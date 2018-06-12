@@ -1,0 +1,243 @@
+<ion-view class="m-index" view-title="">
+    <ion-nav-buttons side="left">
+        <a class="logo" href="#/home"><img ng-src="/mobile/images/logo.png"></a>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <span ng-if="isLogin">
+	        <a class="user-button" href="#/ucenter/index"><span class="span-user">{{My.getUserName()}}</span></a>
+	        <a class="button ry-button" ng-click="logout();">退出</a>
+        </span>
+        <span ng-if="inited && !isLogin">
+	        <a class="button ry-button mr-5" href="#/login">登录</a>
+	        <a ng-if="!agentFlag || (agentFlag == 1 && recoUser)" class="button ry-button mr-5" href="#/reg">注册</a>
+	        <a ng-if="agentFlag!=1"  class="button ry-button" ng-click="guestLogin();">试玩</a>
+        </span>
+        <ion-spinner ng-show="!inited" class="spinner topinfo-spinner"></ion-spinner>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-slide-box delegate-handle="home-handle" auto-play="true" does-continue="true" slide-interval="3000">
+            <ion-slide ng-repeat="slide in appConfig.slideList ">
+                <a href="{{ slide.href }}"><img ng-src="{{ slide.imgUrl }}" /></a>
+            </ion-slide>
+        </ion-slide-box>
+
+        <div class="row notice">
+            <div class="col col-10 notice-icon"></div>
+            <div class="col col-90 notice-content">
+                <zl-notice></zl-notice>
+            </div>
+        </div>
+
+        <div class="gamelist">
+            <div class="title">
+                <img src="/mobile/images/icon-game.png">热门游戏
+            </div>
+            <div class="row">
+                <div class="col col-33">
+                    <div class="gamebox">
+                        <a href="#/lottery/index/{{gameList[0].id}}"> <img ng-src="{{gameList[0].icon}}">
+                            <p>{{gameList[0].text}}</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col col-33">
+                    <div class="gamebox">
+                        <a href="#/lottery/index/{{gameList[1].id}}"> <img ng-src="{{gameList[1].icon}}">
+                            <p>{{gameList[1].text}}</p>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div  class="col col-33">
+                    <div class="gamebox">
+                        <a href="#/lottery/index/{{gameList[2].id}}"> <img ng-src="{{gameList[2].icon}}">
+                            <p>{{gameList[2].text}}</p>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col col-33">
+                    <div class="gamebox">
+                        <a href="#/lottery/index/{{gameList[3].id}}"> <img ng-src="{{gameList[3].icon}}">
+                            <p>{{gameList[3].text}}</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col col-33">
+                    <div class="gamebox">
+                        <a href="#/lottery/index/{{gameList[4].id}}"> <img ng-src="{{gameList[4].icon}}">
+                            <p>{{gameList[4].text}}</p>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col col-33">
+                    <!--<div class="gamebox">-->
+                        <!--<a href="#/lottery/index/{{gameList[5].id}}"> <img ng-src="{{gameList[5].icon}}">-->
+                            <!--<p>{{gameList[5].text}}</p>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                    <div class="gamebox">
+                        <a ng-click="openZxkfWindow()"> <img src="/mobile/images/games/kefu.png">
+                            <p>在线客服</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="row">-->
+
+                <!--<div  class="col col-33">-->
+                    <!--<div class="gamebox">-->
+                        <!--<a href="#/lottery/index/{{gameList[6].id}}"> <img ng-src="{{gameList[6].icon}}">-->
+                            <!--<p>{{gameList[6].text}}</p>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="col col-33">-->
+                    <!--<div class="gamebox">-->
+                        <!--<a href="#/lottery/index/{{gameList[7].id}}"> <img ng-src="{{gameList[7].icon}}">-->
+                            <!--<p>{{gameList[7].text}}</p>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div  class="col col-33" >-->
+                    <!--<div class="gamebox">-->
+                        <!--<a href="#/lottery/index/{{gameList[8].id}}"> <img ng-src="{{gameList[8].icon}}">-->
+                            <!--<p>{{gameList[8].text}}</p>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="row">-->
+                <!--<div class="col col-33">-->
+                    <!--<div class="gamebox">-->
+                        <!--<a href="#/lottery/index/{{gameList[9].id}}"> <img ng-src="{{gameList[9].icon}}">-->
+                            <!--<p>{{gameList[9].text}}</p>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="col col-33">-->
+                    <!--<div class="gamebox">-->
+                        <!--<a href="#/lottery/list"> <img src="/mobile/images/games/more.png">-->
+                            <!--<p>更多彩票</p>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="col col-33">-->
+                    <!--<div class="gamebox">-->
+                        <!--<a ng-click="openZxkfWindow()"> <img src="/mobile/images/games/kefu.png">-->
+                            <!--<p>在线客服</p>-->
+                       <!--</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="row">
+                <!--<div class="col col-33">-->
+                    <!--<div class="gamebox">-->
+                        <!--<a ng-if="isLogin" target="_blank" href="#"> <img src="/mobile/images/games/tuijian.png">-->
+                            <!--<p>我的推荐</p>-->
+                        <!--</a>-->
+                        <!--<a ng-if="!isLogin"  target="_blank" href="/home/"> <img src="/mobile/images/games/tuijian.png">-->
+                            <!--<p>我的推荐</p>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="col col-33">
+                    <div class="gamebox">
+                        <a ng-if="isLogin" target="_blank" href="/?type=pc"> <img src="/mobile/images/g-computer.png">
+                            <p>电脑版</p>
+                        </a>
+                        <a ng-if="!isLogin"  target="_blank" href="/?type=pc"> <img src="./mobile/images/g-computer.png">
+                            <p>电脑版</p>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col col-33" ng-if="appConfig.mobileAppDownUrl && agentFlag!=1">
+                    <div class="gamebox">
+                        <a ng-click="downApp(appConfig.mobileAppDownUrl);">
+                            <img src="/mobile/images/games/app_down.png">
+                            <p>APP下载</p>
+                        </a>
+                        <img class="new" src="/mobile/images/games/new.png" />
+                    </div>
+                </div>
+
+                <div ng-if="isLogin && actiMap[3]" class="col col-33">
+                    <div class="gamebox">
+                        <a ng-href="#/login_activity/0"> <img src="/mobile/images/menu-activity.png">
+                            <p>登陆抽奖</p>
+                        </a>
+                    </div>
+                </div>
+
+                <div ng-if="!isLogin && agentFlag!=1" class="col col-33">
+                    <div class="gamebox">
+                        <a ng-click="guestLogin();"> <img src="/mobile/images/games/g-try.png">
+                            <p>免费试玩</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 优惠活动 BEGIN -->
+        <div class="activity" ng-if="actiMap[3] || actiMap[1] || actiMap[4]">
+            <div class="head">
+                <div class="title">
+                    <img src="/mobile/images/icon-activity.png">优惠活动
+                </div>
+                <a href="#/activity">更多&gt;&gt;</a>
+            </div>
+
+            <div class="activity-list">
+                <a ng-click="showActiInfo(actiMap[4])" ng-if="actiMap[4]"><p>{{actiMap[4].name}}</p>
+                    <img src="/mobile/images/activity/6.jpg">
+                </a>
+                <a href="#/cont_activity/{{actiMap[1].topActivityId}}" ng-if="actiMap[1]"><p>{{actiMap[1].name}}</p>
+                    <img src="/mobile/images/activity/5.jpg">
+                </a>
+                <a href="#/login_activity/{{actiMap[3].topActivityId}}" ng-if="actiMap[3]"><p>{{actiMap[3].name}}</p>
+                    <img src="/mobile/images/activity/4.jpg">
+                </a>
+            </div>
+        </div>
+        <!-- 优惠活动 END -->
+
+        <div class="foot-link">
+            <div class="left">
+                <a href="/?type=pc">
+                    <img src="/mobile/images/computer.png" alt=""> 电脑版
+                </a>
+            </div>
+            <div class="right">
+                <a href="#/activity">
+                    <img src="/mobile/images/gift.png" alt=""> 优惠活动
+                </a>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>{{ appConfig.copyright }}</p>
+        </div>
+    </ion-content>
+    <ion-footer-bar class="max">
+        <ion-tabs class="tabs-icon-top tabs-light">
+            <ion-tab title="首页" icon-off="icon-home" icon-on="icon-home" href="#/home"></ion-tab>
+            <ion-tab title="游戏大厅" icon-off="icon-youxi" icon-on="icon-youxi" href="#/lottery/list"></ion-tab>
+            <ion-tab title="资金管理" icon-off="icon-29" icon-on="icon-29" href="#/bank/deposit"></ion-tab>
+            <!-- <ion-tab title="优惠活动" icon-off="icon-29" icon-on="icon-29" href="#/bank/deposit"></ion-tab> -->
+            <ion-tab title="我的" icon-off="icon-yonghu" icon-on="icon-yonghu" href="#/ucenter/index"></ion-tab>
+        </ion-tabs>
+    </ion-footer-bar>
+</ion-view>

@@ -1,0 +1,2779 @@
+@charset "UTF-8";
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.platform-android .popover {
+    margin-top: 10px;
+    background-color: #4d4d4d
+}
+
+.platform-android .popover .item {
+    border-color: #e6e6e6;
+    background-color: #fafafa;
+    color: #4d4d4d
+}
+
+.platform-android .popover-arrow {
+    position: absolute;
+    display: block;
+    top: -17px;
+    width: 10px;
+    height: 19px;
+    overflow: hidden;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 8px solid #fff
+}
+
+.platform-android .popover-arrow:after {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    width: 10px;
+    height: 20px;
+    border-radius: 3px;
+    content: ''
+}
+
+.platform-android .popover-bottom .popover-arrow {
+    top: auto;
+    bottom: -10px
+}
+
+.platform-android .popover-bottom .popover-arrow:after {
+    top: -6px
+}
+
+
+
+
+
+
+
+
+/* select {
+    background-color: rgba(214,207,225,.13);
+    margin: 10px
+}
+
+select,.pd5 {
+    padding: 5px
+} */
+
+.notice-icon {
+    padding: 0 .5rem;
+    font-size: 1.3rem
+}
+
+.notice-content {
+    padding: 0 .4rem 0 0;
+    font-size: .8rem
+}
+
+.popup-title {
+    font-size: .75rem;
+    font-weight: bolder;
+    color: #000;
+}
+
+.lh-23px {
+    line-height: 23px!important
+}
+
+.lh-40px {
+    line-height: 40px
+}
+
+.lh-4 {
+    line-height: 4!important
+}
+
+.lh-3 {
+    line-height: 3!important
+}
+
+.lh-1 {
+    line-height: 1!important
+}
+
+.text-l {
+    text-align: left!important
+}
+
+.h-20 {
+    height: 20px
+}
+
+.h-15 {
+    height: 15px
+}
+
+.pdl-1 {
+    padding-left: 1px
+}
+
+.pdl-4 {
+    padding-left: 4px
+}
+
+.pdl-5 {
+    padding-left: 5px
+}
+
+.pdl-10 {
+    padding-left: 10px
+}
+
+.pdl-15 {
+    padding-left: 15px
+}
+
+.pdr-15 {
+    padding-right: 15px
+}
+
+.pdt-8 {
+    padding-top: 8px
+}
+
+.pdt-5 {
+    padding-top: 5px
+}
+
+.background1::before {
+    background: url("../images/guangDongShiYiXuanWu.png")
+}
+
+.background2::before {
+    background: url("../images/gdKuaiLeShiFen.png")
+}
+
+.background3::before {
+    background: url("../images/chongQingShiShiCai.png")
+}
+
+.background4::before {
+    background: url("../images/beiJingSaiChe.png")
+}
+
+.background5::before {
+    background: url("../images/xingYunNongChang.png")
+}
+
+.background6::before {
+    background: url("../images/xingYunFeiTing.png")
+}
+
+.background7::before {
+    background: url("../images/shengDiCai.png")
+}
+
+.background8::before {
+    background: url("../images/jiangXiShiShiCai.png")
+}
+
+.background9::before {
+    background: url("../images/guangDongShiYiXuanWu.png")
+}
+
+.background10::before {
+    background: url("../images/bjpk10.png")
+}
+
+.my-select {
+    width: 8.5rem
+}
+
+.my-select select {
+    width: 7.5rem;
+    border: 1px solid rgba(250, 250, 250, .44);
+    border-radius: .15rem;
+    background-color: rgba(0, 0, 0, .2);
+    position: inherit;
+    direction: ltr;
+    padding: 0;
+    color: #fff;
+    height: 1.4rem;
+    font-size: .6rem;
+    line-height: .7rem;
+    text-indent: .3em
+}
+
+.my-select:after {
+    position: absolute;
+    color: #fff;
+    right: 3rem;
+    top: 50%;
+    border-top: .4rem solid;
+    border-right: .25rem solid transparent;
+    border-left: .25rem solid transparent;
+    padding: 0;
+    margin: -.16rem 0 0
+}
+
+.row-width {
+    width: 0
+}
+
+.col-31 {
+    -webkit-flex: 0 0 31%;
+    -moz-flex: 0 0 31%;
+    -ms-flex: 0 0 31%;
+    flex: 0 0 31%;
+    max-width: 31%
+}
+
+.col-31,
+.col-23 {
+    -webkit-box-flex: 0;
+    -moz-box-flex: 0
+}
+
+.col-23 {
+    -webkit-flex: 0 0 23%;
+    -moz-flex: 0 0 23%;
+    -ms-flex: 0 0 23%;
+    flex: 0 0 23%;
+    max-width: 23%
+}
+
+.col-40 {
+    -webkit-flex: 0 0 40%;
+    -moz-flex: 0 0 40%;
+    -ms-flex: 0 0 40%;
+    flex: 0 0 40%;
+    max-width: 40%
+}
+
+.col-40,
+.col-45 {
+    -webkit-box-flex: 0;
+    -moz-box-flex: 0
+}
+
+.col-45 {
+    -webkit-flex: 0 0 45%;
+    -moz-flex: 0 0 45%;
+    -ms-flex: 0 0 45%;
+    flex: 0 0 45%;
+    max-width: 45%
+}
+
+.text-valign-center {
+    display: flex;
+    align-items: center
+}
+
+.text-align-center {
+    display: flex;
+    justify-content: center
+}
+
+.pd0 {
+    padding: 0
+}
+
+.mt0 {
+    margin-top: 0
+}
+
+.ml5 {
+    margin-left: 5px
+}
+
+.ml10 {
+    margin-left: 10px
+}
+
+.mr10 {
+    margin-right: 10px
+}
+
+.tp40 {
+    top: 30px
+}
+
+.right30 {
+    right: 1.5rem
+}
+
+.text-underline {
+    text-decoration: underline
+}
+
+.cur-tips {
+    font-size: .7rem
+}
+
+.resultData {
+    border: solid 1px rgba(255, 255, 255, .29);
+    background: rgba(255, 255, 255, .19);
+    border-radius: 4px;
+    text-decoration: none;
+    color: #fff;
+    text-align: center;
+    margin-right: .1rem;
+    font-size: .6rem;
+    width: 1.1rem;
+    height: 1rem;
+    line-height: .9rem;
+    display: inline-block;
+}
+
+.resultData:last-child {
+    margin-right: 0;
+}
+
+.resultData-width {
+    width: 1.4rem
+}
+
+.h-1-4rem {
+    height: 1.4rem
+}
+
+.h-1-1rem {
+    height: 1.1rem
+}
+
+.index .lottery-top {
+    margin-top: 45px
+}
+
+.index .lottery-list {
+    top: 4.1rem
+}
+
+.index .lottery-list .row {
+    height: 100%;
+    display: block;
+    padding: 0 .4rem 10px;
+    clear: both
+}
+
+.index .lottery-list .row .item {
+    float: left;
+    border: none;
+    background: 0 0;
+    text-align: center;
+    padding: 10px;
+    width: 50%
+}
+
+.index .lottery-list .row .item a {
+    position: relative;
+    display: block;
+    width: 100%;
+    border: solid 1px rgba(255, 255, 255, .29);
+    background: rgba(255, 255, 255, .19);
+    box-shadow: 0 5px 4px -1px rgba(0, 0, 0, .1);
+    border-radius: 6px;
+    text-decoration: none;
+    color: #fff;
+    text-align: center;
+    padding: 25px 5px
+}
+
+.index .lottery-list .row .item a::before {
+    display: block;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+    box-shadow: inset 0 0 10px -3px rgba(255, 255, 255, .4);
+    background-size: 100% 100%
+}
+
+.index .lottery-list .row .item a h3 {
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    font-size: .8rem;
+    margin-bottom: 25px
+}
+
+.index .lottery-list .row .item a span {
+    background: rgba(255, 255, 255, .08);
+    padding: 4px 12px;
+    border: solid 1px rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    position: relative;
+    font-weight: 700
+}
+
+.index .lottery-list .row .item a span::before {
+    display: block;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: inset 0 0 8px -2px rgba(255, 255, 255, .5)
+}
+
+.index .lottery-list .spinner svg {
+    width: 16px;
+    height: 16px;
+}
+
+.index .notice {
+    color: rgba(0, 0, 0, .74);
+    padding: 0;
+    height: 35px;
+    line-height: 35px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .23);
+    position: relative
+}
+
+.index .no-title {
+    padding: 10px;
+    text-align: center;
+    font-size: .7rem;
+    line-height: 1rem;
+    border-bottom: solid 1px rgba(255, 255, 255, .26);
+    background-color: rgba(0, 0, 0, .08)
+}
+
+.index .no-title .backgrounduser {
+    background: url("../images/userinfo.png") center left no-repeat;
+    padding-left: 1rem;
+    background-size: .8rem;
+    line-height: 1rem;
+    color: #fff
+}
+
+.index .no-title .backgroundmoney {
+    background: url("../images/money.png") center left no-repeat;
+    padding-left: 1rem;
+    background-size: .8rem;
+    line-height: 1rem;
+    color: #fff
+}
+
+.index .no-title span {
+    font-size: .7rem
+}
+
+.index .no-title i {
+    font-size: 1rem
+}
+
+.index .no-title .button.ry-button {
+    background-color: rgba(250, 252, 250, .01);
+    padding: 0 5px;
+    border: solid 1px rgba(0, 0, 0, .1);
+    box-shadow: inset 1px 1px 0 rgba(250, 250, 250, .22);
+    color: #fff;
+    min-height: 0;
+    height: 1.2rem;
+    line-height: 1.1rem;
+    font-size: .7rem;
+}
+
+.index .no-title .button.ry-button.activated {
+    border-color: rgba(0, 0, 0, .3);
+    background-color: rgba(0, 0, 0, .5);
+    color: #fff;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, .1), 0 0 1px rgba(250, 250, 250, .3)
+}
+
+.icon-size::before {
+    font-size: 145%!important
+}
+
+.tryPlayIcon {
+    padding-top: 4px;
+    padding-left: 8px;
+    z-index: 1;
+    position: relative
+}
+
+.rp-float {
+    position: absolute;
+    right: 26px;
+    top: 231px;
+    width: 65px;
+    height: 85px;
+    background: url("/m/images/packet-icon.png?v=u860dba6e") center no-repeat;
+    background-size: 100%;
+    z-index: 15
+}
+
+.rp-float a {
+    padding: 3px 8px;
+    position: absolute;
+    top: -20px;
+    right: -26px;
+    color: #be0000;
+    font-size: 16px
+}
+
+.rp-state {
+    top: -20px;
+    width: 100%;
+    text-align: center;
+    color: #e40001;
+    font-size: 16px;
+    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px 0 #fff
+}
+
+.rp-state,
+.rp-count {
+    position: absolute;
+    font-weight: 700
+}
+
+.rp-count {
+    top: -10px;
+    right: 63px;
+    color: #ffea00;
+    border-radius: 2px;
+    font-size: 12px;
+    border: 1px solid #ffea00;
+    background-color: #e00;
+    padding: 0 3px
+}
+
+.rp-detail {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 45px;
+    overflow: scroll;
+    background-color: rgba(0, 0, 0, .2);
+    z-index: 15
+}
+
+.rp-content {
+    margin: 30px auto 50px;
+    width: 260px;
+    height: 464px;
+    background: url("../images/packet-bg.png?v=u860dba6e") center 49px no-repeat;
+    background-size: 100%;
+    position: relative
+}
+
+.rp-content h3 {
+    color: #e4cca1;
+    text-align: center;
+    margin: -16px auto 10px;
+    width: 100px;
+    background-color: #d74f43
+}
+
+.rp-content .ion-close-round {
+    font-size: 24px;
+    color: #d74f43;
+    position: absolute;
+    top: 45px;
+    right: -32px;
+    padding: 0 4px
+}
+
+.rp-content .line {
+    zoom: 1 width: 100%;
+    margin-top: 10px;
+    border: 1px dashed #c4483c
+}
+
+.rp-list .rp-info {
+    margin: 0 auto 20px;
+    padding-top: 4px;
+    width: 210px;
+    height: 180px;
+    background: url("../images/packet-info.png?v=u860dba6e") center no-repeat;
+    background-size: 100%;
+    text-align: center
+}
+
+.rp-list .rp-info p {
+    padding-left: 30px;
+    font-size: 16px;
+    color: #454545;
+    text-decoration: underline;
+    text-align: left;
+    line-height: 46px;
+    margin: 0
+}
+
+.rp-list .rp-info p span {
+    color: #bb4036;
+    width: 80px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block
+}
+
+.rp-list .rp-info a {
+    margin-top: 6px;
+    display: inline-block;
+    background-color: #d74f43;
+    padding: 2px 6px;
+    color: #fff;
+    border-radius: 2px
+}
+
+.rp-list .switch {
+    margin-right: 10px;
+    float: right;
+    line-height: 30px;
+    font-size: 16px;
+    text-decoration: underline;
+    color: #830c01
+}
+
+.rp-list .intro {
+    height: 194px;
+    overflow: scroll;
+    padding: 0 13px
+}
+
+.rp-list .intro h5 {
+    color: #e4cca1;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 5px
+}
+
+.rp-list .intro p {
+    color: #ffdfdf
+}
+
+.rp-list .rank {
+    padding: 0 20px;
+    text-align: center
+}
+
+.rp-list .rank-head {
+    color: #e4cca1;
+    font-size: 16px;
+    padding-bottom: 0
+}
+
+.rp-list .rank-head .col {
+    padding-bottom: 0
+}
+
+.rp-list .rank-list {
+    height: 164px;
+    overflow: scroll;
+    color: #ffdfdf
+}
+
+.rp-list .rank-list .row {
+    border-top: 1px dashed #c4483c
+}
+
+.rp-list .rank-list .row:first-child {
+    border-top: 0
+}
+
+.rp-list .rank .current {
+    color: #e4cca1
+}
+
+.rp-win {
+    background-position: center -2px
+}
+
+.rp-win .rp-info {
+    margin: 0 auto 35px;
+    padding-top: 4px;
+    width: 210px;
+    height: 129px;
+    background: url("../images/packet-win.png?v=u860dba6e") center no-repeat;
+    background-size: 100%;
+    text-align: center
+}
+
+.rp-win .rp-info h1 {
+    margin-top: 20px;
+    color: #bb4036;
+    font-size: 40px;
+    font-weight: 700
+}
+
+.rp-win .rp-info h1 span {
+    font-size: 22px
+}
+
+.rp-win .rp-info a {
+    font-size: 16px;
+    margin-top: 15px;
+    display: inline-block;
+    color: #bb4036;
+    text-decoration: underline
+}
+
+.rp-win .rule {
+    color: #ffdfdf;
+    padding: 10px 15px
+}
+
+.rp-open {
+    margin: 40px auto 50px;
+    width: 260px;
+    height: 357px;
+    background: url("../images/packet-open.png?v=u860dba6e") center no-repeat;
+    background-size: 100%;
+    position: relative;
+    text-align: center
+}
+
+.rp-open .ion-close-round {
+    font-size: 24px;
+    color: #d74f43;
+    position: absolute;
+    top: -9px;
+    right: -32px;
+    padding: 0 4px
+}
+
+.rp-open .btn-open {
+    background: url("../images/packet-kai.png?v=u860dba6e") center no-repeat;
+    background-size: 100%;
+    display: inline-block;
+    padding: 44px;
+    margin-top: 60px
+}
+
+.rp-open .active {
+    animation: rpRotate 1s infinite;
+    -webkit-animation: rpRotate 1s infinite
+}
+
+.rp-open h3 {
+    width: 94%;
+    margin: 20px auto 12px;
+    color: #e4cca1;
+    font-weight: 700;
+    font-size: 20px;
+    overflow: hidden;
+    white-space: nowrap
+}
+
+.rp-open p {
+    padding: 0 10px;
+    color: #ffdfdf
+}
+
+.rp-out {
+    background-position: center 10px;
+    height: 425px;
+    padding: 155px 10px 0;
+    text-align: center;
+    position: relative
+}
+
+.rp-out h2 {
+    color: #e4cca1;
+    font-weight: 700
+}
+
+.rp-out p {
+    color: #ffdfdf
+}
+
+.rp-out .link {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    line-height: 30px;
+    color: #dbbe89;
+    font-size: 16px;
+    text-decoration: underline
+}
+
+.rp-fail {
+    background-position: center 10px;
+    height: 425px;
+    padding: 165px 10px 0;
+    text-align: center;
+    position: relative
+}
+
+.rp-fail h2 {
+    color: #e4cca1;
+    font-weight: 700
+}
+
+.rp-fail .btn-again {
+    display: inline-block;
+    width: 200px;
+    height: 41px;
+    line-height: 41px;
+    color: #454545;
+    font-weight: 700;
+    font-size: 20px;
+    background: url("../images/packet-btn.jpg?v=u860dba6e") center no-repeat;
+    background-size: 100%
+}
+
+@-webkit-keyframes rpRotate {
+    from {
+        transform: rotateY(0deg)
+    }
+
+    to {
+        transform: rotateY(360deg)
+    }
+}
+
+@keyframes rpRotate {
+    from {
+        transform: rotateY(0deg)
+    }
+
+    to {
+        transform: rotateY(360deg)
+    }
+}
+
+.lotter-view .lotter-bar {
+    background-color: #3883ba;
+    height: 44px
+}
+
+.lotter-view .lottery-content {
+    transition: all .3s;
+}
+
+.lotter-view .member-balance {
+    padding: 6px;
+    font-size: .7rem
+}
+
+.lotter-view .button.button-clear {
+    font-size: .7rem
+}
+
+.lotter-view .button.button-clear .game-name {
+    background: url("../images/back.png") center right no-repeat;
+    padding-right: 1rem;
+    background-size: .7rem;
+    line-height: 1rem;
+    font-weight: 600;
+}
+
+.lotter-view .perio {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .32);
+    background-color: rgba(255, 255, 255, 0);
+    font-size: .5rem;
+    line-height: 1.5rem
+}
+
+.lotter-view .pre-perio {
+    height: 3rem;
+}
+
+.lotter-view .perio .pre-perio .item {
+    padding: 0 .25rem;
+    background-color: transparent;
+    color: #fff;
+    border: 0;
+    font-size: .7rem;
+    position: relative;
+}
+
+.lotter-view .perio .pre-perio .item .ion-arrow-swap {
+    font-size: 1.1rem;
+    padding: 0 .3rem
+}
+
+.perio .preissue {
+    float: left;
+    margin: 3px 5px 0 0;
+}
+
+.perio .lottery-nums {
+    margin-top: 8px;
+    line-height: 1.1rem;
+}
+
+.lotter-view .perio .cur-perio {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2);
+}
+
+.lotter-view .perio .cur-perio .item {
+    font-size: .7rem;
+    padding: 0 .25rem;
+    background-color: transparent;
+    color: #fff;
+    border: 0
+}
+
+.lotter-view .perio .cur-perio .item .time {
+    box-shadow: inset 1px 1px 0 rgba(250, 250, 250, .22), 0 1px 0 rgba(0, 0, 0, .22);
+    background-color: rgba(250, 250, 250, .15);
+    padding: 1px 3px;
+    border-radius: 2px 2px 2px 2px
+}
+
+
+// .nums-wrap {
+//     height: 1.1rem;
+// }
+.nums-wrap .equal {
+    margin: 0 5px
+}
+
+.result-wrap {
+    margin-top: .1rem;
+}
+
+.lotter-view .lottery-bet {}
+
+
+.lotter-view .lottery-bet .active a {
+    color: #fff;
+    box-shadow: inset -1px 3px 7px rgba(0, 0, 0, .34);
+    background-color: rgba(0, 0, 0, .23);
+    border: 0
+}
+
+.lotter-view .lottery-bet .item {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 -1px 0 rgba(0, 0, 0, .23);
+    padding: 8px 5px;
+    background: rgba(250, 250, 250, .11);
+    text-align: center;
+    position: relative;
+    border: 0;
+    display: block;
+    font-size: .7rem
+}
+
+.lotter-view .lottery-bet .item .smallround {
+    width: 7px;
+    height: 7px;
+    border-radius: 25px;
+    background-color: rgba(0, 0, 0, .3);
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translate(0, -50%);
+    border-bottom: 1px solid rgba(250, 250, 250, .5);
+    box-shadow: inset 0 -1 1px #fafafa, 0 0 1px rgba(0, 0, 0, .5)
+}
+
+.lotter-view .lottery-bet .active .smallround {
+    background-color: #eee;
+}
+
+.lotter-view .lottery-bet .item .smallround.menus-choose {
+    background-color: #fffb22;
+    border-bottom: none
+}
+
+.lotter-view .lottery-bet .sub-Navs .row .sub-col {
+    margin: 0;
+    padding: 0 1px 0 0
+}
+
+.lotter-view .lottery-bet .sub-Navs .row .sub-col a {
+    font-size: .7rem
+}
+
+.lotter-view .lottery-bet .sub-Navs .row .sub-col.navActive a {
+    margin: 0;
+    background-color: rgba(255, 255, 255, .25)!important;
+    border: 0;
+    color: rgba(0, 0, 0, .83)
+}
+
+.lotter-view .lottery-bet .sub-Navs .row .sub-col .item {
+    margin: 0;
+    box-shadow: none;
+    background: rgba(250, 250, 250, .11);
+    text-align: center;
+    position: relative;
+    border: 0;
+    display: block;
+    height: 30px
+}
+
+.lotter-view .lottery-bet .lottery-menu {
+    box-shadow: 1px 0 0 rgba(255, 255, 255, .48);
+    background-color: rgba(0, 0, 0, .21);
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    margin-top: 0;
+    padding-top: 1px;
+    margin-bottom: -1px;
+    height: auto;
+    top: 4.5rem;
+    width: 3.7rem
+}
+
+.lotter-view .lottery-bet .bet-view {
+    top: 4.5rem;
+    left: 3.75rem
+}
+
+.group7 .lottery-bet .bet-view,
+.group7 .lottery-bet .lottery-menu {
+    top: 3rem;
+}
+
+.group7 .span-pt {
+    padding-top: 0px!important;
+}
+
+.lotter-view .lottery-bet .tab-content .scroll-content.close .bet {
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .23);
+    color: rgba(0, 0, 0, .8)
+}
+
+.lotter-view .lottery-bet .row {
+    padding: 0;
+    margin: 0
+}
+
+.lotter-view .lottery-bet .row.end {
+    border-bottom: solid 1px rgba(255, 255, 255, .2)
+}
+
+.lotter-view .lottery-bet .row .col {
+    text-align: center;
+    padding: .4rem 0;
+    font-size: .92rem
+}
+
+.lotter-view .lottery-bet .row .bet {
+    position: relative;
+    background: rgba(255, 255, 255, .02);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .23);
+    font-weight: bolder;
+    color: rgba(0, 0, 0, .8);
+    box-shadow: inset -1px 1px 1px rgba(255, 255, 255, .2)
+}
+
+.lotter-view .lottery-bet .row .bet.ban-bo {
+    padding: 0
+}
+
+.lotter-view .lottery-bet .row .bet.ban-bo .bet-content {
+    margin-left: .3rem;
+    padding: 1rem 0;
+    float: left
+}
+
+.lotter-view .lottery-bet .row .bet.ban-bo .bet-item {
+    padding: 1rem 0;
+    margin-left: 5px;
+    float: left;
+    line-height: 1.4rem
+}
+
+.lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu {
+    padding-top: .3rem;
+    padding-bottom: .1rem;
+    text-align: right;
+    margin-right: .1rem;
+    width: 7rem;
+    float: right
+}
+
+.lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu span {
+    color: rgba(0, 0, 0, .8)
+}
+
+.lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu .round-3 {
+    line-height: 1.2rem;
+    margin-right: 0;
+    margin-bottom: .2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    color: #000;
+    display: inline-block;
+    text-align: center;
+    font-size: .7rem
+}
+
+.lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu .round-3.red {
+    background-image: url("../images/default/6h/red.png");
+    background-size: 1.2rem
+}
+
+.lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu .round-3.blue {
+    background-image: url("../images/default/6h/blue.png");
+    background-size: 1.2rem
+}
+
+.lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu .round-3.green {
+    background-image: url("../images/default/6h/green.png");
+    background-size: 1.2rem
+}
+
+.lotter-view .lottery-bet .row .special {
+    padding: .2rem 0
+}
+
+.lotter-view .lottery-bet .row .special .bet-item {
+    padding-left: 0;
+    display: block;
+    line-height: .9rem;
+    width: 100%
+}
+
+.lotter-view .lottery-bet .row .special .bet-content {
+    padding-left: 0;
+    display: block;
+    line-height: 1.4rem
+}
+
+.lotter-view .lottery-bet .row .lh4,
+.lotter-view .lottery-bet .row .lh14,
+.lotter-view .lottery-bet .row .bet-round {
+    line-height: 1.4rem
+}
+
+.lotter-view .lottery-bet .row .bet-round span {
+    color: rgba(0, 0, 0, .8)
+}
+
+.lotter-view .lottery-bet .row .bet-content {
+    display: inline-block;
+    line-height: 1.4rem
+}
+
+.lotter-view .lottery-bet .row .bet-content.pd3 {
+    margin-left: .3rem
+}
+
+.lotter-view .lottery-bet .row .bet-content .round-dit {
+    display: inline-table
+}
+
+.lotter-view .lottery-bet .row .bet-item {
+    display: inline-block;
+    padding-left: 5px;
+    font-size: .65rem;
+    color: rgba(0, 0, 0, .5);
+    min-width: 30px;
+}
+
+.lotter-view .lottery-bet .row .bet-bottom {
+    border-bottom: 1px solid rgba(11, 10, 10, .23)
+}
+
+.lotter-view .lottery-bet .row .ok {
+    background-color: rgba(255, 255, 255, .01);
+    color: rgba(0, 0, 0, .8);
+    font-weight: bolder;
+    box-shadow: inset -1px 1px 1px rgba(255, 255, 255, .2)
+}
+
+.lotter-view .lottery-bet .row .bet-choose {
+    background: rgba(0, 0, 0, .4);
+    text-shadow: 0 0 0 rgba(255, 255, 255, .23);
+    color: #fff;
+    box-shadow: inset 0 1px 5px rgba(0, 0, 0, .3)
+}
+
+.lotter-view .lottery-bet .row .bet-choose .bet-item {
+    color: #fff
+}
+
+.lotter-view .lottery-bet .row .bet-choose .bet-content span {
+    color: rgba(0, 0, 0, .8)
+}
+
+.lotter-view .lottery-bet .row .bet-choose span {
+    font-weight: 700
+}
+
+.lotter-view .lottery-bet .title,
+.lotter-view .lottery-bet .title-no {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2)
+}
+
+.lotter-view .hkc-bet-view .lottery-menu,
+.lotter-view .hkc-bet-view .bet-view {
+    top: 3.1rem
+}
+
+.lotter-view .bar-footer {
+    background-color: rgba(0, 0, 0, .39);
+    height: 62px
+}
+
+.lotter-view .bar-footer .row {
+    padding: 0;
+    font-size: 16px;
+    text-align: center
+}
+
+.lotter-view .bar-footer .row .pb5 {
+    padding-bottom: 1px;
+    font-size: 14px;
+    margin-top: -2px;
+}
+
+.lotter-view .bar-footer .row .button {
+    padding: 2px 4px 1px;
+    min-width: 60px;
+    min-height: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 37px;
+    color: #fff;
+    border: 0
+}
+@media (min-device-width: 366px) {
+    .lotter-view .bar-footer{background-color:rgba(0,0,0,.39);height:61px}
+    .lotter-view .bar-footer .row .button{padding:2px 4px 1px;min-width:60px;min-height:50px;font-size:16px;font-weight:700;line-height:37px;color:#fff;border:0}
+    .lotter-view .has-footer{bottom:75px}
+    .inputbox .cel .textinput{text-decoration:none;position:absolute;height:30px;padding-left:.5em;width:100%}
+    .lotter-view .bar-footer .close-pan .tip{text-align:center;margin-top:.1rem;font-size:1rem;font-weight:700}
+}
+@media (max-device-width: 366px) {
+    .lotter-view .has-footer {
+        bottom: 61px;
+    }
+    .lotter-view .bar-footer {
+        background-color: rgba(0,0,0,.39);
+        height: 61px;
+    }
+    .lotter-view .bar-footer .row .button {
+        padding: 2px 4px 1px;
+        min-width: 3em;
+        min-height: 3em;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 37px;
+        color: #fff;
+        border: 0;
+    }
+    .inputbox .cel .textinput {
+        text-decoration: none;
+        position: absolute;
+        height: 1.5em;
+        padding-left: .5em;
+        width: 100%;
+    }
+    .lotter-view .bar-footer .close-pan .tip {
+        text-align: center;
+        margin-top: 0.1em;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+}
+.lotter-view .bar-footer .row .button-bet {
+    background-color: #d3563e;
+    box-shadow: inset 0 0 3px rgba(250, 250, 250, .23), 1px 3px 4px rgba(0, 0, 0, .18)
+}
+
+.lotter-view .bar-footer .row .button-reset {
+    background-color: #4574c1;
+    box-shadow: inset 0 0 3px rgba(250, 250, 250, .23), 1px 3px 4px rgba(0, 0, 0, .18)
+}
+
+.lotter-view .bar-footer .row .button-chouma {
+    background-color: #8ebf73;
+    box-shadow: inset 0 0 3px rgba(250,250,250,.23), 1px 3px 4px rgba(0,0,0,.18);
+}
+
+.chouma_case{
+    width: 20%; height: 100%; display: inline-block; position: absolute;
+}
+#chouma_wrap{
+    width:75%;
+    height: 100%;
+    background: url('/mobile/images/chouma.png') no-repeat;
+    background-size: 100%;
+    position:absolute;
+    left: 5px;
+    bottom: 61px;
+    z-index:12;
+}
+
+.lotter-view .bar-footer .close-pan {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #000;
+    z-index: 1;
+    opacity: .5
+}
+
+.lotter-view .bar-footer .close-pan .tip {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translate(0, -50%);
+    font-size: 1rem;
+    font-weight: 700
+}
+
+.hightabs .has-tabs {
+    bottom: 0;
+}
+
+.lotter-view .has-footer {
+    bottom: 62px
+}
+
+.lotter-view .menu-right {
+    left: auto
+}
+
+.lotter-view .menu-left .bar.bar-stable,
+.lotter-view .menu-right .bar.bar-stable {
+    background: 0 0;
+    background-image: linear-gradient(0deg, rgba(178, 178, 178, 0), rgba(255, 255, 255, 0)50%, transparent 50%)
+}
+
+.lotter-view .menu-left .item-content {
+    padding: 10px;
+    font-size: .75rem
+}
+
+.lotter-view .menu-left .item a,
+.lotter-view .menu-right .item a {
+    background-color: transparent;
+    color: #fff;
+    font-weight: 700;
+}
+
+.lotter-view .bar-header .title {
+    color: #fff!important;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.lotter-view .menu-left .item,
+.lotter-view .menu-right .item {
+    background-color: transparent;
+    color: #fff;
+    font-weight: 700;
+    border-color: rgba(0, 0, 0, .15);
+    box-shadow: inset 0 1px 1px rgba(250, 250, 250, .2)
+}
+
+.lotter-view .menu-left .item a,
+.lotter-view .menu-right .item a {
+    background-color: transparent;
+    color: #fff;
+    font-weight: 700
+}
+
+.lotter-view .ion-mt {
+    margin-top: 6px
+}
+
+.lotter-popup .popup {
+    width: 90%;
+    color: #000
+}
+
+.lotter-popup .popup .red {
+    color: red
+}
+
+.lotter-popup .popup .popup-head {
+    padding: 0
+}
+
+.lotter-popup .popup .popup-head .popup-title {
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    font-size: .8rem;
+    line-height: 1.8rem
+}
+
+.lotter-popup .popup .popup-body {
+    padding: 0 0 0 10px;
+    font-size: .7rem;
+    line-height: 1rem
+}
+
+.lotter-popup .popup .popup-body .scroll-view {
+    padding: 0;
+    margin: 0;
+    height: 9.5rem;
+    /* max-height: 9.5rem; */
+    overflow-y: hidden;
+}
+
+.lotter-popup .popup .popup-buttons {
+    min-height: 2.5rem;
+    padding: 0 10px
+}
+
+.lotter-popup .popup .popup-buttons button {
+    height: 1.8rem;
+    line-height: 1.8rem;
+    font-size: .8rem;
+    margin-bottom: .3rem;
+    margin-top: .4rem
+}
+
+.lotter-popup .popup .scroll-bar-fade-out {
+    opacity: 2!important
+}
+
+.lotter-popup .split-line {
+    margin-top: 10px;
+    border-top: 1px solid rgba(0, 0, 0, .15);
+    padding-top: 10px;
+    margin-right: 10px;
+}
+
+.role-poput .popup {
+    width: 80%
+}
+
+.role-poput .popup .popup-head {
+    padding: 0
+}
+
+.role-poput .popup .popup-head .popup-title {
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    font-size: .8rem;
+    line-height: 1.8rem
+}
+
+.role-poput .popup .popup-body {
+    padding: 0 0 0 10px;
+    margin: 5px 0;
+    overflow-x: hidden
+}
+
+.role-poput .popup .popup-body .scroll-view {
+    padding: 0;
+    margin: 0
+}
+
+.role-poput .popup .popup-buttons {
+    min-height: 2.5rem;
+    padding: 0 10px
+}
+
+.role-poput .popup .popup-buttons button {
+    height: 1.8rem;
+    line-height: 1.8rem;
+    font-size: .8rem;
+    margin-bottom: .3rem;
+    margin-top: .4rem
+}
+
+.role-poput .popup .typo {
+    color: #000;
+    font-size: 12px
+}
+
+.role-poput .popup .scroll-bar-fade-out {
+    opacity: 2!important
+}
+
+.inputbox {
+    position: relative;
+    color: #fff;
+}
+
+.inputbox .cel {
+    width: 100%
+}
+
+.inputbox .cel .textinput {
+    text-decoration: none;
+    position: absolute;
+    height: 30px;
+    padding-left: .5em;
+    width: 100%
+}
+
+.inputbox .cel .textinput-mt {
+    margin-top: -5%
+}
+
+.inputbox .cel .txdel {
+    position: absolute;
+    right: 5px;
+    top: 1px;
+    display: inline-block;
+    width: 35px;
+    height: 36px;
+    color: #000;
+    padding-top: 5px
+}
+
+.inputbox .text-yellow {
+    color: #ffd200;
+    font-weight: 700
+}
+
+.bar .buttons-left span {
+    margin-right: 0;
+    display: inline-block
+}
+
+.opacityBetView {
+    opacity: .5
+}
+
+.side-item,
+.ball-item {
+    text-align: center
+}
+
+.lottery-list {
+    color: #fff
+}
+
+.lottery-list .no-title {
+    text-align: center;
+    padding: 0;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: .6rem
+}
+
+.lottery-list .no-title.pt {
+    margin-top: .5rem
+}
+
+.lottery-list .no-title .radiu {
+    background: rgba(255, 255, 255, .2);
+    padding: 0 0 0 .05rem;
+    box-shadow: inset -1px 1px 0 0 rgba(255, 255, 255, .21), 1px 1px 0 0 rgba(0, 0, 0, .13)
+}
+
+.lottery-list .tips {
+    height: 1.5rem;
+    line-height: 1.5rem;
+    padding-left: 10px
+}
+
+.lottery-list .tips a {
+    color: #fff;
+    font-size: .6rem
+}
+
+.lottery-list .list {
+    position: absolute;
+    margin-bottom: 0;
+    top: 1.5rem
+}
+
+.lottery-list .list.detail {
+    top: 3.1rem
+}
+
+.lottery-list .list .row {
+    padding: 0;
+    font-size: .6rem
+}
+
+.lottery-list .list .row .tal {
+    box-shadow: inset -1px 1px 0 0 rgba(255, 255, 255, .2), 1px 1px 0 0 rgba(0, 0, 0, .1);
+    margin-bottom: 6px;
+    padding: 0 .05rem 0 0;
+    background-color: rgba(255, 255, 255, .05)
+}
+
+.lottery-list .list .row .tal div {
+    padding: .5rem .25rem
+}
+
+.lottery-list .list .row .tal.bet {
+    color: #1c1d4b
+}
+
+.lottery-list .has-footer,
+.lottery-list.has-footer {
+    bottom: 45px;
+}
+
+.lottery-list .bar-footer .row {
+    font-size: .7rem;
+    padding: 0
+}
+
+.lottery-list .bar-footer .bet {
+    color: #4e6fa9
+}
+
+.count {
+    font-size: .7rem
+}
+
+.count .row.tips {
+    margin-top: 0;
+    padding: .2rem .5rem
+}
+
+.count .row.tips .col {
+    padding: 0;
+    color: #fff;
+    font-size: .65rem;
+    line-height: 1.2rem
+}
+
+.count .row.tips .col.day {
+    color: rgba(255, 255, 255, .41)
+}
+
+.count .title-no {
+    background: rgba(248, 234, 234, .14);
+    margin-top: .2rem;
+    padding: 0
+}
+
+.count .title-no.detail {
+    margin-top: 0
+}
+
+.count .title-no .tle {
+    line-height: 1.2rem;
+    padding: .2rem 0 .2rem 1px
+}
+
+.count .list {
+    position: absolute;
+    padding: 0;
+    background: 0 0;
+    top: 1.9rem;
+    margin-bottom: 0
+}
+
+.count .list.detail {
+    top: 3.3rem
+}
+
+.count .list.detail .row {
+    padding: 0
+}
+
+.count .list.detail .row.day {
+    padding-top: 0;
+    padding-bottom: 0
+}
+
+.count .list .row {
+    padding: 0;
+    margin-top: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, .12)
+}
+
+.count .list .row .bet {
+    color: #1c1d4b
+}
+
+.count .list .row .tal {
+    padding: 0 1px 0 0
+}
+
+.count .list .row .tal .cont {
+    padding: .25rem 0 .25rem .25rem
+}
+
+.count .list .row .tal .cont .item-data {
+    line-height: .8rem
+}
+
+.count .list .row .tal .cont .item-data.double {
+    line-height: 2rem
+}
+
+.count .bar-footer {
+    padding: 0;
+    background-color: rgba(0, 0, 0, .8)
+}
+
+.count .bar-footer .row {
+    margin: 0;
+    padding: 5px 0;
+    font-size: 16px
+}
+
+.count .bar-footer .row .color-blue {
+    color: #4e6fa9
+}
+
+.chang-long .selectLottery {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0;
+    line-height: 2.25rem
+}
+
+.chang-long select {
+    margin: 0 10px
+}
+
+.chang-long .no-title {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    line-height: 1rem;
+    font-size: .7rem
+}
+
+.chang-long .no-title .radiu {
+    background: rgba(255, 255, 255, .2);
+    padding: .5rem 0;
+    box-shadow: inset -1px 1px 0 0 rgba(255, 255, 255, .21), 1px 1px 0 0 rgba(0, 0, 0, .13)
+}
+
+.chang-long .list {
+    position: absolute;
+    top: 2.105rem;
+    text-align: center;
+}
+
+.chang-long .list .row {
+    padding: 0;
+    font-size: .6rem;
+    color: #fff;
+}
+
+.chang-long .list .row .tal {
+    padding: .5rem 0;
+    box-shadow: inset -1px 1px 0 0 rgba(255, 255, 255, .21), 1px 1px 0 0 rgba(0, 0, 0, .13);
+    margin-bottom: 6px;
+    background-color: rgba(255, 255, 255, .05)
+}
+
+.lu-zhu {
+    color: #fff;
+}
+
+.lu-zhu .ball-temp {
+    top: 2.2rem
+}
+
+.lu-zhu select {
+    width: 5.5rem
+}
+
+.lu-zhu .ball-temp .row {
+    padding: 0;
+    font-size: .6rem
+}
+
+.lu-zhu .ball-temp .row.title {
+    margin: .5rem 0 0
+}
+
+.lu-zhu .ball-temp .row.title.mt0 {
+    margin-top: 0
+}
+
+.lu-zhu .ball-temp .row .radiu {
+    background: rgba(255, 255, 255, .2);
+    padding: .5rem 0;
+    box-shadow: inset -1px 1px 0 0 rgba(255, 255, 255, .21), 1px 1px 0 0 rgba(0, 0, 0, .13)
+}
+
+.lu-zhu .ball-temp .row .selected {
+    color: #fff;
+    box-shadow: inset -1px 3px 7px rgba(0, 0, 0, .28)
+}
+
+.lu-zhu .ball-temp .content {
+    padding: 0;
+    text-align: center
+}
+
+.lu-zhu .ball-temp .content .row .following {
+    background-color: rgba(255, 255, 255, .05);
+    border-bottom: 1px solid rgba(250, 250, 250, .47);
+    box-shadow: inset 1px 1px 0 rgba(250, 250, 250, .47);
+    max-width: 2rem!important;
+    padding: 0
+}
+
+.lu-zhu .ball-temp .content .row .following div:first-child {
+    padding-top: 7px
+}
+
+.lu-zhu .ball-temp .content .row .following div:last-child {
+    padding-bottom: 7px
+}
+
+.lu-zhu .ball-temp .middle {
+    text-indent: 1em;
+    line-height: 28px;
+    font-size: .6rem;
+    width: 100%;
+    height: 30px;
+    margin-left: 1px;
+    margin-bottom: 0;
+    border-right: 1px solid rgba(0, 0, 0, .5);
+    background: 0 0;
+    box-shadow: inset 0 1px 2px rgba(250, 250, 250, .2), -1px -1px 1px rgba(0, 0, 0, .2);
+    border-bottom: 1px solid rgba(0, 0, 0, .2)
+}
+
+.lu-zhu .side-temp {
+    top: 2.2rem
+}
+
+.lu-zhu .side-temp .row {
+    padding: 0;
+    font-size: .6rem
+}
+
+.lu-zhu .side-temp .row.title {
+    margin: 0
+}
+
+.lu-zhu .side-temp .row .radiu {
+    background: rgba(255, 255, 255, .2);
+    padding: .5rem 0;
+    box-shadow: inset -1px 1px 0 0 rgba(255, 255, 255, .21), 1px 1px 0 0 rgba(0, 0, 0, .13)
+}
+
+.lu-zhu .side-temp .row .selected {
+    color: #fff;
+    box-shadow: inset -1px 3px 7px rgba(0, 0, 0, .28)
+}
+
+.lu-zhu .side-temp .content {
+    padding: 0;
+    text-align: center
+}
+
+.lu-zhu .side-temp .content .row {
+    min-height: 5rem
+}
+
+.lu-zhu .side-temp .content .row .following {
+    padding: 0;
+    margin: 0;
+    max-width: 2rem!important;
+    background-color: rgba(255, 255, 255, .05);
+    border-bottom: 1px solid rgba(250, 250, 250, .47);
+    box-shadow: inset 1px 1px 0 rgba(250, 250, 250, .47)
+}
+
+.lu-zhu .side-temp .content .row .following div:first-child {
+    padding-top: 7px
+}
+
+.lu-zhu .side-temp .content .row .following div:last-child {
+    padding-bottom: 7px
+}
+
+.lu-zhu button {
+    background-color: rgba(250, 252, 250, .1);
+    padding: .15rem;
+    border: 0;
+    color: #fafafa;
+    box-shadow: inset 0 0 3px rgba(250, 250, 250, .5), 0 0 5px rgba(0, 0, 0, .5);
+    border-radius: 2px 2px 2px 2px;
+    width: 2rem;
+    height: 1.3rem;
+    line-height: .5rem;
+    font-size: .6rem
+}
+
+.history {
+    color: #fff;
+}
+
+.history select {
+    margin: 0 10px
+}
+
+.history .pd {
+    padding: 0;
+    line-height: 2.25rem;
+    display: table-cell;
+    vertical-align: middle
+}
+
+.history .title {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    font-size: .7rem;
+    line-height: 1rem
+}
+
+.history .title .radiu {
+    background: rgba(255, 255, 255, .2);
+    padding: .5rem 0 .5rem 1px;
+    box-shadow: inset -1px 1px 0 0 rgba(255, 255, 255, .21), 1px 1px 0 0 rgba(0, 0, 0, .13)
+}
+
+.history .list {
+    position: absolute;
+    top: 4.325rem
+}
+
+.history .list .row {
+    padding: 0;
+    font-size: .7rem
+}
+
+.history .list .row .tal {
+    padding: 0 1px 0 0;
+    box-shadow: inset -1px 1px 0 0 rgba(255, 255, 255, .2), 1px 1px 0 0 rgba(0, 0, 0, .1);
+    margin-bottom: 6px;
+    background-color: rgba(255, 255, 255, .05)
+}
+
+.history .list .row .tal.padding-left {
+    padding-left: 10px
+}
+
+.history .list .row .tal .cont {
+    padding: .5rem .05rem;
+    text-align: center
+}
+
+.history .list .row .tal .cont.pd1 {
+    padding: .1rem .05rem 0
+}
+
+.history .list .row .tal .cont.lh {
+    line-height: 1rem
+}
+
+.history .list .row .tal .cont.lh1 {
+    line-height: 1.25rem
+}
+
+.history .list .row .tal .cont .mt-20 {
+    margin-top: -20px
+}
+
+.history .list .row .tal .cont .mt-15 {
+    margin-top: -15px
+}
+
+.history .list .row .tal .cont .mt5 {
+    margin-top: 5px
+}
+
+.limit select {
+    margin: 0 10px
+}
+
+.limit .pd {
+    padding: 0;
+    line-height: 2.25rem;
+    display: table-cell;
+    vertical-align: middle
+}
+
+.limit .title {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    font-size: .7rem;
+    line-height: 1rem
+}
+
+.limit .title .radiu {
+    background: rgba(255, 255, 255, .2);
+    padding: .5rem 0 .5rem 1px;
+    box-shadow: inset -1px 1px 0 0 rgba(255, 255, 255, .21), 1px 1px 0 0 rgba(0, 0, 0, .13)
+}
+
+.limit .list {
+    position: absolute;
+    top: 4.325rem
+}
+
+.limit .list .row {
+    padding: 0;
+    font-size: .7rem
+}
+
+.limit .list .row .tal {
+    padding: 0 1px 0 0;
+    box-shadow: inset -1px 1px 0 0 rgba(255, 255, 255, .2), 1px 1px 0 0 rgba(0, 0, 0, .1);
+    margin-bottom: 6px;
+    background-color: rgba(255, 255, 255, .05)
+}
+
+.limit .list .row .tal.padding-left {
+    padding-left: 10px
+}
+
+.limit .list .row .tal .cont {
+    padding: .5rem .05rem;
+    text-align: center
+}
+
+.limit .list .row .tal .cont.pd1 {
+    padding: .1rem .05rem 0
+}
+
+.limit .list .row .tal .cont.lh {
+    line-height: 1rem
+}
+
+.limit .list .row .tal .cont.lh1 {
+    line-height: 1.25rem
+}
+
+.limit .list .row .tal .cont .mt-20 {
+    margin-top: -20px
+}
+
+.transfer .show-txt {
+    margin: 1rem 6% .5rem 0;
+    padding: .5rem;
+    border-radius: .25rem;
+    background-color: rgba(250, 250, 250, .08);
+    box-shadow: inset 0 0 3px rgba(250, 250, 250, .24), 0 0 1px rgba(0, 0, 0, .5);
+    font-size: .7rem
+}
+
+.transfer .show-txt p.show-money {
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.1rem
+}
+
+.transfer .show-txt p.show-money a {
+    padding-left: .5rem
+}
+
+.transfer .item-button {
+    margin: 0 6% 20px 0
+}
+
+.transfer .item-button button {
+    text-align: center;
+    border-color: rgba(250, 250, 250, 0);
+    background-color: #227add;
+    color: #fff;
+    min-height: 2.35rem;
+    top: .5rem;
+    font-weight: 700;
+    font-size: 1rem
+}
+
+.transfer .content {
+    font-size: .7rem;
+    margin: 0 0 0 1rem
+}
+
+.transfer .content div {
+    padding-bottom: .5rem
+}
+
+.transfer .content .row {
+    position: absolute;
+    padding: 0 0 .5rem;
+    display: block;
+    clear: both
+}
+
+.transfer .content .row .item {
+    border: none;
+    background-color: rgba(250, 250, 250, .13);
+    color: #fff;
+    float: left;
+    text-align: center;
+    padding: .5rem .25rem;
+    font-size: .8rem;
+    font-weight: 700;
+    margin: 0 2% 2% 0;
+    width: 30%;
+    height: 2.05rem;
+    border-bottom: 1px solid rgba(0, 0, 0, .3);
+    border-right: 1px solid rgba(0, 0, 0, .3);
+    box-shadow: inset 0 1px 1px rgba(250, 250, 250, .3), 0 0 5px rgba(0, 0, 0, .15);
+    border-radius: .25rem .25rem .25rem .25rem
+}
+
+.transfer .content .row .item.pd {
+    padding: .6rem .25rem
+}
+
+.transfer .content .row .item input[type="tel"] {
+    width: 97%;
+    padding: 0;
+    height: 1.3rem;
+    background-color: rgba(250, 250, 250, .01);
+    color: #fff;
+    font-weight: 700;
+    font-size: .8rem;
+    margin: -3px 0 0;
+    position: absolute
+}
+
+.transfer .content .row .item input::-webkit-input-placeholder {
+    line-height: 1.2em;
+    color: rgba(0, 0, 0, .2)
+}
+
+.transfer .content .row .item.item-disabled {
+    background: 0 0;
+    color: rgba(0, 0, 0, .18)
+}
+
+.transfer .content .row .item.show-color {
+    background: rgba(0, 0, 0, .4);
+    border-right: 1px solid rgba(0, 0, 0, .3);
+    color: #fff;
+    box-shadow: inset 0 1px 5px rgba(0, 0, 0, .3), 0 0 1px rgba(250, 250, 250, .5)!important
+}
+
+.transfer .content .row .item.wt {
+    width: 94%;
+    position: relative
+}
+
+.transfer .content .row .item .txdel {
+    right: 5px;
+    margin-top: -8px;
+    padding-top: .4rem;
+    width: 2.5rem;
+    height: 2rem;
+    position: absolute
+}
+
+@media only screen and (min-width:700px) {
+    .lotter-view .lottery-bet .row .bet.ban-bo {
+        padding: 0
+    }
+
+    .lotter-view .lottery-bet .row .bet.ban-bo .bet-content {
+        margin-left: .3rem;
+        padding: .7rem 0;
+        float: left
+    }
+
+    .lotter-view .lottery-bet .row .bet.ban-bo .bet-item {
+        padding: .7rem 0;
+        margin-left: 5px;
+        float: left;
+        line-height: 1.4rem
+    }
+
+    .lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu {
+        padding: .7rem 0;
+        text-align: right;
+        margin-right: .1rem;
+        width: 420px;
+        float: right
+    }
+
+    .lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu span {
+        color: rgba(0, 0, 0, .8)
+    }
+
+    .lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu .round-3 {
+        line-height: 1.2rem;
+        margin-right: .1rem;
+        margin-bottom: .2rem;
+        width: 1.2rem;
+        height: 1.2rem;
+        color: #000;
+        display: inline-block;
+        text-align: center;
+        font-size: .7rem
+    }
+
+    .lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu .round-3.red {
+        background-image: url("../images/default/6h/red.png");
+        background-size: 1.2rem
+    }
+
+    .lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu .round-3.blue {
+        background-image: url("../images/default/6h/blue.png");
+        background-size: 1.2rem
+    }
+
+    .lotter-view .lottery-bet .row .bet.ban-bo .bet-qiu .round-3.green {
+        background-image: url("../images/default/6h/green.png");
+        background-size: 1.2rem
+    }
+}
+
+@media only screen and (max-width:320px) {
+    .round-9 {
+        margin-right: 2px;
+    }
+    .resultData {
+        margin-right: 2px;
+    }
+    .round-6 {
+        margin-right: 2px;
+    }
+    .cur-chat .radio {
+        font-size: 12px;
+    }
+}
+
+
+.hightabs .tabs {
+    top: 45px;
+    background: transparent;
+    height: 30px;
+    line-height: 30px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .32);
+    padding-top: 1px;
+}
+
+.hightabs .tab-item-active {
+    background: rgba(255, 255, 255, .3)
+}
+
+.hightabs .tab-item {
+    max-width: 50%;
+}
+
+.lotter-view .chat-content {
+    top: 76px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .32);
+}
+
+.cur-chat {
+    background: url(../images/chat/bg.png) no-repeat center;
+}
+
+.roomlist {
+    height: 1.8rem;
+    line-height: 1.8rem;
+    white-space: nowrap;
+}
+
+.roomlist li {
+    display: inline-block;
+    padding: 0 15px;
+    margin: 0 5px;
+    height: 1.8rem;
+    color: #848484;
+    text-decoration: inherit;
+}
+
+.roomlist .active {
+    border: 1px solid #cad5e4;
+    border-top: none;
+    border-bottom-width: 4px;
+    color: #000;
+    padding: 0 14px;
+}
+
+.cur-chat .radio {
+    position: relative;
+    background: #f5f7fa;
+    border-top: 1px solid #e1e6eb;
+    border-bottom: 1px solid #e1e6eb;
+    padding: 0 .5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+}
+
+.cur-chat .radio .tico {
+    background: url(../images/chat/radio.png) no-repeat left;
+    padding: 0 0 0 25px;
+    max-width: 33.33%;
+}
+
+.cur-chat .radio .tico span {
+    color: red;
+}
+
+.cur-chat .radio .text {
+    width: 68%;
+}
+
+.cur-chat marquee {
+    color: #6f6f6f;
+}
+
+.lotter-view .chatmain .chat-textbox {
+    background: url(../images/chat/bg.png) no-repeat bottom;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    margin-top: 0;
+    padding: 0.5rem 0;
+    margin-bottom: -1px;
+    height: auto;
+    top: 0;
+}
+
+
+.chatmain .scrollctrl {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+.chatmain .scrollctrl a, .chatmain .scrollctrl label {
+    display: block;
+    padding: 1px 5px 1px 25px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border: 1px solid #ddd;
+    font-size: 12px;
+    text-decoration: none;
+    color: #000;
+    background: url(../images/chat/btns.png) no-repeat #fff;
+    background-size: 14px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.chatmain .scrollctrl .lock {
+    margin-bottom: 10px;
+    background-position: 6px -60px;
+}
+
+.chatmain .scrollctrl .unlock {
+    background-position: 6px -28px;
+}
+
+.chatmain .scrollctrl .clean {
+    background-position: 6px 4px;
+}
+
+.chatmain .scrollctrl .editnick {
+    background-position: 6px -91px;
+}
+
+.chat-textbox .user-head {
+    padding-top: 5px;
+}
+
+.col-15 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 15%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 15%;
+    -ms-flex: 0 0 15%;
+    flex: 0 0 15%;
+    max-width: 15%;
+}
+
+
+.chat-textbox .user-head img {
+    width: 90%;
+    border-radius: 5px;
+}
+
+
+
+.chat-textbox .user-nick {
+    color: #2161b3;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.chat-textbox .user-level {
+    vertical-align: middle;
+}
+
+.chat-textbox .msg-date {
+    color: #9f9f9f;
+    background: rgba(230, 230, 230, .6);
+    padding: 0 6px;
+    border-radius: 10px;
+    float: right;
+    font-size: 12px;
+}
+
+.textwrap {
+    position: relative;
+    margin-top: 3px;
+}
+
+.textwrap.tc {
+    text-align: center;
+}
+
+.chat-textbox .text {
+    border-radius: 5px;
+    padding: 2px 5px;
+    border-top-left-radius: 0;
+    display: inline-block;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+.chat-textbox .text img{
+    max-width: 100%;
+}
+
+.chat-textbox .text:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border-width: 8px;
+    border-style: solid;
+    border-left-color: transparent;
+    border-top-color: inherit;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.chat-textbox .notice {
+    display: inline;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+.typearea {
+    font-size: 12px;
+    background: #fff;
+}
+
+.typearea .ctrl {
+    position: relative;
+    width: 100%;
+    background: #f0f0f0;
+    border-top: 1px solid #adadad;
+    height: 30px;
+}
+
+.typearea.fullheight .ctrl {
+    display: none;
+}
+
+.typearea .wrap {
+    position: relative;
+    margin: 0 .5rem;
+}
+
+.typearea .face {
+    width: 26px;
+    height: 26px;
+    position: absolute;
+    left: 0;
+    top: 1px;
+    background: url(../images/chat/face.png) no-repeat center #e5e5e5;
+    background-size: 90% auto;
+}
+
+.typearea .filter {
+    position: absolute;
+    right: 0;
+    top: 3px;
+}
+
+.typearea .toggle {
+    vertical-align: middle;
+}
+
+.typearea .track {
+    width: 42px;
+    height: 22px;
+}
+
+.typearea .handle {
+    width: 18px;
+    height: 18px;
+}
+
+.typearea .type {
+    position: relative;
+    margin: 4px .2rem 0;
+}
+
+.typearea textarea {
+    height: 32px;
+    resize: none;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 6px 75px 6px 5px;
+    width: 100%;
+    transition: all .3s;
+}
+
+.typearea.fullheight textarea {
+    height: 50px;
+}
+
+.typearea .imgbtn, .typearea .sendbtn {
+    line-height: 32px;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    color: #fff;
+    font-size: 14px;
+    transition: all .3s;
+    line-height: 32px;
+}
+
+.typearea .imgbtn {
+    width: 40px;
+    right: 60px;
+    border-right: 1px solid #bfe1ff;
+}
+
+.typearea .sendbtn {
+    width: 60px;
+    right: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    
+}
+
+.typearea.fullheight .sendbtn {
+    line-height: 50px;
+}
+
+.typearea.fullheight .imgbtn {
+    line-height: 50px;
+}
+
+.chatfooter.bar-footer {
+    transition: all .3s;
+    background: #fff;
+}
+
+.RBtn {
+    display: inline-block;
+    border-radius: 3px;
+    padding: 2px 5px;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f5c91f+0,f5a61b+100 */
+    background: #f5c91f;
+    /* Old browsers */
+    background: -moz-linear-gradient(top, #f5c91f 0%, #f5a61b 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #f5c91f 0%, #f5a61b 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #f5c91f 0%, #f5a61b 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    font-size: 12px;
+    color: #553216;
+    border-radius: 5px;
+    padding: 3px 10px;
+    text-decoration: none;
+}
+
+.RedPackMask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: .1;
+}
+
+.lay-redpack {
+    position: absolute;
+    width: 100%;
+    top: 25%;
+    left: 0;
+}
+
+.RedPack {
+  position: relative;
+  box-sizing: border-box;
+  transform: scale(1.7);
+  margin: 0 auto;
+  width: 255px;
+}
+.RedPack p {
+    margin-bottom: 5px;
+}
+.RedPack .RedSprite {
+  background: url(../images/chat/red.png) no-repeat;
+  background-size: 265px auto;
+}
+.RedPack .sparkbg {
+  width: 280px;
+  height: 176px;
+  overflow: hidden;
+  text-align: center;
+}
+.RedPack .sparkbg .bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url(../images/chat/red.png) no-repeat;
+  background-size: 265px auto;
+}
+.RedPack .sparkbg .inner {
+  position: relative;
+}
+.RedPack .packedbg {
+  background: url(../images/chat/red.png) no-repeat;
+  background-size: 265px auto;
+  width: 140px;
+  height: 114px;
+  background-position: 0 -180px;
+  margin: 60px auto 0;
+  padding-right: 23px;
+  box-sizing: border-box;
+  padding-top: 68px;
+}
+.RedPack .openedbg {
+  background: url(../images/chat/red.png) no-repeat;
+  background-size: 265px auto;
+  width: 135px;
+  height: 155px;
+  background-position: -145px -180px;
+  margin: 16px auto 0;
+  padding-right: 23px;
+  box-sizing: border-box;
+  padding-top: 68px;
+}
+.RedPack .pack {
+  height: 250px;
+  background: #cc453b;
+  width: 220px;
+  border-radius: 10px;
+  margin: 0 auto;
+  transform: scale(0.5) translateY(-30px) translateX(-26px);
+}
+.RedPack .pack .cover {
+  height: 140px;
+  border: 1px solid #BD503A;
+  background-color: #de5c42;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 50% 15%;
+  border-bottom-left-radius: 50% 15%;
+  box-shadow: 0px 4px 0px -1px rgba(0, 0, 0, 0.2);
+  color: #FFF;
+}
+.RedPack .pack .cover .sender {
+  margin: 15px 0 4px;
+  font-size: 24px;
+}
+.RedPack .pack .cover .desc {
+  font-size: 18px;
+}
+.RedPack .pack .sticker {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #FFA73A;
+  background-color: #FFA73A;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 26px;
+  display: inline-block;
+  position: relative;
+  top: -50px;
+  box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.RedPack .pack .sticker span {
+  display: inline-block;
+  padding-top: 40px;
+}
+.RedPack .txt-t1 {
+  font-size: 18px;
+  color: #FFF;
+}
+.RedPack .txt-t2 {
+  font-size: 24px;
+  color: #f1d23a;
+  margin-top: -8px;
+}
+.RedPack .txt-t3 {
+  font-size: 10px;
+  color: #ebab1e;
+  transform: scale(0.8);
+}
+.RedPack .txt-t5 {
+  font-size: 14px;
+}
+.RedPackInfo {
+  margin: 0 auto;
+  background: #d12b1e;
+  border-radius: 10px;
+  padding: 20px 10px;
+  max-width: 400px;
+}
+.RedPackInfo .req-txt {
+  font-size: 20px;
+  color: #f1d23a;
+  text-align: center;
+}
+.RedPackInfo .req {
+  border-radius: inherit;
+  background: #fff2ce;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #000;
+}
+.RedPackInfo .action {
+  text-align: center;
+  margin-top: 10px;
+}
+.RedPackInfo .action .RBtn {
+  font-size: 16px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.RedPackRecipt {
+  color: #353535;
+  font-size: 13px;
+}
+.RedPackRecipt .t-red {
+  color: #f50000;
+}
+.chat .Item .RedPackRecipt .iconfont {
+  font-size: 26px;
+  vertical-align: -4px;
+  color: #f50000;
+  padding-right: 5px;
+}
+.rotate {
+  -webkit-animation: anim .6s infinite alternate;
+  -ms-animation: anim .6s infinite alternate;
+  animation: anim .6s infinite alternate;
+}
+@-webkit-keyframes anim {
+  from {
+    -webkit-transform: rotateY(180deg);
+  }
+  to {
+    -webkit-transform: rotateY(360deg);
+  }
+}
+@-ms-keyframes anim {
+  from {
+    -ms-transform: rotateY(180deg);
+  }
+  to {
+    -ms-transform: rotateY(360deg);
+  }
+}
+@keyframes anim {
+  from {
+    transform: rotateY(180deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+.backdrop {
+    z-index: 110;
+}
+
+.loading-container {
+    z-index: 130;
+}
+
+.popup-container {
+    z-index: 120;
+}

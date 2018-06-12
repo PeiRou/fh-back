@@ -1,0 +1,76 @@
+.content .about_left {
+  float: left;
+  width: 160px;
+  margin: 20px 0;
+}
+.content .about_left h1 {
+  background: url(../images/lehecai_about_bdcp.png) no-repeat -300px -700px;
+  height: 35px;
+  line-height: 35px;
+  position: relative;
+  text-align: center;
+  font-size: 0;
+  margin: 0;
+}
+.content .about_left ul {
+  background: #fff7eb;
+}
+.content .about_left ul li {
+  margin-top: -1px;
+  background: url(../images/lehecai_about_bdcp.png) no-repeat 0px -500px;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  border-left: 1px solid #fecf44;
+  border-bottom: 1px solid #fecf44;
+}
+.content .about_left ul li a {
+  color: #414141;
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+.content .about_left ul li a:hover {
+  background: url(../images/lehecai_about_bdcp.png) no-repeat -284px 3px;
+}
+.content .about_left ul li .selected {
+  background: url(../images/lehecai_about_bdcp.png) no-repeat -284px 3px;
+  color: red;
+}
+.content .about_right {
+  font-family: 宋体;
+  background: url(../images/lehecai_about_bdcp.png) no-repeat -1px -801px;
+  float: left;
+  border: 1px solid #fecf44;
+  width: 807px;
+  margin: 20px 0 10px 5px;
+  padding-bottom: 120px;
+}
+.content .about_right .tit {
+  width: 795px;
+  height: 30px;
+  line-height: 30px;
+  color: #f88c01;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0 auto;
+  padding-left: 10px;
+  border-bottom: 1px solid #fecf44;
+}
+.content .about_right .con {
+  margin-top: 20px;
+  width: 98%;
+  margin-right: 10px;
+  padding-left: 10px;
+}
+.content .about_right .con .red {
+  font-size: 18px;
+  color: #ff0000;
+}
+.content .about_right .con p {
+  text-indent: 24px;
+  font-size: 14px;
+  font-size: 16px;
+  color: #646464;
+  margin-top: 6px;
+}

@@ -1,0 +1,21 @@
+<ion-view class="actiyity-list" view-title="优惠活动">
+    <ion-nav-bar class="bar-positive">
+        <ion-nav-buttons side="left">
+            <a class="button button-icon icon-prepage" href="#/home"></a>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+    <ion-content>
+        <div class="activity">
+            <div class="head">
+                <div class="title">
+                    <img src="/mobile/images/icon-activity.png">优惠活动
+                </div>
+            </div>
+            <div class="activity-list">
+                <a href="#/cont_activity/{{actiMap[1].topActivityId}}" ng-if="actiMap[1]"><p>{{actiMap[1].name}}</p><img src="/mobile/images/activity/5.jpg"></a>
+                <a href="#/login_activity/{{actiMap[3].topActivityId}}" ng-if="actiMap[3]"><p>{{actiMap[3].name}}</p><img src="/mobile/images/activity/4.jpg"></a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

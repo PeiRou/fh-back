@@ -1,0 +1,43 @@
+<ion-view view-title="{{rechTitle}}">
+    <ion-nav-buttons side="left">
+        <a class="button button-icon icon-prepage" ng-click="back();"></a>
+    </ion-nav-buttons>
+
+    <ion-content>
+
+        <div class="item-online">
+            <form id="onlinepay-form" name="onlinepayForm" onsubmit="return false;" novalidate method="post" target="_blank">
+                <input name="token" type="hidden" ng-value="xSessionToken" />
+                <input name="backUrl" type="hidden" ng-value="backUrl" />
+                <div class="item item-input">
+                    <input type="text" name="amount" ng-model="onlinepayData.depositMoney"
+                           placeholder="请填写存款金额"
+                           ng-keyup="parseFloatMoneyInDepositPage($event)" required class="reset-field">
+                </div>
+                <p class="item-warn text-light">单笔下限<span class="red">{{onlinepayData.payWay.minMoney || rechMoneyLimit[rechType].mix}}</span>，单笔上限<span class="red">{{onlinepayData.payWay.maxMoney || rechMoneyLimit[rechType].max}}</span></p>
+                <div class="item item-select">
+                    <select data-tap-disabled="true" ng-model="onlinepayData.payWay" ng-options="(rechTitle + ' ' + (+idx + 1)) for (idx, v) in rechTypeList track by v.id">
+                        <option value="">选择在线渠道</option>
+                    </select>
+                    <input type="hidden" name="rechId" ng-value="onlinepayData.payWay.id" required />
+                    <input ng-if="!onlinepayData.payWay.onlineTypeConfig.banks" type="hidden" name="payId" ng-value="onlinepayData.payWay.onlineTypeConfig.channel" required />
+                </div>
+                <div class="item item-select" ng-if="onlinepayData.payWay.onlineTypeConfig.banks">
+                    <select data-tap-disabled="true" name="payId" ng-model="onlinepayData.bank" ng-options="v.bankName for v in onlinepayData.payWay.onlineTypeConfig.banks track by v.value" required>
+                        <option value="">选择支付银行</option>
+                    </select>
+                </div>
+
+                <div class="offline-pay-tip" style="margin-top: 5px" ng-show="onlinepayData.payWay.remark"><span>!</span>{{onlinepayData.payWay.remark}}</div>
+                <div ng-click="validateFields()"><input ng-disabled="onlinepayForm.$invalid" type="button" ng-click="onlinePay()" class="button button-block button-positive button-positive-theme" value="开始充值"></div>
+            </form>
+        </div>
+    </ion-content>
+
+    <script id="submitData-template" type="text/ng-template">
+        <p>支付方式: 在线支付</p>
+        <p>支付金额: <font color="red">¥{{onlinepayData.depositMoney}}</font></p>
+        <p>1.成功付款后将会自动到账。</p>
+        <p>2.长时间无反应，请联系客服。</p>
+    </script>
+</ion-view>

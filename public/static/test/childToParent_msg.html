@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="box">
+    <v-parent></v-parent>
+</div>
+
+<!--父组件模板-->
+<template id="parent">
+    <div>
+        <span>{{msgParent}}</span>
+        <v-child @child-info="get"></v-child>
+    </div>
+</template>
+
+<!--子组件模板-->
+<template id="child">
+    <div>
+        <button @click="send">send</button>
+        <p>{{msgChild}}</p>
+    </div>
+</template>
+
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#box',
+        components: {
+            //父组件
+            'v-parent': {
+                data() {
+                    return {
+                        msgParent: 'hello'
+                    }
+                },
+                template: '#parent',
+                methods: {
+                    get(msg) {
+                        this.msgParent = msg
+                    }
+                },
+
+                //子组件
+                components:{
+                    'v-child': {
+                        data() {
+                            return {
+                                msgChild: 'child'
+                            }
+                        },
+                        template: '#child',
+                        methods: {
+                            send() {
+                                this.$emit('child-info',this.msgChild)
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    })
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<ion-view view-title="资金管理">
+    <ion-nav-buttons side="left">
+        <a class="button button-icon icon-prepage" ng-click="back();"></a>
+    </ion-nav-buttons>
+
+    <ion-content class="m-center m-info m-cash">
+        <div class="cash-top">
+            <div class="row sub-header">
+                <div class="col col-33">
+                    <img class="avatar" src="/mobile/images/avatar.png">
+                </div>
+                <div class="col col-66">
+                    <h5>{{My.getUserName()}}</h5>
+                    <p ng-click="getWallet()" >
+                        用户余额：<span  style=""><span class="money">{{My.getMoney()}}</span>RMB</span>
+                        <a class="refresh" ng-click="refreshMoney();"><img src="/mobile/images/icon-refresh.png"></a>
+                    </p>
+                </div>
+            </div>
+            <div class="tabs-striped tabs-top">
+                <div class="tabs tabs-theme">
+                    <a class="tab-item tab-item-25 active" href="#/bank/deposit"><span >存款</span></a>
+                    <a class="tab-item tab-item-25" href="#/bank/withdraw"><span >取款</span></a>
+                    <a class="tab-item tab-item-25" href="#/bank/trans/1">存款记录</a>
+                    <a class="tab-item tab-item-25" href="#/bank/trans/2">取款记录</a>
+                </div>
+            </div>
+        </div>
+        <div class="list list-new">
+            <ul>
+                <li ng-repeat="category in rechCategorySorted" class="item">
+                    <a ng-href="{{CategoryInfo[category.type].href}}"><img alt="" ng-src="{{CategoryInfo[category.type].ico}}">
+                        <div class="fl"><p>{{category.title}}</p><span>{{CategoryInfo[category.type].desc}}</span></div>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </ion-content>
+</ion-view>

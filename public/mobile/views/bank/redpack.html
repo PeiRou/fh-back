@@ -1,0 +1,42 @@
+<ion-view view-title="红包记录">
+    <ion-nav-buttons side="left">
+        <a class="button button-icon icon-prepage" href="#/ucenter/index"></a>
+    </ion-nav-buttons>
+
+    <ion-content class="m-center m-info m-cash" scroll="false">
+        <div class="cash-top">
+            <div class="row sub-header">
+                <div class="col col-33">
+                    <img class="avatar" src="/mobile/images/avatar.png">
+                </div>
+                <div class="col col-66">
+                    <h5>{{My.getUserName()}}</h5>
+                    <p >
+                        用户余额：<span  style=""><span class="money">{{My.getMoney()}}</span>RMB</span>
+                        <a class="refresh" ng-click="refreshMoney();"><img src="/mobile/images/icon-refresh.png"></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content text-center table-list t-white">
+            <div class="row text-center no-title pm">
+                <div class="col col-40 radiu">时间</div>
+                <div class="col col-30 radiu">金额</div>
+                <div class="col col-30 radiu">状态</div>
+            </div>
+
+            <ion-content class="list" style="top: 6.13rem">
+                <div ng-repeat="item in dataList" class="row text-center">
+                    <div class="col col-40 text-center tal ti">{{item.addTime}}</div>
+                    <div class="col col-30 text-center tal ti">{{item.money}}</div>
+                    <div class="col col-30 text-center tal ti">成功抢到红包</div>
+                </div>
+                <div ng-if="dataList.length == 0" class="empty-tip">暂无数据</div>
+                <div ng-show="!dataList" class="spinner-warp"><ion-spinner class="spinner spinner-ios"></ion-spinner></div>
+                <ion-infinite-scroll ng-if="isMore" on-infinite="queryData()" icon="ion-loading-c" distance="1%"></ion-infinite-scroll>
+            </ion-content>
+        </div>
+
+    </ion-content>
+</ion-view>

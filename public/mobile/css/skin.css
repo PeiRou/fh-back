@@ -1,0 +1,70 @@
+/** 首页背景图片 */
+.skin_blue .pane, .skin_blue .view {
+    background: url("../images/bg2.jpg");
+    background-size: cover;
+}
+
+.skin_red .pane, .skin_red .view {
+    background: url("../images/bg3.jpg");
+    background-size: cover;
+}
+
+/** 注册输入框placeholder文字颜色 */
+.skin_red input::-webkit-input-placeholder {
+    color: #e1d4d4!important;;
+}
+
+/** 游戏区背景图片 */
+/* .skin_blue .lottery .view, .skin_blue .lottery .pane {
+	background: #5d9dc0 url("../images/bg2.jpg")!important;
+	background-size: cover!important;
+	color: #fff
+}
+
+.skin_red .lottery .view, .skin_red .lottery .pane {
+	background: #5d9dc0 url("../images/bg3.jpg")!important;
+	background-size: cover!important;
+	color: #fff
+} */
+
+
+/** 游戏区底部封盘样式 */
+.skin_blue .lotter-view .bar-footer .close-pan {
+	background-color: #5a97c3;
+	opacity: .8;
+	color: #f3efef
+}
+
+.skin_red .lotter-view .bar-footer .close-pan {
+	background-color: #8d476d;
+	opacity: .8;
+	color: #f3efef
+}
+
+/*聊天按钮*/
+
+.skin_blue .toggle input:checked+.track{
+	border-color: #72aadb;
+    background-color: #72aadb;
+}
+
+.skin_blue .typearea textarea{
+	border-color: #72aadb;
+}
+
+.skin_blue .typearea .sendbtn, .skin_blue .typearea .imgbtn{
+	background: #72aadb;
+}
+
+.skin_red .toggle input:checked+.track{
+	border-color: #e96165;
+    background-color: #e96165;
+}
+
+.skin_red .typearea textarea{
+	border-color: #e96165;
+}
+
+.skin_red .typearea .sendbtn, .skin_red .typearea .imgbtn{
+	background: #e96165;
+}

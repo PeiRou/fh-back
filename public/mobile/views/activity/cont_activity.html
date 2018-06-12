@@ -1,0 +1,48 @@
+<ion-view class="cont-actiyity" view-title="">
+    <ion-nav-bar class="bar-positive bar-activity">
+        <ion-nav-buttons side="left">
+            <a class="button button-icon icon-prepage" href="#/home"></a>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+    <ion-content>
+        <div class="bg">
+            <div class="header">
+                <img src="/mobile/images/activity/cont/header.png" alt="">
+                <div class="signdays">
+                    <p>
+                        我已累计签到：<span>{{daycount ? daycount : 0}}</span> 天
+                    </p>
+                </div>
+            </div>
+            <div class="gamebox">
+                <div class="light">
+                    <img src="/mobile/images/activity/cont/light.png" alt="">
+                </div>
+                <div class="desk">
+                    <img src="/mobile/images/activity/cont/desk.png" alt="">
+                </div>
+                <div class="egg" ng-class="ani" ng-click="eggOpen();">
+                    <img ng-src="{{eggsrc}}" alt="">
+                </div>
+                <div class="hammer" ng-class="ani" ng-click="eggOpen();">
+                    <img src="/mobile/images/activity/cont/hammer.png" alt="">
+                </div>
+            </div>
+            <div class="award">
+                <p class="tit">活动规则</p>
+                <p>所有玩家只需要每天登录平台，充值达到相应的金额并且达到相应投注量即可参与抽奖活动</p>
+                <p>每天充值和投注量以及获得的抽奖机会列表：</p>
+                <p ng-repeat="detail in activity.details">
+                    签到第{{detail.activitySort}}天 充值{{detail.rechMoney}}元  投注量{{detail.betMoney}}元  获得1次抽奖机会</span>
+                </p>
+                <p style="color: red;">如果中间间断一天，连续签到将被重置开始时间隔天计算。连续天数越大抽奖获得的奖品更丰厚。</p>
+                <p>当天达到条件后，第二天可以获得1次抽奖机会，获得抽奖机会后请及时参与抽奖，抽奖机会将在次日凌晨5点重置</p>
+                <p class="tit">奖品说明</p>
+                <p ng-repeat="detail in activity.details">
+                    第{{detail.activitySort}}天奖品：<span ng-repeat="prize in detail.prizeList">{{($index > 0 ? '、' : '') + prize.name}}</span>
+                </p>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

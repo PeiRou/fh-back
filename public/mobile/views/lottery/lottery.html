@@ -1,0 +1,238 @@
+<ion-view>
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon button-clear"><span class="game-name">{{game.name}}</span></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <span class="member-balance ng-binding">{{My.getMoney()}}</span>
+        <button class="button button-icon icon icon-liebiao" ng-click="showPoper($event);"></button>
+    </ion-nav-buttons>
+
+    <ion-side-menus class="lotter-view">
+        <!--  左侧菜单 -->
+        <ion-side-menu side="left" class="menu-left view" width="180">
+            <header class="bar bar-header bar-stable">
+                <h1 class="title">系统菜单</h1></header>
+            <ion-content class="has-header">
+                <ion-list>
+                    <ion-item nav-clear menu-close href="#/lottery/list">返回大厅</ion-item>
+                    <div ng-repeat="game in gameList">
+                        <ion-item nav-clear menu-close href="#/lottery/index/{{game.id}}">{{game.name}}</ion-item>
+                    </div>
+                </ion-list>
+            </ion-content>
+        </ion-side-menu>
+        <!--  左侧菜单结束 -->
+
+        <ion-side-menu-content>
+            <ion-nav-bar class="bar-positive"></ion-nav-bar>
+            <ion-tabs delegate-handle="tabs" class="tabs-positive hightabs" ng-class="{'tabs-item-hide': !chat.runChat}">
+                <ion-tab title="投注区">
+                    <ion-content class="lottery-content" scroll="false" ng-style="{'top':(chat.runChat)?'76px':'44px'}">
+                        <div class="cur-lottery">
+                            <div class="perio"></div>
+                            <div class="lottery-bet">
+                                <div class="cur-menus">
+                                    <ion-content delegate-handle="menus" class="lottery-menu">
+                                        <ul>
+                                            <li class="nav" ng-repeat="pane in panes" ng-class="{active:currPane.code==pane.code}"><a class="item col" ng-click="selectCate(pane);">{{pane.name}}<span class="smallround" ng-class="{'menus-choose':betData[pane.code].length>0}"></span></a></li>
+                                        </ul>
+                                    </ion-content>
+                                    <div ng-include="contentTpl"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </ion-content>
+
+                    <ion-footer-bar class="bar bar-footer">
+                        <div id="chouma_wrap" ng-show="showChouMa">
+                            <span class="chouma_case" style="left: 0;" ng-click="changeMoney(10);"></span>
+                            <span class="chouma_case" style="left:20%;" ng-click="changeMoney(100);"></span>
+                            <span class="chouma_case" style="left:40%;" ng-click="changeMoney(1000);"></span>
+                            <span class="chouma_case" style="left:60%;" ng-click="changeMoney(10000);"></span>
+                            <span class="chouma_case" style="left:80%;" ng-click="changeMoney('');"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col col-40">
+                                <div class="inputbox">
+                                    <div class="text-left pb5">已选中<span class="text-yellow">{{shareData.betCount}}</span>注</div>
+                                    <div class="inputbox cel">
+                                        <input id="j-money" type="tel" class="inputbox textinput" ng-model="shareData.betMoney" placeholder="输入金额" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-60">
+                                <button class="button button-small button-chouma" style="margin-right: 10px;" ng-click="show_chouma();">筹码</button>
+                                <button class="button button-small button-bet" style="margin-right: 10px;" ng-click="bet($event)">下注</button>
+                                <button class="button button-small button-reset" ng-click="reset()">重置</button>
+                            </div>
+                        </div>
+                        <div ng-show="shareData.lotteryState == 0" class="close-pan">
+                            <div class="tip">已封盘</div>
+                        </div>
+                        <div ng-show="shareData.lotteryState == -1" class="close-pan">
+                            <div class="tip">未开盘</div>
+                        </div>
+                    </ion-footer-bar>
+                </ion-tab>
+
+
+                <!--<ion-tab title="聊天室" on-select="chat.getChatting()">-->
+                <ion-tab title="聊天室" ng-click="noRoom()">
+                    <ion-content class="chat-content" scroll="false">
+                        <div class="cur-chat">
+                            <!-- <ion-scroll zooming="true" direction="xy" scrollbar-x='false' scrollbar-y='false' class="roomlist">
+                                <div>
+                                    <ul>
+                                        <li ng-repeat="room in chat.roomList" ng-click="chat.goRoom({{room.id}});chat.roomIsActive($index)" ng-class="{true:'active'}[chat.nowTab == $index]">{{room.name}}</li>
+                                        <li ng-show="chat.roomList.length  == 0">当前无房间</li>
+                                    </ul>
+                                </div>
+                            </ion-scroll> -->
+                            <div ng-if="chat.bulletinList.length" class="row radio">
+                                <div class="tico"><span>公告：</span></div>
+                                <div class="text">
+                                    <marquee scrollamount="3"><span ng-repeat="notice in chat.bulletinList">{{notice.content}}</span></marquee>
+                                </div>
+                            </div>
+                            <div class="chatmain">
+                                <ion-content class="chat-textbox" delegate-handle="chatMainScroll" ng-style="{top: chat.bulletinList.length ? '1.5rem' : 0}">
+                                    <ul>
+                                        <li ng-repeat="msg in chat.messageList" class="row" repeat-emit>
+                                            <div ng-click="chat.atName(msg.nickName)" class="user-head col col-15" ng-if="msg.chatType == 1 || msg.chatType == 12 || msg.chatType == 6">
+                                                <div class="wrap">
+                                                    <img ng-src="{{msg.headPic}}" alt="">
+                                                </div>
+                                            </div>
+                                            <div ng-click="chat.openPack(msg.pack)" ng-if="msg.chatType != 11" class="msg-detail col">
+                                                <div class="info" ng-if="msg.chatType == 1 || msg.chatType == 6">
+                                                    <span ng-click="chat.atName(msg.nickName)" class="user-nick" ng-style="{'color':'{{msg.nickTextColor}}'}">{{msg.nickName}}</span><span ng-if="msg.levelPic" class="user-level"><img ng-src="{{msg.levelPic}}" alt=""></span>
+                                                    <span class="msg-date">{{msg.curTime | chatCutTime}}</span>
+                                                </div>
+                                                <div class="info" ng-if="msg.chatType == 12">
+                                                    <span ng-click="chat.atName(msg.nickName)" class="user-nick" ng-style="{'color':'{{msg.nickTextColor}}'}">{{msg.nickName}}</span><span ng-if="msg.levelPic" class="user-level"><img ng-src="{{msg.levelPic}}" alt=""></span>
+                                                    <span class="msg-date">{{msg.curTime | chatCutTime}}</span>
+                                                </div>
+                                                <div class="textwrap" ng-class="{true:'tc'}[msg.chatType != 1 && msg.chatType != 6]" ng-if="msg.chatType != 12">
+                                                    <div ng-class="{true:'text',false:'notice'}[msg.chatType == 1|| msg.chatType == 6]" ng-style="{'background':(msg.bgColor | chatBgColor),'color':'{{msg.textColor}}','border-top-color':(msg.bgColor | chatBorderColor)}"><p ng-repeat="img in msg.images"><br><img ng-src="{{img}}" imageonload="chat.toBottom()" zoom-src="{{img.replace('_s.', '_b.')}}" zoom-view></p>{{msg.content}}</div>
+                                                </div>
+                                                <div class="textwrap" ng-class="{true:'tc'}[msg.chatType != 1 && msg.chatType != 6]" ng-if="msg.chatType == 12">
+                                                    <div class="text" ng-style="{'textAlign':'left','background':(msg.bgColor | chatBgColor),'color':'{{msg.textColor}}','border-top-color':(msg.bgColor | chatBorderColor)}" ng-bind-html="msg.content"></div>
+                                                </div>
+
+                                            </div>
+                                            <div ng-if="msg.chatType == 11" class="msg-detail col">
+                                                <div class="textwrap tc">
+                                                    <div class="notice" style="background: rgb(204, 204, 204); color: #f15e22;"><svg class="icon" style="width: 1.2em; height: 1.2em;vertical-align: text-bottom;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1523"><path d="M785.825 960.988h-547.65c-67.219 0-121.725-53.663-121.725-119.869v-599.344l365.119 119.869h60.862l365.119-119.869v599.288c0 66.206-54.506 119.925-121.725 119.925v0zM543.894 659.431l88.313-0.225c22.106 0.225 29.981-11.081 30.431-24.694 0.338-11.812-10.969-34.087-30.938-34.594h-88.313v-20.981c0 0 66.994-67.387 84.431-82.969 17.325-15.581 21.713-27.844 11.025-40.444-10.856-12.881-30.037-12.094-44.044-0.675-14.231 11.644-82.688 74.25-82.688 74.25s-58.781-59.737-71.494-71.775c-11.419-10.8-35.662-21.319-48.713-6.75-13.613 15.188-3.038 34.2 5.513 42.525 8.494 8.213 82.013 84.769 82.013 84.769l-0.112 23.006h-92.138c-13.613 0-25.65 23.85-25.2 36.563 0.45 12.6 10.744 22.5 25.2 22.5 14.456 0 91.856-0.506 91.856-0.506l-0.225 64.238h-95.456c-13.613 0-25.031 13.5-25.594 26.213-0.506 12.712 10.181 29.869 25.594 29.869h95.231c0 0-0.169 21.994 0.394 31.163 1.294 20.475 14.906 28.8 33.131 29.137 18.225 0.338 31.106-14.681 31.106-28.069-0.056-11.081-0.338-32.231-0.338-32.231s79.256-0.112 94.219 0c14.963 0.113 26.156-14.794 25.538-29.869-0.563-15.131-9.844-26.719-32.569-26.719h-86.681l0.506-63.731zM542.431 301.738h-60.863l-365.119-119.869c0-66.206 54.506-119.869 121.725-119.869h547.706c67.219 0 121.725 53.663 121.725 119.869l-365.175 119.869zM542.431 301.738z" p-id="1524"></path></svg>
+                                                        {{msg.nickName}} 抢到了金额为 {{msg.content}} 元的红包
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </ion-content>
+                                <div ng-if="chat.redPack.state != chat.packStates.DISMISS" class="r">
+                                    <div class="RedPackMask"></div>
+                                    <div class="lay-redpack">
+                                        <div ng-if="chat.redPack.state == chat.packStates.CONDITION" class="lay-redinfo" style="margin: 0 60px;">
+                                            <div class="RedPackInfo">
+                                                <div class="req-txt">您不满足本次抢红包的条件<br>无法抢红包！</div>
+                                                <div class="req">需要满足条件：在前两天<span ng-if="chat.redPack.pack_info.rechMoney">充值金额达到{{chat.redPack.pack_info.rechMoney}}元 </span><span ng-if="chat.redPack.pack_info.betMoney">打码量达到{{chat.redPack.pack_info.betMoney}}元</span></div>
+                                                <p class="action"><a href="javascript:void(0)" ng-click="chat.redPack.close()" class="RBtn">确定</a></p>
+                                            </div>
+                                        </div>
+                                        <div ng-if="chat.redPack.state != chat.packStates.CONDITION" class="RedPack">
+                                            <div class="sparkbg">
+                                                <div class="bg"></div>
+
+                                                <div class="inner">
+                                                    <div ng-if="chat.redPack.state == chat.packStates.MISSED" class="openedbg">
+                                                        <p class="txt-t1">手慢了</p>
+                                                        <br>
+                                                        <a href="javascript:void(0)" ng-click="chat.redPack.close()" class="RBtn">关闭</a>
+                                                    </div>
+
+                                                    <div  ng-if="chat.redPack.state == chat.packStates.AWARD" class="openedbg">
+                                                        <p class="txt-t2">{{chat.redPack.award}}</p>
+                                                        <p><a href="javascript:void(0)" ng-click="chat.redPack.close()" class="RBtn">确定</a></p>
+                                                        <p class="txt-t3">红包将自动放入<br>账户余额</p>
+                                                    </div>
+
+                                                    <div ng-if="chat.redPack.state == chat.packStates.INITIAL || chat.redPack.state == chat.packStates.OPENING" class="lay-pack animated bounceInDown">
+                                                        <div class="pack">
+                                                            <div class="cover">
+                                                                <h3 class="sender">&nbsp;</h3>
+                                                                <p class="desc">恭喜發財 大吉大利</p>
+                                                            </div>
+                                                            <div class="sticker" ng-click="chat.redPack.open()" ng-class="{rotate: chat.redPack.state == chat.packStates.OPENING}"><span>拆红包</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="scrollctrl">
+                                    <a href="javascript:;" ng-class="{true:'lock',false:'unlock'}[chat.screenLock]" ng-click="chat.changeLock();">{{chat.screenLockText}} >></a>
+                                    <a href="javascript:;" class="clean" ng-click="chat.clean();">清屏 >></a>
+                                    <a href="javascript:;" class="editnick" ng-click="chat.setNick();" ng-if="chat.userInitData.setted == '0' && chat.userInitData.role.type != '0'">昵称 &gt;&gt;</a>
+                                    <label for="avatarUploadInput" class="editnick"
+                                           ng-if="chat.userInitData.role.type != '0'"
+                                    >
+                                        头像 &gt;&gt;
+                                        <input id="avatarUploadInput"
+                                               type="file" style="width: 0.1px; height: 0.1px; opacity: 0; position: absolute; top: 0; right: 0;"
+                                               accept="image/*"
+                                               file-up-load="sendAvatar"
+                                        >
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </ion-content>
+                    <ion-footer-bar class="bar bar-footer chatfooter" ng-style="{height: chat.chatMinBetMoney ? '70px' : '62px' }">
+                        <div class="typearea" ng-class="{'fullheight': {{chat.chatMinBetMoney == 0 || !chat.chatMinBetMoney}}}">
+                            <div class="ctrl">
+                                <div class="wrap">
+                                    <!-- <div class="face">
+                                    </div> -->
+                                    <div class="filter">
+                                        显示我的投注
+                                        <label class="toggle">
+                                            <input type="checkbox" ng-model="chat.userInitData.pushBet" ng-change="chat.pushBetChange()">
+                                            <div class="track">
+                                                <div class="handle"></div>
+                                            </div>
+                                        </label>
+                                        屏蔽所有投注
+                                        <label class="toggle">
+                                            <input type="checkbox" ng-model="chat.isHideBet">
+                                            <div class="track">
+                                                <div class="handle"></div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="type">
+                                <textarea ng-model="chat.textMsg.text" placeholder="输入内容" ng-focus="chat.textFocus();" ng-blur="chat.textBlur();"></textarea>
+
+                                <label for="imgUploadInput" class="imgbtn">
+                                    <svg class="icon" style="width: 2em; height: 2em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4502"><path d="M840.733023 733.825155h0.056282v-0.334622l-0.056282 0.334622z" fill="" p-id="4503"></path><path d="M823.302025 172.922375H199.348234c-39.782052 0-72.031547 32.249495-72.031547 72.030523V772.906242c0 39.782052 32.249495 72.030523 72.031547 72.030523h623.953791c39.782052 0 72.031547-32.249495 72.031547-72.030523V244.953921c0-39.782052-32.249495-72.031547-72.031547-72.031546z m-623.973234 48.001247h623.992677c13.261025 0 24.010857 10.749832 24.010857 24.009833v282.678104c-38.675858-31.735795-105.733113-74.524321-186.173167-74.52432-74.166163 0-147.288554 57.470923-217.993896 113.052822-54.1769 42.580794-110.207008 86.615707-149.516292 86.615707-55.137785 0-102.337783-40.533159-118.332059-55.997362V244.933455c0.001023-13.260002 10.750855-24.009833 24.01188-24.009833z m623.9937 576.012919H199.328791c-13.261025 0-24.010857-10.749832-24.010857-24.009833V658.989749c28.77844 20.390399 70.397327 41.788755 118.331036 41.788755 55.923684 0 115.798353-47.058782 179.190125-96.886631 64.294328-50.529837 130.769322-102.783944 188.32211-102.783944 103.159498 0 184.981015 90.814332 185.789426 91.728144l0.38374-0.338714v180.427302c-0.002047 13.261025-10.751878 24.01188-24.01188 24.01188z" fill="" p-id="4504"></path><path d="M367.07733 509.191024c53.092195 0 96.132454-43.040259 96.132454-96.132454s-43.039235-96.132454-96.132454-96.132454c-53.092195 0-96.132454 43.040259-96.132455 96.132454s43.040259 96.132454 96.132455 96.132454z m0.358157-144.264684c26.435069 0 47.863101 21.429055 47.863101 47.864124 0 26.435069-21.429055 47.864124-47.863101 47.864124-26.436092 0-47.864124-21.429055-47.864124-47.864124 0-26.433022 21.429055-47.864124 47.864124-47.864124z" fill="" p-id="4505"></path></svg>
+                                    <input id="imgUploadInput"
+                                           type="file" style="width: 0.1px; height: 0.1px; opacity: 0; position: absolute;"
+                                           accept="image/*"
+                                           file-up-load="sendImage"
+                                    >
+                                </label>
+                                <div class="sendbtn" ng-click="chat.sendMessage()">发送</div>
+                            </div>
+                        </div>
+                        <div ng-show="chat.userInitData.chatSpeak == false" class="close-pan">
+                            <div class="tip">当前不在聊天时段</div>
+                        </div>
+                    </ion-footer-bar>
+                </ion-tab>
+            </ion-tabs>
+        </ion-side-menu-content>
+    </ion-side-menus>
+</ion-view>

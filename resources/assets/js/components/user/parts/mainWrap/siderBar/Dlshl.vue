@@ -1,0 +1,373 @@
+<template>
+	<iframe src="/static/dzp/index.html" frameborder="0" width="100%" height="700" allowtransparency="true" border="0"></iframe>
+	<!--<div class="wrap" id="wrap">-->
+		<!--<div class="bg">-->
+			<!--<div class="roll-box">-->
+				<!--<div class="bg-roll" id="bg_Roll"></div>-->
+				<!--&lt;!&ndash;<div class="btn-roll" id="btn_Roll" @click="open"></div>&ndash;&gt;-->
+				<!--<div class="btn-roll" id="btn_Roll" @click="open()"></div>-->
+			<!--</div>-->
+			<!--<div class="award-box">-->
+				<!--<ul>-->
+					<!--<li>奖项设置：</li>-->
+					<!--<li>一等奖：<span id="prize_rank_1">1888元</span></li>-->
+					<!--<li>二等奖：<span id="prize_rank_2">888元</span></li>-->
+					<!--<li>三等奖：<span id="prize_rank_3">388元</span></li>-->
+					<!--<li>四等奖：<span id="prize_rank_4">58元</span></li>-->
+					<!--<li>五等奖：<span id="prize_rank_5">28元</span></li>-->
+					<!--<li>六等奖：<span id="prize_rank_6">5元</span></li>-->
+				<!--</ul>-->
+			<!--</div>-->
+			<!--<div class="rules-box">-->
+				<!--<p class="tit">活动时间:</p>-->
+				<!--<p><span id="stime">2017-09-23 00:00:00</span> 至 </p>-->
+				<!--<p><span id="etime">2018-12-31 23:59:59</span></p>-->
+				<!--<p>参与对象:玩家只需满足存款提款即可参与活动</p>-->
+			<!--</div>-->
+		<!--</div>-->
+	<!--</div>-->
+</template>
+
+<script>
+    export default {
+        created () {
+            this.$store.dispatch('contSiderShowFalse')
+        },
+		methods: {
+            open(){
+                alert(123)
+			}
+
+            // open() {
+            //     this.$alert('开启之后才能下注', '幸运大装盘还未开启', {
+            //         confirmButtonText: '确定',
+            //         callback: action => {
+            //             this.$message({
+            //                 type: 'info',
+            //                 message: `action: ${ action }`
+            //             });
+            //         }
+            //     });
+            // }
+		}
+    }
+</script>
+
+<!--<script>-->
+    <!--$(function () {-->
+        <!--// alert(123)-->
+        <!--var $btn = $('#btn_Roll')-->
+        <!--var $bg = $('#bg_Roll')-->
+        <!--var $wrap = $('#wrap')-->
+        <!--var runStatus = 1 // 起跑状态-->
+        <!--var nowdeg = 0 // 起始位置-->
+        <!--var time = 14 // 旋转间隔时间-->
+        <!--var countRound = 0 // 计算圈数-->
+        <!--var countDeg = 0 // 计算度数-->
+        <!--// var times = 0 // 是否有参与次数-->
+        <!--var times = 1 // 是否有参与次数 (测试的时候,times 变为 1,正式的时候,通过ajax传参数进来,改变times的次数)-->
+        <!--var result = null // 结果-->
+        <!--var stopPoint //停靠点-->
+        <!--var getPoint = { // 奖项点-->
+            <!--1: [-->
+                <!--255-->
+            <!--],-->
+            <!--2: [-->
+                <!--45-->
+            <!--],-->
+            <!--3: [-->
+                <!--180-->
+            <!--],-->
+            <!--4: [-->
+                <!--0-->
+            <!--],-->
+            <!--5: [-->
+                <!--270-->
+            <!--],-->
+            <!--6: [-->
+                <!--90-->
+            <!--],-->
+            <!--7: [-->
+                <!--135, 315-->
+            <!--]-->
+        <!--}-->
+
+
+
+        <!--var roll = {-->
+            <!--init : function () {-->
+                <!--var that = this;-->
+                <!--$btn.on('click', function () {-->
+                    <!--// if (runStatus) { // 通过ajax请求,请求到了数据就不会走这一步-->
+                    <!--//     that.hint('请耐心等待结果')-->
+                    <!--//     return-->
+                    <!--// }-->
+                    <!--// if (!times) {-->
+                    <!--//     that.hint('您当前没有抽奖机会')-->
+                    <!--//     return-->
+                    <!--// }-->
+                    <!--//执行抽奖-->
+                    <!--LoginActivity.luckDraw()-->
+
+                <!--})-->
+            <!--},-->
+            <!--speedCtrl : function () {-->
+                <!--var that = this-->
+
+                <!--// 角度归零-->
+                <!--if (nowdeg == 360) {-->
+                    <!--nowdeg = 0-->
+                <!--}-->
+
+                <!--// 加速阶段 (没有获得结果之前 加速三次)-->
+                <!--if (!result && nowdeg % 60 == 0) {-->
+                    <!--if (time > 4) {-->
+                        <!--time -= 4  //加速转3次 16 - 12  (每次转到60度的时候加速一次)-->
+                        <!--console.log(time)-->
+                    <!--}-->
+                    <!--return-->
+                <!--}-->
+
+                <!--// 减速阶段 (获得结果之后 开始减速 time增加,增加的时间间隔就会增加)-->
+                <!--if (result && nowdeg % 30 == 0) {-->
+                    <!--time += 1-->
+                <!--}-->
+
+                <!--// 停止阶段-->
+                <!--if (result) {-->
+                    <!--if (time > 8 && nowdeg == stopPoint) {-->
+                        <!--times = 0-->
+                        <!--runStatus = 1-->
+                        <!--clearInterval(rolltimer)-->
+
+                        <!--// 结果提示-->
+                        <!--var noticeToUserMsg = "真遗憾, 竟然没中奖~"-->
+                        <!--if (result != 7) {-->
+                            <!--noticeToUserMsg = "恭喜您获得：" + $('#prize_rank_' + result).html()-->
+                        <!--}-->
+                        <!--that.hint(noticeToUserMsg)-->
+                    <!--}-->
+                <!--}-->
+
+            <!--},-->
+            <!--getResult : function () {-->
+                <!--var arg = arguments[0]-->
+
+                <!--setTimeout(function () {-->
+                    <!--result = arg-->
+                    <!--var pScope = getPoint[arg][Math.floor(Math.random()-->
+                        <!--* getPoint[arg].length)] + 5-->
+                    <!--var random = Math.floor(Math-->
+                        <!--.random() * 36)-->
+                    <!--// stopPoint = 260-->
+                    <!--stopPoint = pScope + random-->
+                    <!--console.log('设置结果角度' + stopPoint)-->
+                    <!--console.log('取到结果为' + result)-->
+                <!--},6000)-->
+            <!--},-->
+            <!--hint : function () {-->
+                <!--if (!$('#roll_Hint').length) {-->
+                    <!--var text = arguments[0]-->
+                    <!--var html = '<div class="jp-box" id="roll_Hint"><span>' + text + '</span></div>'-->
+                    <!--$wrap.append(html)-->
+                    <!--var $hint = $('#roll_Hint')-->
+                    <!--$hint.fadeIn(function () {-->
+                        <!--setTimeout(function () {-->
+                            <!--$hint.fadeOut(function () {-->
+                                <!--$hint.fadeOut(function () {-->
+                                    <!--$hint.remove()-->
+                                <!--})-->
+                            <!--})-->
+                        <!--}, 1500)-->
+                    <!--})-->
+                <!--}-->
+            <!--},-->
+            <!--boxRun : function () {-->
+                <!--var that = this-->
+
+                <!--function go() {-->
+                    <!--nowdeg += 1-->
+                    <!--countDeg++-->
+                    <!--$bg.css({-->
+                        <!--transform : 'rotate(' + nowdeg + 'deg)'-->
+                    <!--})-->
+                    <!--rolltimer = setTimeout(go, time)-->
+                    <!--that.speedCtrl()-->
+                <!--}-->
+                <!--go()-->
+            <!--},-->
+        <!--}-->
+
+        <!--roll.init()-->
+        <!--var LoginActivity = {-->
+            <!--// 验证是否可以抽奖 LoginActivity.verifyLuckDraw();-->
+
+            <!--// 执行抽奖 LoginActivity.luckDraw();-->
+            <!--luckDraw : function () {-->
+                <!--//test-->
+                <!--// 这里我们模拟ajax有结果的效果-->
+                <!--runStatus = 0-->
+                <!--roll.getResult(7) // 7是默认值 7是没有中奖的值 1-6 就是中奖的结果-->
+                <!--roll.boxRun()-->
+
+                <!--//test 结束-->
+
+
+                <!--// $.ajax({-->
+                <!--//     type : "post",-->
+                <!--//     url : '/acti/loginLuckDraw.do?activityId=' + activityId,-->
+                <!--//     success : function (data) {-->
+                <!--//             if (data) {-->
+                <!--//                 runStatus = 0-->
+                <!--//                 roll.getResult(data == -1 ? 7 : data)-->
+                <!--//                 roll.boxRun()-->
+                <!--//             }-->
+                <!--//     },-->
+                <!--//     error: function (XMLHttpRequest, textStatus, errorThrown) {-->
+                <!--//             var result = JSON.parse(XMLHttpRequest.responseText)-->
+                <!--//             roll.hint(result.msg || '操作失败,请联系客服')-->
+                <!--//     }-->
+                <!--// })-->
+            <!--}-->
+
+
+
+        <!--}-->
+
+        <!--console.log($('#roll_Hint').length)-->
+
+        <!--// test-->
+        <!--// $btn.on('click', function () {-->
+        <!--//     alert('btn')-->
+        <!--// })-->
+
+
+        <!--// test end-->
+
+    <!--})-->
+<!--</script>-->
+
+
+<style>
+	* {
+		margin: 0;
+		padding: 0
+	}
+
+	body {
+		color: #626262;
+		margin: 4px 0 0 5px;
+		padding: 0;
+		font-size: 13px;
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		background-color: #e7eef5;
+	}
+
+	li {
+		list-style: none
+	}
+
+	.clearfix:after {
+		content: "";
+		height: 0;
+		visibility: hidden;
+		display: block;
+		clear: both
+	}
+
+	.clearfix {
+		zoom: 1
+	}
+
+	.clear {
+		clear: both
+	}
+
+	.wrap {
+		background: #e7eef6;
+	}
+
+	.bg {
+		margin-left: 10px;
+		width: 967px;
+		height: 608px;
+		background: url(/static/dzp/images/bg.png) center no-repeat;
+		overflow: hidden;
+		position: relative;
+	}
+
+	.award-box, .roll-box, .rules-box {
+		position: absolute
+	}
+
+	.roll-box {
+		width: 396px;
+		height: 397px;
+		left: 106px;
+		bottom: 75px
+	}
+
+	.roll-box .bg-roll {
+		width: 396px;
+		height: 397px;
+		background: url(/static/dzp/images/rollbox.png) center no-repeat
+	}
+
+	.roll-box .btn-roll {
+		position: absolute;
+		width: 89px;
+		height: 134px;
+		background: url(/static/dzp/images/rollbtn_un.png) center no-repeat;
+		left: 50%;
+		top: 50%;
+		margin: -90px 0 0 -45px;
+		cursor: pointer
+	}
+
+	.award-box {
+		width: 240px;
+		top: 264px;
+		right: 177px;
+		color: #35517b;
+		font-size: 14px
+	}
+
+	.award-box li {
+		line-height: 25px
+	}
+
+	.rules-box {
+		font-size: 12px;
+		width: 260px;
+		top: 443px;
+		right: 170px;
+		color: #fff
+	}
+
+	.rules-box p {
+		line-height: 18px
+	}
+
+	.rules-box .tit {
+		margin-top: 3px
+	}
+
+	.jp-box{
+		display:none;
+		position: absolute;
+		left:50%;
+		top:40%;
+		width:240px;
+		height:80px;
+		margin:-40px 0 0 -120px;
+		border:1px solid #666;
+		text-align:center;
+		z-index:99;
+		background:rgba(0,0,0,.7);
+	}
+	.jp-box span{
+		line-height:80px;
+		color:#fff;
+		font-size:16px;
+	}
+</style>

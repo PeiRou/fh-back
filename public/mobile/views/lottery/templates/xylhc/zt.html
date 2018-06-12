@@ -1,0 +1,858 @@
+<ion-content class="bet-view" scroll="false">
+    <div class="sub-Navs" item-class="col-31">
+        <ion-scroll id="sub-navs" direction="x" scrollbar-x="false" delegate-handle="sub-navs">
+            <div class="row" ng-init="shareData.subIndex=1">
+                <div class="col sub-col col-31" ng-class="{navActive:shareData.subIndex==1}">
+                    <a class="item nav-item" ng-click="selectSubnav(1);">正1特</a>
+                </div>
+
+                <div class="col sub-col col-31" ng-class="{navActive:shareData.subIndex==2}">
+                    <a class="item nav-item" ng-click="selectSubnav(2);">正2特</a>
+                </div>
+
+                <div class="col sub-col col-31" ng-class="{navActive:shareData.subIndex==3}">
+                    <a class="item nav-item" ng-click="selectSubnav(3);">正3特</a>
+                </div>
+
+                <div class="col sub-col col-31" ng-class="{navActive:shareData.subIndex==4}">
+                    <a class="item nav-item" ng-click="selectSubnav(4);">正4特</a>
+                </div>
+
+                <div class="col sub-col col-31" ng-class="{navActive:shareData.subIndex==5}">
+                    <a class="item nav-item" ng-click="selectSubnav(5);">正5特</a>
+                </div>
+
+                <div class="col sub-col col-31" ng-class="{navActive:shareData.subIndex==6}">
+                    <a class="item nav-item" ng-click="selectSubnav(6);">正6特</a>
+                </div>
+            </div>
+        </ion-scroll>
+
+        <div class="nav-content">
+            <ion-content class="tp40">
+                <div ng-if="shareData.subIndex==1">
+                    <div class="row text-center"><div class="col title-no">正1特</div></div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212001"><div class="bet-content"><span class="round-3 red">01</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212002"><div class="bet-content"><span class="round-3 red">02</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212003"><div class="bet-content"><span class="round-3 blue">03</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212004"><div class="bet-content"><span class="round-3 blue">04</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212005"><div class="bet-content"><span class="round-3 green">05</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212006"><div class="bet-content"><span class="round-3 green">06</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212007"><div class="bet-content"><span class="round-3 red">07</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212008"><div class="bet-content"><span class="round-3 red">08</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212009"><div class="bet-content"><span class="round-3 blue">09</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212010"><div class="bet-content"><span class="round-3 blue">10</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212011"><div class="bet-content"><span class="round-3 green">11</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212012"><div class="bet-content"><span class="round-3 red">12</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212013"><div class="bet-content"><span class="round-3 red">13</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212014"><div class="bet-content"><span class="round-3 blue">14</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212015"><div class="bet-content"><span class="round-3 blue">15</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212016"><div class="bet-content"><span class="round-3 green">16</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212017"><div class="bet-content"><span class="round-3 green">17</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212018"><div class="bet-content"><span class="round-3 red">18</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212019"><div class="bet-content"><span class="round-3 red">19</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212020"><div class="bet-content"><span class="round-3 blue">20</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212021"><div class="bet-content"><span class="round-3 green">21</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212022"><div class="bet-content"><span class="round-3 green">22</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212023"><div class="bet-content"><span class="round-3 red">23</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212024"><div class="bet-content"><span class="round-3 red">24</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212025"><div class="bet-content"><span class="round-3 blue">25</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212026"><div class="bet-content"><span class="round-3 blue">26</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212027"><div class="bet-content"><span class="round-3 green">27</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212028"><div class="bet-content"><span class="round-3 green">28</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212029"><div class="bet-content"><span class="round-3 red">29</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212030"><div class="bet-content"><span class="round-3 red">30</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212031"><div class="bet-content"><span class="round-3 blue">31</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212032"><div class="bet-content"><span class="round-3 green">32</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212033"><div class="bet-content"><span class="round-3 green">33</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212034"><div class="bet-content"><span class="round-3 red">34</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212035"><div class="bet-content"><span class="round-3 red">35</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212036"><div class="bet-content"><span class="round-3 blue">36</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212037"><div class="bet-content"><span class="round-3 blue">37</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212038"><div class="bet-content"><span class="round-3 green">38</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212039"><div class="bet-content"><span class="round-3 green">39</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212040"><div class="bet-content"><span class="round-3 red">40</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212041"><div class="bet-content"><span class="round-3 blue">41</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212042"><div class="bet-content"><span class="round-3 blue">42</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212043"><div class="bet-content"><span class="round-3 green">43</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212044"><div class="bet-content"><span class="round-3 green">44</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212045"><div class="bet-content"><span class="round-3 red">45</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212046"><div class="bet-content"><span class="round-3 red">46</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212047"><div class="bet-content"><span class="round-3 blue">47</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212048"><div class="bet-content"><span class="round-3 blue">48</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212049"><div class="bet-content"><span class="round-3 green">49</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row text-center"><div class="col title-no">两面</div></div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212052"><span class="bet-content">大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212053"><span class="bet-content">小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212050"><span class="bet-content">单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212051"><span class="bet-content">双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212056"><span class="bet-content">合大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212057"><span class="bet-content">合小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212054"><span class="bet-content">合单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212055"><span class="bet-content">合双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212061"><span class="bet-content">尾大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212062"><span class="bet-content">尾小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row end">
+                        <div class="col col-33 bet ok" data-id="85212058"><span class="bet-content">红波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212059"><span class="bet-content">蓝波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212060"><span class="bet-content">绿波</span> <span class="bet-item"></span></div>
+                    </div>
+                </div>
+
+                <div ng-if="shareData.subIndex==2">
+                    <div class="row text-center"><div class="col title-no">正2特</div></div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212063"><div class="bet-content"><span class="round-3 red">01</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212064"><div class="bet-content"><span class="round-3 red">02</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212065"><div class="bet-content"><span class="round-3 blue">03</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212066"><div class="bet-content"><span class="round-3 blue">04</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212067"><div class="bet-content"><span class="round-3 green">05</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212068"><div class="bet-content"><span class="round-3 green">06</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212069"><div class="bet-content"><span class="round-3 red">07</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212070"><div class="bet-content"><span class="round-3 red">08</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212071"><div class="bet-content"><span class="round-3 blue">09</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212072"><div class="bet-content"><span class="round-3 blue">10</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212073"><div class="bet-content"><span class="round-3 green">11</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212074"><div class="bet-content"><span class="round-3 red">12</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212075"><div class="bet-content"><span class="round-3 red">13</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212076"><div class="bet-content"><span class="round-3 blue">14</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212077"><div class="bet-content"><span class="round-3 blue">15</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212078"><div class="bet-content"><span class="round-3 green">16</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212079"><div class="bet-content"><span class="round-3 green">17</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212080"><div class="bet-content"><span class="round-3 red">18</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212081"><div class="bet-content"><span class="round-3 red">19</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212082"><div class="bet-content"><span class="round-3 blue">20</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212083"><div class="bet-content"><span class="round-3 green">21</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212084"><div class="bet-content"><span class="round-3 green">22</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212085"><div class="bet-content"><span class="round-3 red">23</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212086"><div class="bet-content"><span class="round-3 red">24</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212087"><div class="bet-content"><span class="round-3 blue">25</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212088"><div class="bet-content"><span class="round-3 blue">26</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212089"><div class="bet-content"><span class="round-3 green">27</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212090"><div class="bet-content"><span class="round-3 green">28</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212091"><div class="bet-content"><span class="round-3 red">29</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212092"><div class="bet-content"><span class="round-3 red">30</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212093"><div class="bet-content"><span class="round-3 blue">31</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212094"><div class="bet-content"><span class="round-3 green">32</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212095"><div class="bet-content"><span class="round-3 green">33</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212096"><div class="bet-content"><span class="round-3 red">34</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212097"><div class="bet-content"><span class="round-3 red">35</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212098"><div class="bet-content"><span class="round-3 blue">36</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212099"><div class="bet-content"><span class="round-3 blue">37</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212100"><div class="bet-content"><span class="round-3 green">38</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212101"><div class="bet-content"><span class="round-3 green">39</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212102"><div class="bet-content"><span class="round-3 red">40</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212103"><div class="bet-content"><span class="round-3 blue">41</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212104"><div class="bet-content"><span class="round-3 blue">42</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212105"><div class="bet-content"><span class="round-3 green">43</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212106"><div class="bet-content"><span class="round-3 green">44</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212107"><div class="bet-content"><span class="round-3 red">45</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212108"><div class="bet-content"><span class="round-3 red">46</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212109"><div class="bet-content"><span class="round-3 blue">47</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212110"><div class="bet-content"><span class="round-3 blue">48</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212111"><div class="bet-content"><span class="round-3 green">49</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row text-center"><div class="col title-no">两面</div></div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212114"><span class="bet-content">大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212115"><span class="bet-content">小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212112"><span class="bet-content">单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212113"><span class="bet-content">双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212118"><span class="bet-content">合大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212119"><span class="bet-content">合小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212116"><span class="bet-content">合单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212117"><span class="bet-content">合双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212123"><span class="bet-content">尾大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212124"><span class="bet-content">尾小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row end">
+                        <div class="col col-33 bet ok" data-id="85212120"><span class="bet-content">红波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212121"><span class="bet-content">蓝波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212122"><span class="bet-content">绿波</span> <span class="bet-item"></span></div>
+                    </div>
+                </div>
+
+                <div ng-if="shareData.subIndex==3">
+                    <div class="row text-center"><div class="col title-no">正3特</div></div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212125"><div class="bet-content"><span class="round-3 red">01</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212126"><div class="bet-content"><span class="round-3 red">02</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212127"><div class="bet-content"><span class="round-3 blue">03</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212128"><div class="bet-content"><span class="round-3 blue">04</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212129"><div class="bet-content"><span class="round-3 green">05</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212130"><div class="bet-content"><span class="round-3 green">06</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212131"><div class="bet-content"><span class="round-3 red">07</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212132"><div class="bet-content"><span class="round-3 red">08</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212133"><div class="bet-content"><span class="round-3 blue">09</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212134"><div class="bet-content"><span class="round-3 blue">10</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212135"><div class="bet-content"><span class="round-3 green">11</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212136"><div class="bet-content"><span class="round-3 red">12</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212137"><div class="bet-content"><span class="round-3 red">13</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212138"><div class="bet-content"><span class="round-3 blue">14</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212139"><div class="bet-content"><span class="round-3 blue">15</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212140"><div class="bet-content"><span class="round-3 green">16</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212141"><div class="bet-content"><span class="round-3 green">17</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212142"><div class="bet-content"><span class="round-3 red">18</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212143"><div class="bet-content"><span class="round-3 red">19</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212144"><div class="bet-content"><span class="round-3 blue">20</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212145"><div class="bet-content"><span class="round-3 green">21</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212146"><div class="bet-content"><span class="round-3 green">22</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212147"><div class="bet-content"><span class="round-3 red">23</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212148"><div class="bet-content"><span class="round-3 red">24</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212149"><div class="bet-content"><span class="round-3 blue">25</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212150"><div class="bet-content"><span class="round-3 blue">26</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212151"><div class="bet-content"><span class="round-3 green">27</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212152"><div class="bet-content"><span class="round-3 green">28</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212153"><div class="bet-content"><span class="round-3 red">29</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212154"><div class="bet-content"><span class="round-3 red">30</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212155"><div class="bet-content"><span class="round-3 blue">31</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212156"><div class="bet-content"><span class="round-3 green">32</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212157"><div class="bet-content"><span class="round-3 green">33</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212158"><div class="bet-content"><span class="round-3 red">34</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212159"><div class="bet-content"><span class="round-3 red">35</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212160"><div class="bet-content"><span class="round-3 blue">36</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212161"><div class="bet-content"><span class="round-3 blue">37</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212162"><div class="bet-content"><span class="round-3 green">38</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212163"><div class="bet-content"><span class="round-3 green">39</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212164"><div class="bet-content"><span class="round-3 red">40</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212165"><div class="bet-content"><span class="round-3 blue">41</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212166"><div class="bet-content"><span class="round-3 blue">42</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212167"><div class="bet-content"><span class="round-3 green">43</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212168"><div class="bet-content"><span class="round-3 green">44</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212169"><div class="bet-content"><span class="round-3 red">45</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212170"><div class="bet-content"><span class="round-3 red">46</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212171"><div class="bet-content"><span class="round-3 blue">47</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212172"><div class="bet-content"><span class="round-3 blue">48</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212173"><div class="bet-content"><span class="round-3 green">49</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row text-center"><div class="col title-no">两面</div></div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212176"><span class="bet-content">大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212177"><span class="bet-content">小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212174"><span class="bet-content">单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212175"><span class="bet-content">双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212180"><span class="bet-content">合大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212181"><span class="bet-content">合小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212178"><span class="bet-content">合单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212179"><span class="bet-content">合双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212185"><span class="bet-content">尾大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212186"><span class="bet-content">尾小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row end">
+                        <div class="col col-33 bet ok" data-id="85212182"><span class="bet-content">红波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212183"><span class="bet-content">蓝波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212184"><span class="bet-content">绿波</span> <span class="bet-item"></span></div>
+                    </div>
+                </div>
+
+                <div ng-if="shareData.subIndex==4">
+                    <div class="row text-center"><div class="col title-no">正4特</div></div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212187"><div class="bet-content"><span class="round-3 red">01</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212188"><div class="bet-content"><span class="round-3 red">02</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212189"><div class="bet-content"><span class="round-3 blue">03</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212190"><div class="bet-content"><span class="round-3 blue">04</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212191"><div class="bet-content"><span class="round-3 green">05</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212192"><div class="bet-content"><span class="round-3 green">06</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212193"><div class="bet-content"><span class="round-3 red">07</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212194"><div class="bet-content"><span class="round-3 red">08</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212195"><div class="bet-content"><span class="round-3 blue">09</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212196"><div class="bet-content"><span class="round-3 blue">10</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212197"><div class="bet-content"><span class="round-3 green">11</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212198"><div class="bet-content"><span class="round-3 red">12</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212199"><div class="bet-content"><span class="round-3 red">13</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212200"><div class="bet-content"><span class="round-3 blue">14</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212201"><div class="bet-content"><span class="round-3 blue">15</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212202"><div class="bet-content"><span class="round-3 green">16</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212203"><div class="bet-content"><span class="round-3 green">17</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212204"><div class="bet-content"><span class="round-3 red">18</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212205"><div class="bet-content"><span class="round-3 red">19</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212206"><div class="bet-content"><span class="round-3 blue">20</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212207"><div class="bet-content"><span class="round-3 green">21</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212208"><div class="bet-content"><span class="round-3 green">22</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212209"><div class="bet-content"><span class="round-3 red">23</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212210"><div class="bet-content"><span class="round-3 red">24</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212211"><div class="bet-content"><span class="round-3 blue">25</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212212"><div class="bet-content"><span class="round-3 blue">26</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212213"><div class="bet-content"><span class="round-3 green">27</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212214"><div class="bet-content"><span class="round-3 green">28</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212215"><div class="bet-content"><span class="round-3 red">29</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212216"><div class="bet-content"><span class="round-3 red">30</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212217"><div class="bet-content"><span class="round-3 blue">31</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212218"><div class="bet-content"><span class="round-3 green">32</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212219"><div class="bet-content"><span class="round-3 green">33</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212220"><div class="bet-content"><span class="round-3 red">34</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212221"><div class="bet-content"><span class="round-3 red">35</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212222"><div class="bet-content"><span class="round-3 blue">36</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212223"><div class="bet-content"><span class="round-3 blue">37</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212224"><div class="bet-content"><span class="round-3 green">38</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212225"><div class="bet-content"><span class="round-3 green">39</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212226"><div class="bet-content"><span class="round-3 red">40</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212227"><div class="bet-content"><span class="round-3 blue">41</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212228"><div class="bet-content"><span class="round-3 blue">42</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212229"><div class="bet-content"><span class="round-3 green">43</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212230"><div class="bet-content"><span class="round-3 green">44</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212231"><div class="bet-content"><span class="round-3 red">45</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212232"><div class="bet-content"><span class="round-3 red">46</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212233"><div class="bet-content"><span class="round-3 blue">47</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212234"><div class="bet-content"><span class="round-3 blue">48</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212235"><div class="bet-content"><span class="round-3 green">49</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row text-center"><div class="col title-no">两面</div></div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212238"><span class="bet-content">大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212239"><span class="bet-content">小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212236"><span class="bet-content">单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212237"><span class="bet-content">双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212242"><span class="bet-content">合大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212243"><span class="bet-content">合小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212240"><span class="bet-content">合单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212241"><span class="bet-content">合双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212247"><span class="bet-content">尾大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212248"><span class="bet-content">尾小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row end">
+                        <div class="col col-33 bet ok" data-id="85212244"><span class="bet-content">红波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212245"><span class="bet-content">蓝波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212246"><span class="bet-content">绿波</span> <span class="bet-item"></span></div>
+                    </div>
+                </div>
+
+                <div ng-if="shareData.subIndex==5">
+                    <div class="row text-center"><div class="col title-no">正5特</div></div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212249"><div class="bet-content"><span class="round-3 red">01</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212250"><div class="bet-content"><span class="round-3 red">02</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212251"><div class="bet-content"><span class="round-3 blue">03</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212252"><div class="bet-content"><span class="round-3 blue">04</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212253"><div class="bet-content"><span class="round-3 green">05</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212254"><div class="bet-content"><span class="round-3 green">06</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212255"><div class="bet-content"><span class="round-3 red">07</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212256"><div class="bet-content"><span class="round-3 red">08</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212257"><div class="bet-content"><span class="round-3 blue">09</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212258"><div class="bet-content"><span class="round-3 blue">10</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212259"><div class="bet-content"><span class="round-3 green">11</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212260"><div class="bet-content"><span class="round-3 red">12</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212261"><div class="bet-content"><span class="round-3 red">13</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212262"><div class="bet-content"><span class="round-3 blue">14</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212263"><div class="bet-content"><span class="round-3 blue">15</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212264"><div class="bet-content"><span class="round-3 green">16</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212265"><div class="bet-content"><span class="round-3 green">17</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212266"><div class="bet-content"><span class="round-3 red">18</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212267"><div class="bet-content"><span class="round-3 red">19</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212268"><div class="bet-content"><span class="round-3 blue">20</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212269"><div class="bet-content"><span class="round-3 green">21</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212270"><div class="bet-content"><span class="round-3 green">22</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212271"><div class="bet-content"><span class="round-3 red">23</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212272"><div class="bet-content"><span class="round-3 red">24</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212273"><div class="bet-content"><span class="round-3 blue">25</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212274"><div class="bet-content"><span class="round-3 blue">26</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212275"><div class="bet-content"><span class="round-3 green">27</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212276"><div class="bet-content"><span class="round-3 green">28</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212277"><div class="bet-content"><span class="round-3 red">29</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212278"><div class="bet-content"><span class="round-3 red">30</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212279"><div class="bet-content"><span class="round-3 blue">31</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212280"><div class="bet-content"><span class="round-3 green">32</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212281"><div class="bet-content"><span class="round-3 green">33</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212282"><div class="bet-content"><span class="round-3 red">34</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212283"><div class="bet-content"><span class="round-3 red">35</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212284"><div class="bet-content"><span class="round-3 blue">36</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212285"><div class="bet-content"><span class="round-3 blue">37</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212286"><div class="bet-content"><span class="round-3 green">38</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212287"><div class="bet-content"><span class="round-3 green">39</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212288"><div class="bet-content"><span class="round-3 red">40</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212289"><div class="bet-content"><span class="round-3 blue">41</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212290"><div class="bet-content"><span class="round-3 blue">42</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212291"><div class="bet-content"><span class="round-3 green">43</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212292"><div class="bet-content"><span class="round-3 green">44</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212293"><div class="bet-content"><span class="round-3 red">45</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212294"><div class="bet-content"><span class="round-3 red">46</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212295"><div class="bet-content"><span class="round-3 blue">47</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212296"><div class="bet-content"><span class="round-3 blue">48</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212297"><div class="bet-content"><span class="round-3 green">49</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row text-center"><div class="col title-no">两面</div></div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212300"><span class="bet-content">大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212301"><span class="bet-content">小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212298"><span class="bet-content">单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212299"><span class="bet-content">双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212304"><span class="bet-content">合大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212305"><span class="bet-content">合小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212302"><span class="bet-content">合单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212303"><span class="bet-content">合双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212309"><span class="bet-content">尾大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212310"><span class="bet-content">尾小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row end">
+                        <div class="col col-33 bet ok" data-id="85212306"><span class="bet-content">红波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212307"><span class="bet-content">蓝波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212308"><span class="bet-content">绿波</span> <span class="bet-item"></span></div>
+                    </div>
+                </div>
+
+                <div ng-if="shareData.subIndex==6">
+                    <div class="row text-center"><div class="col title-no">正6特</div></div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212311"><div class="bet-content"><span class="round-3 red">01</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212312"><div class="bet-content"><span class="round-3 red">02</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212313"><div class="bet-content"><span class="round-3 blue">03</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212314"><div class="bet-content"><span class="round-3 blue">04</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212315"><div class="bet-content"><span class="round-3 green">05</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212316"><div class="bet-content"><span class="round-3 green">06</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212317"><div class="bet-content"><span class="round-3 red">07</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212318"><div class="bet-content"><span class="round-3 red">08</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212319"><div class="bet-content"><span class="round-3 blue">09</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212010"><div class="bet-content"><span class="round-3 blue">10</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212321"><div class="bet-content"><span class="round-3 green">11</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212322"><div class="bet-content"><span class="round-3 red">12</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212323"><div class="bet-content"><span class="round-3 red">13</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212324"><div class="bet-content"><span class="round-3 blue">14</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212325"><div class="bet-content"><span class="round-3 blue">15</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212326"><div class="bet-content"><span class="round-3 green">16</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212327"><div class="bet-content"><span class="round-3 green">17</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212328"><div class="bet-content"><span class="round-3 red">18</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212329"><div class="bet-content"><span class="round-3 red">19</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212330"><div class="bet-content"><span class="round-3 blue">20</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212331"><div class="bet-content"><span class="round-3 green">21</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212332"><div class="bet-content"><span class="round-3 green">22</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212333"><div class="bet-content"><span class="round-3 red">23</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212334"><div class="bet-content"><span class="round-3 red">24</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212335"><div class="bet-content"><span class="round-3 blue">25</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212336"><div class="bet-content"><span class="round-3 blue">26</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212337"><div class="bet-content"><span class="round-3 green">27</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212338"><div class="bet-content"><span class="round-3 green">28</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212339"><div class="bet-content"><span class="round-3 red">29</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212340"><div class="bet-content"><span class="round-3 red">30</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212341"><div class="bet-content"><span class="round-3 blue">31</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212342"><div class="bet-content"><span class="round-3 green">32</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212343"><div class="bet-content"><span class="round-3 green">33</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212344"><div class="bet-content"><span class="round-3 red">34</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212345"><div class="bet-content"><span class="round-3 red">35</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212346"><div class="bet-content"><span class="round-3 blue">36</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212347"><div class="bet-content"><span class="round-3 blue">37</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212348"><div class="bet-content"><span class="round-3 green">38</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212349"><div class="bet-content"><span class="round-3 green">39</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212350"><div class="bet-content"><span class="round-3 red">40</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212351"><div class="bet-content"><span class="round-3 blue">41</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212352"><div class="bet-content"><span class="round-3 blue">42</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-33 bet ok" data-id="85212353"><div class="bet-content"><span class="round-3 green">43</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212354"><div class="bet-content"><span class="round-3 green">44</span></div><div class="bet-item"></div></div>
+                        <div class="col col-33 bet ok" data-id="85212355"><div class="bet-content"><span class="round-3 red">45</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212356"><div class="bet-content"><span class="round-3 red">46</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212357"><div class="bet-content"><span class="round-3 blue">47</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212358"><div class="bet-content"><span class="round-3 blue">48</span></div><div class="bet-item"></div></div>
+                        <div class="col col-50 bet ok" data-id="85212359"><div class="bet-content"><span class="round-3 green">49</span></div><div class="bet-item"></div></div>
+                    </div>
+
+                    <div class="row text-center"><div class="col title-no">两面</div></div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212362"><span class="bet-content">大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212363"><span class="bet-content">小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212360"><span class="bet-content">单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212361"><span class="bet-content">双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212366"><span class="bet-content">合大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212367"><span class="bet-content">合小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212364"><span class="bet-content">合单</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212365"><span class="bet-content">合双</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col col-50 bet ok" data-id="85212371"><span class="bet-content">尾大</span> <span class="bet-item"></span></div>
+                        <div class="col col-50 bet ok" data-id="85212372"><span class="bet-content">尾小</span> <span class="bet-item"></span></div>
+                    </div>
+
+                    <div class="row end">
+                        <div class="col col-33 bet ok" data-id="85212368"><span class="bet-content">红波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212369"><span class="bet-content">蓝波</span> <span class="bet-item"></span></div>
+                        <div class="col col-33 bet ok" data-id="85212370"><span class="bet-content">绿波</span> <span class="bet-item"></span></div>
+                    </div>
+                </div>
+
+            </ion-content>
+        </div>
+    </div>
+</ion-content>

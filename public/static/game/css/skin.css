@@ -1,0 +1,563 @@
+/******************************
+			red
+******************************/
+
+.skin_red .sub {
+    color: #fff;
+    background: #d87c86;
+    border-bottom: 1px solid #ccc;
+}
+
+.skin_red .sub a {
+    color: #fff;
+}
+
+.skin_red .sub a:hover,
+.skin_red .sub .selected {
+    color: #54131e;
+}
+
+.skin_red .lotterys .selected,
+.skin_red .lotterys a:hover {
+    color: #54131e;
+    background: #d67a84;
+}
+
+.skin_red .header-top {
+    background: url(/static/game/images/skin/red/main_bg.jpg) no-repeat 0 0;
+}
+
+.skin_red .skinHover,
+.skin_red .skinHover ul {
+    background: #832c3c;
+}
+
+.skin_red .announce {
+    background: url(/static/game/images/skin/red/announce-bg.png) repeat-x 0 -30px;
+}
+
+.skin_red .announc3-hd {
+    background: url(/static/game/images/skin/red/announce-bg.png) no-repeat 0 0;
+}
+
+.skin_red .header .lotterys {
+    background: #6a1f2d;
+}
+
+.skin_red .header .lotterys .show span {
+    background: url(/static/game/images/skin/red/nav_shuxian.png) no-repeat scroll right 10px;
+}
+
+.skin_red .header .menu3 a {
+    background-color:#751d28;
+}
+
+.skin_red .side_left .info label {
+    color: #36639D;
+}
+
+.skin_red .content {
+    background-color: #FFFFFF;
+}
+
+.skin_red .cont-col3 {
+    background: #FFFFFF;
+}
+
+.skin_red .u-table2 .name {
+    background-color:#FFF5F5;
+}
+
+.skin_red .u-table2 td,
+.skin_red .u-table4 td {
+    border: 1px solid #E6B3BE;
+    color: #762D08;
+}
+
+.skin_red .u-table2 .hover {
+    background: none repeat 0 0 #F6D3E4;
+}
+
+.skin_red .u-table5 th,
+.skin_red .u-table5 td {
+    border: 1px solid #b9c2cb;
+}
+
+.skin_red .u-tb5-tr1 {
+    background: #FFF;
+}
+
+.skin_red .u-table2 thead th.select {
+    background: url(/static/game/images/skin/red/huang_bg.png) 0 0 !important;
+    color: white !important;
+}
+
+.skin_red .tab_title02 a:hover,
+.skin_red .tab_title02 .on {
+    background: url(/static/game/images/skin/red/tab_bg10.png) no-repeat scroll left top;
+    color: #35406d;
+}
+
+.skin_red .u-table10 thead th {
+    border: 1px solid #b9c2cb;
+    background-color: #edf4fe;
+    color: #35406d;
+}
+
+.skin_red .u-table10 td {
+    border: 1px solid #b9c2cb;
+    background: #fff;
+    color: #35406d;
+}
+
+.skin_red .megas512 span.current {
+    color: #35406d;
+}
+
+.skin_red .demo-class .layui-layer-title {
+    background: url(/static/game/images/skin/red/bg-sprites.png) repeat-x scroll 0 -58px;
+    border: 1px solid #b9c2cb;
+    color: #35406d;
+}
+
+.skin_red .demo-class .layui-layer-btn a {
+    /*background: url(/static/game/images/skin/red/btn-bg.png);*/
+    color: #fff;
+}
+
+.skin_red .bet-bottom {
+    border: 1px solid #b9c2cb;
+}
+
+.skin_red .bet-bottom .bcount {
+    border-right: 1px solid #b9c2cb;
+}
+
+.skin_red .skinbtn {
+    background-color: #4987D7;
+    color: #ffffff;
+}
+
+.skin_red .skin-font-color {
+    color: #35406d
+}
+
+.skin_red #lastBets li {
+    border-top: 1px solid #b9c2cb;
+}
+
+.skin_red .pop-tips {
+    border: 1px solid #4092F6;
+}
+
+.skin_red .pop-tips-hd {
+    background: #4987D7;
+    color: #fff;
+}
+
+.skin_red .r-wrap a,
+.skin_red .r-wrap {
+    color: #fff;
+}
+
+.skin_red .r-nowrap1 {
+    background: rgb(216, 124, 134);
+    /*background: -moz- linear-gradient( top, rgba(216, 124, 134) 0%, rgba(199, 94, 114) 100%);*/
+    /*background: -webkit- linear-gradient( top, rgba(216, 124, 134) 0%, rgba(199, 94, 114) 100%);*/
+    background: linear-gradient( to bottom, rgb(216, 124, 134) 0%, rgb(199, 94, 114) 100%);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#fbd0d0', endColorstr='#d47686', GradientType=0);*/
+}
+
+.skin_red .nowrap2 {
+    border: 1px solid #f4521b;
+    background: rgb(255, 148, 97);
+    background: -moz-linear-gradient(top, rgba(255, 148, 97, 1) 0%, rgba(255, 104, 53, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255, 148, 97, 1) 0%, rgba(255, 104, 53, 1) 100%);
+    background: linear-gradient(to bottom, rgba(255, 148, 97, 1) 0%, rgba(255, 104, 53, 1) 100%);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ff9461', endColorstr='#ff6835', GradientType=0);*/
+}
+
+.skin_red .nowrap2:hover {
+    background: url("/static/game/images/skin/red/announce-bg.png") no-repeat center bottom;
+}
+
+.skin_red li.link:hover {
+    background: rgb(216, 124, 134);
+    /*background: -moz- linear-gradient( top, rgba(216, 124, 134) 0%, rgba(173, 53, 76) 100%);*/
+    /*background: -webkit- linear-gradient( top, rgba(216, 124, 134) 0%, rgba(173, 53, 76) 100%);*/
+    background: linear-gradient( to bottom, rgb(216, 124, 134) 0%, rgb(173, 53, 76) 100%);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#fbd0d0', endColorstr='#d47686', GradientType=0);*/
+}
+
+.skin_red .u-header {
+    background-color: #B33B4E;
+    color: #fff;
+}
+
+.skin_red .u-table2 th {
+    color: #4F4D4D;
+    border: 1px solid #E6B3BE;
+    background-color: #FFF5F5;
+
+}
+
+.skin_red .cont-col3-box2 span {
+    color: #6a1f2d;
+}
+
+.skin_red .u-btn1 {
+    background: #AA3748;
+    background: -moz-linear-gradient(top, #D87C86 0%, #6A1F2D 100%);
+    background: -webkit-linear-gradient(top, #D87C86 0%,#6A1F2D 100%);
+    background: linear-gradient(to bottom, #D87C86 0%,#6A1F2D 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b8ac7', endColorstr='#2765b5',GradientType=0 );
+    border: 1px solid #AB374A;
+    color: #FFFFFF;
+}
+
+.skin_red .u-btn1:hover {
+    color: #f98d5c;
+    font-weight: bold;
+}
+
+.skin_red .cont-sider thead th{
+    background: #B33B4E;
+    color: #fff;
+}
+
+.skin_red .header .lotterys .more-game{
+    border-left:1px solid #6a1f2d;
+}
+
+.skin_red .header .more-game-drop a{
+    color:#fff;
+}
+
+.skin_red .header .more-game-drop a:hover{
+    background:#6a1f2d;
+    color:#fff;
+}
+
+.skin_red .header .lotterys .more-game:hover, .skin_red .header .lotterys.menu-editMode .more-game {
+    background: #d87c86;
+    border-bottom: 1px solid #d87c86;
+}
+
+.skin_red .header .lotterys .more-game:hover > a, .skin_red .header .lotterys.menu-editMode .more-game > a {
+    color:#fff;
+}
+
+.skin_red .header .gamebox a {
+    background: #d67a84;
+}
+
+.skin_red .header .actionBtn {
+    background: #d67a84;
+}
+
+.skin_red .header .more-game-drop{
+    background-color: #e7e7e7;
+    border: 1px solid #6a1f2d;
+}
+
+
+.skin_red .notice-wrap .bg {
+    background: rgb(30,87,153); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(30,87,153,1) 0%, rgba(252,92,68,1) 0%, rgba(252,49,104,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(252,92,68,1) 0%,rgba(252,49,104,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(30,87,153,1) 0%,rgba(252,92,68,1) 0%,rgba(252,49,104,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#fc3168',GradientType=0 ); /* IE6-9 */
+}
+
+
+/******************************
+			blue
+******************************/
+
+.skin_blue .sub {
+    color: #666;
+    background: rgb(230, 230, 230);
+    background: -moz-linear-gradient(top, rgba(230, 230, 230, 1) 0%, rgba(231, 231, 231, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(230, 230, 230, 1) 0%, rgba(231, 231, 231, 1) 100%);
+    background: linear-gradient(to bottom, rgba(230, 230, 230, 1) 0%, rgba(231, 231, 231, 1) 100%);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#e6e6e6', endColorstr='#e7e7e7', GradientType=0);*/
+    border-bottom: 1px solid #ccc;
+}
+
+.skin_blue .sub a {
+    color: #666;
+}
+
+.skin_blue .sub a:hover,
+.skin_blue .sub .selected {
+    color: #f98d5c;
+}
+
+.skin_blue .lotterys .selected,
+.skin_blue .lotterys .show > a:hover {
+    color: #143679;
+    background: rgb(230, 230, 230);
+    background: -moz-linear-gradient(top, rgba(230, 230, 230, 1) 0%, rgba(231, 231, 231, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(230, 230, 230, 1) 0%, rgba(231, 231, 231, 1) 100%);
+    background: linear-gradient(to bottom, rgba(230, 230, 230, 1) 0%, rgba(231, 231, 231, 1) 100%);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#e6e6e6', endColorstr='#e7e7e7', GradientType=0);*/
+}
+.skin_blue .lotterys.menu-editMode .show > a:hover {
+    background: none;
+    color: #FFF;
+}
+
+.skin_blue .header-top {
+    background: url(/static/game/images/skin/blue/main_bg.jpg) no-repeat 0 0;
+}
+
+.skin_blue .skinHover,
+.skin_blue .skinHover ul {
+    background: #234b95;
+}
+
+.skin_blue .announce {
+    background: url(/static/game/images/skin/blue/announce-bg.png) repeat-x 0 -30px;
+}
+
+.skin_blue .announc3-hd {
+    background: url(/static/game/images/skin/blue/announce-bg.png) no-repeat 0 0;
+}
+
+.skin_blue .header {
+    background: #3682D0;
+}
+
+.skin_blue .header .lotterys {
+    background: #2161b3;
+}
+
+.skin_blue .header .lotterys .show span {
+    background: url(/static/game/images/skin/blue/nav_shuxian.png) no-repeat scroll right 10px;
+}
+
+.skin_blue .header .menu3 a {
+    background-color:#2f97f7;
+}
+
+.skin_blue .side_left .info label {
+    color: #36639D;
+}
+
+.skin_blue .content {
+    background-color: #FFFFFF;
+}
+
+.skin_blue .cont-col3 {
+    background: #FFFFFF;
+}
+
+.skin_blue .u-table2 .name {
+    background-color: #edf4fe;
+}
+
+.skin_blue .u-table2 td,
+.skin_blue .u-table4 td {
+    border: 1px solid #b9c2cb;
+    color: #35406d;
+}
+
+.skin_blue .u-table2 .hover {
+    background: none repeat 0 0 #c3d9f1;
+}
+
+.skin_blue .u-table5 th,
+.skin_blue .u-table5 td {
+    border: 1px solid #b9c2cb;
+}
+
+.skin_blue .u-tb5-tr1 {
+    background: #FFF;
+}
+
+.skin_blue .u-table2 thead th.select {
+    background: #dee9f3;
+    /*background: -moz- linear-gradient( top, #dee9f3 0%, #dee9f3 50%, #cfd9e3 51%, #cfd9e3 100%);*/
+    /*background: -webkit- linear-gradient( top, #dee9f3 0%, #dee9f3 50%, #cfd9e3 51%, #cfd9e3 100%);*/
+    background: linear-gradient( to bottom, #dee9f3 0%, #dee9f3 50%, #cfd9e3 51%, #cfd9e3 100%);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#dee9f3', endColorstr='#cfd9e3', GradientType=0);*/
+    color: #000;
+    font-weight: bold;
+}
+
+.skin_blue .tab_title02 a:hover,
+.skin_blue .tab_title02 .on {
+    background: url(/static/game/images/skin/blue/tab_bg10.png) no-repeat scroll left top;
+    color: #35406d;
+}
+
+.skin_blue .u-table10 thead th {
+    border: 1px solid #b9c2cb;
+    background-color: #edf4fe;
+    color: #35406d;
+}
+
+.skin_blue .u-table10 td {
+    border: 1px solid #b9c2cb;
+    background: #fff;
+    color: #35406d;
+}
+
+.skin_blue .megas512 span.current {
+    color: #35406d;
+}
+
+.skin_blue .demo-class .layui-layer-title {
+    background: url(/static/game/images/skin/blue/bg-sprites.png) repeat-x scroll 0 -58px;
+    border: 1px solid #b9c2cb;
+    color: #35406d;
+}
+
+.skin_blue .demo-class .layui-layer-btn a {
+    /*background: url(/static/game/images/skin/blue/btn-bg.png);*/
+    color: #fff;
+}
+
+.skin_blue .bet-bottom {
+    border: 1px solid #b9c2cb;
+}
+
+.skin_blue .bet-bottom .bcount {
+    border-right: 1px solid #b9c2cb;
+}
+
+.skin_blue .skinbtn {
+    background-color: #4987D7;
+    color: #ffffff;
+}
+
+.skin_blue .skin-font-color {
+    color: #35406d
+}
+
+.skin_blue #lastBets li {
+    border-top: 1px solid #b9c2cb;
+}
+
+.skin_blue .pop-tips {
+    border: 1px solid #4092F6;
+}
+
+.skin_blue .pop-tips-hd {
+    background: #4987D7;
+    color: #fff;
+}
+
+.skin_blue .r-wrap a,
+.skin_blue .r-wrap {
+    color: #fff;
+}
+
+.skin_blue .r-nowrap1 {
+    background: #2161b3;
+}
+
+.skin_blue .nowrap2 {
+    border: 1px solid #f4521b;
+    background: rgb(255, 148, 97);
+    background: -moz-linear-gradient(top, rgba(255, 148, 97, 1) 0%, rgba(255, 104, 53, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255, 148, 97, 1) 0%, rgba(255, 104, 53, 1) 100%);
+    background: linear-gradient(to bottom, rgba(255, 148, 97, 1) 0%, rgba(255, 104, 53, 1) 100%);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ff9461', endColorstr='#ff6835', GradientType=0);*/
+}
+
+.skin_blue .nowrap2:hover {
+    background: url("/static/game/images/skin/blue/announce-bg.png") no-repeat center bottom;
+}
+
+.skin_blue li.link:hover {
+    background: rgb(52, 111, 185);
+    background: -moz-linear-gradient(top, rgba(52, 111, 185, 1) 0%, rgba(52, 111, 185, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(52, 111, 185, 1) 0%, rgba(52, 111, 185, 1) 100%);
+    background: linear-gradient(to bottom, rgba(52, 111, 185, 1) 0%, rgba(52, 111, 185, 1) 100%);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#346fb9', endColorstr='#346fb9', GradientType=0);*/
+}
+
+.skin_blue .u-header {
+    background-color: #2161b3;
+    color: #fff;
+}
+
+.skin_blue .u-table2 th {
+    color: #4F4D4D;
+    border: 1px solid #b9c2cb;
+    background-color: #edf4fe;
+
+}
+
+.skin_blue .cont-col3-box2 span {
+    color: #38539a;
+}
+
+.skin_blue .u-btn1 {
+    background: #5b8ac7;
+    background: -moz-linear-gradient(top, #5b8ac7 0%, #2765b5 100%);
+    background: -webkit-linear-gradient(top, #5b8ac7 0%, #2765b5 100%);
+    background: linear-gradient(to bottom, #5b8ac7 0%, #2765b5 100%);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#5b8ac7', endColorstr='#2765b5', GradientType=0);*/
+    border: 1px solid #1e57a0;
+    color: #FFFFFF;
+}
+
+.skin_blue .u-btn1:hover {
+    color: #f98d5c;
+    font-weight: bold;
+}
+
+.skin_blue .cont-sider thead th{
+    background: #2161b3;
+    color: #fff;
+}
+
+.skin_blue .header .lotterys .more-game{
+    border-left:1px solid #2161b3;
+}
+
+.skin_blue .header .more-game-drop a{
+    color:#FFF;
+}
+
+.skin_blue .header .more-game-drop a:hover{
+    background:#143679;
+    color:#fff;
+}
+
+.skin_blue .header .lotterys .more-game:hover > a, .skin_blue .header .lotterys.menu-editMode .more-game > a, .skin_blue .header .lotterys .more-game.selected > a {
+    background: rgb(230, 230, 230);
+    background: -moz-linear-gradient(top, rgba(230, 230, 230, 1) 0%, rgba(231, 231, 231, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(230, 230, 230, 1) 0%, rgba(231, 231, 231, 1) 100%);
+    background: linear-gradient(to bottom, rgba(230, 230, 230, 1) 0%, rgba(231, 231, 231, 1) 100%);
+    /*filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#e6e6e6', endColorstr='#e7e7e7', GradientType=0);*/
+    border-bottom: 1px solid rgb(230, 230, 230);
+    color: #143679;
+}
+
+.skin_blue .header .lotterys .more-game:hover > a, .skin_blue .header .lotterys.menu-editMode .more-game > a{
+    color:#143679;
+}
+
+.skin_blue .header .more-game-drop{
+    background-color: #e7e7e7;
+    border: 1px solid #2161b3;
+}
+
+.skin_blue .header .gamebox a {
+    background: #2161b3;
+}
+
+.skin_blue .header .actionBtn {
+    background: #2161b3;
+}
+
+.skin_blue .notice-wrap .bg {
+    background: rgb(30,87,153); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(30,87,153,1) 0%, rgba(0,219,255,1) 0%, rgba(0,165,255,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(0,219,255,1) 0%,rgba(0,165,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(30,87,153,1) 0%,rgba(0,219,255,1) 0%,rgba(0,165,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#00a5ff',GradientType=0 ); /* IE6-9 */
+}

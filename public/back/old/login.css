@@ -1,0 +1,33 @@
+@charset "utf-8";
+/* CSS Document */
+/***
+ */
+*{font-size:9pt;margin:0;padding:0;}
+body{font-family:'微软雅黑'; margin:0 auto;min-width:1000px; overflow-y:hidden; }
+ul{display:block;margin:0;padding:0;list-style:none;}
+li{display:block;margin:0;padding:0;list-style: none;}
+a,a:focus{text-decoration:none;color:#000;outline:none;blr:expression(this.onFocus=this.blur());}
+a:hover{color:#00a4ac;text-decoration:none;}
+#login {background-color:#1c77ac; background-image:url(/back/old/images/light.png); background-repeat:no-repeat; background-position:center top; overflow:hidden;}
+#mainBody {width:100%;height:100%;position:absolute;z-index:-1;}
+.cloud {position:absolute;top:0px;left:0px;width:100%;height:100%;background:url(/back/old/images/cloud.png) no-repeat;z-index:1;opacity:0.5;}
+#cloud2 {z-index:2;}
+
+.logintop{height:47px; position:absolute; top:0; background:#0000005e;z-index:100; width:100%;}
+.logintop span{color:#fff; line-height:47px; background:url(/back/old/images/loginsj.png) no-repeat 21px 18px; text-indent:44px; color:#afc5d2; float:left;}
+.logintop ul{float:right; padding-right:30px;}
+.logintop ul li{float:left; margin-left:20px; line-height:47px;}
+.logintop ul li a{color:#afc5d2;}
+.logintop ul li a:hover{color:#fff;}
+.loginbody{background:url(/back/old/images/loginbg3.png) no-repeat center center; width:100%; height:100%; overflow:hidden; position:absolute; top:47px;}
+.loginbox{ position:absolute; left:50% !important; top:50%; width:692px; height:336px; margin:-193px 0 0 -346px; background:url(/back/old/images/logininfo.png) no-repeat;}
+.loginbox ul{margin-top:88px; margin-left:285px;}
+.loginbox ul li{margin-bottom:15px;}
+.loginbox ul li label{color:#687f92; padding-left:25px;}
+.loginbox ul li label a{color:#687f92;}
+.loginbox ul li label a:hover{color:#3d96c9;}
+.loginbox ul li label input{margin-right:5px;}
+.loginuser{width:299px; height:40px; background:url(/back/old/images/loginuser_343x40.png) no-repeat; border:none; line-height:40px; padding-left:44px; font-size:14px; font-weight:bold;}
+.loginpwd{width:299px; height:40px; background:url(/back/old/images/loginpassword_343x40.png) no-repeat; border:none;line-height:40px; padding-left:44px; font-size:14px; color:#90a2bc;}
+.logincode{width:150px; height:40px; background:url(/back/old/images/logincode.png) no-repeat; border:none;line-height:40px; padding-left:44px; font-size:14px; }
+.loginbtn{width:111px;height:35px; background:url(/back/old/images/buttonbg.png) repeat-x; font-size:14px; font-weight:bold; color:#fff;cursor:pointer; line-height:35px;border: none}
