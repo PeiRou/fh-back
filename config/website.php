@@ -19,7 +19,7 @@ return [
     //官方开奖
     'guanServerUrl' => 'http://156.235.192.178:8881/api/guan/',
     //开奖服务器URL
-    'openServerUrl'=> 'http://192.168.1.40:8881/api/',
+    'openServerUrl'=> 'http://172.31.197.39:8881/api/',
     //第三方开奖接口
     'openApi' => [
         'url'   =>'http://e.apiplus.net/newly.do',
