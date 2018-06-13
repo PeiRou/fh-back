@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Article;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use App\Notices;
 use Carbon\Carbon;
@@ -12,7 +13,8 @@ use Carbon\Carbon;
 class IndexController extends Controller
 {
     public function index(){
-        if($_SERVER['HTTP_HOST'] == "0123500w.com" || $_SERVER['HTTP_HOST'] == "www.0123500w.com"){
+        $backEndUrl = Config::get('website.backEndUrl');
+        if($_SERVER['HTTP_HOST'] == $backEndUrl[0] || $_SERVER['HTTP_HOST'] == $backEndUrl[1]){
             return redirect()->route('back.login');
         }
         $captcha = CaptchaController::makeCaptcha();

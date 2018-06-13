@@ -27,4 +27,6 @@ return [
         'format'=>'json',
         'rows'  =>'1',
     ],
+    //后台地址
+    'backEndUrl' => ['f8710.com','www.f8710.com']
 ];
