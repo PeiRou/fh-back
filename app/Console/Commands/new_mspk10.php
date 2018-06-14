@@ -54,9 +54,13 @@ class new_mspk10 extends Command
         $data = json_decode($getFile,true);
         $nowTime    = date('H:i:s');
         $filtered = collect($data)->first(function ($value, $key) use ($nowTime) {
-            if(strtotime($value['time']) === strtotime($nowTime)){
+            $timeDiff = Carbon::now()->diffInSeconds(Carbon::parse($value['time']));
+            if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3){
                 return $value;
             }
+//            if(strtotime($value['time']) === strtotime($nowTime)){
+//                return $value;
+//            }
         });
         if($filtered!=null){
             if($filtered['issue'] >= 793 && $filtered['issue'] <= 985){
