@@ -53,37 +53,37 @@ return [
 //            'strict' => false,
 //            'engine' => null,
 //        ],
-//        'mysql' => [
-//            'driver' => 'mysql',
-//            'read' => [
-//                'host' => '192.168.1.30'
-//            ],
-//            'write' => [
-//                'host' => '192.168.1.10'
-//            ],
-//            //'host' => env('DB_HOST', '127.0.0.1'),
-//            'port' => 3306,
-//            'database' => 'ss500_db',
-//            'username' => 'laravel',
-//            'password' => 'w9GHHCk1iEUmJORN',
-//            'unix_socket' => env('DB_SOCKET', ''),
-//            'charset' => 'utf8mb4',
-//            'collation' => 'utf8mb4_unicode_ci',
-//            'prefix' => '',
-//            'strict' => false, //SQL严格模式
-//            'engine' => null,
-//        ],
         'mysql' => [
-            'host' => 'rm-j6cu60797usb9qsdzrw.mysql.rds.aliyuncs.com',
-            'driver'    => 'mysql',
-            'database'  => 'fh-db',
-            'username'  => 'laravel',
-            'password'  => 'ab30317!',
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict' => false,
+            'driver' => 'mysql',
+            'read' => [
+                'host' => 'rr-j6cnipyc2834v6690.mysql.rds.aliyuncs.com'
+            ],
+            'write' => [
+                'host' => 'rm-j6cu60797usb9qsdz.mysql.rds.aliyuncs.com'
+            ],
+            //'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => 3306,
+            'database' => 'fh-db',
+            'username' => 'laravel',
+            'password' => 'ab30317!',
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => false, //SQL严格模式
+            'engine' => null,
         ],
+//        'mysql' => [
+//            'host' => 'rm-j6cu60797usb9qsdzrw.mysql.rds.aliyuncs.com',
+//            'driver'    => 'mysql',
+//            'database'  => 'fh-db',
+//            'username'  => 'laravel',
+//            'password'  => 'ab30317!',
+//            'charset'   => 'utf8',
+//            'collation' => 'utf8_unicode_ci',
+//            'prefix'    => '',
+//            'strict' => false,
+//        ],
 
         'pgsql' => [
             'driver' => 'pgsql',
