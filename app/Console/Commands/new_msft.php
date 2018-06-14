@@ -51,12 +51,16 @@ class new_msft extends Command
         $getFile    = Storage::disk('gameTime')->get('msft.json');
         $data       = json_decode($getFile,true);
         $nowTime    = date('H:i:s');
-        $filtered = collect($data)->first(function ($value, $key) use ($nowTime) {
-            if(strtotime($value['time']) === strtotime($nowTime)){
+        $nowTimeAdd1 = Carbon::parse($nowTime)->addSeconds(1);
+        $nowTimeAdd2 = Carbon::parse($nowTime)->addSeconds(2);
+        $nowTimeAdd3 = Carbon::parse($nowTime)->addSeconds(3);
+        $filtered = collect($data)->first(function ($value, $key) use ($nowTime, $nowTimeAdd1, $nowTimeAdd2, $nowTimeAdd3) {
+            if(strtotime($value['time']) == strtotime($nowTime) || strtotime($value['time']) == strtotime($nowTimeAdd1) || strtotime($value['time']) == strtotime($nowTimeAdd2) || strtotime($value['time']) == strtotime($nowTimeAdd3)){
                 return $value;
             }
         });
         if($filtered!=null){
+            \Log::info('秒速飞艇'.$filtered['issue']);
             if($filtered['issue'] >= 793 && $filtered['issue'] <= 985){
                 $date = Carbon::parse(date('Y-m-d'))->addDays(-1);
                 $params =  [
