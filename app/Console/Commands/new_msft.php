@@ -57,6 +57,7 @@ class new_msft extends Command
             }
         });
         if($filtered!=null){
+            \Log::info($filtered['issue']);
             if($filtered['issue'] >= 793 && $filtered['issue'] <= 985){
                 $date = Carbon::parse(date('Y-m-d'))->addDays(-1);
                 $params =  [
