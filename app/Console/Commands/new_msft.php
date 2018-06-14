@@ -48,7 +48,6 @@ class new_msft extends Command
      */
     public function handle()
     {
-        \Log::info('msft'.date('H:i:s'));
         $getFile    = Storage::disk('gameTime')->get('msft.json');
         $data       = json_decode($getFile,true);
         $nowTime    = date('H:i:s');

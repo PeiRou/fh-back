@@ -50,7 +50,6 @@ class new_mspk10 extends Command
      */
     public function handle()
     {
-        \Log::info('mssc'.date('H:i:s'));
         $getFile = Storage::disk('gameTime')->get('mssc.json');
         $data = json_decode($getFile,true);
         $nowTime    = date('H:i:s');

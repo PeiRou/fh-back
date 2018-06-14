@@ -48,7 +48,6 @@ class new_msssc extends Command
      */
     public function handle()
     {
-        \Log::info('msssc'.date('H:i:s'));
         $getFile    = Storage::disk('gameTime')->get('msssc.json');
         $data       = json_decode($getFile,true);
         $nowTime    = date('H:i:s');
