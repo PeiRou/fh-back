@@ -55,13 +55,15 @@ class new_msft extends Command
         $nowTimeAdd2 = Carbon::parse($nowTime)->addSeconds(2);
         $nowTimeAdd3 = Carbon::parse($nowTime)->addSeconds(3);
         $filtered = collect($data)->first(function ($value, $key) use ($nowTime, $nowTimeAdd1, $nowTimeAdd2, $nowTimeAdd3) {
-            if(strtotime($value['time']) == strtotime($nowTime) || strtotime($value['time']) == strtotime($nowTimeAdd1) || strtotime($value['time']) == strtotime($nowTimeAdd2) || strtotime($value['time']) == strtotime($nowTimeAdd3)){
-                return $value;
-            }
+            $timeDiff = Carbon::now()->diffInSeconds(Carbon::parse($value['time']));
+            \Log::info($timeDiff);
+//            if(strtotime($value['time']) == strtotime($nowTime) || strtotime($value['time']) == strtotime($nowTimeAdd1) || strtotime($value['time']) == strtotime($nowTimeAdd2) || strtotime($value['time']) == strtotime($nowTimeAdd3)){
+//                return $value;
+//            }
         });
-        \Log::info('当前文件时间：'.$nowTime);
-        \Log::info('开奖时间'.$filtered['time']);
-        \Log::info('误差时间'.$nowTimeAdd1.'=='.$nowTimeAdd2.'=='.$nowTimeAdd3);
+//        \Log::info('当前文件时间：'.$nowTime);
+//        \Log::info('开奖时间'.$filtered['time']);
+//        \Log::info('误差时间'.$nowTimeAdd1.'=='.$nowTimeAdd2.'=='.$nowTimeAdd3);
         if($filtered!=null){
 //            \Log::info('秒速飞艇'.$filtered['issue']);
             if($filtered['issue'] >= 793 && $filtered['issue'] <= 985){
