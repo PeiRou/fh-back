@@ -48,6 +48,7 @@ class new_msft extends Command
      */
     public function handle()
     {
+        \Log::info('msft'.date('H:i:s'));
         $getFile    = Storage::disk('gameTime')->get('msft.json');
         $data       = json_decode($getFile,true);
         $nowTime    = date('H:i:s');
@@ -57,7 +58,6 @@ class new_msft extends Command
             }
         });
         if($filtered!=null){
-            \Log::info($filtered['issue']);
             if($filtered['issue'] >= 793 && $filtered['issue'] <= 985){
                 $date = Carbon::parse(date('Y-m-d'))->addDays(-1);
                 $params =  [

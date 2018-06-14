@@ -50,6 +50,7 @@ class new_paoma extends Command
      */
     public function handle()
     {
+        \Log::info('paoma'.date('H:i:s'));
         $getFile = Storage::disk('gameTime')->get('paoma.json');
         $data = json_decode($getFile,true);
         $nowTime    = date('H:i:s');

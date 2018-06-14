@@ -44,6 +44,7 @@ class new_msnn extends Command
      */
     public function handle()
     {
+        \Log::info('msnn'.date('H:i:s'));
         $getFile = Storage::disk('gameTime')->get('msnn.json');
         $data = json_decode($getFile,true);
         $nowTime    = date('H:i:s');
