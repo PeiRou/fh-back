@@ -243,7 +243,7 @@ class FinanceDataController extends Controller
                 } else if($drawing->status == 2) {
                     return '<span class="green-text"><b>通过</b></span>';
                 } else if($drawing->status == 3) {
-                    return '<span class="red-text"><b>不通过</b></span>';
+                    return '<span class="red-text"><b>不通过</b></span> <span><i class="iconfont">&#xe61e;</i></span>';
                 } else if($drawing->status == 3) {
                     return '锁定';
                 }

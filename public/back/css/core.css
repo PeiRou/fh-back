@@ -6,11 +6,11 @@
     -moz-osx-font-smoothing: grayscale;}
 @font-face {
     font-family: 'iconfont';  /* project id 540627 */
-    src: url('//at.alicdn.com/t/font_540627_dtt1s7g9442t9.eot');
-    src: url('//at.alicdn.com/t/font_540627_dtt1s7g9442t9.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_540627_dtt1s7g9442t9.woff') format('woff'),
-    url('//at.alicdn.com/t/font_540627_dtt1s7g9442t9.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_540627_dtt1s7g9442t9.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_540627_15coqbkv9jn.eot');
+    src: url('//at.alicdn.com/t/font_540627_15coqbkv9jn.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_540627_15coqbkv9jn.woff') format('woff'),
+    url('//at.alicdn.com/t/font_540627_15coqbkv9jn.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_540627_15coqbkv9jn.svg#iconfont') format('svg');
 }
 .light-gary-text{
     color: #c5c5c5;
