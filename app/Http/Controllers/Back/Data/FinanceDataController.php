@@ -160,7 +160,7 @@ class FinanceDataController extends Controller
                         return "<b class='green-text'>充值成功</b>";
                         break;
                     case 3:
-                        return "<b class='red-text'>充值失败</b>";
+                        return '<b class="red-text">充值失败</b> <span class="tips-icon"><i data-tooltip="'.$recharge->msg.'" data-inverted class="iconfont">&#xe61e;</i></span>';
                         break;
                     case 4:
                         return "<b class='blue-text'>充值中</b>";
