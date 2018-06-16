@@ -194,8 +194,7 @@ class ModalController extends Controller
     {
         $user = User::find($id);
         $allBanks = Banks::where('status',1)->get();
-        $getUserBankInfo = DB::table('user_bank')->where('user_id',$user->id)->first();
-        return view('back.modal.member.userEditInfo',compact('user','allBanks','getUserBankInfo'));
+        return view('back.modal.member.userEditInfo',compact('user','allBanks'));
     }
     //查看会员备注
     public function viewUserContent($id)

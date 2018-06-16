@@ -40,7 +40,7 @@
                 <select class="ui dropdown" name="bank" style="height: 32px !important;">
                     <option value="">请选择</option>
                     @foreach($allBanks as $item)
-                        <option @if(@$getUserBankInfo->bank_id == $item->bank_id) selected @endif value="{{ $item->bank_id }}">{{ $item->name }}</option>
+                        <option @if($user->bank_id == $item->bank_id) selected @endif value="{{ $item->bank_id }}">{{ $item->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -48,7 +48,7 @@
         <div class="field">
             <label>银行卡号</label>
             <div class="ui input icon">
-                <input type="text" name="bank_num" value="{{ @$getUserBankInfo->cardNo }}"/>
+                <input type="text" name="bank_num" value="{{ $user->bank_num }}"/>
             </div>
         </div>
     </div>
@@ -57,7 +57,7 @@
         <div class="field">
             <label>支行地址</label>
             <div class="ui input icon">
-                <input type="text" name="bank_addr" value="{{ @$getUserBankInfo->subAddress }}"/>
+                <input type="text" name="bank_addr" value="{{ $user->bank_addr }}"/>
             </div>
         </div>
         <div class="field">
