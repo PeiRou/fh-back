@@ -31,6 +31,9 @@
                     <div class="one wide field">
                         <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
                             <option value="">用户层级</option>
+                            @foreach($levels as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="two wide field">

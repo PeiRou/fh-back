@@ -18,7 +18,7 @@ Route::group(['prefix' => 'back/control/','middleware' => 'domain-check'],functi
 Route::group(['prefix' => 'back/control/userManage','middleware'=>['check-permission','domain-check']],function (){
     Route::get('general_agent','Back\SrcViewController@generalAgent')->name('m.gAgent'); // 总代理
     Route::get('agent','Back\SrcViewController@agent')->name('m.agent'); // 代理
-    Route::get('user','Back\SrcViewController@user')->name('m.user'); // 代理
+    Route::get('user','Back\SrcViewController@user')->name('m.user'); // 用户
     Route::get('onlineUser','Back\SrcViewController@onlineUser')->name('m.onlineUser'); // 在线会员
     Route::get('sub_account','Back\SrcViewController@subAccount')->name('m.subAccount'); // 子账号
     Route::get('userBetList/{userId}','Back\SrcViewController@userBetList')->name('m.user.viewDetails'); //用户注单明细

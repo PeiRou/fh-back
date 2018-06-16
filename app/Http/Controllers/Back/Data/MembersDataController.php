@@ -407,6 +407,7 @@ class MembersDataController extends Controller
             ->rawColumns(['online','user','balance','status','control','created_at','updated_at','content','rechLevel'])
             ->make(true);
     }
+
     //用户资金明细
     public function userCapital($id,Request $request)
     {

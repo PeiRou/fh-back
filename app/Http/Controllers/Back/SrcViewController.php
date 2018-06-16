@@ -56,7 +56,8 @@ class SrcViewController extends Controller
     //会员
     public function user()
     {
-        return view('back.user');
+        $levels = DB::table('level')->where('status',1)->get();
+        return view('back.user',compact('levels'));
     }
     //会员注单详情 - 独占页面
     public function userBetList($userId)
