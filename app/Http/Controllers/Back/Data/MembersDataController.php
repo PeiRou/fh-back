@@ -344,7 +344,11 @@ class MembersDataController extends Controller
             })
             ->editColumn('agent',function ($users){
                 $getAgent = Agent::find($users->agent);
-                return $getAgent->account;
+                if($getAgent){
+                    return $getAgent->account;
+                } else {
+                    return '--';
+                }
             })
             ->editColumn('balance',function ($users){
                 return "<span class='red-text'>".$users->money."</span>";
