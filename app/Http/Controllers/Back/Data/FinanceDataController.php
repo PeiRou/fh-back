@@ -160,7 +160,7 @@ class FinanceDataController extends Controller
                         return "<b class='green-text'>充值成功</b>";
                         break;
                     case 3:
-                        return '<b class="red-text">充值失败</b> <span class="tips-icon"><i data-tooltip="'.$recharge->msg.'" data-inverted class="iconfont">&#xe61e;</i></span>';
+                        return '<b class="red-text">充值失败</b> <span class="tips-icon"><i data-tooltip="'.$recharge->msg.'" data-position="left center" data-inverted class="iconfont">&#xe61e;</i></span>';
                         break;
                     case 4:
                         return "<b class='blue-text'>充值中</b>";
@@ -243,7 +243,7 @@ class FinanceDataController extends Controller
                 } else if($drawing->status == 2) {
                     return '<span class="green-text"><b>通过</b></span>';
                 } else if($drawing->status == 3) {
-                    return '<span class="red-text"><b>不通过</b></span> <span class="tips-icon"><i data-tooltip="'.$drawing->msg.'" data-inverted class="iconfont">&#xe61e;</i></span>';
+                    return '<span class="red-text"><b>不通过</b></span> <span class="tips-icon"><i data-position="left center" data-tooltip="'.$drawing->msg.'" data-inverted class="iconfont">&#xe61e;</i></span>';
                 } else if($drawing->status == 3) {
                     return '锁定';
                 }
