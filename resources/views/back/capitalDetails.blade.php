@@ -16,7 +16,7 @@
             <div class="ui mini form">
                 <div class="fields">
                     <div class="one wide field">
-                        <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
+                        <select class="ui dropdown" id="time_point" style='height:32px !important'>
                             <option value="">今日明细</option>
                             <option value="">昨日明细</option>
                             <option value="">历史明细</option>
@@ -27,18 +27,18 @@
                         <input type="text" id="account" placeholder="历史明细用户名必填">
                     </div>
                     <div class="one wide field">
-                        <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
+                        <select class="ui dropdown" id="game" style='height:32px !important'>
                             <option value="">游戏选择</option>
                         </select>
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="account" placeholder="订单号">
+                        <input type="text" id="order" placeholder="订单号">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="account" placeholder="期号">
+                        <input type="text" id="issue" placeholder="期号">
                     </div>
                     <div class="one wide field" style="width: 9% !important;">
-                        <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
+                        <select class="ui dropdown" id="type" style='height:32px !important'>
                             <option value="">类型</option>
                             <option value="t01">充值</option>
                             <option value="t02">撤单[中奖金额]</option>
@@ -63,15 +63,15 @@
                     </div>
                     <div style="line-height: 32px;">交易金额：</div>
                     <div class="one wide field">
-                        <input type="text" id="account" placeholder="最小金额">
+                        <input type="text" id="amount_min" placeholder="最小金额">
                     </div>
                     <div style="line-height: 32px;">-</div>
                     <div class="one wide field">
-                        <input type="text" id="promoter" placeholder="最大金额">
+                        <input type="text" id="amount_max" placeholder="最大金额">
                     </div>
                     <div style="line-height: 32px;">时间：</div>
                     <div class="one wide field">
-                        <input type="text" id="account" placeholder="">
+                        <input type="text" id="time" placeholder="">
                     </div>
                     <div style="line-height: 32px;">-</div>
                     <div class="one wide field">

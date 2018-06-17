@@ -27,4 +27,9 @@ $(function () {
     //         }
     //     }
     // });
+    
+    $('#btn_search').on('click',function () {
+        var type = $('#type').val();
+        alert(type);
+    })
 });
