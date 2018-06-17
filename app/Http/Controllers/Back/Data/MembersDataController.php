@@ -621,7 +621,7 @@ class MembersDataController extends Controller
             ->editColumn('control',function ($user){
                 return '<span class="edit-link" onclick="getOut(\''.$user->id.'\',\''.$user->username.'\')"><i class="iconfont">&#xeab6;</i> 踢下线</span>';
             })
-            ->rawColumns(['online','status','login_client','control','login_ip_info','login_ip','money'])
+            ->rawColumns(['account','online','status','login_client','control','login_ip_info','login_ip','money'])
             ->make(true);
     }
 }
