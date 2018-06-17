@@ -210,17 +210,8 @@ class FinanceDataController extends Controller
                 return '<span class="red-text">'.$drawing->amount.'</span>';
             })
             ->editColumn('bank_info',function ($drawing){
-                $getBankInfo = DB::table('user_bank')->where('user_id',$drawing->user_id)->first();
-                if($getBankInfo){
-                    $getuserInfo = DB::table('users')->where('id',$drawing->user_id)->first();
-                    if($getuserInfo){
-                        return '<div style="text-align: center">姓名：'.$getuserInfo->fullName.'</br>银行：'.$getBankInfo->bank_name.'<br>账号：'.$getBankInfo->cardNo.'<br>地址：'.$getBankInfo->subAddress.'</div>';
-                    }else {
-                        return '用户已被删除';
-                    }
-                } else {
-                    return '用户已被删除';
-                }
+                $userInfo = DB::table('users')->where('id',$drawing->user_id)->first();
+                return '<div style="text-align: center">姓名：'.$userInfo->fullName.'</br>银行：'.$userInfo->bank_name.'<br>账号：'.$userInfo->bank_name.'<br>地址：'.$userInfo->bank_addr.'</div>';
             })
             ->editColumn('liushui',function ($drawing){
                 return '--';
