@@ -585,7 +585,7 @@ class MembersDataController extends Controller
                 return "<span class='on-line-point'></span>";
             })
             ->editColumn('account',function ($user){
-                return $user->username;
+                return '<a href="/back/control/userManage/userBetList/'.$user->id.'" target="_blank">'.$user->username.'</a>';
             })
             ->editColumn('userType',function ($user){
                 return "会员";
