@@ -30,6 +30,30 @@ $(function () {
     
     $('#btn_search').on('click',function () {
         var type = $('#type').val();
-        alert(type);
+        typeTable(type);
     })
 });
+
+function typeTable(type) {
+    if(type == 't01'){
+        var th = '<th>用户</th>\n' +
+                 '<th>订单号</th>\n' +
+                 '<th>交易时间</th>\n' +
+                 '<th>交易类型</th>\n' +
+                 '<th>交易金额</th>\n' +
+                 '<th>余额</th>\n' +
+                 '<th>期号</th>\n' +
+                 '<th>游戏</th>\n' +
+                 '<th>玩法</th>\n' +
+                 '<th>操作人</th>\n' +
+                 '<th>备注</th>';
+    }
+    if(type == 't02'){
+        var th = '<th>用户</th>\n' +
+            '<th>订单号</th>\n' +
+            '<th>交易时间</th>\n' +
+            '<th>交易类型</th>\n' +
+            '<th>交易金额</th>\n';
+    }
+    $('#capitalDetailsTable thead tr').html(th);
+}

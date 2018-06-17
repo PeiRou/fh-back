@@ -89,17 +89,17 @@
         <table id="capitalDetailsTable" class="ui small table" cellspacing="0" width="100%">
             <thead>
             <tr>
-                <th>用户</th>
-                <th>订单号</th>
-                <th>交易时间</th>
-                <th>交易类型</th>
-                <th>交易金额</th>
-                <th>余额</th>
-                <th>期号</th>
-                <th>游戏</th>
-                <th>玩法</th>
-                <th>操作人</th>
-                <th>备注</th>
+                {{--<th>用户</th>--}}
+                {{--<th>订单号</th>--}}
+                {{--<th>交易时间</th>--}}
+                {{--<th>交易类型</th>--}}
+                {{--<th>交易金额</th>--}}
+                {{--<th>余额</th>--}}
+                {{--<th>期号</th>--}}
+                {{--<th>游戏</th>--}}
+                {{--<th>玩法</th>--}}
+                {{--<th>操作人</th>--}}
+                {{--<th>备注</th>--}}
             </tr>
             </thead>
         </table>
