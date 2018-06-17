@@ -40,6 +40,20 @@
                 </div>
             </div>
         </div>
+
+        <table id="loginLogTable" class="ui small table" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>会员</th>
+                <th>登录日期</th>
+                <th>IP</th>
+                <th>IP信息</th>
+                <th>来源</th>
+                <th>登录域名</th>
+                <th>退出时间</th>
+            </tr>
+            </thead>
+        </table>
     </div>
 @endsection
 
