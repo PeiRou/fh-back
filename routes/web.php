@@ -64,6 +64,13 @@ Route::group(['prefix' => 'back/control/systemManage','middleware'=>['check-perm
     Route::get('articleManage','Back\SrcViewController@articleManage')->name('system.articleManage'); //文章管理
 });
 
+//日志管理
+Route::group(['prefix' => 'back/control/logManage','middleware'=>['check-permission','domain-check']],function () {
+    Route::get('login','Back\SrcViewController@loginLog')->name('log.login'); //登录日志
+    Route::get('handle','Back\SrcViewController@handleLog')->name('log.handle'); //操作日志
+    Route::get('abnormal','Back\SrcViewController@abnormalLog')->name('log.abnormal'); //异常日志
+});
+
 //充值配置
 Route::group(['prefix' => 'back/control/payManage','middleware'=>['check-permission','domain-check']],function () {
     Route::get('payOnline','Back\SrcViewController@payOnline')->name('pay.online'); //在线支付配置
