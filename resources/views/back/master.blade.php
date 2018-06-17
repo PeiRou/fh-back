@@ -246,18 +246,18 @@
         </li>
         @endif
         @if($hasPermission->hasPermission('log') == "has")
-        <li class="nav-item"><a href="javascript:void(0)">
+        <li id="menu-logManage" class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>
                 日志管理</a>
             <ul>
                 @if($hasPermission->hasPermission('log.login') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>登录日志</span></a></li>
+                <li id="menu-logManage-login"><a href="{{ route('log.login') }}"><cite></cite><span>登录日志</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('log.handle') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>操作日志</span></a></li>
+                <li id="menu-logManage-handle"><a href="{{ route('log.handle') }}"><cite></cite><span>操作日志</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('log.abnormal') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>异常日志</span></a></li>
+                <li id="menu-logManage-abnormal"><a href="{{ route('log.abnormal') }}"><cite></cite><span>异常日志</span></a></li>
                 @endif
             </ul>
         </li>
