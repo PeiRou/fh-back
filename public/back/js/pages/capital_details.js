@@ -46,6 +46,7 @@ function typeTable(type) {
     var search = true;
     if(type == ""){
         alert('没有选择类型');
+        search = false;
         return search;
     }
     if(type == 't01'){
