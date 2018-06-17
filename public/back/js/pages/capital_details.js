@@ -40,6 +40,10 @@ $(function () {
 });
 
 function typeTable(type) {
+    if(type == ""){
+        alert('没有选择类型');
+        return false;
+    }
     if(type == 't01'){
         var th = '<th>用户</th>\n' +
                  '<th>订单号</th>\n' +
