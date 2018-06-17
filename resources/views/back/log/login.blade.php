@@ -12,20 +12,20 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
-                    <div class="two wide field">
+                    <div class="one wide field">
                         <input type="text" id="account" placeholder="开始时间">
                     </div>
                     <div style="line-height: 32px;">-</div>
                     <div class="one wide field">
                         <input type="text" id="mobile" placeholder="结束时间">
                     </div>
-                    <div class="one wide field">
+                    <div class="two wide field">
                         <input type="text" id="qq" placeholder="用户账户">
                     </div>
                     <div class="one wide field">
                         <input type="text" id="minMoney" placeholder="登录IP">
                     </div>
-                    <div class="one wide field">
+                    <div class="two wide field">
                         <input type="text" id="maxMoney" placeholder="域名">
                     </div>
                     <div class="one wide field">
