@@ -201,7 +201,25 @@ class SrcViewController extends Controller
     {
         return view('back.system.articleManage');
     }
-    
+
+    //日志管理
+    //登录日志
+    public function loginLog()
+    {
+        return view('back.log.login');
+    }
+    //操作日志
+    public function handleLog()
+    {
+        return view('back.log.handle');
+    }
+    //异常日志
+    public function abnormalLog()
+    {
+        return view('back.log.abnormal');
+    }
+
+
     //充值配置
     //绑定银行配置
     public function payOnline()
