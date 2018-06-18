@@ -16,12 +16,31 @@ $(function () {
             }
         },
         columns: [
-            {data:'userId'},
-            {data:'user'},
+            {data:'user_id'},
+            {data:'username'},
             {data:'login_time'},
             {data:'ip'},
             {data:'ip_info'},
-            {data:'type'},
+            {
+                data:'type',
+                render:function (data, type, row) {
+                    if(data == 1){
+                        return '电脑';
+                    }
+                    if(data == 2){
+                        return '手机';
+                    }
+                    if(data == 3){
+                        return 'iOS';
+                    }
+                    if(data == 4){
+                        return 'Android';
+                    }
+                    if(data == 5){
+                        return '其他';
+                    }
+                }
+            },
             {data:'login_host'},
             {data:'logout_time'}
         ],
