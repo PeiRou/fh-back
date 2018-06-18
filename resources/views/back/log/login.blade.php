@@ -3,7 +3,7 @@
 @section('title','登录日志')
 
 @section('content')
-    {{ $_SERVER["HTTP_CLIENT_IP"] }}
+    {{ $_SERVER["REMOTE_ADDR"] }}
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>登录日志
