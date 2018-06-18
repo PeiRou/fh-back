@@ -118,6 +118,7 @@ Route::get('/back/datatables/payWechat','Back\Data\PayDataController@payWechat')
 Route::get('/back/datatables/payCft','Back\Data\PayDataController@payCft');
 Route::get('/back/datatables/article','Back\Data\ArticleController@article');
 Route::get('/back/datatables/userBetSearch','Back\Data\BetDataController@userBetSearch');
+Route::get('/back/datatables/log/login','Back\Data\LogDataController@login'); //登录日志
 
 //action
 Route::post('/action/admin/login','Back\SrcAccountController@login');
