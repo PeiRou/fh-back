@@ -37,7 +37,7 @@ class LogDataController extends Controller
                     $q->where('ip_info',$ipInfo);
                 }
             })
-            ->get();
+            ->orderBy('id','DESC')->get();
         return DataTables::of($loginLog)
             ->make(true);
     }
