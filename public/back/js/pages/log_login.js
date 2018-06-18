@@ -12,7 +12,10 @@ $(function () {
         ajax: {
             url:'/back/datatables/log/login',
             data:function (d) {
-
+                d.username = $('#username').val();
+                d.ip = $('#ip').val();
+                d.loginHost = $('#login_host').val();
+                d.ipInfo = $('#ip_info').val();
             }
         },
         columns: [
@@ -58,4 +61,8 @@ $(function () {
             }
         }
     });
+});
+
+$('#btn_search').on('click',function () {
+    dataTable.ajax.reload();
 });

@@ -20,16 +20,16 @@
                         <input type="text" id="mobile" placeholder="结束时间">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="qq" placeholder="用户账户">
+                        <input type="text" id="username" placeholder="用户账户">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="minMoney" placeholder="登录IP">
+                        <input type="text" id="ip" placeholder="登录IP">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="maxMoney" placeholder="域名">
+                        <input type="text" id="login_host" placeholder="域名">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="promoter" placeholder="IP信息">
+                        <input type="text" id="ip_info" placeholder="IP信息">
                     </div>
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
