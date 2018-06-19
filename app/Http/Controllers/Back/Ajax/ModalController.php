@@ -7,7 +7,6 @@ use App\Article;
 use App\Banks;
 use App\Games;
 use App\GeneralAgent;
-use App\Http\Controllers\Pay\payShop;
 use App\Levels;
 use App\PayOnline;
 use App\PayType;
@@ -22,18 +21,6 @@ use Illuminate\Support\Facades\DB;
 
 class ModalController extends Controller
 {
-    protected $payShop;
-
-    /**
-     * ModalController constructor.
-     * @param $payShop
-     */
-    public function __construct(payShop $payShop)
-    {
-        $this->payShop = $payShop;
-    }
-
-
     //添加权限
     public function addPermission()
     {
@@ -269,7 +256,7 @@ class ModalController extends Controller
     //添加在线支付配置
     public function addPayOnline()
     {
-        $payType = $this->payShop->list();
+        $payType = PayType::all();
         $levels = Levels::all();
         return view('back.modal.pay.addPayOnline')->with('payType',$payType)->with('levels',$levels);
     }

@@ -5,7 +5,7 @@
             <select class="ui fluid dropdown" name="payType">
                 <option value="">请选择支付类型</option>
                 @foreach($payType as $item)
-                    <option data-url="{{ $item['url'] }}" value="{{ $item['id'] }}">{{ $item['rechName'] }}</option>
+                    <option data-url="{{ $item->url }}" value="{{ $item->id }}">{{ $item->rechName }}</option>
                 @endforeach
             </select>
         </div>
