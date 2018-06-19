@@ -30,7 +30,9 @@ $(function () {
         "columnDefs": [ {
             "targets": 3,
             "createdCell": function (td, cellData, rowData, row, col) {
-                alert(cellData);
+                if(cellData == '用户已被删除'){
+                    $(td).css('color', 'red')
+                }
                 // if ( cellData < 1 ) {
                 //     $(td).css('color', 'red')
                 // }
