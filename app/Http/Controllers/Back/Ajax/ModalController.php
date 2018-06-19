@@ -271,7 +271,7 @@ class ModalController extends Controller
     {
         $payType = $this->payShop->list();
         foreach ($payType as $i){
-            echo $i->code;
+            echo $i['code'];
         }
 //        $payType = PayType::all();
 //        $levels = Levels::all();
