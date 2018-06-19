@@ -31,7 +31,7 @@ $(function () {
             "targets": 3,
             "createdCell": function (td, cellData, rowData, row, col) {
                 if(cellData == '用户已被删除'){
-                    $(td).parent().css('color', 'red')
+                    $(td).parent().css('background', '#ffd6d6')
                 }
                 // if ( cellData < 1 ) {
                 //     $(td).css('color', 'red')
