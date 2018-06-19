@@ -214,7 +214,7 @@ class FinanceDataController extends Controller
                 if($userInfo){
                     return '<div style="text-align: center">姓名：'.$userInfo->fullName.'</br>银行：'.$userInfo->bank_name.'<br>账号：'.$userInfo->bank_name.'<br>地址：'.$userInfo->bank_addr.'</div>';
                 } else {
-                    return '-';
+                    return '';
                 }
             })
             ->editColumn('liushui',function ($drawing){

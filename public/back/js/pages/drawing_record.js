@@ -1,4 +1,3 @@
-
 $(function () {
     $('#menu-financeManage').addClass('nav-show');
     $('#menu-financeManage-drawingRecord').addClass('active');
@@ -28,6 +27,15 @@ $(function () {
             {data:'status'},
             {data:'control'},
         ],
+        "columnDefs": [ {
+            "targets": 3,
+            "createdCell": function (td, cellData, rowData, row, col) {
+                alert(cellData);
+                // if ( cellData < 1 ) {
+                //     $(td).css('color', 'red')
+                // }
+            }
+        }],
         language: {
             "zeroRecords": "暂无数据",
             "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",
