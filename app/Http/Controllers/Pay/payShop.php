@@ -15,6 +15,7 @@ class payShop
     {
         return [
             1 => [
+                'id' => 1,
                 'rechName' => '仁信（微信）',
                 'company' => 'RENXIN',
                 'code' => 'WX',
@@ -24,6 +25,7 @@ class payShop
                 'whitelist' => []
             ],
             2 => [
+                'id' => 2,
                 'rechName' => '仁信（支付宝）',
                 'company' => 'RENXIN',
                 'code' => 'ZFB',
@@ -33,6 +35,7 @@ class payShop
                 'whitelist' => []
             ],
             3 => [
+                'id' => 3,
                 'rechName' => '仁信（QQ钱包）',
                 'company' => 'RENXIN',
                 'code' => 'QQ',
@@ -42,6 +45,7 @@ class payShop
                 'whitelist' => []
             ],
             4 => [
+                'id' => 4,
                 'rechName' => '仁信（京东钱包）',
                 'company' => 'RENXIN',
                 'code' => 'JD',
