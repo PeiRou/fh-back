@@ -56,6 +56,12 @@ Route::group(['prefix' => 'back/control/gameManage','middleware'=>['check-permis
     Route::get('handicapSetting','Back\SrcViewController@handicapSetting')->name('game.handicapSetting');
 });
 
+//开奖管理
+Route::group(['prefix' => 'back/control/openManage','middleware'=>['check-permission','domain-check']],function () {
+    Route::get('lhc','Back\SrcViewController@openManage_xglhc')->name('historyLottery.xglhc'); //六合彩
+    Route::get('xylhc','Back\SrcViewController@openManage_xylhc')->name('historyLottery.xylhc'); //幸运六合彩
+});
+
 //系统管理
 Route::group(['prefix' => 'back/control/systemManage','middleware'=>['check-permission','domain-check']],function () {
     Route::get('permissions','Back\SrcViewController@Permissions')->name('system.permission');
