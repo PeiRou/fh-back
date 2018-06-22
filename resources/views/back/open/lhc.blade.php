@@ -12,3 +12,7 @@
         </div>
     </div>
 @endsection
+
+@section('page-js')
+    <script src="/back/js/pages/open_lhc.js"></script>
+@endsection
