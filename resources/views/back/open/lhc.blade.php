@@ -1,7 +1,7 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: vincent
- * Date: 2018/6/22
- * Time: 下午11:48
- */
+@extends('back.master')
+
+@section('title','历史开奖-六合彩')
+
+@section('content')
+
+@endsection
