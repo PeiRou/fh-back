@@ -105,6 +105,18 @@ class SrcViewController extends Controller
     {
         return view('back.agentReconciliation');
     }
+
+    //开奖记录
+    //六合彩
+    public function openManage_xglhc()
+    {
+        return view('back.open.lhc');
+    }
+    //幸运六合彩
+    public function openManage_xylhc()
+    {
+        return view('back.open.xylhc');
+    }
     
     //报表管理
     //总代理报表
