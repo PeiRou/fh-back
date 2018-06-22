@@ -164,9 +164,12 @@ $('#recharge_type').on('change',function () {
             success:function (result) {
                 $('#onlineTypeDiv').show();
                 $('#pay_online_id').empty();
+                var str = '<option value="">全部</option>';
                 result.forEach(function(item){
-                    $("#pay_online_id").append($("<option/>").text(item.payeeName).attr("value",item.id));
+                    // str += $("#pay_online_id").append($("<option/>").text(item.payeeName).attr("value",item.id));
+                    str += $("<option/>").text(item.payeeName).attr("value",item.id);
                 });
+                $("#pay_online_id").html(str);
             }
         });
     }
