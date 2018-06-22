@@ -307,6 +307,13 @@
                                 $num_val = "";
                             break;
                     }
+                    //删除当日用不到的数据
+                    $aTmp = DB::select(" select id from clong_kaijian2 WHERE lotteryid = :lotteryid and code = :code and clong_num =((SELECT max(clong_num) FROM `clong_kaijian2` WHERE lotteryid = :lotteryid1 and code = :code1 ) -51)",
+                        ['lotteryid' => $lotteryId,'code' => $val,'lotteryid1' => $lotteryId,'code1' => $val]);
+                    if(!empty($aTmp)) {
+                        $aTmp = $aTmp[0];
+                        DB::table('clong_kaijian2')->where('lotteryid', $lotteryId)->where('code', $val)->where('id', "<=", $aTmp->id)->delete();
+                    }
                     $aTmp = DB::select("select clong_num as max_num ,value from clong_kaijian2 where clong_num = (
                     select max(clong_num) as max_num from clong_kaijian2 where lotteryid = :lotteryid and code =:code ) and lotteryid =:lotteryid1 and code =:code1 ",
                         ['lotteryid' => $lotteryId,'code' => $val,'lotteryid1' => $lotteryId,'code1' => $val]);
