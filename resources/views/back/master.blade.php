@@ -171,11 +171,16 @@
         </li>
         @endif
         @if($hasPermission->hasPermission('historyLottery') == "has")
-        <li class="nav-item"><a href="javascript:void(0)">
+        <li id="menu-openManage" class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>
                 历史开奖</a>
             <ul>
-                <li><a href="javascript:void(0)"><cite></cite><span>秒速时时彩</span></a></li>
+                @if($hasPermission->hasPermission('historyLottery.xglhc') == "has")
+                <li id="menu-openManage-lhc"><a href="{{ route('historyLottery.xglhc') }}"><cite></cite><span>六合彩</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.xylhc') == "has")
+                <li id="menu-openManage-xylhc"><a href="{{ route('historyLottery.xylhc') }}"><cite></cite><span>幸运六合彩</span></a></li>
+                @endif
             </ul>
         </li>
         @endif
