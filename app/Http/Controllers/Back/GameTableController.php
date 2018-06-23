@@ -207,7 +207,7 @@ class GameTableController extends Controller
     public function gameTable70()
     {
         $data = Play::where('gameId',70)->get();
-        $filter = ['TMA_odds','TMA_rebate','TMB_odds','TMB_rebate','LM_rebate','LM_odds','HB_odds','HB_rebate','LB_LB_odds','LB_LB_rebate','HD_LX_LX_odds','HD_LX_LX_rebate','SB_HX_odds','SB_HX_rebate','SB_LVD_odds','SB_LVD_rebate','SB_LD_odds','SB_LD_rebate','HD_LD_LS_LD_odds','HD_LD_LS_LD_rebate','SB_HSHUANG_odds','SB_HSHUANG_rebate','SB_LVSHUANG_odds','SB_LVSHUANG_rebate','SB_HDD_LXD_LXS_odds','SB_HDD_LXD_LXS_rebate','SB_HXD_HXS_LDD_odds','SB_HXD_HXS_LDD_rebate','HDS_LXS_LDS_LDD_LXD_LDS_odds','HDS_LXS_LDS_LDD_LXD_LDS_rebate'];
+        $filter = ['TMA_odds','TMA_rebate','TMB_odds','TMB_rebate','LM_rebate','LM_odds','HB_odds','HB_rebate','LB_LB_odds','LB_LB_rebate','HD_LX_LX_odds','HD_LX_LX_rebate','SB_HX_odds','SB_HX_rebate','SB_LVD_odds','SB_LVD_rebate','SB_LD_odds','SB_LD_rebate','HD_LD_LS_LD_odds','HD_LD_LS_LD_rebate','SB_HSHUANG_odds','SB_HSHUANG_rebate','SB_LVSHUANG_odds','SB_LVSHUANG_rebate','SB_HDD_LXD_LXS_odds','SB_HDD_LXD_LXS_rebate','SB_HXD_HXS_LDD_odds','SB_HXD_HXS_LDD_rebate','HDS_LXS_LDS_LDD_LXD_LDS_odds','HDS_LXS_LDS_LDD_LXD_LDS_rebate','TX_SHU_odds','TX_SHU_rebate','TX_NIU_odds','TX_NIU_rebate','TX_HU_odds','TX_HU_rebate','TX_TU_odds','TX_TU_rebate','TX_LONG_odds','TX_LONG_rebate','TX_SHE_odds','TX_SHE_rebate','TX_MA_odds','TX_MA_rebate','TX_YANG_odds','TX_YANG_rebate','TX_HOU_odds','TX_HOU_rebate','TX_JI_odds','TX_JI_rebate','TX_GOU_odds','TX_GOU_rebate','TX_ZHU_odds','TX_ZHU_rebate'];
         return $this->OddsAndRebate($data,$filter,70);
     }
     

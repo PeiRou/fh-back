@@ -237,12 +237,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鼠</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_SHU_odds" value="{{ $odds['TX_SHU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_SHU_rebate" value="{{ $rebate['TX_SHU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -250,12 +250,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">牛</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_NIU_odds" value="{{ $odds['TX_NIU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_NIU_rebate" value="{{ $rebate['TX_NIU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -263,12 +263,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">虎</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_HU_odds" value="{{ $odds['TX_HU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_HU_rebate" value="{{ $rebate['TX_HU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -276,12 +276,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">免</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_TU_odds" value="{{ $odds['TX_TU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_TU_rebate" value="{{ $rebate['TX_TU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -289,12 +289,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">龙</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_LONG_odds" value="{{ $odds['TX_LONG_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_LONG_rebate" value="{{ $rebate['TX_LONG_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -302,12 +302,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蛇</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_SHE_odds" value="{{ $odds['TX_SHE_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_SHE_rebate" value="{{ $rebate['TX_SHE_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -315,12 +315,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">马</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_MA_odds" value="{{ $odds['TX_MA_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_MA_rebate" value="{{ $rebate['TX_MA_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -328,12 +328,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">羊</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_YANG_odds" value="{{ $odds['TX_YANG_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_YANG_rebate" value="{{ $rebate['TX_YANG_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -341,12 +341,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猴</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_HOU_odds" value="{{ $odds['TX_HOU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_HOU_rebate" value="{{ $rebate['TX_HOU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -354,12 +354,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鸡</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_JI_odds" value="{{ $odds['TX_JI_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_JI_rebate" value="{{ $rebate['TX_JI_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -367,12 +367,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">狗</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_GOU_odds" value="{{ $odds['TX_GOU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_GOU_rebate" value="{{ $rebate['TX_GOU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -380,12 +380,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猪</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_ZHU_odds" value="{{ $odds['TX_ZHU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TX_ZHU_rebate" value="{{ $rebate['TX_ZHU_rebate'] }}">
                 </div>
             </td>
         </tr>
