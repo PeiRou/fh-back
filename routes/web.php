@@ -278,6 +278,7 @@ Route::post('/game/table/save/mssc','Back\GameTables\SaveGameOddsController@mssc
 Route::post('/game/table/save/msft','Back\GameTables\SaveGameOddsController@msft');
 Route::post('/game/table/save/msssc','Back\GameTables\SaveGameOddsController@msssc');
 Route::post('/game/table/save/paoma','Back\GameTables\SaveGameOddsController@paoma');
+Route::post('/game/table/save/lhc','Back\GameTables\SaveGameOddsController@lhc');
 
 //error
 Route::get('/error/403',function (){
