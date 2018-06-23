@@ -695,12 +695,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红波</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZTM_HBO_odds" value="{{ $odds['ZTM_HBO_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZTM_HBO_rebate" value="{{ $rebate['ZTM_HBO_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -708,12 +708,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蓝波,绿波</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZTM_H_L_L_odds" value="{{ $odds['ZTM_H_L_L_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZTM_H_L_L_rebate" value="{{ $rebate['ZTM_H_L_L_rebate'] }}">
                 </div>
             </td>
         </tr>
