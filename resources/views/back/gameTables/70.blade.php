@@ -723,12 +723,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鼠</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_SHU_odds" value="{{ $odds['PTYX_SHU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_SHU_rebate" value="{{ $rebate['PTYX_SHU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -736,12 +736,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">牛</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_NIU_odds" value="{{ $odds['PTYX_NIU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_NIU_rebate" value="{{ $rebate['PTYX_NIU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -749,12 +749,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">虎</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_HU_odds" value="{{ $odds['PTYX_HU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_HU_rebate" value="{{ $rebate['PTYX_HU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -762,12 +762,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">免</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_TU_odds" value="{{ $odds['PTYX_TU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_TU_rebate" value="{{ $rebate['PTYX_TU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -775,12 +775,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">龙</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_LONG_odds" value="{{ $odds['PTYX_LONG_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_LONG_rebate" value="{{ $rebate['PTYX_LONG_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -788,12 +788,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蛇</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_SHE_odds" value="{{ $odds['PTYX_SHE_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_SHE_rebate" value="{{ $rebate['PTYX_SHE_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -801,12 +801,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">马</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_MA_odds" value="{{ $odds['PTYX_MA_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_MA_rebate" value="{{ $rebate['PTYX_MA_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -814,12 +814,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">羊</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_YANG_odds" value="{{ $odds['PTYX_YANG_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_YANG_rebate" value="{{ $rebate['PTYX_YANG_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -827,12 +827,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猴</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_HOU_odds" value="{{ $odds['PTYX_HOU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_HOU_rebate" value="{{ $rebate['PTYX_HOU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -840,12 +840,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鸡</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_JI_odds" value="{{ $odds['PTYX_JI_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_JI_rebate" value="{{ $rebate['PTYX_JI_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -853,12 +853,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">狗</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_GOU_odds" value="{{ $odds['PTYX_GOU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_GOU_rebate" value="{{ $rebate['PTYX_GOU_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -866,12 +866,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猪</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_ZHU_odds" value="{{ $odds['PTYX_ZHU_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_ZHU_rebate" value="{{ $rebate['PTYX_ZHU_rebate'] }}">
                 </div>
             </td>
         </tr>
