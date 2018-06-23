@@ -16,12 +16,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">特码A</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="TMA_odds" value="{{ $TMA_odds }}">
+                    <input type="text" name="TMA_odds" value="{{ $odds['TMA_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="TMA_rebate" value="{{ $TMA_rebate }}">
+                    <input type="text" name="TMA_rebate" value="{{ $rebate['TMA_rebate'] }}">
                 </div>
             </td>
         </tr>
