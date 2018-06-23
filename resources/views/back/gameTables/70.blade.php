@@ -2182,3 +2182,29 @@
         <button class="ui primary button">保 存</button>
     </div>
 </form>
+<script>
+    $('#game70Form').formValidation({
+        framework: 'semantic',
+        icon: {
+            valid: 'checkmark icon',
+            invalid: 'remove icon',
+            validating: 'refresh icon'
+        },
+        fields: {}
+    }).on('success.form.fv', function(e) {
+        loader(true);
+        e.preventDefault();
+        var $form = $(e.target),
+            fv    = $form.data('formValidation');
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: $form.serialize(),
+            success: function(result) {
+                if(result.status == true){
+                    loader(false);
+                }
+            }
+        });
+    });
+</script>

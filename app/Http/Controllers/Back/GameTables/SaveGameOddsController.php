@@ -79,6 +79,12 @@ class SaveGameOddsController extends Controller
         return $this->updateBatch($data,66);
     }
 
+    public function lhc(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,70);
+    }
+
     public function mssc(Request $request)
     {
         $data = $request->all();
