@@ -101,12 +101,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红大,蓝小,绿小</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HD_LX_LX_odds" value="{{ $odds['HD_LX_LX_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HD_LX_LX_rebate" value="{{ $rebate['HD_LX_LX_rebate'] }}">
                 </div>
             </td>
         </tr>
