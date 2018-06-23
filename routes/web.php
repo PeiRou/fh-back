@@ -1,7 +1,7 @@
 <?php
 Route::get('/','Home\IndexController@index')->middleware('mobile-check');
 
-Route::get('/plan','test@plan');
+Route::any('/plan','test@plan');
 
 Route::get('/getCaptcha',function(){});
 
