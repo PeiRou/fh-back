@@ -44,12 +44,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="blue-td"></td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="LM_odds" value="{{ $odds['LM_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="LM_rebate" value="{{ $rebate['LM_rebate'] }}">
                 </div>
             </td>
         </tr>
