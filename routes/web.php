@@ -1,7 +1,7 @@
 <?php
 Route::get('/','Home\IndexController@index')->middleware('mobile-check');
 
-Route::get('/plan',function (Request $request){
+Route::get('/plan',function (\Illuminate\Support\Facades\Request $request){
     \Log::info($request);
 });
 
