@@ -395,12 +395,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">2肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_2X_odds" value="{{ $odds['HX_2X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_2X_rebate" value="{{ $rebate['HX_2X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -408,12 +408,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">3肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_3X_odds" value="{{ $odds['HX_3X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_3X_rebate" value="{{ $rebate['HX_3X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -421,12 +421,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">4肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_4X_odds" value="{{ $odds['HX_4X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_4X_rebate" value="{{ $rebate['HX_4X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -434,12 +434,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">5肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_5X_odds" value="{{ $odds['HX_5X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_5X_rebate" value="{{ $rebate['HX_5X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -447,12 +447,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">6肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_6X_odds" value="{{ $odds['HX_6X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_6X_rebate" value="{{ $rebate['HX_6X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -460,12 +460,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">7肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_7X_odds" value="{{ $odds['HX_7X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_7X_rebate" value="{{ $rebate['HX_7X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -473,12 +473,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">8肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_8X_odds" value="{{ $odds['HX_8X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_8X_rebate" value="{{ $rebate['HX_8X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -486,12 +486,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">9肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_9X_odds" value="{{ $odds['HX_9X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_9X_rebate" value="{{ $rebate['HX_9X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -499,12 +499,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">10肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_10X_odds" value="{{ $odds['HX_10X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_10X_rebate" value="{{ $rebate['HX_10X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -512,12 +512,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">11肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_11X_odds" value="{{ $odds['HX_11X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HX_11X_rebate" value="{{ $rebate['HX_11X_rebate'] }}">
                 </div>
             </td>
         </tr>
