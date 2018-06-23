@@ -29,12 +29,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">特码B</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYX_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYX_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -44,12 +44,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="blue-td"></td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -58,12 +58,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td"></td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="2face_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="2face_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -73,12 +73,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红波</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYD_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYD_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -86,12 +86,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蓝波,绿波</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYX_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYX_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -101,12 +101,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红大,蓝小,绿小</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYDan_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYDan_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -114,12 +114,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红小</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYS_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYS_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -127,12 +127,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蓝大</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYS_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYS_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -140,12 +140,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">绿大</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYS_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="GYS_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -155,12 +155,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红单,蓝单,蓝双,绿单</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -168,12 +168,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红双</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -181,12 +181,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">绿双</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -196,12 +196,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红大单,蓝小单,绿小双</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -209,12 +209,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红小单,红小双,蓝大单</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -222,12 +222,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红大双,蓝小双,蓝大双,绿大单,绿小单,绿大双</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -237,12 +237,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鼠</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -250,12 +250,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">牛</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -263,12 +263,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">虎</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -276,12 +276,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">免</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -289,12 +289,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">龙</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -302,12 +302,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蛇</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -315,12 +315,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">马</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -328,12 +328,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">羊</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -341,12 +341,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猴</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -354,12 +354,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鸡</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -367,12 +367,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">狗</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -380,12 +380,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猪</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -395,12 +395,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">2肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -408,12 +408,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">3肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -421,12 +421,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">4肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -434,12 +434,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">5肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -447,12 +447,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">6肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -460,12 +460,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">7肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -473,12 +473,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">8肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -486,12 +486,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">9肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -499,12 +499,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">10肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -512,12 +512,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">11肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -527,12 +527,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0头</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -540,12 +540,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -555,12 +555,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -568,12 +568,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -583,12 +583,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">金</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -596,12 +596,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">木</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -609,12 +609,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">水</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -622,12 +622,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">火</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -635,12 +635,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">土</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -650,12 +650,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="blue-td"></td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -665,12 +665,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="blue-td"></td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -680,12 +680,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="blue-td"></td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -695,12 +695,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红波</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -708,12 +708,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蓝波,绿波</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -723,12 +723,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鼠</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -736,12 +736,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">牛</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -749,12 +749,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">虎</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -762,12 +762,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">免</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -775,12 +775,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">龙</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -788,12 +788,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蛇</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -801,12 +801,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">马</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -814,12 +814,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">羊</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -827,12 +827,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猴</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -840,12 +840,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鸡</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -853,12 +853,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">狗</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -866,12 +866,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猪</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -881,12 +881,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -894,12 +894,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -909,12 +909,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红波</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -922,12 +922,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蓝波,绿波</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -935,12 +935,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">和局</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -950,12 +950,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">2肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -963,12 +963,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">3肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -976,12 +976,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">4肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -989,12 +989,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">5肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1002,12 +1002,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">6肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1015,12 +1015,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">7肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1030,12 +1030,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">单</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1043,12 +1043,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">双</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1058,12 +1058,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">中二</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1071,12 +1071,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">中三</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1086,12 +1086,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="blue-td"></td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1101,12 +1101,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="blue-td"></td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1116,12 +1116,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="blue-td"></td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1131,12 +1131,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">中特</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1144,12 +1144,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">中二</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1159,12 +1159,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="blue-td">中特</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="1_10_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1174,12 +1174,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鼠</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1187,12 +1187,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">牛</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1200,12 +1200,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">虎</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1213,12 +1213,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">免</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1226,12 +1226,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">龙</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1239,12 +1239,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蛇</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1252,12 +1252,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">马</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1265,12 +1265,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">羊</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1278,12 +1278,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猴</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1291,12 +1291,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鸡</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1304,12 +1304,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">狗</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1317,12 +1317,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猪</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1332,12 +1332,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鼠</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1345,12 +1345,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">牛</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1358,12 +1358,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">虎</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1371,12 +1371,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">免</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1384,12 +1384,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">龙</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1397,12 +1397,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蛇</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1410,12 +1410,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">马</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1423,12 +1423,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">羊</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1436,12 +1436,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猴</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1449,12 +1449,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鸡</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1462,12 +1462,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">狗</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1475,12 +1475,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猪</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1490,12 +1490,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鼠</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1503,12 +1503,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">牛</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1516,12 +1516,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">虎</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1529,12 +1529,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">免</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1542,12 +1542,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">龙</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1555,12 +1555,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蛇</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1568,12 +1568,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">马</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1581,12 +1581,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">羊</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1594,12 +1594,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猴</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1607,12 +1607,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鸡</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1620,12 +1620,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">狗</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1633,12 +1633,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猪</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1648,12 +1648,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鼠</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1661,12 +1661,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">牛</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1674,12 +1674,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">虎</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1687,12 +1687,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">免</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1700,12 +1700,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">龙</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1713,12 +1713,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蛇</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1726,12 +1726,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">马</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1739,12 +1739,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">羊</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1752,12 +1752,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猴</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1765,12 +1765,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鸡</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1778,12 +1778,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">狗</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1791,12 +1791,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猪</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1806,12 +1806,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鼠</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1819,12 +1819,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">牛</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1832,12 +1832,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">虎</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1845,12 +1845,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">免</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1858,12 +1858,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">龙</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1871,12 +1871,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">蛇</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1884,12 +1884,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">马</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1897,12 +1897,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">羊</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1910,12 +1910,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猴</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1923,12 +1923,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">鸡</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1936,12 +1936,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">狗</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1949,12 +1949,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">猪</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="781415_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1964,12 +1964,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1977,12 +1977,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -1992,12 +1992,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2005,12 +2005,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2020,12 +2020,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2033,12 +2033,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2048,12 +2048,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2061,12 +2061,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2076,12 +2076,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">5不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="341819_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2089,12 +2089,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">6不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2102,12 +2102,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">7不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2115,12 +2115,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">8不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2128,12 +2128,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">9不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2141,12 +2141,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">10不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2154,12 +2154,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">11不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
@@ -2167,12 +2167,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">12不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_odds" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="561617_rebate" value="">
+                    <input type="text" name="" value="">
                 </div>
             </td>
         </tr>
