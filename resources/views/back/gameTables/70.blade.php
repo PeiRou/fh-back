@@ -29,12 +29,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">特码B</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
                 </div>
             </td>
         </tr>
