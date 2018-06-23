@@ -950,12 +950,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">2肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_2X_odds" value="{{ $odds['ZONGXIAO_2X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_2X_rebate" value="{{ $rebate['ZONGXIAO_2X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -963,12 +963,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">3肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_3X_odds" value="{{ $odds['ZONGXIAO_3X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_3X_rebate" value="{{ $rebate['ZONGXIAO_3X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -976,12 +976,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">4肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_4X_odds" value="{{ $odds['ZONGXIAO_4X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_4X_rebate" value="{{ $rebate['ZONGXIAO_4X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -989,12 +989,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">5肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_5X_odds" value="{{ $odds['ZONGXIAO_5X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_5X_rebate" value="{{ $rebate['ZONGXIAO_5X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -1002,12 +1002,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">6肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_6X_odds" value="{{ $odds['ZONGXIAO_6X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_6X_rebate" value="{{ $rebate['ZONGXIAO_6X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -1015,12 +1015,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">7肖</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_7X_odds" value="{{ $odds['ZONGXIAO_7X_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_7X_rebate" value="{{ $rebate['ZONGXIAO_7X_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -1030,12 +1030,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">单</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_DAN_odds" value="{{ $odds['ZONGXIAO_DAN_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_DAN_rebate" value="{{ $rebate['ZONGXIAO_DAN_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -1043,12 +1043,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">双</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_S_odds" value="{{ $odds['ZONGXIAO_S_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZONGXIAO_S_rebate" value="{{ $rebate['ZONGXIAO_S_rebate'] }}">
                 </div>
             </td>
         </tr>
