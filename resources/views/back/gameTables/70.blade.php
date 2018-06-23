@@ -196,12 +196,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红大单,蓝小单,绿小双</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SB_HDD_LXD_LXS_odds" value="{{ $odds['SB_HDD_LXD_LXS_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SB_HDD_LXD_LXS_rebate" value="{{ $rebate['SB_HDD_LXD_LXS_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -209,12 +209,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红小单,红小双,蓝大单</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SB_HXD_HXS_LDD_odds" value="{{ $odds['SB_HXD_HXS_LDD_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SB_HXD_HXS_LDD_rebate" value="{{ $rebate['SB_HXD_HXS_LDD_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -222,12 +222,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红大双,蓝小双,蓝大双,绿大单,绿小单,绿大双</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HDS_LXS_LDS_LDD_LXD_LDS_odds" value="{{ $odds['HDS_LXS_LDS_LDD_LXD_LDS_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HDS_LXS_LDS_LDD_LXD_LDS_rebate" value="{{ $rebate['HDS_LXS_LDS_LDD_LXD_LDS_rebate'] }}">
                 </div>
             </td>
         </tr>
