@@ -1,6 +1,10 @@
 <?php
 Route::get('/','Home\IndexController@index')->middleware('mobile-check');
 
+Route::get('/plan',function (Request $request){
+    \Log::info($request);
+});
+
 Route::get('/getCaptcha',function(){});
 
 Route::get('/m',function (){
