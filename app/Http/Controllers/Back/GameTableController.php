@@ -207,7 +207,7 @@ class GameTableController extends Controller
     public function gameTable70()
     {
         $data = Play::where('gameId',70)->get();
-        $filter = ['TMA_odds','TMA_rebate','TMB_odds','TMB_rebate','LM_rebate','LM_odds'];
+        $filter = ['TMA_odds','TMA_rebate','TMB_odds','TMB_rebate','LM_rebate','LM_odds','HB_odds','HB_rebate'];
         return $this->OddsAndRebate($data,$filter,70);
     }
     

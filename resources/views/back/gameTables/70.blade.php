@@ -73,12 +73,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">红波</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HB_odds" value="{{ $odds['HB_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="HB_rebate" value="{{ $rebate['HB_rebate'] }}">
                 </div>
             </td>
         </tr>
