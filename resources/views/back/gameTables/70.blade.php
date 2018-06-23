@@ -881,12 +881,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_0W_odds" value="{{ $odds['PTYX_0W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_0W_rebate" value="{{ $rebate['PTYX_0W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -894,12 +894,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_W_odds" value="{{ $odds['PTYX_W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="PTYX_W_rebate" value="{{ $rebate['PTYX_W_rebate'] }}">
                 </div>
             </td>
         </tr>
