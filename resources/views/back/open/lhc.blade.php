@@ -27,6 +27,7 @@
                     <div class="one wide field">
                         <button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置</button>
                     </div>
+                    <div class="eight wide field"></div>
                 </div>
             </div>
         </div>
