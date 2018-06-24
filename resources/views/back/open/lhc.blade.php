@@ -30,6 +30,25 @@
                 </div>
             </div>
         </div>
+        <table id="lhcHistoryTable" class="ui small table" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>期数</th>
+                <th>开奖时间</th>
+                <th>一</th>
+                <th>二</th>
+                <th>三</th>
+                <th>四</th>
+                <th>五</th>
+                <th>六</th>
+                <th>特码</th>
+                <th>生肖</th>
+                <th>总分</th>
+                <th>状态</th>
+                <th width="320px">操作</th>
+            </tr>
+            </thead>
+        </table>
     </div>
 @endsection
 
