@@ -21,13 +21,12 @@
                     <div class="one wide field">
                         <input type="text" id="mobile" placeholder="开奖时间">
                     </div>
-                    <div class="one wide field">
+                    <div class="field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询</button>
                     </div>
-                    <div class="one wide field">
+                    <div class="field">
                         <button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置</button>
                     </div>
-                    <div class="eight wide field"></div>
                 </div>
             </div>
         </div>
