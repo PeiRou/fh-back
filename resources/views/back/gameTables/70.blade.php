@@ -1964,12 +1964,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="EELW_0W_odds" value="{{ $odds['EELW_0W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="EELW_0W_rebate" value="{{ $rebate['EELW_0W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -1977,12 +1977,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="EELW_W_odds" value="{{ $odds['EELW_W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="EELW_W_rebate" value="{{ $rebate['EELW_W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -1992,12 +1992,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SSLW_0W_odds" value="{{ $odds['SSLW_0W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SSLW_0W_rebate" value="{{ $rebate['SSLW_0W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2005,12 +2005,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SSLW_W_odds" value="{{ $odds['SSLW_W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SSLW_W_rebate" value="{{ $rebate['SSLW_W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2020,12 +2020,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SILW_0W_odds" value="{{ $odds['SILW_0W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SILW_0W_rebate" value="{{ $rebate['SILW_0W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2033,12 +2033,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SILW_W_odds" value="{{ $odds['SILW_W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="SILW_W_rebate" value="{{ $rebate['SILW_W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2048,12 +2048,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">0尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="WULW_0W_odds" value="{{ $odds['WULW_0W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="WULW_0W_rebate" value="{{ $rebate['WULW_0W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2061,12 +2061,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">其它</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="WULW_W_odds" value="{{ $odds['WULW_W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="WULW_W_rebate" value="{{ $rebate['WULW_W_rebate'] }}">
                 </div>
             </td>
         </tr>
