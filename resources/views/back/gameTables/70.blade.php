@@ -2076,12 +2076,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">5不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_5BZ_odds" value="{{ $odds['ZXBZ_5BZ_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_5BZ_rebate" value="{{ $rebate['ZXBZ_5BZ_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2089,12 +2089,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">6不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_6BZ_odds" value="{{ $odds['ZXBZ_6BZ_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_6BZ_rebate" value="{{ $rebate['ZXBZ_6BZ_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2102,12 +2102,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">7不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_7BZ_odds" value="{{ $odds['ZXBZ_7BZ_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_7BZ_rebate" value="{{ $rebate['ZXBZ_7BZ_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2115,12 +2115,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">8不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_8BZ_odds" value="{{ $odds['ZXBZ_8BZ_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_8BZ_rebate" value="{{ $rebate['ZXBZ_8BZ_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2128,12 +2128,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">9不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_9BZ_odds" value="{{ $odds['ZXBZ_9BZ_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_9BZ_rebate" value="{{ $rebate['ZXBZ_9BZ_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2141,12 +2141,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">10不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_10BZ_odds" value="{{ $odds['ZXBZ_10BZ_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_10BZ_rebate" value="{{ $rebate['ZXBZ_10BZ_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2154,12 +2154,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">11不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_11BZ_odds" value="{{ $odds['ZXBZ_11BZ_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_11BZ_rebate" value="{{ $rebate['ZXBZ_11BZ_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2167,12 +2167,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">12不中</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_12BZ_odds" value="{{ $odds['ZXBZ_12BZ_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="">
+                    <input type="text" name="ZXBZ_12BZ_rebate" value="{{ $rebate['ZXBZ_12BZ_rebate'] }}">
                 </div>
             </td>
         </tr>
