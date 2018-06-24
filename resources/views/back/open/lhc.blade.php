@@ -15,10 +15,10 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
-                    <div class="one wide field">
+                    <div class="two wide field">
                         <input type="text" id="account" placeholder="期号">
                     </div>
-                    <div class="one wide field">
+                    <div class="two wide field">
                         <input type="text" id="mobile" placeholder="开奖时间">
                     </div>
                     <div class="field">
