@@ -1,8 +1,6 @@
 <?php
 Route::get('/','Home\IndexController@index')->middleware('mobile-check');
 
-Route::any('/plan','test@plan');
-
 Route::get('/getCaptcha',function(){});
 
 Route::get('/m',function (){
@@ -127,6 +125,7 @@ Route::get('/back/datatables/payCft','Back\Data\PayDataController@payCft');
 Route::get('/back/datatables/article','Back\Data\ArticleController@article');
 Route::get('/back/datatables/userBetSearch','Back\Data\BetDataController@userBetSearch');
 Route::get('/back/datatables/log/login','Back\Data\LogDataController@login'); //登录日志
+Route::get('/back/datatables/openHistory/lhc','Back\Data\openHistoryController@lhc'); //历史开奖 - 六合彩
 
 //action
 Route::post('/action/admin/login','Back\SrcAccountController@login');
