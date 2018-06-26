@@ -256,7 +256,7 @@ class ModalController extends Controller
     //添加在线支付配置
     public function addPayOnline()
     {
-        $payType = PayType::all();
+        $payType = PayType::where('status',1)->get();
         $levels = Levels::all();
         return view('back.modal.pay.addPayOnline')->with('payType',$payType)->with('levels',$levels);
     }
