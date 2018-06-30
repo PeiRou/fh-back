@@ -120,10 +120,10 @@
             'QIU4DS'=>array('type'=>'DWDS','seq'=>'3','chname'=>'第四球'),	    //第四球-大小
             'QIU5DS'=>array('type'=>'DWDS','seq'=>'4','chname'=>'第五球'),	    //第五球-大小
             //===== 时时彩的总和
-            'ZH'=>array('type'=>'ZH','seq'=>'','nseq'=>'0,1,2,3,4','ishe'=>'1','chname'=>''),		    //总和
-            'ZHDX'=>array('type'=>'ZHDX','seq'=>'','nseq'=>'0,1,2,3,4','ishe'=>'1','chname'=>''),		//总和-大小
-            'ZHDS'=>array('type'=>'ZHDS','seq'=>'','nseq'=>'0,1,2,3,4','ishe'=>'1','chname'=>''),		//总和-单双
-            'ZHLHH'=>array('type'=>'LHH','seq'=>'','nseq'=>'0,4','ishe'=>'0','chname'=>''),		        //总和-龙虎和
+            'ZH'=>array('type'=>'ZH','seq'=>'','nseq'=>'0,1,2,3,4','ishe'=>'1','chname'=>'总和'),		    //总和
+            'ZHDX'=>array('type'=>'ZHDX','seq'=>'','nseq'=>'0,1,2,3,4','ishe'=>'1','chname'=>'总和'),		//总和-大小
+            'ZHDS'=>array('type'=>'ZHDS','seq'=>'','nseq'=>'0,1,2,3,4','ishe'=>'1','chname'=>'总和'),		//总和-单双
+            'ZHLHH'=>array('type'=>'LHH','seq'=>'','nseq'=>'0,4','ishe'=>'0','chname'=>'总和'),		        //总和-龙虎和
             //===== PC蛋蛋的混合.波色
             'PCDDZHDX'=>array('type'=>'PCDDZHDX','seq'=>'','nseq'=>'0,1,2','ishe'=>'1','chname'=>'混合'),		//混合-大小
             'PCDDZHDS'=>array('type'=>'ZHDS','seq'=>'','nseq'=>'0,1,2','ishe'=>'1','chname'=>'混合'),		    //混合-单双
@@ -131,13 +131,13 @@
             'PCDDBZ'=>array('type'=>'PCDDBZ','seq'=>'','nseq'=>'0,1,2','ishe'=>'0','chname'=>'混合'),		    //混合-豹子
             'PCDDZHPS'=>array('type'=>'PCDDZHPS','seq'=>'','nseq'=>'0,1,2','ishe'=>'1','chname'=>'波色'),		//波色-红波.蓝波.绿波
             //===== 北京快乐8 总和、总和过关
-            'bjkl8ZH'=>array('type'=>'ZH','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'1','chname'=>''),		            //总和
-            'bjkl8ZHDX'=>array('type'=>'bjkl8ZHDX','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'1','chname'=>''),		    //总和-大小810
-            'bjkl8ZHDS'=>array('type'=>'ZHDS','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'1','chname'=>''),		        //总和-单双
+            'bjkl8ZH'=>array('type'=>'ZH','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'1','chname'=>'总和'),		            //总和
+            'bjkl8ZHDX'=>array('type'=>'bjkl8ZHDX','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'1','chname'=>'总和大小'),		    //总和-大小810
+            'bjkl8ZHDS'=>array('type'=>'ZHDS','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'1','chname'=>'总和单双'),		        //总和-单双
             'bjkl8ZHDXDS'=>array('type'=>'bjkl8ZHDXDS','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'1','chname'=>''),		//总和大小-单双
-            'bjkl8QHH'=>array('type'=>'bjkl8QHH','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'0','chname'=>''),		    //前后和
-            'bjkl8DSH'=>array('type'=>'bjkl8DSH','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'0','chname'=>''),		    //单双和
-            'bjkl8WH'=>array('type'=>'bjkl8WH','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'1','chname'=>''),		        //总和-五行
+            'bjkl8QHH'=>array('type'=>'bjkl8QHH','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'0','chname'=>'前后和'),		    //前后和
+            'bjkl8DSH'=>array('type'=>'bjkl8DSH','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'0','chname'=>'单双和'),		    //单双和
+            'bjkl8WH'=>array('type'=>'bjkl8WH','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'1','chname'=>'总和'),		        //总和-五行
         );
         /**
          * 长龙榜特殊处理
@@ -215,10 +215,10 @@
                             $num_val = $num_val >= 12?"大":"小";
                             break;
                         case 'ZHDX':                    //---指定多位的和值-总和大小
-                            $num_val = $num_val >= 23?"总和大":"总和小";
+                            $num_val = $num_val >= 23?"大":"小";
                             break;
                         case 'ZHDS':                    //---指定多位的和值-总和单双
-                            $num_val = $num_val%2==1 ?"总和单":"总和双";
+                            $num_val = $num_val%2==1 ?"单":"双";
                             break;
                         case 'LHH':                     //---指定多位-龙虎和
                             if( $num_array[0]>$num_array[1]){
@@ -258,11 +258,11 @@
                             break;
                         case 'bjkl8ZHDX':                    //---指定多位的和值-总和-大小810
                             if($num_val > 810)
-                                $num_val = "总和大";
+                                $num_val = "大";
                             else if($num_val < 810)
-                                $num_val = "总和小";
+                                $num_val = "小";
                             else
-                                $num_val = "总和810";
+                                $num_val = "810";
                             break;
                         case 'bjkl8ZHDXDS':                    //---指定多位的和值-总和-总和大小-单双
                             if($num_val > 810)
