@@ -212,7 +212,7 @@ class FinanceDataController extends Controller
             ->editColumn('bank_info',function ($drawing){
                 $userInfo = DB::table('users')->where('id',$drawing->user_id)->first();
                 if($userInfo){
-                    return '<div style="text-align: center">姓名：'.$userInfo->fullName.'</br>银行：'.$userInfo->bank_name.'<br>账号：'.$userInfo->bank_name.'<br>地址：'.$userInfo->bank_addr.'</div>';
+                    return '<div style="text-align: center">姓名：'.$userInfo->fullName.'</br>银行：'.$userInfo->bank_name.'<br>账号：'.$userInfo->bank_num.'<br>地址：'.$userInfo->bank_addr.'</div>';
                 } else {
                     return '';
                 }
