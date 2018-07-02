@@ -23,9 +23,17 @@
 }
 .pay-total-crumb{
     float: left;
+    font-size: 13px;
+    color: red;
+    line-height: 39px;
+    padding-left: 10px;
 }
 .pay-total-crumb div{
     float: left;
+    margin-right: 20px;
+}
+.pay-total-crumb span{
+    font-weight: bolder;
 }
 .orange-text{
     color: #d4a736;
