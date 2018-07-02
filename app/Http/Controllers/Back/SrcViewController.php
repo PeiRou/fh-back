@@ -327,14 +327,14 @@ class SrcViewController extends Controller
         if($date == 'month'){
             return response()->json([
                 'start'=> date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y'))),
-                'end' => mktime(23,59,59,date('m'),date('t'),date('Y'))
+                'end' => date('Y-m-d',mktime(23,59,59,date('m'),date('t'),date('Y')))
             ]);
         }
-//        if($date == 'lastMonth'){
-//            return response()->json([
-//                'start'=> ,
-//                'end' =>
-//            ]);
-//        }
+        if($date == 'lastMonth'){
+            return response()->json([
+                'start'=> date('Y-m-d', mktime(0,0,0,date('m')-1,1,date('Y'))),
+                'end' => date('Y-m-d', mktime(0,0,0,date('m')-1,$t,date('Y')))
+            ]);
+        }
     }
 }
