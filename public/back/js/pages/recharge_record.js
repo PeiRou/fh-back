@@ -206,6 +206,7 @@ $('#recharge_type').on('change',function () {
     var rechargeType = $(this).val();
     if(rechargeType == ""){
         $('#onlineTypeDiv').hide();
+        $('#pay_online_id').val('');
     } else if(rechargeType == "adminAddMoney") {
         $('#onlineTypeDiv').hide();
     } else {
