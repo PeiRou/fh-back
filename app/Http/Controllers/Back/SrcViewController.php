@@ -83,8 +83,9 @@ class SrcViewController extends Controller
     //充值记录
     public function rechargeRecord()
     {
-        //今日充值总数
-        return view('back.rechargeRecord');
+        //今日在线支付充值总数
+        $onlinePayToday = DB::table('recharges')->select(DB::raw('sum(amount) as sum'))->where('payType','onlinePayment')->where('status',2)->whereDate('created_at',date('Y-m-d'))->get();
+        return view('back.rechargeRecord',compact('onlinePayToday'));
     }
     //提款记录
     public function drawingRecord()
