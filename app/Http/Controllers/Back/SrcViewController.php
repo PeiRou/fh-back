@@ -83,6 +83,7 @@ class SrcViewController extends Controller
     //充值记录
     public function rechargeRecord()
     {
+        //今日充值总数
         return view('back.rechargeRecord');
     }
     //提款记录

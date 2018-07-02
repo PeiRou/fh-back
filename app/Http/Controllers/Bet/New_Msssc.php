@@ -463,7 +463,7 @@ class New_Msssc
 
     private function NUM4_DXDS($openCode,$gameId,$win){
         $arrOpenCode = explode(',',$openCode);
-        $playCate = 126;
+        $playCate = 127;
         $num = $arrOpenCode[3];
         //大小
         if($num >= 5){
@@ -490,7 +490,7 @@ class New_Msssc
 
     private function NUM5_DXDS($openCode,$gameId,$win){
         $arrOpenCode = explode(',',$openCode);
-        $playCate = 126;
+        $playCate = 128;
         $num = $arrOpenCode[4];
         //大小
         if($num >= 5){
