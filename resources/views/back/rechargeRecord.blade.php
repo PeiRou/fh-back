@@ -99,9 +99,9 @@
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
                     </div>
-                    <div class="one wide field">
-                        <button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>
-                    </div>
+                    {{--<div class="one wide field">--}}
+                        {{--<button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>--}}
+                    {{--</div>--}}
                     <input type="hidden" id="isSearch" value="">
                 </div>
             </div>

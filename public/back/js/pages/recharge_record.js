@@ -64,21 +64,21 @@ $('#btn_search').on('click',function () {
     }
 });
 
-$('#reset').on('click',function () {
-    $('#recharge_type').val("");
-    $('#rechargeType').val("");
-    $('#status').val("");
-    $('#account_param').val("");
-    $('#amount').val("");
-    $('#pay_online_id').val("");
-    $('#fullName').val("");
-    $('#dateType').val("");
-    $('#startTime').val("");
-    $('#endTime').val("");
-    $('#date_param').val("");
-    $('#isSearch').val('no');
-    dataTable.ajax.reload();
-});
+// $('#reset').on('click',function () {
+//     $('#recharge_type').val("");
+//     $('#rechargeType').val("");
+//     $('#status').val("");
+//     $('#account_param').val("");
+//     $('#amount').val("");
+//     $('#pay_online_id').val("");
+//     $('#fullName').val("");
+//     $('#dateType').val("");
+//     $('#startTime').val("");
+//     $('#endTime').val("");
+//     $('#date_param').val("");
+//     $('#isSearch').val('no');
+//     dataTable.ajax.reload();
+// });
 
 function pass(id) {
     jc = $.confirm({
