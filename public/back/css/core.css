@@ -21,7 +21,12 @@
 .tips-icon i{
     font-size: 13px;
 }
-
+.pay-total-crumb{
+    float: left;
+}
+.pay-total-crumb div{
+    float: left;
+}
 .orange-text{
     color: #d4a736;
     font-weight: bold;
