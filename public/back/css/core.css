@@ -21,6 +21,18 @@
 .tips-icon i{
     font-size: 13px;
 }
+.total-recharge-bar{
+    border: 1px solid #bdbcbc;
+    padding-top: 12px;
+    padding-left: 15px;
+    margin-top: 10px;
+    border-radius: 3px;
+    background: #e4e4e4;
+    color: #8a8a8a;
+}
+.total-recharge-bar div{
+    float: left;
+}
 .orange-text{
     color: #d4a736;
     font-weight: bold;
