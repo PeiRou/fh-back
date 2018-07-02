@@ -95,8 +95,23 @@ class FinanceDataController extends Controller
         $payType = $request->get('recharge_type');
         $startTime = $request->get('startTime');
         $endTime = $request->get('endTime');
+        $account_type = $request->get('account_type');
+        $account_param = $request->get('account_param');
 
         $recharge = Recharges::select()
+            ->where(function ($q) use ($account_type, $account_param){
+                if(isset($account_param) && $account_param){
+                    if($account_type == 'account'){
+                        $q->where('username',$account_param);
+                    }
+                    if($account_type == 'orderNum'){
+                        $q->where('orderNum',$account_param);
+                    }
+                    if($account_type == 'operation_account'){
+                        $q->where('operation_account',$account_param);
+                    }
+                }
+            })
             ->where(function ($q) use ($payType) {
                 if(isset($payType) && $payType){
                     $q->where('payType',$payType);
