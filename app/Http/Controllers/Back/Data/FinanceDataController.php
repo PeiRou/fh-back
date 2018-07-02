@@ -109,6 +109,8 @@ class FinanceDataController extends Controller
             ->where(function ($q) use ($status){
                 if(isset($status) && $status){
                     $q->where('status',$status);
+                } else {
+                    $q->where('status','!=',4);
                 }
             })
             ->where(function ($q) use ($account_type, $account_param){
