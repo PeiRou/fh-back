@@ -4,6 +4,7 @@ $(function () {
     $('#menu-financeManage-rechargeRecord').addClass('active');
 
     dataTable = $('#rechargeRecordTable').DataTable({
+        aLengthMenu: [[50]],
         searching: false,
         bLengthChange: false,
         processing: true,
