@@ -14,8 +14,8 @@
     </div>
     <div class="table-content">
         <div class="total-recharge-bar">
-            <div>今日在线支付充值总额：<span>¥0</span></div>
-            <div>今日转账充值总额：<span>¥0</span></div>
+            <div>今日在线支付充值总额：<span>¥ 0</span></div>
+            <div>今日转账充值总额：<span>¥ 0</span></div>
         </div>
         <div class="table-quick-bar">
             <div class="ui mini form">
