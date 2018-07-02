@@ -92,7 +92,17 @@ class FinanceDataController extends Controller
 //                }
 //            })
 //        ->orderBy('created_at','desc')->get();
-        $recharge = Recharges::select()->orderBy('created_at','desc')->get();
+        $payType = $request->get('recharge_type');
+
+        $recharge = Recharges::select()
+            ->where(function ($q) use ($payType) {
+                if(isset($payType) && $payType){
+                    $q->where('payType',$payType);
+                } else {
+                    $q->where('payType','!=','onlinePayment');
+                }
+            })
+            ->orderBy('created_at','desc')->get();
 
         return DataTables::of($recharge)
             ->editColumn('created_at',function ($recharge){
