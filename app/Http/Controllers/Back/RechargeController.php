@@ -45,7 +45,8 @@ class RechargeController extends Controller
                         'operation_id' => Session::get('account_id'),
                         'operation_account' => Session::get('account'),
                         'status' => 2,
-                        'addMoney' => 1
+                        'addMoney' => 1,
+                        'process_date' => date('Y-m-d H:i:s')
                     ]);
                 if($updateRechargeStatus == 1){
                     return response()->json([
@@ -83,6 +84,7 @@ class RechargeController extends Controller
                 ->update([
                     'operation_id' => Session::get('account_id'),
                     'operation_account' => Session::get('account'),
+                    'process_date' => date('Y-m-d H:i:s'),
                     'status' => 3,
                     'addMoney' => 1,
                     'msg' => $msg
