@@ -303,7 +303,8 @@ class SrcViewController extends Controller
         //本周结束日期
         $week_end = date('Y-m-d',strtotime("$week_start +6 days"));
 
-        //本月
+        $m = date('Y-m-d', mktime(0,0,0,date('m')-1,1,date('Y'))); //上个月的开始日期
+        $t = date('t',strtotime($m)); //上个月共多少天
 
 
         if($date == 'today'){
