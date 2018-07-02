@@ -108,6 +108,9 @@ $('#btn_search').on('click',function () {
         $('#isSearch').val('yes');
         dataTable.ajax.reload();
     }
+
+    var rechType = $('#recharge_type').val();
+    alert(rechType);
 });
 
 // $('#reset').on('click',function () {
