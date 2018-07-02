@@ -287,4 +287,16 @@ class SrcViewController extends Controller
             return response()->json($get);
         }
     }
+
+    public function payOnlineDateChange($date = "")
+    {
+        $today = date('Y-m-d');
+        $yesterday = Carbon::parse($today)->isYesterday();
+        if($date == 'yesterday'){
+            return response()->json([
+                'start'=> $yesterday,
+                'end' => $yesterday
+            ]);
+        }
+    }
 }

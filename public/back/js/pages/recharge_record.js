@@ -225,7 +225,14 @@ $('#recharge_type').on('change',function () {
 
 $('#date_param').on('change',function () {
     var data = $(this).val();
-    alert(data);
+    $.ajax({
+        url:'/recharge/selectData/dateChange/'+data,
+        type:'get',
+        dataType:'json',
+        success:function (result) {
+
+        }
+    });
 });
 
 $('#account_type').on('change',function () {

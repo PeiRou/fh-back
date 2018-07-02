@@ -91,6 +91,7 @@ Route::group(['prefix' => 'back/control/payManage','middleware'=>['check-permiss
 
 Route::get('/today/selectData/playCate/{gameId?}','Back\SrcViewController@playCate'); // 下拉菜单获取玩法分类
 Route::get('/recharge/selectData/payOnline/{rechargeType?}','Back\SrcViewController@payOnlineSelectData'); // 下拉菜单获取在线支付分类
+Route::get('/recharge/selectData/dateChange/{date?}','Back\SrcViewController@payOnlineDateChange'); // 下拉菜单获取今日，昨日，上周
 
 Route::get('/back/datatables/subaccount','Back\Data\MembersDataController@subAccounts');
 Route::get('/back/datatables/generalAgent','Back\Data\MembersDataController@generalAgent');
