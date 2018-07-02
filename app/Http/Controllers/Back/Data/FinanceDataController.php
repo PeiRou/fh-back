@@ -97,8 +97,14 @@ class FinanceDataController extends Controller
         $endTime = $request->get('endTime');
         $account_type = $request->get('account_type');
         $account_param = $request->get('account_param');
+        $status = $request->get('status');
 
         $recharge = Recharges::select()
+            ->where(function ($q) use ($status){
+                if(isset($status) && $status){
+                    $q->where('status',$status);
+                }
+            })
             ->where(function ($q) use ($account_type, $account_param){
                 if(isset($account_param) && $account_param){
                     if($account_type == 'account'){
