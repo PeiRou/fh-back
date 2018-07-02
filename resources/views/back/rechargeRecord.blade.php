@@ -7,16 +7,16 @@
         <div class="breadcrumb">
             <b>位置：</b>充值记录
         </div>
+        <div class="pay-total-crumb">
+            <div>今日线上总额：<span>¥ {{ $onlinePayToday }}</span></div>
+            <div>今日线下总额：<span>¥ 0</span></div>
+        </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('rechargeRecordTable')"><i class="iconfont">&#xe61d;</i></span>
             <span onclick="addSubAccount()">导出充值</span>
         </div>
     </div>
     <div class="table-content">
-        <div class="total-recharge-bar">
-            <div>今日线上总额：<span>¥ {{ $onlinePayToday }}</span></div>
-            <div>今日线下总额：<span>¥ 0</span></div>
-        </div>
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
