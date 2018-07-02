@@ -82,10 +82,22 @@
                         </select>
                     </div>
                     <div class="one wide field">
+                        <div class="ui calendar" id="rangestart">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" id="timeStart">
+                            </div>
+                        </div>
                         <input type="text" id="startTime" value="{{ $today }}" placeholder="">
                     </div>
                     <div class="one wide field">
                         <input type="text" id="endTime" value="{{ $today }}" placeholder="">
+                        <div class="ui calendar" id="rangeend">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" id="timeEnd">
+                            </div>
+                        </div>
                     </div>
                     <div class="one wide field">
                         <select class="ui dropdown" id="date_param" style='height:32px !important'>
@@ -129,5 +141,7 @@
 @endsection
 
 @section('page-js')
+    <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
+    <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <script src="/back/js/pages/recharge_record.js"></script>
 @endsection
