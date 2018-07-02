@@ -223,6 +223,11 @@ $('#recharge_type').on('change',function () {
     }
 });
 
+$('#date_param').on('change',function () {
+    var data = $(this).val();
+    alert(data);
+});
+
 $('#account_type').on('change',function () {
     var account_type = $(this).val();
     if(account_type == "account"){
