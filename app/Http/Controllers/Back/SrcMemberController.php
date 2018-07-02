@@ -417,6 +417,9 @@ class SrcMemberController extends Controller
                 $recharges->msg = $content;
                 $recharges->status = 2;
                 $recharges->addMoney = 1;
+                $recharges->process_date = date('Y-m-d H:i:s');
+                $recharges->operation_id = Session::get('account_id');
+                $recharges->operation_account = Session::get('account');
                 $save = $recharges->save();
                 if($save == 1){
                     $updateBalance = User::where('id',$uid)
