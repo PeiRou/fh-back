@@ -110,8 +110,8 @@ function checkRecharge() {
                             audio2.play();
                         }
                     }
-                    console.log(nowCount+'===='+data.count);
-                    console.log(nowDrawCount+'===='+data.drawCount);
+                    //console.log(nowCount+'===='+data.count);
+                    //console.log(nowDrawCount+'===='+data.drawCount);
                 }
             }
         })
