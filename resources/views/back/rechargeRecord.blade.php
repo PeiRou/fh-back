@@ -85,17 +85,15 @@
                         <div class="ui calendar" id="rangestart">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
-                                <input type="text" id="timeStart">
+                                <input type="text" id="startTime" value="{{ $today }}" placeholder="">
                             </div>
                         </div>
-                        <input type="text" id="startTime" value="{{ $today }}" placeholder="">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="endTime" value="{{ $today }}" placeholder="">
                         <div class="ui calendar" id="rangeend">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
-                                <input type="text" id="timeEnd">
+                                <input type="text" id="endTime" value="{{ $today }}" placeholder="">
                             </div>
                         </div>
                     </div>
