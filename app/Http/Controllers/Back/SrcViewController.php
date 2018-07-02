@@ -326,7 +326,7 @@ class SrcViewController extends Controller
         }
         if($date == 'month'){
             return response()->json([
-                'start'=> mktime(0,0,0,date('m'),1,date('Y')),
+                'start'=> date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y'))),
                 'end' => mktime(23,59,59,date('m'),date('t'),date('Y'))
             ]);
         }
