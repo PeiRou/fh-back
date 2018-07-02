@@ -28,6 +28,8 @@ class FinanceDataController extends Controller
         $account_param = $request->get('account_param');
         $amount = $request->get('amount');
         $fullName = $request->get('fullName');
+        $startTime = $request->get('startTime');
+        $endTime = $request->get('endTime');
 
         $recharge = Recharges::select()
             ->where(function ($query) use ($status,$isSearch){
@@ -82,6 +84,11 @@ class FinanceDataController extends Controller
                     if($account_type == 'operation_account'){
                         $query->where('operation_account',$account_param);
                     }
+                }
+            })
+            ->where(function ($query) use ($startTime,$endTime) {
+                if(isset($startTime) && $startTime || isset($endTime) && $endTime){
+                    $query->whereBetween('created_at',[$startTime, $endTime]);
                 }
             })
         ->orderBy('created_at','desc')->get();

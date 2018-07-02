@@ -20,6 +20,8 @@ $(function () {
                 d.account_param = $('#account_param').val();
                 d.amount = $('#amount').val();
                 d.fullName = $('#fullName').val();
+                d.startTime = $('#startTime').val();
+                d.endTime = $('#endTime').val();
             }
         },
         columns: [
