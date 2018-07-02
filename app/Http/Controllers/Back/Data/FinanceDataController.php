@@ -93,6 +93,8 @@ class FinanceDataController extends Controller
 //            })
 //        ->orderBy('created_at','desc')->get();
         $payType = $request->get('recharge_type');
+        $startTime = $request->get('startTime');
+        $endTime = $request->get('endTime');
 
         $recharge = Recharges::select()
             ->where(function ($q) use ($payType) {
@@ -100,6 +102,13 @@ class FinanceDataController extends Controller
                     $q->where('payType',$payType);
                 } else {
                     $q->where('payType','!=','onlinePayment');
+                }
+            })
+            ->where(function ($q) use ($startTime,$endTime) {
+                if(isset($startTime) && $startTime || isset($endTime) && $endTime){
+                    $q->whereBetween('created_at',[$startTime, $endTime]);
+                } else {
+                    $q->whereDate('created_at',date('Y-m-d'));
                 }
             })
             ->orderBy('created_at','desc')->get();
