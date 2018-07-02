@@ -107,7 +107,7 @@
                 </div>
             </div>
         </div>
-        <table id="rechargeRecordTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="rechargeRecordTable" class="ui small celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>订单时间</th>
