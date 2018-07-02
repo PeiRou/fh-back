@@ -303,6 +303,15 @@ class SrcViewController extends Controller
         //本周结束日期
         $week_end = date('Y-m-d',strtotime("$week_start +6 days"));
 
+        //本月
+
+
+        if($date == 'today'){
+            return response()->json([
+                'start'=> $sdefaultDate,
+                'end' => $sdefaultDate
+            ]);
+        }
         if($date == 'yesterday'){
             return response()->json([
                 'start'=> $dt->yesterday()->toDateString(),
@@ -315,5 +324,17 @@ class SrcViewController extends Controller
                 'end' => $week_end
             ]);
         }
+        if($date == 'month'){
+            return response()->json([
+                'start'=> mktime(0,0,0,date('m'),1,date('Y')),
+                'end' => mktime(23,59,59,date('m'),date('t'),date('Y'))
+            ]);
+        }
+//        if($date == 'lastMonth'){
+//            return response()->json([
+//                'start'=> ,
+//                'end' =>
+//            ]);
+//        }
     }
 }
