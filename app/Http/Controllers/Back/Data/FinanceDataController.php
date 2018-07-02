@@ -19,79 +19,81 @@ class FinanceDataController extends Controller
     //充值记录
     public function rechargeRecord(Request $request)
     {
-        $isSearch = $request->get('isSearch');
-        $status = $request->get('status');
-        $pay_online_id = $request->get('pay_online_id');
-        $payType = $request->get('recharge_type');
-        $rechargeType = $request->get('rechargeType'); //自动还是手动收款 参数
-        $account_type = $request->get('account_type');
-        $account_param = $request->get('account_param');
-        $amount = $request->get('amount');
-        $fullName = $request->get('fullName');
-        $startTime = $request->get('startTime');
-        $endTime = $request->get('endTime');
+//        $isSearch = $request->get('isSearch');
+//        $status = $request->get('status');
+//        $pay_online_id = $request->get('pay_online_id');
+//        $payType = $request->get('recharge_type');
+//        $rechargeType = $request->get('rechargeType'); //自动还是手动收款 参数
+//        $account_type = $request->get('account_type');
+//        $account_param = $request->get('account_param');
+//        $amount = $request->get('amount');
+//        $fullName = $request->get('fullName');
+//        $startTime = $request->get('startTime');
+//        $endTime = $request->get('endTime');
+//
+//        $recharge = Recharges::select()
+//            ->where(function ($query) use ($status,$isSearch){
+//                if($isSearch == 'yes'){
+//                    if(isset($status) && $status){
+//                        $query->where('status',$status);
+//                    }
+//                } else {
+//                    $query->where('status',1);
+//                }
+//            })
+//            ->where(function ($query) use ($fullName){
+//                if(isset($fullName) && $fullName){
+//                    $find = User::where('fullName',$fullName)->first();
+//                    if($find){
+//                        $query->where('userId',$find->id);
+//                    }
+//                }
+//            })
+//            ->where(function ($query) use ($amount){
+//                if(isset($amount) && $amount){
+//                    $query->where('amount',$amount);
+//                }
+//            })
+//            ->where(function ($query) use ($pay_online_id){
+//                if(isset($pay_online_id) && $pay_online_id){
+//                    $query->where('pay_online_id',$pay_online_id);
+//                }
+//            })
+//            ->where(function ($query) use ($rechargeType){
+//                if(isset($rechargeType) && $rechargeType){
+//                    $query->where('rechargeType',$rechargeType);
+//                }
+//            })
+//            ->where(function ($query) use ($payType,$isSearch){
+//                if($isSearch == 'yes'){
+//                    if(isset($payType) && $payType){
+//                        $query->where('payType',$payType);
+//                    }
+//                } else {
+//                    $query->where('payType','!=','onlinePayment')->where('payType','!=','adminAddMoney');
+//                }
+//            })
+//            ->where(function ($query) use ($account_type,$account_param){
+//                if(isset($account_type) && $account_type && isset($account_param) && $account_param){
+//                    if($account_type == 'account'){
+//                        $query->where('username',$account_param);
+//                    }
+//                    if($account_type == 'orderNum'){
+//                        $query->where('orderNum',$account_param);
+//                    }
+//                    if($account_type == 'operation_account'){
+//                        $query->where('operation_account',$account_param);
+//                    }
+//                }
+//            })
+//            ->where(function ($query) use ($startTime,$endTime) {
+//                if(isset($startTime) && $startTime || isset($endTime) && $endTime){
+//                    $query->whereBetween('created_at',[$startTime, $endTime]);
+//                }
+//            })
+//        ->orderBy('created_at','desc')->get();
+        $recharge = Recharges::select()->orderBy('created_at','desc')->get();
 
-        $recharge = Recharges::select()
-            ->where(function ($query) use ($status,$isSearch){
-                if($isSearch == 'yes'){
-                    if(isset($status) && $status){
-                        $query->where('status',$status);
-                    }
-                } else {
-                    $query->where('status',1);
-                }
-            })
-            ->where(function ($query) use ($fullName){
-                if(isset($fullName) && $fullName){
-                    $find = User::where('fullName',$fullName)->first();
-                    if($find){
-                        $query->where('userId',$find->id);
-                    }
-                }
-            })
-            ->where(function ($query) use ($amount){
-                if(isset($amount) && $amount){
-                    $query->where('amount',$amount);
-                }
-            })
-            ->where(function ($query) use ($pay_online_id){
-                if(isset($pay_online_id) && $pay_online_id){
-                    $query->where('pay_online_id',$pay_online_id);
-                }
-            })
-            ->where(function ($query) use ($rechargeType){
-                if(isset($rechargeType) && $rechargeType){
-                    $query->where('rechargeType',$rechargeType);
-                }
-            })
-            ->where(function ($query) use ($payType,$isSearch){
-                if($isSearch == 'yes'){
-                    if(isset($payType) && $payType){
-                        $query->where('payType',$payType);
-                    }
-                } else {
-                    $query->where('payType','!=','onlinePayment')->where('payType','!=','adminAddMoney');
-                }
-            })
-            ->where(function ($query) use ($account_type,$account_param){
-                if(isset($account_type) && $account_type && isset($account_param) && $account_param){
-                    if($account_type == 'account'){
-                        $query->where('username',$account_param);
-                    }
-                    if($account_type == 'orderNum'){
-                        $query->where('orderNum',$account_param);
-                    }
-                    if($account_type == 'operation_account'){
-                        $query->where('operation_account',$account_param);
-                    }
-                }
-            })
-            ->where(function ($query) use ($startTime,$endTime) {
-                if(isset($startTime) && $startTime || isset($endTime) && $endTime){
-                    $query->whereBetween('created_at',[$startTime, $endTime]);
-                }
-            })
-        ->orderBy('created_at','desc')->get();
         return DataTables::of($recharge)
             ->editColumn('created_at',function ($recharge){
                 return date('m/d H:i',strtotime($recharge->created_at));
