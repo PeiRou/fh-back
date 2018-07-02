@@ -230,7 +230,8 @@ $('#date_param').on('change',function () {
         type:'get',
         dataType:'json',
         success:function (result) {
-
+            $('#startTime').val(result.start);
+            $('#endTime').val(result.end);
         }
     });
 });
