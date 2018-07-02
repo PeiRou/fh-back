@@ -82,19 +82,18 @@
                         </select>
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="startTime" placeholder="">
+                        <input type="text" id="startTime" value="{{ $today }}" placeholder="">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="endTime" placeholder="">
+                        <input type="text" id="endTime" value="{{ $today }}" placeholder="">
                     </div>
                     <div class="one wide field">
                         <select class="ui dropdown" id="date_param" style='height:32px !important'>
-                            <option value="">选择周期</option>
-                            <option value="1">今天</option>
-                            <option value="2">昨天</option>
-                            <option value="2">本周</option>
-                            <option value="2">本月</option>
-                            <option value="2">上月</option>
+                            <option value="today">今天</option>
+                            <option value="yesterday">昨天</option>
+                            <option value="week">本周</option>
+                            <option value="month">本月</option>
+                            <option value="lastMonth">上月</option>
                         </select>
                     </div>
                     <div class="one wide field">
