@@ -207,7 +207,7 @@ class FinanceDataController extends Controller
                 }
             })
             ->rawColumns(['amount','shou_info','ru_info','status','control','trueName'])
-            ->make(true)->with(['wwww'=>111]);
+            ->make(true);
     }
     
     //提款记录
