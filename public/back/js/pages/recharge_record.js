@@ -111,6 +111,15 @@ $('#btn_search').on('click',function () {
 
     var rechType = $('#recharge_type').val();
     var payOnlineId = $('#pay_online_id').val();
+    $.ajax({
+        url:'/action/admin/',
+        type:'post',
+        dataType:'json',
+        data:{rechType:rechType,payOnlineId:payOnlineId},
+        success:function (data) {
+            console.log(data);
+        }
+    });
     alert(rechType+'==='+payOnlineId);
 });
 
