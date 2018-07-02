@@ -110,7 +110,8 @@ $('#btn_search').on('click',function () {
     }
 
     var rechType = $('#recharge_type').val();
-    alert(rechType);
+    var payOnlineId = $('#pay_online_id').val();
+    alert(rechType+'==='+payOnlineId);
 });
 
 // $('#reset').on('click',function () {
