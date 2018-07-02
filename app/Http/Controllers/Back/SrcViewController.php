@@ -290,12 +290,11 @@ class SrcViewController extends Controller
 
     public function payOnlineDateChange($date = "")
     {
-        $today = date('Y-m-d');
-        $yesterday = Carbon::parse($today)->isYesterday();
+        $dt = Carbon::now();
         if($date == 'yesterday'){
             return response()->json([
-                'start'=> $yesterday,
-                'end' => $yesterday
+                'start'=> $dt->yesterday(),
+                'end' => $dt->yesterday()
             ]);
         }
     }
