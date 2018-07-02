@@ -106,7 +106,11 @@ class FinanceDataController extends Controller
             })
             ->where(function ($q) use ($startTime,$endTime) {
                 if(isset($startTime) && $startTime || isset($endTime) && $endTime){
-                    $q->whereBetween('created_at',[$startTime, $endTime]);
+                    if($startTime == $endTime){
+                        $q->whereDate('created_at',$startTime);
+                    } else {
+                        $q->whereBetween('created_at',[$startTime, $endTime]);
+                    }
                 } else {
                     $q->whereDate('created_at',date('Y-m-d'));
                 }
