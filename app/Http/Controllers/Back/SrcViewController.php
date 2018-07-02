@@ -293,8 +293,8 @@ class SrcViewController extends Controller
         $dt = Carbon::now();
         if($date == 'yesterday'){
             return response()->json([
-                'start'=> $dt->yesterday(),
-                'end' => $dt->yesterday()
+                'start'=> $dt->yesterday()->toDateString(),
+                'end' => $dt->yesterday()->toDateString()
             ]);
         }
     }
