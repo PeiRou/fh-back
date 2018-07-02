@@ -25,13 +25,19 @@
     border: 1px solid #bdbcbc;
     padding-top: 12px;
     padding-left: 15px;
-    margin-top: 10px;
+    margin-top: 5px;
     border-radius: 3px;
     background: #e4e4e4;
-    color: #8a8a8a;
+    color: #f51b1b;
+    overflow: hidden;
+    height: 40px;
 }
 .total-recharge-bar div{
     float: left;
+    margin-right: 10px;
+}
+.total-recharge-bar div span{
+    font-weight: bold;
 }
 .orange-text{
     color: #d4a736;
