@@ -14,8 +14,8 @@
             </label>
         </div>
         <div class="pay-total-crumb">
-            <div><span>今日线上总额：</span><span class="loading-gif">¥ {{ $onlinePayToday }}</span></div>
-            <div><span>今日线下总额：</span><span class="loading-gif">¥ {{ $offlinePayToday }}</span></div>
+            <div><span>今日线上总额：¥ </span><span id="onlinePayToday" class="loading-gif"></span></div>
+            <div><span>今日线下总额：¥ </span><span id="offlinePayToday" class="loading-gif"></span></div>
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('rechargeRecordTable')"><i class="iconfont">&#xe61d;</i></span>

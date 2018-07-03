@@ -111,6 +111,13 @@ class RechargeController extends Controller
         $endDate = $request->get('endDate');
         $killTest = $request->get('killTest');
 
+        //今日线上总数
+        $onlinePayToday = DB::table('recharges')
+            ->where('payType','onlinePayment')->where('status',2)->whereDate('created_at',date('Y-m-d'))->sum('amount');
+        //今日线下总数
+        $offlinePayToday = DB::table('recharges')
+            ->where('payType','!=','onlinePayment')->where('status',2)->whereDate('created_at',date('Y-m-d'))->sum('amount');
+
         $total = DB::table('recharges')
             ->leftJoin('users','recharges.userId', '=', 'users.id')
             ->where(function ($q) use ($killTest){
@@ -130,7 +137,9 @@ class RechargeController extends Controller
             })
             ->where('recharges.status',2)->whereBetween('recharges.created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('recharges.amount');
         return response()->json([
-            'total' => $total
+            'total' => $total,
+            'onlinePayToday' => $onlinePayToday,
+            'offlinePayToday' => $offlinePayToday
         ]);
     }
 

@@ -30,8 +30,7 @@ body{
 .loading-gif{
     background: url("/back/img/l.gif") no-repeat;
     display: block;
-    width: 20px;
-    height: 20px;
+    background-position: 17px 12px;
 }
 .light-gary-text{
     color: #c5c5c5;
