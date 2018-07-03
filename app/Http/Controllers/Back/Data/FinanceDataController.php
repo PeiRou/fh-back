@@ -190,7 +190,7 @@ class FinanceDataController extends Controller
 
         $drawing = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
-            ->select()
+            ->select('drawing.created_at as dr_created_at','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id')
             ->where(function ($q) use ($killTestUser){
                 if(isset($killTestUser) && $killTestUser){
                     $q->where('users.agent','!=',2);
@@ -199,74 +199,64 @@ class FinanceDataController extends Controller
             ->orderBy('drawing.created_at','desc')->get();
         return DataTables::of($drawing)
             ->editColumn('created_at',function ($drawing){
-                return date('m/d H:i',strtotime($drawing->created_at));
+                return date('m/d H:i',strtotime($drawing->dr_created_at));
             })
             ->editColumn('process_date',function ($drawing){
-                if($drawing->process_date){
-                    return date('m/d H:i',strtotime($drawing->process_date));
+                if($drawing->dr_process_date){
+                    return date('m/d H:i',strtotime($drawing->dr_process_date));
                 } else {
                     return '--';
                 }
             })
             ->editColumn('rechLevel',function ($drawing){
-               $getUserInfo = DB::table('users')->where('id',$drawing->user_id)->first();
-               if($getUserInfo){
-                   $levels = Levels::where('value',$getUserInfo->rechLevel)->first();
-                    return  "<a href='javascript:void(0)' onclick='editLevels(\"$drawing->user_id\",\"$getUserInfo->rechLevel\")' class='allow-edit'>$levels->name <i class='iconfont'>&#xe715;</i></a>";
-               } else {
-                   return '用户已被删除';
-               }
+                   $levels = Levels::where('value',$drawing->user_rechLevel)->first();
+                    return  "<a href='javascript:void(0)' onclick='editLevels(\"$drawing->dr_uid\",\"$drawing->user_rechLevel\")' class='allow-edit'>$levels->name <i class='iconfont'>&#xe715;</i></a>";
             })
             ->editColumn('amount',function ($drawing){
-                return '<span class="red-text">'.$drawing->amount.'</span>';
+                return '<span class="red-text">'.$drawing->dr_amount.'</span>';
             })
             ->editColumn('bank_info',function ($drawing){
-                $userInfo = DB::table('users')->where('id',$drawing->user_id)->first();
-                if($userInfo){
-                    return '<div style="text-align: center">姓名：'.$userInfo->fullName.'</br>银行：'.$userInfo->bank_name.'<br>账号：'.$userInfo->bank_num.'<br>地址：'.$userInfo->bank_addr.'</div>';
-                } else {
-                    return '';
-                }
+                return '<div style="text-align: center">姓名：'.$drawing->user_fullName.'</br>银行：'.$drawing->user_bank_name.'<br>账号：'.$drawing->user_bank_num.'<br>地址：'.$drawing->user_bank_addr.'</div>';
             })
             ->editColumn('liushui',function ($drawing){
-                return '--';
+                return '-';
             })
             ->editColumn('ip_info',function ($drawing){
-                return "<span data-tooltip='$drawing->ip_info' data-inverted><i class='iconfont'>&#xe627;</i> $drawing->ip</span>";
+                return "<span data-tooltip='$drawing->dr_ip_info' data-inverted><i class='iconfont'>&#xe627;</i> $drawing->dr_ip</span>";
             })
             ->editColumn('draw_type',function ($drawing){
-                if($drawing->draw_type == 1){
+                if($drawing->dr_draw_type == 1){
                     return '手动出款';
                 } else {
                     return '自动出款';
                 }
             })
             ->editColumn('status',function ($drawing){
-                if($drawing->status == 0){
+                if($drawing->dr_status == 0){
                     return '<span class="orange-text">未受理</span>';
-                } else if($drawing->status == 1) {
+                } else if($drawing->dr_status == 1) {
                     return '<span class="blue-text">处理中</span>';
-                } else if($drawing->status == 2) {
+                } else if($drawing->dr_status == 2) {
                     return '<span class="green-text"><b>通过</b></span>';
-                } else if($drawing->status == 3) {
-                    return '<span class="red-text"><b>不通过</b></span> <span class="tips-icon"><i data-position="left center" data-tooltip="'.$drawing->msg.'" data-inverted class="iconfont">&#xe61e;</i></span>';
-                } else if($drawing->status == 3) {
+                } else if($drawing->dr_status == 3) {
+                    return '<span class="red-text"><b>不通过</b></span> <span class="tips-icon"><i data-position="left center" data-tooltip="'.$drawing->dr_msg.'" data-inverted class="iconfont">&#xe61e;</i></span>';
+                } else if($drawing->dr_status == 3) {
                     return '锁定';
                 }
             })
             ->editColumn('platform',function ($drawing){
-                if($drawing->platform == 1){
+                if($drawing->dr_platform == 1){
                     return '电脑端';
                 }
-                if($drawing->platform == 2){
+                if($drawing->dr_platform == 2){
                     return '手机端';
                 }
             })
             ->editColumn('control',function ($drawing){
-                if($drawing->status == 2 || $drawing->status == 3){
+                if($drawing->dr_status == 2 || $drawing->dr_status == 3){
                     return "<span class='light-gary-text'>通过 | 驳回</span>";
                 } else {
-                    return '<span class="hover-black" onclick="pass(\''.$drawing->id.'\')">通过</span> | <span class="hover-black" onclick="error(\''.$drawing->id.'\')">驳回</span>';
+                    return '<span class="hover-black" onclick="pass(\''.$drawing->dr_id.'\')">通过</span> | <span class="hover-black" onclick="error(\''.$drawing->dr_id.'\')">驳回</span>';
                 }
             })
             ->rawColumns(['rechLevel','amount','bank_info','status','control','ip_info'])
