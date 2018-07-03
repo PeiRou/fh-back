@@ -115,6 +115,10 @@ $('#btn_search').on('click',function () {
 });
 
 function getTotalRecharge() {
+    $('#onlinePayToday').html(" ");
+    $('#offlinePayToday').html(" ");
+    $('#onlinePayToday').addClass('loading-gif');
+    $('#offlinePayToday').addClass('loading-gif');
     var rechType = $('#recharge_type').val();
     var payOnlineId = $('#pay_online_id').val();
     var startDate = $('#startTime').val();
@@ -132,7 +136,7 @@ function getTotalRecharge() {
                 $('#offlinePayToday').removeClass('loading-gif');
                 $('#onlinePayToday').html(data.onlinePayToday);
                 $('#offlinePayToday').html(data.offlinePayToday);
-            },1000);
+            },600);
         }
     });
     // console.log(rechType+'==='+payOnlineId+'==='+startDate+'==='+endDate);
