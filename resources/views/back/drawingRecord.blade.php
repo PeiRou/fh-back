@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-        <table id="drawingRecordTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="drawingRecordTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>订单时间</th>
