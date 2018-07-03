@@ -27,6 +27,12 @@ body{
     margin-left: 20px;
     margin-right: 8px;
 }
+.loading-gif{
+    background: url("/back/img/l.gif") no-repeat;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
 .light-gary-text{
     color: #c5c5c5;
 }
