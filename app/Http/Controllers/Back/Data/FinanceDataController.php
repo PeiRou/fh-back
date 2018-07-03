@@ -119,7 +119,7 @@ class FinanceDataController extends Controller
             })
             ->where(function ($q) use ($findUserId){
                 if(isset($findUserId) && $findUserId){
-                    $q->where('userId',$findUserId);
+                    $q->where('userId',$findUserId->id);
                 }
             })
             ->where(function ($q) use ($status){
