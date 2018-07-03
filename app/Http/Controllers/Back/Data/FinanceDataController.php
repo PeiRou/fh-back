@@ -36,6 +36,7 @@ class FinanceDataController extends Controller
 
         $recharge = DB::table('recharges')
             ->leftJoin('users','recharges.userId', '=', 'users.id')
+            ->select('users.id as uid','recharges.id as rid','recharges.created_at as re_created_at','recharges.process_date as re_process_date','recharges.username as re_username')
             ->where(function ($q) use ($killTestUser){
                 if(isset($killTestUser) && $killTestUser){
                     $q->where('users.agent','!=',2);
@@ -94,17 +95,17 @@ class FinanceDataController extends Controller
 
         return DataTables::of($recharge)
             ->editColumn('created_at',function ($recharge){
-                return date('m/d H:i',strtotime($recharge->created_at));
+                return date('m/d H:i',strtotime($recharge->re_created_at));
             })
             ->editColumn('process_date',function ($recharge){
-                if($recharge->process_date !== null){
-                    return date('m/d H:i',strtotime($recharge->process_date));
+                if($recharge->re_process_date !== null){
+                    return date('m/d H:i',strtotime($recharge->re_process_date));
                 } else {
                     return "--";
                 }
             })
             ->editColumn('user',function ($recharge){
-                return $recharge->username;
+                return $recharge->re_username;
             })
             ->editColumn('trueName',function ($recharge){
                 $userInfo = User::where('id',$recharge->userId)->first();
@@ -159,7 +160,7 @@ class FinanceDataController extends Controller
                 return $recharge->ru_info;
             })
             ->editColumn('status',function ($recharge){
-                switch ($recharge->recharges->status){
+                switch ($recharge->status){
                     case 1:
                         return "<b class='gary-text'>未受理</b>";
                         break;
