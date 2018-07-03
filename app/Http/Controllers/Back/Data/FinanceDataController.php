@@ -34,58 +34,58 @@ class FinanceDataController extends Controller
             $findUserId = DB::table('users')->where('fullName',$fullName)->first();
         }
 
-        $recharge = Recharges::select()
+        $recharge = DB::table('recharges')
             ->leftJoin('users','recharges.userId', '=', 'users.id')
             ->where(function ($q) use ($pay_online_id){
                 if(isset($pay_online_id) && $pay_online_id){
-                    $q->where('pay_online_id',$pay_online_id);
+                    $q->where('recharges.pay_online_id',$pay_online_id);
                 }
             })
             ->where(function ($q) use ($amount){
                 if(isset($amount) && $amount){
-                    $q->where('amount',$amount);
+                    $q->where('recharges.amount',$amount);
                 }
             })
             ->where(function ($q) use ($findUserId){
                 if(isset($findUserId) && $findUserId){
-                    $q->where('userId',$findUserId->id);
+                    $q->where('recharges.userId',$findUserId->id);
                 }
             })
             ->where(function ($q) use ($status){
                 if(isset($status) && $status){
-                    $q->where('status',$status);
+                    $q->where('recharges.status',$status);
                 } else {
-                    $q->where('status','!=',4);
+                    $q->where('recharges.status','!=',4);
                 }
             })
             ->where(function ($q) use ($account_type, $account_param){
                 if(isset($account_param) && $account_param){
                     if($account_type == 'account'){
-                        $q->where('username',$account_param);
+                        $q->where('recharges.username',$account_param);
                     }
                     if($account_type == 'orderNum'){
-                        $q->where('orderNum',$account_param);
+                        $q->where('recharges.orderNum',$account_param);
                     }
                     if($account_type == 'operation_account'){
-                        $q->where('operation_account',$account_param);
+                        $q->where('recharges.operation_account',$account_param);
                     }
                 }
             })
             ->where(function ($q) use ($payType) {
                 if(isset($payType) && $payType){
-                    $q->where('payType',$payType);
+                    $q->where('recharges.payType',$payType);
                 } else {
-                    $q->where('payType','!=','onlinePayment');
+                    $q->where('recharges.payType','!=','onlinePayment');
                 }
             })
             ->where(function ($q) use ($startTime,$endTime) {
                 if(isset($startTime) && $startTime || isset($endTime) && $endTime){
-                    $q->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59']);
+                    $q->whereBetween('recharges.created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59']);
                 } else {
-                    $q->whereDate('created_at',date('Y-m-d'));
+                    $q->whereDate('recharges.created_at',date('Y-m-d'));
                 }
             })
-            ->orderBy('created_at','desc')->get();
+            ->orderBy('recharges.created_at','desc')->get();
 
         return DataTables::of($recharge)
             ->editColumn('created_at',function ($recharge){
