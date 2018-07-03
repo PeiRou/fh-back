@@ -159,7 +159,7 @@ class FinanceDataController extends Controller
                 return $recharge->ru_info;
             })
             ->editColumn('status',function ($recharge){
-                switch ($recharge->status){
+                switch ($recharge->recharges->status){
                     case 1:
                         return "<b class='gary-text'>未受理</b>";
                         break;
