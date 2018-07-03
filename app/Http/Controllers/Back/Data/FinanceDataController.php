@@ -99,11 +99,17 @@ class FinanceDataController extends Controller
         $account_param = $request->get('account_param');
         $status = $request->get('status');
         $pay_online_id = $request->get('pay_online_id');
+        $amount = $request->get('amount');
 
         $recharge = Recharges::select()
             ->where(function ($q) use ($pay_online_id){
                 if(isset($pay_online_id) && $pay_online_id){
                     $q->where('pay_online_id',$pay_online_id);
+                }
+            })
+            ->where(function ($q) use ($amount){
+                if(isset($amount) && $amount){
+                    $q->where('amount',$amount);
                 }
             })
             ->where(function ($q) use ($status){
