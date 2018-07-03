@@ -70,7 +70,7 @@ $(function () {
                 d.fullName = $('#fullName').val();
                 d.startTime = $('#startTime').val();
                 d.endTime = $('#endTime').val();
-                d.killTestUser = $('#killTestUser').val();
+                d.killTestUser = $('#killTestUser:checked').val();
             }
         },
         columns: [
