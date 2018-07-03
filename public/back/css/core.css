@@ -1,6 +1,9 @@
 *{
     font-size: 9pt;
 }
+.ui.striped.table tbody tr:nth-child(2n), .ui.striped.table>tr:nth-child(2n){
+    background-color: rgba(0, 0, 50, 0.05);
+}
 body{
     font-family: '微软雅黑' !important;
 }
