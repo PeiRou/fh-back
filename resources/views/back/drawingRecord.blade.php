@@ -55,10 +55,20 @@
                         </select>
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="promoter" placeholder="">
+                        <div class="ui calendar" id="rangestart" style="width: 108px;">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" id="startTime" value="{{ $today }}" placeholder="">
+                            </div>
+                        </div>
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="noLoginDays" placeholder="">
+                        <div class="ui calendar" id="rangeend" style="width: 108px;">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" id="endTime" value="{{ $today }}" placeholder="">
+                            </div>
+                        </div>
                     </div>
                     <div class="one wide field">
                         <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
@@ -72,9 +82,9 @@
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
                     </div>
-                    <div class="one wide field">
-                        <button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>
-                    </div>
+                    {{--<div class="one wide field">--}}
+                        {{--<button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>--}}
+                    {{--</div>--}}
                 </div>
             </div>
         </div>
@@ -87,7 +97,7 @@
                 <th>层级</th>
                 <th>余额</th>
                 <th>有效投注</th>
-                <th>订单号</th>
+                <th width="180">订单号</th>
                 <th>流水层</th>
                 <th>交易金额</th>
                 <th>操作人</th>
@@ -104,5 +114,7 @@
 @endsection
 
 @section('page-js')
+    <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
+    <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <script src="/back/js/pages/drawing_record.js"></script>
 @endsection

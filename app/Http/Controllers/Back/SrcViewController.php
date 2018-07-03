@@ -89,7 +89,8 @@ class SrcViewController extends Controller
     //提款记录
     public function drawingRecord()
     {
-        return view('back.drawingRecord');
+        $today = date('Y-m-d');
+        return view('back.drawingRecord',compact('today'));
     }
     //资金明细
     public function capitalDetails()
