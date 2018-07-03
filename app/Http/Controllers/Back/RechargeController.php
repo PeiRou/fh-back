@@ -109,19 +109,26 @@ class RechargeController extends Controller
         $payOnlineId = $request->get('payOnlineId');
         $startDate = $request->get('startDate');
         $endDate = $request->get('endDate');
+        $killTest = $request->get('killTest');
 
         $total = DB::table('recharges')
+            ->leftJoin('users','recharges.userId', '=', 'users.id')
+            ->where(function ($q) use ($killTest){
+                if(isset($killTest) && $killTest){
+                    $q->where('users.agent','!=',2);
+                }
+            })
             ->where(function ($q) use ($rechType) {
                 if($rechType && isset($rechType)){
-                    $q->where('payType',$rechType);
+                    $q->where('recharges.payType',$rechType);
                 }
             })
             ->where(function ($q) use ($payOnlineId) {
                 if($payOnlineId && isset($payOnlineId)){
-                    $q->where('pay_online_id',$payOnlineId);
+                    $q->where('recharges.pay_online_id',$payOnlineId);
                 }
             })
-            ->where('status',2)->whereBetween('created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('amount');
+            ->where('recharges.status',2)->whereBetween('recharges.created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('recharges.amount');
         return response()->json([
             'total' => $total
         ]);
