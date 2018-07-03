@@ -110,7 +110,13 @@ class RechargeController extends Controller
         $startDate = $request->get('startDate');
         $endDate = $request->get('endDate');
 
-        $total = DB::table('recharges')->where('status',2)->whereBetween('created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('amount');
+        $total = DB::table('recharges')
+            ->where(function ($q) use ($rechType) {
+                if($rechType && isset($rechType)){
+
+                }
+            })
+            ->where('status',2)->whereBetween('created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('amount');
         return response()->json([
             'total' => $total
         ]);
