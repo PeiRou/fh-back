@@ -36,6 +36,11 @@ class FinanceDataController extends Controller
 
         $recharge = DB::table('recharges')
             ->leftJoin('users','recharges.userId', '=', 'users.id')
+            ->where(function ($q) use ($killTestUser){
+                if(isset($killTestUser) && $killTestUser){
+                    $q->where('users.agent','!=',2);
+                }
+            })
             ->where(function ($q) use ($pay_online_id){
                 if(isset($pay_online_id) && $pay_online_id){
                     $q->where('recharges.pay_online_id',$pay_online_id);
