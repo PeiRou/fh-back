@@ -115,6 +115,9 @@
                     <input type="hidden" id="isSearch" value="">
                 </div>
             </div>
+            <div class="total-nums">
+                赠送金额：<div>0</div> 充值总计：<div>0</div>
+            </div>
         </div>
         <table id="rechargeRecordTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
