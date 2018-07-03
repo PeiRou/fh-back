@@ -184,9 +184,19 @@ class FinanceDataController extends Controller
     }
     
     //提款记录
-    public function drawingRecord()
+    public function drawingRecord(Request $request)
     {
-        $drawing = Drawing::select()->orderBy('created_at','desc')->get();
+        $killTestUser = $request->get('killTestUser');
+
+        $drawing = DB::table('drawing')
+            ->leftJoin('users','drawing.user_id', '=', 'users.id')
+            ->select()
+            ->where(function ($q) use ($killTestUser){
+                if(isset($killTestUser) && $killTestUser){
+                    $q->where('users.agent','!=',2);
+                }
+            })
+            ->orderBy('drawing.created_at','desc')->get();
         return DataTables::of($drawing)
             ->editColumn('created_at',function ($drawing){
                 return date('m/d H:i',strtotime($drawing->created_at));
