@@ -92,6 +92,7 @@ class FinanceDataController extends Controller
 //                }
 //            })
 //        ->orderBy('created_at','desc')->get();
+        $findUserId = '';
         $payType = $request->get('recharge_type');
         $startTime = $request->get('startTime');
         $endTime = $request->get('endTime');
@@ -100,6 +101,10 @@ class FinanceDataController extends Controller
         $status = $request->get('status');
         $pay_online_id = $request->get('pay_online_id');
         $amount = $request->get('amount');
+        $fullName = $request->get('fullName');
+        if($fullName && isset('fullName')){
+            $findUserId = DB::table('users')->where('fullName',$fullName)->first();
+        }
 
         $recharge = Recharges::select()
             ->where(function ($q) use ($pay_online_id){
@@ -110,6 +115,11 @@ class FinanceDataController extends Controller
             ->where(function ($q) use ($amount){
                 if(isset($amount) && $amount){
                     $q->where('amount',$amount);
+                }
+            })
+            ->where(function ($q) use ($findUserId){
+                if(isset($findUserId) && $findUserId){
+                    $q->where('userId',$findUserId);
                 }
             })
             ->where(function ($q) use ($status){
