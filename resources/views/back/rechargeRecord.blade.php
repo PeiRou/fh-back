@@ -7,6 +7,12 @@
         <div class="breadcrumb">
             <b>位置：</b>充值记录
         </div>
+        <div class="select-test-user">
+            <label>
+                <input type="checkbox" value="1" id="killTestUser">
+                过滤测试用户
+            </label>
+        </div>
         <div class="pay-total-crumb">
             <div>今日线上总额：<span>¥ {{ $onlinePayToday }}</span></div>
             <div>今日线下总额：<span>¥ {{ $offlinePayToday }}</span></div>
