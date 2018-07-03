@@ -116,7 +116,7 @@
                 </div>
             </div>
             <div class="total-nums">
-                赠送金额：<span>0</span> 充值总计：<span>0</span>
+                赠送金额：<span id="rechargeGiveTotal">0</span> 充值总计：<span id="rechargeTotal">0</span>
             </div>
         </div>
         <table id="rechargeRecordTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">

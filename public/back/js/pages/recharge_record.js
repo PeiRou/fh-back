@@ -119,7 +119,7 @@ $('#btn_search').on('click',function () {
         dataType:'json',
         data:{rechType:rechType,payOnlineId:payOnlineId,startDate:startDate,endDate:endDate},
         success:function (data) {
-            console.log(data);
+            $('#rechargeTotal').html(data.total);
         }
     });
     console.log(rechType+'==='+payOnlineId+'==='+startDate+'==='+endDate);
