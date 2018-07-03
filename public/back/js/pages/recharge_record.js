@@ -111,6 +111,8 @@ $('#btn_search').on('click',function () {
 
     var rechType = $('#recharge_type').val();
     var payOnlineId = $('#pay_online_id').val();
+    var startDate = $('#startTime').val();
+    var endDate = $('#endTime').val();
     $.ajax({
         url:'/action/admin/',
         type:'post',
@@ -120,7 +122,7 @@ $('#btn_search').on('click',function () {
             console.log(data);
         }
     });
-    console.log(rechType+'==='+payOnlineId);
+    console.log(rechType+'==='+payOnlineId+'==='+startDate+'==='+endDate);
 });
 
 // $('#reset').on('click',function () {
