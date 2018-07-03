@@ -457,7 +457,7 @@ a:active{text-decoration: none}
 .nav-item li:hover a{color: #FFF;background: rgba(0, 0, 0,.1);}
 
 .dash{
-    background: #fbfbfb;
+    background: #ffffff;
     overflow: hidden;
 }
 .dash .nav-top{
