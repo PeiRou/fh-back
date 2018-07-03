@@ -108,6 +108,10 @@ $(function () {
     });
 });
 
+$('#btn_search').on('click',function () {
+    dataTable.ajax.reload();
+});
+
 function pass(id) {
     jc = $.confirm({
         title: '确定通过此条提款申请吗？',
