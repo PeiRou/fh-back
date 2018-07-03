@@ -116,6 +116,11 @@ class RechargeController extends Controller
                     $q->where('payType',$rechType);
                 }
             })
+            ->where(function ($q) use ($payOnlineId) {
+                if($payOnlineId && isset($payOnlineId)){
+                    $q->where('pay_online_id',$payOnlineId);
+                }
+            })
             ->where('status',2)->whereBetween('created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('amount');
         return response()->json([
             'total' => $total
