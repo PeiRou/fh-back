@@ -7,6 +7,12 @@
         <div class="breadcrumb">
             <b>位置：</b>提款记录
         </div>
+        <div class="select-test-user">
+            <label>
+                <input type="checkbox" value="1" id="killTestUser" checked>
+                过滤测试用户
+            </label>
+        </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('drawingRecordTable')"><i class="iconfont">&#xe61d;</i></span>
             <span onclick="addSubAccount()">导出充值</span>

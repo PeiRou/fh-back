@@ -54,7 +54,15 @@ $(function () {
         processing: true,
         serverSide: true,
         ordering: false,
-        ajax: '/back/datatables/drawingRecord',
+        ajax: {
+            url:'/back/datatables/drawingRecord',
+            data:function (d) {
+                d.status = $('#status').val();
+                d.startTime = $('#startTime').val();
+                d.endTime = $('#endTime').val();
+                d.killTestUser = $('#killTestUser:checked').val();
+            }
+        },
         columns: [
             {data:'created_at'},
             {data:'process_date'},
