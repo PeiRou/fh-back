@@ -9,7 +9,7 @@
         </div>
         <div class="select-test-user">
             <label>
-                <input type="checkbox" value="1" id="killTestUser" >
+                <input type="checkbox" value="1" id="killTestUser" checked>
                 过滤测试用户
             </label>
         </div>
