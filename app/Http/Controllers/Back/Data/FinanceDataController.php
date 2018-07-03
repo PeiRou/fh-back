@@ -36,7 +36,7 @@ class FinanceDataController extends Controller
 
         $recharge = DB::table('recharges')
             ->leftJoin('users','recharges.userId', '=', 'users.id')
-            ->select('users.id as uid','recharges.id as rid','recharges.created_at as re_created_at','recharges.process_date as re_process_date','recharges.username as re_username')
+            ->select('users.id as uid','recharges.id as rid','recharges.created_at as re_created_at','recharges.process_date as re_process_date','recharges.username as re_username','recharges.userId as userId','users.fullName as user_fullName','users.money as user_money','recharges.payType as re_payType','recharges.amount as re_amount','recharges.operation_account as re_operation_account','recharges.shou_info as re_shou_info','recharges.ru_info as re_ru_info','recharges.status as re_status','recharges.msg as re_msg')
             ->where(function ($q) use ($killTestUser){
                 if(isset($killTestUser) && $killTestUser){
                     $q->where('users.agent','!=',2);
@@ -108,59 +108,49 @@ class FinanceDataController extends Controller
                 return $recharge->re_username;
             })
             ->editColumn('trueName',function ($recharge){
-                $userInfo = User::where('id',$recharge->userId)->first();
-                if($userInfo){
-                    return $userInfo->fullName;
-                } else {
-                    return "<span class='red-text'>用户已不存在</span>";
-                }
+                return $recharge->user_fullName;
             })
             ->editColumn('balance',function ($recharge){
-                $userInfo = User::where('id',$recharge->userId)->first();
-                if($userInfo){
-                    return $userInfo->money;
-                } else {
-                    return "--";
-                }
+                return $recharge->user_money;
             })
             ->editColumn('payType',function ($recharge){
-                if($recharge->payType == 'onlinePayment'){
+                if($recharge->re_payType == 'onlinePayment'){
                     return "在线支付";
                 }
-                if($recharge->payType == 'bankTransfer'){
+                if($recharge->re_payType == 'bankTransfer'){
                     return "银行汇款";
                 }
-                if($recharge->payType == 'weixin'){
+                if($recharge->re_payType == 'weixin'){
                     return "微信转账";
                 }
-                if($recharge->payType == 'alipay'){
+                if($recharge->re_payType == 'alipay'){
                     return "支付宝转账";
                 }
-                if($recharge->payType == 'cft'){
+                if($recharge->re_payType == 'cft'){
                     return "财付通转账";
                 }
-                if($recharge->payType == 'adminAddMoney'){
+                if($recharge->re_payType == 'adminAddMoney'){
                     return "后台加钱";
                 }
             })
             ->editColumn('amount',function ($recharge){
-                return "<b class='red-text'>$recharge->amount</b>";
+                return "<b class='red-text'>$recharge->re_amount</b>";
             })
             ->editColumn('operation_account',function ($recharge){
-                if($recharge->operation_account == ""){
+                if($recharge->re_operation_account == ""){
                     return "--";
                 } else {
-                    return $recharge->operation_account;
+                    return $recharge->re_operation_account;
                 }
             })
             ->editColumn('shou_info',function ($recharge){
-                return $recharge->shou_info;
+                return $recharge->re_shou_info;
             })
             ->editColumn('ru_info',function ($recharge){
-                return $recharge->ru_info;
+                return $recharge->re_ru_info;
             })
             ->editColumn('status',function ($recharge){
-                switch ($recharge->status){
+                switch ($recharge->re_status){
                     case 1:
                         return "<b class='gary-text'>未受理</b>";
                         break;
@@ -168,7 +158,7 @@ class FinanceDataController extends Controller
                         return "<b class='green-text'>充值成功</b>";
                         break;
                     case 3:
-                        return '<b class="red-text">充值失败</b> <span class="tips-icon"><i data-tooltip="'.$recharge->msg.'" data-position="left center" data-inverted class="iconfont">&#xe61e;</i></span>';
+                        return '<b class="red-text">充值失败</b> <span class="tips-icon"><i data-tooltip="'.$recharge->re_msg.'" data-position="left center" data-inverted class="iconfont">&#xe61e;</i></span>';
                         break;
                     case 4:
                         return "<b class='blue-text'>充值中</b>";
@@ -176,13 +166,13 @@ class FinanceDataController extends Controller
                 }
             })
             ->editColumn('control',function ($recharge){
-                if($recharge->payType == 'onlinePayment' || $recharge->payType == 'adminAddMoney'){
+                if($recharge->re_payType == 'onlinePayment' || $recharge->re_payType == 'adminAddMoney'){
                     return "<span class='light-gary-text'>通过 | 驳回</span>";
                 } else {
-                    if($recharge->status == 2 || $recharge->status == 3){
+                    if($recharge->re_status == 2 || $recharge->re_status == 3){
                         return "<span class='light-gary-text'>通过 | 驳回</span>";
                     } else {
-                        return '<span class="hover-black" onclick="pass(\''.$recharge->id.'\')">通过</span> | <span class="hover-black" onclick="error(\''.$recharge->id.'\')">驳回</span>';
+                        return '<span class="hover-black" onclick="pass(\''.$recharge->rid.'\')">通过</span> | <span class="hover-black" onclick="error(\''.$recharge->rid.'\')">驳回</span>';
                     }
                 }
             })
