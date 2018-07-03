@@ -31,6 +31,8 @@ body{
     background: url("/back/img/l.gif") no-repeat;
     display: block;
     background-position: 17px 12px;
+    min-width: 40px;
+    min-height: 30px;
 }
 .light-gary-text{
     color: #c5c5c5;

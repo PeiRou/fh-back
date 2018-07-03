@@ -127,6 +127,8 @@ function getTotalRecharge() {
         data:{rechType:rechType,payOnlineId:payOnlineId,startDate:startDate,endDate:endDate,killTest:killTest},
         success:function (data) {
             $('#rechargeTotal').html(data.total);
+            $('#onlinePayToday').html(data.onlinePayToday);
+            $('#offlinePayToday').html(data.offlinePayToday);
         }
     });
     // console.log(rechType+'==='+payOnlineId+'==='+startDate+'==='+endDate);
