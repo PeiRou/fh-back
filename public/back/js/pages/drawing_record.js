@@ -47,7 +47,7 @@ $(function () {
         }
     });
 
-    $('#drawingRecordTable').DataTable({
+    dataTable = $('#drawingRecordTable').DataTable({
         aLengthMenu: [[50]],
         searching: false,
         bLengthChange: false,
