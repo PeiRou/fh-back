@@ -3,6 +3,8 @@ $(function () {
     $('#menu-financeManage').addClass('nav-show');
     $('#menu-financeManage-rechargeRecord').addClass('active');
 
+    getTotalRecharge();
+
     $('#rangestart').calendar({
         type: 'date',
         endCalendar: $('#rangeend'),
@@ -108,7 +110,10 @@ $('#btn_search').on('click',function () {
         $('#isSearch').val('yes');
         dataTable.ajax.reload();
     }
+    getTotalRecharge();
+});
 
+function getTotalRecharge() {
     var rechType = $('#recharge_type').val();
     var payOnlineId = $('#pay_online_id').val();
     var startDate = $('#startTime').val();
@@ -122,8 +127,8 @@ $('#btn_search').on('click',function () {
             $('#rechargeTotal').html(data.total);
         }
     });
-    console.log(rechType+'==='+payOnlineId+'==='+startDate+'==='+endDate);
-});
+    // console.log(rechType+'==='+payOnlineId+'==='+startDate+'==='+endDate);
+}
 
 // $('#reset').on('click',function () {
 //     $('#recharge_type').val("");
