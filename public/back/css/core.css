@@ -666,7 +666,13 @@ a:active{text-decoration: none}
     position: relative;
 }
 .total-nums{
-
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+.total-nums span{
+    color: red;
+    font-weight: bolder;
 }
 .control-menu li ul li:hover{
     background: #343434;
