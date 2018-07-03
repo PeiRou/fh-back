@@ -134,7 +134,8 @@ class SrcViewController extends Controller
     //会员报表
     public function reportUser()
     {
-        return view('back.reportUser');
+        $games = Games::where('status',1)->get();
+        return view('back.reportUser',compact('games'));
     }
     //在线报表
     public function reportOnline()
