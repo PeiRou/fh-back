@@ -120,7 +120,7 @@ $('#btn_search').on('click',function () {
             console.log(data);
         }
     });
-    // alert(rechType+'==='+payOnlineId);
+    console.log(rechType+'==='+payOnlineId);
 });
 
 // $('#reset').on('click',function () {
