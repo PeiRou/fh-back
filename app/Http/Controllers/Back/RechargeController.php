@@ -6,6 +6,7 @@ use App\Recharges;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class RechargeController extends Controller
@@ -100,6 +101,19 @@ class RechargeController extends Controller
                 ]);
             }
         }
+    }
+
+    public function totalRecharge(Request $request)
+    {
+        $rechType = $request->get('rechType');
+        $payOnlineId = $request->get('payOnlineId');
+        $startDate = $request->get('startDate');
+        $endDate = $request->get('endDate');
+
+        $total = DB::table('recharges')->where('status',2)->whereBetween('created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('amount');
+        return response()->json([
+            'total' => $total
+        ]);
     }
 
 }

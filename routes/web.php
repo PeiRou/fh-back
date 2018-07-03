@@ -26,7 +26,6 @@ Route::group(['prefix' => 'back/control/userManage','middleware'=>['check-permis
 //财务管理
 Route::group(['prefix' => 'back/control/financeManage','middleware'=>['check-permission','domain-check']],function (){
     Route::get('rechargeRecord','Back\SrcViewController@rechargeRecord')->name('finance.rechargeRecord'); // 充值记录
-    //充值记录
     Route::get('drawingRecord','Back\SrcViewController@drawingRecord')->name('finance.drawingRecord'); // 充值记录
     Route::get('capitalDetails','Back\SrcViewController@capitalDetails')->name('finance.capitalDetails'); // 资金明细
     Route::get('memberReconciliation','Back\SrcViewController@memberReconciliation')->name('finance.memberReconciliation'); // 会员对账
@@ -197,6 +196,8 @@ Route::post('/action/admin/addRechargeError','Back\RechargeController@addRecharg
 
 Route::post('/action/admin/passDrawing','Back\DrawingController@passDrawing'); //通过提款申请
 Route::post('/action/admin/addDrawingError','Back\DrawingController@addDrawingError'); //驳回提款申请
+
+Route::post('/action/recharge/totalRecharge','Back\RechargeController@totalRecharge'); //充值记录的总额统计
 
 //Modal
 Route::get('/back/modal/addPermission','Back\Ajax\ModalController@addPermission');

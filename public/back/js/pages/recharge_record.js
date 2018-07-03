@@ -114,10 +114,10 @@ $('#btn_search').on('click',function () {
     var startDate = $('#startTime').val();
     var endDate = $('#endTime').val();
     $.ajax({
-        url:'/action/admin/',
+        url:'/action/recharge/totalRecharge',
         type:'post',
         dataType:'json',
-        data:{rechType:rechType,payOnlineId:payOnlineId},
+        data:{rechType:rechType,payOnlineId:payOnlineId,startDate:startDate,endDate:endDate},
         success:function (data) {
             console.log(data);
         }
