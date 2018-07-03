@@ -21,6 +21,12 @@ body{
     url('//at.alicdn.com/t/font_540627_15coqbkv9jn.ttf') format('truetype'),
     url('//at.alicdn.com/t/font_540627_15coqbkv9jn.svg#iconfont') format('svg');
 }
+.select-test-user{
+    float: left;
+    line-height: 40px;
+    margin-left: 20px;
+    margin-right: 8px;
+}
 .light-gary-text{
     color: #c5c5c5;
 }
