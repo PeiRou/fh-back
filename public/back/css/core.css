@@ -55,6 +55,8 @@ body{
 }
 .pay-total-crumb span{
     font-weight: bolder;
+    display: block;
+    float: left;
 }
 .orange-text{
     color: #d4a736;
