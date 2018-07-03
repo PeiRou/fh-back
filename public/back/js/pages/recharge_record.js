@@ -127,8 +127,12 @@ function getTotalRecharge() {
         data:{rechType:rechType,payOnlineId:payOnlineId,startDate:startDate,endDate:endDate,killTest:killTest},
         success:function (data) {
             $('#rechargeTotal').html(data.total);
-            $('#onlinePayToday').html(data.onlinePayToday);
-            $('#offlinePayToday').html(data.offlinePayToday);
+            setTimeout(function () {
+                $('#onlinePayToday').removeClass('loading-gif');
+                $('#offlinePayToday').removeClass('loading-gif');
+                $('#onlinePayToday').html(data.onlinePayToday);
+                $('#offlinePayToday').html(data.offlinePayToday);
+            },1000);
         }
     });
     // console.log(rechType+'==='+payOnlineId+'==='+startDate+'==='+endDate);
