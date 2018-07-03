@@ -3,6 +3,8 @@
 @section('title','会员报表')
 
 @section('content')
+    <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
+    <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>会员报表
@@ -16,42 +18,62 @@
             <div class="ui mini form">
                 <div class="fields">
                     <div class="one wide field">
-                        <select class="ui dropdown" id="recharge_type" style='height:32px !important'>
+                        <select class="ui dropdown" id="game" style='height:32px !important'>
                             <option value="">游戏选择</option>
+                            @foreach($games as $item)
+                                <option value="{{ $item->game_id }}">{{ $item->game_name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="two wide field">
-                        <input type="text" id="promoter" placeholder="会员账号">
+                        <input type="text" id="account" placeholder="会员账号">
                     </div>
                     <div style="line-height: 32px;">时间：</div>
+
                     <div class="one wide field">
-                        <input type="text" id="noLoginDays" placeholder="">
+                        <div class="ui calendar" id="rangestart">
+                            <div class="ui input left">
+                                <input type="text" id="timeStart" placeholder="起始日期" value="{{ date('Y-m-d',time()) }}">
+                            </div>
+                        </div>
                     </div>
                     <div style="line-height: 32px;">-</div>
                     <div class="one wide field">
-                        <input type="text" id="noLoginDays" placeholder="">
+                        <div class="ui calendar" id="rangeend">
+                            <div class="ui input left">
+                                <input type="text" id="timeEnd" placeholder="结束日期" value="{{ date('Y-m-d',time()) }}">
+                            </div>
+                        </div>
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="noLoginDays" placeholder="最小实际输赢">
+                        <input type="text" id="minBunko" placeholder="最小实际输赢">
                     </div>
                     <div style="line-height: 32px;">-</div>
                     <div class="one wide field">
-                        <input type="text" id="noLoginDays" placeholder="最大实际输赢">
+                        <input type="text" id="maxBunko" placeholder="最大实际输赢">
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
-                        <button class="fluid ui mini blue button">今天</button>
+                        <button class="fluid ui mini blue button" id="btnToday">今天</button>
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
-                        <button class="fluid ui mini blue button">昨天</button>
+                        <button class="fluid ui mini blue button" id="btnYesterday">昨天</button>
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
-                        <button class="fluid ui mini blue button">本周</button>
+                        <button class="fluid ui mini blue button" id="btnWeek">本周</button>
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
-                        <button class="fluid ui mini blue button">本月</button>
+                        <button class="fluid ui mini blue button" id="btnMonth">本月</button>
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
-                        <button class="fluid ui mini blue button">上月</button>
+                        <button class="fluid ui mini blue button"  id="btnLastMonth">上月</button>
+                    </div>
+                    <div class="ui checkbox">
+                        <input type="checkbox" id="chkTest" checked="checked">
+                        <label>过滤测试用户</label>
+                    </div>
+                    <div class="ui checkbox">
+                        <input type="checkbox" id="chkDouble">
+                        <label>显示重复姓名会员</label>
                     </div>
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
