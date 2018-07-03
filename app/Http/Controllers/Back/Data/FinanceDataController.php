@@ -190,7 +190,8 @@ class FinanceDataController extends Controller
 
         $drawing = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
-            ->select('drawing.created_at as dr_created_at','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id','users.username as user_username','drawing.balance as dr_balance','drawing.order_id as dr_order_id','drawing.operation_account as dr_operation_account')
+            ->leftJoin('level','users.rechLevel','=','level.value')
+            ->select('drawing.created_at as dr_created_at','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id','users.username as user_username','drawing.balance as dr_balance','drawing.order_id as dr_order_id','drawing.operation_account as dr_operation_account','level.name as level_name')
             ->where(function ($q) use ($killTestUser){
                 if(isset($killTestUser) && $killTestUser){
                     $q->where('users.agent','!=',2);
@@ -224,8 +225,7 @@ class FinanceDataController extends Controller
                 }
             })
             ->editColumn('rechLevel',function ($drawing){
-                   $levels = Levels::where('value',$drawing->user_rechLevel)->first();
-                    return  "<a href='javascript:void(0)' onclick='editLevels(\"$drawing->dr_uid\",\"$drawing->user_rechLevel\")' class='allow-edit'>$levels->name <i class='iconfont'>&#xe715;</i></a>";
+                  return  "<a href='javascript:void(0)' onclick='editLevels(\"$drawing->dr_uid\",\"$drawing->user_rechLevel\")' class='allow-edit'>$drawing->level_name <i class='iconfont'>&#xe715;</i></a>";
             })
             ->editColumn('amount',function ($drawing){
                 return '<span class="red-text">'.$drawing->dr_amount.'</span>';
