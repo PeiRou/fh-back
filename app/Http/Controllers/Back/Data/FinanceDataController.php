@@ -207,6 +207,9 @@ class FinanceDataController extends Controller
             ->editColumn('balance',function ($drawing){
                 return $drawing->dr_balance;
             })
+            ->editColumn('total_bet',function ($drawing){
+                return 0;
+            })
             ->editColumn('process_date',function ($drawing){
                 if($drawing->dr_process_date){
                     return date('m/d H:i',strtotime($drawing->dr_process_date));
