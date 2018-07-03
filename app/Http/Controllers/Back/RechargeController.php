@@ -113,7 +113,7 @@ class RechargeController extends Controller
         $total = DB::table('recharges')
             ->where(function ($q) use ($rechType) {
                 if($rechType && isset($rechType)){
-
+                    $q->where('payType',$rechType);
                 }
             })
             ->where('status',2)->whereBetween('created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('amount');
