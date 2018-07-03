@@ -17,7 +17,7 @@
             <div class="ui mini form">
                 <div class="fields">
                     <div class="one wide field">
-                        <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
+                        <select class="ui dropdown" id="status" style='height:32px !important'>
                             <option value="">选择状态</option>
                             <option value="">未受理</option>
                             <option value="">处理中</option>
@@ -29,6 +29,7 @@
                     <div class="one wide field">
                         <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
                             <option value="">出款方式</option>
+                            <option value="">手动出款</option>
                         </select>
                     </div>
                     <div class="one wide field">
@@ -49,7 +50,7 @@
                         </select>
                     </div>
                     <div class="one wide field">
-                        <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
+                        <select class="ui dropdown" id="bao_time" style='height:32px !important'>
                             <option value="1">报表时间</option>
                             <option value="2">添加时间</option>
                         </select>
@@ -71,12 +72,12 @@
                         </div>
                     </div>
                     <div class="one wide field">
-                        <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
-                            <option value="1">今天</option>
-                            <option value="2">昨天</option>
-                            <option value="2">本周</option>
-                            <option value="2">本月</option>
-                            <option value="2">上月</option>
+                        <select class="ui dropdown" id="date_param" style='height:32px !important'>
+                            <option value="today">今天</option>
+                            <option value="yesterday">昨天</option>
+                            <option value="week">本周</option>
+                            <option value="month">本月</option>
+                            <option value="lastMonth">上月</option>
                         </select>
                     </div>
                     <div class="one wide field">
