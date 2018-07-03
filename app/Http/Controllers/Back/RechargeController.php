@@ -113,10 +113,22 @@ class RechargeController extends Controller
 
         //今日线上总数
         $onlinePayToday = DB::table('recharges')
-            ->where('payType','onlinePayment')->where('status',2)->whereDate('created_at',date('Y-m-d'))->sum('amount');
+            ->leftJoin('users','recharges.userId', '=', 'users.id')
+            ->where(function ($q) use ($killTest){
+                if(isset($killTest) && $killTest){
+                    $q->where('users.agent','!=',2);
+                }
+            })
+            ->where('recharges.payType','onlinePayment')->where('recharges.status',2)->whereDate('recharges.created_at',date('Y-m-d'))->sum('recharges.amount');
         //今日线下总数
         $offlinePayToday = DB::table('recharges')
-            ->where('payType','!=','onlinePayment')->where('status',2)->whereDate('created_at',date('Y-m-d'))->sum('amount');
+            ->leftJoin('users','recharges.userId', '=', 'users.id')
+            ->where(function ($q) use ($killTest){
+                if(isset($killTest) && $killTest){
+                    $q->where('users.agent','!=',2);
+                }
+            })
+            ->where('recharges.payType','!=','onlinePayment')->where('recharges.status',2)->whereDate('recharges.created_at',date('Y-m-d'))->sum('recharges.amount');
 
         $total = DB::table('recharges')
             ->leftJoin('users','recharges.userId', '=', 'users.id')
