@@ -102,7 +102,7 @@ class FinanceDataController extends Controller
         $pay_online_id = $request->get('pay_online_id');
         $amount = $request->get('amount');
         $fullName = $request->get('fullName');
-        if($fullName && isset('fullName')){
+        if($fullName && isset($fullName)){
             $findUserId = DB::table('users')->where('fullName',$fullName)->first();
         }
 
