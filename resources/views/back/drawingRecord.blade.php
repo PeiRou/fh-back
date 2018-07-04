@@ -25,11 +25,11 @@
                     <div class="one wide field">
                         <select class="ui dropdown" id="status" style='height:32px !important'>
                             <option value="">选择状态</option>
-                            <option value="">未受理</option>
-                            <option value="">处理中</option>
-                            <option value="">通过</option>
-                            <option value="">不通过</option>
-                            <option value="">锁定</option>
+                            <option value="0">未受理</option>
+                            <option value="1">处理中</option>
+                            <option value="2">通过</option>
+                            <option value="3">不通过</option>
+                            <option value="4">锁定</option>
                         </select>
                     </div>
                     <div class="one wide field">

@@ -200,6 +200,11 @@ class FinanceDataController extends Controller
                     $q->where('users.agent','!=',2);
                 }
             })
+            ->where(function ($q) use ($status){
+                if(isset($status) && $status){
+                    $q->where('drawing.status',$status);
+                }
+            })
             ->where(function ($q) use ($startTime,$endTime) {
                 if(isset($startTime) && $startTime || isset($endTime) && $endTime){
                     $q->whereBetween('drawing.created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59']);
