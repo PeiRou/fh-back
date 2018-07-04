@@ -247,7 +247,7 @@ class FinanceDataController extends Controller
                 return date('m/d H:i',strtotime($drawing->dr_created_at));
             })
             ->editColumn('username',function ($drawing){
-                return $drawing->user_username."</br><span>资金详情</span>";
+                return $drawing->user_username.'</br><span class="blue-text" onclick="showUserInfo(\''.$drawing->dr_uid.'\')">资金详情</span>';
             })
             ->editColumn('balance',function ($drawing){
                 return $drawing->dr_balance;

@@ -119,6 +119,10 @@ $('#btn_search').on('click',function () {
     getTotalDrawing();
 });
 
+function showUserInfo(uid) {
+    alert('1');
+}
+
 function getTotalDrawing() {
     var status = $('#status').val();
     var startDate = $('#startTime').val();
