@@ -101,5 +101,27 @@ class DrawingController extends Controller
         $startDate = $request->get('startDate');
         $endDate = $request->get('endDate');
         $killTest = $request->get('killTest');
+
+        //提款总额统计
+        $drawingTotal = DB::table('drawing')
+            ->leftJoin('users','drawing.user_id', '=', 'users.id')
+            ->where(function ($q) use ($killTest){
+                if(isset($killTest) && $killTest){
+                    $q->where('users.agent','!=',2);
+                }
+            })
+            ->where(function ($q) use ($status) {
+                if($status && isset($status)){
+                    if($status == 'no'){
+                        $q->where('drawing.status',0);
+                    } else {
+                        $q->where('drawing.status',$status);
+                    }
+                }
+            })
+            ->whereBetween('drawing.created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('drawing.amount');
+        return response()->json([
+            'total' => $drawingTotal
+        ]);
     }
 }
