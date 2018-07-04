@@ -117,6 +117,8 @@ class DrawingController extends Controller
                     } else {
                         $q->where('drawing.status',$status);
                     }
+                } else {
+                    $q->where('drawing.status',2);
                 }
             })
             ->whereBetween('drawing.created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('drawing.amount');
