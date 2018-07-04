@@ -281,7 +281,7 @@ class FinanceDataController extends Controller
 
             })
             ->editColumn('amount',function ($drawing){
-                return '<span class="red-text">'.$drawing->dr_amount.'</span>';
+                return '<span class="red-text" style="font-size: 12pt;">'.$drawing->dr_amount.'</span>';
             })
             ->editColumn('bank_info',function ($drawing){
                 return '<div style="text-align: center">姓名：'.$drawing->user_fullName.'</br>银行：'.$drawing->user_bank_name.'<br>账号：'.$drawing->user_bank_num.'<br>地址：'.$drawing->user_bank_addr.'</div>';
