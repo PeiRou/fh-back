@@ -247,7 +247,7 @@ class FinanceDataController extends Controller
                 return date('m/d H:i',strtotime($drawing->dr_created_at));
             })
             ->editColumn('username',function ($drawing){
-                return $drawing->user_username;
+                return $drawing->user_username."</br><span>资金详情</span>";
             })
             ->editColumn('balance',function ($drawing){
                 return $drawing->dr_balance;
@@ -327,7 +327,7 @@ class FinanceDataController extends Controller
                     return '<span class="hover-black" onclick="pass(\''.$drawing->dr_id.'\')">通过</span> | <span class="hover-black" onclick="error(\''.$drawing->dr_id.'\')">驳回</span>';
                 }
             })
-            ->rawColumns(['rechLevel','amount','bank_info','status','control','ip_info','total_bet'])
+            ->rawColumns(['rechLevel','amount','username','bank_info','status','control','ip_info','total_bet'])
             ->make(true);
     }
     
