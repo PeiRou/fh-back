@@ -367,7 +367,7 @@ class ModalController extends Controller
                             <td valign="top" style="word-break: break-all;">账户余额：</td>
                             <td valign="top" style="word-break: break-all;">'.$user->money.'</td>
                             <td valign="top" style="word-break: break-all;">最后一笔充值金额：</td>
-                            <td valign="top" style="word-break: break-all;">'.$userLastPay->amount.'</td>
+                            <td valign="top" style="word-break: break-all;">'.$userLastPay['amount'].'</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">充值次数：</td>
