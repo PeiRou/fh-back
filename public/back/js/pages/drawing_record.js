@@ -128,7 +128,7 @@ function getTotalDrawing() {
         dataType:'json',
         data:{status:status,startDate:startDate,endDate:endDate,killTest:killTest},
         success:function (data) {
-            console.log(data);
+            $('#drawingTotal').html(data.total)
         }
     });
 }
