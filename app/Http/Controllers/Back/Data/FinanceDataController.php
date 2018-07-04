@@ -254,7 +254,7 @@ class FinanceDataController extends Controller
             })
             ->editColumn('total_bet',function ($drawing){
                 $bet = DB::table('bet')->where('user_id',$drawing->dr_uid)->whereDate('created_at',date('Y-m-d'))->sum('bet_money');
-                return $bet;
+                return "<a href='/back/control/userManage/userBetList/$drawing->dr_uid' target='_blank'>".$bet."</a>";
             })
             ->editColumn('total_draw',function ($drawing){
                 return $drawing->user_DrawTimes;
@@ -327,7 +327,7 @@ class FinanceDataController extends Controller
                     return '<span class="hover-black" onclick="pass(\''.$drawing->dr_id.'\')">通过</span> | <span class="hover-black" onclick="error(\''.$drawing->dr_id.'\')">驳回</span>';
                 }
             })
-            ->rawColumns(['rechLevel','amount','bank_info','status','control','ip_info'])
+            ->rawColumns(['rechLevel','amount','bank_info','status','control','ip_info','total_bet'])
             ->make(true);
     }
     
