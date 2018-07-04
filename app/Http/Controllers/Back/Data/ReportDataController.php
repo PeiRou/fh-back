@@ -119,11 +119,10 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         if(isset($maxBunko) && $maxBunko){
             $where .= " and sumBunko <= ".$maxBunko;
         }
-        if(isset($chkTest) && $chkTest=='on'){
-            $where .= " and (u.agent  = 1 OR u.agent  >= 4)";
-        }
         if(isset($ag) && $ag>0 ){
             $where .= " and u.agent = ".$ag;
+        }else if(isset($chkTest) && $chkTest=='on'){
+            $where .= " and (u.agent  = 1 OR u.agent  >= 4)";
         }
         $aSql = $aSql.$where." GROUP BY u.id ";
         $user = DB::select($aSql);
