@@ -94,4 +94,12 @@ class DrawingController extends Controller
         }
 
     }
+
+    public function totalDrawing(Request $request)
+    {
+        $status = $request->get('status');
+        $startDate = $request->get('startDate');
+        $endDate = $request->get('endDate');
+        $killTest = $request->get('killTest');
+    }
 }

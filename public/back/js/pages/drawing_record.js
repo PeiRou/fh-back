@@ -114,7 +114,24 @@ $(function () {
 
 $('#btn_search').on('click',function () {
     dataTable.ajax.reload();
+    getTotalDrawing();
 });
+
+function getTotalDrawing() {
+    var status = $('#status').val();
+    var startDate = $('#startTime').val();
+    var endDate = $('#endTime').val();
+    var killTest = $('#killTestUser:checked').val();
+    $.ajax({
+        url:'/action/drawing/totalDrawing',
+        type:'post',
+        dataType:'json',
+        data:{status:status,startDate:startDate,endDate:endDate,killTest:killTest},
+        success:function (data) {
+            console.log(data);
+        }
+    });
+}
 
 function pass(id) {
     jc = $.confirm({

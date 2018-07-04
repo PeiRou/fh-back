@@ -97,6 +97,9 @@
                     {{--</div>--}}
                 </div>
             </div>
+            <div class="total-nums">
+                提款总计：<span id="drawingTotal">0</span>
+            </div>
         </div>
         <table id="drawingRecordTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>

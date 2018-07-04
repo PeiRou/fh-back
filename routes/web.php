@@ -198,6 +198,7 @@ Route::post('/action/admin/passDrawing','Back\DrawingController@passDrawing'); /
 Route::post('/action/admin/addDrawingError','Back\DrawingController@addDrawingError'); //驳回提款申请
 
 Route::post('/action/recharge/totalRecharge','Back\RechargeController@totalRecharge'); //充值记录的总额统计
+Route::post('/action/drawing/totalDrawing','Back\DrawingController@totalDrawing'); //提款记录的总额统计
 
 //Modal
 Route::get('/back/modal/addPermission','Back\Ajax\ModalController@addPermission');
