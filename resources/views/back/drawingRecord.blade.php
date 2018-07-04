@@ -33,7 +33,7 @@
                         </select>
                     </div>
                     <div class="one wide field">
-                        <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
+                        <select class="ui dropdown" id="" style='height:32px !important'>
                             <option value="">出款方式</option>
                             <option value="">手动出款</option>
                         </select>
