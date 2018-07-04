@@ -5,15 +5,106 @@ $(function () {
     $('#menu-reportManage').addClass('nav-show');
     $('#menu-reportManage-agent').addClass('active');
 
-    $('#reportAgentTable').DataTable({
+    var today = new Date();
+    $('#rangestart').calendar({
+        type: 'date',
+        endCalendar: $('#rangeend'),
+        formatter: {
+            date: function (date, settings) {
+                if (!date) return '';
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                return year+'-'+month+'-'+day;
+            }
+        },
+        text: {
+            days: ['日', '一', '二', '三', '四', '五', '六'],
+            months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            today: '今天',
+            now: '现在',
+            am: 'AM',
+            pm: 'PM'
+        },
+        minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 99),
+        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    });
+    $('#rangeend').calendar({
+        type: 'date',
+        startCalendar: $('#rangestart'),
+        formatter: {
+            date: function (date, settings) {
+                if (!date) return '';
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                return year+'-'+month+'-'+day;
+            }
+        },
+        text: {
+            days: ['日', '一', '二', '三', '四', '五', '六'],
+            months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            today: '今天',
+            now: '现在',
+            am: 'AM',
+            pm: 'PM'
+        },
+        minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 99),
+        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    });
+
+    dataTable = $('#reportAgentTable').DataTable({
         searching: false,
         bLengthChange: false,
         processing: true,
         serverSide: true,
-        ordering: false,
-        ajax: '/back/datatables/reportAgent',
+        ordering: true,
+        "order": [],
+        ajax: {
+            url:'/back/datatables/reportAgent',
+            data:function (d) {
+                d.game = $('#game').val();
+                d.account = $('#account').val();
+                d.timeStart = $('#timeStart').val();
+                d.timeEnd = $('#timeEnd').val();
+                d.zd = $('#zd').val();
+            }
+        },
         columns: [
-            {}
+            {data:function(data){              //账号 agaccount
+                var timeStart = $('#timeStart').val();
+                var timeEnd = $('#timeEnd').val();
+                return '<a href="/back/control/reportManage/user?ag='+data.a_id+'&start='+timeStart+'&end='+timeEnd+'">'+data.agaccount + '(<font color="gray">'+data.agname+'</font>)</a>';
+            }},
+            {data:'countMember'},             //会员数
+            {data:function () {             //充值金额
+                    return 0 ;
+                }},
+            {data:function () {             //取款金额
+                    return 0 ;
+                }},
+            {data:'countBet'},              //笔数
+            {data:'sumMoney'},             //投注金额
+            {data:'sumWinbet'},             //赢利投注金额
+            {data:function () {             //活动金额
+                    return 0 ;
+                }},
+            {data:function () {             //充值优惠/手续费
+                    return 0 ;
+                }},
+            {data:function () {             //代理赔率金额
+                    return 0 ;
+                }},
+            {data:function () {             //代理退水金额
+                    return 0 ;
+                }},
+            {data:'sumBunko'},             //会员输赢（不包括退水）
+            {data:function () {             //实际退水
+                    return 0 ;
+                }},
+            {data:'sumBunko'},             //会员输赢（不包括退水）
         ],
         language: {
             "zeroRecords": "暂无数据",
@@ -28,5 +119,20 @@ $(function () {
                 "previous":   "上一页"
             }
         }
+    });
+    $('#btn_search').on('click',function () {
+        dataTable.ajax.reload();
+    });
+    $('#reset').on('click',function () {
+        $('#game').val("");
+        $('#rechLevel').val("");
+        $('#account').val("");
+        $('#mobile').val("");
+        $('#qq').val("");
+        $('#minMoney').val("");
+        $('#maxMoney').val("");
+        $('#promoter').val("");
+        $('#noLoginDays').val("");
+        dataTable.ajax.reload();
     });
 });

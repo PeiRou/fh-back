@@ -3,6 +3,8 @@
 @section('title','总代理报表')
 
 @section('content')
+    <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
+    <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>总代理报表
@@ -22,20 +24,32 @@
                         </select>
                     </div>
                     <div class="one wide field">
-                        <select class="ui dropdown" id="recharge_type" style='height:32px !important'>
+                        <select class="ui dropdown" id="game" style='height:32px !important'>
                             <option value="">游戏选择</option>
+                            @foreach($games as $item)
+                                <option value="{{ $item->game_id }}">{{ $item->game_name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="two wide field">
-                        <input type="text" id="promoter" placeholder="总代理账号">
+                        <input type="text" id="account" placeholder="总代理账号">
                     </div>
                     <div style="line-height: 32px;">时间：</div>
+
                     <div class="one wide field">
-                        <input type="text" id="noLoginDays" placeholder="">
+                        <div class="ui calendar" id="rangestart">
+                            <div class="ui input left">
+                                <input type="text" id="timeStart" placeholder="起始日期" value="{{ date('Y-m-d',time()) }}">
+                            </div>
+                        </div>
                     </div>
                     <div style="line-height: 32px;">-</div>
                     <div class="one wide field">
-                        <input type="text" id="noLoginDays" placeholder="">
+                        <div class="ui calendar" id="rangeend">
+                            <div class="ui input left">
+                                <input type="text" id="timeEnd" placeholder="结束日期" value="{{ date('Y-m-d',time()) }}">
+                            </div>
+                        </div>
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
                         <button class="fluid ui mini blue button">今天</button>

@@ -72,6 +72,7 @@ $(function () {
                 d.maxBunko = $('#maxBunko').val();
                 d.chkTest = $('#chkTest').prop('checked')?$('#chkTest').val():'';
                 d.chkDouble = $('#chkDouble').prop('checked')?$('#chkDouble').val():'';
+                d.ag = $('#ag').val();
             }
         },
         columns: [

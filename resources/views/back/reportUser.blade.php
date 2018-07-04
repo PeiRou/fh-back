@@ -33,7 +33,7 @@
                     <div class="one wide field">
                         <div class="ui calendar" id="rangestart">
                             <div class="ui input left">
-                                <input type="text" id="timeStart" placeholder="起始日期" value="{{ date('Y-m-d',time()) }}">
+                                <input type="text" id="timeStart" placeholder="起始日期" value="@if($start == "") {{ date('Y-m-d',time()) }} @else {{ $start }} @endif">
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                     <div class="one wide field">
                         <div class="ui calendar" id="rangeend">
                             <div class="ui input left">
-                                <input type="text" id="timeEnd" placeholder="结束日期" value="{{ date('Y-m-d',time()) }}">
+                                <input type="text" id="timeEnd" placeholder="结束日期" value="@if($end == "") {{ date('Y-m-d',time()) }} @else {{ $end }} @endif">
                             </div>
                         </div>
                     </div>
@@ -75,6 +75,7 @@
                         <input type="checkbox" id="chkDouble">
                         <label>显示重复姓名会员</label>
                     </div>
+                    <input type="hidden" id="ag" value="{{ $ag }}">
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
                     </div>

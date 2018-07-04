@@ -125,18 +125,26 @@ class SrcViewController extends Controller
     //总代理报表
     public function reportGagent()
     {
-        return view('back.reportGagent');
+        $games = Games::where('status',1)->get();
+        return view('back.reportGagent',compact('games'));
     }
     //代理报表
-    public function reportAgent()
+    public function reportAgent(Request $request)
     {
-        return view('back.reportAgent');
+        $zd = $request->get('zd');            //总代帐号
+        $start = $request->get('start');
+        $end = $request->get('end');
+        $games = Games::where('status',1)->get();
+        return view('back.reportAgent',compact('games','zd','start','end'));
     }
     //会员报表
-    public function reportUser()
+    public function reportUser(Request $request)
     {
+        $ag = $request->get('ag');            //代理帐号
+        $start = $request->get('start');
+        $end = $request->get('end');
         $games = Games::where('status',1)->get();
-        return view('back.reportUser',compact('games'));
+        return view('back.reportUser',compact('games','ag','start','end'));
     }
     //在线报表
     public function reportOnline()
