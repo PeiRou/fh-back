@@ -351,12 +351,10 @@ class ModalController extends Controller
             $userLastPay = DB::table('recharges')->select('amount')->where('userId',$uid)->orderBy('created_at','desc')->first();
             $hours48SQL = "SELECT sum(b.bet_money) as BETMONEY FROM bet b WHERE b.created_at > DATE_SUB(NOW(), INTERVAL 48 HOUR) AND user_id = {$uid}";
             $hours48Bet = DB::table('bet')
-                ->select(DB::raw('sum(bet_money) as sum'))
+                ->select(DB::raw('sum(bet_money) as sum , sum(bunko) as sumBunko'))
                 ->whereRaw('created_at > DATE_SUB(NOW(), INTERVAL 48 HOUR)')
                 ->where('user_id',$uid)
                 ->first();
-
-            return $hours48Bet->sum;
 
             $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
@@ -392,9 +390,9 @@ class ModalController extends Controller
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">下注总金额：</td>
-                            <td valign="top" style="word-break: break-all;">'.$hours48Bet[0]['BETMONEY'].'</td>
+                            <td valign="top" style="word-break: break-all;">'.$hours48Bet->sum.'</td>
                             <td valign="top" style="word-break: break-all;">输赢总金额：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$hours48Bet->sumBunko.'</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">退水总金额：</td>
