@@ -196,3 +196,22 @@ $('#date_param').on('change',function () {
         }
     });
 });
+
+$('#account_type').on('change',function () {
+    var account_type = $(this).val();
+    if(account_type == "account"){
+        $('#account_param').attr('placeholder','用户账号');
+    }
+    if(account_type == "orderNum"){
+        $('#account_param').attr('placeholder','订单号');
+    }
+    if(account_type == "amount"){
+        $('#account_param').attr('placeholder','交易金额');
+    }
+    if(account_type == "amount_fw"){
+        $('#account_param').attr('placeholder','金额范围');
+    }
+    if(account_type == "operation_account"){
+        $('#account_param').attr('placeholder','操作人账号');
+    }
+});

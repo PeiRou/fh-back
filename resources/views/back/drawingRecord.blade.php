@@ -39,16 +39,16 @@
                         </select>
                     </div>
                     <div class="one wide field">
-                        <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
-                            <option value="">用户账号</option>
-                            <option value="1">交易金额</option>
-                            <option value="1">金额范围</option>
-                            <option value="1">订单号</option>
-                            <option value="2">操作人账号</option>
+                        <select class="ui dropdown" id="account_type" style='height:32px !important'>
+                            <option value="account">用户账号</option>
+                            <option value="amount">交易金额</option>
+                            <option value="amount_fw">金额范围</option>
+                            <option value="orderNum">订单号</option>
+                            <option value="operation_account">操作人账号</option>
                         </select>
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="account" placeholder="用户账号">
+                        <input type="text" id="account_param" placeholder="用户账号">
                     </div>
                     <div class="one wide field">
                         <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
