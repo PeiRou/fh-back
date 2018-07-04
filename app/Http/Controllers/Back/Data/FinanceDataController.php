@@ -190,6 +190,9 @@ class FinanceDataController extends Controller
         $startTime = $request->get('startTime');
         $endTime = $request->get('endTime');
         $status = $request->get('status');
+        $account_type = $request->get('account_type');
+        $account_param = $request->get('account_param');
+        $rechLevel = $request->get('rechLevel');
 
         $drawing = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
@@ -206,6 +209,27 @@ class FinanceDataController extends Controller
                         $q->where('drawing.status',0);
                     } else {
                         $q->where('drawing.status',$status);
+                    }
+                }
+            })
+            ->where(function ($q) use ($rechLevel){
+                if(isset($rechLevel) && $rechLevel){
+                    $q->where('users.rechLevel',$rechLevel);
+                })
+            })
+            ->where(function ($q) use ($account_type, $account_param){
+                if(isset($account_param) && $account_param){
+                    if($account_type == 'account'){
+                        $q->where('drawing.username',$account_param);
+                    }
+                    if($account_type == 'orderNum'){
+                        $q->where('drawing.order_id',$account_param);
+                    }
+                    if($account_type == 'operation_account'){
+                        $q->where('drawing.operation_account',$account_param);
+                    }
+                    if($account_type == 'amount'){
+                        $q->where('drawing.amount',$account_param);
                     }
                 }
             })
