@@ -348,7 +348,7 @@ class ModalController extends Controller
     {
         if($uid){
             $user = DB::table('users')->where('id',$uid)->first();
-            $userLastPay = DB::table('recharges')->where('userId',$uid)->orderBy('created_at','desc')->first();
+            $userLastPay = DB::table('recharges')->select('amount')->where('userId',$uid)->orderBy('created_at','desc')->first();
             $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
                         <tr class="firstRow">
