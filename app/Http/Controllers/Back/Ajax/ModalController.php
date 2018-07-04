@@ -361,7 +361,7 @@ class ModalController extends Controller
                             <td valign="top" style="word-break: break-all;">当前登录时间：</td>
                             <td valign="top" style="word-break: break-all;">'.$user->updated_at.'</td>
                             <td valign="top" style="word-break: break-all;">当前IP信息：</td>
-                            <td valign="top" style="word-break: break-all;">'.$user->login_ip.'</td>
+                            <td valign="top" style="word-break: break-all;">'.$user->login_ip_info.'</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">账户余额：</td>
