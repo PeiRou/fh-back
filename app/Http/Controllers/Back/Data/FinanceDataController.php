@@ -254,7 +254,7 @@ class FinanceDataController extends Controller
             })
             ->editColumn('total_bet',function ($drawing){
                 $bet = DB::table('bet')->where('user_id',$drawing->dr_uid)->sum('bet_money');
-                return 0;
+                return $bet;
             })
             ->editColumn('total_draw',function ($drawing){
                 return $drawing->user_DrawTimes;
