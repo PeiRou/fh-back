@@ -70,7 +70,7 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         if(isset($zd) && $zd>0 ){
             $where .= " and ag.gagent_id = ".$zd;
         }else{
-            $where = " and u.agent >= 4 ";
+            $where .= " and u.agent >= 4 ";
         }
         $aSql = $aSql.$where." GROUP BY u.agent ";
         $agent = DB::select($aSql);
