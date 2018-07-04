@@ -349,6 +349,9 @@ class ModalController extends Controller
         if($uid){
             $user = DB::table('users')->where('id',$uid)->first();
             $userLastPay = DB::table('recharges')->select('amount')->where('userId',$uid)->orderBy('created_at','desc')->first();
+            $hours48SQL = 'SELECT sum(b.bet_money) as BETMONEY FROM bet b WHERE b.created_at > DATE_SUB(NOW(), INTERVAL 48 HOUR)';
+            $hours48Bet = DB::statement($hours48SQL);
+
             $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
                         <tr class="firstRow">
@@ -383,7 +386,7 @@ class ModalController extends Controller
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">下注总金额：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$hours48Bet->BETMONEY.'</td>
                             <td valign="top" style="word-break: break-all;">输赢总金额：</td>
                             <td valign="top" style="word-break: break-all;"></td>
                         </tr>
