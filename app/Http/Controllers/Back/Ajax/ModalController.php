@@ -410,6 +410,6 @@ class ModalController extends Controller
                         </tr>
                     </tbody>
                 </table>';
-        return $uid;
+        return $table;
     }
 }
