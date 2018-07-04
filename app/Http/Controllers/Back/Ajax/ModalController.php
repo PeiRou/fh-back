@@ -386,7 +386,7 @@ class ModalController extends Controller
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">下注总金额：</td>
-                            <td valign="top" style="word-break: break-all;">'.$hours48Bet['BETMONEY'].'</td>
+                            <td valign="top" style="word-break: break-all;">'.$hours48Bet->BETMONEY.'</td>
                             <td valign="top" style="word-break: break-all;">输赢总金额：</td>
                             <td valign="top" style="word-break: break-all;"></td>
                         </tr>
