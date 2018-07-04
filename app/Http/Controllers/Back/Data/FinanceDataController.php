@@ -246,7 +246,7 @@ class FinanceDataController extends Controller
             })
             ->editColumn('rechLevel',function ($drawing){
                   if($drawing->level_name){
-                      return  "<a href='javascript:void(0)' onclick='editLevels(\"$drawing->dr_uid\",\"$drawing->user_rechLevel\")' class='allow-edit'>$drawing->level_name <i class='iconfont'>&#xe715;</i></a>";
+                      return  $drawing->level_name;
                   } else {
                       return '用户已被删除';
                   }
