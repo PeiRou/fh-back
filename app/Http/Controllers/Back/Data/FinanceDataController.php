@@ -201,9 +201,7 @@ class FinanceDataController extends Controller
                 }
             })
             ->where(function ($q) use ($status){
-                if(isset($status) && $status){
-                    $q->where('drawing.status',$status);
-                }
+                $q->where('drawing.status',$status);
             })
             ->where(function ($q) use ($startTime,$endTime) {
                 if(isset($startTime) && $startTime || isset($endTime) && $endTime){
