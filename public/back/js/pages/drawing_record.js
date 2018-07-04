@@ -124,7 +124,7 @@ function showUserInfo(uid) {
         theme: 'material',
         title: '会员48小时内资金详情',
         closeIcon:true,
-        boxWidth:'40%',
+        boxWidth:'30%',
         content: 'url:/back/modal/user48hoursInfo/'+uid,
         buttons: {
             formSubmit: {
