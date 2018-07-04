@@ -60,6 +60,9 @@ $(function () {
                 d.status = $('#status').val();
                 d.startTime = $('#startTime').val();
                 d.endTime = $('#endTime').val();
+                d.account_type = $('#account_type').val();
+                d.account_param = $('#account_param').val();
+                d.rechLevel = $('#rechLevel').val();
                 d.killTestUser = $('#killTestUser:checked').val();
             }
         },

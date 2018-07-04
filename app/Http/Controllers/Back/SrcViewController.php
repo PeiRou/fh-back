@@ -90,7 +90,8 @@ class SrcViewController extends Controller
     public function drawingRecord()
     {
         $today = date('Y-m-d');
-        return view('back.drawingRecord',compact('today'));
+        $rechLevel = DB::table('level')->where('status',1)->get();
+        return view('back.drawingRecord',compact('today','rechLevel'));
     }
     //资金明细
     public function capitalDetails()
