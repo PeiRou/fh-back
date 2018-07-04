@@ -244,6 +244,7 @@ Route::get('/back/modal/editArticle/{id}','Back\Ajax\ModalController@editArticle
 Route::get('/back/modal/editUserLevels/{uid}/{nowLevels}','Back\Ajax\ModalController@editUserLevels');
 Route::get('/back/modal/rechargeError/{id}','Back\Ajax\ModalController@rechargeError');
 Route::get('/back/modal/drawingError/{id}','Back\Ajax\ModalController@drawingError');
+Route::get('/back/modal/user48hoursInfo/{uid}','Back\Ajax\ModalController@user48hoursInfo');
 
 //游戏MODAL
 Route::get('/back/modal/gameSetting/{id}','Back\Ajax\ModalController@gameSetting');

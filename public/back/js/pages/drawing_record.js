@@ -120,7 +120,27 @@ $('#btn_search').on('click',function () {
 });
 
 function showUserInfo(uid) {
-    alert('1');
+    jc = $.confirm({
+        theme: 'material',
+        title: '会员48小时内资金详情',
+        closeIcon:true,
+        boxWidth:'40%',
+        content: 'url:/back/modal/user48hoursInfo/'+uid,
+        buttons: {
+            formSubmit: {
+                text:'关闭',
+                btnClass: 'btn-blue'
+            }
+        },
+        contentLoaded: function(data, status, xhr){
+            $('.jconfirm-content').css('overflow','hidden');
+            if(xhr == 'Forbidden')
+            {
+                this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
+                $('.jconfirm-buttons').hide();
+            }
+        }
+    });
 }
 
 function getTotalDrawing() {

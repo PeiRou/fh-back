@@ -343,4 +343,9 @@ class ModalController extends Controller
     {
         return view('back.modal.pay.drawingError',compact('id'));
     }
+    //提款记录 会员48小时详情
+    public function user48hoursInfo($uid = '')
+    {
+        return $uid;
+    }
 }
