@@ -351,7 +351,7 @@ class ModalController extends Controller
             $userLastPay = DB::table('recharges')->select('amount')->where('userId',$uid)->orderBy('created_at','desc')->first();
             $hours48SQL = "SELECT sum(b.bet_money) as BETMONEY FROM bet b WHERE b.created_at > DATE_SUB(NOW(), INTERVAL 48 HOUR) AND user_id = {$uid}";
             $hours48Bet = DB::table('bet')
-                ->select(DB::raw('sum(bet_money) as sum , sum(bunko) as sumBunko'))
+                ->select(DB::raw('sum(bet_money) as sum , sum(bunko) as sumBunko, sum(case WHEN bunko = 0 then bet_money else 0 end) as noBunko'))
                 ->whereRaw('created_at > DATE_SUB(NOW(), INTERVAL 48 HOUR)')
                 ->where('user_id',$uid)
                 ->first();
@@ -398,7 +398,7 @@ class ModalController extends Controller
                             <td valign="top" style="word-break: break-all;">退水总金额：</td>
                             <td valign="top" style="word-break: break-all;">0</td>
                             <td valign="top" style="word-break: break-all;">未结算金额：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$hours48Bet->noBunko.'</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">活动金额：</td>
