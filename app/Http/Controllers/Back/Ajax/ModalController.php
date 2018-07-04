@@ -346,6 +346,70 @@ class ModalController extends Controller
     //提款记录 会员48小时详情
     public function user48hoursInfo($uid = '')
     {
+        $table = '<table class="ui small selectable celled striped table" cellspacing="0" width="100%">
+                    <tbody>
+                        <tr class="firstRow">
+                            <td width="190" valign="top" style="word-break: break-all;">账号：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                            <td width="190" valign="top" style="word-break: break-all;">名称：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                        </tr>
+                        <tr>
+                            <td width="190" valign="top" style="word-break: break-all;">当前登录时间：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                            <td width="190" valign="top" style="word-break: break-all;">当前IP信息：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                        </tr>
+                        <tr>
+                            <td width="190" valign="top" style="word-break: break-all;">账户余额：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                            <td width="190" valign="top" style="word-break: break-all;">最后一笔充值金额：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                        </tr>
+                        <tr>
+                            <td width="190" valign="top" style="word-break: break-all;">充值次数：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                            <td width="190" valign="top" style="word-break: break-all;">充值金额：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                        </tr>
+                        <tr>
+                            <td width="190" valign="top" style="word-break: break-all;">提现次数：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                            <td width="190" valign="top" style="word-break: break-all;">提现金额：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                        </tr>
+                        <tr>
+                            <td width="190" valign="top" style="word-break: break-all;">下注总金额：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                            <td width="190" valign="top" style="word-break: break-all;">输赢总金额：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                        </tr>
+                        <tr>
+                            <td width="190" valign="top" style="word-break: break-all;">退水总金额：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                            <td width="190" valign="top" style="word-break: break-all;">未结算金额：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                        </tr>
+                        <tr>
+                            <td width="190" valign="top" style="word-break: break-all;">活动金额：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                            <td width="190" valign="top" style="word-break: break-all;">红包金额：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                        </tr>
+                        <tr>
+                            <td width="190" valign="top" style="word-break: break-all;">后台加钱：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                            <td width="190" valign="top" style="word-break: break-all;">后台扣钱：</td>
+                            <td width="190" valign="top" style="word-break: break-all;"></td>
+                        </tr>
+                        <tr>
+                            <td valign="top" style="word-break: break-all;" rowspan="1" colspan="4">备注：</td>
+                        </tr>
+                        <tr>
+                            <td valign="top" rowspan="1" colspan="4" style="word-break: break-all;"></td>
+                        </tr>
+                    </tbody>
+                </table>';
         return $uid;
     }
 }
