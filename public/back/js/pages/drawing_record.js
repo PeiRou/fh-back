@@ -2,6 +2,8 @@ $(function () {
     $('#menu-financeManage').addClass('nav-show');
     $('#menu-financeManage-drawingRecord').addClass('active');
 
+    getTotalDrawing();
+
     $('#rangestart').calendar({
         type: 'date',
         endCalendar: $('#rangeend'),
