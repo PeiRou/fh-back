@@ -73,7 +73,6 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
             $where = " and u.agent >= 4 ";
         }
         $aSql = $aSql.$where." GROUP BY u.agent ";
-        \Log::warning('sqlsql..'.$aSql);
         $agent = DB::select($aSql);
 
         return DataTables::of($agent)
