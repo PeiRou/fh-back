@@ -356,7 +356,7 @@ class ModalController extends Controller
                 ->where('user_id',$uid)
                 ->get();
 
-            return $hours48Bet;
+            return $hours48Bet->BETMONEY;
 
             $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
