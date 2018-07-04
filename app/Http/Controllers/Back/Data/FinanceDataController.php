@@ -187,6 +187,9 @@ class FinanceDataController extends Controller
     public function drawingRecord(Request $request)
     {
         $killTestUser = $request->get('killTestUser');
+        $startTime = $request->get('startTime');
+        $endTime = $request->get('endTime');
+        $status = $request->get('status');
 
         $drawing = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
@@ -197,7 +200,15 @@ class FinanceDataController extends Controller
                     $q->where('users.agent','!=',2);
                 }
             })
+            ->where(function ($q) use ($startTime,$endTime) {
+                if(isset($startTime) && $startTime || isset($endTime) && $endTime){
+                    $q->whereBetween('drawing.created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59']);
+                } else {
+                    $q->whereDate('drawing.created_at',date('Y-m-d'));
+                }
+            })
             ->orderBy('drawing.created_at','desc')->get();
+
         return DataTables::of($drawing)
             ->editColumn('created_at',function ($drawing){
                 return date('m/d H:i',strtotime($drawing->dr_created_at));
