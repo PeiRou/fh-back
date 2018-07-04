@@ -215,7 +215,7 @@ class FinanceDataController extends Controller
             ->where(function ($q) use ($rechLevel){
                 if(isset($rechLevel) && $rechLevel){
                     $q->where('users.rechLevel',$rechLevel);
-                })
+                }
             })
             ->where(function ($q) use ($account_type, $account_param){
                 if(isset($account_param) && $account_param){
