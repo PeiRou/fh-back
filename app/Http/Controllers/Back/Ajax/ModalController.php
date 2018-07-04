@@ -348,8 +348,8 @@ class ModalController extends Controller
     {
         if($uid){
             $user = DB::table('users')->where('id',$uid)->first();
-        }
-        $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
+            $userLastPay = DB::table('recharges')->select('amount')->where('userId',$uid)->orderBy('created_at','desc')->take(1);
+            $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
                         <tr class="firstRow">
                             <td valign="top" style="word-break: break-all;">账号：</td>
@@ -367,7 +367,7 @@ class ModalController extends Controller
                             <td valign="top" style="word-break: break-all;">账户余额：</td>
                             <td valign="top" style="word-break: break-all;">'.$user->money.'</td>
                             <td valign="top" style="word-break: break-all;">最后一笔充值金额：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$userLastPay->amount.'</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">充值次数：</td>
@@ -413,6 +413,9 @@ class ModalController extends Controller
                         </tr>
                     </tbody>
                 </table>';
-        return $table;
+            return $table;
+        } else {
+            return '加载错误！';
+        }
     }
 }
