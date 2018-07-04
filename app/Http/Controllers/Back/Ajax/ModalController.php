@@ -346,7 +346,7 @@ class ModalController extends Controller
     //提款记录 会员48小时详情
     public function user48hoursInfo($uid = '')
     {
-        $table = '<table class="ui small selectable celled striped table" cellspacing="0" width="100%">
+        $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
                         <tr class="firstRow">
                             <td width="190" valign="top" style="word-break: break-all;">账号：</td>
