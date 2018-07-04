@@ -346,37 +346,40 @@ class ModalController extends Controller
     //提款记录 会员48小时详情
     public function user48hoursInfo($uid = '')
     {
+        if($uid){
+            $user = DB::table('users')->where('id',$uid)->first();
+        }
         $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
                         <tr class="firstRow">
                             <td valign="top" style="word-break: break-all;">账号：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$user->username.'</td>
                             <td valign="top" style="word-break: break-all;">名称：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$user->fullName.'</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">当前登录时间：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$user->updated_at.'</td>
                             <td valign="top" style="word-break: break-all;">当前IP信息：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$user->login_ip.'</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">账户余额：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$user->money.'</td>
                             <td valign="top" style="word-break: break-all;">最后一笔充值金额：</td>
                             <td valign="top" style="word-break: break-all;"></td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">充值次数：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$user->PayTimes.'</td>
                             <td valign="top" style="word-break: break-all;">充值金额：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$user->saveMoneyCount.'</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">提现次数：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$user->DrawTimes.'</td>
                             <td valign="top" style="word-break: break-all;">提现金额：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">'.$user->drawMoneyCount.'</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">下注总金额：</td>
@@ -386,27 +389,27 @@ class ModalController extends Controller
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">退水总金额：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">0</td>
                             <td valign="top" style="word-break: break-all;">未结算金额：</td>
                             <td valign="top" style="word-break: break-all;"></td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">活动金额：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">0</td>
                             <td valign="top" style="word-break: break-all;">红包金额：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">0</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">后台加钱：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">0</td>
                             <td valign="top" style="word-break: break-all;">后台扣钱：</td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">0</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;" rowspan="1" colspan="4">备注：</td>
                         </tr>
                         <tr>
-                            <td valign="top" rowspan="1" colspan="4" style="word-break: break-all;"></td>
+                            <td valign="top" rowspan="1" colspan="4" style="word-break: break-all;">'.$user->content.'</td>
                         </tr>
                     </tbody>
                 </table>';
