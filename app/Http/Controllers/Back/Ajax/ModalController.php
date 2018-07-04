@@ -352,8 +352,6 @@ class ModalController extends Controller
             $hours48SQL = "SELECT sum(b.bet_money) as BETMONEY FROM bet b WHERE b.created_at > DATE_SUB(NOW(), INTERVAL 48 HOUR) AND user_id = {$uid}";
             $hours48Bet = DB::select($hours48SQL);
 
-            return $hours48Bet;
-
             $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
                         <tr class="firstRow">
@@ -388,7 +386,7 @@ class ModalController extends Controller
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">下注总金额：</td>
-                            <td valign="top" style="word-break: break-all;">'.$hours48Bet->BETMONEY.'</td>
+                            <td valign="top" style="word-break: break-all;">'.$hours48Bet[0]['BETMONEY'].'</td>
                             <td valign="top" style="word-break: break-all;">输赢总金额：</td>
                             <td valign="top" style="word-break: break-all;"></td>
                         </tr>
