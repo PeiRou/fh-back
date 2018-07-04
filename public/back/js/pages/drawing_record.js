@@ -73,6 +73,7 @@ $(function () {
             {data:'rechLevel'},
             {data:'balance'},
             {data:'total_bet'},
+            {data:'total_draw'},
             {data:'order_id'},
             {data:'liushui'},
             {data:'amount'},
