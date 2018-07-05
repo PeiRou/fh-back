@@ -415,7 +415,7 @@ class BetDataController extends Controller
 //        return count($games);
         $bet = DB::table('bet')
             ->leftJoin('game','bet.game_id','=','game.game_id')
-            ->select('bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.game_id as bet_game_id','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko')
+            ->select('bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.game_id as bet_game_id','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko','bet.created_at as bet_created_at')
             ->where(function ($query) use ($games){
                 if(count($games) !== 0){
                     foreach ($games as $item){
@@ -430,6 +430,9 @@ class BetDataController extends Controller
             })
             ->editColumn('user',function ($bet) use ($user){
                 return '<span>'.$user->username.'</span>';
+            })
+            ->editColumn('created_at',function ($bet) {
+                return $bet->bet_created_at;
             })
             ->editColumn('game',function ($bet){
                 return '<span>'.$bet->g_game_name.'</span>';
