@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div>
-        <table id="userTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="userTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>在线</th>
