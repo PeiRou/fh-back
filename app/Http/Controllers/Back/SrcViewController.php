@@ -62,8 +62,9 @@ class SrcViewController extends Controller
         //统计会员数据
         $allUser = DB::table('users')->where('testFlag',0)->count();
         $todayRegUsers = DB::table('users')->whereDate('created_at',date('Y-m-d'))->count();
+        $monthRegUsers = DB::table('users')->whereDate('created_at',date('m'))->count();
 
-        return view('back.user',compact('levels','agent','allUser','todayRegUsers'));
+        return view('back.user',compact('levels','agent','allUser','todayRegUsers','monthRegUsers'));
     }
     //会员注单详情 - 独占页面
     public function userBetList($userId)
