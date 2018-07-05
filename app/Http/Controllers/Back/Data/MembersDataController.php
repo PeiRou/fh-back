@@ -322,7 +322,7 @@ class MembersDataController extends Controller
                     $query->where('users.noLoginDays','=',$noLoginDays);
                 }
             })
-            ->where('users.testFlag',0)->orWhere('users.testFlag',2)->orderBy('users.created_at','desc')->get();
+            ->where('users.testFlag',0)->where('users.testFlag',2)->orderBy('users.created_at','desc')->get();
         return DataTables::of($users)
             ->editColumn('online',function ($users) {
                 $key = 'user:'.md5($users->uid);
