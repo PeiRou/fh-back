@@ -7,6 +7,10 @@
         <div class="breadcrumb">
             <b>位置：</b>会员
         </div>
+        <div class="pay-total-crumb">
+            <div><span>今日新增会员：</span><span>{{ $todayRegUsers }}</span></div>
+            <div><span>全部会员总数：</span><span>{{ $allUser }}</span></div>
+        </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('userTable')"><i class="iconfont">&#xe61d;</i></span>
             <span onclick="">导出用户数据</span>

@@ -58,7 +58,12 @@ class SrcViewController extends Controller
     {
         $levels = DB::table('level')->where('status',1)->get();
         $agent = DB::table('agent')->where('status',1)->get();
-        return view('back.user',compact('levels','agent'));
+
+        //统计会员数据
+        $allUser = DB::table('users')->where('testFlag',0)->count();
+        $todayRegUsers = DB::table('users')->whereDate('created_at',date('Y-m-d'))->count();
+
+        return view('back.user',compact('levels','agent','allUser','todayRegUsers'));
     }
     //会员注单详情 - 独占页面
     public function userBetList($userId)
