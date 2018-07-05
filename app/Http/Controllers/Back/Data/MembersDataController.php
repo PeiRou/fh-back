@@ -282,7 +282,7 @@ class MembersDataController extends Controller
             })
             ->where(function ($query) use($agent){
                 if(isset($agent) && $agent){
-                    $query->where('users.agent','=',$agent);
+                    $query->where('users.agent',$agent);
                 }
             })
             ->where(function ($query) use($rechLevel){
