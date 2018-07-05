@@ -260,6 +260,7 @@ class MembersDataController extends Controller
     //会员数据
     public function user(Request $request)
     {
+        Redis::select(2);
         $status = $request->get('status');
         $agent = $request->get('agent');
         $rechLevel = $request->get('rechLevel');
@@ -325,13 +326,12 @@ class MembersDataController extends Controller
             ->where('users.testFlag','!=',1)->orderBy('users.created_at','desc')->get();
         return DataTables::of($users)
             ->editColumn('online',function ($users) {
-//                $key = 'user:'.md5($users->uid);
-//                Redis::select(2);
-//                if(Redis::exists($key)){
-//                    return "<span class='on-line-point'></span>";
-//                } else {
-//                    return "<span class='off-line-point'></span>";
-//                }
+                $key = 'user:'.md5($users->uid);
+                if(Redis::exists($key)){
+                    return "<span class='on-line-point'></span>";
+                } else {
+                    return "<span class='off-line-point'></span>";
+                }
 //                $userLastTime = strtotime($users->updated_at);
 //                $time = $now-$userLastTime;
 //                if($time > 3600)
