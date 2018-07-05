@@ -323,9 +323,15 @@ class MembersDataController extends Controller
                 }
             })
             ->where('users.testFlag',0)->orderBy('users.created_at','desc')->get();
-        $now = time();
         return DataTables::of($users)
-            ->editColumn('online',function ($users) use($now){
+            ->editColumn('online',function ($users) {
+                $key = 'user:'.md5($users->uid);
+                Redis::select(2);
+                if(Redis::exists($key)){
+                    return "<span class='on-line-point'></span>";
+                } else {
+                    return "<span class='off-line-point'></span>";
+                }
 //                $userLastTime = strtotime($users->updated_at);
 //                $time = $now-$userLastTime;
 //                if($time > 3600)
