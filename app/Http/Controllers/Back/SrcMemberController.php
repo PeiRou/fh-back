@@ -10,6 +10,7 @@ use App\SubAccount;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
@@ -452,6 +453,17 @@ class SrcMemberController extends Controller
         } catch (\Exception $e){
 
         }
+    }
+    //会员总余额统计
+    public function totalUserMoney()
+    {
+        $total = DB::table('users')
+            ->where('testFlag',0)
+            ->where('agent','!=',2)
+            ->sum('money');
+        return response()->json([
+            'total' => $total
+        ]);
     }
     
     //添加子账号

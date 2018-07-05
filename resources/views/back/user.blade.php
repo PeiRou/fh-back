@@ -80,6 +80,9 @@
                     {{--</div>--}}
                 </div>
             </div>
+            <div class="total-nums">
+                会员余额总计：<span style="font-size: 13pt;" id="moneyTotal">0</span>
+            </div>
         </div>
         <table id="userTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>

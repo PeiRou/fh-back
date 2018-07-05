@@ -61,20 +61,33 @@ $(function () {
     
     $('#btn_search').on('click',function () {
         dataTable.ajax.reload();
+        getTotalMoney();
     });
-    $('#reset').on('click',function () {
-        $('#status').val("");
-        $('#rechLevel').val("");
-        $('#account').val("");
-        $('#mobile').val("");
-        $('#qq').val("");
-        $('#minMoney').val("");
-        $('#maxMoney').val("");
-        $('#promoter').val("");
-        $('#noLoginDays').val("");
-        dataTable.ajax.reload();
-    });
+    // $('#reset').on('click',function () {
+    //     $('#status').val("");
+    //     $('#rechLevel').val("");
+    //     $('#account').val("");
+    //     $('#mobile').val("");
+    //     $('#qq').val("");
+    //     $('#minMoney').val("");
+    //     $('#maxMoney').val("");
+    //     $('#promoter').val("");
+    //     $('#noLoginDays').val("");
+    //     dataTable.ajax.reload();
+    // });
 });
+
+function getTotalMoney() {
+    $.ajax({
+        url:'/action/userMoney/totalUserMoney',
+        type:'post',
+        dataType:'json',
+        data:{},
+        success:function (data) {
+            console.log(data);
+        }
+    });
+}
 
 function editLevels(uid,nowLevel) {
     jc = $.confirm({

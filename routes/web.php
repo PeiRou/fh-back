@@ -153,6 +153,7 @@ Route::post('/action/admin/changeUserMoney','Back\SrcMemberController@changeUser
 Route::post('/action/admin/delUser/{id}','Back\SrcMemberController@delUser')->middleware('check-permission')->name('m.user.delUser');//删除会员账号
 Route::post('/action/admin/editUserLevels','Back\SrcMemberController@editUserLevels');//删除会员账号
 Route::post('/action/admin/getOutUser','Back\SrcMemberController@getOutUser');//会员踢下线
+Route::post('/action/userMoney/totalUserMoney','Back\SrcMemberController@totalUserMoney');//会员总余额统计
 
 Route::post('/action/admin/addPermission','Back\PermissionController@addPermission')->name('addPermission'); //添加权限
 Route::post('/action/admin/addNewRole','Back\RoleController@addNewRole');//添加角色
