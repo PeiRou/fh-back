@@ -441,24 +441,25 @@ class BetDataController extends Controller
                 return '<span style="color: #'.$bet->bet_color.'">'.$bet->bet_issue.'</span>';
             })
             ->editColumn('play',function ($bet){
-//                if($bet->bet_game_id == 1){
-//                    $weishu = strlen((int)$bet->bet_game_id.$bet->bet_playcate_id);
-//                    $playid_weishu = strlen((int)$bet->bet_play_id);
-//                    $playCate = $bet->bet_playcate_id;
-//                    $play = substr($bet->bet_play_id,$weishu,$playid_weishu-$weishu);
-//                }
-//                if($bet->bet_game_id == 80 || $bet->bet_game_id == 81 || $bet->bet_game_id == 82 || $bet->bet_game_id == 99 || $bet->bet_game_id == 90 || $bet->bet_game_id == 91){
-//                    $playCate = substr($bet->bet_play_id,2,3);
-//                    $play = substr($bet->bet_play_id,5,4);
-//                }
-//                if($bet->bet_game_id == 50){
-//                    $playCate = substr($bet->bet_play_id,2,2);
-//                    $play = substr($bet->bet_play_id,4,3);
-//                }
-//                if($bet->bet_game_id == 66 || $bet->bet_game_id == 65){
-//                    $playCate = substr($bet->bet_play_id,2,2);
-//                    $play = substr($bet->bet_play_id,4,4);
-//                }
+                if($bet->bet_game_id == 1){
+                    $weishu = strlen((int)$bet->bet_game_id.$bet->bet_playcate_id);
+                    $playid_weishu = strlen((int)$bet->bet_play_id);
+                    $playCate = $bet->bet_playcate_id;
+                    $play = substr($bet->bet_play_id,$weishu,$playid_weishu-$weishu);
+                }
+                if($bet->bet_game_id == 80 || $bet->bet_game_id == 81 || $bet->bet_game_id == 82 || $bet->bet_game_id == 99 || $bet->bet_game_id == 90 || $bet->bet_game_id == 91){
+                    $playCate = substr($bet->bet_play_id,2,3);
+                    $play = substr($bet->bet_play_id,5,4);
+                }
+                if($bet->bet_game_id == 50){
+                    $playCate = substr($bet->bet_play_id,2,2);
+                    $play = substr($bet->bet_play_id,4,3);
+                }
+                if($bet->bet_game_id == 66 || $bet->bet_game_id == 65){
+                    $playCate = substr($bet->bet_play_id,2,2);
+                    $play = substr($bet->bet_play_id,4,4);
+                }
+                return $this->play($bet->bet_game_id,$playCate);
 //                $cate_txt = PlayCates::where('gameId',$bet->game_id)->where('id',$playCate)->first();
 //                $play_txt = Play::where('gameId',$bet->game_id)->where('id',$play)->first();
 //                return "<span class='blue-text'>$cate_txt->name - </span><span class='blue-text'>$play_txt->name</span> @ <span class='red-text'>$bet->play_odds</span>";
@@ -493,5 +494,10 @@ class BetDataController extends Controller
             })
             ->rawColumns(['order_id','user','game','issue','play','bunko','bet_money'])
             ->make(true);
+    }
+
+    private function play($gameId,$playCate){
+        $cate_txt = PlayCates::where('gameId',$gameId)->where('id',$playCate)->first();
+        return $cate_txt;
     }
 }
