@@ -5,6 +5,12 @@ $(function () {
     $('#menu-userManage').addClass('nav-show');
     $('#menu-userManage-user').addClass('active');
 
+    $(document).keyup(function(event){
+        if(event.keyCode == 13){
+           alert('回车')
+        }
+    });
+
     getTotalMoney();
 
     dataTable = $('#userTable').DataTable({
