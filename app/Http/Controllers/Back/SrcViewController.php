@@ -63,8 +63,9 @@ class SrcViewController extends Controller
         $allUser = DB::table('users')->where('testFlag',0)->count();
         $todayRegUsers = DB::table('users')->whereDate('created_at',date('Y-m-d'))->count();
         $monthRegUsers = DB::table('users')->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
+        $lastMonthRegUsers = DB::table('users')->whereRaw('PERIOD_DIFF( date_format( now( ) , "%Y%m" ) , date_format( created_at, "%Y%m" ) ) =1')->count();
 
-        return view('back.user',compact('levels','agent','allUser','todayRegUsers','monthRegUsers'));
+        return view('back.user',compact('levels','agent','allUser','todayRegUsers','monthRegUsers','lastMonthRegUsers'));
     }
     //会员注单详情 - 独占页面
     public function userBetList($userId)

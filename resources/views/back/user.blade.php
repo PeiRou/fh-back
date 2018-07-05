@@ -10,6 +10,7 @@
         <div class="pay-total-crumb">
             <div><span>今日新增会员：</span><span>{{ $todayRegUsers }}</span></div>
             <div><span>本月新增会员：</span><span>{{ $monthRegUsers }}</span></div>
+            <div><span>上月新增会员：</span><span>{{ $lastMonthRegUsers }}</span></div>
             <div><span>全部会员总数：</span><span>{{ $allUser }}</span></div>
         </div>
         <div class="content-top-buttons">
