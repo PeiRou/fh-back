@@ -9,9 +9,9 @@
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('userTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="addGeneralAgent()">导出用户数据</span>
-            <span onclick="addGeneralAgent()">更新邮箱</span>
-            <span onclick="addGeneralAgent()">回访用户</span>
+            <span onclick="">导出用户数据</span>
+            <span onclick="">更新邮箱</span>
+            <span onclick="">回访用户</span>
             <span onclick="addUser()">添加会员</span>
         </div>
     </div>
@@ -36,7 +36,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="two wide field">
+                    <div class="one wide field">
                         <input type="text" id="account" placeholder="账号/邮箱/名称">
                     </div>
                     <div class="one wide field">
@@ -61,9 +61,9 @@
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
                     </div>
-                    <div class="one wide field">
-                        <button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>
-                    </div>
+                    {{--<div class="one wide field">--}}
+                        {{--<button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>--}}
+                    {{--</div>--}}
                 </div>
             </div>
         </div>
