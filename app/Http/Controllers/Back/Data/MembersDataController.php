@@ -273,6 +273,7 @@ class MembersDataController extends Controller
         $users = DB::table('users')
             ->leftJoin('level','users.rechLevel','=','level.value')
             ->leftJoin('agent','users.agent','=','agent.a_id')
+            ->select('users.promoter as user_promoter','level.name as level_name','users.id as uid','users.rechLevel as user_rechLevel','users.created_at as user_created_at','users.updated_at as user_updated_at','users.username as user_username','users.fullName as user_fullName','agent.account as ag_account','users.money as user_money','users.status as user_status','users.PayTimes as user_PayTimes','users.DrawTimes as user_DrawTimes','users.saveMoneyCount as user_saveMoneyCount','users.drawMoneyCount as user_drawMoneyCount','users.lastLoginTime as user_lastLoginTime','users.content as user_content')
             ->where(function ($query) use($status){
                 if(isset($status) && $status){
                     $query->where('users.status','=',$status);
@@ -319,89 +320,87 @@ class MembersDataController extends Controller
         $now = time();
         return DataTables::of($users)
             ->editColumn('online',function ($users) use($now){
-                $userLastTime = strtotime($users->updated_at);
-                $time = $now-$userLastTime;
-                if($time > 3600)
-                {
-                    return "<span class='off-line-point'></span>";
-                } else {
-                    return "<span class='on-line-point'></span>";
-                }
+//                $userLastTime = strtotime($users->updated_at);
+//                $time = $now-$userLastTime;
+//                if($time > 3600)
+//                {
+//                    return "<span class='off-line-point'></span>";
+//                } else {
+//                    return "<span class='on-line-point'></span>";
+//                }
             })
             ->editColumn('promoter',function ($users){
-                return empty($users->promoter) ? '无' : $users->promoter;
+                return empty($users->user_promoter) ? '无' : $users->user_promoter;
             })
             ->editColumn('rechLevel',function ($user){
-                $levels = Levels::where('value',$user->rechLevel)->first();
-                return  "<a href='javascript:void(0)' onclick='editLevels(\"$user->id\",\"$user->rechLevel\")' class='allow-edit'>$levels->name <i class='iconfont'>&#xe715;</i></a>";
+                return  "<a href='javascript:void(0)' onclick='editLevels(\"$user->uid\",\"$user->user_rechLevel\")' class='allow-edit'>$user->level_name <i class='iconfont'>&#xe715;</i></a>";
             })
             ->editColumn('created_at',function ($users){
-                return "<span data-tooltip=\"".$users->created_at."\" data-inverted=\"\">".date('m/d H:i:s',strtotime($users->created_at))."</span>";
+                return "<span data-tooltip=\"".$users->user_created_at."\" data-inverted=\"\">".date('m/d H:i:s',strtotime($users->user_created_at))."</span>";
             })
             ->editColumn('updated_at',function ($users){
-                return "<span data-tooltip=\"".$users->updated_at."\" data-inverted=\"\">".date('m/d H:i:s',strtotime($users->updated_at))."</span>";
+                return "<span data-tooltip=\"".$users->user_updated_at."\" data-inverted=\"\">".date('m/d H:i:s',strtotime($users->user_updated_at))."</span>";
             })
             ->editColumn('user',function ($users){
-                return $users->username."<span class='gary-text'> (".$users->fullName.")</span>";
+                return $users->user_username."<span class='gary-text'> (".$users->user_fullName.")</span>";
             })
             ->editColumn('agent',function ($users){
-                $getAgent = Agent::find($users->agent);
-                if($getAgent){
-                    return $getAgent->account;
+                if($users->ag_account){
+                    return $users->ag_account;
                 } else {
                     return '--';
                 }
             })
             ->editColumn('balance',function ($users){
-                return "<span class='red-text'>".$users->money."</span>";
+                return "<span class='red-text'>".$users->user_money."</span>";
             })
             ->editColumn('status',function ($users){
-                if($users->status == 1){
+                if($users->user_status == 1){
                     return '<span class="status-1"><i class="iconfont">&#xe652;</i> 正常</span>';
                 }
-                if($users->status == 2){
+                if($users->user_status == 2){
                     return '<span class="status-2"><i class="iconfont">&#xe656;</i> 冻结</span>';
                 }
-                if($users->status == 3){
+                if($users->user_status == 3){
                     return '<span class="status-3"><i class="iconfont">&#xe672;</i> 停用</span>';
                 }
             })
             ->editColumn('saveOrDraw',function ($users){
-                return $users->PayTimes.'/'.$users->DrawTimes;
+                return $users->user_PayTimes.'/'.$users->user_DrawTimes;
             })
             ->editColumn('saveMoneyCount',function ($users){
-                return $users->saveMoneyCount;
+                return $users->user_saveMoneyCount;
             })
             ->editColumn('drawMoneyCount',function ($users){
-                return $users->drawMoneyCount;
+                return $users->user_drawMoneyCount;
             })
             ->editColumn('noLoginDays',function ($users){
-                $startdate = strtotime(date('Y-m-d',strtotime($users->lastLoginTime)));
+                $startdate = strtotime(date('Y-m-d',strtotime($users->user_lastLoginTime)));
                 $enddate = strtotime(date('Y-m-d'));
                 $days=round(($enddate-$startdate)/3600/24) ;
                 return $days.'天';
             })
             ->editColumn('content',function ($users){
-                if($users->content){
-                    return "<span class='edit-link' onclick='seeContent(\"$users->id\")'>查看</span>";
+                if($users->user_content){
+                    return "<span class='edit-link' onclick='seeContent(\"$users->uid\")'>查看</span>";
                 } else {
                     return "-";
                 }
             })
             ->editColumn('control',function ($users){
                 return "<ul class='control-menu'>
-                        <li onclick='edit(\"$users->id\")'>修改</li>
-                        <li onclick='changeUserMoney(\"$users->id\")'>余额变更</li>
-                        <li><a href='/back/control/userManage/userBetList/$users->id' target='_blank'>注单明细</a></li>
-                        <li onclick='userCapital(\"$users->id\")'>资金明细</li>
+                        <li onclick='edit(\"$users->uid\")'>修改</li>
+                        <li onclick='changeUserMoney(\"$users->uid\")'>余额变更</li>
+                        <li><a href='/back/control/userManage/userBetList/$users->uid' target='_blank'>注单明细</a></li>
+                        <li onclick='userCapital(\"$users->uid\")'>资金明细</li>
                         <li>更多操作
                         <ul>
-                        <li onclick='viewInfo(\"$users->id\")'>查看详情</li>
-                        <li onclick='changeFullName(\"$users->id\")'>修改姓名</li>
+                        <li onclick='viewInfo(\"$users->uid\")'>查看详情</li>
+                        <li onclick='changeFullName(\"$users->uid\")'>修改姓名</li>
                         <li>盘口设定</li>
                         <li>交易设定</li>
-                        <li onclick='changeAgent(\"$users->id\",\"$users->username\")'>更换代理</li>
-                        <li class='red-hover' onclick='delUser(\"$users->id\",\"$users->username\")'>删除会员</li>
+                        <li onclick='changeAgent(\"$users->uid\",\"$users->user_username\")'>更换代理</li>
+                        <li class='red-hover' onclick='delUser(\"$users->uid\",\"$users->user_username\")'>删除会员</li>
                         </ul>
                         </li>
                         </ul>";
