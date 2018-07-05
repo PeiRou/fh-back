@@ -631,7 +631,7 @@ a:active{text-decoration: none}
     display: block;
     width: 15px;
     height: 15px;
-    background: #2add86;
+    background: #00ff7a;
     -webkit-border-radius:100px;
     -moz-border-radius:100px;
     border-radius:100px;
@@ -640,7 +640,7 @@ a:active{text-decoration: none}
     display: block;
     width: 15px;
     height: 15px;
-    background: #838383;
+    background: #cacaca;
     -webkit-border-radius:100px;
     -moz-border-radius:100px;
     border-radius:100px;
