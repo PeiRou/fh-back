@@ -5,6 +5,8 @@ $(function () {
     $('#menu-userManage').addClass('nav-show');
     $('#menu-userManage-user').addClass('active');
 
+    getTotalMoney();
+
     dataTable = $('#userTable').DataTable({
         searching: false,
         bLengthChange: false,
@@ -84,7 +86,7 @@ function getTotalMoney() {
         dataType:'json',
         data:{},
         success:function (data) {
-            console.log(data);
+            $('#moneyTotal').html(data.total)
         }
     });
 }
