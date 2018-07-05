@@ -66,8 +66,9 @@
                     <div class="one wide field" style="width: 4.2%!important;">
                         <button class="fluid ui mini blue button">上月</button>
                     </div>
-                    <div class="one wide field">
-                        <button class="fluid ui mini green button">重新统计</button>
+                    <div class="ui checkbox">
+                        <input type="checkbox" id="chkTest" checked="checked">
+                        <label>过滤测试用户</label>
                     </div>
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>

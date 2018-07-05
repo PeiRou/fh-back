@@ -19,9 +19,11 @@ class ReportDataController extends Controller
         $account = $request->get('account');            //总代帐号
         $starttime = $request->get('timeStart');
         $endtime = $request->get('timeEnd');
+        $chkTest = $request->get('chkTest');            //是否过滤测试帐号
 
-        $aSql = "SELECT zd.ga_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,zd.account as zdaccount, sum(b.bet_money) as sumMoney,sum(case WHEN bunko >0 then bet_money else 0 end) as sumWinbet,sum(bunko) as sumBunko 
-FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.agent = ag.a_id LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id WHERE u.testFlag = 0 ";
+        $aSql = "SELECT zd.ga_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,zd.account as zdaccount, sum(b.bet_money) as sumMoney,
+sum(case WHEN bunko >0 then bet_money else 0 end) as sumWinbet,sum(case WHEN bunko >0 then bunko-bet_money else bunko end) as sumBunko 
+FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.agent = ag.a_id LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id WHERE 1 ";
         $where = "";
         if(isset($game) && $game){
             $where .= " and b.game_id = ".$game;
@@ -34,6 +36,11 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         }
         if(isset($endtime) && $endtime){
             $where .= " and b.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+        }
+        if(isset($chkTest) && $chkTest=='on'){
+            $where .= " and u.testFlag = 0";
+        }else{
+            $where .= " and u.testFlag in(0,2)";
         }
         $aSql = $aSql.$where." GROUP BY zd.ga_id ";
         $Gagent = DB::select($aSql);
@@ -52,7 +59,7 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         $zd = $request->get('zd');            //总代帐号
 
         $aSql = "SELECT ag.a_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,ag.name as agname, 
-sum(case WHEN bunko >0 then bet_money else 0 end) as sumWinbet,sum(bunko) as sumBunko 
+sum(case WHEN bunko >0 then bet_money else 0 end) as sumWinbet,sum(case WHEN bunko >0 then bunko-bet_money else bunko end) as sumBunko 
 FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.agent = ag.a_id WHERE 1 ";
         $where = "";
         if(isset($game) && $game){
@@ -98,8 +105,8 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         }
 
         $aSql = "SELECT u.id,u.username,u.fullName,u.agent,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,
-            sum(case WHEN bunko >0 then bet_money else 0 end) as sumWinbet,sum(bunko) as sumBunko
-            FROM {$aUser} u LEFT JOIN `bet` b on u.id = b.user_id LEFT JOIN `agent` ag on u.agent = ag.a_id WHERE u.testFlag = 0 ";
+            sum(case WHEN bunko >0 then bet_money else 0 end) as sumWinbet,sum(case WHEN bunko >0 then bunko-bet_money else bunko end) as sumBunko
+            FROM {$aUser} u LEFT JOIN `bet` b on u.id = b.user_id LEFT JOIN `agent` ag on u.agent = ag.a_id WHERE 1 ";
         $where = "";
         if(isset($game) && $game){
             $where .= " and b.game_id = ".$game;
@@ -119,10 +126,12 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         if(isset($maxBunko) && $maxBunko){
             $where .= " and sumBunko <= ".$maxBunko;
         }
-        if(isset($ag) && $ag>0 ){
+        if(isset($chkTest) && $chkTest=='on'){
+            $where .= " and u.testFlag = 0 ";
+        }else if(isset($ag) && $ag>0 ){
             $where .= " and u.agent = ".$ag;
-        }else if(isset($chkTest) && $chkTest=='on'){
-            $where .= " and (u.agent  = 1 OR u.agent  >= 4)";
+        }else{
+            $where .= " and u.testFlag in (0,2) ";
         }
         $aSql = $aSql.$where." GROUP BY u.id ";
         $user = DB::select($aSql);

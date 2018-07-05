@@ -69,6 +69,7 @@ $(function () {
                 d.account = $('#account').val();
                 d.timeStart = $('#timeStart').val();
                 d.timeEnd = $('#timeEnd').val();
+                d.chkTest = $('#chkTest').prop('checked')?$('#chkTest').val():'';
             }
         },
         columns: [
