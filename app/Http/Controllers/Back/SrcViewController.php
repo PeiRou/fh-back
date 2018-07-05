@@ -62,7 +62,7 @@ class SrcViewController extends Controller
         //统计会员数据
         $allUser = DB::table('users')->where('testFlag',0)->count();
         $todayRegUsers = DB::table('users')->whereDate('created_at',date('Y-m-d'))->count();
-        $monthRegUsers = DB::table('users')->whereDate('created_at',date('Y-m'))->count();
+        $monthRegUsers = DB::table('users')->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
 
         return view('back.user',compact('levels','agent','allUser','todayRegUsers','monthRegUsers'));
     }
