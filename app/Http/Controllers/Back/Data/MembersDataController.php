@@ -270,50 +270,52 @@ class MembersDataController extends Controller
         $promoter = $request->get('promoter');
         $noLoginDays = $request->get('noLoginDays');
 
-        $users = User::select()
+        $users = DB::table('users')
+            ->leftJoin('level','users.rechLevel','=','level.value')
+            ->leftJoin('agent','users.agent','=','agent.a_id')
             ->where(function ($query) use($status){
                 if(isset($status) && $status){
-                    $query->where('status','=',$status);
+                    $query->where('users.status','=',$status);
                 }
             })
             ->where(function ($query) use($rechLevel){
                 if(isset($rechLevel) && $rechLevel){
-                    $query->where('rechLevel','=',$rechLevel);
+                    $query->where('users.rechLevel','=',$rechLevel);
                 }
             })
             ->where(function ($query) use($account){
                 if(isset($account) && $account){
-                    $query->where('username','=',$account)
-                        ->orWhere('email','=',$account)
-                        ->orWhere('fullName','=',$account);
+                    $query->where('users.username','=',$account)
+                        ->orWhere('users.email','=',$account)
+                        ->orWhere('users.fullName','=',$account);
                 }
             })
             ->where(function ($query) use($mobile){
                 if(isset($mobile) && $mobile){
-                    $query->where('mobile','=',$mobile);
+                    $query->where('users.mobile','=',$mobile);
                 }
             })
             ->where(function ($query) use($qq){
                 if(isset($qq) && $qq){
-                    $query->where('qq','=',$qq);
+                    $query->where('users.qq','=',$qq);
                 }
             })
             ->where(function ($query) use($minMoney,$maxMoney){
                 if(isset($minMoney) && $minMoney || isset($maxMoney) && $maxMoney){
-                    $query->where('money','>=',$minMoney)->where('money','<=',$maxMoney);
+                    $query->where('users.money','>=',$minMoney)->where('users.money','<=',$maxMoney);
                 }
             })
             ->where(function ($query) use($promoter){
                 if(isset($promoter) && $promoter){
-                    $query->where('promoter','=',$promoter);
+                    $query->where('users.promoter','=',$promoter);
                 }
             })
             ->where(function ($query) use($noLoginDays){
                 if(isset($noLoginDays) && $noLoginDays){
-                    $query->where('noLoginDays','=',$noLoginDays);
+                    $query->where('users.noLoginDays','=',$noLoginDays);
                 }
             })
-            ->where('testFlag',0)->orderBy('created_at','desc')->get();
+            ->where('users.testFlag',0)->orderBy('users.created_at','desc')->get();
         $now = time();
         return DataTables::of($users)
             ->editColumn('online',function ($users) use($now){
