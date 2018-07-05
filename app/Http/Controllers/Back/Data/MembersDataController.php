@@ -369,10 +369,19 @@ class MembersDataController extends Controller
                 return $users->user_PayTimes.'/'.$users->user_DrawTimes;
             })
             ->editColumn('saveMoneyCount',function ($users){
-                return $users->user_saveMoneyCount;
+                if($users->user_saveMoneyCount > 0){
+                    return "<b>".$users->user_saveMoneyCount."</b>";
+                } else {
+                    return $users->user_saveMoneyCount;
+                }
+
             })
             ->editColumn('drawMoneyCount',function ($users){
-                return $users->user_drawMoneyCount;
+                if($users->user_drawMoneyCount > 0){
+                    return "<b>".$users->user_drawMoneyCount."</b>";
+                } else {
+                    return $users->user_drawMoneyCount;
+                }
             })
             ->editColumn('noLoginDays',function ($users){
                 $startdate = strtotime(date('Y-m-d',strtotime($users->user_lastLoginTime)));
