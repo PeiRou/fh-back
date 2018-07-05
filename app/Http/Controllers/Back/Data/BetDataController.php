@@ -415,8 +415,6 @@ class BetDataController extends Controller
 //        return count($games);
         $bet = DB::table('bet')
             ->leftJoin('game','bet.game_id','=','game.game_id')
-            ->leftJoin('play_cate','bet.game_id','=','play_cate.gameId')
-            ->leftJoin('play','bet.game_id','=','play.gameId')
             ->select('bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.game_id as bet_game_id','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko')
             ->where(function ($query) use ($games){
                 if(count($games) !== 0){
