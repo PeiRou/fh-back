@@ -415,7 +415,7 @@ class BetDataController extends Controller
 //        return count($games);
         $bet = DB::table('bet')
             ->leftJoin('game','bet.game_id','=','game.game_id')
-            ->select('bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.game_id as bet_game_id','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko','bet.created_at as bet_created_at')
+            ->select('bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.game_id as bet_game_id','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko','bet.created_at as bet_created_at','bet.play_odds as bet_play_odds')
             ->where(function ($query) use ($games){
                 if(count($games) !== 0){
                     foreach ($games as $item){
@@ -459,10 +459,7 @@ class BetDataController extends Controller
                     $playCate = substr($bet->bet_play_id,2,2);
                     $play = substr($bet->bet_play_id,4,4);
                 }
-                return $this->play($bet->bet_game_id,$playCate);
-//                $cate_txt = PlayCates::where('gameId',$bet->game_id)->where('id',$playCate)->first();
-//                $play_txt = Play::where('gameId',$bet->game_id)->where('id',$play)->first();
-//                return "<span class='blue-text'>$cate_txt->name - </span><span class='blue-text'>$play_txt->name</span> @ <span class='red-text'>$bet->play_odds</span>";
+                return $this->play($bet->bet_game_id,$playCate,$play,$bet->bet_play_odds);
             })
             ->editColumn('rebate',function ($bet){
                 return '0';
@@ -496,8 +493,9 @@ class BetDataController extends Controller
             ->make(true);
     }
 
-    private function play($gameId,$playCate){
+    private function play($gameId,$playCate,$play,$odds){
         $cate_txt = PlayCates::where('gameId',$gameId)->where('id',$playCate)->first();
-        return $cate_txt;
+        $play_txt = Play::where('gameId',$gameId)->where('id',$play)->first();
+        return "<span class='blue-text'>$cate_txt->name - </span><span class='blue-text'>$play_txt->name</span> @ <span class='red-text'>$odds</span>";
     }
 }
