@@ -61,9 +61,9 @@ class SrcViewController extends Controller
 
         //统计会员数据
         $allUser = DB::table('users')->where('testFlag',0)->count();
-        $todayRegUsers = DB::table('users')->whereDate('created_at',date('Y-m-d'))->count();
-        $monthRegUsers = DB::table('users')->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
-        $lastMonthRegUsers = DB::table('users')->whereRaw('PERIOD_DIFF( date_format( now( ) , "%Y%m" ) , date_format( created_at, "%Y%m" ) ) =1')->count();
+        $todayRegUsers = DB::table('users')->where('testFlag',0)->whereDate('created_at',date('Y-m-d'))->count();
+        $monthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
+        $lastMonthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('PERIOD_DIFF( date_format( now( ) , "%Y%m" ) , date_format( created_at, "%Y%m" ) ) =1')->count();
 
         return view('back.user',compact('levels','agent','allUser','todayRegUsers','monthRegUsers','lastMonthRegUsers'));
     }
