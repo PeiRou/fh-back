@@ -29,6 +29,14 @@
                         </select>
                     </div>
                     <div class="one wide field">
+                        <select class="ui dropdown" id="agent" style='height:32px !important'>
+                            <option value="">所属代理</option>
+                            @foreach($agent as $item)
+                                <option value="{{ $item->a_id }}">{{ $item->account }}({{ $item->name }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="one wide field">
                         <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
                             <option value="">用户层级</option>
                             @foreach($levels as $item)

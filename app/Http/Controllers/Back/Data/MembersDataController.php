@@ -261,6 +261,7 @@ class MembersDataController extends Controller
     public function user(Request $request)
     {
         $status = $request->get('status');
+        $agent = $request->get('agent');
         $rechLevel = $request->get('rechLevel');
         $account = $request->get('account'); //多条件 邮箱/账号/名称
         $mobile = $request->get('mobile');
@@ -277,6 +278,11 @@ class MembersDataController extends Controller
             ->where(function ($query) use($status){
                 if(isset($status) && $status){
                     $query->where('users.status','=',$status);
+                }
+            })
+            ->where(function ($query) use($agent){
+                if(isset($agent) && $agent){
+                    $query->where('users.agent','=',$agent);
                 }
             })
             ->where(function ($query) use($rechLevel){
@@ -374,7 +380,6 @@ class MembersDataController extends Controller
                 } else {
                     return $users->user_saveMoneyCount;
                 }
-
             })
             ->editColumn('drawMoneyCount',function ($users){
                 if($users->user_drawMoneyCount > 0){

@@ -57,7 +57,8 @@ class SrcViewController extends Controller
     public function user()
     {
         $levels = DB::table('level')->where('status',1)->get();
-        return view('back.user',compact('levels'));
+        $agent = DB::table('agent')->where('status',1)->get();
+        return view('back.user',compact('levels','agent'));
     }
     //会员注单详情 - 独占页面
     public function userBetList($userId)

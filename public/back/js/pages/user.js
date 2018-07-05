@@ -17,6 +17,7 @@ $(function () {
             data:function (d) {
                 d.status = $('#status').val();
                 d.rechLevel = $('#rechLevel').val();
+                d.agent = $('#agent').val();
                 d.account = $('#account').val();
                 d.mobile = $('#mobile').val();
                 d.qq = $('#qq').val();
