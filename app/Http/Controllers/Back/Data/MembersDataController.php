@@ -414,7 +414,7 @@ class MembersDataController extends Controller
                         </li>
                         </ul>";
             })
-            ->rawColumns(['online','user','balance','status','control','created_at','updated_at','content','rechLevel'])
+            ->rawColumns(['online','user','balance','status','control','created_at','updated_at','content','rechLevel','saveMoneyCount','drawMoneyCount'])
             ->make(true);
     }
 
