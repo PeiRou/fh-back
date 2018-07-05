@@ -370,7 +370,7 @@ class MembersDataController extends Controller
             })
             ->editColumn('saveMoneyCount',function ($users){
                 if($users->user_saveMoneyCount > 0){
-                    return "<b>".$users->user_saveMoneyCount."</b>";
+                    return "<b class='blue-text'>".$users->user_saveMoneyCount."</b>";
                 } else {
                     return $users->user_saveMoneyCount;
                 }
@@ -378,7 +378,7 @@ class MembersDataController extends Controller
             })
             ->editColumn('drawMoneyCount',function ($users){
                 if($users->user_drawMoneyCount > 0){
-                    return "<b>".$users->user_drawMoneyCount."</b>";
+                    return "<b class='blue-text'>".$users->user_drawMoneyCount."</b>";
                 } else {
                     return $users->user_drawMoneyCount;
                 }
