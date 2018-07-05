@@ -7,7 +7,8 @@ $(function () {
 
     $(document).keyup(function(event){
         if(event.keyCode == 13){
-           alert('回车')
+            dataTable.ajax.reload();
+            getTotalMoney();
         }
     });
 
