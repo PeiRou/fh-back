@@ -17,6 +17,8 @@
     <script src="/vendor/confirm/dist/jquery-confirm.min.js"></script>
     <script src="/vendor/dataTables/DataTables-1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="/vendor/dataTables/DataTables-1.10.16/js/dataTables.semanticui.min.js"></script>
+    <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
+    <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <style>
         body{
             font-family: '微软雅黑';
@@ -52,10 +54,10 @@
         <div class="ui mini form">
             <div class="fields">
                 <div class="one wide field">
-                    <select class="ui dropdown" id="status" style='height:32px !important'>
-                        <option value="">今日注单</option>
-                        <option value="1">昨日注单</option>
-                        <option value="2">历史注单</option>
+                    <select class="ui dropdown" id="date" style='height:32px !important'>
+                        <option value="today">今日注单</option>
+                        <option value="yesterday">昨日注单</option>
+                        <option value="history">历史注单</option>
                     </select>
                 </div>
                 <div class="one wide field">
@@ -63,29 +65,28 @@
                         <option value="">结算状态</option>
                         <option value="1">未结算</option>
                         <option value="2">已结算</option>
-                        <option value="2">撤销</option>
+                        <option value="3">撤销</option>
                     </select>
                 </div>
                 <div class="one wide field">
-                    <input type="text" id="account" placeholder="期数">
+                    <input type="text" id="issue" placeholder="期数">
                 </div>
                 <div class="one wide field">
-                    <input type="text" id="mobile" placeholder="订单号">
+                    <input type="text" id="orderNum" placeholder="订单号">
                 </div>
                 <div class="one wide field">
-                    <div class="ui calendar" id="rangestart">
+                    <div class="ui calendar" id="rangestart" style="width: 108px;">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
-                            <input type="text" id="timeStart" placeholder="时间-开始">
+                            <input type="text" id="startTime" value="{{ $today }}" placeholder="">
                         </div>
                     </div>
                 </div>
-                <div style="line-height: 32px;">-</div>
                 <div class="one wide field">
-                    <div class="ui calendar" id="rangeend">
+                    <div class="ui calendar" id="rangeend" style="width: 108px;">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
-                            <input type="text" id="timeEnd" placeholder="时间-结束">
+                            <input type="text" id="endTime" value="{{ $today }}" placeholder="">
                         </div>
                     </div>
                 </div>
@@ -129,6 +130,51 @@
 <script>
     $(function () {
         getCheckBox();
+
+        $('#rangestart').calendar({
+            type: 'date',
+            endCalendar: $('#rangeend'),
+            formatter: {
+                date: function (date, settings) {
+                    if (!date) return '';
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+                    return year+'-'+month+'-'+day;
+                }
+            },
+            text: {
+                days: ['日', '一', '二', '三', '四', '五', '六'],
+                months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                today: '今天',
+                now: '现在',
+                am: 'AM',
+                pm: 'PM'
+            }
+        });
+        $('#rangeend').calendar({
+            type: 'date',
+            startCalendar: $('#rangestart'),
+            formatter: {
+                date: function (date, settings) {
+                    if (!date) return '';
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+                    return year+'-'+month+'-'+day;
+                }
+            },
+            text: {
+                days: ['日', '一', '二', '三', '四', '五', '六'],
+                months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                today: '今天',
+                now: '现在',
+                am: 'AM',
+                pm: 'PM'
+            }
+        });
 
         dataTable = $('#userBetTable').DataTable({
             searching: false,

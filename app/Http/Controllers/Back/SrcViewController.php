@@ -74,7 +74,8 @@ class SrcViewController extends Controller
         $games = DB::table('game')->where('status',1)->get();
         $nowDate = date('Y-m-d');
         $yesterday = Carbon::parse($nowDate)->addDays(-1)->toDateString();
-        return view('back.userBetList',compact('getUserInfo','games','userId','nowDate','yesterday'));
+        $today = date('Y-m-d');
+        return view('back.userBetList',compact('getUserInfo','games','userId','nowDate','yesterday','today'));
     }
     //子账号
     public function subAccount()
