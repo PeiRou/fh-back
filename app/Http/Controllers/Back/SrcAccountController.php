@@ -48,18 +48,10 @@ class SrcAccountController extends Controller
                     Session::put('account_name',$find->name);
                     Session::put('account_permission',$collectionAuth);
 
-                    //登录后处理赔率文件
-                    $getPlayFiles = Storage::disk('static')->exists('plays.php');
-                    if($getPlayFiles){
-                        return response()->json([
-                            'status'=>true,
-                            'msg'=>'登录成功，正在进入'
-                        ]);
-                    } else {
-                        $plays = DB::table('play')->get();
-                        Storage::disk('static')->put('plays.php',json_encode($plays));
-                        return '不存在';
-                    }
+                    return response()->json([
+                        'status'=>true,
+                        'msg'=>'登录成功，正在进入'
+                    ]);
                 } else {
                     return response()->json([
                         'status'=>false,

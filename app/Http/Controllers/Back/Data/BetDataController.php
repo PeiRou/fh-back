@@ -470,7 +470,7 @@ class BetDataController extends Controller
                     $playCate = substr($bet->bet_play_id,2,2);
                     $play = substr($bet->bet_play_id,4,4);
                 }
-                return $this->plays->handle($bet->bet_game_id,$playCate,$play,$bet->bet_play_odds);
+//                return $this->plays->handle($bet->bet_game_id,$playCate,$play,$bet->bet_play_odds);
 //                return $this->play($bet->bet_game_id,$playCate,$play,$bet->bet_play_odds);
             })
             ->editColumn('rebate',function ($bet){
