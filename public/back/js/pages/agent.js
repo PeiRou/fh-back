@@ -63,11 +63,14 @@ function addAgent() {
             }
         },
         contentLoaded: function(data, status, xhr){
-            if(xhr.status == 403)
-            {
-                this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
-                $('.jconfirm-buttons').hide();
-            }
+            console.log(status);
+            console.log(data);
+            console.log(xhr);
+            // if(xhr.status == 403)
+            // {
+            //     this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
+            //     $('.jconfirm-buttons').hide();
+            // }
         }
     });
 }
