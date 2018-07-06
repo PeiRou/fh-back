@@ -188,6 +188,8 @@
                 data:function (d) {
                     d.games = check_val;
                     d.userId = {{ $userId }};
+                    d.date = $('#date').val();
+                    d.status = $('#status').val();
                 //     d.rechLevel = $('#rechLevel').val();
                 //     d.account = $('#account').val();
                 //     d.mobile = $('#mobile').val();

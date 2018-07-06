@@ -7,6 +7,7 @@ use App\Games;
 use App\Play;
 use App\PlayCates;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -422,6 +423,8 @@ class BetDataController extends Controller
     {
         $games = $request->get('games');
         $userId = $request->get('userId');
+        $date = $request->get('date');
+        $status = $request->get('status');
         $user = DB::table('users')->where('id',$userId)->first();
 //        return count($games);
         $bet = DB::table('bet')
@@ -431,6 +434,20 @@ class BetDataController extends Controller
                 if(count($games) !== 0){
                     foreach ($games as $item){
                         $query->orWhere("bet.game_id",$item);
+                    }
+                }
+            })
+            ->where(function ($query) use ($date){
+                if(isset($date) && $date){
+                    if($date == 'today'){
+                        $query->whereDate('created_at',date('Y-m-d'));
+                    }
+                    if($date == 'yesterday'){
+                        $yesterday = Carbon::now()->addDays(-1)->toDateString();
+                        $query->whereDate('created_at',$yesterday);
+                    }
+                    if($date == 'history'){
+
                     }
                 }
             })
