@@ -18,6 +18,10 @@
     <script src="/vendor/dataTables/DataTables-1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="/vendor/dataTables/DataTables-1.10.16/js/dataTables.semanticui.min.js"></script>
     <style>
+        body{
+            font-family: '微软雅黑';
+            font-size: 9pt;
+        }
         .user-bet-list .title{
             border-left: 3px solid red;
             font-size: 14px;
@@ -111,6 +115,7 @@
             <th>玩法类型</th>
             <th>返水</th>
             <th>下注金额</th>
+            <th>终端</th>
             <th>代理赔率/比</th>
             <th>代理返水/比</th>
             <th>会员输赢</th>
@@ -156,6 +161,7 @@
                 {data:'play'},
                 {data:'rebate'},
                 {data:'bet_money'},
+                {data:'platform'},
                 {data:'none1'},
                 {data:'none2'},
                 {data:'bunko'},
