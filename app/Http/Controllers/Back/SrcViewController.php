@@ -70,11 +70,11 @@ class SrcViewController extends Controller
     //会员注单详情 - 独占页面
     public function userBetList($userId)
     {
-//        $getUserInfo = User::where('id',$userId)->first();
-//        $games = DB::table('game')->where('status',1)->get();
-//        $nowDate = date('Y-m-d');
-//        $yesterday = Carbon::parse($nowDate)->addDays(-1)->toDateString();
-//        return view('back.userBetList',compact('getUserInfo','games','userId','nowDate','yesterday'));
+        $getUserInfo = User::where('id',$userId)->first();
+        $games = DB::table('game')->where('status',1)->get();
+        $nowDate = date('Y-m-d');
+        $yesterday = Carbon::parse($nowDate)->addDays(-1)->toDateString();
+        return view('back.userBetList',compact('getUserInfo','games','userId','nowDate','yesterday'));
     }
     //子账号
     public function subAccount()
