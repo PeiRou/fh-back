@@ -440,11 +440,11 @@ class BetDataController extends Controller
             ->where(function ($query) use ($date){
                 if(isset($date) && $date){
                     if($date == 'today'){
-                        $query->whereDate('created_at',date('Y-m-d'));
+                        $query->whereDate('bet.created_at',date('Y-m-d'));
                     }
                     if($date == 'yesterday'){
                         $yesterday = Carbon::now()->addDays(-1)->toDateString();
-                        $query->whereDate('created_at',$yesterday);
+                        $query->whereDate('bet.created_at',$yesterday);
                     }
                     if($date == 'history'){
 
