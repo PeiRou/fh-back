@@ -49,7 +49,11 @@ class SrcAccountController extends Controller
 
                     //登录后处理赔率文件
                     $getPlayFiles = Storage::disk('static')->exists('plays.php');
-                    echo $getPlayFiles;
+                    if($getPlayFiles){
+                        return '存在！';
+                    } else {
+                        return '不存在';
+                    }
 
 //                    return response()->json([
 //                        'status'=>true,
