@@ -51,17 +51,16 @@ class SrcAccountController extends Controller
                     //登录后处理赔率文件
                     $getPlayFiles = Storage::disk('static')->exists('plays.php');
                     if($getPlayFiles){
-                        return '存在！';
-                    } else {
-                        $plays = DB::table('play')->get();
-                        Storage::disk('static')->put('plays.php',$plays);
                         $getFile = Storage::disk('static')->get('plays.php');
                         $d = [];
                         foreach($getFile as $item){
                             $d[] = $item->id;
                         }
                         return $d;
-                        //return '不存在';
+                    } else {
+                        $plays = DB::table('play')->get();
+                        Storage::disk('static')->put('plays.php',$plays);
+                        return '不存在';
                     }
 
 //                    return response()->json([
