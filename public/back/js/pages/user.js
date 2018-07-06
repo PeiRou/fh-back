@@ -120,7 +120,7 @@ function editLevels(uid,nowLevel) {
         },
         contentLoaded: function(data, status, xhr){
             $('.jconfirm-content').css('overflow','hidden');
-            if(xhr == 'Forbidden')
+            if(data.status == 403)
             {
                 this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
                 $('.jconfirm-buttons').hide();
@@ -151,7 +151,7 @@ function addUser() {
         },
         contentLoaded: function(data, status, xhr){
             $('.jconfirm-content').css('overflow','hidden');
-            if(xhr == 'Forbidden')
+            if(data.status == 403)
             {
                 this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
                 $('.jconfirm-buttons').hide();
@@ -219,7 +219,7 @@ function changeAgent(id,username) {
         },
         contentLoaded: function(data, status, xhr){
             $('.jconfirm-content').css('overflow','hidden');
-            if(xhr == 'Forbidden')
+            if(data.status == 403)
             {
                 this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
                 $('.jconfirm-buttons').hide();
@@ -250,7 +250,7 @@ function changeFullName(id) {
         },
         contentLoaded: function(data, status, xhr){
             $('.jconfirm-content').css('overflow','hidden');
-            if(xhr == 'Forbidden')
+            if(data.status == 403)
             {
                 this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
                 $('.jconfirm-buttons').hide();
@@ -273,7 +273,7 @@ function viewInfo(id) {
         },
         contentLoaded: function(data, status, xhr){
             $('.jconfirm-content').css('overflow','hidden');
-            if(xhr == 'Forbidden')
+            if(data.status == 403)
             {
                 this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
                 $('.jconfirm-buttons').hide();
