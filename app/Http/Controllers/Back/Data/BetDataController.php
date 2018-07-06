@@ -426,7 +426,7 @@ class BetDataController extends Controller
 //        return count($games);
         $bet = DB::table('bet')
             ->leftJoin('game','bet.game_id','=','game.game_id')
-            ->select('bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.game_id as bet_game_id','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko','bet.created_at as bet_created_at','bet.play_odds as bet_play_odds')
+            ->select('bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko','bet.created_at as bet_created_at','bet.play_odds as bet_play_odds','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name')
             ->where(function ($query) use ($games){
                 if(count($games) !== 0){
                     foreach ($games as $item){
@@ -452,26 +452,7 @@ class BetDataController extends Controller
                 return '<span style="color: #'.$bet->bet_color.'">'.$bet->bet_issue.'</span>';
             })
             ->editColumn('play',function ($bet){
-                if($bet->bet_game_id == 1){
-                    $weishu = strlen((int)$bet->bet_game_id.$bet->bet_playcate_id);
-                    $playid_weishu = strlen((int)$bet->bet_play_id);
-                    $playCate = $bet->bet_playcate_id;
-                    $play = substr($bet->bet_play_id,$weishu,$playid_weishu-$weishu);
-                }
-                if($bet->bet_game_id == 80 || $bet->bet_game_id == 81 || $bet->bet_game_id == 82 || $bet->bet_game_id == 99 || $bet->bet_game_id == 90 || $bet->bet_game_id == 91){
-                    $playCate = substr($bet->bet_play_id,2,3);
-                    $play = substr($bet->bet_play_id,5,4);
-                }
-                if($bet->bet_game_id == 50){
-                    $playCate = substr($bet->bet_play_id,2,2);
-                    $play = substr($bet->bet_play_id,4,3);
-                }
-                if($bet->bet_game_id == 66 || $bet->bet_game_id == 65){
-                    $playCate = substr($bet->bet_play_id,2,2);
-                    $play = substr($bet->bet_play_id,4,4);
-                }
-//                return $this->plays->handle($bet->bet_game_id,$playCate,$play,$bet->bet_play_odds);
-//                return $this->play($bet->bet_game_id,$playCate,$play,$bet->bet_play_odds);
+                return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span>";
             })
             ->editColumn('rebate',function ($bet){
                 return '0';
