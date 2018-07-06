@@ -53,7 +53,7 @@ class SrcAccountController extends Controller
                     if($getPlayFiles){
                         return '存在！';
                     } else {
-                        $plays = DB::table('play')->all();
+                        $plays = DB::table('play')->get();
                         Storage::disk('static')->put('plays.php',$plays);
                         return '不存在';
                     }
