@@ -64,7 +64,7 @@ function addAgent() {
         },
         contentLoaded: function(data, status, xhr){
             console.log(status);
-            console.log(data);
+            console.log(data.status);
             console.log(xhr);
             // if(xhr.status == 403)
             // {
