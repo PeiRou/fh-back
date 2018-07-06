@@ -7,6 +7,7 @@ use App\Roles;
 use App\SubAccount;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -52,6 +53,8 @@ class SrcAccountController extends Controller
                     if($getPlayFiles){
                         return '存在！';
                     } else {
+                        $plays = DB::table('play')->all();
+                        Storage::disk('static')->put('plays.php',$plays);
                         return '不存在';
                     }
 
