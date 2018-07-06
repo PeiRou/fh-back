@@ -48,7 +48,7 @@ class SrcAccountController extends Controller
                     Session::put('account_permission',$collectionAuth);
 
                     //登录后处理赔率文件
-                    $getPlayFiles = Storage::disk('static')->get('plays.php');
+                    $getPlayFiles = Storage::disk('static')->exists('plays.php');
                     return $getPlayFiles;
 
 //                    return response()->json([
