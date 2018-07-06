@@ -55,7 +55,13 @@ class SrcAccountController extends Controller
                     } else {
                         $plays = DB::table('play')->get();
                         Storage::disk('static')->put('plays.php',$plays);
-                        return '不存在';
+                        $getFile = Storage::disk('static')->get('plays.php');
+                        $d = [];
+                        foreach($getFile as $item){
+                            $d[] = $item->id;
+                        }
+                        return $d;
+                        //return '不存在';
                     }
 
 //                    return response()->json([
