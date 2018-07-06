@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class SrcAccountController extends Controller
 {
@@ -45,10 +46,15 @@ class SrcAccountController extends Controller
                     Session::put('account',$find->account);
                     Session::put('account_name',$find->name);
                     Session::put('account_permission',$collectionAuth);
-                    return response()->json([
-                        'status'=>true,
-                        'msg'=>'登录成功，正在进入'
-                    ]);
+
+                    //登录后处理赔率文件
+                    $getPlayFiles = Storage::disk('static')->get('plays.php');
+                    return $getPlayFiles;
+
+//                    return response()->json([
+//                        'status'=>true,
+//                        'msg'=>'登录成功，正在进入'
+//                    ]);
                 } else {
                     return response()->json([
                         'status'=>false,
