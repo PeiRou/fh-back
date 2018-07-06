@@ -14,7 +14,16 @@ use Yajra\DataTables\DataTables;
 
 class BetDataController extends Controller
 {
+    protected $play;
     //今日注单
+    /**
+     * BetDataController constructor.
+     */
+    public function __construct($play)
+    {
+        $this->play = '1111';
+    }
+
     public function betToday(Request $request)
     {
         $searchType = $request->get('searchType');
@@ -459,6 +468,7 @@ class BetDataController extends Controller
                     $playCate = substr($bet->bet_play_id,2,2);
                     $play = substr($bet->bet_play_id,4,4);
                 }
+                return $this->play;
 //                return $this->play($bet->bet_game_id,$playCate,$play,$bet->bet_play_odds);
             })
             ->editColumn('rebate',function ($bet){
