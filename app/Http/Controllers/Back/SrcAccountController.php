@@ -53,13 +53,14 @@ class SrcAccountController extends Controller
                     if($getPlayFiles){
                         $getFile = Storage::disk('static')->get('plays.php');
                         $d = [];
-                        foreach($getFile as $item){
+                        $dd = json_decode($getFile);
+                        foreach($dd as $item){
                             $d[] = $item->id;
                         }
                         return $d;
                     } else {
                         $plays = DB::table('play')->get();
-                        Storage::disk('static')->put('plays.php',$plays);
+                        Storage::disk('static')->put('plays.php',json_encode($plays));
                         return '不存在';
                     }
 
