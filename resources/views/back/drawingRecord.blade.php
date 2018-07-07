@@ -104,8 +104,8 @@
         <table id="drawingRecordTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
-                <th>订单时间</th>
-                <th>处理日期</th>
+                <th width="75">订单时间</th>
+                <th width="75">处理日期</th>
                 <th>会员</th>
                 <th>层级</th>
                 <th>余额</th>
