@@ -8,13 +8,13 @@
     <div class="field">
         <label>封盘时间</label>
         <div class="ui input icon">
-            <input type="text" name="end_time"/>
+            <input type="text" name="end_time" value="{{ $endTime }}"/>
         </div>
     </div>
     <div class="field">
         <label>开奖时间</label>
         <div class="ui input icon">
-            <input type="text" name="open_time"/>
+            <input type="text" name="open_time" value="{{ $openTime }}"/>
         </div>
     </div>
 </form>
@@ -34,7 +34,7 @@
         "timePicker24Hour": true,
         "timePickerSeconds": true,
         locale: {
-            format: 'YYYY-MM-DD 21:30:00',
+            format: 'YYYY-MM-DD hh:mm:ss',
             "applyLabel": "确认",
             "cancelLabel": "取消",
             "daysOfWeek": [
@@ -69,7 +69,7 @@
         "timePicker24Hour": true,
         "timePickerSeconds": true,
         locale: {
-            format: 'YYYY-MM-DD 21:35:00',
+            format: 'YYYY-MM-DD hh:mm:ss',
             "applyLabel": "确认",
             "cancelLabel": "取消",
             "daysOfWeek": [

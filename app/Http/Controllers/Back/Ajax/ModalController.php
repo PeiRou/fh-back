@@ -430,6 +430,8 @@ class ModalController extends Controller
     //添加六合彩
     public function addLhcNewIssue()
     {
-        return view('back.modal.open.addLhcNewIssue',compact('levels'));
+        $endTime = date('Y-m-d 21:30:00');
+        $openTime = date('Y-m-d 21:35:00');
+        return view('back.modal.open.addLhcNewIssue',compact('endTime','openTime'));
     }
 }
