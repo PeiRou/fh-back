@@ -95,6 +95,9 @@ class New_Msnn
                 }
             }
         }
+        \Log::info('开奖号码：'.$openCode);
+        \Log::info('Win：'.$win);
+        \Log::info('WinArr1：'.$winArr1);
     }
 
     private function bunko($win,$lose,$winArr1,$gameId,$issue)
