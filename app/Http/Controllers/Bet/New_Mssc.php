@@ -1165,7 +1165,9 @@ class New_Mssc
         }
         \Log::info($users);
         $ids = implode(',',$users);
+        \Log::info($ids);
         $sql .= "END WHERE id IN (0,$ids)";
+        \Log::info($sql);
         $up = DB::statement($sql);
         if($up == 1){
             return 1;
