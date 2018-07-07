@@ -58,6 +58,7 @@ function addNewIssue() {
                 text:'确定添加',
                 btnClass: 'btn-blue',
                 action: function () {
+                    $('.daterangepicker').hide();
                     var form = this.$content.find('#addLhcNewIssueForm').data('formValidation').validate().isValid();
                     if(!form){
                         return false;
