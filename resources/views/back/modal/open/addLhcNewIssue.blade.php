@@ -18,9 +18,9 @@
         </div>
     </div>
 </form>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" href="/js/daterangepicker.css">
 <script src="/js/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="/js/daterangepicker.min.js"></script>
 <style>
     .daterangepicker{
         display: none;
