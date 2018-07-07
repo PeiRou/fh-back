@@ -23,6 +23,7 @@
 <script src="/js/daterangepicker.js"></script>
 <style>
     .daterangepicker{
+        display: none !important;
         z-index: 99999999 !important;
     }
 </style>
