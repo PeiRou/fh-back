@@ -8,7 +8,7 @@ $(function () {
         ordering:false,
         processing: true,
         serverSide: true,
-        aLengthMenu: [[25]],
+        aLengthMenu: [[50]],
         ajax: {
             url:'/back/datatables/openHistory/lhc',
             data:function (d) {
