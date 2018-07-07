@@ -11,7 +11,7 @@ class openHistoryController extends Controller
 {
     public function lhc(Request $request)
     {
-        $lhc = DB::table('game_lhc')->get();
+        $lhc = DB::table('game_lhc')->orderBy('id','DESC')->get();
         return DataTables::of($lhc)
             ->editColumn('issue',function ($lhc){
                 return "<b style='color: #".$lhc->color.";'>$lhc->issue</b>";
