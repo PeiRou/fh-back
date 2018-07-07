@@ -290,7 +290,7 @@ class FinanceDataController extends Controller
                 return '-';
             })
             ->editColumn('ip_info',function ($drawing){
-                return "<span data-tooltip='$drawing->dr_ip_info' data-inverted><i class='iconfont'>&#xe627;</i> $drawing->dr_ip</span>";
+                return "<span><i class='iconfont'>&#xe627;</i> $drawing->dr_ip</span></br><span>$drawing->dr_ip_info</span>";
             })
             ->editColumn('draw_type',function ($drawing){
                 if($drawing->dr_draw_type == 1){
