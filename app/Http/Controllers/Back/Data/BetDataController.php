@@ -15,18 +15,6 @@ use Yajra\DataTables\DataTables;
 
 class BetDataController extends Controller
 {
-    protected $plays;
-
-    /**
-     * BetDataController constructor.
-     * @param $plays
-     */
-    public function __construct(\App\Helpers\Play $plays)
-    {
-        $this->plays = $plays;
-    }
-
-
     public function betToday(Request $request)
     {
         $searchType = $request->get('searchType');
