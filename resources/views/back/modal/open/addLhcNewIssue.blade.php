@@ -1,4 +1,4 @@
-<form id="addLhcNewIssueForm" class="ui mini form" action="">
+<form id="addLhcNewIssueForm" class="ui mini form" action="{{ url('/action/admin/addLhcNewIssue') }}">
     <div class="field">
         <label>期号</label>
         <div class="ui input icon">
@@ -138,6 +138,10 @@
             data: $form.serialize(),
             success: function(result) {
                 if(result.status == true){
+                    jc.close();
+                    $('#lhcHistoryTable').DataTable().ajax.reload(null,false);
+                } else {
+                    Calert(result.msg,'red');
                     jc.close();
                     $('#lhcHistoryTable').DataTable().ajax.reload(null,false);
                 }
