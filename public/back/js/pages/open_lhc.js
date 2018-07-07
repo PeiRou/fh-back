@@ -17,7 +17,7 @@ $(function () {
         },
         columns: [
             {data:'issue'},
-            {data:'open_time'},
+            {data:'opentime'},
             {data:'n1'},
             {data:'n2'},
             {data:'n3'},
@@ -27,7 +27,7 @@ $(function () {
             {data:'n7'},
             {data:'sx'},
             {data:'total_num'},
-            {data:'status'},
+            {data:'is_open'},
             {data:'control'}
         ],
         language: {

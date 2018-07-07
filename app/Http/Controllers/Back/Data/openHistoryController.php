@@ -13,6 +13,10 @@ class openHistoryController extends Controller
     {
         $lhc = DB::table('game_lhc')->get();
         return DataTables::of($lhc)
+            ->editColumn('control',function ($lhc){
+                return 1;
+            })
+            ->rawColumns([])
             ->make(true);
     }
 }
