@@ -1163,11 +1163,11 @@ class New_Mssc
             $users[] = $i->user_id;
             $sql .= "WHEN $i->user_id THEN $i->s ";
         }
-        \Log::info($users);
+        //\Log::info($users);
         $ids = implode(',',$users);
-        \Log::info($ids);
+        //\Log::info($ids);
         $sql .= "END WHERE id IN (0,$ids)";
-        \Log::info($sql);
+        //\Log::info($sql);
         $up = DB::statement($sql);
         if($up == 1){
             return 1;
