@@ -111,7 +111,7 @@
                 <th>余额</th>
                 <th width="65">有效投注</th>
                 <th width="65">提款总次数</th>
-                <th width="180">订单号</th>
+                <th>订单号</th>
                 <th>流水层</th>
                 <th>交易金额</th>
                 <th>操作人</th>
