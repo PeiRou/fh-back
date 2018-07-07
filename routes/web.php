@@ -247,7 +247,7 @@ Route::get('/back/modal/editUserLevels/{uid}/{nowLevels}','Back\Ajax\ModalContro
 Route::get('/back/modal/rechargeError/{id}','Back\Ajax\ModalController@rechargeError');
 Route::get('/back/modal/drawingError/{id}','Back\Ajax\ModalController@drawingError');
 Route::get('/back/modal/user48hoursInfo/{uid}','Back\Ajax\ModalController@user48hoursInfo');
-Route::get('/back/modal/addLhcNewIssue','Back\Ajax\ModalController@addLhcNewIssue')->middleware('check-permission')->name('historyLottery.xglhc');
+Route::get('/back/modal/addLhcNewIssue','Back\Ajax\ModalController@addLhcNewIssue');
 
 //游戏MODAL
 Route::get('/back/modal/gameSetting/{id}','Back\Ajax\ModalController@gameSetting');
