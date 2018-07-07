@@ -15,10 +15,10 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
-                    <div class="two wide field">
+                    <div class="one wide field">
                         <input type="text" id="account" placeholder="期号">
                     </div>
-                    <div class="two wide field">
+                    <div class="one wide field">
                         <input type="text" id="mobile" placeholder="开奖时间">
                     </div>
                     <div class="field">
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <table id="lhcHistoryTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="lhcHistoryTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>期数</th>
