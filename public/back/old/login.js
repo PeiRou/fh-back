@@ -1,8 +1,18 @@
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-    }
+$(function () {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+        }
+    });
+
+    $(document).keyup(function(event){
+        if(event.keyCode == 13){
+            login();
+        }
+    });
 });
+
+
 
 function login() {
     var userName = $("#userName").val();
