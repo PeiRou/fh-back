@@ -843,7 +843,7 @@ class New_Cqssc
             $sql .= "WHEN $i->user_id THEN $i->s ";
         }
         $ids = implode(',',$users);
-        $sql .= "END WHERE id IN ($ids)";
+        $sql .= "END WHERE id IN (0,$ids)";
         $up = DB::statement($sql);
         if($up == 1){
             return 1;
