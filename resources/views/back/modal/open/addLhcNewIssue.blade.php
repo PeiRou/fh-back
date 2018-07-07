@@ -28,10 +28,11 @@
     }
 </style>
 <script>
-    $('input[name="end_time"]').on('click',function () {
-        $('.daterangepicker').show();
-    });
     $('input[name="end_time"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "timePickerSeconds": true,
         locale: {
             format: 'YYYY-MM-DD',
             "applyLabel": "确认",
