@@ -17,9 +17,12 @@ class openHistoryController extends Controller
                 return "<b style='color: #".$lhc->color.";'>$lhc->issue</b>";
             })
             ->editColumn('control',function ($lhc){
-                return 1;
+                return "<ul class='control-menu'>
+                        <li onclick='edit(\"$lhc->id\")'>修改</li>
+                        <li onclick='changeUserMoney(\"$lhc->id\")'>手动开奖</li>
+                        </ul>";
             })
-            ->rawColumns([])
+            ->rawColumns(['issue','control'])
             ->make(true);
     }
 }
