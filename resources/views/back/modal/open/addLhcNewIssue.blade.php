@@ -34,7 +34,7 @@
         "timePicker24Hour": true,
         "timePickerSeconds": true,
         locale: {
-            format: 'YYYY-MM-DD hh:mm:ss',
+            format: 'YYYY-MM-DD HH:mm:ss',
             "applyLabel": "确认",
             "cancelLabel": "取消",
             "daysOfWeek": [
@@ -69,7 +69,7 @@
         "timePicker24Hour": true,
         "timePickerSeconds": true,
         locale: {
-            format: 'YYYY-MM-DD hh:mm:ss',
+            format: 'YYYY-MM-DD HH:mm:ss',
             "applyLabel": "确认",
             "cancelLabel": "取消",
             "daysOfWeek": [
