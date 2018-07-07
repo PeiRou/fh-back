@@ -77,7 +77,8 @@ class RechargeController extends Controller
                 'operation_account' => Session::get('account'),
                 'status' => 3,
                 'addMoney' => 1,
-                'process_date' => date('Y-m-d H:i:s')
+                'process_date' => date('Y-m-d H:i:s'),
+                'msg' => '第三方回调失败，已手动入款'
             ]);
         if($updateRechargeStatus == 1){
             return response()->json([
