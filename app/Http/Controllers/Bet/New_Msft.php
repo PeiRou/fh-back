@@ -1128,7 +1128,7 @@ class New_Msft
     }
 
     private function bunko($win,$gameId,$issue){
-        $id=[];
+        $id = [];
         foreach ($win as $k=>$v){
             $id[] = $v;
         }

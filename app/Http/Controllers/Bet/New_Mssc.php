@@ -1163,6 +1163,7 @@ class New_Mssc
             $users[] = $i->user_id;
             $sql .= "WHEN $i->user_id THEN $i->s ";
         }
+        \Log::info($users);
         $ids = implode(',',$users);
         $sql .= "END WHERE id IN (0,$ids)";
         $up = DB::statement($sql);
