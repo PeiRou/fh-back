@@ -104,8 +104,8 @@
         <table id="drawingRecordTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
-                <th width="75">订单时间</th>
-                <th width="75">处理日期</th>
+                <th >订单时间</th>
+                <th >处理日期</th>
                 <th>会员</th>
                 <th>层级</th>
                 <th>余额</th>
@@ -115,8 +115,8 @@
                 <th>流水层</th>
                 <th>交易金额</th>
                 <th>操作人</th>
-                <th>银行信息</th>
-                <th>IP信息</th>
+                <th width="370">银行信息</th>
+                <th width="165">IP信息</th>
                 <th>终端</th>
                 <th>出款方式</th>
                 <th>状态</th>
