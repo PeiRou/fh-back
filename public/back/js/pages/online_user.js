@@ -3,6 +3,7 @@ $(function () {
     $('#menu-userManage-online').addClass('active');
 
     $('#onlineUserTable').DataTable({
+        aLengthMenu: [[50]],
         searching: false,
         bLengthChange: false,
         processing: true,
