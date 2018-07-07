@@ -26,8 +26,6 @@
     </ul>
 </div>
 
-{{ base64_decode('eyJyZXNwQ29kZSI6IjAwMDAiLCJ0b3RhbEFtb3VudCI6IjUwMDAwIiwicmVzcE1zZyI6IiIsInBheVRyYW5zSWQiOiIyMDAwNjIwMTgwNzA3MTcyNTQ0MDU3NDM2OTQzIiwic2V0dGxlRGF0ZSI6IjIwMTgwNzA3IiwicmVzcFRpbWUiOiIyMDE4MDcwNzEwMDYwMCIsInBheVRpbWUiOiIyMDE4MDcwNzE3MjY1NSIsIm9yZGVySWQiOiJQQVkyMDE4MDcwNzE3MjU0MzE0NjczODAzIn0=') }}
-
 <div class="loginbody">
     <span class="systemlogo"></span>
     <div class="loginbox">
