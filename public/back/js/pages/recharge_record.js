@@ -239,7 +239,7 @@ function errorOnlinePay(id){
         content: '此操作用于第三方支付无法回调时，手动添加用户充值的操作，点击【驳回】后，第三方恢复回调后，避免重复给用户添加余额！您确认要驳回吗？',
         buttons: {
             confirm: {
-                text:'确定通过',
+                text:'确定',
                 btnClass: 'btn-red',
                 action: function(){
                     $.ajax({
