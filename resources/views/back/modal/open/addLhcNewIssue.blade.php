@@ -21,6 +21,11 @@
 <link rel="stylesheet" href="/js/daterangepicker.css">
 <script src="/js/moment.min.js"></script>
 <script src="/js/daterangepicker.js"></script>
+<style>
+    .daterangepicker{
+        z-index: 99999999 !important;
+    }
+</style>
 <script>
     $('input[name="end_time"]').daterangepicker({
         locale: {
