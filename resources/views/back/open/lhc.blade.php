@@ -8,7 +8,7 @@
             <b>位置：</b>六合彩历史记录
         </div>
         <div class="content-top-buttons">
-            <span onclick="addBank()">新增下一期</span>
+            <span onclick="addNewIssue()">新增下一期</span>
         </div>
     </div>
     <div class="table-content">

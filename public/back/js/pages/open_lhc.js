@@ -45,3 +45,33 @@ $(function () {
         }
     });
 });
+
+function addNewIssue() {
+    jc = $.confirm({
+        theme: 'material',
+        title: '六合彩-新增期数',
+        closeIcon:true,
+        boxWidth:'20%',
+        content: 'url:/back/modal/addLhcNewIssue',
+        buttons: {
+            formSubmit: {
+                text:'确定添加',
+                btnClass: 'btn-blue',
+                action: function () {
+                    var form = this.$content.find('#addLhcNewIssueForm').data('formValidation').validate().isValid();
+                    if(!form){
+                        return false;
+                    }
+                    return false;
+                }
+            }
+        },
+        contentLoaded: function(data, status, xhr){
+            if(data.status == 403)
+            {
+                this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
+                $('.jconfirm-buttons').hide();
+            }
+        }
+    });
+}
