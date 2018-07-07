@@ -16,6 +16,14 @@ class openHistoryController extends Controller
             ->editColumn('issue',function ($lhc){
                 return "<b style='color: #".$lhc->color.";'>$lhc->issue</b>";
             })
+            ->editColumn('is_open',function ($lhc){
+                if($lhc->is_open == 1){
+                    return '已开奖';
+                }
+                if($lhc->is_open == 0){
+                    return '暂未开奖';
+                }
+            })
             ->editColumn('control',function ($lhc){
                 return "<ul class='control-menu'>
                         <li onclick='edit(\"$lhc->id\")'>修改</li>
