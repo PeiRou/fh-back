@@ -169,7 +169,9 @@ class FinanceDataController extends Controller
                 }
             })
             ->editColumn('control',function ($recharge){
-                if($recharge->re_payType == 'onlinePayment' || $recharge->re_payType == 'adminAddMoney'){
+                if($recharge->re_payType == 'onlinePayment'){
+                    return '<span class="hover-black" onclick="errorOnlinePay(\''.$recharge->rid.'\')">驳回</span>';
+                } else if($recharge->re_payType == 'adminAddMoney') {
                     return "<span class='light-gary-text'>通过 | 驳回</span>";
                 } else {
                     if($recharge->re_status == 2 || $recharge->re_status == 3){
