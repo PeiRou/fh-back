@@ -18,6 +18,9 @@
         </div>
     </div>
 </form>
+<link rel="stylesheet" href="/js/daterangepicker.css">
+<script src="/js/moment.min.js"></script>
+<script src="/js/daterangepicker.js"></script>
 <script>
     $('#addLhcNewIssueForm').formValidation({
         framework: 'semantic',
