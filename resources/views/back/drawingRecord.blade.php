@@ -119,8 +119,8 @@
                 <th width="165">IP信息</th>
                 <th>终端</th>
                 <th>出款方式</th>
-                <th>状态</th>
-                <th>操作</th>
+                <th width="72">状态</th>
+                <th width="92">操作</th>
             </tr>
             </thead>
         </table>
