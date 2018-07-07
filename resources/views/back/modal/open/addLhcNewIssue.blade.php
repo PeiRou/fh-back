@@ -28,6 +28,9 @@
     }
 </style>
 <script>
+    $('input[name="end_time"]').on('click',function () {
+        $('.daterangepicker').show();
+    });
     $('input[name="end_time"]').daterangepicker({
         locale: {
             format: 'YYYY-MM-DD',
