@@ -230,6 +230,47 @@ function error(id) {
     });
 }
 
+function errorOnlinePay(id){
+    jc = $.confirm({
+        title: '驳回在线充值申请',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '此操作用于第三方支付无法回调时，手动添加用户充值的操作，点击【驳回】后，第三方恢复回调后，避免重复给用户添加余额！您确认要驳回吗？',
+        buttons: {
+            confirm: {
+                text:'确定通过',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/action/admin/passOnlineRecharge',
+                        type:'post',
+                        dataType:'json',
+                        data:{id:id},
+                        success:function (data) {
+                            if(data.status == true){
+                                Calert('充值状态已更新','green');
+                                $('#rechargeRecordTable').DataTable().ajax.reload(null,false)
+                            } else {
+                                Calert(data.msg,'red')
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
+
 $('#recharge_type').on('change',function () {
     var rechargeType = $(this).val();
     if(rechargeType == ""){

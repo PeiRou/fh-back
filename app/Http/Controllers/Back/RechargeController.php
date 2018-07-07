@@ -68,6 +68,29 @@ class RechargeController extends Controller
         }
     }
 
+    public function passOnlineRecharge(Request $request)
+    {
+        $id = $request->get('id');
+        $updateRechargeStatus = Recharges::where('id',$id)
+            ->update([
+                'operation_id' => Session::get('account_id'),
+                'operation_account' => Session::get('account'),
+                'status' => 3,
+                'addMoney' => 1,
+                'process_date' => date('Y-m-d H:i:s')
+            ]);
+        if($updateRechargeStatus == 1){
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => '更新用户充值状态失败，请重试！'
+            ]);
+        }
+    }
+
     //驳回
     public function addRechargeError(Request $request)
     {

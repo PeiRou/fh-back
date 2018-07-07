@@ -193,6 +193,7 @@ Route::post('/action/admin/changeGameStatus','Back\SrcGameController@changeGameS
 Route::post('/action/admin/saveOddsRebate','Back\SrcGameController@saveOddsRebate');//修改游戏开启和停用状态
 
 Route::post('/action/admin/passRecharge','Back\RechargeController@passRecharge'); //通过充值申请
+Route::post('/action/admin/passOnlineRecharge','Back\RechargeController@passOnlineRecharge'); //通过在线充值申请
 Route::post('/action/admin/addRechargeError','Back\RechargeController@addRechargeError'); //驳回充值申请
 
 Route::post('/action/admin/passDrawing','Back\DrawingController@passDrawing'); //通过提款申请
