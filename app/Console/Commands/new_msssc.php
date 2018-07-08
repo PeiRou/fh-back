@@ -51,7 +51,7 @@ class new_msssc extends Command
         $action = $this->argument('action');
         if($action !== ''){
             Redis::select(0); //杀-专用redis库
-            Redis::setex('sha:msssc',10,$action);
+            Redis::setex('sha:msssc',60,$action);
         }
         $this->go();
     }
