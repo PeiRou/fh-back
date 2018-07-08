@@ -95,6 +95,7 @@ class new_msssc extends Command
             Redis::set('msssc:nextIssue',(int)$nextIssue+1);
             Redis::set('msssc:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+            Redis::del('sha:msssc');
 
             try{
                 DB::table('game_msssc')->where('issue',$res->expect)->update([
