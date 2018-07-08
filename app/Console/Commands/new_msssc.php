@@ -51,7 +51,7 @@ class new_msssc extends Command
         $action = $this->argument('action');
         if($action !== ''){
             Redis::select(0); //杀-专用redis库
-            Redis::setex('sha:msssc',40,$action);
+            Redis::setex('sha:msssc',60,$action);
         }
         $this->go();
     }
@@ -71,16 +71,19 @@ class new_msssc extends Command
             }
         });
         if($filtered!=null){
+            $sha = Redis::get('sha:msssc');
             if($filtered['issue'] >= 793 && $filtered['issue'] <= 985){
                 $date = Carbon::parse(date('Y-m-d'))->addDays(-1);
                 $params =  [
                     'issue' => date('ymd',strtotime($date)).$filtered['issue'],
-                    'openTime' => date('Y-m-d ').$filtered['time']
+                    'openTime' => date('Y-m-d ').$filtered['time'],
+                    'sha' => $sha
                 ];
             } else {
                 $params =  [
                     'issue' => date('ymd').$filtered['issue'],
-                    'openTime' => date('Y-m-d ').$filtered['time']
+                    'openTime' => date('Y-m-d ').$filtered['time'],
+                    'sha' => $sha
                 ];
             }
             $res = curl(Config::get('website.openServerUrl').$this->code,$params,1);
