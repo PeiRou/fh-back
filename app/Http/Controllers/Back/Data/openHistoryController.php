@@ -28,13 +28,13 @@ class openHistoryController extends Controller
                 if($lhc->is_open == 0){
                     return "<ul class='control-menu'>
                         <li onclick='edit(\"$lhc->id\")'>修改</li>
-                        <li onclick='changeUserMoney(\"$lhc->id\")'>手动开奖</li>
+                        <li onclick='open(\"$lhc->id\")'>手动开奖</li>
                         </ul>";
                 }
                 if($lhc->is_open == 1){
                     return "<ul class='control-menu'>
-                        <li onclick='edit(\"$lhc->id\")'>重新开奖</li>
-                        <li onclick='changeUserMoney(\"$lhc->id\")'>撤单</li>
+                        <li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>
+                        <li onclick='cancel(\"$lhc->id\")'>撤单</li>
                         </ul>";
                 }
             })
