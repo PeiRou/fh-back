@@ -49,10 +49,8 @@ class new_msssc extends Command
     public function handle()
     {
         $action = $this->argument('action');
-        if($action !== ''){
-            Redis::select(0); //杀-专用redis库
-            Redis::set('sha:msssc',$action);
-        }
+        Redis::select(0); //杀-专用redis库
+        Redis::setex('sha:msssc',40,$action);
         $this->go();
 
     }
@@ -96,7 +94,6 @@ class new_msssc extends Command
             Redis::set('msssc:nextIssue',(int)$nextIssue+1);
             Redis::set('msssc:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-            Redis::del('sha:msssc');
 
             try{
                 DB::table('game_msssc')->where('issue',$res->expect)->update([
