@@ -52,9 +52,9 @@ class new_msssc extends Command
         if($action !== ''){
             Redis::select(0); //杀-专用redis库
             Redis::set('sha:msssc',$action);
-        } else {
-            $this->go();
         }
+        $this->go();
+
     }
 
     public function go()
