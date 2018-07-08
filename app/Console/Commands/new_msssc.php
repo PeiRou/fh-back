@@ -21,7 +21,7 @@ class new_msssc extends Command
      *
      * @var string
      */
-    protected $signature = 'new_msssc';
+    protected $signature = 'new_msssc {action?}';
 
     /**
      * The console command description.
@@ -47,6 +47,16 @@ class new_msssc extends Command
      * @return mixed
      */
     public function handle()
+    {
+        $action = $this->argument('action');
+        if($action !== ''){
+            Redis::select(8); //杀-专用redis库
+            Redis::setex('sha:msssc',10,$action);
+        }
+        $this->go();
+    }
+
+    public function go()
     {
         $getFile    = Storage::disk('gameTime')->get('msssc.json');
         $data       = json_decode($getFile,true);
