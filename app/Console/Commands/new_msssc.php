@@ -49,9 +49,12 @@ class new_msssc extends Command
     public function handle()
     {
         $action = $this->argument('action');
-        Redis::select(0); //杀-专用redis库
-        Redis::set('sha:msssc',$action);
-        $this->go();
+        if($action !== ''){
+            Redis::select(0); //杀-专用redis库
+            Redis::set('sha:msssc',$action);
+        } else {
+            $this->go();
+        }
     }
 
     public function go()
