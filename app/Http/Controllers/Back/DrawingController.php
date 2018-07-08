@@ -26,29 +26,37 @@ class DrawingController extends Controller
             $nowUserDrawTimes = $userDrawTimes+1;
             $nowUserDrawMoneyCount = $userDrawMoneyCount + $getUserId->amount;
 
-            $update = DB::table('drawing')->where('id',$id)->update([
-                'status' => 2,
-                'operation_id' => Session::get('account_id'),
-                'operation_account' => Session::get('account_name'),
-                'process_date' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
-            ]);
-            if($update == 1){
-                $updateUserInfo = User::where('id',$userId)
-                    ->update([
-                        'DrawTimes' => $nowUserDrawTimes,
-                        'drawMoneyCount' => $nowUserDrawMoneyCount
-                    ]);
-                if($updateUserInfo == 1){
-                    return response()->json([
-                        'status' => true
-                    ]);
-                } else {
-                    return response()->json([
-                        'status' => false,
-                        'msg' => '更新用户提款信息失败，请重试！'
-                    ]);
+            $lock = $getUserId->locked;
+            if($lock == 0){
+                $update = DB::table('drawing')->where('id',$id)->update([
+                    'status' => 2,
+                    'operation_id' => Session::get('account_id'),
+                    'operation_account' => Session::get('account_name'),
+                    'process_date' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+                if($update == 1){
+                    $updateUserInfo = User::where('id',$userId)
+                        ->update([
+                            'DrawTimes' => $nowUserDrawTimes,
+                            'drawMoneyCount' => $nowUserDrawMoneyCount
+                        ]);
+                    if($updateUserInfo == 1){
+                        return response()->json([
+                            'status' => true
+                        ]);
+                    } else {
+                        return response()->json([
+                            'status' => false,
+                            'msg' => '更新用户提款信息失败，请重试！'
+                        ]);
+                    }
                 }
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'msg' => '用户提款申请已被处理！'
+                ]);
             }
         }
     }
