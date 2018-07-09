@@ -126,6 +126,7 @@
     
     function getLHCData(issue) {
         $('.modal-mask').fadeIn();
+        $('.getBtn').html('获取中...');
         var subIssue = issue.slice(2);
         $.ajax({
             url:'/back/openData/lhc/'+subIssue,
@@ -134,6 +135,7 @@
             success:function (result) {
                 if(result.status == true){
                     $('#n1').val(result.n1);
+                    $('.getBtn').html('获取成功（点击可重新获取）');
                     $('.modal-mask').fadeOut();
                 }
                 if(result.status == false){
