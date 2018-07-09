@@ -37,7 +37,7 @@
                 <option value=""></option>
             </select>
         </div>
-        <div class="ui input icon" style="width: 104px !important;">
+        <div class="ui input icon" style="width: 104px !important;margin-right: 0;">
             <span style="width: 70px;margin-left: 10px;line-height: 37px;">特码：</span>
             <select class="ui dropdown" name="nums">
                 <option value=""></option>
