@@ -104,12 +104,11 @@
         });
     });
     
-    function getLHCData(issue) {
+    function getLHCData(date) {
         $('.modal-mask').fadeIn();
         $('.getBtn').html('获取中...');
-        var subIssue = issue.slice(2);
         $.ajax({
-            url:'/back/openData/lhc/'+subIssue,
+            url:'/back/openData/lhc/'+date,
             type:'get',
             dataType:'json',
             success:function (result) {
