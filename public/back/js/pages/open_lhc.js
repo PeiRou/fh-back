@@ -138,3 +138,34 @@ function openLhc(id) {
         }
     });
 }
+
+function reOpen(id) {
+    jc = $.confirm({
+        theme: 'material',
+        title: '六合彩-重新开奖',
+        closeIcon:true,
+        boxWidth:'30%',
+        content: 'url:/back/modal/reOpenLhc/'+id,
+        buttons: {
+            formSubmit: {
+                text:'确定',
+                btnClass: 'btn-blue',
+                action: function () {
+                    $('.daterangepicker').hide();
+                    var form = this.$content.find('#reOpenLhc').data('formValidation').validate().isValid();
+                    if(!form){
+                        return false;
+                    }
+                    return false;
+                }
+            }
+        },
+        contentLoaded: function(data, status, xhr){
+            if(data.status == 403)
+            {
+                this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
+                $('.jconfirm-buttons').hide();
+            }
+        }
+    });
+}

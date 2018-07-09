@@ -206,6 +206,7 @@ Route::post('/action/admin/addLhcNewIssue','Back\OpenHistoryController@addLhcNew
 Route::post('/action/admin/editLhcNewIssue','Back\OpenHistoryController@editLhcNewIssue');
 
 Route::post('/action/admin/openLhc','Back\OpenHistoryController@addLhcData');
+Route::post('/action/admin/reOpenLhc','Back\OpenHistoryController@reOpenLhcData');
 
 //Modal
 Route::get('/back/modal/addPermission','Back\Ajax\ModalController@addPermission');
@@ -255,6 +256,7 @@ Route::get('/back/modal/user48hoursInfo/{uid}','Back\Ajax\ModalController@user48
 Route::get('/back/modal/addLhcNewIssue','Back\Ajax\ModalController@addLhcNewIssue');
 Route::get('/back/modal/editLhcNewIssue/{id}','Back\Ajax\ModalController@editLhcNewIssue');
 Route::get('/back/modal/openLhc/{id}','Back\Ajax\ModalController@openLhc');
+Route::get('/back/modal/reOpenLhc/{id}','Back\Ajax\ModalController@reOpenLhc');
 
 //游戏MODAL
 Route::get('/back/modal/gameSetting/{id}','Back\Ajax\ModalController@gameSetting');

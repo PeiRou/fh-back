@@ -446,4 +446,10 @@ class ModalController extends Controller
         $lhc = DB::table('game_lhc')->where('id',$id)->first();
         return view('back.modal.open.openLHC',compact('lhc'));
     }
+    //六合彩重新开奖
+    public function reOpenLhc($id = '')
+    {
+        $lhc = DB::table('game_lhc')->where('id',$id)->first();
+        return view('back.modal.open.reOpenLHC',compact('lhc'));
+    }
 }
