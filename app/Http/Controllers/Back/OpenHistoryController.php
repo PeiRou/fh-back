@@ -106,7 +106,8 @@ class OpenHistoryController extends Controller
             'msg' => $msg,
             'open_num' => $openNum,
             'sx' => $sx,
-            'total_num' => $totalNum
+            'total_num' => $totalNum,
+            'is_open' => 1
         ]);
         if($update == 1){
             return response()->json([
