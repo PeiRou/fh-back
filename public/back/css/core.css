@@ -30,6 +30,7 @@ body{
 .openSelect div{
     width: 55px !important;
     float: left;
+    margin-right: 10px;
 }
 .loading-gif{
     background: url("/back/img/l.gif") no-repeat;
