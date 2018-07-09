@@ -25,7 +25,7 @@ $(function () {
             {data:'n5'},
             {data:'n6'},
             {data:'n7'},
-            {data:'sx'},
+            {data:'n7_sx'},
             {data:'total_num'},
             {data:'is_open'},
             {data:'control'}
