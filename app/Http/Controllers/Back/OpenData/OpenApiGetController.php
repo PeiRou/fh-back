@@ -17,7 +17,7 @@ class OpenApiGetController extends Controller
 //            $arrCode = explode(',',$json['number']);
             return response()->json([
                 'code' => 200,
-                'data'=> $json[$issue]['number'],
+                'data'=> $json,
                 'status' => true,
 //                'openCode' => $json['number'],
 //                'n1' => $arrCode[0],
