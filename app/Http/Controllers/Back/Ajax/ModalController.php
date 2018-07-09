@@ -440,4 +440,10 @@ class ModalController extends Controller
         $lhc = DB::table('game_lhc')->where('id',$id)->first();
         return view('back.modal.open.editLhcNewIssue',compact('lhc'));
     }
+    //六合彩手动开奖
+    public function openLhc($id = '')
+    {
+        $lhc = DB::table('game_lhc')->where('id',$id)->first();
+        return view('back.modal.open.openLHC',compact('lhc'));
+    }
 }

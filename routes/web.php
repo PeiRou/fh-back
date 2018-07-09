@@ -252,6 +252,7 @@ Route::get('/back/modal/drawingError/{id}','Back\Ajax\ModalController@drawingErr
 Route::get('/back/modal/user48hoursInfo/{uid}','Back\Ajax\ModalController@user48hoursInfo');
 Route::get('/back/modal/addLhcNewIssue','Back\Ajax\ModalController@addLhcNewIssue');
 Route::get('/back/modal/editLhcNewIssue/{id}','Back\Ajax\ModalController@editLhcNewIssue');
+Route::get('/back/modal/openLhc/{id}','Back\Ajax\ModalController@openLhc');
 
 //游戏MODAL
 Route::get('/back/modal/gameSetting/{id}','Back\Ajax\ModalController@gameSetting');
