@@ -124,7 +124,7 @@
     function getLHCData(issue) {
         var subIssue = issue.slice(2);
         $.ajax({
-            url:'http://vip.jiangyuan365.com/K25ae456c03d2df/'+subIssue+'/xglhc.json',
+            url:'https://vip.jiangyuan365.com/K25ae456c03d2df/'+subIssue+'/xglhc.json',
             type:'get',
             dataType:'json',
             success:function (result) {
