@@ -113,7 +113,7 @@ function openLhc(id) {
         theme: 'material',
         title: '六合彩-手动开奖',
         closeIcon:true,
-        boxWidth:'38%',
+        boxWidth:'30%',
         content: 'url:/back/modal/openLhc/'+id,
         buttons: {
             formSubmit: {

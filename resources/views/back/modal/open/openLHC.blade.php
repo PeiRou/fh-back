@@ -44,6 +44,20 @@
             </select>
         </div>
     </div>
+    <div class="field">
+        <label>自动获取</label>
+        <span onclick="getLHCData()">点击获取开奖号码</span>
+    </div>
+    <div class="field">
+        <label>开奖理由</label>
+        <select class="ui dropdown" name="msg">
+            <option value="1">无</option>
+            <option value="2">官方未开奖</option>
+            <option value="3">水位错误</option>
+            <option value="4">非正常投注</option>
+            <option value="5">未接受注单</option>
+        </select>
+    </div>
     <input type="hidden" name="id" value="{{ $lhc->id }}">
 </form>
 
@@ -106,4 +120,8 @@
             }
         });
     });
+    
+    function getLHCData() {
+        alert('1');
+    }
 </script>
