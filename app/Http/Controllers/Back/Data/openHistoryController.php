@@ -59,7 +59,7 @@ class openHistoryController extends Controller
                         </ul>";
                 }
             })
-            ->rawColumns(['issue','control'])
+            ->rawColumns(['issue','control','n1','n2','n3','n4','n5','n6','n7'])
             ->make(true);
     }
 }
