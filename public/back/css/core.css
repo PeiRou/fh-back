@@ -666,6 +666,39 @@ a:active{text-decoration: none}
     cursor: pointer;
     background: #d2d1d1;
 }
+.lhc-sb-r{
+    background: #fff;
+    border: 6px solid red;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 100px;
+    font-weight: bolder;
+}
+.lhc-sb-g{
+    background: #fff;
+    border: 6px solid green;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 100px;
+    font-weight: bolder;
+}
+.lhc-sb-b{
+    background: #fff;
+    border: 6px solid blue;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 100px;
+    font-weight: bolder;
+}
 .on-line-point{
     display: block;
     width: 15px;
