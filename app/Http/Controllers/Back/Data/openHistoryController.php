@@ -16,6 +16,27 @@ class openHistoryController extends Controller
             ->editColumn('issue',function ($lhc){
                 return "<b style='color: #".$lhc->color.";'>$lhc->issue</b>";
             })
+            ->editColumn('n1',function ($lhc){
+                return "<span class='lhc-sb-".$lhc->n1_sb."'>$lhc->n1</span>";
+            })
+            ->editColumn('n2',function ($lhc){
+                return "<span class='lhc-sb-".$lhc->n2_sb."'>$lhc->n2</span>";
+            })
+            ->editColumn('n3',function ($lhc){
+                return "<span class='lhc-sb-".$lhc->n3_sb."'>$lhc->n3</span>";
+            })
+            ->editColumn('n4',function ($lhc){
+                return "<span class='lhc-sb-".$lhc->n4_sb."'>$lhc->n4</span>";
+            })
+            ->editColumn('n5',function ($lhc){
+                return "<span class='lhc-sb-".$lhc->n5_sb."'>$lhc->n5</span>";
+            })
+            ->editColumn('n6',function ($lhc){
+                return "<span class='lhc-sb-".$lhc->n6_sb."'>$lhc->n6</span>";
+            })
+            ->editColumn('n7',function ($lhc){
+                return "<span class='lhc-sb-".$lhc->n7_sb."'>$lhc->n7</span>";
+            })
             ->editColumn('is_open',function ($lhc){
                 if($lhc->is_open == 1){
                     return '已开奖';
