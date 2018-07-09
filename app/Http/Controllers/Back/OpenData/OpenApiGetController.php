@@ -19,7 +19,7 @@ class OpenApiGetController extends Controller
             ]);
         } catch (\Exception $e){
             return response()->json([
-                'issue'=> $e->getMessage()
+                'issue'=> $e->getCode()
             ]);
         }
     }
