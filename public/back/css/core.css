@@ -668,7 +668,7 @@ a:active{text-decoration: none}
 }
 .lhc-sb-r{
     background: #fff;
-    border: 6px solid red;
+    border: 4px solid #c34444;
     display: inline-block;
     width: 20px;
     height: 20px;
@@ -679,7 +679,7 @@ a:active{text-decoration: none}
 }
 .lhc-sb-g{
     background: #fff;
-    border: 6px solid green;
+    border: 4px solid #1ee01e;
     display: inline-block;
     width: 20px;
     height: 20px;
@@ -690,7 +690,7 @@ a:active{text-decoration: none}
 }
 .lhc-sb-b{
     background: #fff;
-    border: 6px solid blue;
+    border: 4px solid #36b1f9;
     display: inline-block;
     width: 20px;
     height: 20px;
