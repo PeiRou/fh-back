@@ -12,12 +12,13 @@ class OpenApiGetController extends Controller
     {
         $http = new Client();
         try{
-            $res = $http->request('get','http://vip.jiangyuan365.com/K25ae456c03d2df/18077/xglhc.json');
+            $res = $http->request('get','http://vip.jiangyuan365.com/K25ae456c03d2df/'.$issue.'/xglhc.json');
             $json = json_decode((string) $res->getBody(), true);
             return response()->json([
                 'code' => 200,
                 'data'=> $json,
-                'status' => true
+                'status' => true,
+                'openCode' => '1'
             ]);
         } catch (\Exception $e){
             return response()->json([
