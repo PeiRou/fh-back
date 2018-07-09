@@ -17,7 +17,7 @@ class OpenApiGetController extends Controller
 //            $arrCode = explode(',',$json['number']);
             $issue_str = '';
             foreach ($json as $k => $v){
-                $issue_str .= $k;
+                $issue_str .= $v->number;
             }
             return response()->json([
                 'code' => 200,
