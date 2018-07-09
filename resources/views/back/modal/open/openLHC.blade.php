@@ -8,38 +8,38 @@
     <div class="field openSelect">
         <label>开奖号码</label>
         <div class="ui input icon">
-            <select name="nums">
+            <select class="ui dropdown" name="nums">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select name="nums">
+            <select class="ui dropdown" name="nums">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select name="nums">
+            <select class="ui dropdown" name="nums">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select name="nums">
+            <select class="ui dropdown" name="nums">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select name="nums">
+            <select class="ui dropdown" name="nums">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select name="nums">
+            <select class="ui dropdown" name="nums">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <span>特码：</span>
-            <select name="nums">
+            <span style="width: 70px;margin-left: 10px;">特码：</span>
+            <select class="ui dropdown" name="nums">
                 <option value=""></option>
             </select>
         </div>
