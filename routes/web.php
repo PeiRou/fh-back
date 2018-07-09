@@ -205,6 +205,8 @@ Route::post('/action/drawing/totalDrawing','Back\DrawingController@totalDrawing'
 Route::post('/action/admin/addLhcNewIssue','Back\OpenHistoryController@addLhcNewIssue');
 Route::post('/action/admin/editLhcNewIssue','Back\OpenHistoryController@editLhcNewIssue');
 
+Route::post('/action/admin/openLhc','Back\OpenHistoryController@addLhcData');
+
 //Modal
 Route::get('/back/modal/addPermission','Back\Ajax\ModalController@addPermission');
 Route::get('/back/modal/addRole','Back\Ajax\ModalController@addRole');

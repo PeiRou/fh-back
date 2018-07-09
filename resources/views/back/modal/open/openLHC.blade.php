@@ -53,7 +53,7 @@
     </div>
     <div class="field" style="width: 120px;">
         <label>开奖理由</label>
-        <select class="ui dropdown" name="msg">
+        <select class="ui dropdown" name="msg" id="msg">
             <option value="1">无</option>
             <option value="2">官方未开奖</option>
             <option value="3">水位错误</option>
@@ -61,7 +61,7 @@
             <option value="5">未接受注单</option>
         </select>
     </div>
-    <input type="hidden" name="id" value="{{ $lhc->id }}">
+    <input type="hidden" name="id" id="id" value="{{ $lhc->id }}">
 </form>
 
 <script>
@@ -81,27 +81,7 @@
             validating: 'refresh icon'
         },
         fields: {
-            issue:{
-                validators: {
-                    notEmpty: {
-                        message: '请输入期号'
-                    }
-                }
-            },
-            end_time: {
-                validators: {
-                    notEmpty: {
-                        message: '请输入封盘时间'
-                    }
-                }
-            },
-            open_time: {
-                validators: {
-                    notEmpty: {
-                        message: '请输入开奖时间'
-                    }
-                }
-            }
+
         }
     }).on('success.form.fv', function(e) {
         e.preventDefault();
@@ -110,7 +90,7 @@
         $.ajax({
             url: $form.attr('action'),
             type: 'POST',
-            data: $form.serialize(),
+            data: {id:$('#id').val(),n1:$('#n1').val(),n2:$('#n2').val(),n3:$('#n3').val(),n4:$('#n4').val(),n5:$('#n5').val(),n6:$('#n6').val(),n7:$('#n7').val(),msg:$('#msg').val()},
             success: function(result) {
                 if(result.status == true){
                     jc.close();
@@ -145,6 +125,7 @@
                     $('.modal-mask').fadeOut();
                 }
                 if(result.status == false){
+                    $('.getBtn').html('点击获取开奖号码');
                     Calert(result.msg,'red');
                     $('.modal-mask').fadeOut();
                 }
