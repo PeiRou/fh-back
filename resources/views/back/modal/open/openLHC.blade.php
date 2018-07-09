@@ -8,38 +8,38 @@
     <div class="field openSelect">
         <label>开奖号码</label>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums">
+            <select class="ui dropdown" name="nums" id="n1">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums">
+            <select class="ui dropdown" name="nums" id="n2">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums">
+            <select class="ui dropdown" name="nums" id="n3">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums">
+            <select class="ui dropdown" name="nums" id="n4">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums">
+            <select class="ui dropdown" name="nums" id="n5">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums">
+            <select class="ui dropdown" name="nums" id="n6">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon" style="width: 104px !important;margin-right: 0;">
             <span style="width: 70px;margin-left: 10px;line-height: 37px;">特码：</span>
-            <select class="ui dropdown" name="nums">
+            <select class="ui dropdown" name="nums" id="n7">
                 <option value=""></option>
             </select>
         </div>
@@ -128,7 +128,12 @@
             type:'get',
             dataType:'json',
             success:function (result) {
-                alert(result['issue'][0]['code']);
+                if(result.status == true){
+                    $('#n1').val(result.n1);
+                }
+                if(result.status == false){
+                    Calert(result.msg,'red');
+                }
             }
         });
     }
