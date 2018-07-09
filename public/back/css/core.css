@@ -628,6 +628,25 @@ a:active{text-decoration: none}
     background: #3283c3;
     cursor: pointer;
 }
+.modal-mask{
+    background: #0000006e;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    border-radius: 5px;
+    display: none;
+}
+.modal-mask div{
+    color: #fff;
+    text-align: center;
+    margin-top: 18%;
+    background: #0000006b;
+    padding: 30px;
+    font-size: 12pt;
+}
 .content-top .content-top-buttons span, .def-btn{
     background: #eaeaea;
     color: #444;

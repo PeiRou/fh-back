@@ -125,6 +125,7 @@
     });
     
     function getLHCData(issue) {
+        $('.modal-mask').fadeIn();
         var subIssue = issue.slice(2);
         $.ajax({
             url:'/back/openData/lhc/'+subIssue,
@@ -133,9 +134,11 @@
             success:function (result) {
                 if(result.status == true){
                     $('#n1').val(result.n1);
+                    $('.modal-mask').fadeOut();
                 }
                 if(result.status == false){
                     Calert(result.msg,'red');
+                    $('.modal-mask').fadeOut();
                 }
             }
         });
