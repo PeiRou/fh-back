@@ -46,7 +46,7 @@
     </div>
     <div class="field" style="margin-top: 15px;">
         <label>自动获取</label>
-        <span onclick="getLHCData()" class="def-btn">点击获取开奖号码</span>
+        <span onclick="getLHCData()" class="getBtn">点击获取开奖号码</span>
     </div>
     <div class="field" style="width: 120px;">
         <label>开奖理由</label>
