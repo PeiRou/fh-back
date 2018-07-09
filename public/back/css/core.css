@@ -616,6 +616,18 @@ a:active{text-decoration: none}
     float: right;
     padding-right: 10px;
 }
+.getBtn{
+    background: #3397dc;
+    padding: 5px 9px;
+    border-radius: 3px;
+    color: #fff;
+    margin-top: 3px;
+    display: inline-block;
+}
+.getBtn:hover{
+    background: #3283c3;
+    cursor: pointer;
+}
 .content-top .content-top-buttons span, .def-btn{
     background: #eaeaea;
     color: #444;
