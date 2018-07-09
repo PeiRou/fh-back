@@ -1,3 +1,6 @@
+<div class="modal-mask">
+    <div>获取开奖数据中...请稍后</div>
+</div>
 <form id="openLhc" class="ui mini form" action="{{ url('/action/admin/openLhc') }}">
     <div class="field" style="width: 120px;">
         <label>期号</label>
