@@ -134,7 +134,7 @@ class OpenHistoryController extends Controller
     }
 
     //六合彩重新开奖
-    public function reOpenLhcData()
+    public function reOpenLhcData(Request $request)
     {
         $id = $request->get('id');
         $n1 = $request->get('n1');
