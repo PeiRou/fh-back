@@ -27,6 +27,10 @@ body{
     margin-left: 20px;
     margin-right: 8px;
 }
+.openSelect{
+    height: auto;
+    overflow: hidden;
+}
 .openSelect div{
     width: 55px !important;
     float: left;
@@ -612,7 +616,7 @@ a:active{text-decoration: none}
     float: right;
     padding-right: 10px;
 }
-.content-top .content-top-buttons span{
+.content-top .content-top-buttons span, .def-btn{
     background: #eaeaea;
     color: #444;
     text-shadow: 0 1px 1px #fff;
