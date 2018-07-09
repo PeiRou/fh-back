@@ -14,23 +14,23 @@ class OpenApiGetController extends Controller
         try{
             $res = $http->request('get','http://api.caipiaokong.cn/lottery/?name=xglhc&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d&date='.$date);
             $json = json_decode((string) $res->getBody(), true);
-//            $arrCode = explode(',',$json['number']);
-            $issue_str = '';
+            $num_str = '';
             foreach ($json as $k => $v){
-                $issue_str .= $v['number'];
+                $num_str .= $v['number'];
             }
+            $arrCode = explode(',',$num_str);
             return response()->json([
                 'code' => 200,
-                'data'=> $issue_str,
+                'data'=> $json,
                 'status' => true,
-//                'openCode' => $json['number'],
-//                'n1' => $arrCode[0],
-//                'n2' => $arrCode[1],
-//                'n3' => $arrCode[2],
-//                'n4' => $arrCode[3],
-//                'n5' => $arrCode[4],
-//                'n6' => $arrCode[5],
-//                'n7' => $arrCode[6],
+                'openCode' => $num_str,
+                'n1' => (int)$arrCode[0],
+                'n2' => (int)$arrCode[1],
+                'n3' => (int)$arrCode[2],
+                'n4' => (int)$arrCode[3],
+                'n5' => (int)$arrCode[4],
+                'n6' => (int)$arrCode[5],
+                'n7' => (int)$arrCode[6],
             ]);
         } catch (\Exception $e){
             return response()->json([
