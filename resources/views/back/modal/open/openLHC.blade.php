@@ -135,6 +135,12 @@
             success:function (result) {
                 if(result.status == true){
                     $('#n1').val(result.n1);
+                    $('#n2').val(result.n2);
+                    $('#n3').val(result.n3);
+                    $('#n4').val(result.n4);
+                    $('#n5').val(result.n5);
+                    $('#n6').val(result.n6);
+                    $('#n7').val(result.n7);
                     $('.getBtn').html('获取成功（点击可重新获取）');
                     $('.modal-mask').fadeOut();
                 }
