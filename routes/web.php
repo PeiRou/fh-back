@@ -316,3 +316,5 @@ Route::post('/action/inner/getPlayCateItem','Inner\innerActionController@getPlay
 
 //后台状态轮询
 Route::get('/back/status','Back\AjaxStatusController@status');
+//后台获取六合彩开奖--接口
+Route::get('/back/openData/lhc/{issue}','Back\OpenData\OpenApiGetController@lhc');
