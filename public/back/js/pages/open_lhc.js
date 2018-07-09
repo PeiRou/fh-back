@@ -108,7 +108,7 @@ function edit(id) {
     });
 }
 
-function open(id) {
+function openLhc(id) {
     jc = $.confirm({
         theme: 'material',
         title: '六合彩-手动开奖',
