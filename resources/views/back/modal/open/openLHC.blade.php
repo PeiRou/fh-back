@@ -128,7 +128,7 @@
             type:'get',
             dataType:'json',
             success:function (result) {
-                alert(result);
+                alert(result['issue'][0]['code']);
             }
         });
     }
