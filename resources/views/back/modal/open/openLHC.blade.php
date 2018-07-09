@@ -27,6 +27,22 @@
                 <option value=""></option>
             </select>
         </div>
+        <div class="ui input icon">
+            <select name="nums">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="ui input icon">
+            <select name="nums">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="ui input icon">
+            <span>特码：</span>
+            <select name="nums">
+                <option value=""></option>
+            </select>
+        </div>
     </div>
     <input type="hidden" name="id" value="{{ $lhc->id }}">
 </form>
