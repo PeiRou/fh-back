@@ -129,7 +129,6 @@
             dataType:'json',
             success:function (result) {
                 if(result.status == true){
-                    $('select[name="nums"]').empty();
                     $('#n1').val(result.n1);
                 }
                 if(result.status == false){
