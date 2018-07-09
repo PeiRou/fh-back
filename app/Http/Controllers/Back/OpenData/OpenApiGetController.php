@@ -18,7 +18,7 @@ class OpenApiGetController extends Controller
                 'code' => 200,
                 'data'=> $json,
                 'status' => true,
-                'openCode' => '1'
+                'openCode' => $json['code']
             ]);
         } catch (\Exception $e){
             return response()->json([
