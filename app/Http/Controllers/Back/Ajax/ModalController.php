@@ -434,4 +434,10 @@ class ModalController extends Controller
         $openTime = date('Y-m-d 21:35:00');
         return view('back.modal.open.addLhcNewIssue',compact('endTime','openTime'));
     }
+    //修改六合彩
+    public function editLhcNewIssue($id = '')
+    {
+        $lhc = DB::table('game_lhc')->where('id',$id)->first();
+        return view('back.modal.open.editLhcNewIssue',compact('lhc'));
+    }
 }

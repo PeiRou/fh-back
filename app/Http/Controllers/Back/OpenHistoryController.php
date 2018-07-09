@@ -41,6 +41,31 @@ class OpenHistoryController extends Controller
         }
     }
 
+    public function editLhcNewIssue(Request $request)
+    {
+        $id = $request->get('id');
+        $issue = $request->get('issue');
+        $end_time = $request->get('end_time');
+        $open_time = $request->get('open_time');
+
+        $update = DB::table('game_lhc')->where('id',$id)->update([
+            'issue' => $issue,
+            'endtime' => $end_time,
+            'opentime' => $open_time
+        ]);
+        if($update == 1){
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => '修改期数异常，请稍后再试！'
+            ]);
+        }
+
+    }
+
     function randColor(){
         $rand = rand(1,20);
         switch($rand){

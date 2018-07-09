@@ -203,6 +203,7 @@ Route::post('/action/recharge/totalRecharge','Back\RechargeController@totalRecha
 Route::post('/action/drawing/totalDrawing','Back\DrawingController@totalDrawing'); //提款记录的总额统计
 
 Route::post('/action/admin/addLhcNewIssue','Back\OpenHistoryController@addLhcNewIssue');
+Route::post('/action/admin/editLhcNewIssue','Back\OpenHistoryController@editLhcNewIssue');
 
 //Modal
 Route::get('/back/modal/addPermission','Back\Ajax\ModalController@addPermission');
@@ -250,6 +251,7 @@ Route::get('/back/modal/rechargeError/{id}','Back\Ajax\ModalController@rechargeE
 Route::get('/back/modal/drawingError/{id}','Back\Ajax\ModalController@drawingError');
 Route::get('/back/modal/user48hoursInfo/{uid}','Back\Ajax\ModalController@user48hoursInfo');
 Route::get('/back/modal/addLhcNewIssue','Back\Ajax\ModalController@addLhcNewIssue');
+Route::get('/back/modal/editLhcNewIssue/{id}','Back\Ajax\ModalController@editLhcNewIssue');
 
 //游戏MODAL
 Route::get('/back/modal/gameSetting/{id}','Back\Ajax\ModalController@gameSetting');
