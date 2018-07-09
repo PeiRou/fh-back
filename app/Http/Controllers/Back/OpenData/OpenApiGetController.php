@@ -15,12 +15,13 @@ class OpenApiGetController extends Controller
             $res = $http->request('get','http://api.caipiaokong.cn/lottery/?name=xglhc&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d&date='.$date);
             $json = json_decode((string) $res->getBody(), true);
 //            $arrCode = explode(',',$json['number']);
-            foreach($json as $item){
-                $number = $item->number;
+            $issue_str = '';
+            foreach ($json as $k => $v){
+                $issue_str .= $k;
             }
             return response()->json([
                 'code' => 200,
-                'data'=> $number,
+                'data'=> $issue_str,
                 'status' => true,
 //                'openCode' => $json['number'],
 //                'n1' => $arrCode[0],
