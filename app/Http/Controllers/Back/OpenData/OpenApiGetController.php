@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 
 class OpenApiGetController extends Controller
 {
-    public function lhc($date = '')
+    public function lhc($date = '',$issue)
     {
         $http = new Client();
         try{
@@ -17,7 +17,7 @@ class OpenApiGetController extends Controller
 //            $arrCode = explode(',',$json['number']);
             return response()->json([
                 'code' => 200,
-                'data'=> $json,
+                'data'=> $json[$issue]['number'],
                 'status' => true,
 //                'openCode' => $json['number'],
 //                'n1' => $arrCode[0],

@@ -49,7 +49,7 @@
     </div>
     <div class="field" style="margin-top: 15px;">
         <label>自动获取</label>
-        <span onclick="getLHCData('{{ date('Ymd',strtotime($lhc->opentime)) }}')" class="getBtn">点击获取开奖号码</span>
+        <span onclick="getLHCData('{{ date('Ymd',strtotime($lhc->opentime)) }}','{{ $lhc->issue }}')" class="getBtn">点击获取开奖号码</span>
     </div>
     <div class="field" style="width: 120px;">
         <label>开奖理由</label>
@@ -104,11 +104,11 @@
         });
     });
     
-    function getLHCData(date) {
+    function getLHCData(date,issue) {
         $('.modal-mask').fadeIn();
         $('.getBtn').html('获取中...');
         $.ajax({
-            url:'/back/openData/lhc/'+date,
+            url:'/back/openData/lhc/'+date+'/'+issue.slice(2),
             type:'get',
             dataType:'json',
             success:function (result) {
