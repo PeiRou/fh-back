@@ -1,5 +1,5 @@
 <form id="openLhc" class="ui mini form" action="{{ url('/action/admin/openLhc') }}">
-    <div class="field">
+    <div class="field" style="width: 120px;">
         <label>期号</label>
         <div class="ui input icon">
             <input type="text" name="issue" value="{{ $lhc->issue }}" readonly/>
@@ -44,11 +44,11 @@
             </select>
         </div>
     </div>
-    <div class="field">
+    <div class="field" style="margin-top: 20px;">
         <label>自动获取</label>
         <span onclick="getLHCData()">点击获取开奖号码</span>
     </div>
-    <div class="field">
+    <div class="field" style="width: 120px;">
         <label>开奖理由</label>
         <select class="ui dropdown" name="msg">
             <option value="1">无</option>
