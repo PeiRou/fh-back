@@ -27,6 +27,10 @@ body{
     margin-left: 20px;
     margin-right: 8px;
 }
+.openSelect div{
+    width: 55px !important;
+    float: left;
+}
 .loading-gif{
     background: url("/back/img/l.gif") no-repeat;
     display: block;

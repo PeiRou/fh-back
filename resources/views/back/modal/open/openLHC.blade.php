@@ -5,7 +5,7 @@
             <input type="text" name="issue" value="{{ $lhc->issue }}" readonly/>
         </div>
     </div>
-    <div class="field">
+    <div class="field openSelect">
         <label>开奖号码</label>
         <div class="ui input icon">
             <input type="text" name="end_time" value=""/>
