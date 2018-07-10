@@ -12,8 +12,8 @@
         </tr>
 
         <tr>
-            <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td">特码</td>
-            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">特码A</td>
+            <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td">特码A</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">01球</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
                     <input type="text" name="TMA_odds" value="{{ $odds['TMA_odds'] }}">
@@ -26,7 +26,1257 @@
             </td>
         </tr>
         <tr>
-            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">特码B</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">02球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">03球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">04球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">05球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">06球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">07球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">08球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">09球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">10球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">11球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">12球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">13球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">14球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">15球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">16球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">17球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">18球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">19球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">20球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">21球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">22球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">23球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">24球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">25球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">26球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">27球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">28球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">29球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">30球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">31球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">32球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">33球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">34球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">35球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">36球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">37球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">38球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">39球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">40球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">41球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">42球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">43球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">44球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">45球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">46球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">47球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">48球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">49球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td">特码B</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">01球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMA_odds" value="{{ $odds['TMA_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMA_rebate" value="{{ $rebate['TMA_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">02球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">03球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">04球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">05球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">06球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">07球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">08球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">09球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">10球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">11球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">12球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">13球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">14球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">15球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">16球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">17球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">18球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">19球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">20球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">21球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">22球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">23球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">24球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">25球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">26球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">27球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">28球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">29球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">30球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">31球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">32球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">33球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">34球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">35球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">36球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">37球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">38球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">39球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">40球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">41球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">42球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">43球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">44球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">45球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">46球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">47球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">48球</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
+                </div>
+            </td>
+            <td valign="middle" colspan="1" rowspan="1" align="center">
+                <div class="ui input">
+                    <input type="text" name="TMB_rebate" value="{{ $rebate['TMB_rebate'] }}">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">49球</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
                     <input type="text" name="TMB_odds" value="{{ $odds['TMB_odds'] }}">
