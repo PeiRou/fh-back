@@ -2149,7 +2149,7 @@
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_1W_rebate" value="{{ $rebate['PTYX_1W_rebate'] }}">
+                    {{--<input type="text" name="PTYX_1W_rebate" value="{{ $rebate['PTYX_1W_rebate'] }}">--}}
                 </div>
             </td>
         </tr>
