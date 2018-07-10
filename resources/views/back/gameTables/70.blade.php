@@ -12,7 +12,7 @@
         </tr>
 
         <tr>
-            <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td">特码A</td>
+            <td valign="middle" colspan="1" rowspan="49" align="center" class="deep-blue-td">特码A</td>
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">01球</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
@@ -651,7 +651,7 @@
         </tr>
 
         <tr>
-            <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td">特码B</td>
+            <td valign="middle" colspan="1" rowspan="49" align="center" class="deep-blue-td">特码B</td>
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">01球</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
