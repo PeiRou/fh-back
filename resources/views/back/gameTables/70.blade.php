@@ -2144,12 +2144,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">1尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_odds" value="{{ $odds['PTYX_1W_odds'] }}">
+                    <input type="text" name="PTYX_1W_odds" value="{{ $odds['PTYX_1W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_rebate" value="{{ $rebate['PTYX_1W_rebate'] }}">
+                    <input type="text" name="PTYX_1W_rebate" value="{{ $rebate['PTYX_1W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2157,12 +2157,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">2尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_odds" value="{{ $odds['PTYX_2W_odds'] }}">
+                    <input type="text" name="PTYX_2W_odds" value="{{ $odds['PTYX_2W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_rebate" value="{{ $rebate['PTYX_2W_rebate'] }}">
+                    <input type="text" name="PTYX_2W_rebate" value="{{ $rebate['PTYX_2W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2170,12 +2170,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">3尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_odds" value="{{ $odds['PTYX_3W_odds'] }}">
+                    <input type="text" name="PTYX_3W_odds" value="{{ $odds['PTYX_3W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_rebate" value="{{ $rebate['PTYX_3W_rebate'] }}">
+                    <input type="text" name="PTYX_3W_rebate" value="{{ $rebate['PTYX_3W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2183,12 +2183,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">4尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_odds" value="{{ $odds['PTYX_4W_odds'] }}">
+                    <input type="text" name="PTYX_4W_odds" value="{{ $odds['PTYX_4W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_rebate" value="{{ $rebate['PTYX_4W_rebate'] }}">
+                    <input type="text" name="PTYX_4W_rebate" value="{{ $rebate['PTYX_4W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2196,12 +2196,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">5尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_odds" value="{{ $odds['PTYX_5W_odds'] }}">
+                    <input type="text" name="PTYX_5W_odds" value="{{ $odds['PTYX_5W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_rebate" value="{{ $rebate['PTYX_5W_rebate'] }}">
+                    <input type="text" name="PTYX_5W_rebate" value="{{ $rebate['PTYX_5W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2209,12 +2209,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">6尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_odds" value="{{ $odds['PTYX_6W_odds'] }}">
+                    <input type="text" name="PTYX_6W_odds" value="{{ $odds['PTYX_6W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_rebate" value="{{ $rebate['PTYX_6W_rebate'] }}">
+                    <input type="text" name="PTYX_6W_rebate" value="{{ $rebate['PTYX_6W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2222,12 +2222,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">7尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_odds" value="{{ $odds['PTYX_7W_odds'] }}">
+                    <input type="text" name="PTYX_7W_odds" value="{{ $odds['PTYX_7W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_rebate" value="{{ $rebate['PTYX_7W_rebate'] }}">
+                    <input type="text" name="PTYX_7W_rebate" value="{{ $rebate['PTYX_7W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2235,12 +2235,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">8尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_odds" value="{{ $odds['PTYX_8W_odds'] }}">
+                    <input type="text" name="PTYX_8W_odds" value="{{ $odds['PTYX_8W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_rebate" value="{{ $rebate['PTYX_8W_rebate'] }}">
+                    <input type="text" name="PTYX_8W_rebate" value="{{ $rebate['PTYX_8W_rebate'] }}">
                 </div>
             </td>
         </tr>
@@ -2248,12 +2248,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">9尾</td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_odds" value="{{ $odds['PTYX_9W_odds'] }}">
+                    <input type="text" name="PTYX_9W_odds" value="{{ $odds['PTYX_9W_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="PTYX_W_rebate" value="{{ $rebate['PTYX_9W_rebate'] }}">
+                    <input type="text" name="PTYX_9W_rebate" value="{{ $rebate['PTYX_9W_rebate'] }}">
                 </div>
             </td>
         </tr>
