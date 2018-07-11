@@ -54,15 +54,6 @@ class TestController extends Controller
         } else {
             $zmys_green = 0;
         }
-        if($zmys_blue == 3 && $zmys_green == 3 && $tmsb == 'R'){
-            echo '和局';
-        }
-        if($zmys_blue == 3 && $zmys_red == 3 && $tmsb == 'G'){
-            echo '和局';
-        }
-        if($zmys_green == 3 && $zmys_red == 3 && $tmsb == 'B'){
-            echo '和局';
-        }
 
         echo '特码色波：'.$tmsb;
         $ac = array_count_values($s);
@@ -98,11 +89,17 @@ class TestController extends Controller
         } else {
             $greenTotal = 0;
         }
-        if($redTotal>$blueTotal&$redTotal>$greenTotal){
+        if($zmys_blue == 3 && $zmys_green == 3 && $tmsb == 'R'){
+            echo '和局';
+        } else if ($zmys_blue == 3 && $zmys_red == 3 && $tmsb == 'G'){
+            echo '和局';
+        } else if ($zmys_green == 3 && $zmys_red == 3 && $tmsb == 'B'){
+            echo '和局';
+        } else if ($redTotal>$blueTotal&$redTotal>$greenTotal){
             return '红'.$redTotal;
-        }else if($blueTotal>$greenTotal){
+        }else if ($blueTotal>$greenTotal) {
             return '蓝'.$blueTotal;
-        }else{
+        } else {
             return '绿'.$greenTotal;
         }
     }
