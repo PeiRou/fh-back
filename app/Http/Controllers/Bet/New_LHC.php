@@ -303,7 +303,7 @@ class New_LHC
         }
         $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $run = DB::select($sql);
+        $run = DB::statement($sql);
         \Log::info('六合彩运行：'.$run);
     }
 }
