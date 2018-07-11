@@ -1915,12 +1915,12 @@
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="blue-td"></td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="" placeholder="不可用" disabled="disabled">
+                    <input type="text" name="LM_TMDXDS_odds" value="{{ $odds['LM_TMDXDS_odds'] }}">
                 </div>
             </td>
             <td valign="middle" colspan="1" rowspan="1" align="center">
                 <div class="ui input">
-                    <input type="text" name="" value="" placeholder="不可用" disabled="disabled">
+                    <input type="text" name="LM_TMDXDS_rebate" value="{{ $rebate['LM_TMDXDS_rebate'] }}">
                 </div>
             </td>
         </tr>
