@@ -18,6 +18,7 @@ class TestController extends Controller
         $zm5 = $arrOpenCode[4];
         $zm6 = $arrOpenCode[5];
         $tm = $arrOpenCode[6]; //特码号码
+        $tmsb = $this->SB_Color($tm); //特码色波
         //七个号码色波
         $s = [
             $this->SB_Color($zm1),
@@ -53,10 +54,16 @@ class TestController extends Controller
         } else {
             $zmys_green = 0;
         }
-        return "红".$zmys_red.'===蓝'.$zmys_blue.'===绿'.$zmys_green;
+        if($zmys_blue == 3 && $zmys_green == 3 && $tmsb == 'R'){
+            echo '和局';
+        }
+        if($zmys_blue == 3 && $zmys_red == 3 && $tmsb == 'G'){
+            echo '和局';
+        }
+        if($zmys_green == 3 && $zmys_red == 3 && $tmsb == 'B'){
+            echo '和局';
+        }
 
-
-        $tmsb = $this->SB_Color($tm);
         echo '特码色波：'.$tmsb;
         $ac = array_count_values($s);
         $redBall = 0;
