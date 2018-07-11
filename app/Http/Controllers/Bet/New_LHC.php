@@ -554,12 +554,12 @@ class New_LHC
         }
         //特尾大 特尾小
         $TW = $chaiTM[1];
-        if($TW >= 5){ //尾大
+        if($TW >= 5 && $tmBL != 49){ //尾大
             $playId = 1465;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
         }
-        if($TW <= 4){
+        if($TW <= 4 && $tmBL != 49){
             $playId = 1466;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
