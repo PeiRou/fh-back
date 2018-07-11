@@ -9,6 +9,23 @@ class TestController extends Controller
 {
     public function lhc()
     {
-        echo 1;
+        $arrOpenCode = explode(',','4,23,12,5,17,33,48'); // 分割开奖号码
+        $zm_playCate = 70; //特码分类ID
+        $ZM1 = $arrOpenCode[0];
+        $ZM2 = $arrOpenCode[1];
+        $ZM3 = $arrOpenCode[2];
+        $ZM4 = $arrOpenCode[3];
+        $ZM5 = $arrOpenCode[4];
+        $ZM6 = $arrOpenCode[5];
+        $nums = [
+            '1' => '1545',
+            '2' => '1546',
+            '3' => '1547',
+            '4' => '1548',
+            '5' => '1549',
+        ];
+        foreach ($nums as $k => $v){
+            echo $k.'----'.$v;
+        }
     }
 }
