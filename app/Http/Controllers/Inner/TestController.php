@@ -36,31 +36,31 @@ class TestController extends Controller
         $greenBall = 0;
         foreach($ac as $k => $v){
             if($tmsb == $k && $k == 'G'){
-                $greenBall = $greenBall+0.5;
+                $greenBall = $greenBall+0.5+$v;
             }
             if($tmsb == $k && $k == 'R'){
-                $redBall = $redBall+0.5;
+                $redBall = $redBall+0.5+$v;
             }
             if($tmsb == $k && $k == 'B'){
-                $blueBall = $blueBall+0.5;
+                $blueBall = $blueBall+0.5+$v;
             }
         }
-        if(isset($ac['R'])){
-            $red = $redBall + $ac['R'];
-        } else {
-            $red = 0;
-        }
-        if(isset($ac['B'])){
-            $blue = $blueBall + $ac['B'];
-        } else {
-            $blue = 0;
-        }
-        if(isset($ac['G'])){
-            $green = $blueBall + $ac['G'];
-        } else {
-            $green = 0;
-        }
-        return '红：'.$red.'=====蓝：'.$blue.'====绿：'.$green;
+//        if(isset($ac['R'])){
+//            $red = $redBall + $ac['R'];
+//        } else {
+//            $red = 0;
+//        }
+//        if(isset($ac['B'])){
+//            $blue = $blueBall + $ac['B'];
+//        } else {
+//            $blue = 0;
+//        }
+//        if(isset($ac['G'])){
+//            $green = $blueBall + $ac['G'];
+//        } else {
+//            $green = 0;
+//        }
+        return '红：'.$redBall.'=====蓝：'.$blueBall.'====绿：'.$greenBall;
     }
 
     function SB_Color($num){
