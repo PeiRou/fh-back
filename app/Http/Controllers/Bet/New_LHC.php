@@ -34,6 +34,7 @@ class New_LHC
         $this->SB($openCode,$gameId,$win);
         $this->TX($openCode,$gameId,$win);
         $this->TMTWS($openCode,$gameId,$win);
+        $this->ZM($openCode,$gameId,$win);
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($win,$gameId,$issue);
@@ -893,6 +894,39 @@ class New_LHC
         $ZM4 = $arrOpenCode[3];
         $ZM5 = $arrOpenCode[4];
         $ZM6 = $arrOpenCode[5];
+        $nums = ['1'=>'1545','2'=>'1546','3'=>'1547','4'=>'1548','5'=>'1549','6'=>'1550','7'=>'1551','8'=>'1552','9'=>'1553','10'=>'1554','11'=>'1555','12'=>'1556','13'=>'1557','14'=>'1558','15'=>'1559','16'=>'1560','17'=>'1561','18'=>'1562','19'=>'1563','20'=>'1564','21'=>'1565','22'=>'1566','23'=>'1567','24'=>'1568','25'=>'1569','26'=>'1570','27'=>'1571','28'=>'1572','29'=>'1573','30'=>'1574','31'=>'1575','32'=>'1576','33'=>'1577','34'=>'1578','35'=>'1579','36'=>'1580','37'=>'1581','38'=>'1582','39'=>'1583','40'=>'1584','41'=>'1585','42'=>'1586','43'=>'1587','44'=>'1588','45'=>'1589','46'=>'1590','47'=>'1591','48'=>'1592','49'=>'1593'];
+        foreach ($nums as $k => $v){
+            if($ZM1 == $k){
+                $playId = $v;
+                $winCode = $gameId.$zm_playCate.$playId;
+                $win->push($winCode);
+            }
+            if($ZM2 == $k){
+                $playId = $v;
+                $winCode = $gameId.$zm_playCate.$playId;
+                $win->push($winCode);
+            }
+            if($ZM3 == $k){
+                $playId = $v;
+                $winCode = $gameId.$zm_playCate.$playId;
+                $win->push($winCode);
+            }
+            if($ZM4 == $k){
+                $playId = $v;
+                $winCode = $gameId.$zm_playCate.$playId;
+                $win->push($winCode);
+            }
+            if($ZM5 == $k){
+                $playId = $v;
+                $winCode = $gameId.$zm_playCate.$playId;
+                $win->push($winCode);
+            }
+            if($ZM6 == $k){
+                $playId = $v;
+                $winCode = $gameId.$zm_playCate.$playId;
+                $win->push($winCode);
+            }
+        }
     }
 
     //投注结算
