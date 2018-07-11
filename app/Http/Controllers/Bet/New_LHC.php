@@ -37,6 +37,7 @@ class New_LHC
         $this->ZM($openCode,$gameId,$win);
         $this->WX($openCode,$gameId,$win);
         $this->QSB($openCode,$gameId,$win);
+        $this->PTYXWS($openCode,$gameId,$win);
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($win,$gameId,$issue);
@@ -1071,6 +1072,92 @@ class New_LHC
                 $winCode = $gameId.$qsb_playCate.$playId;
                 $win->push($winCode);
             }
+        }
+    }
+
+    //平特一肖位数
+    public function PTYXWS($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+        $ptyxws_playCate = 73; //特码分类ID
+        $m1 = $arrOpenCode[0];
+        $m2 = $arrOpenCode[1];
+        $m3 = $arrOpenCode[2];
+        $m4 = $arrOpenCode[3];
+        $m5 = $arrOpenCode[4];
+        $m6 = $arrOpenCode[5];
+        $m7 = $arrOpenCode[6];
+        $shu = [11,23,35,47];
+        $niu = [10,22,34,46];
+        $hu = [9,21,33,45];
+        $tu = [8,20,32,44];
+        $long = [7,19,31,43];
+        $she = [6,18,30,42];
+        $ma = [5,17,29,41];
+        $yang = [4,16,28,40];
+        $hou = [3,15,27,39];
+        $ji = [2,14,26,38];
+        $gou = [1,13,25,37,49];
+        $zhu = [12,24,36,48];
+        if(in_array($m1,$shu) || in_array($m2,$shu) || in_array($m3,$shu) || in_array($m4,$shu) || in_array($m5,$shu) || in_array($m6,$shu) || in_array($m7,$shu)){
+            $playId = 1599;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$niu) || in_array($m2,$niu) || in_array($m3,$niu) || in_array($m4,$niu) || in_array($m5,$niu) || in_array($m6,$niu) || in_array($m7,$niu)){
+            $playId = 1600;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$hu) || in_array($m2,$hu) || in_array($m3,$hu) || in_array($m4,$hu) || in_array($m5,$hu) || in_array($m6,$hu) || in_array($m7,$hu)){
+            $playId = 1601;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$tu) || in_array($m2,$tu) || in_array($m3,$tu) || in_array($m4,$tu) || in_array($m5,$tu) || in_array($m6,$tu) || in_array($m7,$tu)){
+            $playId = 1602;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$long) || in_array($m2,$long) || in_array($m3,$long) || in_array($m4,$long) || in_array($m5,$long) || in_array($m6,$long) || in_array($m7,$long)){
+            $playId = 1603;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$she) || in_array($m2,$she) || in_array($m3,$she) || in_array($m4,$she) || in_array($m5,$she) || in_array($m6,$she) || in_array($m7,$she)){
+            $playId = 1604;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$ma) || in_array($m2,$ma) || in_array($m3,$ma) || in_array($m4,$ma) || in_array($m5,$ma) || in_array($m6,$ma) || in_array($m7,$ma)){
+            $playId = 1605;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$yang) || in_array($m2,$yang) || in_array($m3,$yang) || in_array($m4,$yang) || in_array($m5,$yang) || in_array($m6,$yang) || in_array($m7,$yang)){
+            $playId = 1606;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$hou) || in_array($m2,$hou) || in_array($m3,$hou) || in_array($m4,$hou) || in_array($m5,$hou) || in_array($m6,$hou) || in_array($m7,$hou)){
+            $playId = 1607;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$ji) || in_array($m2,$ji) || in_array($m3,$ji) || in_array($m4,$ji) || in_array($m5,$ji) || in_array($m6,$ji) || in_array($m7,$ji)){
+            $playId = 1608;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$gou) || in_array($m2,$gou) || in_array($m3,$gou) || in_array($m4,$gou) || in_array($m5,$gou) || in_array($m6,$gou) || in_array($m7,$gou)){
+            $playId = 1609;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$zhu) || in_array($m2,$zhu) || in_array($m3,$zhu) || in_array($m4,$zhu) || in_array($m5,$zhu) || in_array($m6,$zhu) || in_array($m7,$zhu)){
+            $playId = 1610;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
         }
     }
 
