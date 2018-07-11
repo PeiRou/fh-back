@@ -25,7 +25,10 @@ class TestController extends Controller
             '5' => '1549',
         ];
         foreach ($nums as $k => $v){
-            echo $k.'----'.$v.'</br>';
+            if($ZM1 == $k){
+                echo "中了，ID:".$v;
+            }
+//            echo $k.'----'.$v.'</br>';
         }
     }
 }
