@@ -37,249 +37,396 @@ class New_LHC
         $tm = $arrOpenCode[6]; //特码号码
         switch ($tm){
             case 1:
-                $playId = 1408;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1408;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1359;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 2:
-                $playId = 1409;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1409;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1360;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 3:
-                $playId = 1410;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1410;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1361;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 4:
-                $playId = 1411;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1411;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1362;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 5:
-                $playId = 1412;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1412;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1363;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 6:
-                $playId = 1413;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1413;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1364;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 7:
-                $playId = 1414;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1414;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1365;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 8:
-                $playId = 1415;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1415;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1366;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 9:
-                $playId = 1416;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
-                break;
+                $playId_B = 1416;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1367;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
+                 break;
             case 10:
-                $playId = 1417;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1417;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1368;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 11:
-                $playId = 1418;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1418;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1369;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 12:
-                $playId = 1419;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1419;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1370;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 13:
-                $playId = 1420;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1420;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1371;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 14:
-                $playId = 1421;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1421;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1372;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 15:
-                $playId = 1422;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1422;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1373;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 16:
-                $playId = 1423;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1423;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1374;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 17:
-                $playId = 1424;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1424;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1375;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 18:
-                $playId = 1425;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1425;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1376;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 19:
-                $playId = 1426;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1426;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1377;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 20:
-                $playId = 1427;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1427;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1378;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 21:
-                $playId = 1428;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1428;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1379;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 22:
-                $playId = 1429;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1429;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1380;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 23:
-                $playId = 1430;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1430;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1381;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 24:
-                $playId = 1431;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1431;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1382;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 25:
-                $playId = 1432;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1432;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1383;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 26:
-                $playId = 1433;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1433;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1384;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 27:
-                $playId = 1434;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1434;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1385;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 28:
-                $playId = 1435;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1435;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1386;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 29:
-                $playId = 1436;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1436;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1387;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 30:
-                $playId = 1437;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1437;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1388;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 31:
-                $playId = 1438;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1438;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1389;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 32:
-                $playId = 1439;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1439;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1390;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 33:
-                $playId = 1440;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1440;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1391;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 34:
-                $playId = 1441;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1441;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1392;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 35:
-                $playId = 1442;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1442;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1393;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 36:
-                $playId = 1443;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1443;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1394;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 37:
-                $playId = 1444;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1444;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1395;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 38:
-                $playId = 1445;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1445;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1396;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 39:
-                $playId = 1446;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1446;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1397;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 40:
-                $playId = 1447;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1447;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1398;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 41:
-                $playId = 1448;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1448;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1399;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 42:
-                $playId = 1449;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1449;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1400;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 43:
-                $playId = 1450;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1450;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1401;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 44:
-                $playId = 1451;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1451;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1402;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 45:
-                $playId = 1452;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1452;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1403;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 46:
-                $playId = 1453;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1453;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1404;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 47:
-                $playId = 1454;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1454;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1405;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 48:
-                $playId = 1455;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1455;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1406;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
             case 49:
-                $playId = 1456;
-                $winCode = $gameId.$tm_playCate.$playId;
-                $win->push($winCode);
+                $playId_B = 1456;
+                $winCode_B = $gameId.$tm_playCate.$playId_B;
+                $win->push($winCode_B);
+                $playId_A = 1407;
+                $winCode_A = $gameId.$tm_playCate.$playId_A;
+                $win->push($winCode_A);
                 break;
         }
     }
