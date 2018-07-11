@@ -31,6 +31,7 @@ class New_LHC
         $win = collect([]);
         $this->TM($openCode,$gameId,$win);
         $this->LM($openCode,$gameId,$win);
+        $this->SB($openCode,$gameId,$win);
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($win,$gameId,$issue);
@@ -583,6 +584,144 @@ class New_LHC
             $playId = 1477;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
+        }
+    }
+
+    //色波
+    public function SB($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+        $sb_playCate = 66; //特码分类ID
+        $tm = $arrOpenCode[6]; //特码号码
+        //色波
+        if($tm == 1 || $tm == 2 || $tm == 7 || $tm == 8 || $tm == 12 || $tm == 13 || $tm == 18 || $tm == 19 || $tm == 23 || $tm == 24 || $tm == 29 || $tm == 30 || $tm == 34 || $tm == 35 || $tm == 40 || $tm == 45 || $tm == 46){ //红波
+            $playId = 1481;
+            $winCode = $gameId.$sb_playCate.$playId;
+            $win->push($winCode);
+            //半波
+            if($tm%2 == 0){ //红双
+                $playId = 1485;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+            } else { //红单
+                $playId = 1484;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+            }
+            if($tm >= 25 && $tm <= 48){ //红大
+                $playId = 1486;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+                if($tm%2 == 0){ //红大双
+                    $playId = 1497;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                } else { // 红大单
+                    $playId = 1496;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                }
+            }
+            if($tm <= 24){ //红小
+                $playId = 1487;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+                if($tm%2 == 0){ //红小双
+                    $playId = 1499;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                } else { // 红小单
+                    $playId = 1498;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                }
+            }
+        }
+        if($tm == 3 || $tm == 4 || $tm == 9 || $tm == 10 || $tm == 14 || $tm == 15 || $tm == 20 || $tm == 25 || $tm == 26 || $tm == 31 || $tm == 36 || $tm == 37 || $tm == 41 || $tm == 42 || $tm == 47 || $tm == 48){ //蓝波
+            $playId = 1482;
+            $winCode = $gameId.$sb_playCate.$playId;
+            $win->push($winCode);
+            //半波
+            if($tm%2 == 0){ //蓝双
+                $playId = 1489;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+            } else { //蓝单
+                $playId = 1488;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+            }
+            if($tm >= 25 && $tm <= 48){ //蓝大
+                $playId = 1490;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+                if($tm%2 == 0){ //蓝大双
+                    $playId = 1501;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                } else { // 蓝大单
+                    $playId = 1500;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                }
+            }
+            if($tm <= 24){ //蓝小
+                $playId = 1491;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+                if($tm%2 == 0){ //蓝小双
+                    $playId = 1503;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                } else { // 蓝小单
+                    $playId = 1502;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                }
+            }
+        }
+        if($tm == 5 || $tm == 6 || $tm == 11 || $tm == 16 || $tm == 17 || $tm == 21 || $tm == 22 || $tm == 27 || $tm == 28 || $tm == 32 || $tm == 33 || $tm == 38 || $tm == 39 || $tm == 43 || $tm == 44 || $tm == 49){ //绿波
+            $playId = 1483;
+            $winCode = $gameId.$sb_playCate.$playId;
+            $win->push($winCode);
+            //半波
+            if($tm%2 == 0){ //绿双
+                $playId = 1493;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+            } else { //绿单
+                $playId = 1492;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+            }
+            if($tm >= 25 && $tm <= 48){ //绿大
+                $playId = 1494;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+                if($tm%2 == 0){ //绿大双
+                    $playId = 1505;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                } else { // 绿大单
+                    $playId = 1504;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                }
+            }
+            if($tm <= 24){ //绿小
+                $playId = 1495;
+                $winCode = $gameId.$sb_playCate.$playId;
+                $win->push($winCode);
+                if($tm%2 == 0){ //绿小双
+                    $playId = 1507;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                } else { // 绿小单
+                    $playId = 1506;
+                    $winCode = $gameId.$sb_playCate.$playId;
+                    $win->push($winCode);
+                }
+            }
         }
     }
 
