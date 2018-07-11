@@ -9,10 +9,23 @@
 namespace App\Http\Controllers\Bet;
 
 
+use App\Helpers\LHC_SX;
 use Illuminate\Support\Facades\DB;
 
 class New_LHC
 {
+    protected $LHC_SX;
+
+    /**
+     * New_LHC constructor.
+     * @param $LHC_SX
+     */
+    public function __construct(LHC_SX $LHC_SX)
+    {
+        $this->LHC_SX = $LHC_SX;
+    }
+
+
     public function all($openCode,$issue,$gameId)
     {
         $win = collect([]);
@@ -29,7 +42,7 @@ class New_LHC
         }
     }
     
-    //特码B
+    //特码A-B
     public function TM($openCode,$gameId,$win)
     {
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
@@ -428,6 +441,147 @@ class New_LHC
                 $winCode_A = $gameId.$tm_playCate.$playId_A;
                 $win->push($winCode_A);
                 break;
+        }
+    }
+    
+    //两面
+    public function LM($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+        $lm_playCate = 65; //特码分类ID
+        $tm = $arrOpenCode[6]; //特码号码
+        $ZH = (int)$arrOpenCode[0]+(int)$arrOpenCode[1]+(int)$arrOpenCode[2]+(int)$arrOpenCode[3]+(int)$arrOpenCode[4]+(int)$arrOpenCode[5]+(int)$arrOpenCode[6];
+        //特码大小
+        if($tm >= 25 && $tm <= 48){ //大
+            $playId = 1457;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+            if($tm%2 == 0){ //特大双
+                $playId = 1468;
+                $winCode = $gameId.$lm_playCate.$playId;
+                $win->push($winCode);
+            } else { //特大单
+                $playId = 1467;
+                $winCode = $gameId.$lm_playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        if($tm <= 24){
+            $playId = 1458;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+            if($tm%2 == 0){ //特小双
+                $playId = 1470;
+                $winCode = $gameId.$lm_playCate.$playId;
+                $win->push($winCode);
+            } else { //特小单
+                $playId = 1469;
+                $winCode = $gameId.$lm_playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        //特码单双
+        if($tm%2 == 0){ // 双
+            $playId = 1460;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm%2 != 0 && $tm != 49){
+            $playId = 1459;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        //特码合数大小
+        $tmBL = str_pad($tm,2,"0",STR_PAD_LEFT); //十位补零
+        $chaiTM = str_split($tmBL); //拆分个位 十位
+        $TMHS = (int)$chaiTM[0]+(int)$chaiTM[1];
+        if($TMHS >= 7 && $tmBL != 49){ //特合大
+            $playId = 1461;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($TMHS <= 6 && $tmBL != 49){ //特合小
+            $playId = 1462;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($TMHS%2 == 0){ // 双
+            $playId = 1464;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($TMHS%2 != 0 && $tmBL != 49){
+            $playId = 1463;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        //特天肖 地肖
+        $TTX = $this->LHC_SX->shengxiao($tm);
+        if($TTX == '兔' || $TTX == '马' || $TTX == '猴' || $TTX == '猪' || $TTX == '牛' || $TTX == '龙'){ //天肖
+            $playId = 1471;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($TTX == '蛇' || $TTX == '羊' || $TTX == '鸡' || $TTX == '狗' || $TTX == '鼠' || $TTX == '虎'){ //地肖
+            $playId = 1472;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        //特前肖 后肖
+        $TQH = $this->LHC_SX->shengxiao($tm);
+        if($TQH == '鼠' || $TQH == '牛' || $TQH == '虎' || $TQH == '兔' || $TQH == '龙' || $TQH == '蛇'){ //前肖
+            $playId = 1473;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($TQH == '马' || $TQH == '羊' || $TQH == '猴' || $TQH == '鸡' || $TQH == '狗' || $TQH == '猪'){ //后肖
+            $playId = 1474;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        //特家肖 野肖
+         $TJX = $this->LHC_SX->shengxiao($tm);
+        if($TJX == '牛' || $TJX == '马' || $TJX == '羊' || $TJX == '鸡' || $TJX == '狗' || $TJX == '猪'){ //家肖
+            $playId = 1475;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($TJX == '鼠' || $TJX == '虎' || $TJX == '兔' || $TJX == '龙' || $TJX == '蛇' || $TJX == '猴'){ //野肖
+            $playId = 1476;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        //特尾大 特尾小
+        $TW = $chaiTM[1];
+        if($TW >= 5){ //尾大
+            $playId = 1465;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($TW <= 4){
+            $playId = 1466;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        //总和大小
+        if($ZH >= 175){ //大
+            $playId = 1479;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        } else { //小
+            $playId = 1480;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        }
+        //总和单双
+        if($ZH%2 == 0){ //双
+            $playId = 1478;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 1477;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $win->push($winCode);
         }
     }
 
