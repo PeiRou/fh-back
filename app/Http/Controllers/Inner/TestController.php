@@ -48,24 +48,21 @@ class TestController extends Controller
                 $blue .= $blueBall+0.5;
             }
         }
-        $redTotal = $red + $ac['R'];
-        $blueTotal = $blue + $ac['B'];
-        $greenTotal = $green + $ac['G'];
-//        if(isset($ac['R'])){
-//            $red = $redBall + $ac['R'];
-//        } else {
-//            $red = 0;
-//        }
-//        if(isset($ac['B'])){
-//            $blue = $blueBall + $ac['B'];
-//        } else {
-//            $blue = 0;
-//        }
-//        if(isset($ac['G'])){
-//            $green = $blueBall + $ac['G'];
-//        } else {
-//            $green = 0;
-//        }
+        if(isset($ac['R'])){
+            $redTotal = $red + $ac['R'];
+        } else {
+            $redTotal = 0;
+        }
+        if(isset($ac['B'])){
+            $blueTotal = $blue + $ac['B'];
+        } else {
+            $blueTotal = 0;
+        }
+        if(isset($ac['G'])){
+            $greenTotal = $green + $ac['G'];
+        } else {
+            $greenTotal = 0;
+        }
         return '红：'.$redTotal.'=====蓝：'.$blueTotal.'====绿：'.$greenTotal;
     }
 
