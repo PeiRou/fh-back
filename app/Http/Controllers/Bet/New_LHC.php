@@ -1049,32 +1049,28 @@ class New_LHC
             $playId = 1636;
             $winCode = $gameId.$qsb_playCate.$playId;
             $win->push($winCode);
-            return;
-        }
-        if ($zmys_blue == 3 && $zmys_red == 3 && $tmsb == 'G'){
+        } else if ($zmys_blue == 3 && $zmys_red == 3 && $tmsb == 'G'){
             $playId = 1636;
             $winCode = $gameId.$qsb_playCate.$playId;
             $win->push($winCode);
-            return;
-        }
-        if ($zmys_green == 3 && $zmys_red == 3 && $tmsb == 'B'){
+        } else if ($zmys_green == 3 && $zmys_red == 3 && $tmsb == 'B'){
             $playId = 1636;
-            $winCode = $gameId.$qsb_playCate.$playId;
-            $win->push($winCode);
-            return;
-        }
-        if ($redTotal>$blueTotal&$redTotal>$greenTotal){
-            $playId = 1633;
-            $winCode = $gameId.$qsb_playCate.$playId;
-            $win->push($winCode);
-        }else if ($blueTotal>$greenTotal) {
-            $playId = 1634;
             $winCode = $gameId.$qsb_playCate.$playId;
             $win->push($winCode);
         } else {
-            $playId = 1635;
-            $winCode = $gameId.$qsb_playCate.$playId;
-            $win->push($winCode);
+            if ($redTotal>$blueTotal&$redTotal>$greenTotal){
+                $playId = 1633;
+                $winCode = $gameId.$qsb_playCate.$playId;
+                $win->push($winCode);
+            }else if ($blueTotal>$greenTotal) {
+                $playId = 1634;
+                $winCode = $gameId.$qsb_playCate.$playId;
+                $win->push($winCode);
+            } else {
+                $playId = 1635;
+                $winCode = $gameId.$qsb_playCate.$playId;
+                $win->push($winCode);
+            }
         }
     }
 
