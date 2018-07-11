@@ -34,15 +34,18 @@ class TestController extends Controller
         $redBall = 0;
         $blueBall = 0;
         $greenBall = 0;
+        $red = 0;
+        $green = 0;
+        $blue = 0;
         foreach($ac as $k => $v){
             if($tmsb == $k && $k == 'G'){
-                $green = $greenBall+0.5;
+                $green .= $greenBall+0.5;
             }
             if($tmsb == $k && $k == 'R'){
-                $red = $redBall+0.5;
+                $red .= $redBall+0.5;
             }
             if($tmsb == $k && $k == 'B'){
-                $blue = $blueBall+0.5;
+                $blue .= $blueBall+0.5;
             }
         }
         $redTotal = $red + $ac['R'];
