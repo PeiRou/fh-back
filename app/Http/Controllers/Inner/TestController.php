@@ -29,22 +29,19 @@ class TestController extends Controller
             $this->SB_Color($tm),
         ];
         $ac = array_count_values($s);
+        $redBall = 0;
+        $blueBall = 0;
+        $greenBall = 0;
         if(isset($ac['R'])){
-            echo '有红色';
-        } else {
-            echo '没有红色';
+            $redBall = $ac['R'];
         }
         if(isset($ac['B'])){
-            echo '有蓝色';
-        } else {
-            echo '没有蓝色';
+            $blueBall = $ac['B'];
         }
         if(isset($ac['G'])){
-            echo '有绿色';
-        } else {
-            echo '没有绿色';
+            $greenBall = $ac['G'];
         }
-        //return '红：'.@$ac['R'].'=====蓝：'.@$ac['B'].'====绿：'.@$ac['G'];
+        return '红：'.$redBall.'=====蓝：'.$blueBall.'====绿：'.$greenBall;
     }
 
     function SB_Color($num){
