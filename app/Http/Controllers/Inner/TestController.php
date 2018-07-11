@@ -31,18 +31,23 @@ class TestController extends Controller
         $tmsb = $this->SB_Color($tm);
         echo '特码色波：'.$tmsb;
         $ac = array_count_values($s);
+        $redBall = 0;
+        $blueBall = 0;
+        $greenBall = 0;
         foreach($ac as $k => $v){
             if($tmsb == $k && $k == 'G'){
-                $greenBall = $greenBall + 0.5;
+                $green = $greenBall+0.5;
             }
             if($tmsb == $k && $k == 'R'){
-                $redBall = $redBall + 0.5;
+                $red = $redBall+0.5;
             }
             if($tmsb == $k && $k == 'B'){
-                $blueBall = $blueBall + 0.5;
+                $blue = $blueBall+0.5;
             }
         }
-        $red = $redBall + $ac['R'];
+        $redTotal = $red + $ac['R'];
+        $blueTotal = $blue + $ac['B'];
+        $greenTotal = $green + $ac['G'];
 //        if(isset($ac['R'])){
 //            $red = $redBall + $ac['R'];
 //        } else {
@@ -58,7 +63,7 @@ class TestController extends Controller
 //        } else {
 //            $green = 0;
 //        }
-        return '红：'.$redBall.'=====蓝：'.$blueBall.'====绿：'.$greenBall;
+        return '红：'.$redTotal.'=====蓝：'.$blueTotal.'====绿：'.$greenTotal;
     }
 
     function SB_Color($num){
