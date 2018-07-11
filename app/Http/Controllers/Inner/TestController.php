@@ -9,7 +9,7 @@ class TestController extends Controller
 {
     public function lhc()
     {
-        $arrOpenCode = explode(',','8,49,6,41,29,38,2'); // 分割开奖号码
+        $arrOpenCode = explode(',','16,6,5,30,18,32,27'); // 分割开奖号码
         $qsb_playCate = 69; //特码分类ID
         $zm1 = $arrOpenCode[0];
         $zm2 = $arrOpenCode[1];
