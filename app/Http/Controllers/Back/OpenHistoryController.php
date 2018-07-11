@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Events\RunLHC;
 use App\Helpers\LHC_SX;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -122,6 +123,8 @@ class OpenHistoryController extends Controller
             'is_open' => 1
         ]);
         if($update == 1){
+            $getIssue = DB::table('game_lhc')->where('id',$id)->first();
+            event(new RunLHC($openNum,$getIssue->issue,70)); //触发六合彩结算事件
             return response()->json([
                 'status' => true
             ]);
