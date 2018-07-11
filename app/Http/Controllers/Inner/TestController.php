@@ -35,16 +35,24 @@ class TestController extends Controller
         $blueBall = 0;
         $greenBall = 0;
         foreach($ac as $k => $v){
-            echo $k.'==='.$v;
+            if($tmsb == $k && $k == 'G'){
+                $greenBall = $greenBall+0.5;
+            }
+            if($tmsb == $k && $k == 'R'){
+                $redBall = $redBall+0.5;
+            }
+            if($tmsb == $k && $k == 'B'){
+                $blueBall = $blueBall+0.5;
+            }
         }
         if(isset($ac['R'])){
-            $redBall = $ac['R'];
+            $redBall = $redBall + $ac['R'];
         }
         if(isset($ac['B'])){
-            $blueBall = $ac['B'];
+            $blueBall = $blueBall + $ac['B'];
         }
         if(isset($ac['G'])){
-            $greenBall = $ac['G'];
+            $greenBall = $blueBall + $ac['G'];
         }
         return '红：'.$redBall.'=====蓝：'.$blueBall.'====绿：'.$greenBall;
     }
