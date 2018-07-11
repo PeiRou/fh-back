@@ -28,6 +28,8 @@ class TestController extends Controller
             $this->SB_Color($zm6),
             $this->SB_Color($tm),
         ];
+        $tmsb = $this->SB_Color($tm);
+        echo '特码色波：'.$tmsb;
         $ac = array_count_values($s);
         $redBall = 0;
         $blueBall = 0;
