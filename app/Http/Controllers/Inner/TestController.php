@@ -45,16 +45,16 @@ class TestController extends Controller
                 $blueBall = $blueBall+0.5;
             }
         }
-//        if(isset($ac['R'])){
-//            $redBall = $redBall + $ac['R'];
-//        }
-//        if(isset($ac['B'])){
-//            $blueBall = $blueBall + $ac['B'];
-//        }
-//        if(isset($ac['G'])){
-//            $greenBall = $blueBall + $ac['G'];
-//        }
-        return '红：'.$redBall.'=====蓝：'.$blueBall.'====绿：'.$greenBall;
+        if(isset($ac['R'])){
+            $red = $redBall + $ac['R'];
+        }
+        if(isset($ac['B'])){
+            $blue = $blueBall + $ac['B'];
+        }
+        if(isset($ac['G'])){
+            $green = $blueBall + $ac['G'];
+        }
+        return '红：'.$red.'=====蓝：'.$blue.'====绿：'.$green;
     }
 
     function SB_Color($num){
