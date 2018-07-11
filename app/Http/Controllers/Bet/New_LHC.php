@@ -1049,14 +1049,17 @@ class New_LHC
             $playId = 1636;
             $winCode = $gameId.$qsb_playCate.$playId;
             $win->push($winCode);
+            return;
         } else if ($zmys_blue == 3 && $zmys_red == 3 && $tmsb == 'G'){
             $playId = 1636;
             $winCode = $gameId.$qsb_playCate.$playId;
             $win->push($winCode);
+            return;
         } else if ($zmys_green == 3 && $zmys_red == 3 && $tmsb == 'B'){
             $playId = 1636;
             $winCode = $gameId.$qsb_playCate.$playId;
             $win->push($winCode);
+            return;
         } else {
             if ($redTotal>$blueTotal&$redTotal>$greenTotal){
                 $playId = 1633;
