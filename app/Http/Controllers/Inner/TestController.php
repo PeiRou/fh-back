@@ -63,7 +63,12 @@ class TestController extends Controller
         } else {
             $greenTotal = 0;
         }
-        return '红：'.$redTotal.'=====蓝：'.$blueTotal.'====绿：'.$greenTotal;
+        $sort = [
+            $redTotal => '红',
+            $blueTotal => '蓝',
+            $greenTotal => '绿',
+        ];
+        return sort($sort);
     }
 
     function SB_Color($num){
