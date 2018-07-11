@@ -16,7 +16,7 @@ class New_LHC
     public function all($openCode,$issue,$gameId)
     {
         $win = collect([]);
-        $this->TM_B($openCode,$gameId,$win);
+        $this->TM($openCode,$gameId,$win);
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($win,$gameId,$issue);
@@ -30,7 +30,7 @@ class New_LHC
     }
     
     //特码B
-    public function TM_B($openCode,$gameId,$win)
+    public function TM($openCode,$gameId,$win)
     {
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
         $tm_playCate = 64; //特码分类ID
