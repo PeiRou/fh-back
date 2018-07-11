@@ -29,7 +29,7 @@ class TestController extends Controller
             $this->SB_Color($tm),
         ];
         $ac = array_count_values($s);
-        return '红：'.$ac['R'].'=====蓝：'.$ac['B'].'====绿：'.$ac['G'];
+        return '红：'.@$ac['R'].'=====蓝：'.@$ac['B'].'====绿：'.@$ac['G'];
     }
 
     function SB_Color($num){
