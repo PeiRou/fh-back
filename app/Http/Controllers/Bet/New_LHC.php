@@ -968,7 +968,7 @@ class New_LHC
     public function QSB($openCode,$gameId,$win)
     {
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
-        $qsb_playCate = 69; //特码分类ID
+        $qsb_playCate = 75; //特码分类ID
         $zm1 = $arrOpenCode[0];
         $zm2 = $arrOpenCode[1];
         $zm3 = $arrOpenCode[2];
@@ -986,6 +986,56 @@ class New_LHC
             $this->SB_Color($zm6),
             $this->SB_Color($tm),
         ];
+        //正码颜色
+        $tmsb = $this->SB_Color($tm);
+        echo '特码色波：'.$tmsb;
+        $ac = array_count_values($s);
+        $redBall = 0;
+        $blueBall = 0;
+        $greenBall = 0;
+        $red = 0;
+        $green = 0;
+        $blue = 0;
+        foreach($ac as $k => $v){
+            if($tmsb == $k && $k == 'G'){
+                $green .= $greenBall+0.5;
+            }
+            if($tmsb == $k && $k == 'R'){
+                $red .= $redBall+0.5;
+            }
+            if($tmsb == $k && $k == 'B'){
+                $blue .= $blueBall+0.5;
+            }
+        }
+        if(isset($ac['R'])){
+            $redTotal = $red + $ac['R'];
+        } else {
+            $redTotal = 0;
+        }
+        if(isset($ac['B'])){
+            $blueTotal = $blue + $ac['B'];
+        } else {
+            $blueTotal = 0;
+        }
+        if(isset($ac['G'])){
+            $greenTotal = $green + $ac['G'];
+        } else {
+            $greenTotal = 0;
+        }
+        if($redTotal>$blueTotal&$redTotal>$greenTotal){ //红
+            $playId = 1633;
+            $winCode = $gameId.$qsb_playCate.$playId;
+            $win->push($winCode);
+        }else if($blueTotal>$greenTotal){ // 蓝
+            $playId = 1634;
+            $winCode = $gameId.$qsb_playCate.$playId;
+            $win->push($winCode);
+        }else{
+            $playId = 1635; // 绿
+            $winCode = $gameId.$qsb_playCate.$playId;
+            $win->push($winCode);
+        }
+        //和局
     }
 
     function SB_Color($num){

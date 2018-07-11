@@ -28,6 +28,34 @@ class TestController extends Controller
             $this->SB_Color($zm6),
             $this->SB_Color($tm),
         ];
+        //正码颜色
+        $zmys = [
+            $this->SB_Color($zm1),
+            $this->SB_Color($zm2),
+            $this->SB_Color($zm3),
+            $this->SB_Color($zm4),
+            $this->SB_Color($zm5),
+            $this->SB_Color($zm6),
+        ];
+        $zmys_array = array_count_values($zmys);
+        if(isset($zmys_array['R'])){
+            $zmys_red = $zmys_array['R'];
+        } else {
+            $zmys_red = 0;
+        }
+        if(isset($zmys_array['B'])){
+            $zmys_blue = $zmys_array['B'];
+        } else {
+            $zmys_blue = 0;
+        }
+        if(isset($zmys_array['G'])){
+            $zmys_green = $zmys_array['G'];
+        } else {
+            $zmys_green = 0;
+        }
+        return "红".$zmys_red.'===蓝'.$zmys_blue.'===绿'.$zmys_green;
+
+
         $tmsb = $this->SB_Color($tm);
         echo '特码色波：'.$tmsb;
         $ac = array_count_values($s);
