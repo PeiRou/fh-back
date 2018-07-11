@@ -63,12 +63,13 @@ class TestController extends Controller
         } else {
             $greenTotal = 0;
         }
-        $sort = [
-            $redTotal => '红',
-            $blueTotal => '蓝',
-            $greenTotal => '绿',
-        ];
-        return ksort($sort);
+        if($redTotal>$blueTotal&$redTotal>$greenTotal){
+            return '红'.$redTotal;
+        }else if($blueTotal>$greenTotal){
+            return '蓝'.$blueTotal;
+        }else{
+            return '绿'.$greenTotal;
+        }
     }
 
     function SB_Color($num){
