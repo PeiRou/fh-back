@@ -28,7 +28,8 @@ class TestController extends Controller
             $this->SB_Color($zm6),
             $this->SB_Color($tm),
         ];
-        return $s;
+        $ac = array_count_values($s);
+        return $ac;
     }
 
     function SB_Color($num){
