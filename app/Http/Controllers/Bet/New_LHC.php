@@ -1099,6 +1099,16 @@ class New_LHC
         $ji = [2,14,26,38];
         $gou = [1,13,25,37,49];
         $zhu = [12,24,36,48];
+        $w0 = [10,20,30,40];
+        $w1 = [1,11,21,31,41];
+        $w2 = [2,12,22,32,42];
+        $w3 = [3,13,23,33,43];
+        $w4 = [4,14,24,34,44];
+        $w5 = [5,15,25,35,45];
+        $w6 = [6,16,26,36,46];
+        $w7 = [7,17,27,36,47];
+        $w8 = [8,18,28,38,48];
+        $w9 = [9,19,29,39,49];
         if(in_array($m1,$shu) || in_array($m2,$shu) || in_array($m3,$shu) || in_array($m4,$shu) || in_array($m5,$shu) || in_array($m6,$shu) || in_array($m7,$shu)){
             $playId = 1599;
             $winCode = $gameId.$ptyxws_playCate.$playId;
@@ -1156,6 +1166,57 @@ class New_LHC
         }
         if(in_array($m1,$zhu) || in_array($m2,$zhu) || in_array($m3,$zhu) || in_array($m4,$zhu) || in_array($m5,$zhu) || in_array($m6,$zhu) || in_array($m7,$zhu)){
             $playId = 1610;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        //尾数
+        if(in_array($m1,$w0) || in_array($m2,$w0) || in_array($m3,$w0) || in_array($m4,$w0) || in_array($m5,$w0) || in_array($m6,$w0) || in_array($m7,$w0)){
+            $playId = 1611;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$w1) || in_array($m2,$w1) || in_array($m3,$w1) || in_array($m4,$w1) || in_array($m5,$w1) || in_array($m6,$w1) || in_array($m7,$w1)){
+            $playId = 1612;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$w2) || in_array($m2,$w2) || in_array($m3,$w2) || in_array($m4,$w2) || in_array($m5,$w2) || in_array($m6,$w2) || in_array($m7,$w2)){
+            $playId = 1613;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$w3) || in_array($m2,$w3) || in_array($m3,$w3) || in_array($m4,$w3) || in_array($m5,$w3) || in_array($m6,$w3) || in_array($m7,$w3)){
+            $playId = 1614;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$w4) || in_array($m2,$w4) || in_array($m3,$w4) || in_array($m4,$w4) || in_array($m5,$w4) || in_array($m6,$w4) || in_array($m7,$w4)){
+            $playId = 1615;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$w5) || in_array($m2,$w5) || in_array($m3,$w5) || in_array($m4,$w5) || in_array($m5,$w5) || in_array($m6,$w5) || in_array($m7,$w5)){
+            $playId = 1616;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$w6) || in_array($m2,$w6) || in_array($m3,$w6) || in_array($m4,$w6) || in_array($m5,$w6) || in_array($m6,$w6) || in_array($m7,$w6)){
+            $playId = 1617;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$w7) || in_array($m2,$w7) || in_array($m3,$w7) || in_array($m4,$w7) || in_array($m5,$w7) || in_array($m6,$w7) || in_array($m7,$w7)){
+            $playId = 1618;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$w8) || in_array($m2,$w8) || in_array($m3,$w8) || in_array($m4,$w8) || in_array($m5,$w8) || in_array($m6,$w8) || in_array($m7,$w8)){
+            $playId = 1619;
+            $winCode = $gameId.$ptyxws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if(in_array($m1,$w9) || in_array($m2,$w9) || in_array($m3,$w9) || in_array($m4,$w9) || in_array($m5,$w9) || in_array($m6,$w9) || in_array($m7,$w9)){
+            $playId = 1620;
             $winCode = $gameId.$ptyxws_playCate.$playId;
             $win->push($winCode);
         }
