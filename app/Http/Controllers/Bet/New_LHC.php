@@ -35,6 +35,8 @@ class New_LHC
         $this->TX($openCode,$gameId,$win);
         $this->TMTWS($openCode,$gameId,$win);
         $this->ZM($openCode,$gameId,$win);
+        $this->WX($openCode,$gameId,$win);
+        $this->QSB($openCode,$gameId,$win);
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($win,$gameId,$issue);
@@ -926,6 +928,78 @@ class New_LHC
                 $winCode = $gameId.$zm_playCate.$playId;
                 $win->push($winCode);
             }
+        }
+    }
+
+    //五行
+    public function WX($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+        $wx_playCate = 72; //特码分类ID
+        $tm = $arrOpenCode[6]; //特码号码
+        if($tm == 4 || $tm == 5 || $tm == 18 || $tm == 19 || $tm == 26 || $tm == 27 || $tm == 34 || $tm == 35 || $tm == 48 || $tm == 49){ //金
+            $playId = 1594;
+            $winCode = $gameId.$wx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 1 || $tm == 8 || $tm == 9 || $tm == 16 || $tm == 17 || $tm == 30 || $tm == 31 || $tm == 38 || $tm == 39 || $tm == 46 || $tm == 47){ //木
+            $playId = 1595;
+            $winCode = $gameId.$wx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 6 || $tm == 7 || $tm == 14 || $tm == 15 || $tm == 22 || $tm == 23 || $tm == 36 || $tm == 37 || $tm == 44 || $tm == 45){ //水
+            $playId = 1596;
+            $winCode = $gameId.$wx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 2 || $tm == 3 || $tm == 10 || $tm == 11 || $tm == 24 || $tm == 25 || $tm == 32 || $tm == 33 || $tm == 40 || $tm == 41){ //火
+            $playId = 1597;
+            $winCode = $gameId.$wx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 12 || $tm == 13 || $tm == 20 || $tm == 21 || $tm == 28 || $tm == 29 || $tm == 42 || $tm == 43){ //土
+            $playId = 1598;
+            $winCode = $gameId.$wx_playCate.$playId;
+            $win->push($winCode);
+        }
+    }
+
+    //七色波
+    public function QSB($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+        $qsb_playCate = 69; //特码分类ID
+        $zm1 = $arrOpenCode[0];
+        $zm2 = $arrOpenCode[1];
+        $zm3 = $arrOpenCode[2];
+        $zm4 = $arrOpenCode[3];
+        $zm5 = $arrOpenCode[4];
+        $zm6 = $arrOpenCode[5];
+        $tm = $arrOpenCode[6]; //特码号码
+        //七个号码色波
+        $s = [
+            $this->SB_Color($zm1),
+            $this->SB_Color($zm2),
+            $this->SB_Color($zm3),
+            $this->SB_Color($zm4),
+            $this->SB_Color($zm5),
+            $this->SB_Color($zm6),
+            $this->SB_Color($tm),
+        ];
+    }
+
+    function SB_Color($num){
+        //红色
+        if($num == 1 || $num == 2 || $num == 7 || $num == 8 || $num == 12 || $num == 13 || $num == 18 || $num == 19 || $num == 23 || $num == 24 || $num == 29 || $num == 30 || $num == 34 || $num == 35 || $num == 40 || $num == 45 || $num == 46){
+            return 'R';
+        }
+        //蓝色
+        if($num == 3 || $num == 4 || $num == 9 || $num == 10 || $num == 14 || $num == 15 || $num == 20 || $num == 25 || $num == 26 || $num == 31 || $num == 36 || $num == 37 || $num == 41 || $num == 42 || $num == 47 || $num == 48) { //蓝波
+            return 'B';
+        }
+        //绿色
+        if($num == 5 || $num == 6 || $num == 11 || $num == 16 || $num == 17 || $num == 21 || $num == 22 || $num == 27 || $num == 28 || $num == 32 || $num == 33 || $num == 38 || $num == 39 || $num == 43 || $num == 44 || $num == 49) { //绿波
+            return 'G';
         }
     }
 

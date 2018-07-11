@@ -10,33 +10,39 @@ class TestController extends Controller
     public function lhc()
     {
         $arrOpenCode = explode(',','8,49,6,41,29,38,2'); // 分割开奖号码
-        $zm_playCate = 70; //特码分类ID
-        $ZM1 = $arrOpenCode[0];
-        $ZM2 = $arrOpenCode[1];
-        $ZM3 = $arrOpenCode[2];
-        $ZM4 = $arrOpenCode[3];
-        $ZM5 = $arrOpenCode[4];
-        $ZM6 = $arrOpenCode[5];
-        $nums = ['1'=>'1545','2'=>'1546','3'=>'1547','4'=>'1548','5'=>'1549','6'=>'1550','7'=>'1551','8'=>'1552','9'=>'1553','10'=>'1554','11'=>'1555','12'=>'1556','13'=>'1557','14'=>'1558','15'=>'1559','16'=>'1560','17'=>'1561','18'=>'1562','19'=>'1563','20'=>'1564','21'=>'1565','22'=>'1566','23'=>'1567','24'=>'1568','25'=>'1569','26'=>'1570','27'=>'1571','28'=>'1572','29'=>'1573','30'=>'1574','31'=>'1575','32'=>'1576','33'=>'1577','34'=>'1578','35'=>'1579','36'=>'1580','37'=>'1581','38'=>'1582','39'=>'1583','40'=>'1584','41'=>'1585','42'=>'1586','43'=>'1587','44'=>'1588','45'=>'1589','46'=>'1590','47'=>'1591','48'=>'1592','49'=>'1593'];
-        foreach ($nums as $k => $v){
-            if($ZM1 == $k){
-                echo "中了".$k."，ID:".$v;
-            }
-            if($ZM2 == $k){
-                echo "中了".$k."，ID:".$v;
-            }
-            if($ZM3 == $k){
-                echo "中了".$k."，ID:".$v;
-            }
-            if($ZM4 == $k){
-                echo "中了".$k."，ID:".$v;
-            }
-            if($ZM5 == $k){
-                echo "中了".$k."，ID:".$v;
-            }
-            if($ZM6 == $k){
-                echo "中了".$k."，ID:".$v;
-            }
+        $qsb_playCate = 69; //特码分类ID
+        $zm1 = $arrOpenCode[0];
+        $zm2 = $arrOpenCode[1];
+        $zm3 = $arrOpenCode[2];
+        $zm4 = $arrOpenCode[3];
+        $zm5 = $arrOpenCode[4];
+        $zm6 = $arrOpenCode[5];
+        $tm = $arrOpenCode[6]; //特码号码
+        //七个号码色波
+        $s = [
+            $this->SB_Color($zm1),
+            $this->SB_Color($zm2),
+            $this->SB_Color($zm3),
+            $this->SB_Color($zm4),
+            $this->SB_Color($zm5),
+            $this->SB_Color($zm6),
+            $this->SB_Color($tm),
+        ];
+        return $s;
+    }
+
+    function SB_Color($num){
+        //红色
+        if($num == 1 || $num == 2 || $num == 7 || $num == 8 || $num == 12 || $num == 13 || $num == 18 || $num == 19 || $num == 23 || $num == 24 || $num == 29 || $num == 30 || $num == 34 || $num == 35 || $num == 40 || $num == 45 || $num == 46){
+            return 'R';
+        }
+        //蓝色
+        if($num == 3 || $num == 4 || $num == 9 || $num == 10 || $num == 14 || $num == 15 || $num == 20 || $num == 25 || $num == 26 || $num == 31 || $num == 36 || $num == 37 || $num == 41 || $num == 42 || $num == 47 || $num == 48) { //蓝波
+            return 'B';
+        }
+        //绿色
+        if($num == 5 || $num == 6 || $num == 11 || $num == 16 || $num == 17 || $num == 21 || $num == 22 || $num == 27 || $num == 28 || $num == 32 || $num == 33 || $num == 38 || $num == 39 || $num == 43 || $num == 44 || $num == 49) { //绿波
+            return 'G';
         }
     }
 }
