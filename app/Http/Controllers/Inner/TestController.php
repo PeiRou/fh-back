@@ -32,6 +32,9 @@ class TestController extends Controller
         $redBall = 0;
         $blueBall = 0;
         $greenBall = 0;
+        foreach($ac as $k => $v){
+            echo $k.'==='.$v;
+        }
         if(isset($ac['R'])){
             $redBall = $ac['R'];
         }
