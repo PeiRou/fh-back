@@ -23,9 +23,18 @@ class TestController extends Controller
             '3' => '1547',
             '4' => '1548',
             '5' => '1549',
+            '23' => '1578',
+            '12' => '6666',
+            '13' => '7777',
         ];
         foreach ($nums as $k => $v){
             if($ZM1 == $k){
+                echo "中了，ID:".$v;
+            }
+            if($ZM2 == $k){
+                echo "中了，ID:".$v;
+            }
+            if($ZM3 == $k){
                 echo "中了，ID:".$v;
             }
 //            echo $k.'----'.$v.'</br>';
