@@ -20,12 +20,12 @@ class New_LHC
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($win,$gameId,$issue);
-//            if($bunko == 1){
-//                $updateUserMoney = $this->updateUserMoney($gameId,$issue);
-//                if($updateUserMoney == 1){
-//                    return 1;
-//                }
-//            }
+            if($bunko == 1){
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue);
+                if($updateUserMoney == 1){
+                    return 1;
+                }
+            }
         }
     }
     
@@ -304,6 +304,29 @@ class New_LHC
         $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $run = DB::statement($sql);
-        \Log::info('六合彩运行：'.$run);
+        if($run == 1){
+            $run2 = DB::statement($sql_lose);
+            if($run2 == 1){
+                return 1;
+            }
+        }
+    }
+
+    function updateUserMoney($gameId,$issue){
+        $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
+        $sql = "UPDATE users SET money = money+ CASE id ";
+        $users = [];
+        foreach ($get as $i){
+            $users[] = $i->user_id;
+            $sql .= "WHEN $i->user_id THEN $i->s ";
+        }
+        $ids = implode(',',$users);
+        $sql .= "END WHERE id IN (0,$ids)";
+        $up = DB::statement($sql);
+        if($up == 1){
+            return 1;
+        } else {
+            \Log::info('更新用户余额，失败！');
+        }
     }
 }
