@@ -32,6 +32,8 @@ class New_LHC
         $this->TM($openCode,$gameId,$win);
         $this->LM($openCode,$gameId,$win);
         $this->SB($openCode,$gameId,$win);
+        $this->TX($openCode,$gameId,$win);
+        $this->TMTWS($openCode,$gameId,$win);
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($win,$gameId,$issue);
@@ -723,6 +725,174 @@ class New_LHC
                 }
             }
         }
+    }
+
+    //特肖
+    public function TX($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+        $tx_playCate = 67; //特码分类ID
+        $tm = $arrOpenCode[6]; //特码号码
+        if($tm == 6 || $tm == 18 || $tm == 30 || $tm == 42){
+            $playId = 1513;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 5 || $tm == 17 || $tm == 29 || $tm == 41){
+            $playId = 1514;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 4 || $tm == 16 || $tm == 28 || $tm == 40){
+            $playId = 1515;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 3 || $tm == 15 || $tm == 27 || $tm == 39){
+            $playId = 1516;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 2 || $tm == 14 || $tm == 26 || $tm == 38){
+            $playId = 1517;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 1 || $tm == 13 || $tm == 25 || $tm == 37 || $tm == 49){
+            $playId = 1518;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 12 || $tm == 24 || $tm == 36 || $tm == 48){
+            $playId = 1519;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 11 || $tm == 23 || $tm == 35 || $tm == 47){
+            $playId = 1508;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 10 || $tm == 22 || $tm == 34 || $tm == 46){
+            $playId = 1509;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 9 || $tm == 21 || $tm == 33 || $tm == 45){
+            $playId = 1510;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 8 || $tm == 20 || $tm == 32 || $tm == 44){
+            $playId = 1511;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tm == 7 || $tm == 19 || $tm == 31 || $tm == 43){
+            $playId = 1512;
+            $winCode = $gameId.$tx_playCate.$playId;
+            $win->push($winCode);
+        }
+    }
+
+    //特码头尾数
+    public function TMTWS($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+        $tmtws_playCate = 69; //特码分类ID
+        $tm = $arrOpenCode[6]; //特码号码
+        $tmBL = str_pad($tm,2,"0",STR_PAD_LEFT); //十位补零
+        $chaiTM = str_split($tmBL); //拆分个位 十位
+        $tou = (int)$chaiTM[0];
+        $wei = (int)$chaiTM[1];
+        if($tou == 0){
+            $playId = 1530;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tou == 1){
+            $playId = 1531;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tou == 2){
+            $playId = 1532;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tou == 3){
+            $playId = 1533;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($tou == 4){
+            $playId = 1534;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($wei == 0){
+            $playId = 1544;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($wei == 1){
+            $playId = 1535;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($wei == 2){
+            $playId = 1536;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($wei == 3){
+            $playId = 1537;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($wei == 4){
+            $playId = 1538;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($wei == 5){
+            $playId = 1539;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($wei == 6){
+            $playId = 1540;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($wei == 7){
+            $playId = 1541;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($wei == 8){
+            $playId = 1542;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+        if($wei == 9){
+            $playId = 1543;
+            $winCode = $gameId.$tmtws_playCate.$playId;
+            $win->push($winCode);
+        }
+    }
+
+    //正码
+    public function ZM($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+        $zm_playCate = 70; //特码分类ID
+        $ZM1 = $arrOpenCode[0];
+        $ZM2 = $arrOpenCode[1];
+        $ZM3 = $arrOpenCode[2];
+        $ZM4 = $arrOpenCode[3];
+        $ZM5 = $arrOpenCode[4];
+        $ZM6 = $arrOpenCode[5];
     }
 
     //投注结算

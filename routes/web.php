@@ -317,6 +317,7 @@ Route::get('inner/play','Inner\innerController@play');
 Route::post('/action/inner/playCate','Inner\innerActionController@playCate');
 Route::post('/action/inner/play','Inner\innerActionController@play');
 Route::post('/action/inner/getPlayCateItem','Inner\innerActionController@getPlayCateItem');
+Route::get('/tttt/test','Inner\TestController@lhc');
 
 //后台状态轮询
 Route::get('/back/status','Back\AjaxStatusController@status');
