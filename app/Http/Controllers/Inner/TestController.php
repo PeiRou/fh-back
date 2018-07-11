@@ -25,7 +25,7 @@ class TestController extends Controller
             '5' => '1549',
         ];
         foreach ($nums as $k => $v){
-            echo $k.'----'.$v;
+            echo $k.'----'.$v.'</br>';
         }
     }
 }
