@@ -1057,18 +1057,20 @@ class New_LHC
             $playId = 1636;
             $winCode = $gameId.$qsb_playCate.$playId;
             $win->push($winCode);
-        } else if ($redTotal>$blueTotal&$redTotal>$greenTotal){
-            $playId = 1633;
-            $winCode = $gameId.$qsb_playCate.$playId;
-            $win->push($winCode);
-        }else if ($blueTotal>$greenTotal) {
-            $playId = 1634;
-            $winCode = $gameId.$qsb_playCate.$playId;
-            $win->push($winCode);
         } else {
-            $playId = 1635;
-            $winCode = $gameId.$qsb_playCate.$playId;
-            $win->push($winCode);
+            if ($redTotal>$blueTotal&$redTotal>$greenTotal){
+                $playId = 1633;
+                $winCode = $gameId.$qsb_playCate.$playId;
+                $win->push($winCode);
+            }else if ($blueTotal>$greenTotal) {
+                $playId = 1634;
+                $winCode = $gameId.$qsb_playCate.$playId;
+                $win->push($winCode);
+            } else {
+                $playId = 1635;
+                $winCode = $gameId.$qsb_playCate.$playId;
+                $win->push($winCode);
+            }
         }
     }
 
