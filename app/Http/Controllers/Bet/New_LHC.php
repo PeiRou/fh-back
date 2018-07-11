@@ -976,6 +976,7 @@ class New_LHC
         $zm5 = $arrOpenCode[4];
         $zm6 = $arrOpenCode[5];
         $tm = $arrOpenCode[6]; //特码号码
+        $tmsb = $this->SB_Color($tm); //特码色波
         //七个号码色波
         $s = [
             $this->SB_Color($zm1),
@@ -987,8 +988,30 @@ class New_LHC
             $this->SB_Color($tm),
         ];
         //正码颜色
-        $tmsb = $this->SB_Color($tm);
-        echo '特码色波：'.$tmsb;
+        $zmys = [
+            $this->SB_Color($zm1),
+            $this->SB_Color($zm2),
+            $this->SB_Color($zm3),
+            $this->SB_Color($zm4),
+            $this->SB_Color($zm5),
+            $this->SB_Color($zm6),
+        ];
+        $zmys_array = array_count_values($zmys);
+        if(isset($zmys_array['R'])){
+            $zmys_red = $zmys_array['R'];
+        } else {
+            $zmys_red = 0;
+        }
+        if(isset($zmys_array['B'])){
+            $zmys_blue = $zmys_array['B'];
+        } else {
+            $zmys_blue = 0;
+        }
+        if(isset($zmys_array['G'])){
+            $zmys_green = $zmys_array['G'];
+        } else {
+            $zmys_green = 0;
+        }
         $ac = array_count_values($s);
         $redBall = 0;
         $blueBall = 0;
@@ -1022,20 +1045,31 @@ class New_LHC
         } else {
             $greenTotal = 0;
         }
-        if($redTotal>$blueTotal&$redTotal>$greenTotal){ //红
+        if($zmys_blue == 3 && $zmys_green == 3 && $tmsb == 'R'){
+            $playId = 1636;
+            $winCode = $gameId.$qsb_playCate.$playId;
+            $win->push($winCode);
+        } else if ($zmys_blue == 3 && $zmys_red == 3 && $tmsb == 'G'){
+            $playId = 1636;
+            $winCode = $gameId.$qsb_playCate.$playId;
+            $win->push($winCode);
+        } else if ($zmys_green == 3 && $zmys_red == 3 && $tmsb == 'B'){
+            $playId = 1636;
+            $winCode = $gameId.$qsb_playCate.$playId;
+            $win->push($winCode);
+        } else if ($redTotal>$blueTotal&$redTotal>$greenTotal){
             $playId = 1633;
             $winCode = $gameId.$qsb_playCate.$playId;
             $win->push($winCode);
-        }else if($blueTotal>$greenTotal){ // 蓝
+        }else if ($blueTotal>$greenTotal) {
             $playId = 1634;
             $winCode = $gameId.$qsb_playCate.$playId;
             $win->push($winCode);
-        }else{
-            $playId = 1635; // 绿
+        } else {
+            $playId = 1635;
             $winCode = $gameId.$qsb_playCate.$playId;
             $win->push($winCode);
         }
-        //和局
     }
 
     function SB_Color($num){
