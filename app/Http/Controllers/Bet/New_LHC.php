@@ -30,6 +30,7 @@ class New_LHC
     {
         $win = collect([]);
         $this->TM($openCode,$gameId,$win);
+        $this->LM($openCode,$gameId,$win);
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($win,$gameId,$issue);
