@@ -443,8 +443,8 @@ class New_LHC
         $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
         $ids = implode(',', $id);
         foreach ($getUserBets as $item){
-            $bunko = $item->bet_money * $item->play_odds;
-            $bunko_lose = 0-$item->bet_money;
+            $bunko = ($item->bet_money * $item->play_odds) + ($item->bet_money * $item->play_rebate);
+            $bunko_lose = (0-$item->bet_money) + ($item->bet_money * $item->play_rebate);
             $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
             $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
         }
