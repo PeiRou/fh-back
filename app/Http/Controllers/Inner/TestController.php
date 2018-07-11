@@ -54,8 +54,6 @@ class TestController extends Controller
         } else {
             $zmys_green = 0;
         }
-
-        echo '特码色波：'.$tmsb;
         $ac = array_count_values($s);
         $redBall = 0;
         $blueBall = 0;
