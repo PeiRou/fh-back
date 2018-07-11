@@ -47,12 +47,18 @@ class TestController extends Controller
         }
         if(isset($ac['R'])){
             $red = (int)$redBall + (int)$ac['R'];
+        } else {
+            $red = 0;
         }
         if(isset($ac['B'])){
             $blue = (int)$blueBall + (int)$ac['B'];
+        } else {
+            $blue = 0;
         }
         if(isset($ac['G'])){
             $green = (int)$blueBall + (int)$ac['G'];
+        } else {
+            $green = 0;
         }
         return '红：'.$red.'=====蓝：'.$blue.'====绿：'.$green;
     }
