@@ -46,17 +46,17 @@ class TestController extends Controller
             }
         }
         if(isset($ac['R'])){
-            $red = (int)$redBall + (int)$ac['R'];
+            $red = $redBall + $ac['R'];
         } else {
             $red = 0;
         }
         if(isset($ac['B'])){
-            $blue = (int)$blueBall + (int)$ac['B'];
+            $blue = $blueBall + $ac['B'];
         } else {
             $blue = 0;
         }
         if(isset($ac['G'])){
-            $green = (int)$blueBall + (int)$ac['G'];
+            $green = $blueBall + $ac['G'];
         } else {
             $green = 0;
         }
