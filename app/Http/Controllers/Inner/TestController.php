@@ -45,15 +45,15 @@ class TestController extends Controller
                 $blueBall = $blueBall+0.5;
             }
         }
-        if(isset($ac['R'])){
-            $redBall = $redBall + $ac['R'];
-        }
-        if(isset($ac['B'])){
-            $blueBall = $blueBall + $ac['B'];
-        }
-        if(isset($ac['G'])){
-            $greenBall = $blueBall + $ac['G'];
-        }
+//        if(isset($ac['R'])){
+//            $redBall = $redBall + $ac['R'];
+//        }
+//        if(isset($ac['B'])){
+//            $blueBall = $blueBall + $ac['B'];
+//        }
+//        if(isset($ac['G'])){
+//            $greenBall = $blueBall + $ac['G'];
+//        }
         return '红：'.$redBall.'=====蓝：'.$blueBall.'====绿：'.$greenBall;
     }
 
