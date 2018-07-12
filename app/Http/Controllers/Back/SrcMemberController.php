@@ -454,11 +454,11 @@ class SrcMemberController extends Controller
                         'balance' => (int)$getUserBalance->money-(int)$money,
                         'total_bet' => 0,
                         'order_id' => $this->orderNumber(),
-                        'amount' => $money,
+                        'amount' => 0-$money,
                         'ip' => '-',
                         'ip_info' => '-',
-                        'draw_type' => 1,
-                        'status' => 0,
+                        'draw_type' => 2,
+                        'status' => 2,
                         'platform' => 1
                     ]);
                     if($insert == 1){
