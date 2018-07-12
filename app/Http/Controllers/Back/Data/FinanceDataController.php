@@ -292,11 +292,17 @@ class FinanceDataController extends Controller
                 return '-';
             })
             ->editColumn('ip_info',function ($drawing){
-                return "<span><i class='iconfont'>&#xe627;</i> $drawing->dr_ip</span></br><span>$drawing->dr_ip_info</span>";
+                if($drawing->dr_draw_type == 2){
+                    return '-';
+                } else {
+                    return "<span><i class='iconfont'>&#xe627;</i> $drawing->dr_ip</span></br><span>$drawing->dr_ip_info</span>";
+                }
             })
             ->editColumn('draw_type',function ($drawing){
                 if($drawing->dr_draw_type == 1){
                     return '手动出款';
+                } else if($drawing->dr_draw_type == 2) {
+                    return '后台扣钱';
                 } else {
                     return '自动出款';
                 }
