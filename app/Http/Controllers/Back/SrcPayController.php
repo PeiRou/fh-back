@@ -492,6 +492,7 @@ class SrcPayController extends Controller
 
         $payOnline = new PayOnline();
         $payOnline->rechName = '银行转账';
+        $payOnline->code = 'bankTransfer';
         $payOnline->rechType = 'bankTransfer';
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payee = $payee;
@@ -602,6 +603,7 @@ class SrcPayController extends Controller
         $payOnline = new PayOnline();
         $payOnline->rechName = '支付宝支付';
         $payOnline->rechType = 'alipay';
+        $payOnline->code = 'alipay';
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payee = $payee;
         $payOnline->payeeName = $payeeName;
@@ -714,6 +716,7 @@ class SrcPayController extends Controller
         $payOnline = new PayOnline();
         $payOnline->rechName = '微信支付';
         $payOnline->rechType = 'weixin';
+        $payOnline->code = 'weixin';
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payee = $payee;
         $payOnline->payeeName = $payeeName;
@@ -826,6 +829,7 @@ class SrcPayController extends Controller
         $payOnline = new PayOnline();
         $payOnline->rechName = '财付通支付';
         $payOnline->rechType = 'cft';
+        $payOnline->code = 'cft';
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payee = $payee;
         $payOnline->payeeName = $payeeName;
