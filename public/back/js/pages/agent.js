@@ -8,6 +8,7 @@ $(function () {
     $('#agentTable').DataTable({
         searching: false,
         bLengthChange: false,
+        aLengthMenu: [[50]],
         processing: true,
         ordering:false,
         serverSide: true,
