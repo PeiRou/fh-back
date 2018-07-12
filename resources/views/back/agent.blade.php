@@ -12,6 +12,7 @@
         </div>
     </div>
     <div class="table-content">
+        <input type="hidden" id="gaid" value="{{$gaid}}">
         <table id="agentTable" class="ui small table" cellspacing="0" width="100%">
             <thead>
             <tr>

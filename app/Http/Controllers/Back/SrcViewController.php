@@ -49,13 +49,15 @@ class SrcViewController extends Controller
         return view('back.generalAgent');
     }
     //代理
-    public function agent()
+    public function agent(Request $request)
     {
-        return view('back.agent');
+        $gaid = $request->get('id');
+        return view('back.agent',compact('gaid'));
     }
     //会员
-    public function user()
+    public function user(Request $request)
     {
+        $aid = $request->get('id');         //代理id
         $levels = DB::table('level')->where('status',1)->get();
         $agent = DB::table('agent')->where('status',1)->get();
 
@@ -65,7 +67,7 @@ class SrcViewController extends Controller
         $monthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
         $lastMonthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('PERIOD_DIFF( date_format( now( ) , "%Y%m" ) , date_format( created_at, "%Y%m" ) ) =1')->count();
 
-        return view('back.user',compact('levels','agent','allUser','todayRegUsers','monthRegUsers','lastMonthRegUsers'));
+        return view('back.user',compact('aid','levels','agent','allUser','todayRegUsers','monthRegUsers','lastMonthRegUsers'));
     }
     //会员注单详情 - 独占页面
     public function userBetList($userId)

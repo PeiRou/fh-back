@@ -35,7 +35,7 @@ class MembersDataController extends Controller
             })
             ->editColumn('agent', function ($allGeneralAgent){
                 $getAgentCount = Agent::where('gagent_id',$allGeneralAgent->ga_id)->count();
-                return "<span class='tag-green'>".$getAgentCount."</span>";
+                return "<a class='tag-green' href='/back/control/userManage/agent?id=".$allGeneralAgent->ga_id."'>".$getAgentCount."</a>";
             })
             ->editColumn('members', function ($allGeneralAgent){
                 return "<span class='tag-green'>0</span>";
@@ -72,9 +72,16 @@ class MembersDataController extends Controller
     }
 
     //代理 - 表格数据
-    public function agent()
+    public function agent(Request $request)
     {
-        $allAgent = Agent::orderBy('created_at','desc')->get();
+        $ga_id = $request->get('gaid');
+        $aSql = "SELECT ag.*,count(DISTINCT(u.id)) as countMember FROM `agent` ag LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 ";
+        $where = "";
+        if(isset($ga_id) && $ga_id>0 ){
+            $where .= " and ag.gagent_id = ".$ga_id;
+        }
+        $aSql = $aSql.$where." GROUP BY ag.created_at desc ";
+        $allAgent = DB::select($aSql);
         return DataTables::of($allAgent)
             ->editColumn('online', function ($allAgent){
                 return '<span id="agent_'.$allAgent->a_id.'"><span class="tag-offline">离线</span></span>';
@@ -87,8 +94,7 @@ class MembersDataController extends Controller
                 return $allAgent->account." <span class='gary-text'>(".$allAgent->name.")</span>";
             })
             ->editColumn('members', function ($allAgent){
-                $count = DB::table('users')->where('agent',$allAgent->a_id)->count();
-                return "<span class='tag-green'>$count</span>";
+                return "<a class='tag-green' href='/back/control/userManage/user?id=".$allAgent->a_id."'>".$allAgent->countMember."</a>";
             })
             ->editColumn('balance', function ($allAgent){
                 if($allAgent->balance == 0)
@@ -271,6 +277,7 @@ class MembersDataController extends Controller
         $maxMoney = $request->get('maxMoney');
         $promoter = $request->get('promoter');
         $noLoginDays = $request->get('noLoginDays');
+        $aid = $request->get('aid');    //代理id
 
         $users = DB::table('users')
             ->leftJoin('level','users.rechLevel','=','level.value')
@@ -279,6 +286,11 @@ class MembersDataController extends Controller
             ->where(function ($query) use($status){
                 if(isset($status) && $status){
                     $query->where('users.status','=',$status);
+                }
+            })
+	    ->where(function ($query) use($aid){
+                if(isset($aid) && $aid>0){
+                    $query->where('users.agent',$aid);
                 }
             })
             ->where(function ($query) use($agent){

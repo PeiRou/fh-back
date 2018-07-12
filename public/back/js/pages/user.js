@@ -34,6 +34,7 @@ $(function () {
                 d.maxMoney = $('#maxMoney').val();
                 d.promoter = $('#promoter').val();
                 d.noLoginDays = $('#noLoginDays').val();
+                d.aid = $('#aid').val();                //代理id
             }
         },
         columns: [

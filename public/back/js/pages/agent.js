@@ -11,7 +11,12 @@ $(function () {
         processing: true,
         ordering:false,
         serverSide: true,
-        ajax: '/back/datatables/agent',
+        ajax: {
+            url :'/back/datatables/agent',
+            data:function (d) {
+                d.gaid = $('#gaid').val();
+            }
+        },
         columns: [
             {data:'online'},
             {data:'general_agent'},

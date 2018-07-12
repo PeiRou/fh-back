@@ -72,6 +72,7 @@
                     <div class="one wide field">
                         <input type="text" id="noLoginDays" placeholder="未登录天数">
                     </div>
+                    <input type="hidden" id="aid" value="{{$aid}}">
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
                     </div>
