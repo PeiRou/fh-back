@@ -408,42 +408,83 @@ class SrcMemberController extends Controller
             $capital->content = $content;
             $insert = $capital->save();
             if($insert == 1){
-                $recharges = new Recharges();
-                $recharges->userId = $uid;
-                $recharges->username = $getUserBalance->username;
-                $recharges->orderNum = payOrderNumber();
-                $recharges->payType = 'adminAddMoney';
-                $recharges->amount = $money;
-                $recharges->shou_info = "后台加钱：".$content;
-                $recharges->msg = $content;
-                $recharges->status = 2;
-                $recharges->addMoney = 1;
-                $recharges->process_date = date('Y-m-d H:i:s');
-                $recharges->operation_id = Session::get('account_id');
-                $recharges->operation_account = Session::get('account');
-                $save = $recharges->save();
-                if($save == 1){
-                    $updateBalance = User::where('id',$uid)
-                        ->update([
-                            'money'=>$newBalance
-                        ]);
-                    if($updateBalance == 1){
-                        return response()->json([
-                            'status'=>true,
-                            'msg'=>'ok'
-                        ]);
+
+                if($money > 0){
+                    $recharges = new Recharges();
+                    $recharges->userId = $uid;
+                    $recharges->username = $getUserBalance->username;
+                    $recharges->orderNum = payOrderNumber();
+                    $recharges->payType = 'adminAddMoney';
+                    $recharges->amount = $money;
+                    $recharges->shou_info = "后台加钱：".$content;
+                    $recharges->msg = $content;
+                    $recharges->status = 2;
+                    $recharges->addMoney = 1;
+                    $recharges->process_date = date('Y-m-d H:i:s');
+                    $recharges->operation_id = Session::get('account_id');
+                    $recharges->operation_account = Session::get('account');
+                    $save = $recharges->save();
+                    if($save == 1){
+                        $updateBalance = User::where('id',$uid)
+                            ->update([
+                                'money'=>$newBalance
+                            ]);
+                        if($updateBalance == 1){
+                            return response()->json([
+                                'status'=>true,
+                                'msg'=>'ok'
+                            ]);
+                        } else {
+                            return response()->json([
+                                'status'=>false,
+                                'msg'=>'资金操作失败，请稍后再试！'
+                            ]);
+                        }
                     } else {
                         return response()->json([
                             'status'=>false,
-                            'msg'=>'资金操作失败，请稍后再试！'
+                            'msg'=>'提交失败，请稍后再试！'
                         ]);
                     }
                 } else {
-                    return response()->json([
-                        'status'=>false,
-                        'msg'=>'提交失败，请稍后再试！'
+                    $insert = DB::table('drawing')->insert([
+                        'user_id' => $uid,
+                        'username' => $getUserBalance->username,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'balance' => (int)$getUserBalance->money-(int)$money,
+                        'total_bet' => 0,
+                        'order_id' => $this->orderNumber(),
+                        'amount' => $money,
+                        'ip' => '-',
+                        'ip_info' => '-',
+                        'draw_type' => 1,
+                        'status' => 0,
+                        'platform' => 1
                     ]);
+                    if($insert == 1){
+                        $updateBalance = User::where('id',$uid)
+                            ->update([
+                                'money'=>$newBalance
+                            ]);
+                        if($updateBalance == 1){
+                            return response()->json([
+                                'status'=>true,
+                                'msg'=>'ok'
+                            ]);
+                        } else {
+                            return response()->json([
+                                'status'=>false,
+                                'msg'=>'资金操作失败，请稍后再试！'
+                            ]);
+                        }
+                    } else {
+                        return response()->json([
+                            'status'=>false,
+                            'msg'=>'提交失败，请稍后再试！'
+                        ]);
+                    }
                 }
+
             } else {
                 return response()->json([
                     'status'=>false,
@@ -453,6 +494,13 @@ class SrcMemberController extends Controller
         } catch (\Exception $e){
 
         }
+    }
+
+    function orderNumber(){
+        $c = "D";
+        $date = date('YmdHis');
+        $randnum = rand(10000000,99999999);
+        return $c.$date.$randnum;
     }
     //会员总余额统计
     public function totalUserMoney()
