@@ -398,7 +398,7 @@ class BetDataController extends Controller
                     $playCate = substr($bet->play_id,2,3);
                     $play = substr($bet->play_id,5,4);
                 }
-                if($bet->game_id == 50){
+                if($bet->game_id == 70){
                     $playCate = substr($bet->play_id,2,2);
                     $play = substr($bet->play_id,4,4);
                 }
