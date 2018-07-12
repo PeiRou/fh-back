@@ -133,6 +133,10 @@ class BetDataController extends Controller
                     $playCate = substr($bet->play_id,2,2);
                     $play = substr($bet->play_id,4,3);
                 }
+                if($bet->game_id == 70){
+                    $playCate = substr($bet->play_id,2,2);
+                    $play = substr($bet->play_id,4,4);
+                }
                 if($bet->game_id == 66 || $bet->game_id == 65){
                     $playCate = substr($bet->play_id,2,2);
                     $play = substr($bet->play_id,4,4);
@@ -276,6 +280,10 @@ class BetDataController extends Controller
                     $playCate = substr($bet->play_id,2,2);
                     $play = substr($bet->play_id,4,3);
                 }
+                if($bet->game_id == 70){
+                    $playCate = substr($bet->play_id,2,2);
+                    $play = substr($bet->play_id,4,4);
+                }
                 if($bet->game_id == 66 || $bet->game_id == 65){
                     $playCate = substr($bet->play_id,2,2);
                     $play = substr($bet->play_id,4,4);
@@ -389,6 +397,10 @@ class BetDataController extends Controller
                 if($bet->game_id == 80 || $bet->game_id == 81 || $bet->game_id == 82 || $bet->game_id == 99 || $bet->game_id == 90 || $bet->game_id == 91){
                     $playCate = substr($bet->play_id,2,3);
                     $play = substr($bet->play_id,5,4);
+                }
+                if($bet->game_id == 50){
+                    $playCate = substr($bet->play_id,2,2);
+                    $play = substr($bet->play_id,4,4);
                 }
                 if($bet->game_id == 50){
                     $playCate = substr($bet->play_id,2,2);
