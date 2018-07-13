@@ -279,7 +279,8 @@ Route::get('/game/tables/80','Back\GameTableController@gameTable80'); //秒速�
 Route::get('/game/tables/82','Back\GameTableController@gameTable82'); //秒速飞艇
 Route::get('/game/tables/81','Back\GameTableController@gameTable81'); //秒速时时彩
 Route::get('/game/tables/99','Back\GameTableController@gameTable99'); //跑马
-Route::get('/game/tables/70','Back\GameTableController@gameTable70'); //跑马
+Route::get('/game/tables/70','Back\GameTableController@gameTable70'); //六合彩
+Route::get('/game/tables/85','Back\GameTableController@gameTable85'); //幸运六合彩
 //保存游戏赔率表格数据
 Route::post('/game/table/save/bjpk10','Back\GameTables\SaveGameOddsController@bjpk10');
 Route::post('/game/table/save/cqssc','Back\GameTables\SaveGameOddsController@cqssc');
