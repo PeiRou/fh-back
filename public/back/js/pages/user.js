@@ -35,6 +35,7 @@ $(function () {
                 d.promoter = $('#promoter').val();
                 d.noLoginDays = $('#noLoginDays').val();
                 d.aid = $('#aid').val();                //代理id
+                d.gaid = $('#gaid').val();                //总代id
             }
         },
         columns: [

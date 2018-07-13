@@ -25,7 +25,8 @@ class MembersDataController extends Controller
     //总代理 - 表格数据
     public function generalAgent()
     {
-        $allGeneralAgent = GeneralAgent::all();
+        $aSql = "SELECT g.*,count(DISTINCT(ag.a_id)) as countAgent,count(DISTINCT(u.id)) as countMember FROM `general_agent` g LEFT JOIN `agent` ag on g.ga_id = ag.gagent_id LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 GROUP BY g.ga_id ";
+        $allGeneralAgent = DB::select($aSql);
         return DataTables::of($allGeneralAgent)
             ->editColumn('online', function ($allGeneralAgent){
                 return '<span id="gagent_'.$allGeneralAgent->ga_id.'"><span class="tag-offline">离线</span></span>';
@@ -34,11 +35,10 @@ class MembersDataController extends Controller
                 return $allGeneralAgent->account." <span class='gary-text'>(".$allGeneralAgent->name.")</span>";
             })
             ->editColumn('agent', function ($allGeneralAgent){
-                $getAgentCount = Agent::where('gagent_id',$allGeneralAgent->ga_id)->count();
-                return "<a class='tag-green' href='/back/control/userManage/agent?id=".$allGeneralAgent->ga_id."'>".$getAgentCount."</a>";
+                return "<a class='tag-green' href='/back/control/userManage/agent?id=".$allGeneralAgent->ga_id."'>".$allGeneralAgent->countAgent."</a>";
             })
             ->editColumn('members', function ($allGeneralAgent){
-                return "<span class='tag-green'>0</span>";
+                return "<a class='tag-green' href='/back/control/userManage/user?ga_id=".$allGeneralAgent->ga_id."'>".$allGeneralAgent->countMember."</a>";
             })
             ->editColumn('balance', function ($allGeneralAgent){
                 if($allGeneralAgent->balance == 0)
@@ -80,7 +80,7 @@ class MembersDataController extends Controller
         if(isset($ga_id) && $ga_id>0 ){
             $where .= " and ag.gagent_id = ".$ga_id;
         }
-        $aSql = $aSql.$where." GROUP BY ag.created_at desc ";
+        $aSql = $aSql.$where." GROUP BY ag.a_id ORDER BY ag.created_at desc ";
         $allAgent = DB::select($aSql);
         return DataTables::of($allAgent)
             ->editColumn('online', function ($allAgent){
@@ -278,14 +278,21 @@ class MembersDataController extends Controller
         $promoter = $request->get('promoter');
         $noLoginDays = $request->get('noLoginDays');
         $aid = $request->get('aid');    //代理id
+        $gaid = $request->get('gaid');    //总代id
 
         $users = DB::table('users')
             ->leftJoin('level','users.rechLevel','=','level.value')
             ->leftJoin('agent','users.agent','=','agent.a_id')
+            ->leftJoin('general_agent', 'agent.gagent_id', '=', 'general_agent.ga_id')
             ->select('users.promoter as user_promoter','level.name as level_name','users.id as uid','users.rechLevel as user_rechLevel','users.created_at as user_created_at','users.updated_at as user_updated_at','users.username as user_username','users.fullName as user_fullName','agent.account as ag_account','users.money as user_money','users.status as user_status','users.PayTimes as user_PayTimes','users.DrawTimes as user_DrawTimes','users.saveMoneyCount as user_saveMoneyCount','users.drawMoneyCount as user_drawMoneyCount','users.lastLoginTime as user_lastLoginTime','users.content as user_content')
             ->where(function ($query) use($status){
                 if(isset($status) && $status){
                     $query->where('users.status','=',$status);
+                }
+            })
+	    ->where(function ($query) use($gaid){
+                if(isset($gaid) && $gaid>0){
+                    $query->where('gagent_id',$gaid);
                 }
             })
 	    ->where(function ($query) use($aid){
