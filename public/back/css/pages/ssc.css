@@ -1,0 +1,46 @@
+.T_SSC span{
+    display: inline-block;
+    margin-right: 7px;
+}
+.T_SSC span b{
+    width: 21px;
+    height: 21px;
+    display: block;
+}
+.T_SSC b {
+    margin-top: 13px;
+    margin-left: 4px;
+    width: 26px !important;
+    height: 24px !important;
+    background: url(/back/img/ball_2.png) no-repeat;
+}
+.T_SSC .b0 {
+    background-position: 0 0;
+}
+.T_SSC .b1 {
+    background-position: 0 -27px;
+}
+.T_SSC .b2 {
+    background-position: 0 -54px;
+}
+.T_SSC .b3 {
+    background-position: 0 -81px;
+}
+.T_SSC .b4 {
+    background-position: 0 -108px;
+}
+.T_SSC .b5 {
+    background-position: 0 -135px;
+}
+.T_SSC .b6 {
+    background-position: 0 -162px;
+}
+.T_SSC .b7 {
+    background-position: 0 -189px;
+}
+.T_SSC .b8 {
+    background-position: 0 -216px;
+}
+.T_SSC .b9 {
+    background-position: 0 -243px;
+}

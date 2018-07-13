@@ -427,6 +427,24 @@ class ModalController extends Controller
     }
 
     //历史开奖
+    //重庆时时彩 - 手动开奖
+    public function openCqssc($id = '')
+    {
+        $cqssc = DB::table('game_cqssc')->where('id',$id)->first();
+        return view('back.modal.open.openCQSSC',compact('cqssc'));
+    }
+    //北京赛车 - 手动开奖
+    public function openBjpk10($id = '')
+    {
+        $bjpk10 = DB::table('game_bjpk10')->where('id',$id)->first();
+        return view('back.modal.open.openBJPK10',compact('bjpk10'));
+    }
+    //北京快乐8 - 手动开奖
+    public function openBjkl8($id = '')
+    {
+        $bjkl8 = DB::table('game_bjkl8')->where('id',$id)->first();
+        return view('back.modal.open.openBJKL8',compact('bjkl8'));
+    }
     //添加六合彩
     public function addLhcNewIssue()
     {

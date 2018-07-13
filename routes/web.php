@@ -58,6 +58,9 @@ Route::group(['prefix' => 'back/control/gameManage','middleware'=>['check-permis
 
 //开奖管理
 Route::group(['prefix' => 'back/control/openManage','middleware'=>['check-permission','domain-check']],function () {
+    Route::get('cqssc','Back\SrcViewController@openManage_cqssc')->name('historyLottery.cqssc'); //重庆时时彩
+    Route::get('bjpk10','Back\SrcViewController@openManage_bjpk10')->name('historyLottery.bjpk10'); //北京pk10
+    Route::get('bjkl8','Back\SrcViewController@openManage_bjkl8')->name('historyLottery.bjkl8'); //北京快乐8
     Route::get('lhc','Back\SrcViewController@openManage_xglhc')->name('historyLottery.xglhc'); //六合彩
     Route::get('xylhc','Back\SrcViewController@openManage_xylhc')->name('historyLottery.xylhc'); //幸运六合彩
 });
@@ -126,6 +129,9 @@ Route::get('/back/datatables/payCft','Back\Data\PayDataController@payCft');
 Route::get('/back/datatables/article','Back\Data\ArticleController@article');
 Route::get('/back/datatables/userBetSearch','Back\Data\BetDataController@userBetSearch');
 Route::get('/back/datatables/log/login','Back\Data\LogDataController@login'); //登录日志
+Route::get('/back/datatables/openHistory/cqssc','Back\Data\openHistoryController@cqssc'); //历史开奖 - 重庆时时彩
+Route::get('/back/datatables/openHistory/bjpk10','Back\Data\openHistoryController@bjpk10'); //历史开奖 - 北京PK10
+Route::get('/back/datatables/openHistory/bjkl8','Back\Data\openHistoryController@bjkl8'); //历史开奖 - 北京快乐8
 Route::get('/back/datatables/openHistory/lhc','Back\Data\openHistoryController@lhc'); //历史开奖 - 六合彩
 
 //action
@@ -205,6 +211,9 @@ Route::post('/action/drawing/totalDrawing','Back\DrawingController@totalDrawing'
 Route::post('/action/admin/addLhcNewIssue','Back\OpenHistoryController@addLhcNewIssue');
 Route::post('/action/admin/editLhcNewIssue','Back\OpenHistoryController@editLhcNewIssue');
 
+Route::post('/action/admin/openCqssc','Back\OpenHistoryController@addCqsscData');     //添加重庆时时彩开奖数据
+Route::post('/action/admin/openBjpk10','Back\OpenHistoryController@addBjpk10Data');     //添加北京PK10开奖数据
+Route::post('/action/admin/openBjkl8','Back\OpenHistoryController@addBjkl8Data');     //添加北京快乐8开奖数据
 Route::post('/action/admin/openLhc','Back\OpenHistoryController@addLhcData');
 Route::post('/action/admin/reOpenLhc','Back\OpenHistoryController@reOpenLhcData');
 
@@ -255,6 +264,9 @@ Route::get('/back/modal/drawingError/{id}','Back\Ajax\ModalController@drawingErr
 Route::get('/back/modal/user48hoursInfo/{uid}','Back\Ajax\ModalController@user48hoursInfo');
 Route::get('/back/modal/addLhcNewIssue','Back\Ajax\ModalController@addLhcNewIssue');
 Route::get('/back/modal/editLhcNewIssue/{id}','Back\Ajax\ModalController@editLhcNewIssue');
+Route::get('/back/modal/openCqssc/{id}','Back\Ajax\ModalController@openCqssc');             //重庆时时彩
+Route::get('/back/modal/openBjpk10/{id}','Back\Ajax\ModalController@openBjpk10');           //北京PK10
+Route::get('/back/modal/openBjkl8/{id}','Back\Ajax\ModalController@openBjkl8');             //北京快乐8
 Route::get('/back/modal/openLhc/{id}','Back\Ajax\ModalController@openLhc');
 Route::get('/back/modal/reOpenLhc/{id}','Back\Ajax\ModalController@reOpenLhc');
 
@@ -325,3 +337,5 @@ Route::get('/tttt/test','Inner\TestController@lhc');
 Route::get('/back/status','Back\AjaxStatusController@status');
 //后台获取六合彩开奖--接口
 Route::get('/back/openData/lhc/{date}/{issue}','Back\OpenData\OpenApiGetController@lhc');
+//后台获取北京PK10开奖--接口
+Route::get('/back/openData/bjpk10/{date}/{issue}','Back\OpenData\OpenApiGetController@bjpk10');

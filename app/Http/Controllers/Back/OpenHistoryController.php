@@ -21,6 +21,127 @@ class OpenHistoryController extends Controller
         $this->LHC = $LHC;
     }
 
+    //添加北京PK10开奖数据
+    public function addBjpk10Data(Request $request)
+    {
+        $id = $this->notTen($request->get('id'));
+        $info = DB::table('game_bjpk10')->select('opentime')->where('id',$id)->first();
+        if(strtotime($info->opentime) > time())
+            return response()->json(['status' => false,'msg' => '请勿提早开奖']);
+        $n1 = $this->notTen($request->get('n1'));
+        $n2 = $this->notTen($request->get('n2'));
+        $n3 = $this->notTen($request->get('n3'));
+        $n4 = $this->notTen($request->get('n4'));
+        $n5 = $this->notTen($request->get('n5'));
+        $n6 = $this->notTen($request->get('n6'));
+        $n7 = $this->notTen($request->get('n7'));
+        $n8 = $this->notTen($request->get('n8'));
+        $n9 = $this->notTen($request->get('n9'));
+        $n10 = $this->notTen($request->get('n10'));
+        $msg = $this->notTen($request->get('msg'));
+
+        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7.','.$n8.','.$n9.','.$n10;
+
+        $update = DB::table('game_bjpk10')->where('id',$id)->update([
+            'opennum' => $openNum,
+            'is_open' => 1
+        ]);
+        if($update == 1){
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => '开奖数据添加失败！'
+            ]);
+        }
+    }
+
+    //添加北京快乐8开奖数据
+    public function addBjkl8Data(Request $request)
+    {
+        $id = $this->notTen($request->get('id'));
+        $info = DB::table('game_bjkl8')->select('opentime')->where('id',$id)->first();
+        if(strtotime($info->opentime) > time())
+            return response()->json(['status' => false,'msg' => '请勿提早开奖']);
+        $n1 = $this->notTen($request->get('n1'));
+        $n2 = $this->notTen($request->get('n2'));
+        $n3 = $this->notTen($request->get('n3'));
+        $n4 = $this->notTen($request->get('n4'));
+        $n5 = $this->notTen($request->get('n5'));
+        $n6 = $this->notTen($request->get('n6'));
+        $n7 = $this->notTen($request->get('n7'));
+        $n8 = $this->notTen($request->get('n8'));
+        $n9 = $this->notTen($request->get('n9'));
+        $n10 = $this->notTen($request->get('n10'));
+        $n11 = $this->notTen($request->get('n11'));
+        $n12 = $this->notTen($request->get('n12'));
+        $n13 = $this->notTen($request->get('n13'));
+        $n14 = $this->notTen($request->get('n14'));
+        $n15 = $this->notTen($request->get('n15'));
+        $n16 = $this->notTen($request->get('n16'));
+        $n17 = $this->notTen($request->get('n17'));
+        $n18 = $this->notTen($request->get('n18'));
+        $n19 = $this->notTen($request->get('n19'));
+        $n20 = $this->notTen($request->get('n20'));
+        $msg = $this->notTen($request->get('msg'));
+
+        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7.','.$n8.','.$n9.','.$n10.','.$n11.','.$n12.','.$n13.','.$n14.','.$n15.','.$n16.','.$n17.','.$n18.','.$n19.','.$n20;
+
+        $update = DB::table('game_bjkl8')->where('id',$id)->update([
+            'opennum' => $openNum,
+            'is_open' => 1
+        ]);
+        if($update == 1){
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => '开奖数据添加失败！'
+            ]);
+        }
+    }
+
+    //添加重庆时时彩开奖数据
+    public function addCqsscData(Request $request)
+    {
+        $id = $this->notTen($request->get('id'));
+        $info = DB::table('game_cqssc')->select('opentime')->where('id',$id)->first();
+        if(strtotime($info->opentime) > time())
+            return response()->json(['status' => false,'msg' => '请勿提早开奖']);
+        $n1 = $request->get('n1');
+        $n2 = $request->get('n2');
+        $n3 = $request->get('n3');
+        $n4 = $request->get('n4');
+        $n5 = $request->get('n5');
+        $msg = $this->notTen($request->get('msg'));
+
+        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5;
+
+        $update = DB::table('game_cqssc')->where('id',$id)->update([
+            'opennum' => $openNum,
+            'is_open' => 1
+        ]);
+        if($update == 1){
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => '开奖数据添加失败！'
+            ]);
+        }
+    }
+    private function notTen($num){
+        $num = (int)$num;
+        if($num<10)
+            $num = '0'.(string)$num;
+        return $num;
+    }
 
     public function addLhcNewIssue(Request $request)
     {

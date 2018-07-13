@@ -1,0 +1,45 @@
+.T_PK10 span{
+    display: block;
+    float: left;
+    margin-right: 7px;
+}
+.T_PK10 span b{
+    width: 21px;
+    height: 21px;
+    display: block;
+}
+.T_PK10 b{
+    margin: 15px 0 0 5px;
+    height: 20px;
+    background: url(/back/img/ball-pk.png) no-repeat;
+}
+.T_PK10 .b1 {
+    background-position: 0 0;
+}
+.T_PK10 .b2 {
+    background-position: 0 -21px;
+}
+.T_PK10 .b3 {
+    background-position: 0 -42px;
+}
+.T_PK10 .b4 {
+    background-position: 0 -63px;
+}
+.T_PK10 .b5 {
+    background-position: 0 -84px;
+}
+.T_PK10 .b6 {
+    background-position: 0 -105px;
+}
+.T_PK10 .b7 {
+    background-position: 0 -126px;
+}
+.T_PK10 .b8 {
+    background-position: 0 -147px;
+}
+.T_PK10 .b9 {
+    background-position: 0 -168px;
+}
+.T_PK10 .b10 {
+    background-position: 0 -189px;
+}
