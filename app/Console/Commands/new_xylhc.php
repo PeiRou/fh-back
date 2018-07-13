@@ -58,6 +58,9 @@ class new_xylhc extends Command
         $nowTimeAdd3 = Carbon::parse($nowTime)->addSeconds(3);
         $filtered = collect($data)->first(function ($value, $key) use ($nowTime, $nowTimeAdd1, $nowTimeAdd2, $nowTimeAdd3) {
             $timeDiff = Carbon::now()->diffInSeconds(Carbon::parse($value['time']));
+            if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3){
+                return $value;
+            }
         });
         if($filtered!=null){
             if($filtered['issue'] >= 192 && $filtered['issue'] <= 240){
