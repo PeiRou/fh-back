@@ -122,6 +122,21 @@ class SrcViewController extends Controller
     }
 
     //开奖记录
+    //重庆时时彩
+    public function openManage_cqssc()
+    {
+        return view('back.open.cqssc');
+    }
+    //北京pk10
+    public function openManage_bjpk10()
+    {
+        return view('back.open.bjpk10');
+    }
+    //北京快乐8
+    public function openManage_bjkl8()
+    {
+        return view('back.open.bjkl8');
+    }
     //六合彩
     public function openManage_xglhc()
     {
