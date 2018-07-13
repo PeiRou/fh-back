@@ -42,8 +42,14 @@ class OPEN_FILE_XYLHC extends Command
         $timeUp = date('08:00:00');
         $str = "";
         for($i=1;$i<=240;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(5);
-            $str .= '"'.(string)$i.'":{"time":"'.$timeUp->toTimeString().'"},';
+            $timeUp = Carbon::parse($timeUp)->addSeconds(300);
+            if(strlen($i) == 1){
+                $i = '00'.$i;
+            }
+            if(strlen($i) == 2){
+                $i = '0'.$i;
+            }
+            $str .= '"'.(string)$i.'":{"time":"'.$timeUp->toTimeString().'","issue":"'.(string)$i.'"},';
         }
         Storage::disk('gameTime')->put('xylhc.json',"{".rtrim($str,',')."}");
     }
