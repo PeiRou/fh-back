@@ -52,6 +52,15 @@ class New_XYLHC
                     }
                 }
             }
+        } else {
+            $update = DB::table('game_xylhc')->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if($update == 1){
+                echo '幸运六合彩'.$issue.'已结算';
+            } else {
+                echo '幸运六合彩'.$issue.'结算失败！';
+            }
         }
     }
 
