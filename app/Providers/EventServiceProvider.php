@@ -49,6 +49,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunLHC' => [
             'App\Listeners\RunLHCEventListener',
         ],
+        'App\Events\RunXYLHC' => [
+            'App\Listeners\RunXYLHCEventListener',
+        ],
         'App\Events\OpenMsscEvent' => [
             'App\Listeners\OpenMsscEventListener',
         ],
