@@ -44,6 +44,17 @@ class BetDataController extends Controller
                     $query->whereDate('bet.created_at',$now);
                 }
             })
+            ->where(function ($query) use($status){
+                if($status && isset($status)){
+                    if($status == 'weijiesuan'){
+                        $query->where("bet.bunko",'=',0);
+                    } else if($status == 'jiesuan'){
+                        $query->where("bet.bunko",'>=',0.01);
+                    } else {
+                        $query->where("bet.bunko",'=',-8888);
+                    }
+                }
+            })
 //            ->where(function ($query) use ($playCate){
 //                if(isset($playCate) && $playCate){
 //                    $query->where("bet.playcate_id",$playCate);
