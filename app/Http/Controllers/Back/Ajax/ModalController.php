@@ -211,7 +211,8 @@ class ModalController extends Controller
     //查看用户资金明细
     public function userCapitalHistory($id)
     {
-        return view('back.modal.member.userCapitalHistory')->with('uid',$id);
+        $games = Games::getGameOption();
+        return view('back.modal.member.userCapitalHistory')->with('uid',$id)->with('games',$games);
     }
 
     //添加公告

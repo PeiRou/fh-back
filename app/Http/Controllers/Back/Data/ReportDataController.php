@@ -42,7 +42,7 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         }else{
             $where .= " and u.testFlag in(0,2)";
         }
-        $aSql = $aSql.$where." GROUP BY zd.ga_id ";
+        $aSql = $aSql.$where." GROUP BY zd.ga_id ORDER BY sumBunko ASC ";
         $Gagent = DB::select($aSql);
 
         return DataTables::of($Gagent)
@@ -79,7 +79,7 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         }else{
             $where .= " and u.testFlag = 0 ";
         }
-        $aSql = $aSql.$where." GROUP BY u.agent ";
+        $aSql = $aSql.$where." GROUP BY u.agent ORDER BY sumBunko ASC ";
         $agent = DB::select($aSql);
 
         return DataTables::of($agent)
@@ -126,14 +126,14 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         if(isset($maxBunko) && $maxBunko){
             $where .= " and sumBunko <= ".$maxBunko;
         }
-        if(isset($chkTest) && $chkTest=='on'){
-            $where .= " and u.testFlag = 0 ";
-        }else if(isset($ag) && $ag>0 ){
+        if(isset($ag) && $ag > 0 ){
             $where .= " and u.agent = ".$ag;
-        }else{
+        }else if(isset($chkTest) && $chkTest=='on'){
+            $where .= " and u.testFlag = 0 ";
+        }else {
             $where .= " and u.testFlag in (0,2) ";
         }
-        $aSql = $aSql.$where." GROUP BY u.id ";
+        $aSql = $aSql.$where." GROUP BY u.id ORDER BY sumBunko ASC ";
         $user = DB::select($aSql);
 
         return DataTables::of($user)

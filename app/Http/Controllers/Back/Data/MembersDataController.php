@@ -75,7 +75,7 @@ class MembersDataController extends Controller
     public function agent(Request $request)
     {
         $ga_id = $request->get('gaid');
-        $aSql = "SELECT ag.*,count(DISTINCT(u.id)) as countMember FROM `agent` ag LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 ";
+        $aSql = "SELECT ag.*,COUNT(DISTINCT((case WHEN u.testFlag in (0,2) then u.id else NULL end))) as countMember FROM `agent` ag LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 ";
         $where = "";
         if(isset($ga_id) && $ga_id>0 ){
             $where .= " and ag.gagent_id = ".$ga_id;
@@ -452,30 +452,37 @@ class MembersDataController extends Controller
     public function userCapital($id,Request $request)
     {
         $capitalType = $request->get('capital_type');
+        $gameId = $request->get('game_id');
         $issue = $request->get('issue');
-        $startTime = strtotime($request->get('startTime').' 00:00:00');
-        $endTime = strtotime($request->get('endTime').' 23:59:59');
+        $startTime = $request->get('startTime');
+        $endTime = $request->get('endTime');
         $loginId = Session::get('account_id');
-        $capital = Capital::where(function($q) use($startTime,$endTime,$capitalType,$issue,$loginId,$id){
+        $capital = Capital::where(function($q) use($startTime,$endTime,$capitalType,$issue,$loginId,$id,$gameId){
             if(isset($capitalType) && $capitalType)
             {
-                $q->whereRaw('type = "'.$capitalType.'"');
+                $q->whereRaw('capital.type = "'.$capitalType.'"');
             }
             if(isset($issue) && $issue)
             {
-                $q->whereRaw('issue = '.$issue);
+                $q->whereRaw('capital.issue = '.$issue);
+            }
+            if(isset($gameId) && $gameId)
+            {
+                $q->whereRaw('capital.game_id = '.$gameId);
             }
             if(isset($startTime) && $startTime)
             {
-                $q->whereRaw('unix_timestamp(created_at) >= '.$startTime);
+                $startTime = strtotime($startTime.' 00:00:00');
+                $q->whereRaw('unix_timestamp(capital.created_at) >= '.$startTime);
             }
             if(isset($endTime) && $endTime)
             {
-                $q->whereRaw('unix_timestamp(created_at) <= '.$endTime);
+                $endTime = strtotime($endTime.' 23:59:59');
+                $q->whereRaw('unix_timestamp(capital.created_at) <= '.$endTime);
             }
-            $q->whereRaw('to_user = '.$id.' and user_type = "user"');
-        })->orderBy('created_at','desc')->get();
-
+            $q->whereRaw('capital.to_user = '.$id.' and capital.user_type = "user"');
+        })->select('capital.*','game.game_id','game.game_name')
+            ->leftJoin('game','game.game_id','=','capital.game_id')->orderBy('capital.created_at','desc')->get();
         return DataTables::of($capital)
             ->editColumn('type', function($capital){
                 switch ($capital->type)
@@ -539,12 +546,20 @@ class MembersDataController extends Controller
                     return $capital->issue;
                 }
             })
+            ->editColumn('created_at', function ($capital){
+                if(empty($capital->created_at))
+                {
+                    return "-";
+                } else {
+                    return $capital->created_at;
+                }
+            })
             ->editColumn('game', function ($capital){
                 if(empty($capital->game_id))
                 {
                     return "-";
                 } else {
-                    return $capital->game_id;
+                    return $capital->game_name;
                 }
             })
             ->editColumn('play_type', function ($capital){
@@ -556,8 +571,12 @@ class MembersDataController extends Controller
                 }
             })
             ->editColumn('operation', function ($capital){
-                $getSubAccount = SubAccount::find($capital->operation_id);
-                return $getSubAccount->account."(".$getSubAccount->name.")";
+                if(!empty($capital->operation_id)){
+                    $getSubAccount = SubAccount::find($capital->operation_id);
+                    return $getSubAccount->account."(".$getSubAccount->name.")";
+                }else{
+                    return "-";
+                }
             })
             ->rawColumns(['money','balance'])
             ->make(true);
@@ -569,13 +588,13 @@ class MembersDataController extends Controller
         $subAccounts = SubAccount::all();
         return DataTables::of($subAccounts)
             ->editColumn('online', function ($subAccounts){
-//                if($subAccounts->online == 0)
-//                {
-//                    return '<span class="tag-offline">离线</span>'.$onlineUsers;
-//                } else {
-//                    return '<span class="tag-online">在线</span>'.$onlineUsers;
-//                }
-                return '<span id="user_'.$subAccounts->sa_id.'"><span class="tag-offline">离线</span></span>';
+                Redis::select(4);
+                $key = 'sa:'.md5($subAccounts->sa_id);
+                if(Redis::exists($key)){
+                    return "<span class='on-line-point'></span>";
+                } else {
+                    return "<span class='off-line-point'></span>";
+                }
             })
             ->editColumn('role', function ($subAccounts){
                 $getRole = Roles::where('id',$subAccounts->role)->first();

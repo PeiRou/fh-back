@@ -13,6 +13,8 @@ $(function () {
         bLengthChange: false,
         processing: true,
         serverSide: true,
+        ordering: true,
+        "order": [],
         ajax: '/back/datatables/subaccount',
         columns: [
             {data: 'online'},

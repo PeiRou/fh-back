@@ -60,7 +60,7 @@ function checkRecharge() {
     $('#rechargeCount').html(localStorage.getItem('rechargeNums'));
     $('#drawingCount').html(localStorage.getItem('DrawNums'));
 
-    setInterval(function () {
+    var time1 = setInterval(function () {
         nowCount = localStorage.getItem('rechargeNums');
         nowDrawCount = localStorage.getItem('DrawNums');
         $.ajax({
@@ -70,6 +70,7 @@ function checkRecharge() {
             success:function (data) {
                 if(data.status === true){
                     $('#onlineUserCount').html(data.onlineUser);
+                    $('#onlineAdminCount').html(data.onlineAdmin);
 
                     if(nowCount == null){
                         ling = data.count;
@@ -112,6 +113,9 @@ function checkRecharge() {
                     }
                     //console.log(nowCount+'===='+data.count);
                     //console.log(nowDrawCount+'===='+data.drawCount);
+                }else{
+                    clearInterval(time1);
+                    Calert(data.msg,'red','nonLogin')
                 }
             }
         })
@@ -140,7 +144,7 @@ $('.nav-item>a').on('click',function(){
     }
 });
 
-function Calert(content,color) {
+function Calert(content,color,type) {
     $.alert({
         icon: 'warning sign icon',
         type: color,
@@ -149,7 +153,11 @@ function Calert(content,color) {
         boxWidth: '20%',
         buttons: {
             ok:{
-                text:'确定'
+                text:'确定',
+                action: function(){
+                    if(type=='nonLogin')
+                        location.href='/back/control'
+                }
             }
         }
     });

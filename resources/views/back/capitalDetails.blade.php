@@ -17,9 +17,9 @@
                 <div class="fields">
                     <div class="one wide field">
                         <select class="ui dropdown" id="time_point" style='height:32px !important'>
-                            <option value="">今日明细</option>
-                            <option value="">昨日明细</option>
-                            <option value="">历史明细</option>
+                            @foreach($capitalTimes as $key => $capitalTime)
+                                <option value="{{ $key }}">{{ $capitalTime }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div style="line-height: 32px;">用户：</div>
@@ -29,6 +29,9 @@
                     <div class="one wide field">
                         <select class="ui dropdown" id="game" style='height:32px !important'>
                             <option value="">游戏选择</option>
+                            @foreach($games as $game)
+                                <option value="{{ $game->game_id }}">{{ $game->game_name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="one wide field">
@@ -40,25 +43,9 @@
                     <div class="one wide field" style="width: 9% !important;">
                         <select class="ui dropdown" id="type" style='height:32px !important'>
                             <option value="">类型</option>
-                            <option value="t01">充值</option>
-                            <option value="t02">撤单[中奖金额]</option>
-                            <option value="t03">撤单[退水金额]</option>
-                            <option value="t04">返利/手续费</option>
-                            <option value="t05">下注</option>
-                            <option value="t06">重新开奖[中奖金额]</option>
-                            <option value="t07">重新开奖[退水金额]</option>
-                            <option value="t08">活动</option>
-                            <option value="t09">奖金</option>
-                            <option value="t10">代理结算佣金</option>
-                            <option value="t11">代理佣金提现</option>
-                            <option value="t12">代理佣金提现失败退回</option>
-                            <option value="t13">抢到红包</option>
-                            <option value="t14">退水</option>
-                            <option value="t15">提现</option>
-                            <option value="t16">撤单</option>
-                            <option value="t17">提现失败</option>
-                            <option value="t18">后台加钱</option>
-                            <option value="t19">后台扣钱</option>
+                            @foreach($playTypes as $key => $playtype)
+                                <option value="{{ $key }}">{{ $playtype }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div style="line-height: 32px;">交易金额：</div>
@@ -71,11 +58,23 @@
                     </div>
                     <div style="line-height: 32px;">时间：</div>
                     <div class="one wide field">
-                        <input type="text" id="time" placeholder="">
+                        {{--<input type="text" id="time" placeholder="">--}}
+                        <div class="ui calendar" id="rangestart" style="width: 108px;">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" id="startTime" value="{{ date('Y-m-d',time()) }}" placeholder="">
+                            </div>
+                        </div>
                     </div>
                     <div style="line-height: 32px;">-</div>
                     <div class="one wide field">
-                        <input type="text" id="promoter" placeholder="">
+                        {{--<input type="text" id="promoter" placeholder="">--}}
+                        <div class="ui calendar" id="rangeend" style="width: 108px;">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" id="endTime" value="{{ date('Y-m-d',time()) }}" placeholder="">
+                            </div>
+                        </div>
                     </div>
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
@@ -89,17 +88,17 @@
         <table id="capitalDetailsTable" class="ui small table" cellspacing="0" width="100%">
             <thead>
             <tr>
-                {{--<th>用户</th>--}}
-                {{--<th>订单号</th>--}}
-                {{--<th>交易时间</th>--}}
-                {{--<th>交易类型</th>--}}
-                {{--<th>交易金额</th>--}}
-                {{--<th>余额</th>--}}
-                {{--<th>期号</th>--}}
-                {{--<th>游戏</th>--}}
-                {{--<th>玩法</th>--}}
-                {{--<th>操作人</th>--}}
-                {{--<th>备注</th>--}}
+                <th>用户</th>
+                <th>订单号</th>
+                <th>交易时间</th>
+                <th>交易类型</th>
+                <th>交易金额</th>
+                <th>余额</th>
+                <th>期号</th>
+                <th>游戏</th>
+                <th>玩法</th>
+                <th>操作人</th>
+                <th>备注</th>
             </tr>
             </thead>
         </table>
@@ -107,5 +106,7 @@
 @endsection
 
 @section('page-js')
+    <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
+    <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <script src="/back/js/pages/capital_details.js"></script>
 @endsection

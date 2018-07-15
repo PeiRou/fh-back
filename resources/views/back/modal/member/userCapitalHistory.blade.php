@@ -30,7 +30,12 @@
             </div>
             <div class="three wide field">
                 <label>游戏</label>
-                <select class="ui dropdown" style='height:32px !important'></select>
+                <select class="ui dropdown" id="game_id" style='height:32px !important'>
+                    <option value="">游戏</option>
+                    @foreach($games as $game)
+                        <option value="{{ $game->game_id }}">{{ $game->game_name }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="two wide field">
                 <label>期号</label>
@@ -143,6 +148,7 @@
                     d.issue = $('#issue').val();
                     d.startTime = $('#timeStart').val();
                     d.endTime = $('#timeEnd').val();
+                    d.game_id = $('#game_id').val();
                 }
             },
             columns: [

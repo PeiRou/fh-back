@@ -40,6 +40,7 @@
     {{--</div>--}}
     <div class="nav-user-info">
         <ul style="margin-top: 20px;">
+            <li onclick="javascript:(location.href='/back/control/userManage/sub_account')">当前子帐号在线人数：<span id="onlineAdminCount">0</span></li>
             <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')">当前在线人数：<span id="onlineUserCount">0</span></li>
             <li>修改密码</li>
             <li onclick="logout()">退出</li>
@@ -296,21 +297,21 @@
         </li>
         @endif
         @if($hasPermission->hasPermission('agentSettle') == "has")
-        <li class="nav-item"><a href="javascript:void(0)">
+        <li id="menu-agentSettle" class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>
                 代理结算</a>
             <ul>
                 @if($hasPermission->hasPermission('agentSettle.report') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>代理结算报表</span></a></li>
+                <li id="menu-agentSettle-report"><a href="{{ route('agentSettle.report') }}"><cite></cite><span>代理结算报表</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('agentSettle.review') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>代理结算审核</span></a></li>
+                <li id="menu-agentSettle-review"><a href="{{ route('agentSettle.review') }}"><cite></cite><span>代理结算审核</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('agentSettle.draw') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>代理提现</span></a></li>
+                <li id="menu-agentSettle-draw"><a href="{{ route('agentSettle.draw') }}"><cite></cite><span>代理提现</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('agentSettle.setting') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>代理结算配置</span></a></li>
+                <li id="menu-agentSettle-setting"><a href="{{ route('agentSettle.setting') }}"><cite></cite><span>代理结算配置</span></a></li>
                 @endif
             </ul>
         </li>

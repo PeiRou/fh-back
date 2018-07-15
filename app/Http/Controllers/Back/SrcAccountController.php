@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
@@ -48,6 +49,17 @@ class SrcAccountController extends Controller
                     Session::put('account_name',$find->name);
                     Session::put('account_permission',$collectionAuth);
 
+                    //用户状态存入Redis
+                    $session_id = Session::getId();
+                    Session::put('account_session_id',$session_id);
+                    $key = 'sa:'.md5($find->sa_id);
+                    $redisData = [
+                        'session_id' => (string)Session::get('account_session_id'),
+                        'sa_id' => (string)$find->sa_id
+                    ];
+                    $jsonEncode = json_encode($redisData);
+                    Redis::select(4);
+                    Redis::setex($key,600,$jsonEncode);
                     return response()->json([
                         'status'=>true,
                         'msg'=>'登录成功，正在进入'
@@ -75,6 +87,11 @@ class SrcAccountController extends Controller
     //退出登录
     public function logout()
     {
+        Redis::select(4);
+        $uid = Session::get('account_id');
+        $key = 'sa:'.md5($uid);
+        Redis::del($key);
+
         Session::flush();
         return response()->json([
            'status'=>true

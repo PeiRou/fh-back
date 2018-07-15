@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Capital;
 use App\Games;
+use App\LogHandle;
 use App\PayOnline;
 use App\PlayCates;
 use App\SubAccount;
@@ -40,7 +42,10 @@ class SrcViewController extends Controller
     //控制台
     public function Dash()
     {
-        return view('back.dash');
+        if(Session::get('account_id'))
+            return view('back.dash');
+        else
+            return view('back.O_adminLogin');
     }
 
     //总代理
@@ -108,7 +113,11 @@ class SrcViewController extends Controller
     //资金明细
     public function capitalDetails()
     {
-        return view('back.capitalDetails');
+        $games = Games::getGameOption();
+        $playTypes = Capital::$playTypeOption;
+        $capitalTimes = Capital::getCapitalTimeOption();
+
+        return view('back.capitalDetails',compact('games','playTypes','capitalTimes'));
     }
     //会员对账
     public function memberReconciliation()
@@ -262,14 +271,35 @@ class SrcViewController extends Controller
     //操作日志
     public function handleLog()
     {
-        return view('back.log.handle');
+        $routeLists = LogHandle::getTypeOption();
+        return view('back.log.handle',compact('routeLists'));
     }
     //异常日志
     public function abnormalLog()
     {
         return view('back.log.abnormal');
     }
-
+    //代理结算
+    //代理结算报表
+    public function agentSettleReport()
+    {
+        return view('back.agentSettle.report');
+    }
+    //代理结算审核
+    public function agentSettleReview()
+    {
+        return view('back.agentSettle.review');
+    }
+    //代理提款
+    public function agentSettleDraw()
+    {
+        return view('back.agentSettle.draw');
+    }
+    //代理结算配置
+    public function agentSettleSetting()
+    {
+        return view('back.agentSettle.setting');
+    }
 
     //充值配置
     //绑定银行配置

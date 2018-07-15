@@ -10,12 +10,12 @@ Route::get('/m',function (){
 Route::get('/src/agent','Back\SrcViewController@AgentLogin'); // 代理登录页面
 Route::get('/back/control','Back\SrcViewController@AdminLogin')->name('back.login')->middleware('domain-check'); // 管理登录页面
 
-Route::group(['prefix' => 'back/control/','middleware' => 'domain-check'],function (){
+Route::group(['prefix' => 'back/control/','middleware' => ['domain-check','add-log-handle']],function (){
     Route::get('dash',['uses'=>'Back\SrcViewController@Dash','as'=>'dash']); // 控制台
 });
 
 //用户管理
-Route::group(['prefix' => 'back/control/userManage','middleware'=>['check-permission','domain-check']],function (){
+Route::group(['prefix' => 'back/control/userManage','middleware'=>['check-permission','domain-check','add-log-handle']],function (){
     Route::get('general_agent','Back\SrcViewController@generalAgent')->name('m.gAgent'); // 总代理
     Route::get('agent','Back\SrcViewController@agent')->name('m.agent'); // 代理
     Route::get('user','Back\SrcViewController@user')->name('m.user'); // 用户
@@ -24,7 +24,7 @@ Route::group(['prefix' => 'back/control/userManage','middleware'=>['check-permis
     Route::get('userBetList/{userId}','Back\SrcViewController@userBetList')->name('m.user.viewDetails'); //用户注单明细
 });
 //财务管理
-Route::group(['prefix' => 'back/control/financeManage','middleware'=>['check-permission','domain-check']],function (){
+Route::group(['prefix' => 'back/control/financeManage','middleware'=>['check-permission','domain-check','add-log-handle']],function (){
     Route::get('rechargeRecord','Back\SrcViewController@rechargeRecord')->name('finance.rechargeRecord'); // 充值记录
     Route::get('drawingRecord','Back\SrcViewController@drawingRecord')->name('finance.drawingRecord'); // 充值记录
     Route::get('capitalDetails','Back\SrcViewController@capitalDetails')->name('finance.capitalDetails'); // 资金明细
@@ -32,32 +32,32 @@ Route::group(['prefix' => 'back/control/financeManage','middleware'=>['check-per
     Route::get('agentReconciliation','Back\SrcViewController@agentReconciliation')->name('finance.agentReconciliation'); // 代理对账
 });
 //报表管理
-Route::group(['prefix' => 'back/control/reportManage','middleware'=>['check-permission','domain-check']],function (){
+Route::group(['prefix' => 'back/control/reportManage','middleware'=>['check-permission','domain-check','add-log-handle']],function (){
     Route::get('gagent','Back\SrcViewController@reportGagent')->name('report.gAgent'); // 总代理报表
     Route::get('agent','Back\SrcViewController@reportAgent')->name('report.agent'); // 代理报表
     Route::get('user','Back\SrcViewController@reportUser')->name('report.user'); // 会员报表
     Route::get('online','Back\SrcViewController@reportOnline')->name('report.online'); // 在线报表
 });
 //投注记录
-Route::group(['prefix' => 'back/control/betManage','middleware'=>['check-permission','domain-check']],function (){
+Route::group(['prefix' => 'back/control/betManage','middleware'=>['check-permission','domain-check','add-log-handle']],function (){
     Route::get('today','Back\SrcViewController@betTodaySearch')->name('bet.todaySearch'); // 今日注单搜索
     Route::get('history','Back\SrcViewController@betHistorySearch')->name('bet.historySearch'); // 历史注单搜索
     Route::get('realTime','Back\SrcViewController@betRealTime')->name('bet.betRealTime'); // 实时滚单
 });
 //公告管理
-Route::group(['prefix' => 'back/control/noticeManage','middleware'=>['check-permission','domain-check']],function (){
+Route::group(['prefix' => 'back/control/noticeManage','middleware'=>['check-permission','domain-check','add-log-handle']],function (){
     Route::get('setting','Back\SrcViewController@noticeSetting')->name('notice.noticeSetting'); // 公告设置
     Route::get('sendMessage','Back\SrcViewController@messageSend')->name('notice.messageSend'); // 消息推送
 });
 
 //游戏管理
-Route::group(['prefix' => 'back/control/gameManage','middleware'=>['check-permission','domain-check']],function () {
-    Route::get('gameSetting','Back\SrcViewController@gameSetting')->name('game.gameSetting');
-    Route::get('handicapSetting','Back\SrcViewController@handicapSetting')->name('game.handicapSetting');
+Route::group(['prefix' => 'back/control/gameManage','middleware'=>['check-permission','domain-check','add-log-handle']],function () {
+    Route::get('gameSetting','Back\SrcViewController@gameSetting')->name('game.gameSetting'); //游戏设定
+    Route::get('handicapSetting','Back\SrcViewController@handicapSetting')->name('game.handicapSetting'); //盘口设定
 });
 
 //开奖管理
-Route::group(['prefix' => 'back/control/openManage','middleware'=>['check-permission','domain-check']],function () {
+Route::group(['prefix' => 'back/control/openManage','middleware'=>['check-permission','domain-check','add-log-handle']],function () {
     Route::get('cqssc','Back\SrcViewController@openManage_cqssc')->name('historyLottery.cqssc'); //重庆时时彩
     Route::get('bjpk10','Back\SrcViewController@openManage_bjpk10')->name('historyLottery.bjpk10'); //北京pk10
     Route::get('bjkl8','Back\SrcViewController@openManage_bjkl8')->name('historyLottery.bjkl8'); //北京快乐8
@@ -66,22 +66,30 @@ Route::group(['prefix' => 'back/control/openManage','middleware'=>['check-permis
 });
 
 //系统管理
-Route::group(['prefix' => 'back/control/systemManage','middleware'=>['check-permission','domain-check']],function () {
-    Route::get('permissions','Back\SrcViewController@Permissions')->name('system.permission');
-    Route::get('role','Back\SrcViewController@role')->name('system.role');
-    Route::get('systemSetting','Back\SrcViewController@systemSetting')->name('system.systemSetting');
+Route::group(['prefix' => 'back/control/systemManage','middleware'=>['check-permission','domain-check','add-log-handle']],function () {
+    Route::get('permissions','Back\SrcViewController@Permissions')->name('system.permission'); //权限管理
+    Route::get('role','Back\SrcViewController@role')->name('system.role');  //角色管理
+    Route::get('systemSetting','Back\SrcViewController@systemSetting')->name('system.systemSetting'); //系统参数配置
     Route::get('articleManage','Back\SrcViewController@articleManage')->name('system.articleManage'); //文章管理
 });
 
 //日志管理
-Route::group(['prefix' => 'back/control/logManage','middleware'=>['check-permission','domain-check']],function () {
+Route::group(['prefix' => 'back/control/logManage','middleware'=>['check-permission','domain-check','add-log-handle']],function () {
     Route::get('login','Back\SrcViewController@loginLog')->name('log.login'); //登录日志
     Route::get('handle','Back\SrcViewController@handleLog')->name('log.handle'); //操作日志
     Route::get('abnormal','Back\SrcViewController@abnormalLog')->name('log.abnormal'); //异常日志
 });
 
+//代理结算
+Route::group(['prefix' => 'back/control/agentSettle','middleware'=>['check-permission','domain-check']],function () {
+    Route::get('report','Back\SrcViewController@agentSettleReport')->name('agentSettle.report');    //代理结算报表
+    Route::get('review','Back\SrcViewController@agentSettleReview')->name('agentSettle.review');    //代理结算审核
+    Route::get('draw','Back\SrcViewController@agentSettleDraw')->name('agentSettle.draw');          //代理提款
+    Route::get('setting','Back\SrcViewController@agentSettleSetting')->name('agentSettle.setting'); //代理结算配置
+});
+
 //充值配置
-Route::group(['prefix' => 'back/control/payManage','middleware'=>['check-permission','domain-check']],function () {
+Route::group(['prefix' => 'back/control/payManage','middleware'=>['check-permission','domain-check','add-log-handle']],function () {
     Route::get('payOnline','Back\SrcViewController@payOnline')->name('pay.online'); //在线支付配置
     Route::get('payBank','Back\SrcViewController@payBank')->name('pay.bank'); //银行支付配置
     Route::get('payAlipay','Back\SrcViewController@payAlipay')->name('pay.alipay'); //支付宝支付配置
@@ -92,9 +100,12 @@ Route::group(['prefix' => 'back/control/payManage','middleware'=>['check-permiss
     Route::get('rechargeWay','Back\SrcViewController@rechargeWay')->name('pay.rechargeWay'); //支付层级配置
 });
 
-Route::get('/today/selectData/playCate/{gameId?}','Back\SrcViewController@playCate'); // 下拉菜单获取玩法分类
-Route::get('/recharge/selectData/payOnline/{rechargeType?}','Back\SrcViewController@payOnlineSelectData'); // 下拉菜单获取在线支付分类
-Route::get('/recharge/selectData/dateChange/{date?}','Back\SrcViewController@payOnlineDateChange'); // 下拉菜单获取今日，昨日，上周
+//下拉菜单
+Route::group(['middleware'=>['add-log-handle']],function(){
+    Route::get('/today/selectData/playCate/{gameId?}','Back\SrcViewController@playCate')->name('select.playCate'); // 下拉菜单获取玩法分类
+    Route::get('/recharge/selectData/payOnline/{rechargeType?}','Back\SrcViewController@payOnlineSelectData')->name('select.payOnlineSelectData'); // 下拉菜单获取在线支付分类
+    Route::get('/recharge/selectData/dateChange/{date?}','Back\SrcViewController@payOnlineDateChange')->name('select.payOnlineDateChange'); // 下拉菜单获取今日，昨日，上周
+});
 
 Route::get('/back/datatables/subaccount','Back\Data\MembersDataController@subAccounts');
 Route::get('/back/datatables/generalAgent','Back\Data\MembersDataController@generalAgent');
@@ -109,7 +120,7 @@ Route::get('/back/datatables/games','Back\Data\GameDataController@games');
 Route::get('/back/datatables/onlineUser','Back\Data\MembersDataController@onlineUser');
 Route::get('/back/datatables/rechargeRecord','Back\Data\FinanceDataController@rechargeRecord');
 Route::get('/back/datatables/drawingRecord','Back\Data\FinanceDataController@drawingRecord');
-Route::get('/back/datatables/capitalDetails','Back\Data\FinanceDataController@capitalDetails');
+Route::get('/back/datatables/capitalDetails','Back\Data\FinanceDataController@capitalDetails'); //会员报表
 Route::get('/back/datatables/memberReconciliation','Back\Data\FinanceDataController@memberReconciliation');
 Route::get('/back/datatables/agentReconciliation','Back\Data\FinanceDataController@agentReconciliation');
 Route::get('/back/datatables/reportGagent','Back\Data\ReportDataController@Gagent');
@@ -129,6 +140,7 @@ Route::get('/back/datatables/payCft','Back\Data\PayDataController@payCft');
 Route::get('/back/datatables/article','Back\Data\ArticleController@article');
 Route::get('/back/datatables/userBetSearch','Back\Data\BetDataController@userBetSearch');
 Route::get('/back/datatables/log/login','Back\Data\LogDataController@login'); //登录日志
+Route::get('/back/datatables/logHandle','Back\Data\LogDataController@logHandle'); //操作日志
 Route::get('/back/datatables/openHistory/cqssc','Back\Data\openHistoryController@cqssc'); //历史开奖 - 重庆时时彩
 Route::get('/back/datatables/openHistory/bjpk10','Back\Data\openHistoryController@bjpk10'); //历史开奖 - 北京PK10
 Route::get('/back/datatables/openHistory/bjkl8','Back\Data\openHistoryController@bjkl8'); //历史开奖 - 北京快乐8

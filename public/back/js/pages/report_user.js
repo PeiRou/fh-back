@@ -61,6 +61,7 @@ $(function () {
         processing: true,
         serverSide: true,
         ordering: true,
+        "order": [],
         ajax: {
             url:'/back/datatables/reportUser',
             data:function (d) {
@@ -123,8 +124,8 @@ $(function () {
             var monTotal = api
                 .column( 1 )
                 .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
+                .reduce( function (a, b, c) {
+                    return parseFloat((intVal(c)+1).toPrecision(12));
                 }, 0 );
 
             var tueTotal = api
