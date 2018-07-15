@@ -49,7 +49,7 @@ class BetDataController extends Controller
                     if($status == 'weijiesuan'){
                         $query->where("bet.bunko",'=',0);
                     } else if($status == 'jiesuan'){
-                        $query->where("bet.bunko",'>=',0.01);
+                        $query->where("bet.bunko",'!=',0);
                     } else {
                         $query->where("bet.bunko",'=',-8888);
                     }
