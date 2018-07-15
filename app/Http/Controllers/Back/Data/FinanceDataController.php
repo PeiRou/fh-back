@@ -77,11 +77,13 @@ class FinanceDataController extends Controller
                     }
                 }
             })
-            ->where(function ($q) use ($payType) {
+            ->where(function ($q) use ($payType,$account_type,$account_param) {
                 if(isset($payType) && $payType){
                     $q->where('recharges.payType',$payType);
                 } else {
-                    $q->where('recharges.payType','!=','onlinePayment');
+                    if($account_param == ""){
+                        $q->where('recharges.payType','!=','onlinePayment');
+                    }
                 }
             })
             ->where(function ($q) use ($startTime,$endTime) {
