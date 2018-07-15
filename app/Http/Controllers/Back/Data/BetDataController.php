@@ -224,7 +224,7 @@ class BetDataController extends Controller
                         }
                     }
                 })
-                ->where('testFlag',0)->orderBy('bet.created_at','desc')->get();
+                ->where('bet.testFlag',0)->orderBy('bet.created_at','desc')->get();
         } else {
             $bet = Bets::where('order_id',888888)->get();
         }
