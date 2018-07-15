@@ -57,11 +57,13 @@ class FinanceDataController extends Controller
                     $q->where('recharges.userId',$findUserId->id);
                 }
             })
-            ->where(function ($q) use ($status){
+            ->where(function ($q) use ($status,$account_param){
                 if(isset($status) && $status){
                     $q->where('recharges.status',$status);
                 } else {
-                    $q->where('recharges.status','!=',4);
+                    if($account_param == ""){
+                        $q->where('recharges.status','!=',4);
+                    }
                 }
             })
             ->where(function ($q) use ($account_type, $account_param){
