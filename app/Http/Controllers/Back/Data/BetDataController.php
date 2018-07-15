@@ -322,7 +322,10 @@ class BetDataController extends Controller
             $q = '';
         }
 
-        $bet = Bets::select()
+        $bet = DB::table('bet')
+            ->leftJoin('game','bet.game_id','=','game.game_id')
+            ->leftJoin('users','bet.user_id','=','users.id')
+            ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at','bet.platform as bet_platform','bet.bet_rebate as bet_bet_rebate')
             ->where(function ($query) use ($games,$q){
                 if(isset($games) && $games){
                     $query->whereRaw(rtrim($q,'and '));
@@ -330,75 +333,42 @@ class BetDataController extends Controller
             })
             ->where(function ($query) use ($issue){
                 if(isset($issue) && $issue){
-                    $query->where('issue',$issue);
+                    $query->where('bet.issue',$issue);
                 }
             })
             ->where(function ($query) use ($username){
                 if(isset($username) && $username){
-                    $findUserid = User::where('username',$username)->first();
-                    if($findUserid){
-                        $query->where("user_id",$findUserid->id);
-                    }
+                    $query->where("users.username",$username);
                 }
             })
             ->where(function ($query) use ($minMoney){
                 if(isset($minMoney) && $minMoney){
-                    $query->where('bet_money','>=',$minMoney);
+                    $query->where('bet.bet_money','>=',$minMoney);
                 }
             })
-            ->where('testFlag',0)->where('bunko',0)->orderBy('created_at','desc')->get();
+            ->where('bet.testFlag',0)->where('bet.bunko',0)->orderBy('bet.created_at','desc')->get();
         return DataTables::of($bet)
             ->editColumn('user',function ($bet){
-                $user = User::where('id',$bet->user_id)->first();
-                if($user){
-                    return $user->username;
+                if($bet->users_username){
+                    return $bet->users_username;
                 } else {
                     return "<span class='red-text'>用户不存在,请核实</span>";
                 }
             })
             ->editColumn('game',function ($bet){
-                $game = Games::where('game_id',$bet->game_id)->first();
-                return $game->game_name;
+                return $bet->game_game_name;
             })
             ->editColumn('issue',function ($bet){
-                return '<span style="color: #'.$bet->color.'">'.$bet->issue.'</span> 期';
+                return '<span style="color: #'.$bet->bet_color.'">'.$bet->bet_issue.'</span> 期';
             })
             ->editColumn('bet_money',function ($bet){
-                return "<span class='bet-text'>$bet->bet_money</span>";
+                return "<span class='bet-text'>$bet->bet_bet_money</span>";
             })
             ->editColumn('bet_rebate',function ($bet){
-                return "<span class='bet-text'>$bet->play_rebate</span>";
+                return "<span class='bet-text'>$bet->bet_bet_rebate</span>";
             })
             ->editColumn('play',function ($bet){
-                if($bet->game_id == 1){
-                    $weishu = strlen((int)$bet->game_id.$bet->playcate_id);
-                    $playid_weishu = strlen((int)$bet->play_id);
-                    $playCate = $bet->playcate_id;
-                    $play = substr($bet->play_id,$weishu,$playid_weishu-$weishu);
-                }
-                if($bet->game_id == 80 || $bet->game_id == 81 || $bet->game_id == 82 || $bet->game_id == 99 || $bet->game_id == 90 || $bet->game_id == 91){
-                    $playCate = substr($bet->play_id,2,3);
-                    $play = substr($bet->play_id,5,4);
-                }
-                if($bet->game_id == 70){
-                    $playCate = substr($bet->play_id,2,2);
-                    $play = substr($bet->play_id,4,4);
-                }
-                if($bet->game_id == 85){
-                    $playCate = substr($bet->play_id,2,3);
-                    $play = substr($bet->play_id,5,4);
-                }
-                if($bet->game_id == 50){
-                    $playCate = substr($bet->play_id,2,2);
-                    $play = substr($bet->play_id,4,3);
-                }
-                if($bet->game_id == 66 || $bet->game_id == 65){
-                    $playCate = substr($bet->play_id,2,2);
-                    $play = substr($bet->play_id,4,4);
-                }
-                $cate_txt = PlayCates::where('gameId',$bet->game_id)->where('id',$playCate)->first();
-                $play_txt = Play::where('gameId',$bet->game_id)->where('id',$play)->first();
-                return "<span class='blue-text'>$cate_txt->name - </span><span class='blue-text'>$play_txt->name</span> @ <span class='red-text'>$bet->play_odds</span>";
+                return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span>";
             })
             ->rawColumns(['user','play','issue','bunko','bet_money','bet_rebate'])
             ->make(true);
