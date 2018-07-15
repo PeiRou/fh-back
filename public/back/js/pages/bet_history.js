@@ -116,9 +116,11 @@ $('#game').on('change',function () {
         dataType:'json',
         success:function (result) {
             $('#playCate').empty();
+            var str = '<option value="">全部</option>';
             result.forEach(function(item){
-                $("#playCate").append($("<option/>").text(item.name).attr("value",item.id));
+                str += '<option value="'+item.id+'">'+item.name+'</option>';
             });
+            $("#playCate").html(str);
         }
     });
 });
