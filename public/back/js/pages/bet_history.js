@@ -56,7 +56,7 @@ $(function () {
         processing: true,
         serverSide: true,
         ordering: false,
-        aLengthMenu: [[25]],
+        aLengthMenu: [[50]],
         ajax: {
             url: '/back/datatables/betHistory',
             data:function (d) {

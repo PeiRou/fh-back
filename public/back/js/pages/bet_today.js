@@ -53,7 +53,7 @@ $(function () {
     dataTable = $('#betTodayTable').DataTable({
         searching: false,
         bLengthChange: false,
-        aLengthMenu: [[25]],
+        aLengthMenu: [[50]],
         processing: true,
         serverSide: true,
         ordering: false,
