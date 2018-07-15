@@ -67,10 +67,10 @@
                 </div>
             </div>
         </div>
-        <table id="reportAgentTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="reportAgentTable" class="ui right aligned small table" cellspacing="0" width="100%">
             <thead>
             <tr>
-                <th>账号</th>
+                <th width="120px">账号</th>
                 <th>会员数</th>
                 <th>充值金额</th>
                 <th>取款金额</th>
@@ -86,6 +86,24 @@
                 <th>实际输赢(含退水)</th>
             </tr>
             </thead>
+            <tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </tfoot>
         </table>
     </div>
 @endsection

@@ -100,6 +100,110 @@ $(function () {
                 }},
             {data:'sumBunko'},             //会员输赢（不包括退水）
         ],
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // converting to interger to find total
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // computing column Total of the complete result
+            var monTotal = api
+                .column( 1 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            var tueTotal = api
+                .column( 2 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            var wedTotal = api
+                .column( 3 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            var thuTotal = api
+                .column( 4 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            var friTotal = api
+                .column( 5 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            var Total6 = api
+                .column( 6 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            var Total7 = api
+                .column( 7 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            var Total8 = api
+                .column( 8 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            var Total9 = api
+                .column( 9 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            var Total10 = api
+                .column( 10 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            var Total11 = api
+                .column( 11 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+
+            // Update footer by showing the total with the reference of the column index
+            $( api.column( 0 ).footer() ).html('总计');
+            $( api.column( 1 ).footer() ).html(monTotal);
+            $( api.column( 2 ).footer() ).html(tueTotal);
+            $( api.column( 3 ).footer() ).html(wedTotal);
+            $( api.column( 4 ).footer() ).html(thuTotal);
+            $( api.column( 5 ).footer() ).html(friTotal);
+            $( api.column( 6 ).footer() ).html(Total6);
+            $( api.column( 7 ).footer() ).html(Total7);
+            $( api.column( 8 ).footer() ).html(Total8);
+            $( api.column( 9 ).footer() ).html(Total9);
+            $( api.column( 10 ).footer() ).html(Total10);
+            $( api.column( 11 ).footer() ).html(Total11);
+        },
         language: {
             "zeroRecords": "暂无数据",
             "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",

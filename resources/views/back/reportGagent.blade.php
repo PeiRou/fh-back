@@ -76,23 +76,39 @@
                 </div>
             </div>
         </div>
-        <table id="reportGagentTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="reportGagentTable" class="ui right aligned small table" cellspacing="0" width="100%">
             <thead>
-            <tr>
-                <th>账号</th>
-                <th>会员数</th>
-                <th>笔数</th>
-                <th>投注金额</th>
-                <th>赢利投注金额</th>
-                <th>活动金额</th>
-                <th>充值优惠/手续费</th>
-                <th>代理赔率金额</th>
-                <th>代理退水金额</th>
-                <th>会员输赢(不包括退水)</th>
-                <th>实际退水</th>
-                <th>实际输赢(包括退水)</th>
-            </tr>
+                <tr>
+                    <th>账号</th>
+                    <th>会员数</th>
+                    <th>笔数</th>
+                    <th>投注金额</th>
+                    <th>赢利投注金额</th>
+                    <th>活动金额</th>
+                    <th>充值优惠/手续费</th>
+                    <th>代理赔率金额</th>
+                    <th>代理退水金额</th>
+                    <th>会员输赢(不包括退水)</th>
+                    <th>实际退水</th>
+                    <th>实际输赢(包括退水)</th>
+                </tr>
             </thead>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </tfoot>
         </table>
     </div>
 @endsection

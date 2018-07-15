@@ -82,7 +82,7 @@
                 </div>
             </div>
         </div>
-        <table id="reportUserTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="reportUserTable" class="ui right aligned small table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>账号</th>
@@ -102,6 +102,25 @@
                 <th>实际输赢(含退水)</th>
             </tr>
             </thead>
+            <tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </tfoot>
         </table>
     </div>
 @endsection
