@@ -100,19 +100,6 @@ class BetDataController extends Controller
 //                    $query->whereRaw('unix_timestamp(bet.created_at) <= '.$timeEnd);
 //                }
 //            })
-//            ->where(function ($query) use ($status){
-//                if(isset($status) && $status){
-//                    if($status == 'weijiesuan'){
-//                        $query->where("bet.bunko",'=',0);
-//                    }
-//                    if($status == 'jiesuan'){
-//                        $query->where("bet.bunko",'!=',0);
-//                    }
-//                    if($status == '-8888'){
-//                        $query->where("bet.bunko",'=',-8888);
-//                    }
-//                }
-//            })
             ->where('bet.testFlag',0)->orderBy('bet.created_at','desc')->get();
         return DataTables::of($bet)
             ->editColumn('order_id',function ($bet){
@@ -188,133 +175,109 @@ class BetDataController extends Controller
         $timeEnd = strtotime($request->get('timeEnd')." 23:59:59");
 
         if($startSearch == 1){
-            $bet = Bets::select()
+            $bet = DB::table('bet')
+                ->leftJoin('game','bet.game_id','=','game.game_id')
+                ->leftJoin('users','bet.user_id','=','users.id')
+                ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at')
                 ->where(function ($query) use ($playCate){
                     if(isset($playCate) && $playCate){
-                        $query->where("playcate_id",$playCate);
+                        $query->where("bet.playcate_id",$playCate);
                     }
                 })
                 ->where(function ($query) use ($game){
                     if(isset($game) && $game){
-                        $query->where("game_id",$game);
+                        $query->where("bet.game_id",$game);
                     }
                 })
                 ->where(function ($query) use ($issue){
                     if(isset($issue) && $issue){
-                        $query->where("issue",$issue);
+                        $query->where("bet.issue",$issue);
                     }
                 })
                 ->where(function ($query) use ($order){
                     if(isset($order) && $order){
-                        $query->where("order_id",$order);
+                        $query->where("bet.order_id",$order);
                     }
                 })
                 ->where(function ($query) use ($timeStart){
                     if(isset($timeStart) && $timeStart){
-                        $query->whereRaw('unix_timestamp(created_at) >= '.$timeStart);
+                        $query->whereRaw('unix_timestamp(bet.created_at) >= '.$timeStart);
                     }
                 })
                 ->where(function ($query) use ($timeEnd){
                     if(isset($timeEnd) && $timeEnd){
-                        $query->whereRaw('unix_timestamp(created_at) <= '.$timeEnd);
+                        $query->whereRaw('unix_timestamp(bet.created_at) <= '.$timeEnd);
                     }
                 })
                 ->where(function ($query) use ($username){
                     if(isset($username) && $username){
-                        $findUserid = User::where('username',$username)->first();
-                        if($findUserid){
-                            $query->where("user_id",$findUserid->id);
-                        }
+                        $query->where("users.username",$username);
                     }
                 })
                 ->where(function ($query) use ($status){
                     if(isset($status) && $status){
                         if($status == 'jiesuan'){
-                            $query->where("bunko",'!=',0);
+                            $query->where("bet.bunko",'!=',0);
                         }
                         if($status == '-8888'){
-                            $query->where("bunko",'=',-8888);
+                            $query->where("bet.bunko",'=',-8888);
                         }
                     }
                 })
-                ->where('testFlag',0)->orderBy('created_at','desc')->get();
+                ->where('testFlag',0)->orderBy('bet.created_at','desc')->get();
         } else {
             $bet = Bets::where('order_id',888888)->get();
         }
         return DataTables::of($bet)
+            ->editColumn('order_id',function ($bet){
+                return $bet->bet_order_id;
+            })
+            ->editColumn('created_at',function ($bet){
+                return $bet->bet_created_at;
+            })
             ->editColumn('user',function ($bet){
-                $user = User::where('id',$bet->user_id)->first();
-                if($user){
-                    return $user->username;
+                if($bet->users_username){
+                    return $bet->users_username;
                 } else {
                     return "<span class='red-text'>用户不存在,请核实</span>";
                 }
             })
             ->editColumn('game',function ($bet){
-                $game = Games::where('game_id',$bet->game_id)->first();
-                return $game->game_name;
+                return $bet->game_game_name;
             })
             ->editColumn('issue',function ($bet){
-                return '<span style="color: #'.$bet->color.'">'.$bet->issue.'</span> 期';
+                return '<span style="color: #'.$bet->bet_color.'">'.$bet->bet_issue.'</span> 期';
             })
             ->editColumn('bet_money',function ($bet){
-                return "<span class='bet-text'>$bet->bet_money</span>";
+                return "<span class='bet-text'>$bet->bet_bet_money</span>";
             })
             ->editColumn('play',function ($bet){
-                if($bet->game_id == 1){
-                    $weishu = strlen((int)$bet->game_id.$bet->playcate_id);
-                    $playid_weishu = strlen((int)$bet->play_id);
-                    $playCate = $bet->playcate_id;
-                    $play = substr($bet->play_id,$weishu,$playid_weishu-$weishu);
-                }
-                if($bet->game_id == 80 || $bet->game_id == 81 || $bet->game_id == 82 || $bet->game_id == 99 || $bet->game_id == 90 || $bet->game_id == 91){
-                    $playCate = substr($bet->play_id,2,3);
-                    $play = substr($bet->play_id,5,4);
-                }
-                if($bet->game_id == 50){
-                    $playCate = substr($bet->play_id,2,2);
-                    $play = substr($bet->play_id,4,3);
-                }
-                if($bet->game_id == 85){
-                    $playCate = substr($bet->play_id,2,3);
-                    $play = substr($bet->play_id,5,4);
-                }
-                if($bet->game_id == 70){
-                    $playCate = substr($bet->play_id,2,2);
-                    $play = substr($bet->play_id,4,4);
-                }
-                if($bet->game_id == 66 || $bet->game_id == 65){
-                    $playCate = substr($bet->play_id,2,2);
-                    $play = substr($bet->play_id,4,4);
-                }
-                $cate_txt = PlayCates::where('gameId',$bet->game_id)->where('id',$playCate)->first();
-                $play_txt = Play::where('gameId',$bet->game_id)->where('id',$play)->first();
-                return "<span class='blue-text'>$cate_txt->name - </span><span class='blue-text'>$play_txt->name</span> @ <span class='red-text'>$bet->play_odds</span>";
+                return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span>";
             })
             ->editColumn('agnet_odds',function ($bet){
-                if($bet->agnet_odds == ""){
+                if($bet->bet_agnet_odds == ""){
                     return "--";
                 } else {
-                    return $bet->agnet_odds;
+                    return $bet->bet_agnet_odds;
                 }
             })
             ->editColumn('agent_rebate',function ($bet){
-                if($bet->agent_rebate == ""){
+                if($bet->bet_agent_rebate == ""){
                     return "--";
                 } else {
-                    return $bet->agent_rebate;
+                    return $bet->bet_agent_rebate;
                 }
             })
             ->editColumn('bunko',function ($bet){
-                if($bet->bunko == 0){
+                if($bet->bet_bunko == 0){
                     return "<span class='tiny-blue-text'>未结算</span>";
                 } else {
-                    if($bet->bunko > 0){
-                        $lastMoney = $bet->bunko - $bet->bet_money;
+                    if($bet->bet_bunko > 0){
+                        $lastMoney = $bet->bet_bunko - $bet->bet_bet_money;
                         return "<span class='blue-text'><b>$lastMoney</b></span>";
                     }
-                    if($bet->bunko < 0){
-                        return "<span class='red-text'><b>$bet->bunko</b></span>";
+                    if($bet->bet_bunko < 0){
+                        return "<span class='red-text'><b>$bet->bet_bunko</b></span>";
                     }
                 }
             })
