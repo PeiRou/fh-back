@@ -39,6 +39,9 @@ class BetDataController extends Controller
                         $yesterday = Carbon::now()->addDays(-1)->toDateString();
                         $query->whereDate('bet.created_at',$yesterday);
                     }
+                } else {
+                    $now = date('Y-m-d');
+                    $query->whereDate('bet.created_at',$now);
                 }
             })
 //            ->where(function ($query) use ($playCate){
