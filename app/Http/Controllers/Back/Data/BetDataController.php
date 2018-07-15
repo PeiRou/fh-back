@@ -75,6 +75,11 @@ class BetDataController extends Controller
                     $query->where("bet.order_id",$order);
                 }
             })
+            ->where(function ($query) use ($username){
+                if(isset($username) && $username){
+                    $query->where("users.username",$username);
+                }
+            })
 //            ->where(function ($query) use ($minMoney){
 //                if(isset($minMoney) && $minMoney){
 //                    $query->where("bet.bet_money",'>=',$minMoney);
@@ -93,11 +98,6 @@ class BetDataController extends Controller
 //            ->where(function ($query) use ($timeEnd){
 //                if(isset($timeEnd) && $timeEnd){
 //                    $query->whereRaw('unix_timestamp(bet.created_at) <= '.$timeEnd);
-//                }
-//            })
-//            ->where(function ($query) use ($username){
-//                if(isset($username) && $username){
-//                    $query->where("users.username",$username);
 //                }
 //            })
 //            ->where(function ($query) use ($status){
