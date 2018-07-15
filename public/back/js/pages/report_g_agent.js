@@ -116,77 +116,77 @@ $(function () {
                 .column( 1 )
                 .data()
                 .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
                 }, 0 );
 
             var tueTotal = api
                 .column( 2 )
                 .data()
                 .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
                 }, 0 );
 
             var wedTotal = api
                 .column( 3 )
                 .data()
                 .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
                 }, 0 );
 
             var thuTotal = api
                 .column( 4 )
                 .data()
                 .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
                 }, 0 );
 
             var friTotal = api
                 .column( 5 )
                 .data()
                 .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
                 }, 0 );
 
             var Total6 = api
                 .column( 6 )
                 .data()
                 .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
                 }, 0 );
 
             var Total7 = api
                 .column( 7 )
                 .data()
                 .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
                 }, 0 );
 
             var Total8 = api
                 .column( 8 )
                 .data()
                 .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
                 }, 0 );
 
             var Total9 = api
                 .column( 9 )
                 .data()
                 .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
                 }, 0 );
 
             var Total10 = api
                 .column( 10 )
                 .data()
                 .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
                 }, 0 );
 
             var Total11 = api
                 .column( 11 )
                 .data()
                 .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
                 }, 0 );
 
 
