@@ -65,14 +65,15 @@ class BetDataController extends Controller
                     $query->where("bet.playcate_id",$playCate);
                 }
             })
+            ->where(function ($query) use ($issue){
+                if(isset($issue) && $issue){
+                    $query->where("bet.issue",$issue);
+                }
+            })
+
 //            ->where(function ($query) use ($game){
 //                if(isset($game) && $game){
 //                    $query->where("bet.game_id",$game);
-//                }
-//            })
-//            ->where(function ($query) use ($issue){
-//                if(isset($issue) && $issue){
-//                    $query->where("bet.issue",$issue);
 //                }
 //            })
 //            ->where(function ($query) use ($order){
