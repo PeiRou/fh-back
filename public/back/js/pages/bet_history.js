@@ -100,8 +100,8 @@ $(function () {
 });
 
 $('#btn_search').on('click',function () {
-    if($('#username').val() === ""){
-        Calert('查找历史注单必须填写会员账号（测试账号与试玩账号无法查询）','red')
+    if($('#username').val() === "" || $('#order').val() === ""){
+        Calert('至少需要选择一个筛选类型进行查询','red')
     } else {
         $('#startSearch').val(1);
         dataTable.ajax.reload();
