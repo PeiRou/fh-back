@@ -41,69 +41,68 @@ class BetDataController extends Controller
                     }
                 }
             })
-            ->where(function ($query) use ($playCate){
-                if(isset($playCate) && $playCate){
-                    $query->where("bet.playcate_id",$playCate);
-                }
-            })
-            ->where(function ($query) use ($game){
-                if(isset($game) && $game){
-                    $query->where("bet.game_id",$game);
-                }
-            })
-            ->where(function ($query) use ($issue){
-                if(isset($issue) && $issue){
-                    $query->where("bet.issue",$issue);
-                }
-            })
-            ->where(function ($query) use ($order){
-                if(isset($order) && $order){
-                    $query->where("bet.order_id",$order);
-                }
-            })
-            ->where(function ($query) use ($minMoney){
-                if(isset($minMoney) && $minMoney){
-                    $query->where("bet.bet_money",'>=',$minMoney);
-                }
-            })
-            ->where(function ($query) use ($maxMoney){
-                if(isset($maxMoney) && $maxMoney){
-                    $query->where("bet.bet_money",'<=',$maxMoney);
-                }
-            })
-            ->where(function ($query) use ($timeStart){
-                if(isset($timeStart) && $timeStart){
-                    $query->whereRaw('unix_timestamp(bet.created_at) >= '.$timeStart);
-                }
-            })
-            ->where(function ($query) use ($timeEnd){
-                if(isset($timeEnd) && $timeEnd){
-                    $query->whereRaw('unix_timestamp(bet.created_at) <= '.$timeEnd);
-                }
-            })
-            ->where(function ($query) use ($username){
-                if(isset($username) && $username){
-                    $query->where("users.username",$username);
-                }
-            })
-            ->where(function ($query) use ($status){
-                if(isset($status) && $status){
-                    if($status == 'weijiesuan'){
-                        $query->where("bet.bunko",'=',0);
-                    }
-                    if($status == 'jiesuan'){
-                        $query->where("bet.bunko",'!=',0);
-                    }
-                    if($status == '-8888'){
-                        $query->where("bet.bunko",'=',-8888);
-                    }
-                }
-            })
+//            ->where(function ($query) use ($playCate){
+//                if(isset($playCate) && $playCate){
+//                    $query->where("bet.playcate_id",$playCate);
+//                }
+//            })
+//            ->where(function ($query) use ($game){
+//                if(isset($game) && $game){
+//                    $query->where("bet.game_id",$game);
+//                }
+//            })
+//            ->where(function ($query) use ($issue){
+//                if(isset($issue) && $issue){
+//                    $query->where("bet.issue",$issue);
+//                }
+//            })
+//            ->where(function ($query) use ($order){
+//                if(isset($order) && $order){
+//                    $query->where("bet.order_id",$order);
+//                }
+//            })
+//            ->where(function ($query) use ($minMoney){
+//                if(isset($minMoney) && $minMoney){
+//                    $query->where("bet.bet_money",'>=',$minMoney);
+//                }
+//            })
+//            ->where(function ($query) use ($maxMoney){
+//                if(isset($maxMoney) && $maxMoney){
+//                    $query->where("bet.bet_money",'<=',$maxMoney);
+//                }
+//            })
+//            ->where(function ($query) use ($timeStart){
+//                if(isset($timeStart) && $timeStart){
+//                    $query->whereRaw('unix_timestamp(bet.created_at) >= '.$timeStart);
+//                }
+//            })
+//            ->where(function ($query) use ($timeEnd){
+//                if(isset($timeEnd) && $timeEnd){
+//                    $query->whereRaw('unix_timestamp(bet.created_at) <= '.$timeEnd);
+//                }
+//            })
+//            ->where(function ($query) use ($username){
+//                if(isset($username) && $username){
+//                    $query->where("users.username",$username);
+//                }
+//            })
+//            ->where(function ($query) use ($status){
+//                if(isset($status) && $status){
+//                    if($status == 'weijiesuan'){
+//                        $query->where("bet.bunko",'=',0);
+//                    }
+//                    if($status == 'jiesuan'){
+//                        $query->where("bet.bunko",'!=',0);
+//                    }
+//                    if($status == '-8888'){
+//                        $query->where("bet.bunko",'=',-8888);
+//                    }
+//                }
+//            })
             ->where('bet.testFlag',0)->orderBy('bet.created_at','desc')->get();
         return DataTables::of($bet)
             ->editColumn('order_id',function ($bet){
-                $yesterday = Carbon::now()->addDays(-1)->toDateString();
-                return $bet->bet_order_id.'....'.$yesterday;
+                return $bet->bet_order_id;
             })
             ->editColumn('created_at',function ($bet){
                 return $bet->bet_created_at;
