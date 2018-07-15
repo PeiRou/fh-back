@@ -36,7 +36,8 @@ class BetDataController extends Controller
             ->where(function ($query) use ($searchType){
                 if(isset($searchType) && $searchType){
                     if($searchType == 'yestoday'){
-                        $query->whereRaw("to_days(now())-to_days(bet.created_at)=1");
+                        $yesterday = Carbon::now()->addDays(-1)->toDateString();
+                        $query->whereDate('bet.created_at',$yesterday);
                     }
                 }
             })
