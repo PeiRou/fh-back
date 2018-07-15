@@ -326,12 +326,6 @@ class BetDataController extends Controller
             ->leftJoin('game','bet.game_id','=','game.game_id')
             ->leftJoin('users','bet.user_id','=','users.id')
             ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at','bet.platform as bet_platform','bet.play_rebate as bet_bet_rebate')
-            ->editColumn('order_id',function ($bet){
-                return $bet->bet_order_id;
-            })
-            ->editColumn('created_at',function ($bet){
-                return $bet->bet_created_at;
-            })
             ->where(function ($query) use ($games,$q){
                 if(isset($games) && $games){
                     $query->whereRaw(rtrim($q,'and '));
@@ -354,6 +348,12 @@ class BetDataController extends Controller
             })
             ->where('bet.testFlag',0)->where('bet.bunko',0)->orderBy('bet.created_at','desc')->get();
         return DataTables::of($bet)
+            ->editColumn('order_id',function ($bet){
+                return $bet->bet_order_id;
+            })
+            ->editColumn('created_at',function ($bet){
+                return $bet->bet_created_at;
+            })
             ->editColumn('user',function ($bet){
                 if($bet->users_username){
                     return $bet->users_username;
