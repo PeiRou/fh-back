@@ -70,17 +70,11 @@ class BetDataController extends Controller
                     $query->where("bet.issue",$issue);
                 }
             })
-
-//            ->where(function ($query) use ($game){
-//                if(isset($game) && $game){
-//                    $query->where("bet.game_id",$game);
-//                }
-//            })
-//            ->where(function ($query) use ($order){
-//                if(isset($order) && $order){
-//                    $query->where("bet.order_id",$order);
-//                }
-//            })
+            ->where(function ($query) use ($order){
+                if(isset($order) && $order){
+                    $query->where("bet.order_id",$order);
+                }
+            })
 //            ->where(function ($query) use ($minMoney){
 //                if(isset($minMoney) && $minMoney){
 //                    $query->where("bet.bet_money",'>=',$minMoney);
