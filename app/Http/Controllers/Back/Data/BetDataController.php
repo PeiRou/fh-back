@@ -166,7 +166,7 @@ class BetDataController extends Controller
             ->editColumn('control',function ($bet){
                 return "取消注单";
             })
-            ->rawColumns(['user','play','issue','bunko','bet_money'])
+            ->rawColumns(['user','play','issue','bunko','bet_money','platform'])
             ->make(true);
     }
     
@@ -235,15 +235,6 @@ class BetDataController extends Controller
                         }
                     }
                 })
-                ->editColumn('platform',function ($bet){
-                    if($bet->bet_platform == 1){
-                        return "<i class='iconfont'>&#xe696;</i> PC端";
-                    } else if($bet->bet_platform == 2){
-                        return "<i class='iconfont'>&#xe686;</i> 移动端";
-                    } else {
-                        return "--";
-                    }
-                })
                 ->where('bet.testFlag',0)->whereBetween('bet.created_at',[$monthStart.' 00:00:00', $monthEnd.' 23:59:59'])->orderBy('bet.created_at','desc')->get();
         } else {
             $bet = Bets::where('order_id',888888)->get();
@@ -301,7 +292,16 @@ class BetDataController extends Controller
                     }
                 }
             })
-            ->rawColumns(['user','play','issue','bunko','bet_money'])
+            ->editColumn('platform',function ($bet){
+                if($bet->bet_platform == 1){
+                    return "<i class='iconfont'>&#xe696;</i> PC端";
+                } else if($bet->bet_platform == 2){
+                    return "<i class='iconfont'>&#xe686;</i> 移动端";
+                } else {
+                    return "--";
+                }
+            })
+            ->rawColumns(['user','play','issue','bunko','bet_money','platform'])
             ->make(true);
     }
     
