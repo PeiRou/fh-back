@@ -100,12 +100,12 @@ $(function () {
 });
 
 $('#btn_search').on('click',function () {
-    if($('#username').val() == "" || $('#order').val() == ""){
-        Calert('至少需要选择一个筛选类型进行查询','red')
-    } else {
+    // if($('#username').val() == "" || $('#order').val() == ""){
+    //     Calert('至少需要选择一个筛选类型进行查询','red')
+    // } else {
         $('#startSearch').val(1);
         dataTable.ajax.reload();
-    }
+    // }
 });
 
 $('#game').on('change',function () {
