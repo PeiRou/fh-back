@@ -5,7 +5,7 @@ $(function () {
 
     context.init({preventDoubleContext: false});
     context.settings({compress: true});
-    context.attach('html', [
+    context.attach('#rechargeRecordTable', [
         {header: 'Compressed Menu'},
         {text: 'Back', href: '#'},
         {text: 'Reload', href: '#'},
