@@ -173,6 +173,8 @@ class BetDataController extends Controller
         $order = $request->get('order');
         $timeStart = strtotime($request->get('timeStart')." 00:00:00");
         $timeEnd = strtotime($request->get('timeEnd')." 23:59:59");
+        $monthStart = date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y')));
+        $monthEnd = date('Y-m-d',mktime(23,59,59,date('m'),date('t'),date('Y')));
 
         if($startSearch == 1){
             $bet = DB::table('bet')
@@ -224,7 +226,7 @@ class BetDataController extends Controller
                         }
                     }
                 })
-                ->where('bet.testFlag',0)->orderBy('bet.created_at','desc')->get();
+                ->where('bet.testFlag',0)->whereBetween('bet.created_at',[$monthStart.' 00:00:00', $monthEnd.' 23:59:59'])->orderBy('bet.created_at','desc')->get();
         } else {
             $bet = Bets::where('order_id',888888)->get();
         }

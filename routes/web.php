@@ -317,13 +317,6 @@ Route::get('/error/403',function (){
     return view('403');
 })->name('error.403');
 
-//代理VIEW部分
-Route::get('/agent','Agent\AgentAccountController@login');
-Route::get('/agent/dash','Agent\AgentViewController@dash');
-Route::get('/agent/member','Agent\AgentViewController@ajaxMember');
-//代理Action部分
-Route::post('/agent/action/account/login','Agent\AgentAccountController@loginAction');
-
 //内部调试
 Route::get('/inner/playCate','Inner\innerController@playCate');
 Route::get('inner/play','Inner\innerController@play');
