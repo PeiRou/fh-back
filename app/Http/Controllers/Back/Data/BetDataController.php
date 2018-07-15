@@ -32,7 +32,7 @@ class BetDataController extends Controller
         $bet = DB::table('bet')
             ->leftJoin('game','bet.game_id','=','game.game_id')
             ->leftJoin('users','bet.user_id','=','users.id')
-            ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at')
+            ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at','bet.platform as bet_platform')
             ->where(function ($query) use ($searchType){
                 if(isset($searchType) && $searchType){
                     if($searchType == 'yestoday'){
@@ -154,6 +154,15 @@ class BetDataController extends Controller
                     }
                 }
             })
+            ->editColumn('platform',function ($bet){
+                if($bet->bet_platform == 1){
+                    return "<i class='iconfont'>&#xe696;</i> PC端";
+                } else if($bet->bet_platform == 2){
+                    return "<i class='iconfont'>&#xe686;</i> 移动端";
+                } else {
+                    return "--";
+                }
+            })
             ->editColumn('control',function ($bet){
                 return "取消注单";
             })
@@ -180,7 +189,7 @@ class BetDataController extends Controller
             $bet = DB::table('bet')
                 ->leftJoin('game','bet.game_id','=','game.game_id')
                 ->leftJoin('users','bet.user_id','=','users.id')
-                ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at')
+                ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at','bet.platform as bet_platform')
                 ->where(function ($query) use ($playCate){
                     if(isset($playCate) && $playCate){
                         $query->where("bet.playcate_id",$playCate);
@@ -224,6 +233,15 @@ class BetDataController extends Controller
                         if($status == '-8888'){
                             $query->where("bet.bunko",'=',-8888);
                         }
+                    }
+                })
+                ->editColumn('platform',function ($bet){
+                    if($bet->bet_platform == 1){
+                        return "<i class='iconfont'>&#xe696;</i> PC端";
+                    } else if($bet->bet_platform == 2){
+                        return "<i class='iconfont'>&#xe686;</i> 移动端";
+                    } else {
+                        return "--";
                     }
                 })
                 ->where('bet.testFlag',0)->whereBetween('bet.created_at',[$monthStart.' 00:00:00', $monthEnd.' 23:59:59'])->orderBy('bet.created_at','desc')->get();

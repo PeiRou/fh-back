@@ -81,7 +81,8 @@ $(function () {
             {data: 'bet_money'},
             {data: 'agnet_odds'},
             {data: 'agent_rebate'},
-            {data: 'bunko'}
+            {data: 'bunko'},
+            {data: 'platform'}
         ],
         language: {
             "zeroRecords": "暂无数据",

@@ -84,6 +84,7 @@ $(function () {
             {data: 'agnet_odds'},
             {data: 'agent_rebate'},
             {data: 'bunko'},
+            {data: 'platform'},
             {data: 'control'}
         ],
         language: {
