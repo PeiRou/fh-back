@@ -102,7 +102,8 @@ class BetDataController extends Controller
             ->where('bet.testFlag',0)->orderBy('bet.created_at','desc')->get();
         return DataTables::of($bet)
             ->editColumn('order_id',function ($bet){
-                return $bet->bet_order_id;
+                $yesterday = Carbon::now()->addDays(-1)->toDateString();
+                return $bet->bet_order_id.'....'.$yesterday;
             })
             ->editColumn('created_at',function ($bet){
                 return $bet->bet_created_at;
