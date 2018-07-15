@@ -162,6 +162,11 @@ class RechargeController extends Controller
                     $q->where('users.agent','!=',2);
                 }
             })
+            ->where(function ($q) use ($account) {
+                if($account && isset($account)){
+                    $q->where('recharges.username',$account);
+                }
+            })
             ->where(function ($q) use ($rechType) {
                 if($rechType && isset($rechType)){
                     $q->where('recharges.payType',$rechType);
