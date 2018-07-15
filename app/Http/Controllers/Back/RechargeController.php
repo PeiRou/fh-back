@@ -134,6 +134,7 @@ class RechargeController extends Controller
         $startDate = $request->get('startDate');
         $endDate = $request->get('endDate');
         $killTest = $request->get('killTest');
+        $account = $request->get('account');
 
         //今日线上总数
         $onlinePayToday = DB::table('recharges')
