@@ -9,7 +9,6 @@ use App\Levels;
 use App\Recharges;
 use App\User;
 use App\UserRecon;
-use function foo\func;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;

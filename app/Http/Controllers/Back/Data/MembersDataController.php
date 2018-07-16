@@ -9,7 +9,6 @@ use App\Levels;
 use App\Roles;
 use App\SubAccount;
 use App\User;
-use function foo\func;
 use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -25,7 +24,7 @@ class MembersDataController extends Controller
     //总代理 - 表格数据
     public function generalAgent()
     {
-        $aSql = "SELECT g.*,count(DISTINCT(ag.a_id)) as countAgent,count(DISTINCT(u.id)) as countMember FROM `general_agent` g LEFT JOIN `agent` ag on g.ga_id = ag.gagent_id LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 GROUP BY g.ga_id ";
+        $aSql = "SELECT g.*,count(DISTINCT(ag.a_id)) as countAgent,count(DISTINCT((case WHEN u.testFlag in (0,2) then u.id else NULL end))) as countMember FROM `general_agent` g LEFT JOIN `agent` ag on g.ga_id = ag.gagent_id LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 GROUP BY g.ga_id ";
         $allGeneralAgent = DB::select($aSql);
         return DataTables::of($allGeneralAgent)
             ->editColumn('online', function ($allGeneralAgent){

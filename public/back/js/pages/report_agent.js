@@ -62,6 +62,7 @@ $(function () {
         serverSide: true,
         ordering: true,
         "order": [],
+        aLengthMenu: [[100]],
         ajax: {
             url:'/back/datatables/reportAgent',
             data:function (d) {
@@ -117,113 +118,30 @@ $(function () {
                         i : 0;
             };
 
-            // computing column Total of the complete result
-            var monTotal = api
-                .column( 1 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var tueTotal = api
-                .column( 2 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var wedTotal = api
-                .column( 3 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var thuTotal = api
-                .column( 4 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var friTotal = api
-                .column( 5 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var Total6 = api
-                .column( 6 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var Total7 = api
-                .column( 7 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var Total8 = api
-                .column( 8 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var Total9 = api
-                .column( 9 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var Total10 = api
-                .column( 10 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var Total11 = api
-                .column( 11 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var Total12 = api
-                .column( 12 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
-
-            var Total13 = api
-                .column( 13 )
-                .data()
-                .reduce( function (a, b) {
-                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
-                }, 0 );
+            $.ajax({
+                url:'/back/datatables/reportTotal',
+                type:'get',
+                dataType:'json',
+                success:function (data) {
+                    console.log(data)
+                    $( api.column( 1 ).footer() ).html(data.result.countMember);
+                    $( api.column( 4 ).footer() ).html(data.result.countBet);
+                    $( api.column( 5 ).footer() ).html(data.result.sumMoney);
+                    $( api.column( 6 ).footer() ).html(data.result.sumWinbet);
+                    $( api.column( 11 ).footer() ).html(data.result.sumBunko);
+                    $( api.column( 13 ).footer() ).html(data.result.sumBunko);
+                }
+            })
 
             // Update footer by showing the total with the reference of the column index
             $( api.column( 0 ).footer() ).html('总计');
-            $( api.column( 1 ).footer() ).html(monTotal);
-            $( api.column( 2 ).footer() ).html(tueTotal);
-            $( api.column( 3 ).footer() ).html(wedTotal);
-            $( api.column( 4 ).footer() ).html(thuTotal);
-            $( api.column( 5 ).footer() ).html(friTotal);
-            $( api.column( 6 ).footer() ).html(Total6);
-            $( api.column( 7 ).footer() ).html(Total7);
-            $( api.column( 8 ).footer() ).html(Total8);
-            $( api.column( 9 ).footer() ).html(Total9);
-            $( api.column( 10 ).footer() ).html(Total10);
-            $( api.column( 11 ).footer() ).html(Total11);
-            $( api.column( 12 ).footer() ).html(Total12);
-            $( api.column( 13 ).footer() ).html(Total13);
+            // $( api.column( 2 ).footer() ).html(tueTotal);
+            // $( api.column( 3 ).footer() ).html(wedTotal);
+            // $( api.column( 7 ).footer() ).html(Total7);
+            // $( api.column( 8 ).footer() ).html(Total8);
+            // $( api.column( 9 ).footer() ).html(Total9);
+            // $( api.column( 10 ).footer() ).html(Total10);
+            // $( api.column( 12 ).footer() ).html(Total12);
         },
         language: {
             "zeroRecords": "暂无数据",

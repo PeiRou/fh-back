@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class ReportDataController extends Controller
 {
@@ -42,10 +43,12 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         }else{
             $where .= " and u.testFlag in(0,2)";
         }
-        $aSql = $aSql.$where." GROUP BY zd.ga_id ORDER BY sumBunko ASC ";
-        $Gagent = DB::select($aSql);
+        $aSql .= $where;
+        Session::put('reportSql',$aSql);
+        $aSql .= " GROUP BY zd.ga_id ORDER BY sumBunko ASC ";
+        $agent = DB::select($aSql);
 
-        return DataTables::of($Gagent)
+        return DataTables::of($agent)
             ->make(true);
     }
 
@@ -79,7 +82,9 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         }else{
             $where .= " and u.testFlag = 0 ";
         }
-        $aSql = $aSql.$where." GROUP BY u.agent ORDER BY sumBunko ASC ";
+        $aSql .= $where;
+        Session::put('reportSql',$aSql);
+        $aSql .= " GROUP BY u.agent ORDER BY sumBunko ASC ";
         $agent = DB::select($aSql);
 
         return DataTables::of($agent)
@@ -133,10 +138,22 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         }else {
             $where .= " and u.testFlag in (0,2) ";
         }
-        $aSql = $aSql.$where." GROUP BY u.id ORDER BY sumBunko ASC ";
+        $aSql .= $where;
+        Session::put('reportSql',$aSql);
+        $aSql .= " GROUP BY u.id ORDER BY sumBunko ASC ";
         $user = DB::select($aSql);
 
         return DataTables::of($user)
             ->make(true);
+    }
+
+    //报表-总计
+    public function Total()
+    {
+        $user = DB::select(Session::get('reportSql'));
+        return response()->json([
+            'status'=>true,
+            'result'=>$user[0]
+        ]);
     }
 }
