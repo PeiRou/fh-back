@@ -1160,18 +1160,27 @@ class New_Mssc
         if($get){
             $sql = "UPDATE users SET money = money+ CASE id ";
             $users = [];
+            $betsId = [];
             foreach ($get as $i){
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->s ";
             }
+            foreach ($get as $m){
+                $betsId[] = $m->bet_id;
+            }
             //\Log::info($users);
             $ids = implode(',',$users);
+            $bets = implode(',',$betsId);
             //\Log::info($ids);
             $sql .= "END WHERE id IN (0,$ids)";
             //\Log::info($sql);
             $up = DB::statement($sql);
             if($up == 1){
-                return 1;
+                $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
+                $update_bet_status = DB::statement($sql_bet_status);
+                if($update_bet_status == 1){
+                    return 1;
+                }
             } else {
                 \Log::info('更新用户余额，失败！');
             }
