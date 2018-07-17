@@ -1165,7 +1165,10 @@ class New_Mssc
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->s ";
             }
-            foreach ($get as $m){
+
+            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->where('status','1')->get();
+
+            foreach ($getBets as $m){
                 $betsId[] = $m->bet_id;
             }
             //\Log::info($users);
