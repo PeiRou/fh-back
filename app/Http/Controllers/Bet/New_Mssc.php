@@ -1134,7 +1134,7 @@ class New_Mssc
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->get();
+        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('status',0)->where('bunko','=',0.00)->get();
         $sql = "UPDATE bet SET status = 1, bunko = CASE ";
         $sql_lose = "UPDATE bet SET status = 1, bunko = CASE ";
         $ids = implode(',', $id);
@@ -1166,7 +1166,7 @@ class New_Mssc
                 $sql .= "WHEN $i->user_id THEN $i->s ";
             }
 
-            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->where('status','1')->get();
+            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status','1')->get();
 
             foreach ($getBets as $m){
                 $betsId[] = $m->bet_id;
