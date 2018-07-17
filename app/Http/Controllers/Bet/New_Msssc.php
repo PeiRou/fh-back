@@ -815,9 +815,9 @@ class New_Msssc
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->get();
-        $sql = "UPDATE bet SET bunko = CASE ";
-        $sql_lose = "UPDATE bet SET bunko = CASE ";
+        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('status',0)->where('bunko','=',0.00)->get();
+        $sql = "UPDATE bet SET status = 1, bunko = CASE ";
+        $sql_lose = "UPDATE bet SET status = 1, bunko = CASE ";
         $ids = implode(',', $id);
         foreach ($getUserBets as $item){
             $bunko = $item->bet_money * $item->play_odds;
@@ -837,20 +837,39 @@ class New_Msssc
     }
 
     private function updateUserMoney($gameId,$issue){
-        $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        $sql = "UPDATE users SET money = money+ CASE id ";
-        $users = [];
-        foreach ($get as $i){
-            $users[] = $i->user_id;
-            $sql .= "WHEN $i->user_id THEN $i->s ";
-        }
-        $ids = implode(',',$users);
-        $sql .= "END WHERE id IN (0,$ids)";
-        $up = DB::statement($sql);
-        if($up == 1){
-            return 1;
+        $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id','bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->where('status','1')->groupBy('user_id')->get();
+        if($get){
+            $sql = "UPDATE users SET money = money+ CASE id ";
+            $users = [];
+            $betsId = [];
+            foreach ($get as $i){
+                $users[] = $i->user_id;
+                $sql .= "WHEN $i->user_id THEN $i->s ";
+            }
+
+            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status','1')->get();
+
+            foreach ($getBets as $m){
+                $betsId[] = $m->bet_id;
+            }
+            //\Log::info($users);
+            $ids = implode(',',$users);
+            $bets = implode(',',$betsId);
+            //\Log::info($ids);
+            $sql .= "END WHERE id IN (0,$ids)";
+            //\Log::info($sql);
+            $up = DB::statement($sql);
+            if($up == 1){
+                $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
+                $update_bet_status = DB::statement($sql_bet_status);
+                if($update_bet_status == 1){
+                    return 1;
+                }
+            } else {
+                \Log::info('更新用户余额，失败！');
+            }
         } else {
-            \Log::info('更新用户余额，失败！');
+            \Log::info('秒速时时彩已结算过，已阻止！');
         }
     }
 }

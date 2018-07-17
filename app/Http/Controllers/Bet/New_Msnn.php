@@ -115,25 +115,25 @@ class New_Msnn
             foreach ($win as $k => $v) {
                 if($v[0] == $item->play_id){
                     if($v[1] <= 6) {
-                        \Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*6);
+                        //\Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*6);
                         $bunko = $item->bet_money*6;
                         $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                         $winArr[] = $item->play_id;
                     }
                     if($v[1] == 7 || $v[1] == 8){
-                        \Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*7);
+                        //\Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*7);
                         $bunko = $item->bet_money*7;
                         $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                         $winArr[] = $item->play_id;
                     }
                     if($v[1] == 9){
-                        \Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*8);
+                        //\Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*8);
                         $bunko = $item->bet_money*8;
                         $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                         $winArr[] = $item->play_id;
                     }
                     if($v[1] == 10){
-                        \Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*10);
+                       // \Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*10);
                         $bunko = $item->bet_money*10 ;
                         $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                         $winArr[] = $item->play_id;
