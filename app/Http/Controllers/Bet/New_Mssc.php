@@ -1187,6 +1187,8 @@ class New_Mssc
             } else {
                 \Log::info('更新用户余额，失败！');
             }
+        } else {
+            \Log::info('秒速赛车已结算过，已阻止！');
         }
     }
 }
