@@ -1258,7 +1258,7 @@ class New_XYLHC
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        $getUserBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',175)->where('bunko','=',0.00)->get();
         if($getUserBets){
             $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
             $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
