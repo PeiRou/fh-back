@@ -1295,25 +1295,23 @@ class New_XYLHC
         if($get){
             $sql = "UPDATE users SET money = money+ CASE id ";
             $users = [];
-            $betsId = [];
             foreach ($get as $i){
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->s ";
             }
-
-            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
-
-            foreach ($getBets as $m){
-                $betsId[] = $m->bet_id;
-            }
-            $bets = implode(',',$betsId);
-            \Log::info('XYLHC：'.$bets);
 
             $ids = implode(',',$users);
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::statement($sql);
                 if($up == 1){
+                    $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
+                    $betsId = [];
+                    foreach ($getBets as $m){
+                        $betsId[] = $m->bet_id;
+                    }
+                    $bets = implode(',',$betsId);
+                    \Log::info('XYLHC：'.$bets);
                     $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
                     $update_bet_status = DB::statement($sql_bet_status);
                     if($update_bet_status == 1){
