@@ -1276,6 +1276,8 @@ class New_XYLHC
         $zxbz_playCate = 175; //特码分类ID
         $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('status',0)->get();
         foreach ($get as $item){
+            $open = explode(',',$openCode);
+            \Log::info($open);
             $user = explode(',',$item->bet_info);
             \Log::info($user);
         }
