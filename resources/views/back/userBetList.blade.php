@@ -283,7 +283,7 @@
             dataType:'json',
             data:{userId:userId,date:date,startTime:startTime,endTime:endTime,_token:token},
             success:function (data) {
-
+                console.log(data[0]['betTotal'])
             }
         });
     }
