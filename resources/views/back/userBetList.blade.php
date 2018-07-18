@@ -192,9 +192,9 @@
                 url:'/back/datatables/userBetSearch',
                 data:function (d) {
                     d.games = check_val;
-                    d.userId = {{ $userId }};
+                    d.userId = '{{ $userId }}';
                     d.date = $('#date').val();
-                    // d.status = $('#status').val();
+                    d.status = $('#status').val();
                     // d.start = $('#startTime').val();
                     // d.end = $('#endTime').val();
                 //     d.rechLevel = $('#rechLevel').val();
