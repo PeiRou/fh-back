@@ -403,7 +403,7 @@ class BetDataController extends Controller
             })
             ->where(function ($query) use ($date,$start,$end){
                 if(isset($start) && $start && isset($end) && $end){
-                    $query->whereBetween('created_at',[$start.' 00:00:00', $end.' 23:59:59']);
+                    $query->whereBetween('bet.created_at',[$start.' 00:00:00', $end.' 23:59:59']);
                 }
             })
             ->where('bet.user_id',$userId)->orderBy('bet.created_at','desc')->get();
