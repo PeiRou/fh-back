@@ -104,6 +104,9 @@
                 </div>
             </div>
         </div>
+        <div class="total-nums">
+            下注总金额：<span id="totalBetMoney" style="font-size: 13pt;">0</span> 输赢总金额：<span id="totalWinMoney" style="font-size: 13pt;">0</span>
+        </div>
     </div>
     <table id="userBetTable" class="ui small celled striped table" cellspacing="0" width="100%">
         <thead>
