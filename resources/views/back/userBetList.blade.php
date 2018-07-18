@@ -133,7 +133,7 @@
 <script>
     $(function () {
         getCheckBox();
-
+        getTotalWin();
         $('#rangestart').calendar({
             type: 'date',
             endCalendar: $('#rangeend'),
@@ -283,7 +283,10 @@
             dataType:'json',
             data:{userId:userId,date:date,startTime:startTime,endTime:endTime,_token:token},
             success:function (data) {
-                console.log(data[0]['betTotal'])
+                var winTotal = data[0]['winTotal'];
+                var betTotal = data[0]['betTotal'];
+                $('#totalBetMoney').html(betTotal);
+                $('#totalWinMoney').html(winTotal);
             }
         });
     }
