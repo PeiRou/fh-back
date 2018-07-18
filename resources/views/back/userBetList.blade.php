@@ -274,6 +274,8 @@
     function getTotalWin() {
         var userId = {{ $getUserInfo->id }};
         var date = $('#date').val();
+        var startTime = $('#startTime').val();
+        var endTime = $('#endTime').val();
         $.ajax({
             url:'/action/userBetList/total',
             type:'post',
