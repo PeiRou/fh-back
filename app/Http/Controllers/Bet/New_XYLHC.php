@@ -1261,6 +1261,7 @@ class New_XYLHC
         $getUserBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
         $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
         $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
+
         $ids = implode(',', $id);
         foreach ($getUserBets as $item){
             $bunko = ($item->bet_money * $item->play_odds) + ($item->bet_money * $item->play_rebate);
@@ -1272,19 +1273,19 @@ class New_XYLHC
         $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $run = DB::statement($sql);
 
-        //自选不中
-        $zxbz_playCate = 175; //特码分类ID
-        $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('status',0)->get();
-        foreach ($get as $item){
-            $open = explode(',',$openCode);
-            \Log::info($open);
-            $user = explode(',',$item->bet_info);
-            \Log::info($user);
-            $bi = array_intersect($open,$user);
-            \Log::info($bi);
-        }
-
         if($run == 1){
+            //结算自选不中
+            //自选不中
+            $zxbz_playCate = 175; //特码分类ID
+            $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('status',0)->get();
+            foreach ($get as $item) {
+                $open = explode(',', $openCode);
+                $user = explode(',', $item->bet_info);
+                $bi = array_intersect($open, $user);
+                if (empty($bi)) {
+                    $id[] = $item->
+                }
+            }
             $run2 = DB::statement($sql_lose);
             if($run2 == 1){
                 return 1;
