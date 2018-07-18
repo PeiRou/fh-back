@@ -290,6 +290,12 @@
             success:function (data) {
                 var winTotal = data[0]['winTotal'];
                 var betTotal = data[0]['betTotal'];
+                if(winTotal == null){
+                    winTotal = 0;
+                }
+                if(betTotal == null){
+                    betTotal = 0;
+                }
                 $('#totalBetMoney').html(betTotal);
                 $('#totalWinMoney').html(winTotal);
             }
