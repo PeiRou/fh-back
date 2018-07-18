@@ -1276,10 +1276,7 @@ class New_XYLHC
         $zxbz_playCate = 175; //特码分类ID
         $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('status',0)->get();
         foreach ($get as $item){
-            $arrOpenCode = explode(',',$openCode);
-            $userSelectCode = explode(',',$item->bet_info);
-            $intersection = array_intersect($arrOpenCode,$userSelectCode);
-            \Log::info('交集'.$intersection);
+            \Log::info($item->bet_info);
         }
 
         if($run == 1){
