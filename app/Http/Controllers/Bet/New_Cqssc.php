@@ -853,7 +853,7 @@ class New_Cqssc
             //\Log::info($users);
             $ids = implode(',',$users);
             $bets = implode(',',$betsId);
-            //\Log::info($ids);
+            \Log::info('cqssc'.$ids);
             $sql .= "END WHERE id IN (0,$ids)";
             //\Log::info($sql);
             $up = DB::statement($sql);
