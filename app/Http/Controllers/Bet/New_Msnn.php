@@ -21,7 +21,7 @@ class New_Msnn
         $lose = collect([]);
         $winArr1 = collect([]);
         $this->NN($openCode,$nn,$gameId,$win,$lose,$winArr1);
-        $betCount = Bets::where('issue',$issue)->where('game_id',$gameId)->count();
+        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$lose,$winArr1,$gameId,$issue);
             if($bunko == 1){

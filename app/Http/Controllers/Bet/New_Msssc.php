@@ -31,7 +31,7 @@ class New_Msssc
         $this->QIANSAN($openCode,$gameId,$win);
         $this->ZHONGSAN($openCode,$gameId,$win);
         $this->HOUSAN($openCode,$gameId,$win);
-        $betCount = Bets::where('issue',$issue)->where('game_id',$gameId)->count();
+        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){

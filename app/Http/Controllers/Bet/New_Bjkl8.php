@@ -21,7 +21,7 @@ class New_Bjkl8
         $this->QHH($openCode,$gameId,$win);
         $this->DSH($openCode,$gameId,$win);
         $this->WX($openCode,$gameId,$win);
-        $betCount = Bets::where('issue',$issue)->where('game_id',$gameId)->count();
+        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){

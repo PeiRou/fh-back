@@ -19,7 +19,7 @@ class New_Pcdd
         $this->HH($openCode,$gameId,$win); //混合
         $this->BS($openCode,$gameId,$win); //波色
         $this->TM($openCode,$gameId,$win); //特码
-        $betCount = Bets::where('issue',$issue)->where('game_id',$gameId)->count();
+        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){

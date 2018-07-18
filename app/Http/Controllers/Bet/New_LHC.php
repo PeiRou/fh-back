@@ -38,7 +38,7 @@ class New_LHC
         $this->WX($openCode,$gameId,$win);
         $this->QSB($openCode,$gameId,$win);
         $this->PTYXWS($openCode,$gameId,$win);
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->count();
+        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($win,$gameId,$issue);
             if($bunko == 1){

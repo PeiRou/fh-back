@@ -40,7 +40,7 @@ class New_Mssc
         $this->NUM8($openCode,$gameId,$win);
         $this->NUM9($openCode,$gameId,$win);
         $this->NUM10($openCode,$gameId,$win);
-        $betCount = Bets::where('issue',$issue)->where('game_id',$gameId)->where('status',0)->count();
+        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
