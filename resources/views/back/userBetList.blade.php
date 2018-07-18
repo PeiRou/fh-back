@@ -276,11 +276,12 @@
         var date = $('#date').val();
         var startTime = $('#startTime').val();
         var endTime = $('#endTime').val();
+        var token = '{{ csrf_token() }}';
         $.ajax({
             url:'/action/userBetList/total',
             type:'post',
             dataType:'json',
-            data:{userId:userId,date:date,startTime:startTime,endTime:endTime},
+            data:{userId:userId,date:date,startTime:startTime,endTime:endTime,_token:token},
             success:function (data) {
 
             }
