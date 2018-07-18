@@ -1135,8 +1135,8 @@ class New_Mssc
             $id[] = $v;
         }
         $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
-        $sql = "UPDATE bet SET status = 2, bunko = CASE ";
-        $sql_lose = "UPDATE bet SET status = 2, bunko = CASE ";
+        $sql = "UPDATE bet SET bunko = CASE ";
+        $sql_lose = "UPDATE bet SET bunko = CASE ";
         $ids = implode(',', $id);
         foreach ($getUserBets as $item){
             $bunko = $item->bet_money * $item->play_odds;
