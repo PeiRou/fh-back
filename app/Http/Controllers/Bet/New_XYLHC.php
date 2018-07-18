@@ -1276,7 +1276,8 @@ class New_XYLHC
         $zxbz_playCate = 175; //特码分类ID
         $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('status',0)->get();
         foreach ($get as $item){
-             \Log::info('开奖号码'.$openCode);
+            $arrOpenCode = [$openCode];
+             \Log::info('开奖号码'.$arrOpenCode);
 //            $arrOpenCode = array($openCode); // 开奖号码
 //            \Log::info('开奖'.$arrOpenCode);
 //            $userSelectCode = array($item->bet_info);
