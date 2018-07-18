@@ -272,11 +272,12 @@
     });
     
     function getTotalWin() {
+        var userId = {{ $getUserInfo->id }};
         $.ajax({
             url:'/action/userBetList/total',
             type:'post',
             dataType:'json',
-            data:{},
+            data:{userId:userId},
             success:function (data) {
 
             }
