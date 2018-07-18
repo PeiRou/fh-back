@@ -236,6 +236,7 @@
 
         $('#btn_search').on('click',function () {
             getCheckBox();
+            getTotalWin();
             if(check_val.length !== 0){
                 dataTable.ajax.reload();
             } else {
@@ -269,6 +270,18 @@
         //     dataTable.ajax.reload();
         // });
     });
+    
+    function getTotalWin() {
+        $.ajax({
+            url:'/action/userBetList/total',
+            type:'post',
+            dataType:'json',
+            data:{},
+            success:function (data) {
+
+            }
+        });
+    }
 
 
     function getCheckBox() {
