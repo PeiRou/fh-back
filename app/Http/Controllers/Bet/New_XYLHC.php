@@ -1259,8 +1259,8 @@ class New_XYLHC
             $id[] = $v;
         }
         $getUserBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
-        $sql = "UPDATE bet SET status = 2, bunko = CASE "; //中奖的SQL语句
-        $sql_lose = "UPDATE bet SET status = 2, bunko = CASE "; //未中奖的SQL语句
+        $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
+        $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
 
         $ids = implode(',', $id);
         foreach ($getUserBets as $item){
@@ -1285,30 +1285,26 @@ class New_XYLHC
                 $user = explode(',', $item->bet_info);
                 $bi = array_intersect($open, $user);
                 if (empty($bi)) {
-                    \Log::info($bi);
-                    \Log::info('有中');
-//                    $zxbz_ids[] = $item->bet_id;
+                    $zxbz_ids[] = $item->bet_id;
                 } else {
-//                    $zxbz_lose_ids[] = $item->bet_id;
-                    \Log::info($bi);
-                    \Log::info('没中');
+                    $zxbz_lose_ids[] = $item->bet_id;
                 }
             }
-//            $ids_zxbz = implode(',', $zxbz_ids);
-//            $ids_zxbz_lose = implode(',', $zxbz_lose_ids);
-//            if($ids_zxbz){
-//                $sql_zxb = "UPDATE bet SET status = 2, bunko = bet_money*play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
-//            } else {
-//                $sql_zxb = "UPDATE bet SET status = 2, bunko = 0-bet_money WHERE `bet_id` IN ($ids_zxbz_lose)"; //未中奖的SQL语句
-//            }
+            $ids_zxbz = implode(',', $zxbz_ids);
+            $ids_zxbz_lose = implode(',', $zxbz_lose_ids);
+            if($ids_zxbz){
+                $sql_zxb = "UPDATE bet SET status = 2, bunko = bet_money*play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
+            } else {
+                $sql_zxb = "UPDATE bet SET status = 2, bunko = 0-bet_money WHERE `bet_id` IN ($ids_zxbz_lose)"; //未中奖的SQL语句
+            }
 
-//            $run_xzbz = DB::statement($sql_zxb);
-//            if($run_xzbz == 1){
+            $run_xzbz = DB::statement($sql_zxb);
+            if($run_xzbz == 1){
                 $run2 = DB::statement($sql_lose);
                 if($run2 == 1){
                     return 1;
                 }
-//            }
+            }
         }
     }
 
