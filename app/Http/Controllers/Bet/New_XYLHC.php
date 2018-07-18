@@ -1289,10 +1289,12 @@ class New_XYLHC
             }
             $ids_zxbz = implode(',', $zxbz_ids);
             $sql_zxb = "UPDATE bet SET bunko = bet_money*play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
-            $run_xzbz =
-            $run2 = DB::statement($sql_lose);
-            if($run2 == 1){
-                return 1;
+            $run_xzbz = DB::statement($sql_zxb);
+            if($run_xzbz == 1){
+                $run2 = DB::statement($sql_lose);
+                if($run2 == 1){
+                    return 1;
+                }
             }
         }
     }
