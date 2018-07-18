@@ -387,8 +387,8 @@ class BetDataController extends Controller
         $userId = $request->get('userId');
         $date = $request->get('date');
         $status = $request->get('status');
-        $start = date('Y-m-d',strtotime($request->get('start')));
-        $end = date('Y-m-d',strtotime($request->get('end')));
+//        $start = date('Y-m-d',strtotime($request->get('start')));
+//        $end = date('Y-m-d',strtotime($request->get('end')));
         $user = DB::table('users')->where('id',$userId)->first();
 //        return count($games);
         $bet = DB::table('bet')
@@ -401,7 +401,7 @@ class BetDataController extends Controller
                     }
                 }
             })
-            ->where(function ($query) use ($start,$end){
+            ->where(function ($query){
 //                $query->whereBetween('bet.created_at',[$start.' 00:00:00', $end.' 23:59:59']);
             })
             ->where('bet.user_id',$userId)->orderBy('bet.created_at','desc')->get();
