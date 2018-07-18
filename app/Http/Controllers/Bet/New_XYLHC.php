@@ -36,10 +36,9 @@ class New_XYLHC
         $this->WX($openCode,$gameId,$win);
         $this->QSB($openCode,$gameId,$win);
         $this->PTYXWS($openCode,$gameId,$win);
-        $this->ZXBZ($openCode,$gameId,$win,$issue);
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->count();
         if($betCount > 0){
-            $bunko = $this->BUNKO($win,$gameId,$issue);
+            $bunko = $this->BUNKO($openCode,$win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                 if($updateUserMoney == 1){
@@ -1237,13 +1236,6 @@ class New_XYLHC
         }
     }
 
-    function ZXBZ($openCode,$gameId,$win,$issue){
-        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
-        $zxbz_playCate = 175; //特码分类ID
-        $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->get();
-        \Log::info($get);
-    }
-
     function SB_Color($num){
         //红色
         if($num == 1 || $num == 2 || $num == 7 || $num == 8 || $num == 12 || $num == 13 || $num == 18 || $num == 19 || $num == 23 || $num == 24 || $num == 29 || $num == 30 || $num == 34 || $num == 35 || $num == 40 || $num == 45 || $num == 46){
@@ -1260,7 +1252,7 @@ class New_XYLHC
     }
 
     //投注结算
-    function BUNKO($win,$gameId,$issue)
+    function BUNKO($openCode,$win,$gameId,$issue)
     {
         $id = [];
         foreach ($win as $k=>$v){
@@ -1279,6 +1271,17 @@ class New_XYLHC
         $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $run = DB::statement($sql);
+
+        //自选不中
+        $zxbz_playCate = 175; //特码分类ID
+        $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->get();
+        foreach ($get as $item){
+            $arrOpenCode = array($openCode); // 开奖号码
+            $userSelectCode = array($item->bet_info);
+            $intersection = array_intersect($arrOpenCode,$userSelectCode);
+            \Log::info($intersection);
+        }
+
         if($run == 1){
             $run2 = DB::statement($sql_lose);
             if($run2 == 1){
