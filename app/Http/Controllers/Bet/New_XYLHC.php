@@ -1294,9 +1294,9 @@ class New_XYLHC
             $ids_zxbz_lose = implode(',', $zxbz_lose_ids);
             \Log::info($ids_zxbz);
             if($ids_zxbz){
-                $sql_zxb = "UPDATE bet SET status = 2, bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
+                $sql_zxb = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
             } else {
-                $sql_zxb = "UPDATE bet SET status = 2, bunko = 0-bet_money WHERE `bet_id` IN ($ids_zxbz_lose)"; //未中奖的SQL语句
+                $sql_zxb = "UPDATE bet SET bunko = 0-bet_money WHERE `bet_id` IN ($ids_zxbz_lose)"; //未中奖的SQL语句
             }
 
             $run_xzbz = DB::statement($sql_zxb);
