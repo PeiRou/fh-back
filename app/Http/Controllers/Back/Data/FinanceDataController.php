@@ -420,16 +420,16 @@ class FinanceDataController extends Controller
     //会员对账
     public function memberReconciliation()
     {
-        $userRecon = UserRecon::all();
-        return DataTables::of($userRecon)
-            ->make(true);
+//        $userRecon = UserRecon::all();
+//        return DataTables::of($userRecon)
+//            ->make(true);
     }
     
     //代理对账
     public function agentReconciliation()
     {
-        $agentRecon = AgentRecon::all();
-        return DataTables::of($agentRecon)
-            ->make(true);
+//        $agentRecon = AgentRecon::all();
+//        return DataTables::of($agentRecon)
+//            ->make(true);
     }
 }
