@@ -280,7 +280,7 @@
             url:'/action/userBetList/total',
             type:'post',
             dataType:'json',
-            data:{userId:userId,date:date},
+            data:{userId:userId,date:date,startTime:startTime,endTime:endTime},
             success:function (data) {
 
             }
