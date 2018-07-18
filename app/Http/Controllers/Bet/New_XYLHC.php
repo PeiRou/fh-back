@@ -1258,7 +1258,7 @@ class New_XYLHC
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',175)->where('bunko','=',0.00)->get();
+        $getUserBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         if($getUserBets){
             $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
             $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
@@ -1275,35 +1275,35 @@ class New_XYLHC
             $run = DB::statement($sql);
 
             if($run == 1){
-                //结算自选不中
-                //自选不中
-                $zxbz_playCate = 175; //特码分类ID
-                $zxbz_ids = [];
-                $zxbz_lose_ids = [];
-                $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
-                foreach ($get as $item) {
-                    $open = explode(',', $openCode);
-                    $user = explode(',', $item->bet_info);
-                    $bi = array_intersect($open, $user);
-                    if (empty($bi)) {
-                        $zxbz_ids[] = $item->bet_id;
-                    } else {
-                        $zxbz_lose_ids[] = $item->bet_id;
+                $run2 = DB::statement($sql_lose);
+                if($run2 == 1){
+                    //结算自选不中
+                    //自选不中
+                    $zxbz_playCate = 175; //特码分类ID
+                    $zxbz_ids = [];
+                    $zxbz_lose_ids = [];
+                    $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
+                    foreach ($get as $item) {
+                        $open = explode(',', $openCode);
+                        $user = explode(',', $item->bet_info);
+                        $bi = array_intersect($open, $user);
+                        if (empty($bi)) {
+                            $zxbz_ids[] = $item->bet_id;
+                        } else {
+                            $zxbz_lose_ids[] = $item->bet_id;
+                        }
                     }
-                }
-                $ids_zxbz = implode(',', $zxbz_ids);
-                $ids_zxbz_lose = implode(',', $zxbz_lose_ids);
-                \Log::info($ids_zxbz);
-                if($ids_zxbz){
-                    $sql_zxb = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
-                } else {
-                    $sql_zxb = "UPDATE bet SET bunko = 0-bet_money WHERE `bet_id` IN ($ids_zxbz_lose)"; //未中奖的SQL语句
-                }
+                    $ids_zxbz = implode(',', $zxbz_ids);
+                    $ids_zxbz_lose = implode(',', $zxbz_lose_ids);
+                    \Log::info($ids_zxbz);
+                    if($ids_zxbz){
+                        $sql_zxb = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
+                    } else {
+                        $sql_zxb = "UPDATE bet SET bunko = 0-bet_money WHERE `bet_id` IN ($ids_zxbz_lose)"; //未中奖的SQL语句
+                    }
 
-                $run_xzbz = DB::statement($sql_zxb);
-                if($run_xzbz == 1){
-                    $run2 = DB::statement($sql_lose);
-                    if($run2 == 1){
+                    $run_xzbz = DB::statement($sql_zxb);
+                    if($run_xzbz == 1){
                         return 1;
                     }
                 }
