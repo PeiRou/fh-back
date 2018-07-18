@@ -1298,11 +1298,12 @@ class New_XYLHC
                     \Log::info($ids_zxbz);
                     if($ids_zxbz){
                         $sql_zxb = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
-                    } else {
-                        $sql_zxb = "UPDATE bet SET bunko = 0-bet_money WHERE `bet_id` IN ($ids_zxbz_lose)"; //未中奖的SQL语句
+                        $run_xzbz = DB::statement($sql_zxb);
                     }
-
-                    $run_xzbz = DB::statement($sql_zxb);
+                    if ($ids_zxbz_lose) {
+                        $sql_zxb = "UPDATE bet SET bunko = 0-bet_money WHERE `bet_id` IN ($ids_zxbz_lose)"; //未中奖的SQL语句
+                        $run_xzbz = DB::statement($sql_zxb);
+                    }
                     if($run_xzbz == 1){
                         return 1;
                     }
