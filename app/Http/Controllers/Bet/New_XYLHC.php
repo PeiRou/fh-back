@@ -1278,6 +1278,7 @@ class New_XYLHC
             //自选不中
             $zxbz_playCate = 175; //特码分类ID
             $zxbz_ids = [];
+            $zxbz_lose_ids = [];
             $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('status',0)->get();
             foreach ($get as $item) {
                 $open = explode(',', $openCode);
@@ -1285,10 +1286,17 @@ class New_XYLHC
                 $bi = array_intersect($open, $user);
                 if (empty($bi)) {
                     $zxbz_ids[] = $item->bet_id;
+                } else {
+                    $zxbz_lose_ids[] = $item->bet_id;
                 }
             }
             $ids_zxbz = implode(',', $zxbz_ids);
-            $sql_zxb = "UPDATE bet SET bunko = bet_money*play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
+            if($ids_zxbz){
+                $sql_zxb = "UPDATE bet SET bunko = bet_money*play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
+            } else {
+                $sql_zxb = "UPDATE bet SET bunko = 0-bet_money WHERE `bet_id` IN ($zxbz_lose_ids)"; //未中奖的SQL语句
+            }
+
             $run_xzbz = DB::statement($sql_zxb);
             if($run_xzbz == 1){
                 $run2 = DB::statement($sql_lose);
