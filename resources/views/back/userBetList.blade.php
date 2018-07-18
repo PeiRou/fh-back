@@ -273,11 +273,12 @@
     
     function getTotalWin() {
         var userId = {{ $getUserInfo->id }};
+        var date = $('#date').val();
         $.ajax({
             url:'/action/userBetList/total',
             type:'post',
             dataType:'json',
-            data:{userId:userId},
+            data:{userId:userId,date:date},
             success:function (data) {
 
             }
