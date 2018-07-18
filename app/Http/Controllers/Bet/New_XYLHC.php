@@ -36,6 +36,7 @@ class New_XYLHC
         $this->WX($openCode,$gameId,$win);
         $this->QSB($openCode,$gameId,$win);
         $this->PTYXWS($openCode,$gameId,$win);
+        $this->ZXBZ($openCode,$gameId,$win,$issue);
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($win,$gameId,$issue);
@@ -1234,6 +1235,13 @@ class New_XYLHC
             $winCode = $gameId.$ptyxws_playCate.$playId;
             $win->push($winCode);
         }
+    }
+
+    function ZXBZ($openCode,$gameId,$win,$issue){
+        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+        $zxbz_playCate = 175; //特码分类ID
+        $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->get();
+        \Log::info($get);
     }
 
     function SB_Color($num){
