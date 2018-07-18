@@ -1259,8 +1259,8 @@ class New_XYLHC
             $id[] = $v;
         }
         $getUserBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
-        $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
-        $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
+        $sql = "UPDATE bet SET status = 2, bunko = CASE "; //中奖的SQL语句
+        $sql_lose = "UPDATE bet SET status = 2, bunko = CASE "; //未中奖的SQL语句
 
         $ids = implode(',', $id);
         foreach ($getUserBets as $item){
@@ -1292,9 +1292,9 @@ class New_XYLHC
             }
             $ids_zxbz = implode(',', $zxbz_ids);
             if($ids_zxbz){
-                $sql_zxb = "UPDATE bet SET bunko = bet_money*play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
+                $sql_zxb = "UPDATE bet SET status = 2, bunko = bet_money*play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
             } else {
-                $sql_zxb = "UPDATE bet SET bunko = 0-bet_money WHERE `bet_id` IN ($zxbz_lose_ids)"; //未中奖的SQL语句
+                $sql_zxb = "UPDATE bet SET status = 2, bunko = 0-bet_money WHERE `bet_id` IN ($zxbz_lose_ids)"; //未中奖的SQL语句
             }
 
             $run_xzbz = DB::statement($sql_zxb);
@@ -1318,29 +1318,29 @@ class New_XYLHC
             }
 
             $ids = implode(',',$users);
-            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
-            $betsId = [];
-            foreach ($getBets as $m){
-                $betsId[] = $m->bet_id;
-            }
-            $bets = implode(',',$betsId);
+//            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
+//            $betsId = [];
+//            foreach ($getBets as $m){
+//                $betsId[] = $m->bet_id;
+//            }
+//            $bets = implode(',',$betsId);
 
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::statement($sql);
-                if($up == 1){
-                    $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
-                    $update_bet_status = DB::statement($sql_bet_status);
-                    if($update_bet_status == 1){
-                        return 1;
-                    }
-                } else {
-                    $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
-                    $update_bet_status = DB::statement($sql_bet_status);
-                    if($update_bet_status == 1){
-                        return 1;
-                    }
-                }
+//                if($up == 1){
+//                    $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
+//                    $update_bet_status = DB::statement($sql_bet_status);
+//                    if($update_bet_status == 1){
+//                        return 1;
+//                    }
+//                } else {
+//                    $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
+//                    $update_bet_status = DB::statement($sql_bet_status);
+//                    if($update_bet_status == 1){
+//                        return 1;
+//                    }
+//                }
             }
         } else {
             \Log::info('幸运六合彩已结算过，已阻止！');
