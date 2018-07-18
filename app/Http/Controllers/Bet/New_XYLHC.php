@@ -1275,13 +1275,15 @@ class New_XYLHC
         //自选不中
         $zxbz_playCate = 175; //特码分类ID
         $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('status',0)->get();
-        foreach ($get as $item){
-            $arrOpenCode = explode(',',$openCode);
+                    $arrOpenCode = explode(',',$openCode);
             \Log::info('开奖'.$arrOpenCode);
-            $userSelectCode = explode(',',$item->bet_info);
-            \Log::info('用户开奖'.$userSelectCode);
-            $intersection = array_intersect($arrOpenCode,$userSelectCode);
-            \Log::info('交集'.$intersection);
+        foreach ($get as $item){
+//            $arrOpenCode = explode(',',$openCode);
+//            \Log::info('开奖'.$arrOpenCode);
+//            $userSelectCode = explode(',',$item->bet_info);
+//            \Log::info('用户开奖'.$userSelectCode);
+//            $intersection = array_intersect($arrOpenCode,$userSelectCode);
+//            \Log::info('交集'.$intersection);
         }
 
         if($run == 1){
