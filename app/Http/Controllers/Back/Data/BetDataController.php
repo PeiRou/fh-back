@@ -387,8 +387,8 @@ class BetDataController extends Controller
         $userId = $request->get('userId');
         $date = $request->get('date');
         $status = $request->get('status');
-        $start = $request->get('start');
-        $end = $request->get('end');
+        $start = date('Y-m-d',strtotime($request->get('start')));
+        $end = date('Y-m-d',strtotime($request->get('end')));
         $user = DB::table('users')->where('id',$userId)->first();
 //        return count($games);
         $bet = DB::table('bet')
