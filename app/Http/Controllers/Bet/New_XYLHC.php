@@ -1273,14 +1273,14 @@ class New_XYLHC
         $run = DB::statement($sql);
 
         //自选不中
-//        $zxbz_playCate = 175; //特码分类ID
-//        $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->get();
-//        foreach ($get as $item){
-//            $arrOpenCode = array($openCode); // 开奖号码
-//            $userSelectCode = array($item->bet_info);
-//            $intersection = array_intersect($arrOpenCode,$userSelectCode);
-//            \Log::info($intersection);
-//        }
+        $zxbz_playCate = 175; //特码分类ID
+        $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->get();
+        foreach ($get as $item){
+            $arrOpenCode = array($openCode); // 开奖号码
+            $userSelectCode = array($item->bet_info);
+            $intersection = array_intersect($arrOpenCode,$userSelectCode);
+            \Log::info($intersection);
+        }
 
         if($run == 1){
             $run2 = DB::statement($sql_lose);
@@ -1303,8 +1303,8 @@ class New_XYLHC
             $ids = implode(',',$users);
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
-                $up = DB::select($sql);
-                \Log::info('执行返回'.$up);
+                $up = DB::statement($sql);
+                \Log::info('执行statement'.$up);
 //                if($up == 1){
 //                    $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
 //                    $betsId = [];
