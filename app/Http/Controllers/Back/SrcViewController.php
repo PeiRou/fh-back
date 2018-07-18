@@ -93,7 +93,7 @@ class SrcViewController extends Controller
         $startTime = $request->get('startTime');
         $endTime = $request->get('endTime');
 
-        $get = DB::table('bet')->select(DB::raw('sum(bet_money) as betTotal'))->where('user_id',$userId)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
+        $get = DB::table('bet')->select(DB::raw('sum(bet_money) as betTotal, sum(bunko) as winTotal'))->where('user_id',$userId)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
         return response()->json($get);
     }
     //子账号
