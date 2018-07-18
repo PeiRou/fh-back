@@ -56,8 +56,10 @@
                 <div class="one wide field">
                     <select class="ui dropdown" id="date" style='height:32px !important'>
                         <option value="today">今日注单</option>
-                        <option value="yesterday">昨日注单</option>
-                        <option value="history">历史注单</option>
+                        <option value="yesterday">昨天注单</option>
+                        <option value="week">本周注单</option>
+                        <option value="month">本月注单</option>
+                        <option value="lastMonth">上月注单</option>
                     </select>
                 </div>
                 <div class="one wide field">
@@ -193,6 +195,8 @@
                     d.userId = {{ $userId }};
                     d.date = $('#date').val();
                     d.status = $('#status').val();
+                    d.start = $('#startTime').val();
+                    d.end = $('#endTime').val();
                 //     d.rechLevel = $('#rechLevel').val();
                 //     d.account = $('#account').val();
                 //     d.mobile = $('#mobile').val();
@@ -300,6 +304,19 @@
                 check_val.push(checkBox[k].value);
         }
     }
+
+    $('#date').on('change',function () {
+        var data = $(this).val();
+        $.ajax({
+            url:'/recharge/selectData/dateChange/'+data,
+            type:'get',
+            dataType:'json',
+            success:function (result) {
+                $('#startTime').val(result.start);
+                $('#endTime').val(result.end);
+            }
+        });
+    });
 </script>
 </body>
 </html>
