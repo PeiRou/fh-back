@@ -1280,6 +1280,8 @@ class New_XYLHC
             \Log::info($open);
             $user = explode(',',$item->bet_info);
             \Log::info($user);
+            $bi = array_intersect($open,$user);
+            \Log::info($bi);
         }
 
         if($run == 1){
