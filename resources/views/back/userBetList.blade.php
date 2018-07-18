@@ -195,7 +195,7 @@
                     d.userId = '{{ $userId }}';
                     d.date = $('#date').val();
                     d.status = $('#status').val();
-                    d.start = $('#startTime').val();
+                    d.start = toString($('#startTime').val());
                     // d.end = $('#endTime').val();
                 //     d.rechLevel = $('#rechLevel').val();
                 //     d.account = $('#account').val();
