@@ -1301,26 +1301,29 @@ class New_XYLHC
             }
 
             $ids = implode(',',$users);
+            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
+            $betsId = [];
+            foreach ($getBets as $m){
+                $betsId[] = $m->bet_id;
+            }
+            $bets = implode(',',$betsId);
+
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::statement($sql);
-                \Log::info('执行statement'.$up);
-//                if($up == 1){
-//                    $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
-//                    $betsId = [];
-//                    foreach ($getBets as $m){
-//                        $betsId[] = $m->bet_id;
-//                    }
-//                    $bets = implode(',',$betsId);
-//                    \Log::info('XYLHC：'.$bets);
-//                    $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
-//                    $update_bet_status = DB::statement($sql_bet_status);
-//                    if($update_bet_status == 1){
-//                        return 1;
-//                    }
-//                } else {
-//                    \Log::info('更新用户余额，失败！');
-//                }
+                if($up == 1){
+                    $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
+                    $update_bet_status = DB::statement($sql_bet_status);
+                    if($update_bet_status == 1){
+                        return 1;
+                    }
+                } else {
+                    $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
+                    $update_bet_status = DB::statement($sql_bet_status);
+                    if($update_bet_status == 1){
+                        return 1;
+                    }
+                }
             }
         } else {
             \Log::info('幸运六合彩已结算过，已阻止！');
