@@ -1186,7 +1186,11 @@ class New_Mssc
                         return 1;
                     }
                 } else {
-                    \Log::info('更新用户余额，失败！');
+                    $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
+                    $update_bet_status = DB::statement($sql_bet_status);
+                    if($update_bet_status == 1){
+                        return 1;
+                    }
                 }
             }
 
