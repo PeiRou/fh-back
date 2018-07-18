@@ -1132,9 +1132,9 @@ class New_Msft
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('status',0)->where('bunko','=',0.00)->get();
-        $sql = "UPDATE bet SET status = 1, bunko = CASE ";
-        $sql_lose = "UPDATE bet SET status = 1, bunko = CASE ";
+        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->get();
+        $sql = "UPDATE bet SET bunko = CASE ";
+        $sql_lose = "UPDATE bet SET bunko = CASE ";
         $ids = implode(',', $id);
         foreach ($getUserBets as $item){
             $bunko = $item->bet_money * $item->play_odds;
@@ -1154,7 +1154,7 @@ class New_Msft
     }
 
     private function updateUserMoney($gameId,$issue){
-        $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id','bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->where('status','1')->groupBy('user_id')->get();
+        $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id','bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->where('status',0)->groupBy('user_id')->get();
         if($get){
             $sql = "UPDATE users SET money = money+ CASE id ";
             $users = [];
@@ -1164,7 +1164,7 @@ class New_Msft
                 $sql .= "WHEN $i->user_id THEN $i->s ";
             }
 
-            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status','1')->get();
+            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
 
             foreach ($getBets as $m){
                 $betsId[] = $m->bet_id;
