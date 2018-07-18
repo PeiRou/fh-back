@@ -1307,6 +1307,7 @@ class New_XYLHC
                 $betsId[] = $m->bet_id;
             }
             $bets = implode(',',$betsId);
+            \Log::info('XYLHC：'.$bets);
 
             $ids = implode(',',$users);
             if($ids && isset($ids)){
