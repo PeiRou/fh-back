@@ -85,6 +85,17 @@ class SrcViewController extends Controller
         $today = date('Y-m-d');
         return view('back.userBetList',compact('getUserInfo','games','userId','nowDate','yesterday','today'));
     }
+    //会员注单统计
+    public function userBetListTotal(Request $request)
+    {
+        $userId = $request->get('userId');
+        $date = $request->get('date');
+        $startTime = $request->get('startTime');
+        $endTime = $request->get('endTime');
+
+        $get = DB::table('bet')->select(DB::raw('sum(bet_money), sum(bunko)'))->where('user_id',$userId)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
+        return $get;
+    }
     //子账号
     public function subAccount()
     {

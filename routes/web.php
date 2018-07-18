@@ -221,6 +221,8 @@ Route::post('/action/admin/addDrawingError','Back\DrawingController@addDrawingEr
 Route::post('/action/recharge/totalRecharge','Back\RechargeController@totalRecharge'); //充值记录的总额统计
 Route::post('/action/drawing/totalDrawing','Back\DrawingController@totalDrawing'); //提款记录的总额统计
 
+Route::post('/action/userBetList/total','Back\SrcViewController@userBetListTotal'); //用户注单页面下注统计
+
 Route::post('/action/admin/addLhcNewIssue','Back\OpenHistoryController@addLhcNewIssue');
 Route::post('/action/admin/editLhcNewIssue','Back\OpenHistoryController@editLhcNewIssue');
 
