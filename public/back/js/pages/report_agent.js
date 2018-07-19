@@ -123,7 +123,6 @@ $(function () {
                 type:'get',
                 dataType:'json',
                 success:function (data) {
-                    console.log(data)
                     $( api.column( 1 ).footer() ).html(data.result.countMember);
                     $( api.column( 4 ).footer() ).html(data.result.countBet);
                     $( api.column( 5 ).footer() ).html(data.result.sumMoney);

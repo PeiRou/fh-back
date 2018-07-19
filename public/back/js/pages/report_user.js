@@ -111,8 +111,7 @@ $(function () {
             {data:'sumBunko'},             //会员输赢（不包括退水）
         ],
         "footerCallback": function ( row, data, start, end, display ) {
-            var api = this.api(), data;
-
+            var api = this.api();
 
             // converting to interger to find total
             var intVal = function ( i ) {
@@ -127,14 +126,13 @@ $(function () {
                 .column( 1 )
                 .data()
                 .reduce( function (a, b, c) {
-                    return parseFloat((intVal(c)+1).toPrecision(12));
+                    return "当前页 "+parseFloat((intVal(c)+1).toPrecision(12))+" 笔";
                 }, 0 );
             $.ajax({
                 url:'/back/datatables/reportTotal',
                 type:'get',
                 dataType:'json',
                 success:function (data) {
-                    console.log(data)
                     $( api.column( 5 ).footer() ).html(data.result.countBet);
                     $( api.column( 6 ).footer() ).html(data.result.sumMoney);
                     $( api.column( 7 ).footer() ).html(data.result.sumWinbet);
@@ -153,9 +151,10 @@ $(function () {
             // $( api.column( 11 ).footer() ).html(Total11);
             // $( api.column( 13 ).footer() ).html(Total13);
         },
+        "pagingType": "full_numbers",
         language: {
             "zeroRecords": "暂无数据",
-            "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",
+            "info": "当前显示第 _START_ 到 _END_ 笔数，总 _TOTAL_ 笔数，当前显示第 _PAGE_ 页，共 _PAGES_ 页",
             "infoEmpty": "没有记录",
             "loadingRecords": "请稍后...",
             "processing":     "读取中...",
@@ -183,64 +182,4 @@ $(function () {
         $('#noLoginDays').val("");
         dataTable.ajax.reload();
     });
-    //今天
-    $('#btnToday').on('click',function () {
-        $('#timeStart').val(GetDateStr(0));
-        $('#timeEnd').val(GetDateStr(0));
-    });
-    //昨天
-    $('#btnYesterday').on('click',function () {
-        $('#timeStart').val(GetDateStr(-1));
-        $('#timeEnd').val(GetDateStr(-1));
-    });
-    //本周
-    $('#btnWeek').on('click',function () {
-        var nowDate = new Date();
-        var nowDay = nowDate.getDay(); // getDay 方法返回0 表示星期天
-        nowDay = nowDay === 0 ? 7 : nowDay;
-        // 一天的时间戳(毫秒为单位)
-        var timestampOfDay = 1000*60*60*24;
-        $('#timeStart').val(getFullDate( +nowDate - (nowDay-1)*timestampOfDay));
-        $('#timeEnd').val(GetDateStr(0));
-    });
-    //本月
-    $('#btnMonth').on('click',function () {
-        var cloneNowDate = new Date();
-        $('#timeStart').val(getFullDate( cloneNowDate.setDate(1) ));
-        $('#timeEnd').val(GetDateStr(0));
-    });
-    //上个月
-    $('#btnLastMonth').on('click',function () {
-        var lastMonthDate = new Date(); //上月日期
-        var lastYear = lastMonthDate.getMonth()==0?lastMonthDate.getFullYear()-1:lastMonthDate.getFullYear();
-        var lastMonth = lastMonthDate.getMonth()==0?12:lastMonthDate.getMonth();
-        var lastDate = lastMonthDate.getDate();
-        $('#timeStart').val(lastYear+"-"+lastMonth+"-"+lastDate);
-        $('#timeEnd').val(GetDateStr(0));
-    });
-    function GetDateStr(AddDayCount) {
-        var dd = new Date();
-        dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
-        var y = dd.getFullYear();
-        var m = dd.getMonth()+1;//获取当前月份的日期
-        var d = dd.getDate();
-        return y+"-"+m+"-"+d;
-    }
-    function getFullDate(targetDate) {
-        var D, y, m, d;
-        if (targetDate) {
-            D = new Date(targetDate);
-            y = D.getFullYear();
-            m = D.getMonth() + 1;
-            d = D.getDate();
-        } else {
-            y = fullYear;
-            m = month;
-            d = date;
-        }
-        m = m > 9 ? m : '0' + m;
-        d = d > 9 ? d : '0' + d;
-
-        return y + '-' + m + '-' + d;
-    }
 });

@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Back\Data;
 
-use App\Agent;
-use App\GeneralAgent;
-use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;

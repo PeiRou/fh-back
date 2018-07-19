@@ -53,19 +53,19 @@
                         <input type="text" id="maxBunko" placeholder="最大实际输赢">
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
-                        <button class="fluid ui mini blue button" id="btnToday">今天</button>
+                        <a class="fluid ui mini blue button" id="btnToday">今天</a>
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
-                        <button class="fluid ui mini blue button" id="btnYesterday">昨天</button>
+                        <a class="fluid ui mini blue button" id="btnYesterday">昨天</a>
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
-                        <button class="fluid ui mini blue button" id="btnWeek">本周</button>
+                        <a class="fluid ui mini blue button" id="btnWeek">本周</a>
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
-                        <button class="fluid ui mini blue button" id="btnMonth">本月</button>
+                        <a class="fluid ui mini blue button" id="btnMonth">本月</a>
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
-                        <button class="fluid ui mini blue button"  id="btnLastMonth">上月</button>
+                        <a class="fluid ui mini blue button"  id="btnLastMonth">上月</a>
                     </div>
                     <div class="ui checkbox">
                         <input type="checkbox" id="chkTest" checked="checked">

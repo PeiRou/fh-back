@@ -50,6 +50,67 @@ $(function () {
     // }
     // Socket_Init();
     checkRecharge();
+
+    //今天
+    $('#btnToday').on('click',function () {
+        $.ajax({
+            url:'/recharge/selectData/dateChange/today',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                $('#timeStart').val(data.start);
+                $('#timeEnd').val(data.end);
+            }
+        })
+    });
+    //昨天
+    $('#btnYesterday').on('click',function () {
+        $.ajax({
+            url:'/recharge/selectData/dateChange/yesterday',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                $('#timeStart').val(data.start);
+                $('#timeEnd').val(data.end);
+            }
+        })
+    });
+    //本周
+    $('#btnWeek').on('click',function () {
+        $.ajax({
+            url:'/recharge/selectData/dateChange/week',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                $('#timeStart').val(data.start);
+                $('#timeEnd').val(data.end);
+            }
+        })
+    });
+    //本月
+    $('#btnMonth').on('click',function () {
+        $.ajax({
+            url:'/recharge/selectData/dateChange/month',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                $('#timeStart').val(data.start);
+                $('#timeEnd').val(data.end);
+            }
+        })
+    });
+    //上个月
+    $('#btnLastMonth').on('click',function () {
+        $.ajax({
+            url:'/recharge/selectData/dateChange/lastMonth',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                $('#timeStart').val(data.start);
+                $('#timeEnd').val(data.end);
+            }
+        })
+    });
 });
 
 

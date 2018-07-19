@@ -20,6 +20,8 @@ class AddLogHandle
      */
     public function handle($request, Closure $next)
     {
+        if(empty(Session::get('account_id')))
+            return view('back.O_adminLogin');
         $routeData = self::getTypeAction(Route::currentRouteName());
         $ip = $request->ip();
         $params = $request->all();
