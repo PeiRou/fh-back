@@ -1,15 +1,6 @@
 <?php
 Route::get('/','Home\IndexController@index')->middleware('mobile-check');
 
-Route::get('/getCaptcha',function(){});
-
-Route::get('/m',function (){
-    return view('mobile');
-})->name('mobile');
-
-Route::get('/src/agent','Back\SrcViewController@AgentLogin'); // 代理登录页面
-Route::get('/back/control','Back\SrcViewController@AdminLogin')->name('back.login')->middleware('domain-check'); // 管理登录页面
-
 Route::group(['prefix' => 'back/control/','middleware' => ['domain-check','add-log-handle']],function (){
     Route::get('dash',['uses'=>'Back\SrcViewController@Dash','as'=>'dash']); // 控制台
 });
