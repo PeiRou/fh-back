@@ -383,119 +383,128 @@ class SrcMemberController extends Controller
         $money = $request->input('money');
         $content = $request->input('content');
         $getUserBalance = User::find($uid);
-        try{
-            $newBalance = $getUserBalance->money + $money;
-            if($newBalance < 0)
-            {
-                return response()->json([
-                    'status'=>false,
-                    'msg'=>'您输入的金额超出了现有余额的计算结果！'
-                ]);
-            }
-            $capital = new Capital();
-            $capital->to_user = $uid;
-            $capital->user_type = 'user';
-            $capital->order_id = $this->randOrder('C');
-            if($money < 0)
-            {
-                $capital->type = 't19';
-            } else {
-                $capital->type = 't18';
-            }
-            $capital->money = $money;
-            $capital->balance = $newBalance;
-            $capital->operation_id = $loginAccount;
-            $capital->content = $content;
-            $insert = $capital->save();
-            if($insert == 1){
-
-                if($money > 0){
-                    $recharges = new Recharges();
-                    $recharges->userId = $uid;
-                    $recharges->username = $getUserBalance->username;
-                    $recharges->orderNum = payOrderNumber();
-                    $recharges->payType = 'adminAddMoney';
-                    $recharges->amount = $money;
-                    $recharges->shou_info = "后台加钱：".$content;
-                    $recharges->msg = $content;
-                    $recharges->status = 2;
-                    $recharges->addMoney = 1;
-                    $recharges->process_date = date('Y-m-d H:i:s');
-                    $recharges->operation_id = Session::get('account_id');
-                    $recharges->operation_account = Session::get('account');
-                    $save = $recharges->save();
-                    if($save == 1){
-                        $updateBalance = User::where('id',$uid)
-                            ->update([
-                                'money'=>$newBalance
-                            ]);
-                        if($updateBalance == 1){
-                            return response()->json([
-                                'status'=>true,
-                                'msg'=>'ok'
-                            ]);
-                        } else {
-                            return response()->json([
-                                'status'=>false,
-                                'msg'=>'资金操作失败，请稍后再试！'
-                            ]);
-                        }
-                    } else {
-                        return response()->json([
-                            'status'=>false,
-                            'msg'=>'提交失败，请稍后再试！'
-                        ]);
-                    }
-                } else {
-                    $insert = DB::table('drawing')->insert([
-                        'user_id' => $uid,
-                        'username' => $getUserBalance->username,
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'balance' => (int)$getUserBalance->money-(int)$money,
-                        'total_bet' => 0,
-                        'operation_id' => Session::get('account_id'),
-                        'operation_account' => Session::get('account'),
-                        'process_date' => date('Y-m-d H:i:s'),
-                        'order_id' => $this->orderNumber(),
-                        'amount' => 0-$money,
-                        'ip' => '-',
-                        'ip_info' => '-',
-                        'draw_type' => 2,
-                        'status' => 2,
-                        'platform' => 1
+        Redis::select(5);
+        $key = 'addMy';
+        if(!Redis::exists($key.$uid)){
+            Redis::setex($key.$uid,5,'on');
+            try{
+                $newBalance = $getUserBalance->money + $money;
+                if($newBalance < 0)
+                {
+                    return response()->json([
+                        'status'=>false,
+                        'msg'=>'您输入的金额超出了现有余额的计算结果！'
                     ]);
-                    if($insert == 1){
-                        $updateBalance = User::where('id',$uid)
-                            ->update([
-                                'money'=>$newBalance
-                            ]);
-                        if($updateBalance == 1){
-                            return response()->json([
-                                'status'=>true,
-                                'msg'=>'ok'
-                            ]);
+                }
+                $capital = new Capital();
+                $capital->to_user = $uid;
+                $capital->user_type = 'user';
+                $capital->order_id = $this->randOrder('C');
+                if($money < 0)
+                {
+                    $capital->type = 't19';
+                } else {
+                    $capital->type = 't18';
+                }
+                $capital->money = $money;
+                $capital->balance = $newBalance;
+                $capital->operation_id = $loginAccount;
+                $capital->content = $content;
+                $insert = $capital->save();
+                if($insert == 1){
+                    if($money > 0){
+                        $recharges = new Recharges();
+                        $recharges->userId = $uid;
+                        $recharges->username = $getUserBalance->username;
+                        $recharges->orderNum = payOrderNumber();
+                        $recharges->payType = 'adminAddMoney';
+                        $recharges->amount = $money;
+                        $recharges->shou_info = "后台加钱：".$content;
+                        $recharges->msg = $content;
+                        $recharges->status = 2;
+                        $recharges->addMoney = 1;
+                        $recharges->process_date = date('Y-m-d H:i:s');
+                        $recharges->operation_id = Session::get('account_id');
+                        $recharges->operation_account = Session::get('account');
+                        $save = $recharges->save();
+                        if($save == 1){
+                            $updateBalance = User::where('id',$uid)
+                                ->update([
+                                    'money'=>$newBalance
+                                ]);
+                            if($updateBalance == 1){
+                                return response()->json([
+                                    'status'=>true,
+                                    'msg'=>'ok'
+                                ]);
+                            } else {
+                                return response()->json([
+                                    'status'=>false,
+                                    'msg'=>'资金操作失败，请稍后再试！'
+                                ]);
+                            }
                         } else {
                             return response()->json([
                                 'status'=>false,
-                                'msg'=>'资金操作失败，请稍后再试！'
+                                'msg'=>'提交失败，请稍后再试！'
                             ]);
                         }
                     } else {
-                        return response()->json([
-                            'status'=>false,
-                            'msg'=>'提交失败，请稍后再试！'
+                        $insert = DB::table('drawing')->insert([
+                            'user_id' => $uid,
+                            'username' => $getUserBalance->username,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'balance' => (int)$getUserBalance->money-(int)$money,
+                            'total_bet' => 0,
+                            'operation_id' => Session::get('account_id'),
+                            'operation_account' => Session::get('account'),
+                            'process_date' => date('Y-m-d H:i:s'),
+                            'order_id' => $this->orderNumber(),
+                            'amount' => 0-$money,
+                            'ip' => '-',
+                            'ip_info' => '-',
+                            'draw_type' => 2,
+                            'status' => 2,
+                            'platform' => 1
                         ]);
+                        if($insert == 1){
+                            $updateBalance = User::where('id',$uid)
+                                ->update([
+                                    'money'=>$newBalance
+                                ]);
+                            if($updateBalance == 1){
+                                return response()->json([
+                                    'status'=>true,
+                                    'msg'=>'ok'
+                                ]);
+                            } else {
+                                return response()->json([
+                                    'status'=>false,
+                                    'msg'=>'资金操作失败，请稍后再试！'
+                                ]);
+                            }
+                        } else {
+                            return response()->json([
+                                'status'=>false,
+                                'msg'=>'提交失败，请稍后再试！'
+                            ]);
+                        }
                     }
+
+                } else {
+                    return response()->json([
+                        'status'=>false,
+                        'msg'=>'资金操作失败，请稍后再试！'
+                    ]);
                 }
+            } catch (\Exception $e){
 
-            } else {
-                return response()->json([
-                    'status'=>false,
-                    'msg'=>'资金操作失败，请稍后再试！'
-                ]);
             }
-        } catch (\Exception $e){
-
+        }else{
+            return response()->json([
+                'status'=>false,
+                'msg'=>'同一个用户5秒内无法重复操作，请稍后再试！'
+            ]);
         }
     }
 
