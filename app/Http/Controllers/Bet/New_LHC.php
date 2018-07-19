@@ -1244,54 +1244,45 @@ class New_LHC
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
-        $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
-        $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
-        $ids = implode(',', $id);
-        foreach ($getUserBets as $item){
-            $bunko = ($item->bet_money * $item->play_odds) + ($item->bet_money * $item->play_rebate);
-            $bunko_lose = (0-$item->bet_money) + ($item->bet_money * $item->play_rebate);
-            $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-            $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-        }
-        $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $run = DB::statement($sql);
-        if($run == 1){
-            $run2 = DB::statement($sql_lose);
-            if($run2 == 1){
-                return 1;
+        $getUserBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        if($getUserBets){
+            $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
+            $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
+            $ids = implode(',', $id);
+            foreach ($getUserBets as $item){
+                $bunko = ($item->bet_money * $item->play_odds) + ($item->bet_money * $item->play_rebate);
+                $bunko_lose = (0-$item->bet_money) + ($item->bet_money * $item->play_rebate);
+                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+            }
+            $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            $run = DB::statement($sql);
+            if($run == 1){
+                $run2 = DB::statement($sql_lose);
+                if($run2 == 1){
+                    return 1;
+                }
             }
         }
+
     }
 
     function updateUserMoney($gameId,$issue){
         $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
         if($get){
-            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
             $sql = "UPDATE users SET money = money+ CASE id ";
             $users = [];
-            $betsId = [];
             foreach ($get as $i){
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->s ";
             }
-            foreach ($getBets as $m){
-                $betsId[] = $m->bet_id;
-            }
             $ids = implode(',',$users);
-            $bets = implode(',',$betsId);
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::statement($sql);
                 if($up == 1){
-                    $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
-                    $update_bet_status = DB::statement($sql_bet_status);
-                    if($update_bet_status == 1){
-                        return 1;
-                    }
-                } else {
-                    \Log::info('更新用户余额，失败！');
+                    return 1;
                 }
             }
         } else {

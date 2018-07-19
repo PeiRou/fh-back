@@ -19,7 +19,7 @@ class New_Pknn
         $lose = collect([]);
         $winArr1 = collect([]);
         $this->NN($openCode,$nn,$gameId,$win,$lose,$winArr1);
-        $betCount = Bets::where('issue',$issue)->where('game_id',$gameId)->count();
+        $betCount = Bets::where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$lose,$winArr1,$gameId,$issue);
             if($bunko == 1){
@@ -101,88 +101,89 @@ class New_Pknn
         $allWin = ["901903462","901903463","901903464","901903465","901903466"];
         $winList = $winArr1->all();
         $loseList = array_diff($allWin,$winList);
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->get();
-        $winArr = [];
-        $loseArr = [];
-
-        $sql = "UPDATE bet SET bunko = CASE ";
-        foreach ($getUserBets as $item){
-            foreach ($win as $k => $v) {
-                if($v[0] == $item->play_id){
-                    if($v[1] <= 6) {
-                        //\Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*6);
-                        $bunko = $item->bet_money*6;
-                        $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                        $winArr[] = $item->play_id;
-                    }
-                    if($v[1] == 7 || $v[1] == 8){
-                        //\Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*7);
-                        $bunko = $item->bet_money*7;
-                        $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                        $winArr[] = $item->play_id;
-                    }
-                    if($v[1] == 9){
-                        //\Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*8);
-                        $bunko = $item->bet_money*8;
-                        $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                        $winArr[] = $item->play_id;
-                    }
-                    if($v[1] == 10){
-                        //\Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*10);
-                        $bunko = $item->bet_money*10 ;
-                        $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                        $winArr[] = $item->play_id;
+        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        if($getUserBets){
+            $winArr = [];
+            $loseArr = [];
+            $sql = "UPDATE bet SET bunko = CASE ";
+            foreach ($getUserBets as $item){
+                foreach ($win as $k => $v) {
+                    if($v[0] == $item->play_id){
+                        if($v[1] <= 6) {
+                            //\Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*6);
+                            $bunko = $item->bet_money*6;
+                            $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                            $winArr[] = $item->play_id;
+                        }
+                        if($v[1] == 7 || $v[1] == 8){
+                            //\Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*7);
+                            $bunko = $item->bet_money*7;
+                            $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                            $winArr[] = $item->play_id;
+                        }
+                        if($v[1] == 9){
+                            //\Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*8);
+                            $bunko = $item->bet_money*8;
+                            $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                            $winArr[] = $item->play_id;
+                        }
+                        if($v[1] == 10){
+                            //\Log::info('中了'.$item->bet_id.'牛：'.$v[1].'输赢：'.$item->bet_money*10);
+                            $bunko = $item->bet_money*10 ;
+                            $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                            $winArr[] = $item->play_id;
+                        }
                     }
                 }
             }
-        }
 
 
-        $sql_lose = "UPDATE bet SET bunko = CASE ";
-        foreach ($getUserBets as $item){
-            foreach ($loseList as $k => $v) {
-                if($v == $item->play_id){
-                    if($BankerNN <= 6){
-                        $bunko_lose = $item->bet_money*5 - $item->bet_money;
-                        $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+            $sql_lose = "UPDATE bet SET bunko = CASE ";
+            foreach ($getUserBets as $item){
+                foreach ($loseList as $k => $v) {
+                    if($v == $item->play_id){
+                        if($BankerNN <= 6){
+                            $bunko_lose = $item->bet_money*5 - $item->bet_money;
+                            $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                        }
+                        if($BankerNN == 7 || $BankerNN == 8){
+                            $bunko_lose = $item->bet_money*5 - $item->bet_money*2;
+                            $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                        }
+                        if($BankerNN == 9){
+                            $bunko_lose = $item->bet_money*5 - $item->bet_money*3;
+                            $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                        }
+                        if($BankerNN == 10){
+                            $bunko_lose = $item->bet_money*5 - $item->bet_money*5;
+                            $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                        }
+                        $loseArr[] = $item->play_id;
                     }
-                    if($BankerNN == 7 || $BankerNN == 8){
-                        $bunko_lose = $item->bet_money*5 - $item->bet_money*2;
-                        $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-                    }
-                    if($BankerNN == 9){
-                        $bunko_lose = $item->bet_money*5 - $item->bet_money*3;
-                        $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-                    }
-                    if($BankerNN == 10){
-                        $bunko_lose = $item->bet_money*5 - $item->bet_money*5;
-                        $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-                    }
-                    $loseArr[] = $item->play_id;
                 }
             }
-        }
 
 
-        $WinListIn = implode(',', $winArr);
-        $LoseListIn = implode(',', $loseArr);
-        $sql .= "END WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
-        $sql_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
-        $winUpdate = 0;
-        if(count($winArr) > 0){
-            $run = DB::statement($sql);
-            if($run == 1){
-                $winUpdate = 1;
+            $WinListIn = implode(',', $winArr);
+            $LoseListIn = implode(',', $loseArr);
+            $sql .= "END WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
+            $winUpdate = 0;
+            if(count($winArr) > 0){
+                $run = DB::statement($sql);
+                if($run == 1){
+                    $winUpdate = 1;
+                }
             }
-        }
-        if(count($loseArr) > 0){
-            $run2 = DB::statement($sql_lose);
-            if($run2 == 1){
-                $winUpdate = 1;
+            if(count($loseArr) > 0){
+                $run2 = DB::statement($sql_lose);
+                if($run2 == 1){
+                    $winUpdate = 1;
+                }
             }
-        }
-        if($winUpdate == 1){
-            return 1;
+            if($winUpdate == 1){
+                return 1;
+            }
         }
     }
 
@@ -195,12 +196,12 @@ class New_Pknn
             $sql .= "WHEN $i->user_id THEN $i->s ";
         }
         $ids = implode(',',$users);
-        $sql .= "END WHERE id IN (0,$ids)";
-        $up = DB::statement($sql);
-        if($up == 1){
-            return 1;
-        } else {
-            \Log::info('更新用户余额，失败！');
+        if($ids && isset($ids)){
+            $sql .= "END WHERE id IN (0,$ids)";
+            $up = DB::statement($sql);
+            if($up == 1){
+                return 1;
+            }
         }
     }
 }
