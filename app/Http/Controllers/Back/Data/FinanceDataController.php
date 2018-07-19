@@ -259,8 +259,8 @@ class FinanceDataController extends Controller
                 return $drawing->dr_balance;
             })
             ->editColumn('total_bet',function ($drawing){
-                $bet = DB::table('bet')->where('user_id',$drawing->dr_uid)->whereDate('created_at',date('Y-m-d'))->sum('bet_money');
-                return "<a href='/back/control/userManage/userBetList/$drawing->dr_uid' target='_blank'>".$bet."</a>";
+//                $bet = DB::table('bet')->where('user_id',$drawing->dr_uid)->whereDate('created_at',date('Y-m-d'))->sum('bet_money');
+//                return "<a href='/back/control/userManage/userBetList/$drawing->dr_uid' target='_blank'>".$bet."</a>";
             })
             ->editColumn('total_draw',function ($drawing){
                 return $drawing->user_DrawTimes;
