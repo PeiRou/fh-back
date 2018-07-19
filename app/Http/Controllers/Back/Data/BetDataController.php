@@ -454,7 +454,7 @@ class BetDataController extends Controller
                 if($bet->bet_bunko < 0){
                     return '<span class="red-text">'.$bet->bet_bunko.'</span>';
                 } else {
-                    return '<span class="blue-text">'.$bet->bet_bunko - $bet->bet_bet_money.'</span>';
+                    return '<span class="blue-text">'.(int)$bet->bet_bunko - (int)$bet->bet_bet_money.'</span>';
                 }
             })
             ->editColumn('dongjie',function ($bet){
