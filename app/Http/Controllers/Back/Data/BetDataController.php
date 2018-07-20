@@ -379,7 +379,7 @@ class BetDataController extends Controller
 //        return count($games);
         $bet = DB::table('bet')
             ->leftJoin('game','bet.game_id','=','game.game_id')
-            ->select('bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko','bet.created_at as bet_created_at','bet.play_odds as bet_play_odds','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.platform as bet_platform')
+            ->select('bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko','bet.created_at as bet_created_at','bet.play_odds as bet_play_odds','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.platform as bet_platform','bet.game_id as bet_game_id')
             ->where(function ($query) use ($games){
                 if(count($games) !== 0){
                     foreach ($games as $item){
@@ -417,7 +417,7 @@ class BetDataController extends Controller
                 return '<span>'.$bet->g_game_name.'</span>';
             })
             ->editColumn('issue',function ($bet){
-                return '<span onclick="showOpenHistory(\''.$bet->bet_issue.'\')" style="color: #'.$bet->bet_color.'">'.$bet->bet_issue.'</span>';
+                return '<span onclick="showOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\')" style="color: #'.$bet->bet_color.'">'.$bet->bet_issue.'</span>';
             })
             ->editColumn('play',function ($bet){
                 return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span>";
