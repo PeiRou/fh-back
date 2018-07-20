@@ -162,9 +162,9 @@
 
 <script>
     $(function () {
-        $('body').on('click',function () {
-            $('.show-open').hide();
-        });
+        // $('body').on('click',function () {
+        //     $('.show-open').hide();
+        // });
 
         getCheckBox();
         getTotalWin();
