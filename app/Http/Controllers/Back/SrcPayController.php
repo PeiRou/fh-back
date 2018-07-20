@@ -490,8 +490,10 @@ class SrcPayController extends Controller
             $new_levels = null;
         }
 
+        $getbank = DB::table('bank')->select('name')->where('bank_id',$paramId)->first();
+
         $payOnline = new PayOnline();
-        $payOnline->rechName = '银行转账';
+        $payOnline->rechName = $getbank->name;
         $payOnline->code = 'bankTransfer';
         $payOnline->rechType = 'bankTransfer';
         $payOnline->lockArea = $new_lockArea;
