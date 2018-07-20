@@ -666,7 +666,11 @@ class MembersDataController extends Controller
                 return "<span><i class='iconfont'>&#xe64f;</i> $user->login_ip</span>";
             })
             ->editColumn('login_ip_info',function ($user){
-                return "<span data-tooltip='$user->login_ip_info' data-inverted><i class='iconfont'>&#xe627;</i> $user->login_ip_info</span>";
+//                return "<span data-tooltip='$user->login_ip_info' data-inverted><i class='iconfont'>&#xe627;</i> $user->login_ip_info</span>";
+                if(strpos($user->login_ip_info,'中国')){
+                    $redClass = 'red-text';
+                }
+                return "<span class='".$redClass."'><i class='iconfont'>&#xe627;</i> $user->login_ip_info</span>";
             })
             ->editColumn('login_client',function ($user){
                 if($user->login_client == 1){
