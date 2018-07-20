@@ -50,6 +50,14 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .open-float-num span{
+            font-size: 14pt;
+            font-weight: bold;
+            padding: 5px;
+            display: block;
+            float: left;
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>

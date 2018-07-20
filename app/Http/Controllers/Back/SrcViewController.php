@@ -155,8 +155,8 @@ class SrcViewController extends Controller
         $get = DB::table($gameTable)->where('issue',$issue)->first();
         $openNum = explode(',',$get->opennum);
         $str = "<div>
-                    <div>".$game_name." - 第".$issue."期</div>
-                    <div>";
+                    <div style='background: #f56363;padding: 5px;color: #fff;'>".$game_name." - 第".$issue."期</div>
+                    <div class='open-float-num'>";
         foreach ($openNum as $item){
             $str .= '<span>'.$item.'</span>';
         }
