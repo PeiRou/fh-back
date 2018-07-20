@@ -308,7 +308,12 @@ $('#recharge_type').on('change',function () {
                 var str = '<option value="">全部</option>';
                 result.forEach(function(item){
                     // str += $("#pay_online_id").append($("<option/>").text(item.payeeName).attr("value",item.id));
-                    str += '<option value="'+item.id+'">'+item.payeeName+'</option>';
+                    if(item.status == 1){
+                        str += '<option value="'+item.id+'">[√]'+item.payeeName+'</option>';
+                    } else {
+                        str += '<option value="'+item.id+'">[×]'+item.payeeName+'</option>';
+                    }
+
                 });
                 $("#pay_online_id").html(str);
             }
