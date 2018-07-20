@@ -455,7 +455,7 @@ class SrcViewController extends Controller
     public function payOnlineSelectData($rechargeType = "")
     {
         if($rechargeType){
-            $get = PayOnline::select('payeeName','id')->where('rechType',$rechargeType)->get();
+            $get = PayOnline::select('payeeName','id')->where('rechType',$rechargeType)->orderBy('status','desc')->get();
             return response()->json($get);
         }
     }
