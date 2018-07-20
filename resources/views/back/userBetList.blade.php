@@ -57,6 +57,11 @@
             float: left;
             margin-right: 0px;
         }
+        .ll-text{
+            text-align: center;
+            padding: 20px;
+            color: #b5b5b5;
+        }
     </style>
 </head>
 <body>
@@ -412,25 +417,27 @@
         $('#openH_'+id).show();
         if($('#openH_'+id).html() == ""){
             $('#openH_'+id).html('<div class="ll-text">查询中...</div>');
-            // setTimeout(function () {
-            //     $.ajax({
-            //         url:'/ajax/openHistory/'+gameId+'/'+issue,
-            //         type:'get',
-            //         dataType:'json',
-            //         success:function (r) {
-            //             if(r.status == true){
-            //                 $('#openH_'+id).html(r.openNum)
-            //             }
-            //         }
-            //     })
-            // },1000);
+            setTimeout(function () {
+                $.ajax({
+                    url:'/ajax/openHistory/'+gameId+'/'+issue,
+                    type:'get',
+                    dataType:'json',
+                    success:function (r) {
+                        if(r.status == true){
+                            $('#openH_'+id).html(r.openNum)
+                        } else {
+                            $('#openH_'+id).html('<div class="ll-text">暂未开奖</div>');
+                        }
+                    }
+                })
+            },1000);
         }
 
     }
 
-    // function hideOpenHistory(gameId,issue,id){
-    //     $('#openH_'+id).hide();
-    // }
+    function hideOpenHistory(gameId,issue,id){
+        $('#openH_'+id).hide();
+    }
 
     $('#date').on('change',function () {
         var data = $(this).val();
