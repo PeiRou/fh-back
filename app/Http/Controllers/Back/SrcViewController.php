@@ -92,8 +92,21 @@ class SrcViewController extends Controller
         $date = $request->get('date');
         $startTime = $request->get('startTime');
         $endTime = $request->get('endTime');
+        $issue = $request->get('issue');
+        $orderNum = $request->get('orderNum');
 
-        $get = DB::table('bet')->select(DB::raw('sum(bet_money) as betTotal, sum(case WHEN bunko >0 then bunko-bet_money else bunko end) as winTotal'))->where('user_id',$userId)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
+        $get = DB::table('bet')->select(DB::raw('sum(bet_money) as betTotal, sum(case WHEN bunko >0 then bunko-bet_money else bunko end) as winTotal'))
+            ->where(function ($query) use($issue) {
+                if($issue && isset($issue)){
+                    $query->where('issue',$issue);
+                }
+            })
+            ->where(function ($query) use($orderNum) {
+                if($orderNum && isset($orderNum)){
+                    $query->where('order_id',$orderNum);
+                }
+            })
+            ->where('user_id',$userId)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
         return response()->json($get);
     }
     //子账号

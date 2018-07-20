@@ -350,11 +350,13 @@
         var startTime = $('#startTime').val();
         var endTime = $('#endTime').val();
         var token = '{{ csrf_token() }}';
+        var issue = $('#issue').val();
+        var orderNum = $('#orderNum').val();
         $.ajax({
             url:'/action/userBetList/total',
             type:'post',
             dataType:'json',
-            data:{userId:userId,date:date,startTime:startTime,endTime:endTime,_token:token},
+            data:{userId:userId,date:date,startTime:startTime,endTime:endTime,_token:token,issue:issue,orderNum:orderNum},
             success:function (data) {
                 var winTotal = data[0]['winTotal'];
                 var betTotal = data[0]['betTotal'];
