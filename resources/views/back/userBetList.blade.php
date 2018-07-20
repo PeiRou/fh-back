@@ -410,14 +410,19 @@
     function showOpenHistory(gameId,issue,id){
         $('#openH_'+id).show();
         if($('#openH_'+id).html() == ""){
-            $.ajax({
-                url:'/ajax/openHistory/'+gameId+'/'+issue,
-                type:'get',
-                dataType:'json',
-                success:function (r) {
-                    $('#openH_'+id).html(r.openNum)
-                }
-            })
+            $('#openH_'+id).html('<div class="ll-text">查询中...</div>');
+            setTimeout(function () {
+                $.ajax({
+                    url:'/ajax/openHistory/'+gameId+'/'+issue,
+                    type:'get',
+                    dataType:'json',
+                    success:function (r) {
+                        if(r.status == true){
+                            $('#openH_'+id).html(r.openNum)
+                        }
+                    }
+                })
+            },1000);
         }
 
     }
