@@ -47,6 +47,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.21);
             border-radius: 5px;
             cursor: pointer;
+            overflow: hidden;
         }
         .open-float-num span{
             font-size: 12pt;
@@ -411,18 +412,18 @@
         $('#openH_'+id).show();
         if($('#openH_'+id).html() == ""){
             $('#openH_'+id).html('<div class="ll-text">查询中...</div>');
-            setTimeout(function () {
-                $.ajax({
-                    url:'/ajax/openHistory/'+gameId+'/'+issue,
-                    type:'get',
-                    dataType:'json',
-                    success:function (r) {
-                        if(r.status == true){
-                            $('#openH_'+id).html(r.openNum)
-                        }
-                    }
-                })
-            },1000);
+            // setTimeout(function () {
+            //     $.ajax({
+            //         url:'/ajax/openHistory/'+gameId+'/'+issue,
+            //         type:'get',
+            //         dataType:'json',
+            //         success:function (r) {
+            //             if(r.status == true){
+            //                 $('#openH_'+id).html(r.openNum)
+            //             }
+            //         }
+            //     })
+            // },1000);
         }
 
     }
