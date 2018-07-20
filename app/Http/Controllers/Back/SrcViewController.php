@@ -153,25 +153,45 @@ class SrcViewController extends Controller
             $game_name = '幸运六合彩';
         }
         $get = DB::table($gameTable)->where('issue',$issue)->first();
-        if($get->opennum == ''){
-            return response()->json([
-                'status' => false
-            ]);
-        } else {
-            $openNum = explode(',',$get->opennum);
-            $str = "<div>
+        if($gameId == 70 || $gameId == 85){
+            if($get->open_num == ''){
+                return response()->json([
+                    'status' => false
+                ]);
+            } else {
+                $openNum = explode(',',$get->open_num);
+                $str = "<div>
                     <div style='background: #f56363;padding: 5px;color: #fff;'>".$game_name." - 第".$issue."期</div>
                     <div class='open-float-num'>";
-            foreach ($openNum as $item){
-                $str .= '<span>'.$item.'</span>';
+                foreach ($openNum as $item){
+                    $str .= '<span>'.$item.'</span>';
+                }
+                $str .= "</div></div>";
+                return response()->json([
+                    'status' => true,
+                    'openNum' => $str
+                ]);
             }
-            $str .= "</div></div>";
-            return response()->json([
-                'status' => true,
-                'openNum' => $str
-            ]);
+        } else {
+            if($get->opennum == ''){
+                return response()->json([
+                    'status' => false
+                ]);
+            } else {
+                $openNum = explode(',',$get->opennum);
+                $str = "<div>
+                    <div style='background: #f56363;padding: 5px;color: #fff;'>".$game_name." - 第".$issue."期</div>
+                    <div class='open-float-num'>";
+                foreach ($openNum as $item){
+                    $str .= '<span>'.$item.'</span>';
+                }
+                $str .= "</div></div>";
+                return response()->json([
+                    'status' => true,
+                    'openNum' => $str
+                ]);
+            }
         }
-
     }
     
     //子账号
