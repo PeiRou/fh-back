@@ -669,6 +669,8 @@ class MembersDataController extends Controller
 //                return "<span data-tooltip='$user->login_ip_info' data-inverted><i class='iconfont'>&#xe627;</i> $user->login_ip_info</span>";
                 if(strpos($user->login_ip_info,'中国')){
                     $redClass = 'red-text';
+                } else {
+                    $redClass = '';
                 }
                 return "<span class='".$redClass."'><i class='iconfont'>&#xe627;</i> $user->login_ip_info</span>";
             })
