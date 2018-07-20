@@ -43,6 +43,7 @@
             left: 0;
             background: #fff;
             top: -40px;
+            display: none;
         }
     </style>
 </head>
@@ -395,8 +396,8 @@
         }
     }
 
-    function showOpenHistory(gameId,issue){
-        alert(gameId+issue);
+    function showOpenHistory(gameId,issue,id){
+        $('#openH_'+id).show();
     }
 
     $('#date').on('change',function () {
