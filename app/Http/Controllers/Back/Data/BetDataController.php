@@ -417,7 +417,7 @@ class BetDataController extends Controller
                 return '<span>'.$bet->g_game_name.'</span>';
             })
             ->editColumn('issue',function ($bet){
-                return '<div style="position: relative"><div class="show-open" id="openH_'.$bet->bet_bet_id.'"></div><span onclick="showOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" style="color: #'.$bet->bet_color.'">'.$bet->bet_issue.'</span></div>';
+                return '<div style="position: relative"><div class="show-open" id="openH_'.$bet->bet_bet_id.'"></div><span onmouseover="showOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" style="color: #'.$bet->bet_color.'">'.$bet->bet_issue.'</span></div>';
             })
             ->editColumn('play',function ($bet){
                 return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span>";
