@@ -18,7 +18,7 @@ Route::group(['prefix' => 'back/control/userManage','middleware'=>['check-permis
     Route::get('onlineUser','Back\SrcViewController@onlineUser')->name('m.onlineUser'); // 在线会员
     Route::get('sub_account','Back\SrcViewController@subAccount')->name('m.subAccount'); // 子账号
     Route::get('userBetList/{userId}','Back\SrcViewController@userBetList')->name('m.user.viewDetails'); //用户注单明细
-    Route::get('/ajax/openHistory/{gameId}/{issue}','Back\SrcViewController@BetListOpenHistory'); //注单明细获取开奖历史
+    Route::get('ajax/openHistory/{gameId}/{issue}','Back\SrcViewController@BetListOpenHistory'); //注单明细获取开奖历史
 });
 //财务管理
 Route::group(['prefix' => 'back/control/financeManage','middleware'=>['check-permission','domain-check','add-log-handle']],function (){
