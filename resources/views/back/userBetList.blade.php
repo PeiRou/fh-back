@@ -42,7 +42,7 @@
             position: absolute;
             left: 0;
             background: #fff;
-            top: -40px;
+            top: -80px;
             display: none;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.21);
             border-radius: 5px;
