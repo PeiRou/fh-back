@@ -81,7 +81,7 @@ $(function () {
             {data: 'issue'},
             {data: 'play'},
             {data: function (data) {
-                    return "<span class='bet-text'>"+(parseFloat(data.bet_.bet_bet_money)).toFixed(2)+"</span>";
+                    return "<span class='bet-text'>"+(parseFloat(data.bet_bet_money)).toFixed(2)+"</span>";
                 }},
             {data: 'agnet_odds'},
             {data: 'agent_rebate'},
