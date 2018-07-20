@@ -404,7 +404,7 @@
     function showOpenHistory(gameId,issue,id){
         $('#openH_'+id).show();
         $.ajax({
-            url:'back/control/userManage/ajax/openHistory/'+gameId+'/'+issue,
+            url:'ajax/openHistory/'+gameId+'/'+issue,
             type:'get',
             dataType:'json',
             success:function (r) {
