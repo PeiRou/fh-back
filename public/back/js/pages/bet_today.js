@@ -99,6 +99,7 @@ $(function () {
                     }
                     return txt;
                 }},
+            {data: 'platform'},
             {data: 'control'}
         ],
         "footerCallback": function ( row, data, start, end, display ) {
