@@ -36,14 +36,18 @@
         .games .title{float: left;border: none;}
         .games .list{float: left;font-size: 14px;}
         .show-open{
-            border: 1px solid #000;
-            height: 30px;
+            border: 1px solid #d6d6d6;
+            min-height: 30px;
             min-width: 200px;
+            height: auto;
+            width: auto;
             position: absolute;
             left: 0;
             background: #fff;
             top: -40px;
             display: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.21);
+            border-radius: 5px;
         }
     </style>
 </head>
