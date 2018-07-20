@@ -37,10 +37,8 @@
         .games .list{float: left;font-size: 14px;}
         .show-open{
             border: 1px solid #d6d6d6;
-            min-height: 30px;
-            min-width: 200px;
             height: auto;
-            width: auto;
+            width: 300px;
             position: absolute;
             left: 0;
             background: #fff;
@@ -51,12 +49,12 @@
             cursor: pointer;
         }
         .open-float-num span{
-            font-size: 14pt;
+            font-size: 12pt;
             font-weight: bold;
             padding: 5px;
             display: block;
             float: left;
-            margin-right: 5px;
+            margin-right: 0px;
         }
     </style>
 </head>
@@ -424,9 +422,9 @@
 
     }
 
-    // function hideOpenHistory(gameId,issue,id){
-    //     $('#openH_'+id).hide();
-    // }
+    function hideOpenHistory(gameId,issue,id){
+        $('#openH_'+id).hide();
+    }
 
     $('#date').on('change',function () {
         var data = $(this).val();
