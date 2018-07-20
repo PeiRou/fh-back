@@ -427,9 +427,9 @@
 
     }
 
-    function hideOpenHistory(gameId,issue,id){
-        $('#openH_'+id).hide();
-    }
+    // function hideOpenHistory(gameId,issue,id){
+    //     $('#openH_'+id).hide();
+    // }
 
     $('#date').on('change',function () {
         var data = $(this).val();
