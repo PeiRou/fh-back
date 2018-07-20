@@ -300,10 +300,26 @@ class SrcMemberController extends Controller
         $uid = $request->input('uid');
         $agent = $request->input('agent');
 
-        $update = User::where('id',$uid)
-            ->update([
-                'agent'=>$agent
-            ]);
+        if($agent == 2){
+            $update = User::where('id',$uid)
+                ->update([
+                    'agent'=>$agent,
+                    'testFlag' => 2
+                ]);
+        } else if($agent == 3){
+            $update = User::where('id',$uid)
+                ->update([
+                    'agent'=>$agent,
+                    'testFlag' => 1
+                ]);
+        } else {
+            $update = User::where('id',$uid)
+                ->update([
+                    'agent'=>$agent,
+                    'testFlag' => 0
+                ]);
+        }
+
         if($update == 1){
             return response()->json([
                 'status'=>true,
