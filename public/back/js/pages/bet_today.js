@@ -81,20 +81,20 @@ $(function () {
             {data: 'issue'},
             {data: 'play'},
             {data: function (data) {
-                    return "<span class='bet-text'>"+(parseFloat(data.bet_money)).toFixed(2)+"</span>";
+                    return "<span class='bet-text'>"+(parseFloat(data.bet_.bet_bet_money)).toFixed(2)+"</span>";
                 }},
             {data: 'agnet_odds'},
             {data: 'agent_rebate'},
             {data: function (data) {
-                    if(data.bunko == 0){
+                    if(data.bet_bunko == 0){
                         txt = '<span class=\'tiny-blue-text\'>未结算</span>';
                     }else{
-                        if(data.bunko > 0){
-                            lastMoney = (parseFloat(intVal(data.bunko) - intVal(data.bet_money))).toFixed(2);
+                        if(data.bet_bunko > 0){
+                            lastMoney = (parseFloat(intVal(data.bet_bunko) - intVal(data..bet_bet_money))).toFixed(2);
                             txt = "<span class='blue-text'><b>"+lastMoney+"</b></span>";
                         }
-                        if(data.bunko < 0){
-                            txt = "<span class='red-text'><b>"+data.bunko+"</b></span>";
+                        if(data.bet_bunko < 0){
+                            txt = "<span class='red-text'><b>"+data.bet_bunko+"</b></span>";
                         }
                     }
                     return txt;
@@ -116,13 +116,13 @@ $(function () {
                 .column( 6 )
                 .data()
                 .reduce( function (a, b,c) {
-                    return parseFloat((intVal(a) + intVal(data[c].bet_money)).toFixed(2));
+                    return parseFloat((intVal(a) + intVal(data[c].bet_bet_money)).toFixed(2));
                 }, 0 );
             var Total9 = api
                 .column( 9 )
                 .data()
                 .reduce( function (a, b,c) {
-                    return parseFloat((intVal(a) + intVal(data[c].bunko)).toFixed(2));
+                    return parseFloat((intVal(a) + intVal(data[c].bet_bunko)).toFixed(2));
                 }, 0 );
             // Update footer by showing the total with the reference of the column index
             $( api.column( 0 ).footer() ).html('总计');
