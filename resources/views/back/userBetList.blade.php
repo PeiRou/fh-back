@@ -154,6 +154,12 @@
     $(function () {
         getCheckBox();
         getTotalWin();
+        var intVal = function ( i ) {
+            return typeof i === 'string' ?
+                i.replace(/[\$,]/g, '')*1 :
+                typeof i === 'number' ?
+                    i : 0;
+        };
         $('#rangestart').calendar({
             type: 'date',
             endCalendar: $('#rangeend'),
