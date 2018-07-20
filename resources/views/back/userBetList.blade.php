@@ -382,8 +382,8 @@
         }
     }
 
-    function showOpenHistory(issue){
-        alert(issue);
+    function showOpenHistory(gameId,issue){
+        alert(gameId+issue);
     }
 
     $('#date').on('change',function () {
