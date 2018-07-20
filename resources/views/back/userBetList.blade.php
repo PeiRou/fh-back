@@ -221,6 +221,8 @@
                     d.status = $('#status').val();
                     d.startTime = $('#startTime').val();
                     d.endTime = $('#endTime').val();
+                    d.issue = $('#issue').val();
+                    d.orderNum = $('#orderNum').val();
                     // d.end = $('#endTime').val();
                 //     d.rechLevel = $('#rechLevel').val();
                 //     d.account = $('#account').val();

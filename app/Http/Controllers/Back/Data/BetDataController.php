@@ -373,6 +373,8 @@ class BetDataController extends Controller
         $status = $request->get('status');
         $start = $request->get('startTime');
         $end = $request->get('endTime');
+        $issue = $request->get('issue');
+        $orderNum = $request->get('orderNum');
         $user = DB::table('users')->where('id',$userId)->first();
 //        return count($games);
         $bet = DB::table('bet')
@@ -383,6 +385,16 @@ class BetDataController extends Controller
                     foreach ($games as $item){
                         $query->orWhere("bet.game_id",$item);
                     }
+                }
+            })
+            ->where(function ($query) use ($issue){
+                if(isset($issue) && isset($issue)){
+                    $query->where('bet.issue',$issue);
+                }
+            })
+            ->where(function ($query) use ($orderNum){
+                if(isset($orderNum) && isset($orderNum)){
+                    $query->where('bet.order_id',$orderNum);
                 }
             })
             ->where(function ($query) use ($date,$start,$end){
