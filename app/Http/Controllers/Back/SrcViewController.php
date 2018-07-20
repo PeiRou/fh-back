@@ -114,11 +114,56 @@ class SrcViewController extends Controller
     {
         if($gameId == 50){
             $gameTable = 'game_bjpk10';
+            $game_name = '北京赛车';
+        }
+        if($gameId == 80){
+            $gameTable = 'game_mssc';
+            $game_name = '秒速赛车';
+        }
+        if($gameId == 82){
+            $gameTable = 'game_msft';
+            $game_name = '秒速飞艇';
+        }
+        if($gameId == 81){
+            $gameTable = 'game_msssc';
+            $game_name = '秒速时时彩';
+        }
+        if($gameId == 1){
+            $gameTable = 'game_cqssc';
+            $game_name = '重庆时时彩';
+        }
+        if($gameId == 66){
+            $gameTable = 'game_pcdd';
+            $game_name = 'PC蛋蛋';
+        }
+        if($gameId == 99){
+            $gameTable = 'game_paoma';
+            $game_name = '跑马';
+        }
+        if($gameId == 70){
+            $gameTable = 'game_lhc';
+            $game_name = '香港六合彩';
+        }
+        if($gameId == 65){
+            $gameTable = 'game_bjkl8';
+            $game_name = '北京快乐8';
+        }
+        if($gameId == 85){
+            $gameTable = 'game_xylhc';
+            $game_name = '幸运六合彩';
         }
         $get = DB::table($gameTable)->where('issue',$issue)->first();
+        $openNum = explode(',',$get->opennum);
+        $str = "<div>
+                    <div>".$game_name." - 第".$issue."期</div>
+                    <div>";
+        foreach ($openNum as $item){
+            $str .= '<span>'.$item.'</span>';
+        }
+        $str .= "</div></div>";
         return response()->json([
             'status' => true,
-            'openNum' => $get->opennum
+            'openNum' => $str
         ]);
     }
     
