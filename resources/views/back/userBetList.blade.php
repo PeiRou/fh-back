@@ -35,6 +35,15 @@
         .games{height: auto;overflow: hidden;padding: 4px 0;}
         .games .title{float: left;border: none;}
         .games .list{float: left;font-size: 14px;}
+        .show-open{
+            border: 1px solid #000;
+            height: 30px;
+            min-width: 200px;
+            position: absolute;
+            left: 0;
+            background: #fff;
+            top: -40px;
+        }
     </style>
 </head>
 <body>
@@ -152,6 +161,10 @@
 
 <script>
     $(function () {
+        $('body').on('click',function () {
+            $('.show-open').hide();
+        });
+
         getCheckBox();
         getTotalWin();
         var intVal = function ( i ) {
