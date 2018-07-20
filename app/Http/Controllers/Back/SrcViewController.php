@@ -109,6 +109,19 @@ class SrcViewController extends Controller
             ->where('user_id',$userId)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
         return response()->json($get);
     }
+    //注单明细获取开奖历史
+    public function BetListOpenHistory($gameId,$issue)
+    {
+        if($gameId == 50){
+            $gameTable = 'game_bjpk10';
+        }
+        $get = DB::table($gameTable)->where('issue',$issue)->first();
+        return response()->json([
+            'status' => true,
+            'openNum' => $get->opennum
+        ]);
+    }
+    
     //子账号
     public function subAccount()
     {

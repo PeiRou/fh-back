@@ -48,6 +48,7 @@
             display: none;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.21);
             border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -402,6 +403,14 @@
 
     function showOpenHistory(gameId,issue,id){
         $('#openH_'+id).show();
+        $.ajax({
+            url:'/ajax/openHistory/'+gameId+'/'+issue,
+            type:'get',
+            dataType:'json',
+            success:function (r) {
+                $('#openH_'+id).html(r.openNum)
+            }
+        })
     }
 
     function hideOpenHistory(gameId,issue,id){
