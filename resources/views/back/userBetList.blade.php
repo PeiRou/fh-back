@@ -129,6 +129,24 @@
             <th>解冻金额</th>
         </tr>
         </thead>
+        <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -216,14 +234,56 @@
                 {data:'issue'},
                 {data:'play'},
                 {data:'rebate'},
-                {data:'bet_money'},
+                {data: function (data) {
+                        return "<span class='bet-text'>"+(parseFloat(data.bet_bet_money)).toFixed(2)+"</span>";
+                    }},
                 {data:'platform'},
                 {data:'none1'},
                 {data:'none2'},
-                {data:'bunko'},
+                {data: function (data) {
+                        if(data.bet_bunko == 0){
+                            txt = '<span class=\'tiny-blue-text\'>未结算</span>';
+                        }else{
+                            if(data.bet_bunko > 0){
+                                lastMoney = (parseFloat(intVal(data.bet_bunko) - intVal(data.bet_money))).toFixed(2);
+                                txt = "<span class='blue-text'><b>"+lastMoney+"</b></span>";
+                            }
+                            if(data.bet_bunko < 0){
+                                txt = "<span class='red-text'><b>"+data.bet_bunko+"</b></span>";
+                            }
+                        }
+                        return txt;
+                    }},
                 {data:'dongjie'},
                 {data:'jiedong'}
             ],
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api();
+
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                var Total7 = api
+                    .column( 7 )
+                    .data()
+                    .reduce( function (a, b,c) {
+                        return parseFloat((intVal(a) + intVal(data[c].bet_bet_money)).toFixed(2));
+                    }, 0 );
+                var Total11 = api
+                    .column( 11 )
+                    .data()
+                    .reduce( function (a, b,c) {
+                        return parseFloat((intVal(a) + intVal(data[c].bet_bunko)).toFixed(2));
+                    }, 0 );
+                // Update footer by showing the total with the reference of the column index
+                $( api.column( 0 ).footer() ).html('总计');
+                $( api.column( 7 ).footer() ).html(Total7);
+                $( api.column( 11 ).footer() ).html(Total11);
+            },
             language: {
                 "zeroRecords": "暂无数据",
                 "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",

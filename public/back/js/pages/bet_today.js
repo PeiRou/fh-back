@@ -80,13 +80,54 @@ $(function () {
             {data: 'game'},
             {data: 'issue'},
             {data: 'play'},
-            {data: 'bet_money'},
+            {data: function (data) {
+                    return "<span class='bet-text'>"+(parseFloat(data.bet_money)).toFixed(2)+"</span>";
+                }},
             {data: 'agnet_odds'},
             {data: 'agent_rebate'},
-            {data: 'bunko'},
-            {data: 'platform'},
+            {data: function (data) {
+                    if(data.bunko == 0){
+                        txt = '<span class=\'tiny-blue-text\'>未结算</span>';
+                    }else{
+                        if(data.bunko > 0){
+                            lastMoney = (parseFloat(intVal(data.bunko) - intVal(data.bet_money))).toFixed(2);
+                            txt = "<span class='blue-text'><b>"+lastMoney+"</b></span>";
+                        }
+                        if(data.bunko < 0){
+                            txt = "<span class='red-text'><b>"+data.bunko+"</b></span>";
+                        }
+                    }
+                    return txt;
+                }},
             {data: 'control'}
         ],
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api();
+
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            var Total6 = api
+                .column( 6 )
+                .data()
+                .reduce( function (a, b,c) {
+                    return parseFloat((intVal(a) + intVal(data[c].bet_money)).toFixed(2));
+                }, 0 );
+            var Total9 = api
+                .column( 9 )
+                .data()
+                .reduce( function (a, b,c) {
+                    return parseFloat((intVal(a) + intVal(data[c].bunko)).toFixed(2));
+                }, 0 );
+            // Update footer by showing the total with the reference of the column index
+            $( api.column( 0 ).footer() ).html('总计');
+            $( api.column( 6 ).footer() ).html(Total6);
+            $( api.column( 9 ).footer() ).html(Total9);
+        },
         language: {
             "zeroRecords": "暂无数据",
             "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",

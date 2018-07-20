@@ -121,9 +121,6 @@ class BetDataController extends Controller
             ->editColumn('issue',function ($bet){
                 return '<span style="color: #'.$bet->bet_color.'">'.$bet->bet_issue.'</span> 期';
             })
-            ->editColumn('bet_money',function ($bet){
-                return "<span class='bet-text'>$bet->bet_bet_money</span>";
-            })
             ->editColumn('play',function ($bet){
                 return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span>";
             })
@@ -139,19 +136,6 @@ class BetDataController extends Controller
                     return "--";
                 } else {
                     return $bet->bet_agent_rebate;
-                }
-            })
-            ->editColumn('bunko',function ($bet){
-                if($bet->bet_bunko == 0){
-                    return "<span class='tiny-blue-text'>未结算</span>";
-                } else {
-                    if($bet->bet_bunko > 0){
-                        $lastMoney = $bet->bet_bunko - $bet->bet_bet_money;
-                        return "<span class='blue-text'><b>$lastMoney</b></span>";
-                    }
-                    if($bet->bet_bunko < 0){
-                        return "<span class='red-text'><b>$bet->bet_bunko</b></span>";
-                    }
                 }
             })
             ->editColumn('platform',function ($bet){
@@ -429,9 +413,6 @@ class BetDataController extends Controller
             ->editColumn('rebate',function ($bet){
                 return '0';
             })
-            ->editColumn('bet_money',function ($bet){
-                return '<span><b>'.$bet->bet_bet_money.'</b></span>';
-            })
             ->editColumn('platform',function ($bet){
                 if($bet->bet_platform == 1){
                     return "<i class='iconfont'>&#xe696;</i> PC端";
@@ -446,17 +427,6 @@ class BetDataController extends Controller
             })
             ->editColumn('none2',function ($bet){
                 return '-';
-            })
-            ->editColumn('bunko',function ($bet){
-                if($bet->bet_bunko == 0){
-                    return '<span class="gary-text">未结算</span>';
-                }
-                if($bet->bet_bunko < 0){
-                    return '<span class="red-text">'.$bet->bet_bunko.'</span>';
-                } else {
-                    $show_bunko = $bet->bet_bunko - $bet->bet_bet_money;
-                    return '<span class="blue-text">'.$show_bunko.'</span>';
-                }
             })
             ->editColumn('dongjie',function ($bet){
                 return '0';
