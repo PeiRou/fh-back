@@ -403,14 +403,17 @@
 
     function showOpenHistory(gameId,issue,id){
         $('#openH_'+id).show();
-        $.ajax({
-            url:'/ajax/openHistory/'+gameId+'/'+issue,
-            type:'get',
-            dataType:'json',
-            success:function (r) {
-                $('#openH_'+id).html(r.openNum)
-            }
-        })
+        if($('#openH_'+id).html() == ""){
+            $.ajax({
+                url:'/ajax/openHistory/'+gameId+'/'+issue,
+                type:'get',
+                dataType:'json',
+                success:function (r) {
+                    $('#openH_'+id).html(r.openNum)
+                }
+            })
+        }
+
     }
 
     function hideOpenHistory(gameId,issue,id){
