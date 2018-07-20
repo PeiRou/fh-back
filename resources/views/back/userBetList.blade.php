@@ -400,6 +400,10 @@
         $('#openH_'+id).show();
     }
 
+    function hideOpenHistory(gameId,issue,id){
+        $('#openH_'+id).hide();
+    }
+
     $('#date').on('change',function () {
         var data = $(this).val();
         $.ajax({
