@@ -309,9 +309,9 @@ $('#recharge_type').on('change',function () {
                 result.forEach(function(item){
                     // str += $("#pay_online_id").append($("<option/>").text(item.payeeName).attr("value",item.id));
                     if(item.status == 1){
-                        str += '<option value="'+item.id+'">[√]'+item.payeeName+'</option>';
+                        str += '<option value="'+item.id+'">[√] '+item.payeeName+'</option>';
                     } else {
-                        str += '<option value="'+item.id+'">[×]'+item.payeeName+'</option>';
+                        str += '<option value="'+item.id+'">[X] '+item.payeeName+'</option>';
                     }
 
                 });
