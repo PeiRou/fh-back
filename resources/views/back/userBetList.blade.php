@@ -382,6 +382,10 @@
         }
     }
 
+    function showOpenHistory(issue){
+        alert(issue);
+    }
+
     $('#date').on('change',function () {
         var data = $(this).val();
         $.ajax({
