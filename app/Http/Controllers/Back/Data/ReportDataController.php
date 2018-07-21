@@ -130,7 +130,8 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         }
         if(isset($ag) && $ag > 0 ){
             $where .= " and u.agent = ".$ag;
-        }else if(isset($chkTest) && $chkTest=='on'){
+        }
+        if(isset($chkTest) && $chkTest=='on'){
             $where .= " and u.testFlag = 0 ";
         }else {
             $where .= " and u.testFlag in (0,2) ";
