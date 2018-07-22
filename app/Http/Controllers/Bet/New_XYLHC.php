@@ -1294,9 +1294,8 @@ class New_XYLHC
             \Log::info('自选不中--》没中：'.$ids_zxbz_lose);
             if($ids_zxbz){
                 $sql_zxb = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
-                $run_xzbz = DB::statement($sql_zxb);
             } else {
-                $run_xzbz = 0;
+                $sql_zxb = 0;
             }
 
 //            if ($ids_zxbz_lose) {
@@ -1309,8 +1308,8 @@ class New_XYLHC
             if($run == 1){
                 $run2 = DB::statement($sql_lose);
                 if($run2 == 1){
-                    if($run_xzbz !== 0){
-                        $run3 = DB::statement($run_xzbz);
+                    if($sql_zxb !== 0){
+                        $run3 = DB::statement($sql_zxb);
                         if($run3 == 1){
                             return 1;
                         }
