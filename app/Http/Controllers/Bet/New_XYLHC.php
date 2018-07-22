@@ -1274,6 +1274,25 @@ class New_XYLHC
             $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
             $run = DB::statement($sql);
 
+            $zxbz_playCate = 175; //特码分类ID
+            $zxbz_ids = [];
+            $zxbz_lose_ids = [];
+            $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
+            foreach ($get as $item) {
+                $open = explode(',', $openCode);
+                $user = explode(',', $item->bet_info);
+                $bi = array_intersect($open, $user);
+                if (empty($bi)) {
+                    $zxbz_ids[] = $item->bet_id;
+                } else {
+                    $zxbz_lose_ids[] = $item->bet_id;
+                }
+            }
+            $ids_zxbz = implode(',', $zxbz_ids);
+            $ids_zxbz_lose = implode(',', $zxbz_lose_ids);
+            \Log::info('自选不中--》中了：'.$ids_zxbz);
+            \Log::info('自选不中--》没中：'.$ids_zxbz_lose);
+
             if($run == 1){
                 $run2 = DB::statement($sql_lose);
                 if($run2 == 1){
