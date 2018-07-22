@@ -95,7 +95,7 @@ class SrcViewController extends Controller
         $issue = $request->get('issue');
         $orderNum = $request->get('orderNum');
 
-        $get = DB::table('bet')->select(DB::raw('sum(bet_money) as betTotal, sum(case WHEN bunko > 0 then bunko - bet_money else bunko end) as winTotal'))
+        $get = DB::table('bet')->select(DB::raw('sum(bet_money) as betTotal, sum(bunko) as winTotal'))
             ->where(function ($query) use($issue) {
                 if($issue && isset($issue)){
                     $query->where('issue',$issue);
