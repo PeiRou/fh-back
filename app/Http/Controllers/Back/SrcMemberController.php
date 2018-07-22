@@ -438,6 +438,7 @@ class SrcMemberController extends Controller
                         $recharges->balance = $getUserBalance->money;
                         $recharges->shou_info = "后台加钱：".$content;
                         $recharges->msg = $content;
+
                         $recharges->status = 2;
                         $recharges->addMoney = 1;
                         $recharges->process_date = date('Y-m-d H:i:s');
