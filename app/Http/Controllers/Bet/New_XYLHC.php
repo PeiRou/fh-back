@@ -1290,8 +1290,8 @@ class New_XYLHC
             }
             $ids_zxbz = implode(',', $zxbz_ids);
             $ids_zxbz_lose = implode(',', $zxbz_lose_ids);
-            \Log::info('自选不中--》中了：'.$ids_zxbz);
-            \Log::info('自选不中--》没中：'.$ids_zxbz_lose);
+//            \Log::info('自选不中--》中了：'.$ids_zxbz);
+//            \Log::info('自选不中--》没中：'.$ids_zxbz_lose);
             if($ids_zxbz){
                 $sql_zxb = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
             } else {
@@ -1330,7 +1330,6 @@ class New_XYLHC
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->s ";
             }
-
             $ids = implode(',',$users);
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
