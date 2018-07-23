@@ -133,14 +133,62 @@ class New_Msnn
         $player5_nn = $niuniuArr[5];
 
         $loseArr = [];
+        $winArr = [];
 
-        //本金结算
-        if(!empty($win)){
+        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        if($getUserBets){
+            if(!empty($win)){
+                $sql_win = "UPDATE bet SET bunko = CASE ";
+                if((int)$banker_nn <= 6){
+                    foreach ($getUserBets as $item){
+                        foreach ($win as $k=>$v){
+                            if($v == $item->play_id){
+                                $bunko = $item->bet_money+$item->bet_money*2;
+                                $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $winArr[] = $item->play_id;
+                            }
+                        }
+                    }
+                }
+                if((int)$banker_nn == 7 || (int)$banker_nn == 8){
+                    foreach ($getUserBets as $item){
+                        foreach ($win as $k=>$v){
+                            if($v == $item->play_id){
+                                $bunko = $item->bet_money+$item->bet_money*3;
+                                $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $winArr[] = $item->play_id;
+                            }
+                        }
+                    }
+                }
+                if((int)$banker_nn == 9){
+                    foreach ($getUserBets as $item){
+                        foreach ($win as $k=>$v){
+                            if($v == $item->play_id){
+                                $bunko = $item->bet_money+$item->bet_money*4;
+                                $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $winArr[] = $item->play_id;
+                            }
+                        }
+                    }
+                }
+                if((int)$banker_nn == 10){
+                    foreach ($getUserBets as $item){
+                        foreach ($win as $k=>$v){
+                            if($v == $item->play_id){
+                                $bunko = $item->bet_money+$item->bet_money*6;
+                                $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $winArr[] = $item->play_id;
+                            }
+                        }
+                    }
+                }
+                $WinListIn = implode(',', $winArr);
+                $sql_win .= "END WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
+                $run = DB::statement($sql_win);
+            }
 
-        }
-        if(!empty($lose)){
-            $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-            if($getUserBets){
+            if(!empty($lose)){
                 $sql_lose = "UPDATE bet SET bunko = CASE ";
                 $sql_unfreeze_lose = "UPDATE bet SET unfreeze_money = CASE ";
                 if((int)$banker_nn <= 6){
@@ -195,15 +243,14 @@ class New_Msnn
                         }
                     }
                 }
+                $LoseListIn = implode(',', $loseArr);
+                $sql_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
+                $sql_unfreeze_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
+                $run = DB::statement($sql_lose);
+                if($run == 1){
+                    $run2 = DB::statement($sql_unfreeze_lose);
+                }
             }
-        }
-
-        $LoseListIn = implode(',', $loseArr);
-        $sql_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
-        $sql_unfreeze_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
-        $run = DB::statement($sql_lose);
-        if($run == 1){
-            $run2 = DB::statement($sql_unfreeze_lose);
         }
         \Log::info('赢'.$win);
         \Log::info('输'.$lose);
