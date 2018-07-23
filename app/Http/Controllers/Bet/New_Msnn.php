@@ -35,8 +35,8 @@ class New_Msnn
 
     public function NN($openCode,$nn,$gameId,$win,$lose,$winArr1)
     {
-//        $nn = '1,-1,-1,1,3,4';
-//        $openCode = '6,4,10,9,2,5,7,8,1,3';
+        $nn = '7,3,-1,9,7,8';
+        $openCode = '3,2,4,8,10,9,5,7,6,1';
         \Log::info($openCode);
         \Log::info($nn);
         \Log::info($gameId);
@@ -45,16 +45,8 @@ class New_Msnn
         \Log::info($winArr1);
 
         $niuniuArr = explode(',',$nn); //分割牛牛结果
-        $replace = str_replace('10','0',$openCode); //替换开奖号码10->0
-        $explodeNum = explode(',',$replace); //分割秒速赛车开奖结果
+        $explodeNum = explode(',',$openCode); //分割秒速赛车开奖结果
         $playCate = 189; //秒速牛牛玩法大类ID
-        //庄闲重新洗牌
-        $banker = (int)$explodeNum[0].','.(int)$explodeNum[1].','.(int)$explodeNum[2].','.(int)$explodeNum[3].','.(int)$explodeNum[4];
-        $player1 = (int)$explodeNum[1].','.(int)$explodeNum[2].','.(int)$explodeNum[3].','.(int)$explodeNum[4].','.(int)$explodeNum[5];
-        $player2 = (int)$explodeNum[2].','.(int)$explodeNum[3].','.(int)$explodeNum[4].','.(int)$explodeNum[5].','.(int)$explodeNum[6];
-        $player3 = (int)$explodeNum[3].','.(int)$explodeNum[4].','.(int)$explodeNum[5].','.(int)$explodeNum[6].','.(int)$explodeNum[7];
-        $player4 = (int)$explodeNum[4].','.(int)$explodeNum[5].','.(int)$explodeNum[6].','.(int)$explodeNum[7].','.(int)$explodeNum[8];
-        $player5 = (int)$explodeNum[5].','.(int)$explodeNum[6].','.(int)$explodeNum[7].','.(int)$explodeNum[8].','.(int)$explodeNum[9];
 
         $banker_nn = $niuniuArr[0];
         $player1_nn = $niuniuArr[1];
