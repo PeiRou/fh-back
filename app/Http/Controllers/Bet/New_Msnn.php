@@ -20,16 +20,16 @@ class New_Msnn
         $win = collect([]);
         $lose = collect([]);
         $this->NN($openCode,$nn,$gameId,$win,$lose);
-//        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
-//        if($betCount > 0){
-//            $bunko = $this->bunko($win,$lose,$winArr1,$gameId,$issue);
+        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        if($betCount > 0){
+            $bunko = $this->bunko($win,$lose,$nn,$gameId,$issue);
 //            if($bunko == 1){
 //                $updateUserMoney = $this->updateUserMoney($gameId,$issue);
 //                if($updateUserMoney == 1){
 //                    return 1;
 //                }
 //            }
-//        }
+        }
     }
 
     public function NN($openCode,$nn,$gameId,$win,$lose)
@@ -120,10 +120,80 @@ class New_Msnn
             $win->push(911893461);
             \Log::info('闲五赢');
         }
+    }
 
+    public function bunko($win,$lose,$nn,$gameId,$issue)
+    {
+        $niuniuArr = explode(',',$nn); //分割牛牛结果
+        $banker_nn = $niuniuArr[0];
+        $player1_nn = $niuniuArr[1];
+        $player2_nn = $niuniuArr[2];
+        $player3_nn = $niuniuArr[3];
+        $player4_nn = $niuniuArr[4];
+        $player5_nn = $niuniuArr[5];
+
+        $loseArr = [];
+
+        //本金结算
+        if(!empty($win)){
+
+        }
+        if(!empty($lose)){
+            $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+            if($getUserBets){
+                $sql = "UPDATE bet SET bunko = CASE ";
+                if((int)$banker_nn <= 6){
+                    foreach ($getUserBets as $item){
+                        foreach ($lose as $k=>$v){
+                            if($v == $item->play_id){
+                                $bunko = 0-$item->bet_money;
+                                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $loseArr[] = $item->play_id;
+                            }
+                        }
+                    }
+                }
+                if((int)$banker_nn == 7 || (int)$banker_nn == 8){
+                    foreach ($getUserBets as $item){
+                        foreach ($lose as $k=>$v){
+                            if($v == $item->play_id){
+                                $bunko = 0-$item->bet_money*2;
+                                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $loseArr[] = $item->play_id;
+                            }
+                        }
+                    }
+                }
+                if((int)$banker_nn == 9){
+                    foreach ($getUserBets as $item){
+                        foreach ($lose as $k=>$v){
+                            if($v == $item->play_id){
+                                $bunko = 0-$item->bet_money*3;
+                                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $loseArr[] = $item->play_id;
+                            }
+                        }
+                    }
+                }
+                if((int)$banker_nn == 10){
+                    foreach ($getUserBets as $item){
+                        foreach ($lose as $k=>$v){
+                            if($v == $item->play_id){
+                                $bunko = 0-$item->bet_money*5;
+                                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $loseArr[] = $item->play_id;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $LoseListIn = implode(',', $loseArr);
+        $sql .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
+        DB::statement($sql);
         \Log::info('赢'.$win);
         \Log::info('输'.$lose);
-
     }
 
 //    private function NN($openCode,$nn,$gameId,$win,$lose,$winArr1)
