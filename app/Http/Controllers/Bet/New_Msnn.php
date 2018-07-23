@@ -19,8 +19,7 @@ class New_Msnn
     {
         $win = collect([]);
         $lose = collect([]);
-        $winArr1 = collect([]);
-        $this->NN($openCode,$nn,$gameId,$win,$lose,$winArr1);
+        $this->NN($openCode,$nn,$gameId,$win,$lose);
 //        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
 //        if($betCount > 0){
 //            $bunko = $this->bunko($win,$lose,$winArr1,$gameId,$issue);
@@ -33,7 +32,7 @@ class New_Msnn
 //        }
     }
 
-    public function NN($openCode,$nn,$gameId,$win,$lose,$winArr1)
+    public function NN($openCode,$nn,$gameId,$win,$lose)
     {
         $nn = '7,3,-1,9,7,8';
         $openCode = '3,2,4,8,10,9,5,7,6,1';
@@ -47,6 +46,7 @@ class New_Msnn
         $niuniuArr = explode(',',$nn); //分割牛牛结果
         $explodeNum = explode(',',$openCode); //分割秒速赛车开奖结果
         $playCate = 189; //秒速牛牛玩法大类ID
+        $allWin = [911893457,911893458,911893459,911893460,911893461];
 
         $banker_nn = $niuniuArr[0];
         $player1_nn = $niuniuArr[1];
@@ -56,54 +56,77 @@ class New_Msnn
         $player5_nn = $niuniuArr[5];
 
         if((int)$banker_nn > (int)$player1_nn){
+            $lose->push(911893457);
             \Log::info('闲一输');
         } else if((int)$banker_nn == (int)$player1_nn && (int)$banker_nn <= 6){
+            $lose->push(911893457);
             \Log::info('闲一输');
         } else if((int)$banker_nn == (int)$player1_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[1]){
+            $lose->push(911893457);
             \Log::info('闲一输');
         } else {
+            $win->push(911893457);
             \Log::info('闲一赢');
         }
 
         if((int)$banker_nn > (int)$player2_nn){
+            $lose->push(911893458);
             \Log::info('闲二输');
         } else if((int)$banker_nn == (int)$player2_nn && (int)$banker_nn <= 6){
+            $lose->push(911893458);
             \Log::info('闲二输');
         } else if((int)$banker_nn == (int)$player2_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[2]){
+            $lose->push(911893458);
             \Log::info('闲二输');
         } else {
+            $win->push(911893458);
             \Log::info('闲二赢');
         }
 
         if((int)$banker_nn > (int)$player3_nn){
+            $lose->push(911893459);
             \Log::info('闲三输');
         } else if((int)$banker_nn == (int)$player3_nn && (int)$banker_nn <= 6){
+            $lose->push(911893459);
             \Log::info('闲三输');
         } else if((int)$banker_nn == (int)$player3_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[3]){
+            $lose->push(911893459);
             \Log::info('闲三输');
         } else {
+            $win->push(911893459);
             \Log::info('闲三赢');
         }
 
         if((int)$banker_nn > (int)$player4_nn){
+            $lose->push(911893460);
             \Log::info('闲四输');
         } else if((int)$banker_nn == (int)$player4_nn && (int)$banker_nn <= 6){
+            $lose->push(911893460);
             \Log::info('闲四输');
         } else if((int)$banker_nn == (int)$player4_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[4]){
+            $lose->push(911893460);
             \Log::info('闲四输');
         } else {
+            $win->push(911893460);
             \Log::info('闲四赢');
         }
 
         if((int)$banker_nn > (int)$player5_nn){
+            $lose->push(911893461);
             \Log::info('闲五输');
         } else if((int)$banker_nn == (int)$player5_nn && (int)$banker_nn <= 6){
+            $lose->push(911893461);
             \Log::info('闲五输');
         } else if((int)$banker_nn == (int)$player5_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[5]){
+            $lose->push(911893461);
             \Log::info('闲五输');
         } else {
+            $win->push(911893461);
             \Log::info('闲五赢');
         }
+
+        \Log::info('赢'.$win);
+        \Log::info('输'.$lose);
 
     }
 
