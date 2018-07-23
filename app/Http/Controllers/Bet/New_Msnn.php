@@ -137,7 +137,7 @@ class New_Msnn
 
         $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         if($getUserBets){
-            if(!empty($win)){
+            if($win){
                 $sql_win = "UPDATE bet SET bunko = CASE ";
                 if((int)$banker_nn <= 6){
                     foreach ($getUserBets as $item){
@@ -188,7 +188,7 @@ class New_Msnn
                 $run = DB::statement($sql_win);
             }
 
-            if(!empty($lose)){
+            if($lose){
                 $sql_lose = "UPDATE bet SET bunko = CASE ";
                 $sql_unfreeze_lose = "UPDATE bet SET unfreeze_money = CASE ";
                 if((int)$banker_nn <= 6){
