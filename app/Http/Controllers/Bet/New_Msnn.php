@@ -63,7 +63,7 @@ class New_Msnn
         $player4_nn = $niuniuArr[4];
         $player5_nn = $niuniuArr[5];
 
-        if((int)$banker_nn > (int)$player1_nn && (int)$banker_nn > 6){
+        if((int)$banker_nn > (int)$player1_nn){
             \Log::info('闲一输');
         } else if((int)$banker_nn == (int)$player1_nn && (int)$banker_nn <= 6){
             \Log::info('闲一输');
@@ -73,7 +73,7 @@ class New_Msnn
             \Log::info('闲一赢');
         }
 
-        if((int)$banker_nn > (int)$player2_nn && (int)$banker_nn > 6){
+        if((int)$banker_nn > (int)$player2_nn){
             \Log::info('闲二输');
         } else if((int)$banker_nn == (int)$player2_nn && (int)$banker_nn <= 6){
             \Log::info('闲二输');
@@ -83,7 +83,7 @@ class New_Msnn
             \Log::info('闲二赢');
         }
 
-        if((int)$banker_nn > (int)$player3_nn && (int)$banker_nn > 6){
+        if((int)$banker_nn > (int)$player3_nn){
             \Log::info('闲三输');
         } else if((int)$banker_nn == (int)$player3_nn && (int)$banker_nn <= 6){
             \Log::info('闲三输');
@@ -93,7 +93,7 @@ class New_Msnn
             \Log::info('闲三赢');
         }
 
-        if((int)$banker_nn > (int)$player4_nn && (int)$banker_nn > 6){
+        if((int)$banker_nn > (int)$player4_nn){
             \Log::info('闲四输');
         } else if((int)$banker_nn == (int)$player4_nn && (int)$banker_nn <= 6){
             \Log::info('闲四输');
@@ -103,7 +103,7 @@ class New_Msnn
             \Log::info('闲四赢');
         }
 
-        if((int)$banker_nn > (int)$player5_nn && (int)$banker_nn > 6){
+        if((int)$banker_nn > (int)$player5_nn){
             \Log::info('闲五输');
         } else if((int)$banker_nn == (int)$player5_nn && (int)$banker_nn <= 6){
             \Log::info('闲五输');
