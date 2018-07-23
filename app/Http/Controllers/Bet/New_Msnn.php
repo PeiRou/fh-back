@@ -41,6 +41,50 @@ class New_Msnn
         \Log::info($win);
         \Log::info($lose);
         \Log::info($winArr1);
+        $niuniuArr = explode(',',$nn); //分割牛牛结果
+        $replace = str_replace('10','0',$openCode); //替换开奖号码10->0
+        $explodeNum = explode(',',$replace); //分割秒速赛车开奖结果
+        $playCate = 189; //秒速牛牛玩法大类ID
+        //庄闲重新洗牌
+        $banker = (int)$explodeNum[0].','.(int)$explodeNum[1].','.(int)$explodeNum[2].','.(int)$explodeNum[3].','.(int)$explodeNum[4];
+        $player1 = (int)$explodeNum[1].','.(int)$explodeNum[2].','.(int)$explodeNum[3].','.(int)$explodeNum[4].','.(int)$explodeNum[5];
+        $player2 = (int)$explodeNum[2].','.(int)$explodeNum[3].','.(int)$explodeNum[4].','.(int)$explodeNum[5].','.(int)$explodeNum[6];
+        $player3 = (int)$explodeNum[3].','.(int)$explodeNum[4].','.(int)$explodeNum[5].','.(int)$explodeNum[6].','.(int)$explodeNum[7];
+        $player4 = (int)$explodeNum[4].','.(int)$explodeNum[5].','.(int)$explodeNum[6].','.(int)$explodeNum[7].','.(int)$explodeNum[8];
+        $player5 = (int)$explodeNum[5].','.(int)$explodeNum[6].','.(int)$explodeNum[7].','.(int)$explodeNum[8].','.(int)$explodeNum[9];
+
+        $banker_nn = $niuniuArr[0];
+        $player1_nn = $niuniuArr[1];
+        $player2_nn = $niuniuArr[2];
+        $player3_nn = $niuniuArr[3];
+        $player4_nn = $niuniuArr[4];
+        $player5_nn = $niuniuArr[5];
+
+        if($banker_nn > $player1_nn){
+            \Log::info('闲一输');
+        } else {
+            \Log::info('闲一赢');
+        }
+        if($banker_nn > $player2_nn){
+            \Log::info('闲二输');
+        } else {
+            \Log::info('闲二赢');
+        }
+        if($banker_nn > $player3_nn){
+            \Log::info('闲三输');
+        } else {
+            \Log::info('闲三赢');
+        }
+        if($banker_nn > $player4_nn){
+            \Log::info('闲四输');
+        } else {
+            \Log::info('闲四赢');
+        }
+        if($banker_nn > $player5_nn){
+            \Log::info('闲五输');
+        } else {
+            \Log::info('闲五赢');
+        }
     }
 
 //    private function NN($openCode,$nn,$gameId,$win,$lose,$winArr1)
