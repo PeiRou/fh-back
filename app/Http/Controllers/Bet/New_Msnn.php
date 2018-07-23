@@ -38,9 +38,6 @@ class New_Msnn
 //        $openCode = '3,2,4,8,10,9,5,7,6,1';
         \Log::info($openCode);
         \Log::info($nn);
-        \Log::info($gameId);
-        \Log::info($win);
-        \Log::info($lose);
 
         $niuniuArr = explode(',',$nn); //分割牛牛结果
         $explodeNum = explode(',',$openCode); //分割秒速赛车开奖结果
