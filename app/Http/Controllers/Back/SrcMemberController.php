@@ -472,7 +472,7 @@ class SrcMemberController extends Controller
                             'user_id' => $uid,
                             'username' => $getUserBalance->username,
                             'created_at' => date('Y-m-d H:i:s'),
-                            'balance' => (int)$getUserBalance->money-(int)$money,
+                            'balance' => (int)$getUserBalance->money+(int)$money,
                             'total_bet' => 0,
                             'operation_id' => Session::get('account_id'),
                             'operation_account' => Session::get('account'),
