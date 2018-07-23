@@ -284,7 +284,8 @@
                             txt = '<span class=\'tiny-blue-text\'>未结算</span>';
                         }else{
                             if(data.bet_bunko > 0){
-                                lastMoney = (parseFloat(intVal(data.bet_bunko) - intVal(data.bet_bet_money))).toFixed(2);
+                                var tmpBet_bet_money = intVal(data.bet_bunko)>0?intVal(data.bet_bet_money):0;
+                                lastMoney = (parseFloat(intVal(data.bet_bunko) - tmpBet_bet_money)).toFixed(2);
                                 txt = "<span class='blue-text'><b>"+lastMoney+"</b></span>";
                             }
                             if(data.bet_bunko < 0){
