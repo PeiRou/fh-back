@@ -73,6 +73,16 @@ class New_Msnn
             \Log::info('闲一赢');
         }
 
+        if($banker_nn > $player2_nn && $banker_nn > 6){
+            \Log::info('闲二输');
+        } else if($banker_nn == $player2_nn && $banker_nn <= 6){
+            \Log::info('闲二输');
+        } else if($banker_nn == $player2_nn && $banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[2]){
+            \Log::info('闲二输');
+        } else {
+            \Log::info('闲二赢');
+        }
+
     }
 
 //    private function NN($openCode,$nn,$gameId,$win,$lose,$winArr1)
