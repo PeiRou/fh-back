@@ -141,13 +141,16 @@ class New_Msnn
         if(!empty($lose)){
             $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
             if($getUserBets){
-                $sql = "UPDATE bet SET bunko = CASE ";
+                $sql_lose = "UPDATE bet SET bunko = CASE ";
+                $sql_unfreeze_lose = "UPDATE bet SET unfreeze_money = CASE ";
                 if((int)$banker_nn <= 6){
                     foreach ($getUserBets as $item){
                         foreach ($lose as $k=>$v){
                             if($v == $item->play_id){
                                 $bunko = 0-$item->bet_money;
-                                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $unfreeze = $item->freeze_money;
+                                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $loseArr[] = $item->play_id;
                             }
                         }
@@ -158,7 +161,9 @@ class New_Msnn
                         foreach ($lose as $k=>$v){
                             if($v == $item->play_id){
                                 $bunko = 0-$item->bet_money*2;
-                                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $unfreeze = $item->freeze_money - $item->bet_money;
+                                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $loseArr[] = $item->play_id;
                             }
                         }
@@ -169,7 +174,9 @@ class New_Msnn
                         foreach ($lose as $k=>$v){
                             if($v == $item->play_id){
                                 $bunko = 0-$item->bet_money*3;
-                                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $unfreeze = $item->freeze_money - $item->bet_money*2;
+                                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $loseArr[] = $item->play_id;
                             }
                         }
@@ -180,7 +187,9 @@ class New_Msnn
                         foreach ($lose as $k=>$v){
                             if($v == $item->play_id){
                                 $bunko = 0-$item->bet_money*5;
-                                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $unfreeze = 0-$item->freeze_money;
+                                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $loseArr[] = $item->play_id;
                             }
                         }
@@ -190,8 +199,12 @@ class New_Msnn
         }
 
         $LoseListIn = implode(',', $loseArr);
-        $sql .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
-        DB::statement($sql);
+        $sql_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
+        $sql_unfreeze_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
+        $run = DB::statement($sql_lose);
+        if($run == 1){
+            $run2 = DB::statement($sql_unfreeze_lose);
+        }
         \Log::info('赢'.$win);
         \Log::info('输'.$lose);
     }
