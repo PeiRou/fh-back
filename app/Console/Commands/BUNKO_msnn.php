@@ -45,7 +45,7 @@ class BUNKO_msnn extends Command
             if($get->nn_bunko !== 1){
                 $opencode = '5,4,7,10,1,6,3,2,9,8';
 //                event(new RunMsnn($get->opennum,$get->niuniu,$get->issue,$this->gameId)); //新--结算
-                event(new RunMsnn($opencode,$get->niuniu,$get->issue,$this->gameId)); //新--结算
+                event(new RunMsnn($get->opennum,$get->niuniu,$get->issue,$this->gameId)); //新--结算
                 $update = DB::table('game_mssc')->where('id',$get->id)->update([
                     'nn_bunko' => 1
                 ]);
