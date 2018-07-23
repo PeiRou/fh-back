@@ -41,7 +41,6 @@ class New_Msnn
         \Log::info($gameId);
         \Log::info($win);
         \Log::info($lose);
-        \Log::info($winArr1);
 
         $niuniuArr = explode(',',$nn); //分割牛牛结果
         $explodeNum = explode(',',$openCode); //分割秒速赛车开奖结果
