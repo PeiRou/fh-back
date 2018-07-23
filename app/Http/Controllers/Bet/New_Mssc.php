@@ -1139,19 +1139,21 @@ class New_Mssc
             $sql = "UPDATE bet SET bunko = CASE ";
             $sql_lose = "UPDATE bet SET bunko = CASE ";
             $ids = implode(',', $id);
-            foreach ($getUserBets as $item){
-                $bunko = $item->bet_money * $item->play_odds;
-                $bunko_lose = 0-$item->bet_money;
-                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-            }
-            $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $run = DB::statement($sql);
-            if($run == 1){
-                $run2 = DB::statement($sql_lose);
-                if($run2 == 1){
-                    return 1;
+            if($ids && isset($ids)){
+                foreach ($getUserBets as $item){
+                    $bunko = $item->bet_money * $item->play_odds;
+                    $bunko_lose = 0-$item->bet_money;
+                    $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                    $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                }
+                $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                $run = DB::statement($sql);
+                if($run == 1){
+                    $run2 = DB::statement($sql_lose);
+                    if($run2 == 1){
+                        return 1;
+                    }
                 }
             }
         }
