@@ -317,7 +317,8 @@
                     .column( 11 )
                     .data()
                     .reduce( function (a, b,c) {
-                        return parseFloat((intVal(a) + intVal(data[c].bet_bunko)).toFixed(2));
+                        var tmpBet_bet_money = intVal(data[c].bet_bunko)>0?intVal(data[c].bet_bet_money):0;
+                        return parseFloat((intVal(a) + intVal(data[c].bet_bunko) - tmpBet_bet_money).toFixed(2));
                     }, 0 );
                 // Update footer by showing the total with the reference of the column index
                 $( api.column( 0 ).footer() ).html('总计');
