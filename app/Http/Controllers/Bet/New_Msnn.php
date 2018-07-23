@@ -35,7 +35,7 @@ class New_Msnn
 
     public function NN($openCode,$nn,$gameId,$win,$lose,$winArr1)
     {
-        $nn = '9,3,5,9,3,6';
+        $nn = '10,-1,6,1,10,5';
         \Log::info($openCode);
         \Log::info($nn);
         \Log::info($gameId);
