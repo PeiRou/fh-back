@@ -65,52 +65,12 @@ class New_Msnn
 
         if($banker_nn > $player1_nn && $banker_nn > 6){
             \Log::info('闲一输');
-        } else if ($banker_nn == $player1_nn && $banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[1]) {
-            \Log::info('闲一输');
         } else if($banker_nn == $player1_nn && $banker_nn <= 6){
+            \Log::info('闲一输');
+        } else if($banker_nn == $player1_nn && $banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[1]){
             \Log::info('闲一输');
         } else {
             \Log::info('闲一赢');
-        }
-
-        if($banker_nn > $player2_nn && $banker_nn > 6){
-            \Log::info('闲二输');
-        } else if ($banker_nn == $player2_nn && $banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[2]) {
-            \Log::info('闲二输');
-        } else if($banker_nn == $player2_nn && $banker_nn <= 6){
-            \Log::info('闲二输');
-        } else {
-            \Log::info('闲二赢');
-        }
-
-        if($banker_nn > $player3_nn && $banker_nn > 6){
-            \Log::info('闲三输');
-        } else if ($banker_nn == $player3_nn && $banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[3]) {
-            \Log::info('闲三输');
-        } else if($banker_nn == $player3_nn && $banker_nn <= 6){
-            \Log::info('闲三输');
-        } else {
-            \Log::info('闲三赢');
-        }
-
-        if($banker_nn > $player4_nn && $banker_nn > 6){
-            \Log::info('闲四输');
-        } else if ($banker_nn == $player4_nn && $banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[4]) {
-            \Log::info('闲四输');
-        } else if($banker_nn == $player4_nn && $banker_nn <= 6){
-            \Log::info('闲四输');
-        } else {
-            \Log::info('闲四赢');
-        }
-
-        if($banker_nn > $player5_nn && $banker_nn > 6){
-            \Log::info('闲五输');
-        } else if ($banker_nn == $player5_nn && $banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[5]) {
-            \Log::info('闲五输');
-        } else if($banker_nn == $player5_nn && $banker_nn <= 6){
-            \Log::info('闲五输');
-        } else {
-            \Log::info('闲五赢');
         }
 
     }
