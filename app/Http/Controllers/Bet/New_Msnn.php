@@ -41,6 +41,7 @@ class New_Msnn
         \Log::info($win);
         \Log::info($lose);
         \Log::info($winArr1);
+        $nn = '9,3,5,9,3,6';
         $niuniuArr = explode(',',$nn); //分割牛牛结果
         $replace = str_replace('10','0',$openCode); //替换开奖号码10->0
         $explodeNum = explode(',',$replace); //分割秒速赛车开奖结果
