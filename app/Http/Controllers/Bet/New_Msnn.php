@@ -125,7 +125,6 @@ class New_Msnn
 
     public function bunko($win,$lose,$nn,$gameId,$issue)
     {
-        global $index;
         $niuniuArr = explode(',',$nn); //分割牛牛结果
         $banker_nn = $niuniuArr[0];
         $player1_nn = $niuniuArr[1];
@@ -138,10 +137,9 @@ class New_Msnn
         $winArr = [];
 
         $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        \Log::info('赢'.$win);
-        \Log::info('输'.$lose);
+        \Log::info('赢'.count($win));
+        \Log::info('输'.count($lose));
         if($getUserBets){
-            $index = 0;
             if(count($win) !== 0){
                 $sql_win = "UPDATE bet SET bunko = CASE ";
                 $sql_unfreeze_win = "UPDATE bet SET unfreeze_money = CASE ";
@@ -185,9 +183,6 @@ class New_Msnn
                 $run = DB::statement($sql_win);
                 if($run == 1){
                     $run2 = DB::statement($sql_unfreeze_win);
-                    if($run2 == 1){
-                        return $index++;
-                    }
                 }
             }
 
@@ -242,16 +237,8 @@ class New_Msnn
                 $run = DB::statement($sql_lose);
                 if($run == 1){
                     $run2 = DB::statement($sql_unfreeze_lose);
-                    if($run2 == 1){
-                        return $index++;
-                    }
                 }
             }
-        }
-
-        if($index == 1 || $index == 2){
-            \Log::info($index);
-            return 1;
         }
     }
 
