@@ -250,7 +250,7 @@ class New_Msnn
                         foreach ($lose as $k=>$v){
                             if($v == $item->play_id){
                                 $bunko = 0-$item->bet_money*5;
-                                $unfreeze = 0-$item->freeze_money;
+                                $unfreeze = 0;
                                 $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                                 $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $loseArr[] = $item->play_id;
