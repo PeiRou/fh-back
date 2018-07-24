@@ -34,8 +34,8 @@ class New_Msnn
 
     public function NN($openCode,$nn,$gameId,$win,$lose)
     {
-//        $nn = '7,3,-1,9,7,8';
-//        $openCode = '3,2,4,8,10,9,5,7,6,1';
+        $nn = '10,-1,6,3,1,5';
+        $openCode = '10,1,6,9,4,2,5,3,7,8';
         \Log::info($openCode);
         \Log::info($nn);
 
@@ -136,6 +136,8 @@ class New_Msnn
         $winArr = [];
 
         $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        \Log::info('赢'.$win);
+        \Log::info('输'.$lose);
         if($getUserBets){
             if($win){
                 $sql_win = "UPDATE bet SET bunko = CASE ";
