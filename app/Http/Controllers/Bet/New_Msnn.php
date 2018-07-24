@@ -125,14 +125,7 @@ class New_Msnn
 
     public function bunko($win,$lose,$nn,$gameId,$issue)
     {
-        $niuniuArr = explode(',',$nn); //分割牛牛结果
-        $banker_nn = $niuniuArr[0];
-        $player1_nn = $niuniuArr[1];
-        $player2_nn = $niuniuArr[2];
-        $player3_nn = $niuniuArr[3];
-        $player4_nn = $niuniuArr[4];
-        $player5_nn = $niuniuArr[5];
-
+        $in = 0;
         $loseArr = [];
         $winArr = [];
 
@@ -147,28 +140,28 @@ class New_Msnn
                     foreach ($win as $k=>$v){
                         if($v[0] == $item->play_id){
                             if((int)$v[1] <= 6 || (int)$v[1] <= 6 || (int)$v[1] <= 6 || (int)$v[1] <= 6 || (int)$v[1] <= 6){
-                                $bunko = $item->bet_money+$item->bet_money*1;
+                                $bunko = ($item->bet_money+$item->bet_money*1)+$item->freeze_money;
                                 $unfreeze = $item->freeze_money;
                                 $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                                 $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $winArr[] = $item->play_id;
                             }
                             if((int)$v[1] == 7 || (int)$v[1] == 8 || (int)$v[1] == 7 || (int)$v[1] == 8 || (int)$v[1] == 7 || (int)$v[1] == 8 || (int)$v[1] == 7 || (int)$v[1] == 8 || (int)$v[1] == 7 || (int)$v[1] == 8){
-                                $bunko = $item->bet_money+$item->bet_money*2;
+                                $bunko = ($item->bet_money+$item->bet_money*2)+$item->freeze_money;
                                 $unfreeze = $item->freeze_money;
                                 $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                                 $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $winArr[] = $item->play_id;
                             }
                             if((int)$v[1] == 9 || (int)$v[1] == 9 || (int)$v[1] == 9 || (int)$v[1] == 9 || (int)$v[1] == 9){
-                                $bunko = $item->bet_money+$item->bet_money*3;
+                                $bunko = ($item->bet_money+$item->bet_money*3)+$item->freeze_money;
                                 $unfreeze = $item->freeze_money;
                                 $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                                 $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $winArr[] = $item->play_id;
                             }
                             if((int)$v[1] == 10 || (int)$v[1] == 10 || (int)$v[1] == 10 || (int)$v[1] == 10 || (int)$v[1] == 10){
-                                $bunko = $item->bet_money+$item->bet_money*5;
+                                $bunko = ($item->bet_money+$item->bet_money*5)+$item->freeze_money;
                                 $unfreeze = $item->freeze_money;
                                 $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                                 $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
@@ -183,6 +176,7 @@ class New_Msnn
                 $run = DB::statement($sql_win);
                 if($run == 1){
                     $run2 = DB::statement($sql_unfreeze_win);
+                    $in++;
                 }
             }
 
@@ -237,8 +231,11 @@ class New_Msnn
                 $run = DB::statement($sql_lose);
                 if($run == 1){
                     $run2 = DB::statement($sql_unfreeze_lose);
+                    $in++;
                 }
             }
+
+            \Log::info('结算次数'.$in);
         }
     }
 
