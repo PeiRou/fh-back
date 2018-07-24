@@ -26,7 +26,7 @@ class New_Msnn
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                 if($updateUserMoney == 1){
-                    \Log::info('秒速牛牛第'.$issue.'已结算');
+                    //\Log::info('秒速牛牛第'.$issue.'已结算');
                     return 1;
                 }
             }
@@ -37,8 +37,8 @@ class New_Msnn
     {
 //        $nn = '-1,-1,10,7,2,3';
 //        $openCode = '9,7,8,6,2,4,10,5,1,3';
-        \Log::info($openCode);
-        \Log::info($nn);
+        //\Log::info($openCode);
+        //\Log::info($nn);
 
         $niuniuArr = explode(',',$nn); //分割牛牛结果
         $explodeNum = explode(',',$openCode); //分割秒速赛车开奖结果
@@ -52,72 +52,72 @@ class New_Msnn
 
         if((int)$banker_nn > (int)$player1_nn){
             $lose->push([911893457,(int)$banker_nn]);
-            \Log::info('闲一输');
+           // \Log::info('闲一输');
         } else if((int)$banker_nn == (int)$player1_nn && (int)$banker_nn <= 6){
             $lose->push([911893457,(int)$banker_nn]);
-            \Log::info('闲一输');
+            //\Log::info('闲一输');
         } else if((int)$banker_nn == (int)$player1_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[1]){
             $lose->push([911893457,(int)$banker_nn]);
-            \Log::info('闲一输');
+            //\Log::info('闲一输');
         } else {
             $win->push([911893457,(int)$player1_nn]);
-            \Log::info('闲一赢');
+            //\Log::info('闲一赢');
         }
 
         if((int)$banker_nn > (int)$player2_nn){
             $lose->push([911893458,(int)$banker_nn]);
-            \Log::info('闲二输');
+            //\Log::info('闲二输');
         } else if((int)$banker_nn == (int)$player2_nn && (int)$banker_nn <= 6){
             $lose->push([911893458,(int)$banker_nn]);
-            \Log::info('闲二输');
+            //\Log::info('闲二输');
         } else if((int)$banker_nn == (int)$player2_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[2]){
             $lose->push([911893458,(int)$banker_nn]);
-            \Log::info('闲二输');
+            //\Log::info('闲二输');
         } else {
             $win->push([911893458,(int)$player2_nn]);
-            \Log::info('闲二赢');
+            //\Log::info('闲二赢');
         }
 
         if((int)$banker_nn > (int)$player3_nn){
             $lose->push([911893459,(int)$banker_nn]);
-            \Log::info('闲三输');
+            //\Log::info('闲三输');
         } else if((int)$banker_nn == (int)$player3_nn && (int)$banker_nn <= 6){
             $lose->push([911893459,(int)$banker_nn]);
-            \Log::info('闲三输');
+            //\Log::info('闲三输');
         } else if((int)$banker_nn == (int)$player3_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[3]){
             $lose->push([911893459,(int)$banker_nn]);
-            \Log::info('闲三输');
+            //\Log::info('闲三输');
         } else {
             $win->push([911893459,(int)$player3_nn]);
-            \Log::info('闲三赢');
+            //\Log::info('闲三赢');
         }
 
         if((int)$banker_nn > (int)$player4_nn){
             $lose->push([911893460,(int)$banker_nn]);
-            \Log::info('闲四输');
+            //\Log::info('闲四输');
         } else if((int)$banker_nn == (int)$player4_nn && (int)$banker_nn <= 6){
             $lose->push([911893460,(int)$banker_nn]);
-            \Log::info('闲四输');
+            //\Log::info('闲四输');
         } else if((int)$banker_nn == (int)$player4_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[4]){
             $lose->push([911893460,(int)$banker_nn]);
-            \Log::info('闲四输');
+            //\Log::info('闲四输');
         } else {
             $win->push([911893460,(int)$player4_nn]);
-            \Log::info('闲四赢');
+            //\Log::info('闲四赢');
         }
 
         if((int)$banker_nn > (int)$player5_nn){
             $lose->push([911893461,(int)$banker_nn]);
-            \Log::info('闲五输');
+            //\Log::info('闲五输');
         } else if((int)$banker_nn == (int)$player5_nn && (int)$banker_nn <= 6){
             $lose->push([911893461,(int)$banker_nn]);
-            \Log::info('闲五输');
+            //\Log::info('闲五输');
         } else if((int)$banker_nn == (int)$player5_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[5]){
             $lose->push([911893461,(int)$banker_nn]);
-            \Log::info('闲五输');
+            //\Log::info('闲五输');
         } else {
             $win->push([911893461,(int)$player5_nn]);
-            \Log::info('闲五赢');
+            //\Log::info('闲五赢');
         }
     }
 
@@ -128,8 +128,8 @@ class New_Msnn
         $winArr = [];
 
         $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        \Log::info('赢'.count($win));
-        \Log::info('输'.count($lose));
+        //\Log::info('赢'.count($win));
+        //\Log::info('输'.count($lose));
         if($getUserBets){
             if(count($win) !== 0){
                 $sql_win = "UPDATE bet SET bunko = CASE ";
@@ -181,7 +181,7 @@ class New_Msnn
                 $sql_win .= "END ";
                 $sql_nn_money .= "END ";
                 $sql_unfreeze_win .= "END WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
-                \Log::info('sql1+++'.$sql_win.$sql_nn_money.$sql_unfreeze_win);
+                //\Log::info('sql1+++'.$sql_win.$sql_nn_money.$sql_unfreeze_win);
                 $run = DB::statement($sql_win.$sql_nn_money.$sql_unfreeze_win);
                 if($run == 1){
                     $in++;
@@ -195,11 +195,6 @@ class New_Msnn
                 foreach ($getUserBets as $item){
                     foreach ($lose as $k=>$v){
                         if($v[0] == $item->play_id){
-                            if((int)$v[1] <= 6){
-                                \Log::info($v[1].'小于6');
-                            } else {
-                                \Log::info($v[1].'不小于6');
-                            }
                             if((int)$v[1] <= 6){
                                 $bunko = ($item->bet_money+$item->freeze_money)-$item->bet_money;
                                 $unfreeze = $item->freeze_money;
@@ -246,7 +241,7 @@ class New_Msnn
                 $sql_lose .= "END ";
                 $sql_nn_money .= "END ";
                 $sql_unfreeze_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
-                \Log::info('sql2+++'.$sql_lose.$sql_nn_money.$sql_unfreeze_lose);
+                //\Log::info('sql2+++'.$sql_lose.$sql_nn_money.$sql_unfreeze_lose);
                 $run = DB::statement($sql_lose.$sql_nn_money.$sql_unfreeze_lose);
                 if($run == 1){
                     $in++;
@@ -276,21 +271,4 @@ class New_Msnn
             }
         }
     }
-//    private function updateUserMoney($gameId,$issue){
-//        $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-//        $sql = "UPDATE users SET money = money+ CASE id ";
-//        $users = [];
-//        foreach ($get as $i){
-//            $users[] = $i->user_id;
-//            $sql .= "WHEN $i->user_id THEN $i->s ";
-//        }
-//        $ids = implode(',',$users);
-//        if($ids && isset($ids)){
-//            $sql .= "END WHERE id IN (0,$ids)";
-//            $up = DB::statement($sql);
-//            if($up == 1){
-//                return 1;
-//            }
-//        }
-//    }
 }
