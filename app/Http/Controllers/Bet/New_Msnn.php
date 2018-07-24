@@ -133,7 +133,7 @@ class New_Msnn
         if($getUserBets){
             if(count($win) !== 0){
                 $sql_win = "UPDATE bet SET bunko = CASE ";
-                $sql_unfreeze_win = "UPDATE bet SET unfreeze_money = CASE ";
+                $sql_unfreeze_win = " , unfreeze_money = CASE ";
                 foreach ($getUserBets as $item){
                     foreach ($win as $k=>$v){
                         if($v[0] == $item->play_id){
@@ -171,18 +171,18 @@ class New_Msnn
                 $WinListIn = implode(',', $winArr);
                 $sql_win .= "END WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
                 $sql_unfreeze_win .= "END WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
-                $run = DB::statement($sql_win);
+                $run = DB::statement($sql_win.$sql_unfreeze_win);
                 if($run == 1){
-                    $run2 = DB::statement($sql_unfreeze_win);
-                    if($run2 == 1){
+//                    $run2 = DB::statement($sql_unfreeze_win);
+//                    if($run2 == 1){
                         $in++;
-                    }
+//                    }
                 }
             }
 
             if(count($lose) !== 0){
                 $sql_lose = "UPDATE bet SET bunko = CASE ";
-                $sql_unfreeze_lose = "UPDATE bet SET unfreeze_money = CASE ";
+                $sql_unfreeze_lose = " , unfreeze_money = CASE ";
                 foreach ($getUserBets as $item){
                     foreach ($lose as $k=>$v){
                         if($v[0] == $item->play_id){
@@ -228,12 +228,12 @@ class New_Msnn
                 $LoseListIn = implode(',', $loseArr);
                 $sql_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
                 $sql_unfreeze_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
-                $run = DB::statement($sql_lose);
+                $run = DB::statement($sql_lose.$sql_unfreeze_lose);
                 if($run == 1){
-                    $run2 = DB::statement($sql_unfreeze_lose);
-                    if($run2 == 1){
+//                    $run2 = DB::statement($sql_unfreeze_lose);
+//                    if($run2 == 1){
                         $in++;
-                    }
+//                    }
                 }
             }
 
