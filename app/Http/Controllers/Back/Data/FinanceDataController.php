@@ -374,6 +374,13 @@ class FinanceDataController extends Controller
                     return $capital->game_name;
                 }
             })
+            ->editColumn('money', function($capital){
+                if($capital->game_id ==90 || $capital->game_id ==91){
+                    return '下注:'.$capital->nn_view_money.'(冻结:'.$capital->freeze_money.')'.'(解冻:'.$capital->freeze_money.')';
+                }else{
+                    return $capital->money;
+                }
+            })
             ->editColumn('balance',function ($capital){
                 if(empty($capital->balance)){
                     return '-';
