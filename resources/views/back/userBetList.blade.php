@@ -285,18 +285,11 @@
                         }else{
                             if(data.bet_bunko > 0){
                                 var tmpBet_bet_money = intVal(data.bet_bunko)>0?intVal(data.bet_bet_money):0;
-                                lastMoney = (parseFloat(intVal(data.bet_bunko) - tmpBet_bet_money - intVal(data.bet_freeze_money))).toFixed(2);
+                                lastMoney = (parseFloat(intVal(data.bet_bunko) - tmpBet_bet_money)).toFixed(2);
                                 txt = "<span class='blue-text'><b>"+lastMoney+"</b></span>";
                             }
-                            if(data.bet_game_id == 90 || data.bet_game_id == 91){
-                                if(data.bet_bunko < 0){
-                                    var bunko = (parseFloat(0 - intVal(data.bet_bet_money) - intVal(data.bet_freeze_money))).toFixed(2);
-                                    txt = "<span class='red-text'><b>"+bunko+"</b></span>";
-                                }
-                            } else {
-                                if(data.bet_bunko < 0){
-                                    txt = "<span class='red-text'><b>"+data.bet_bunko+"</b></span>";
-                                }
+                            if(data.bet_bunko < 0){
+                                txt = "<span class='red-text'><b>"+data.bet_bunko+"</b></span>";
                             }
                         }
                         return txt;
@@ -325,7 +318,7 @@
                     .data()
                     .reduce( function (a, b,c) {
                         var tmpBet_bet_money = intVal(data[c].bet_bunko)>0?intVal(data[c].bet_bet_money):0;
-                        return parseFloat((intVal(a) + intVal(data[c].bet_bunko) - tmpBet_bet_money - intVal(data[c].bet_freeze_money)).toFixed(2));
+                        return parseFloat((intVal(a) + intVal(data[c].bet_bunko) - tmpBet_bet_money).toFixed(2));
                     }, 0 );
                 // Update footer by showing the total with the reference of the column index
                 $( api.column( 0 ).footer() ).html('总计');
