@@ -136,8 +136,8 @@ class New_Msnn
         $winArr = [];
 
         $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        \Log::info('赢'.$win);
-        \Log::info('输'.$lose);
+        \Log::info('赢'.count($win));
+        \Log::info('输'.count($lose));
         if($getUserBets){
             if($win !== '[]'){
                 $sql_win = "UPDATE bet SET bunko = CASE ";
