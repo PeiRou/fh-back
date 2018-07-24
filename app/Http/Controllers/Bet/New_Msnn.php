@@ -35,8 +35,8 @@ class New_Msnn
 
     public function NN($openCode,$nn,$gameId,$win,$lose)
     {
-//        $nn = '10,1,-1,5,6,5';
-//        $openCode = '9,6,8,4,3,10,1,7,5,2';
+        $nn = '-1,-1,10,7,2,3s';
+        $openCode = '9,7,8,6,2,4,10,5,1,3';
         \Log::info($openCode);
         \Log::info($nn);
 
@@ -197,28 +197,28 @@ class New_Msnn
                 foreach ($getUserBets as $item){
                     foreach ($lose as $k=>$v){
                         if($v[0] == $item->play_id){
-                            if($v[1] <= 6){
+                            if((int)$v[1] <= 6){
                                 $bunko = ($item->bet_money+$item->freeze_money)-$item->bet_money;
                                 $unfreeze = $item->freeze_money;
                                 $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                                 $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $loseArr[] = $item->play_id;
                             }
-                            if($v[1] == 7 || $v[1] == 8){
+                            if((int)$v[1] == 7 || (int)$v[1] == 8){
                                 $bunko = ($item->bet_money+$item->freeze_money)-$item->bet_money*2;
                                 $unfreeze = $item->freeze_money - $item->bet_money;
                                 $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                                 $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $loseArr[] = $item->play_id;
                             }
-                            if($v[1] == 9){
+                            if((int)$v[1] == 9){
                                 $bunko = ($item->bet_money+$item->freeze_money)-$item->bet_money*3;
                                 $unfreeze = $item->freeze_money - $item->bet_money*2;
                                 $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                                 $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $loseArr[] = $item->play_id;
                             }
-                            if($v[1] == 10){
+                            if((int)$v[1] == 10){
                                 $bunko = ($item->bet_money+$item->freeze_money)-$item->bet_money*5;
                                 if($bunko == 0){
                                     $bunko = -1;
