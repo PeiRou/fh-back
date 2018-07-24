@@ -89,13 +89,12 @@ class SrcViewController extends Controller
     public function userBetListTotal(Request $request)
     {
         $userId = $request->get('userId');
-        $date = $request->get('date');
         $startTime = $request->get('startTime');
         $endTime = $request->get('endTime');
         $issue = $request->get('issue');
         $orderNum = $request->get('orderNum');
 
-        $get = DB::table('bet')->select(DB::raw('sum(bet_money) as betTotal, sum(case WHEN bunko > 0 then bunko - bet_money else bunko end) as winTotal'))
+        $get = DB::table('bet')->select(DB::raw('sum(bet_money) as betTotal, sum(case WHEN game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as winTotal'))
             ->where(function ($query) use($issue) {
                 if($issue && isset($issue)){
                     $query->where('issue',$issue);

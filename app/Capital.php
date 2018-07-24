@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Capital extends Model
 {
@@ -52,7 +53,7 @@ class Capital extends Model
 
     //资金明细组装
     public static function AssemblyFundDetails($param){
-        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id','game.game_name','capital.play_type','capital.operation_id','sub_account.account','capital.content')
+        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id','game.game_name','capital.play_type','capital.operation_id','sub_account.account','capital.content',DB::raw("'' as freeze_money,'' as unfreeze_money,'' as nn_view_money"))
             ->where(function ($sql) use($param){
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
                     $sql->whereBetween('capital.created_at',[$param['startTime'] .' 00:00:00',$param['endTime'] .' 23:59:59']);
@@ -74,7 +75,7 @@ class Capital extends Model
                     $sql->where('users.id','=',$param['account_id']);
                 }
                 if(isset($param['account']) && array_key_exists('account',$param)){
-                    $sql->where('users.name','=',$param['account']);
+                    $sql->where('users.username','=',$param['account']);
                 }
                 if(isset($param['game_id']) && array_key_exists('game_id',$param)){
                     $sql->where('capital.game_id','=',$param['game_id']);

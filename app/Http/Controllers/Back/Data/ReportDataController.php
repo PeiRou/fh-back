@@ -20,7 +20,8 @@ class ReportDataController extends Controller
         $chkTest = $request->get('chkTest');            //是否过滤测试帐号
 
         $aSql = "SELECT zd.ga_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,zd.account as zdaccount, sum(b.bet_money) as sumMoney,
-sum(case WHEN bunko >0 then bet_money else 0 end) as sumWinbet,sum(case WHEN bunko >0 then bunko-bet_money else bunko end) as sumBunko 
+sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
+sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko 
 FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.agent = ag.a_id LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id WHERE 1 ";
         $where = "";
         if(isset($game) && $game){
@@ -59,8 +60,9 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         $zd = $request->get('zd');            //总代帐号
 
         $aSql = "SELECT ag.a_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,ag.name as agname, 
-sum(case WHEN bunko >0 then bet_money else 0 end) as sumWinbet,sum(case WHEN bunko >0 then bunko-bet_money else bunko end) as sumBunko 
-FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.agent = ag.a_id WHERE 1 ";
+sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
+sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko 
+FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.agent = ag.a_id WHERE 1";
         $where = "";
         if(isset($game) && $game){
             $where .= " and b.game_id = ".$game;
@@ -107,7 +109,8 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         }
 
         $aSql = "SELECT u.id,u.username,u.fullName,u.agent,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,
-            sum(case WHEN bunko >0 then bet_money else 0 end) as sumWinbet,sum(case WHEN bunko >0 then bunko-bet_money else bunko end) as sumBunko
+sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
+sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko
             FROM {$aUser} u LEFT JOIN `bet` b on u.id = b.user_id LEFT JOIN `agent` ag on u.agent = ag.a_id WHERE 1 ";
         $where = "";
         if(isset($game) && $game){

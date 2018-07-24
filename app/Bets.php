@@ -22,7 +22,7 @@ class Bets extends Model
     }
 
     public static function AssemblyFundDetails($param){
-        $aSql = Bets::select(DB::raw("users.name,bet.user_id,bet.order_id,bet.created_at,bet.status,(CASE WHEN bet.bunko > 0 THEN bet.bunko - bet.bet_money ELSE bet.bunko END) as sumBunko,'' as balance,bet.issue,bet.game_id,game.game_name,bet.play_name,'' as agent,'' as agent_id,bet.bet_info"))
+        $aSql = Bets::select(DB::raw("users.username,bet.user_id,bet.order_id,bet.created_at,bet.status,bet.bunko,'' as balance,bet.issue,bet.game_id,game.game_name,bet.play_name,'' as agent,'' as agent_id,bet.bet_info,bet.freeze_money,bet.unfreeze_money,bet.nn_view_money"))
             ->where(function ($sql) use ($param) {
                 if (isset($param['time_point']) && array_key_exists('time_point', $param)) {
                     if ($param['time_point'] == 'today') {
@@ -40,7 +40,7 @@ class Bets extends Model
                     $sql->where('users.id','=',$param['account_id']);
                 }
                 if (isset($param['account']) && array_key_exists('account', $param)) {
-                    $sql->where('users.name', '=', $param['account']);
+                    $sql->where('users.username', '=', $param['account']);
                 }
                 if (isset($param['game_id']) && array_key_exists('game_id', $param)) {
                     $sql->where('bet.game_id', '=', $param['game_id']);
