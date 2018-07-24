@@ -346,50 +346,24 @@ class FinanceDataController extends Controller
     public function capitalDetails(Request $request)
     {
         $param = $request->all();
-        $capital = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance','capital.issue','capital.game_id','game.game_name','capital.play_type','capital.operation_id','sub_account.account','capital.content')
-            ->where(function ($sql) use($param){
-            if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
-                $sql->whereBetween('capital.created_at',[$param['startTime'] .' 00:00:00',$param['endTime'] .' 23:59:59']);
+        $capitalSql = Capital::AssemblyFundDetails($param);
+        if(isset($param['type']) && array_key_exists('type', $param)){
+            if(in_array($param['type'],Capital::$includePlayTypeOption)){
+                $betsSql = Bets::AssemblyFundDetails($param);
+                $capital = $capitalSql->union($betsSql);
             }else{
-                if(isset($param['time_point']) && array_key_exists('time_point',$param)) {
-                    if($param['time_point'] == 'today'){
-                        $time = date('Y-m-d');
-                        $sql->whereBetween('capital.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
-                    }elseif($param['time_point'] == 'yesterday'){
-                        $time = date('Y-m-d',strtotime('- 1 day',time()));
-                        $sql->whereBetween('capital.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
-                    }else{
-                        $time = date('Y-m-d',strtotime('- 2 day',time()));
-                        $sql->where('capital.created_at','<=',$time . '23:59:59');
-                    }
-                }
+                $capital = $capitalSql->get();
             }
-            if(isset($param['account']) && array_key_exists('account',$param)){
-                $sql->where('users.name','=',$param['account']);
-            }
-            if(isset($param['game_id']) && array_key_exists('game_id',$param)){
-                $sql->where('capital.game_id','=',$param['game_id']);
-            }
-            if(isset($param['order_id']) && array_key_exists('order_id',$param)){
-                $sql->where('capital.order_id','=',$param['order_id']);
-            }
-            if(isset($param['issue']) && array_key_exists('issue',$param)){
-                $sql->where('capital.issue','=',$param['issue']);
-            }
-            if(isset($param['type']) && array_key_exists('type',$param)){
-                $sql->where('capital.type','=',$param['type']);
-            }
-            if(isset($param['amount_min']) && array_key_exists('amount_min',$param)){
-                $sql->where('capital.money','>=',$param['amount_min']);
-            }
-            if(isset($param['amount_max']) && array_key_exists('amount_max',$param)){
-                $sql->where('capital.money','<=',$param['amount_max']);
-            }
-        })->leftJoin('game','game.game_id','=','capital.game_id')->leftJoin('users','users.id','=','capital.to_user')->leftJoin('sub_account','sub_account.sa_id','=','capital.operation_id')
-            ->orderBy('capital.created_at','desc')->get();
+        }else {
+            $betsSql = Bets::AssemblyFundDetails($param);
+            $capital = $capitalSql->union($betsSql);
+        }
         $playTypeOptions = Capital::$playTypeOption;
         return DataTables::of($capital)
             ->editColumn('type',function ($capital) use ($playTypeOptions){
+                if(strpos($capital->type,'t') === false) {
+                    return $playTypeOptions['t05'];
+                }
                 return $playTypeOptions[$capital->type];
             })
             ->editColumn('game_name',function ($capital){
@@ -399,11 +373,32 @@ class FinanceDataController extends Controller
                     return $capital->game_name;
                 }
             })
+            ->editColumn('balance',function ($capital){
+                if(empty($capital->balance)){
+                    return '-';
+                }else{
+                    return $capital->balance;
+                }
+            })
             ->editColumn('issue',function ($capital){
                 if(empty($capital->issue)){
                     return '-';
                 }else{
                     return $capital->issue;
+                }
+            })
+            ->editColumn('account',function ($capital){
+                if(empty($capital->account)){
+                    return '-';
+                }else{
+                    return $capital->account;
+                }
+            })
+            ->editColumn('content',function ($capital){
+                if(empty($capital->content)){
+                    return '-';
+                }else{
+                    return $capital->content;
                 }
             })
             ->editColumn('play_type',function ($capital){

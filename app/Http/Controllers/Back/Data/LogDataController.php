@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back\Data;
 
+use App\LogAbnormal;
 use App\LogHandle;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -68,6 +69,54 @@ class LogDataController extends Controller
                     return '-';
                 }else{
                     return $logHandle->param;
+                }
+            })
+            ->make(true);
+    }
+
+    public function logAbnormal(Request $request){
+        $param = $request->all();
+        $logAbnormal = LogAbnormal::where(function ($sql) use ($param){
+            if(isset($param['type_id']) && array_key_exists('type_id',$param)){
+                $sql->where('type_id','=',$param['type_id']);
+            }
+            if(isset($param['ip']) && array_key_exists('ip',$param)){
+                $sql->where('ip','=',$param['ip']);
+            }
+            if(isset($param['startTime']) && array_key_exists('startTime',$param)){
+                $sql->where('create_at','>=',$param['startTime'] . ' 00:00:00');
+            }
+            if(isset($param['endTime']) && array_key_exists('endTime',$param)){
+                $sql->where('create_at','<=',$param['endTime'] . ' 23:59:59');
+            }
+        })->orderBy('create_at','desc')->get();
+        return DataTables::of($logAbnormal)
+            ->editColumn('param',function ($logHandle){
+                if(empty(json_decode($logHandle->param))){
+                    return '-';
+                }else{
+                    return $logHandle->param;
+                }
+            })
+            ->editColumn('user_id',function ($logHandle){
+                if(empty($logHandle->user_id)){
+                    return '-';
+                }else{
+                    return $logHandle->user_id;
+                }
+            })
+            ->editColumn('name',function ($logHandle){
+                if(empty($logHandle->name)){
+                    return '-';
+                }else{
+                    return $logHandle->name;
+                }
+            })
+            ->editColumn('route',function ($logHandle){
+                if(empty($logHandle->route)){
+                    return '-';
+                }else{
+                    return $logHandle->route;
                 }
             })
             ->make(true);

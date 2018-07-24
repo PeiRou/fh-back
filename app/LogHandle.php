@@ -11,16 +11,41 @@ class LogHandle extends Model
     protected $primaryKey = 'id';
 
     //获取操作类型
-        public static function getTypeOption(){
-            $routeLists = RouteConfig::$routeList;
-            $dataLists = [];
-            foreach ($routeLists as $key => $routeList){
-                $dataLists[] = [
-                    'type_id' => $key,
-                    'type_name' => $routeList['name']
+    public static function getTypeOption(){
+        $routeLists = PermissionsType::getPermissionType();
+        $dataLists = [];
+        foreach ($routeLists as $routeList){
+            $dataLists[] = [
+                'type_id' => $routeList->id,
+                'type_name' => $routeList->name
+            ];
+        }
+        return $dataLists;
+    }
+
+    //获取类型
+    public static function getTypeAction($routeName){
+        $routeLists = PermissionsAuth::getPermissionList();
+        $data = [];
+        foreach ($routeLists as $routeList){
+            if($routeList->route_name == $routeName){
+                $data = [
+                    'type_id' => $routeList->type_pefix,
+                    'type_name' => $routeList->type_name,
+                    'route' => $routeName,
+                    'action' => $routeList->auth_name
                 ];
             }
-            return $dataLists;
         }
+        if(empty($data)){
+            $data = [
+                'type_id' => 'error',
+                'type_name' => '未知类型',
+                'route' => $routeName,
+                'action' => '未知方法'
+            ];
+        }
+        return $data;
+    }
 
 }

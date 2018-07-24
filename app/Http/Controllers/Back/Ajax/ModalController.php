@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Back\Ajax;
 use App\Agent;
 use App\Article;
 use App\Banks;
+use App\Capital;
 use App\Games;
 use App\GeneralAgent;
 use App\Levels;
 use App\PayOnline;
 use App\PayType;
 use App\Permissions;
+use App\PermissionsAuth;
+use App\PermissionsType;
 use App\RechargeWay;
 use App\Roles;
 use App\SubAccount;
@@ -24,7 +27,33 @@ class ModalController extends Controller
     //添加权限
     public function addPermission()
     {
-        return view('back.modal.system.addPermission');
+        $aPermissionsAuths = PermissionsAuth::getPermissionLowerLevelList();
+        return view('back.modal.system.addPermission',compact('aPermissionsAuths'));
+    }
+
+    //修改权限
+    public function editPermission($id)
+    {
+        $aPermissionsAuths = PermissionsAuth::getPermissionLowerLevelList();
+        $aPermissions = Permissions::getPermissionOne($id);
+        return view('back.modal.system.editPermission',compact('aPermissionsAuths','aPermissions'));
+    }
+
+    //添加权限控制
+    public function addPermissionAuth(){
+        $aPermissionsAuths = PermissionsAuth::getPermissionLowerLevelList();
+        $aPermissionsTypes = PermissionsType::getPermissionType();
+
+        return view('back.modal.system.addPermissionAuth',compact('aPermissionsAuths','aPermissionsTypes'));
+    }
+
+    //修改权限控制
+    public function editPermissionAuth($id){
+        $aPermissionsAuths = PermissionsAuth::getPermissionLowerLevelList();
+        $aPermissionsTypes = PermissionsType::getPermissionType();
+        $oPermissionsAuth = PermissionsAuth::getPermissionOne($id);
+
+        return view('back.modal.system.editPermissionAuth',compact('aPermissionsAuths','aPermissionsTypes','oPermissionsAuth'));
     }
 
     //添加角色
@@ -32,6 +61,15 @@ class ModalController extends Controller
     {
         $permissions = Permissions::all();
         return view('back.modal.system.addRole')->with('permissions',$permissions);
+    }
+
+    //修改角色
+    public function editRole($id)
+    {
+        $permissions = Permissions::all();
+        $aRole = Roles::getRoleOne($id);
+
+        return view('back.modal.system.editRole',compact('permissions','aRole'));
     }
 
     //添加子账号
@@ -212,7 +250,8 @@ class ModalController extends Controller
     public function userCapitalHistory($id)
     {
         $games = Games::getGameOption();
-        return view('back.modal.member.userCapitalHistory')->with('uid',$id)->with('games',$games);
+        $capitalTimes = Capital::$playTypeOption;
+        return view('back.modal.member.userCapitalHistory')->with('uid',$id)->with('games',$games)->with('capitalTimes',$capitalTimes);
     }
 
     //添加公告

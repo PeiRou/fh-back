@@ -63,6 +63,7 @@ Route::group(['prefix' => 'back/control/openManage','middleware'=>['check-permis
 
 //系统管理
 Route::group(['prefix' => 'back/control/systemManage','middleware'=>['check-permission','domain-check','add-log-handle']],function () {
+    Route::get('PermissionsAuth','Back\SrcViewController@PermissionsAuth')->name('system.PermissionsAuth'); //权限控制管理
     Route::get('permissions','Back\SrcViewController@Permissions')->name('system.permission'); //权限管理
     Route::get('role','Back\SrcViewController@role')->name('system.role');  //角色管理
     Route::get('systemSetting','Back\SrcViewController@systemSetting')->name('system.systemSetting'); //系统参数配置
@@ -109,8 +110,9 @@ Route::get('/back/datatables/agent','Back\Data\MembersDataController@agent');
 Route::get('/back/datatables/agentCapital/{id}','Back\Data\MembersDataController@agentCapital');
 Route::get('/back/datatables/userCapital/{id}','Back\Data\MembersDataController@userCapital');
 Route::get('/back/datatables/user','Back\Data\MembersDataController@user');
-Route::get('/back/datatables/premissions','Back\Data\SystemDataController@permissions');
-Route::get('/back/datatables/roles','Back\Data\SystemDataController@roles');
+Route::get('/back/datatables/premissions','Back\Data\SystemDataController@permissions'); //权限-表格数据
+Route::get('/back/datatables/premissionsAuth','Back\Data\SystemDataController@permissionsAuth'); //权限控制-表格数据
+Route::get('/back/datatables/roles','Back\Data\SystemDataController@roles'); //角色-表格数据
 Route::get('/back/datatables/bank','Back\Data\PayDataController@bank');
 Route::get('/back/datatables/games','Back\Data\GameDataController@games');
 Route::get('/back/datatables/onlineUser','Back\Data\MembersDataController@onlineUser');
@@ -138,6 +140,7 @@ Route::get('/back/datatables/article','Back\Data\ArticleController@article');
 Route::get('/back/datatables/userBetSearch','Back\Data\BetDataController@userBetSearch');
 Route::get('/back/datatables/log/login','Back\Data\LogDataController@login'); //登录日志
 Route::get('/back/datatables/logHandle','Back\Data\LogDataController@logHandle'); //操作日志
+Route::get('/back/datatables/logAbnormal','Back\Data\LogDataController@logAbnormal'); //异常日志
 Route::get('/back/datatables/openHistory/cqssc','Back\Data\openHistoryController@cqssc'); //历史开奖 - 重庆时时彩
 Route::get('/back/datatables/openHistory/bjpk10','Back\Data\openHistoryController@bjpk10'); //历史开奖 - 北京PK10
 Route::get('/back/datatables/openHistory/bjkl8','Back\Data\openHistoryController@bjkl8'); //历史开奖 - 北京快乐8
@@ -171,7 +174,11 @@ Route::post('/action/admin/getOutUser','Back\SrcMemberController@getOutUser');//
 Route::post('/action/userMoney/totalUserMoney','Back\SrcMemberController@totalUserMoney');//会员总余额统计
 
 Route::post('/action/admin/addPermission','Back\PermissionController@addPermission')->name('addPermission'); //添加权限
-Route::post('/action/admin/addNewRole','Back\RoleController@addNewRole');//添加角色
+Route::post('/action/admin/editPermission','Back\PermissionController@editPermission')->name('system.editPermission'); //修改权限
+Route::post('/action/admin/addPermissionAuth','Back\PermissionController@addPermissionAuth')->name('system.addPermissionAuth'); //添加权限控制
+Route::post('/action/admin/editPermissionAuth','Back\PermissionController@editPermissionAuth')->name('system.editPermissionAuth'); //修改权限控制
+Route::post('/action/admin/addNewRole','Back\RoleController@addNewRole')->name('system.addNewRole'); //添加角色
+Route::post('/action/admin/editNewRole','Back\RoleController@editNewRole')->name('system.editNewRole'); //修改角色
 Route::post('/action/admin/systemSetting/edit','Back\SystemSettingController@editSystemSetting');//编辑系统设置
 Route::post('/action/admin/addArticle','Back\SystemSettingController@addArticle');//添加文章
 Route::post('/action/admin/delArticle','Back\SystemSettingController@delArticle');//删除文章
@@ -229,8 +236,12 @@ Route::post('/action/admin/openLhc','Back\OpenHistoryController@addLhcData');
 Route::post('/action/admin/reOpenLhc','Back\OpenHistoryController@reOpenLhcData');
 
 //Modal
-Route::get('/back/modal/addPermission','Back\Ajax\ModalController@addPermission');
-Route::get('/back/modal/addRole','Back\Ajax\ModalController@addRole');
+Route::get('/back/modal/addPermission','Back\Ajax\ModalController@addPermission'); //添加权限
+Route::get('/back/modal/editPermission/{id}','Back\Ajax\ModalController@editPermission'); //修改权限
+Route::get('/back/modal/addPermissionAuth','Back\Ajax\ModalController@addPermissionAuth'); //添加权限控制
+Route::get('/back/modal/editPermissionAuth/{id}','Back\Ajax\ModalController@editPermissionAuth'); //修改权限控制
+Route::get('/back/modal/addRole','Back\Ajax\ModalController@addRole'); //添加角色
+Route::get('/back/modal/editRole/{id}','Back\Ajax\ModalController@editRole'); //修改角色
 Route::get('/back/modal/addSubAccount','Back\Ajax\ModalController@addSubAccount')->middleware('check-permission')->name('m.subAccount.add');
 Route::get('/back/modal/editSubAccount/{id}','Back\Ajax\ModalController@editSubAccount')->middleware('check-permission')->name('m.subAccount.edit');
 Route::get('/back/modal/googleSubAccount/{id}','Back\Ajax\ModalController@googleSubAccount')->middleware('check-permission')->name('m.subAccount.googleOTP');

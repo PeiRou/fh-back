@@ -2,9 +2,11 @@
 
 namespace App\Exceptions;
 
+use App\LogAbnormal;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Yajra\DataTables\Utilities\Request;
 
 class Handler extends ExceptionHandler
 {
@@ -52,6 +54,7 @@ class Handler extends ExceptionHandler
 //        if ($exception && $exception->getStatusCode()) {
 //            return response()->view('errors.'.$exception->getStatusCode(), [],$exception->getStatusCode());
 //        }
+        LogAbnormal::addExceptionRecord($request,$exception);
         if ($exception instanceof \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException) {
             return response()->json([
                 'status' => 'error',

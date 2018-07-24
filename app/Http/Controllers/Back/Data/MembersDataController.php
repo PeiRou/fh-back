@@ -450,81 +450,29 @@ class MembersDataController extends Controller
     //用户资金明细
     public function userCapital($id,Request $request)
     {
-        $capitalType = $request->get('capital_type');
-        $gameId = $request->get('game_id');
-        $issue = $request->get('issue');
-        $startTime = $request->get('startTime');
-        $endTime = $request->get('endTime');
-        $loginId = Session::get('account_id');
-        $capital = Capital::where(function($q) use($startTime,$endTime,$capitalType,$issue,$loginId,$id,$gameId){
-            if(isset($capitalType) && $capitalType)
-            {
-                $q->whereRaw('capital.type = "'.$capitalType.'"');
+        $param = $request->all();
+        $param['type'] = $request->get('capital_type');
+        $param['account_id'] = $id;
+        $capitalSql = Capital::AssemblyFundDetails($param);
+        if(isset($param['type']) && array_key_exists('type', $param)){
+            if(in_array($param['type'],Capital::$includePlayTypeOption)){
+                $betsSql = Bets::AssemblyFundDetails($param);
+                $capital = $capitalSql->union($betsSql);
+            }else{
+                $capital = $capitalSql->get();
             }
-            if(isset($issue) && $issue)
-            {
-                $q->whereRaw('capital.issue = '.$issue);
-            }
-            if(isset($gameId) && $gameId)
-            {
-                $q->whereRaw('capital.game_id = '.$gameId);
-            }
-            if(isset($startTime) && $startTime)
-            {
-                $startTime = strtotime($startTime.' 00:00:00');
-                $q->whereRaw('unix_timestamp(capital.created_at) >= '.$startTime);
-            }
-            if(isset($endTime) && $endTime)
-            {
-                $endTime = strtotime($endTime.' 23:59:59');
-                $q->whereRaw('unix_timestamp(capital.created_at) <= '.$endTime);
-            }
-            $q->whereRaw('capital.to_user = '.$id.' and capital.user_type = "user"');
-        })->select('capital.*','game.game_id','game.game_name')
-            ->leftJoin('game','game.game_id','=','capital.game_id')->orderBy('capital.created_at','desc')->get();
+        }else {
+            $betsSql = Bets::AssemblyFundDetails($param);
+            $capital = $capitalSql->union($betsSql);
+        }
+        $playTypeOptions = Capital::$playTypeOption;
+
         return DataTables::of($capital)
-            ->editColumn('type', function($capital){
-                switch ($capital->type)
-                {
-                    case 't01':
-                        return '充值';
-                    case 't02':
-                        return '撤单[中奖金额]';
-                    case 't03':
-                        return '撤单[退水金额]';
-                    case 't04':
-                        return '返利/手续费';
-                    case 't05':
-                        return '下注';
-                    case 't06':
-                        return '重新开奖[中奖金额]';
-                    case 't07':
-                        return '重新开奖[退水金额]';
-                    case 't08':
-                        return '活动';
-                    case 't09':
-                        return '奖金';
-                    case 't10':
-                        return '代理结算佣金';
-                    case 't11':
-                        return '代理佣金提现';
-                    case 't12':
-                        return '代理佣金提现失败退回';
-                    case 't13':
-                        return '抢到红包';
-                    case 't14':
-                        return '退水';
-                    case 't15':
-                        return '提现';
-                    case 't16':
-                        return '撤单';
-                    case 't17':
-                        return '提现失败';
-                    case 't18':
-                        return '后台加钱';
-                    case 't19':
-                        return '后台扣钱';
+            ->editColumn('type',function ($capital) use ($playTypeOptions){
+                if(strpos($capital->type,'t') === false) {
+                    return $playTypeOptions['t05'];
                 }
+                return $playTypeOptions[$capital->type];
             })
             ->editColumn('money', function($capital){
                 if($capital->money < 0)
@@ -543,14 +491,6 @@ class MembersDataController extends Controller
                     return "-";
                 } else {
                     return $capital->issue;
-                }
-            })
-            ->editColumn('created_at', function ($capital){
-                if(empty($capital->created_at))
-                {
-                    return "-";
-                } else {
-                    return $capital->created_at;
                 }
             })
             ->editColumn('game', function ($capital){
@@ -575,6 +515,13 @@ class MembersDataController extends Controller
                     return $getSubAccount->account."(".$getSubAccount->name.")";
                 }else{
                     return "-";
+                }
+            })
+            ->editColumn('content',function ($capital){
+                if(empty($capital->content)){
+                    return '-';
+                }else{
+                    return $capital->content;
                 }
             })
             ->rawColumns(['money','balance'])

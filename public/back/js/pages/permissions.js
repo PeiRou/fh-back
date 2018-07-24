@@ -15,7 +15,8 @@ $(function () {
             {data: 'id'},
             {data: 'name'},
             {data: 'group_name'},
-            {data: 'created_at'}
+            {data: 'created_at'},
+            {data: 'control'},
         ]
     });
 });
@@ -37,6 +38,29 @@ function addPermission() {
                         return false;
                     }
                     alert(1);
+                    return false;
+                }
+            }
+        }
+    });
+}
+
+function edit(id) {
+    jc1 = $.confirm({
+        theme: 'material',
+        title: '修改权限',
+        closeIcon:true,
+        boxWidth:'25%',
+        content: 'url:/back/modal/editPermission/'+id,
+        buttons: {
+            formSubmit: {
+                text:'确定提交',
+                btnClass: 'btn-blue',
+                action: function () {
+                    var form = this.$content.find('#editPermissionForm').data('formValidation').validate().isValid();
+                    if(!form){
+                        return false;
+                    }
                     return false;
                 }
             }

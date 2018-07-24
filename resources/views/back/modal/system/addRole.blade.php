@@ -1,4 +1,4 @@
-<form id="addRoleForm" class="ui form" method="post" action="/action/admin/addNewRole">
+<form id="addRoleForm" class="ui form" method="post" action="{{ route('system.addNewRole') }}">
     <div class="field">
         <label>角色名称</label>
         <div class="ui input icon">

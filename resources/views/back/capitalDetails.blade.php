@@ -57,23 +57,17 @@
                         <input type="text" id="amount_max" placeholder="最大金额">
                     </div>
                     <div style="line-height: 32px;">时间：</div>
-                    <div class="one wide field">
-                        {{--<input type="text" id="time" placeholder="">--}}
-                        <div class="ui calendar" id="rangestart" style="width: 108px;">
-                            <div class="ui input left icon">
-                                <i class="calendar icon"></i>
-                                <input type="text" id="startTime" value="{{ date('Y-m-d',time()) }}" placeholder="">
-                            </div>
+                    <div class="ui calendar" id="rangestart" style="width: 108px;">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" id="startTime" value="" placeholder="">
                         </div>
                     </div>
                     <div style="line-height: 32px;">-</div>
-                    <div class="one wide field">
-                        {{--<input type="text" id="promoter" placeholder="">--}}
-                        <div class="ui calendar" id="rangeend" style="width: 108px;">
-                            <div class="ui input left icon">
-                                <i class="calendar icon"></i>
-                                <input type="text" id="endTime" value="{{ date('Y-m-d',time()) }}" placeholder="">
-                            </div>
+                    <div class="ui calendar" id="rangeend" style="width: 108px;">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" id="endTime" value="" placeholder="">
                         </div>
                     </div>
                     <div class="one wide field">

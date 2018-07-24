@@ -15,7 +15,8 @@ $(function () {
             {data: 'id'},
             {data: 'name'},
             {data: 'type'},
-            {data: 'created_at'}
+            {data: 'created_at'},
+            {data: 'control'}
         ]
     });
 });
@@ -27,6 +28,29 @@ function addRole() {
         closeIcon:true,
         boxWidth:'25%',
         content: 'url:/back/modal/addRole',
+        buttons: {
+            formSubmit: {
+                text:'确定提交',
+                btnClass: 'btn-blue',
+                action: function () {
+                    var form = this.$content.find('#addRoleForm').data('formValidation').validate().isValid();
+                    if(!form){
+                        return false;
+                    }
+                    return false;
+                }
+            }
+        }
+    });
+}
+
+function edit(id) {
+    jc2 = $.confirm({
+        theme: 'material',
+        title: '修改角色',
+        closeIcon:true,
+        boxWidth:'25%',
+        content: 'url:/back/modal/editRole/'+id,
         buttons: {
             formSubmit: {
                 text:'确定提交',

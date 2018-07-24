@@ -7,25 +7,9 @@
                 <label>资金类型</label>
                 <select class="ui dropdown" id="capital_type" style='height:32px !important'>
                     <option value="">类型</option>
-                    <option value="t01">充值</option>
-                    <option value="t02">撤单[中奖金额]</option>
-                    <option value="t03">撤单[退水金额]</option>
-                    <option value="t04">返利/手续费</option>
-                    <option value="t05">下注</option>
-                    <option value="t06">重新开奖[中奖金额]</option>
-                    <option value="t07">重新开奖[退水金额]</option>
-                    <option value="t08">活动</option>
-                    <option value="t09">奖金</option>
-                    <option value="t10">代理结算佣金</option>
-                    <option value="t11">代理佣金提现</option>
-                    <option value="t12">代理佣金提现失败退回</option>
-                    <option value="t13">抢到红包</option>
-                    <option value="t14">退水</option>
-                    <option value="t15">提现</option>
-                    <option value="t16">撤单</option>
-                    <option value="t17">提现失败</option>
-                    <option value="t18">后台加钱</option>
-                    <option value="t19">后台扣钱</option>
+                    @foreach($capitalTimes as $key => $capitalTime)
+                        <option value="{{ $key }}">{{ $capitalTime }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="three wide field">

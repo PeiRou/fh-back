@@ -347,7 +347,20 @@ class SrcViewController extends Controller
         $game = Games::all();
         return view('back.handicapSetting',compact('gameData','game'));
     }
-    
+
+    //权限控制
+    public function PermissionsAuth(Request $request)
+    {
+        //return $this->hasPermission->hasPermission(['system.permission','system.role','system.systemSetting']);
+        $params = $request->all();
+        if(isset($params['pid']) && array_key_exists('pid',$params)){
+            $auth_id = $params['pid'];
+        }else{
+            $auth_id = 0;
+        }
+        return view('back.system.permissionsAuth',compact('auth_id'));
+    }
+
     //权限
     public function Permissions()
     {
@@ -386,7 +399,8 @@ class SrcViewController extends Controller
     //异常日志
     public function abnormalLog()
     {
-        return view('back.log.abnormal');
+        $routeLists = LogHandle::getTypeOption();
+        return view('back.log.abnormal',compact('routeLists'));
     }
     //代理结算
     //代理结算报表

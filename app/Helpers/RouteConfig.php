@@ -120,6 +120,10 @@ class RouteConfig
                 'select.payOnlineSelectData' => '下拉菜单获取在线支付分类',
                 'select.payOnlineDateChange' => '下拉菜单获取今日，昨日，上周',
             ]
+        ],
+        'error' => [
+            'name' => '未知类型',
+            'route' => []
         ]
     ];
 }

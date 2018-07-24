@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 class Bets extends Model
 {
@@ -20,7 +21,46 @@ class Bets extends Model
         );
     }
 
-
+    public static function AssemblyFundDetails($param){
+        $aSql = Bets::select(DB::raw("users.name,bet.user_id,bet.order_id,bet.created_at,bet.status,(CASE WHEN bet.bunko > 0 THEN bet.bunko - bet.bet_money ELSE bet.bunko END) as sumBunko,users.money,bet.issue,bet.game_id,game.game_name,bet.play_name,'' as agent,'' as agent_id,bet.bet_info"))
+            ->where(function ($sql) use ($param) {
+                if (isset($param['time_point']) && array_key_exists('time_point', $param)) {
+                    if ($param['time_point'] == 'today') {
+                        $time = date('Y-m-d');
+                        $sql->whereBetween('bet.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                    } elseif ($param['time_point'] == 'yesterday') {
+                        $time = date('Y-m-d', strtotime('- 1 day', time()));
+                        $sql->whereBetween('bet.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                    } else {
+                        $time = date('Y-m-d', strtotime('- 2 day', time()));
+                        $sql->where('bet.created_at', '<=', $time . '23:59:59');
+                    }
+                }
+                if(isset($param['account_id']) && array_key_exists('account_id',$param)){
+                    $sql->where('users.id','=',$param['account_id']);
+                }
+                if (isset($param['account']) && array_key_exists('account', $param)) {
+                    $sql->where('users.name', '=', $param['account']);
+                }
+                if (isset($param['game_id']) && array_key_exists('game_id', $param)) {
+                    $sql->where('bet.game_id', '=', $param['game_id']);
+                }
+                if (isset($param['order_id']) && array_key_exists('order_id', $param)) {
+                    $sql->where('bet.order_id', '=', $param['order_id']);
+                }
+                if (isset($param['issue']) && array_key_exists('issue', $param)) {
+                    $sql->where('bet.issue', '=', $param['issue']);
+                }
+                if (isset($param['amount_min']) && array_key_exists('amount_min', $param)) {
+                    $sql->where('bet.bunko', '>=', $param['amount_min']);
+                }
+                if (isset($param['amount_max']) && array_key_exists('amount_max', $param)) {
+                    $sql->where('bet.bunko', '<=', $param['amount_max']);
+                }
+            })->leftJoin('users', 'users.id', '=', 'bet.user_id')->leftJoin('game', 'game.game_id', '=', 'bet.game_id')
+            ->orderBy('bet.created_at','desc');
+        return $aSql;
+    }
 
 
 }

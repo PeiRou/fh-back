@@ -247,6 +247,7 @@
                 <span><img src="/back/old/images/leftico01.png"></span>
                 系统管理</a>
             <ul>
+                <li id="menu-systemManage-permissionsAuth"><a href="{{ route('system.PermissionsAuth') }}"><cite></cite><span>权限控制管理</span></a></li>
                 @if($hasPermission->hasPermission('system.permission') == "has")
                 <li id="menu-systemManage-permissions"><a href="{{ route('system.permission') }}"><cite></cite><span>权限管理</span></a></li>
                 @endif
