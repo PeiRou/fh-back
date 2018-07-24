@@ -139,45 +139,54 @@ class New_Msnn
         if($getUserBets){
             if($win){
                 $sql_win = "UPDATE bet SET bunko = CASE ";
-                if((int)$banker_nn <= 6){
+                $sql_unfreeze_win = "UPDATE bet SET unfreeze_money = CASE ";
+                if((int)$player1_nn <= 6 || (int)$player2_nn <= 6 || (int)$player3_nn <= 6 || (int)$player4_nn <= 6 || (int)$player5_nn <= 6){
+                    foreach ($getUserBets as $item){
+                        foreach ($win as $k=>$v){
+                            if($v == $item->play_id){
+                                $bunko = $item->bet_money+$item->bet_money*1;
+                                $unfreeze = $item->freeze_money;
+                                $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
+                                $winArr[] = $item->play_id;
+                            }
+                        }
+                    }
+                }
+                if((int)$player1_nn == 7 || (int)$player1_nn == 8 || (int)$player2_nn == 7 || (int)$player2_nn == 8 || (int)$player3_nn == 7 || (int)$player3_nn == 8 || (int)$player4_nn == 7 || (int)$player4_nn == 8 || (int)$player5_nn == 7 || (int)$player5_nn == 8){
                     foreach ($getUserBets as $item){
                         foreach ($win as $k=>$v){
                             if($v == $item->play_id){
                                 $bunko = $item->bet_money+$item->bet_money*2;
+                                $unfreeze = $item->freeze_money;
                                 $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $winArr[] = $item->play_id;
                             }
                         }
                     }
                 }
-                if((int)$banker_nn == 7 || (int)$banker_nn == 8){
+                if((int)$player1_nn == 9 || (int)$player2_nn == 9 || (int)$player3_nn == 9 || (int)$player4_nn == 9 || (int)$player5_nn == 9){
                     foreach ($getUserBets as $item){
                         foreach ($win as $k=>$v){
                             if($v == $item->play_id){
                                 $bunko = $item->bet_money+$item->bet_money*3;
+                                $unfreeze = $item->freeze_money;
                                 $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $winArr[] = $item->play_id;
                             }
                         }
                     }
                 }
-                if((int)$banker_nn == 9){
+                if((int)$player1_nn == 10 || (int)$player2_nn == 10 || (int)$player3_nn == 10 || (int)$player4_nn == 10 || (int)$player5_nn == 10){
                     foreach ($getUserBets as $item){
                         foreach ($win as $k=>$v){
                             if($v == $item->play_id){
-                                $bunko = $item->bet_money+$item->bet_money*4;
+                                $bunko = $item->bet_money+$item->bet_money*5;
+                                $unfreeze = $item->freeze_money;
                                 $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                                $winArr[] = $item->play_id;
-                            }
-                        }
-                    }
-                }
-                if((int)$banker_nn == 10){
-                    foreach ($getUserBets as $item){
-                        foreach ($win as $k=>$v){
-                            if($v == $item->play_id){
-                                $bunko = $item->bet_money+$item->bet_money*6;
-                                $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                                $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $winArr[] = $item->play_id;
                             }
                         }
@@ -185,7 +194,11 @@ class New_Msnn
                 }
                 $WinListIn = implode(',', $winArr);
                 $sql_win .= "END WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
+                $sql_unfreeze_win .= "END WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
                 $run = DB::statement($sql_win);
+                if($run == 1){
+                    $run2 = DB::statement($sql_unfreeze_win);
+                }
             }
 
             if($lose){
