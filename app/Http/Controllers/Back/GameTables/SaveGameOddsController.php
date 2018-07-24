@@ -137,7 +137,7 @@ class SaveGameOddsController extends Controller
             $run = DB::statement($sqlOdds.$sqlRebate);
             if($run == 1){
                 $write = Storage::disk('static')->put('gamedatas.js','');
-                $game = Games::select('game_id as id','game_name as name','mode','code','order as sort','cate','maxReward','status as open','iconUrl','pageUrl','holiday_start as restStartDate','holiday_end as restEndDate','amount','isBan')->orderBy('order','desc')->get();
+                $game = Games::select('game_id as id','game_name as name','mode','code','order as sort','cate','maxReward','status as open','iconUrl','pageUrl','holiday_start as restStartDate','holiday_end as restEndDate','amount','isBan')->orderBy('order','ASC')->get();
                 $playCate = PlayCates::all();
                 $plays = Play::select('name','id','gameId','playCateId','alias','code','odds','rebate','minMoney','maxMoney','maxTurnMoney')->get();
                 foreach ($plays as $item){
