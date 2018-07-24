@@ -139,7 +139,7 @@ class New_Msnn
         \Log::info('赢'.$win);
         \Log::info('输'.$lose);
         if($getUserBets){
-            if($win){
+            if($win !== '[]'){
                 $sql_win = "UPDATE bet SET bunko = CASE ";
                 $sql_unfreeze_win = "UPDATE bet SET unfreeze_money = CASE ";
                 if((int)$player1_nn <= 6 || (int)$player2_nn <= 6 || (int)$player3_nn <= 6 || (int)$player4_nn <= 6 || (int)$player5_nn <= 6){
@@ -203,7 +203,7 @@ class New_Msnn
                 }
             }
 
-            if($lose){
+            if($lose !== '[]'){
                 $sql_lose = "UPDATE bet SET bunko = CASE ";
                 $sql_unfreeze_lose = "UPDATE bet SET unfreeze_money = CASE ";
                 if((int)$banker_nn <= 6){
