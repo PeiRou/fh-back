@@ -197,7 +197,12 @@ class New_Msnn
                 foreach ($getUserBets as $item){
                     foreach ($lose as $k=>$v){
                         if($v[0] == $item->play_id){
-                            if((int)$v[1] <= 6 || (int)$v[1] == -1){
+                            if((int)$v[1] <= 6){
+                                \Log::info($v[1].'小于6');
+                            } else {
+                                \Log::info($v[1].'不小于6');
+                            }
+                            if((int)$v[1] <= 6){
                                 $bunko = ($item->bet_money+$item->freeze_money)-$item->bet_money;
                                 $unfreeze = $item->freeze_money;
                                 $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
