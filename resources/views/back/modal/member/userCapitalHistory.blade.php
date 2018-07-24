@@ -30,7 +30,7 @@
                 <div class="ui calendar" id="rangestart">
                     <div class="ui input left icon">
                         <i class="calendar icon"></i>
-                        <input type="text" id="timeStart">
+                        <input type="text" id="timeStart" value="{{date("Y-m-d",time())}}">
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                 <div class="ui calendar" id="rangeend">
                     <div class="ui input left icon">
                         <i class="calendar icon"></i>
-                        <input type="text" id="timeEnd">
+                        <input type="text" id="timeEnd" value="{{date("Y-m-d",time())}}">
                     </div>
                 </div>
             </div>
