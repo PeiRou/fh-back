@@ -285,7 +285,7 @@
                         }else{
                             if(data.bet_bunko > 0){
                                 var tmpBet_bet_money = intVal(data.bet_bunko)>0?intVal(data.bet_bet_money):0;
-                                lastMoney = (parseFloat(intVal(data.bet_bunko) - tmpBet_bet_money)).toFixed(2);
+                                lastMoney = (parseFloat(intVal(data.bet_bunko) - tmpBet_bet_money - intVal(data.bet_freeze_money))).toFixed(2);
                                 txt = "<span class='blue-text'><b>"+lastMoney+"</b></span>";
                             }
                             if(data.bet_bunko < 0){

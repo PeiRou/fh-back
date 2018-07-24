@@ -379,7 +379,7 @@ class BetDataController extends Controller
 //        return count($games);
         $bet = DB::table('bet')
             ->leftJoin('game','bet.game_id','=','game.game_id')
-            ->select('bet.bet_id as bet_bet_id','bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko','bet.created_at as bet_created_at','bet.play_odds as bet_play_odds','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.platform as bet_platform','bet.game_id as bet_game_id')
+            ->select('bet.bet_id as bet_bet_id','bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko','bet.created_at as bet_created_at','bet.play_odds as bet_play_odds','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.platform as bet_platform','bet.game_id as bet_game_id','bet.freeze_money as bet_freeze_money')
             ->where(function ($query) use ($games){
                 if(count($games) !== 0){
                     foreach ($games as $item){
