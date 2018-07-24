@@ -245,6 +245,7 @@ class New_Msnn
         }
 
         if($index == 1 || $index == 2){
+            \Log::info($index);
             return 1;
         }
     }
