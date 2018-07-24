@@ -22,7 +22,7 @@ class Bets extends Model
     }
 
     public static function AssemblyFundDetails($param){
-        $aSql = Bets::select(DB::raw("users.name,bet.user_id,bet.order_id,bet.created_at,bet.status,(CASE WHEN bet.bunko > 0 THEN bet.bunko - bet.bet_money ELSE bet.bunko END) as sumBunko,users.money,bet.issue,bet.game_id,game.game_name,bet.play_name,'' as agent,'' as agent_id,bet.bet_info"))
+        $aSql = Bets::select(DB::raw("users.name,bet.user_id,bet.order_id,bet.created_at,bet.status,(CASE WHEN bet.bunko > 0 THEN bet.bunko - bet.bet_money ELSE bet.bunko END) as sumBunko,'' as balance,bet.issue,bet.game_id,game.game_name,bet.play_name,'' as agent,'' as agent_id,bet.bet_info"))
             ->where(function ($sql) use ($param) {
                 if (isset($param['time_point']) && array_key_exists('time_point', $param)) {
                     if ($param['time_point'] == 'today') {

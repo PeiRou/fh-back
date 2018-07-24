@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back\Data;
 
 use App\AgentRecon;
+use App\Bets;
 use App\Capital;
 use App\Drawing;
 use App\Levels;

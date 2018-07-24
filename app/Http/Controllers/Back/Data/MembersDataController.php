@@ -484,7 +484,12 @@ class MembersDataController extends Controller
                 }
             })
             ->editColumn('balance', function($capital){
-                return '<span class="blue-text">'.$capital->balance.'</span>';
+                if(empty($capital->balance))
+                {
+                    return "-";
+                } else {
+                    return '<span class="blue-text">'.$capital->balance.'</span>';
+                }
             })
             ->editColumn('issue', function ($capital){
                 if(empty($capital->issue))

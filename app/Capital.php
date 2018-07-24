@@ -52,7 +52,7 @@ class Capital extends Model
 
     //资金明细组装
     public static function AssemblyFundDetails($param){
-        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance','capital.issue','capital.game_id','game.game_name','capital.play_type','capital.operation_id','sub_account.account','capital.content')
+        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id','game.game_name','capital.play_type','capital.operation_id','sub_account.account','capital.content')
             ->where(function ($sql) use($param){
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
                     $sql->whereBetween('capital.created_at',[$param['startTime'] .' 00:00:00',$param['endTime'] .' 23:59:59']);

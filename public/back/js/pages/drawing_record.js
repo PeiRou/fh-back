@@ -147,12 +147,13 @@ function getTotalDrawing() {
     var status = $('#status').val();
     var startDate = $('#startTime').val();
     var endDate = $('#endTime').val();
+    var account_param = $('#account_param').val();
     var killTest = $('#killTestUser:checked').val();
     $.ajax({
         url:'/action/drawing/totalDrawing',
         type:'post',
         dataType:'json',
-        data:{status:status,startDate:startDate,endDate:endDate,killTest:killTest},
+        data:{status:status,startDate:startDate,endDate:endDate,account_param:account_param,killTest:killTest},
         success:function (data) {
             $('#drawingTotal').html(data.total)
         }

@@ -108,14 +108,20 @@ class DrawingController extends Controller
         $status = $request->get('status');
         $startDate = $request->get('startDate');
         $endDate = $request->get('endDate');
+        $account_param = $request->get('account_param');
         $killTest = $request->get('killTest');
 
         //提款总额统计
         $drawingTotal = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
+            ->where(function ($q) use ($account_param){
+                if(isset($account_param) && $account_param){
+                    $q->where('users.username',$account_param);
+                }
+            })
             ->where(function ($q) use ($killTest){
                 if(isset($killTest) && $killTest){
-                    $q->where('users.agent','!=',2);
+                    $q->where('users.testFlag',0);
                 }
             })
             ->where(function ($q) use ($status) {
