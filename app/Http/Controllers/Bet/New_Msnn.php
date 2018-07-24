@@ -35,8 +35,8 @@ class New_Msnn
 
     public function NN($openCode,$nn,$gameId,$win,$lose)
     {
-        $nn = '-1,-1,10,7,2,3';
-        $openCode = '9,7,8,6,2,4,10,5,1,3';
+//        $nn = '-1,-1,10,7,2,3';
+//        $openCode = '9,7,8,6,2,4,10,5,1,3';
         \Log::info($openCode);
         \Log::info($nn);
 
@@ -176,7 +176,9 @@ class New_Msnn
                 $run = DB::statement($sql_win);
                 if($run == 1){
                     $run2 = DB::statement($sql_unfreeze_win);
-                    $in++;
+                    if($run2 == 1){
+                        $in++;
+                    }
                 }
             }
 
@@ -231,11 +233,15 @@ class New_Msnn
                 $run = DB::statement($sql_lose);
                 if($run == 1){
                     $run2 = DB::statement($sql_unfreeze_lose);
-                    $in++;
+                    if($run2 == 1){
+                        $in++;
+                    }
                 }
             }
 
-            \Log::info('结算次数'.$in);
+            if($in == 1 || $in == 2){
+                return 1;
+            }
         }
     }
 
