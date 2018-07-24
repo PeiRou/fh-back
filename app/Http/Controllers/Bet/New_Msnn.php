@@ -42,8 +42,6 @@ class New_Msnn
 
         $niuniuArr = explode(',',$nn); //分割牛牛结果
         $explodeNum = explode(',',$openCode); //分割秒速赛车开奖结果
-        $playCate = 189; //秒速牛牛玩法大类ID
-        $allWin = [911893457,911893458,911893459,911893460,911893461];
 
         $banker_nn = $niuniuArr[0];
         $player1_nn = $niuniuArr[1];
@@ -139,28 +137,28 @@ class New_Msnn
                 foreach ($getUserBets as $item){
                     foreach ($win as $k=>$v){
                         if($v[0] == $item->play_id){
-                            if((int)$v[1] <= 6 || (int)$v[1] <= 6 || (int)$v[1] <= 6 || (int)$v[1] <= 6 || (int)$v[1] <= 6){
+                            if((int)$v[1] <= 6){
                                 $bunko = ($item->bet_money+$item->bet_money*1)+$item->freeze_money;
                                 $unfreeze = $item->freeze_money;
                                 $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                                 $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $winArr[] = $item->play_id;
                             }
-                            if((int)$v[1] == 7 || (int)$v[1] == 8 || (int)$v[1] == 7 || (int)$v[1] == 8 || (int)$v[1] == 7 || (int)$v[1] == 8 || (int)$v[1] == 7 || (int)$v[1] == 8 || (int)$v[1] == 7 || (int)$v[1] == 8){
+                            if((int)$v[1] == 7 || (int)$v[1] == 8){
                                 $bunko = ($item->bet_money+$item->bet_money*2)+$item->freeze_money;
                                 $unfreeze = $item->freeze_money;
                                 $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                                 $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $winArr[] = $item->play_id;
                             }
-                            if((int)$v[1] == 9 || (int)$v[1] == 9 || (int)$v[1] == 9 || (int)$v[1] == 9 || (int)$v[1] == 9){
+                            if((int)$v[1] == 9){
                                 $bunko = ($item->bet_money+$item->bet_money*3)+$item->freeze_money;
                                 $unfreeze = $item->freeze_money;
                                 $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                                 $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
                                 $winArr[] = $item->play_id;
                             }
-                            if((int)$v[1] == 10 || (int)$v[1] == 10 || (int)$v[1] == 10 || (int)$v[1] == 10 || (int)$v[1] == 10){
+                            if((int)$v[1] == 10){
                                 $bunko = ($item->bet_money+$item->bet_money*5)+$item->freeze_money;
                                 $unfreeze = $item->freeze_money;
                                 $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
