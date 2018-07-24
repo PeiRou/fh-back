@@ -178,6 +178,7 @@ class New_Msnn
                         $in++;
 //                    }
                 }
+                \Log::info('sql1+++'.$sql_win.$sql_unfreeze_win);
             }
 
             if(count($lose) !== 0){
@@ -235,8 +236,8 @@ class New_Msnn
                         $in++;
 //                    }
                 }
+                \Log::info('sql2+++'.$sql_lose.$sql_unfreeze_lose);
             }
-
             if($in == 1 || $in == 2){
                 return 1;
             }
