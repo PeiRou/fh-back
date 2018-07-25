@@ -247,12 +247,21 @@ class SrcMemberController extends Controller
             ]);
         }
 
+        if($agent == 2){
+            $testFlag = 2;
+        } else if($agent == 3){
+            $testFlag = 3;
+        } else {
+            $testFlag = 0;
+        }
+
         $user = new User();
         $user->agent = $agent;
         $user->username = $username;
         $user->email = 0;
         $user->password = $password;
         $user->fullName = $fullName;
+        $user->testFlag = $testFlag;
         $insert = $user->save();
         if($insert == 1){
             return response()->json([
