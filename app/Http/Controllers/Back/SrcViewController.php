@@ -70,11 +70,13 @@ class SrcViewController extends Controller
         //统计会员数据
         $allUser = DB::table('users')->where('testFlag',0)->count();
         $todayRegUsers = DB::table('users')->where('testFlag',0)->whereDate('created_at',date('Y-m-d'))->count();
+        $yesterday = Carbon::now()->addDays(-1)->toDateString();
+        $yesterdayRegUsers = DB::table('users')->where('testFlag',0)->whereDate('created_at',$yesterday)->count();
         $monthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
         $lastMonthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('PERIOD_DIFF( date_format( now( ) , "%Y%m" ) , date_format( created_at, "%Y%m" ) ) =1')->count();
         $todayRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereDate('created_at',date('Y-m-d'))->count();
 
-        return view('back.user',compact('aid','gaid','levels','agent','allUser','todayRegUsers','monthRegUsers','lastMonthRegUsers','todayRechargesUser'));
+        return view('back.user',compact('aid','gaid','levels','agent','allUser','todayRegUsers','monthRegUsers','lastMonthRegUsers','todayRechargesUser','yesterdayRegUsers'));
     }
     //会员注单详情 - 独占页面
     public function userBetList($userId)
