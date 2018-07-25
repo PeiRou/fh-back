@@ -122,7 +122,7 @@ class DrawingController extends Controller
             ->where(function ($q) use ($killTest){
                 if(isset($killTest) && $killTest){
                     $q->where('users.testFlag',0);
-                }
+                } 
             })
             ->where(function ($q) use ($status) {
                 if($status && isset($status)){

@@ -179,9 +179,9 @@ class RechargeController extends Controller
             })
             ->where('recharges.status',2)->whereBetween('recharges.created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('recharges.amount');
         return response()->json([
-            'total' => $total,
-            'onlinePayToday' => $onlinePayToday,
-            'offlinePayToday' => $offlinePayToday
+            'total' => number_format($total,2),
+            'onlinePayToday' => number_format($onlinePayToday,2),
+            'offlinePayToday' => number_format($offlinePayToday,2)
         ]);
     }
 
