@@ -178,14 +178,19 @@ class New_Msnn
                     }
                 }
                 $WinListIn = implode(',', $winArr);
-                $sql_win .= "END ";
-                $sql_nn_money .= "END ";
-                $sql_unfreeze_win .= "END WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
-                //\Log::info('sql1+++'.$sql_win.$sql_nn_money.$sql_unfreeze_win);
-                $run = DB::statement($sql_win.$sql_nn_money.$sql_unfreeze_win);
-                if($run == 1){
+                if($WinListIn && isset($WinListIn)){
+                    $sql_win .= "END ";
+                    $sql_nn_money .= "END ";
+                    $sql_unfreeze_win .= "END WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
+                    //\Log::info('sql1+++'.$sql_win.$sql_nn_money.$sql_unfreeze_win);
+                    $run = DB::statement($sql_win.$sql_nn_money.$sql_unfreeze_win);
+                    if($run == 1){
+                        $in++;
+                    }
+                } else {
                     $in++;
                 }
+
             }
 
             if(count($lose) !== 0){
@@ -238,14 +243,19 @@ class New_Msnn
                     }
                 }
                 $LoseListIn = implode(',', $loseArr);
-                $sql_lose .= "END ";
-                $sql_nn_money .= "END ";
-                $sql_unfreeze_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
-                //\Log::info('sql2+++'.$sql_lose.$sql_nn_money.$sql_unfreeze_lose);
-                $run = DB::statement($sql_lose.$sql_nn_money.$sql_unfreeze_lose);
-                if($run == 1){
+                if($LoseListIn && isset($LoseListIn)){
+                    $sql_lose .= "END ";
+                    $sql_nn_money .= "END ";
+                    $sql_unfreeze_lose .= "END WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
+                    //\Log::info('sql2+++'.$sql_lose.$sql_nn_money.$sql_unfreeze_lose);
+                    $run = DB::statement($sql_lose.$sql_nn_money.$sql_unfreeze_lose);
+                    if($run == 1){
+                        $in++;
+                    }
+                } else {
                     $in++;
                 }
+
             }
             if($in == 1 || $in == 2){
                 return 1;
