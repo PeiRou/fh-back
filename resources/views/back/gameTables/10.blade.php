@@ -123,9 +123,66 @@
             </div>
         </td>
     </tr>
+
     <tr>
-        <td valign="middle" colspan="1" rowspan="1" align="center" class="deep-blue-td">长牌</td>
-        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td"></td>
+        <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td">三连号</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">123，234，345，456</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">三连通选</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td">三同号</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">111，222，333，444，555，666</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">三同通选</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="deep-blue-td">二同号</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">11，22，33，44，55，66</td>
         <td valign="middle" colspan="1" rowspan="1" align="center">
             <div class="ui input">
                 <input type="text" name="changpai_odds" value="">
@@ -137,6 +194,7 @@
             </div>
         </td>
     </tr>
+
     <tr>
         <td valign="middle" colspan="1" rowspan="1" align="center" class="deep-blue-td">短牌</td>
         <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td"></td>
