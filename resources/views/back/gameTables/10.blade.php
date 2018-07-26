@@ -184,7 +184,7 @@
 
     {{--二同号--}}
     <tr>
-        <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td" width="200">二同号</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="deep-blue-td" width="200">二同号</td>
         <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td" width="200">11，22，33，44，55，66</td>
         <td valign="middle" colspan="1" rowspan="1" align="center">
             <div class="ui input">
