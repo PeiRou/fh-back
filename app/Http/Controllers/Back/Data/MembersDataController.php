@@ -456,17 +456,22 @@ class MembersDataController extends Controller
         $param['startTime'] = $request->get('startTime');
         $param['endTime'] = $request->get('endTime');
         $param['account_id'] = $id;
-        $capitalSql = Capital::AssemblyFundDetails($param);
         if(isset($param['type']) && array_key_exists('type', $param)){
             if(in_array($param['type'],Capital::$includePlayTypeOption)){
-                $betsSql = Bets::AssemblyFundDetails($param);
-                $capital = $capitalSql->union($betsSql);
+                $capital = Bets::AssemblyFundDetails($param);
+            }else if($param['type']=='t01'){        //充值
+                $capital = Capital::AssemblyFundDetails_Rech($param);
+            }else if($param['type']=='t04'){        //返利/手续费
+                $capital = Capital::AssemblyFundDetails($param);
             }else{
+                $capitalSql = Capital::AssemblyFundDetails($param);
                 $capital = $capitalSql->get();
             }
         }else {
+            $capitalSql = Capital::AssemblyFundDetails($param);
             $betsSql = Bets::AssemblyFundDetails($param);
-            $capital = $capitalSql->union($betsSql)->orderBy('created_at','desc');
+            $RechSql = Capital::AssemblyFundDetails_Rech($param);
+            $capital = $capitalSql->union($RechSql)->union($betsSql)->orderBy('created_at','desc');
         }
         $playTypeOptions = Capital::$playTypeOption;
 
@@ -548,7 +553,7 @@ class MembersDataController extends Controller
                     return $capital->content;
                 }
             })
-            ->rawColumns(['money','balance'])
+            ->rawColumns(['money','balance','content'])
             ->make(true);
     }
     

@@ -350,14 +350,20 @@ class FinanceDataController extends Controller
         $capitalSql = Capital::AssemblyFundDetails($param);
         if(isset($param['type']) && array_key_exists('type', $param)){
             if(in_array($param['type'],Capital::$includePlayTypeOption)){
-                $betsSql = Bets::AssemblyFundDetails($param);
-                $capital = $capitalSql->union($betsSql);
+                $capital = Bets::AssemblyFundDetails($param);
+            }else if($param['type']=='t01'){        //充值
+                $capital = Capital::AssemblyFundDetails_Rech($param);
+            }else if($param['type']=='t04'){        //返利/手续费
+                $capital = Capital::AssemblyFundDetails($param);
             }else{
+                $capitalSql = Capital::AssemblyFundDetails($param);
                 $capital = $capitalSql->get();
             }
         }else {
+            $capitalSql = Capital::AssemblyFundDetails($param);
             $betsSql = Bets::AssemblyFundDetails($param);
-            $capital = $capitalSql->union($betsSql)->orderBy('created_at','desc');
+            $RechSql = Capital::AssemblyFundDetails_Rech($param);
+            $capital = $capitalSql->union($RechSql)->union($betsSql)->orderBy('created_at','desc');
         }
         $playTypeOptions = Capital::$playTypeOption;
         return DataTables::of($capital)
@@ -375,10 +381,27 @@ class FinanceDataController extends Controller
                 }
             })
             ->editColumn('money', function($capital){
-                if($capital->game_id ==90 || $capital->game_id ==91){
-                    return '下注:'.$capital->nn_view_money.'(冻结:'.$capital->freeze_money.')'.'(解冻:'.$capital->freeze_money.')';
+                if($capital->game_id>0){
+                    if($capital->game_id ==90 || $capital->game_id ==91){
+                        if($capital->nn_view_money < 0)
+                            return '<span class="green-text">下注:'.$capital->nn_view_money.'</span>'.'<span class="gary-text">(冻结:'.$capital->freeze_money.')</span>'.'<span class="gary-text">(解冻:'.$capital->freeze_money.')</span>';
+                        else
+                            return '<span class="red-text">下注:'.$capital->nn_view_money.'</span>'.'<span class="gary-text">(冻结:'.$capital->freeze_money.')</span>'.'<span class="gary-text">(解冻:'.$capital->freeze_money.')</span>';
+                    }else{
+                        if($capital->money < 0)
+                        {
+                            return '<span class="green-text">'.$capital->money.'</span>';
+                        } else {
+                            return '<span class="red-text">下注:'.$capital->money.'</span>';
+                        }
+                    }
                 }else{
-                    return $capital->money;
+                    if($capital->money < 0)
+                    {
+                        return '<span class="green-text">'.$capital->money.'</span>';
+                    } else {
+                        return '<span class="red-text">'.$capital->money.'</span>';
+                    }
                 }
             })
             ->editColumn('balance',function ($capital){
@@ -416,6 +439,7 @@ class FinanceDataController extends Controller
                     return $capital->play_type;
                 }
             })
+            ->rawColumns(['money','balance','content'])
             ->make(true);
     }
     

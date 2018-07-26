@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Recharges;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -51,9 +52,55 @@ class Capital extends Model
         return $capitalTimeOption;
     }
 
+    //资金明细组装-充值
+    public static function AssemblyFundDetails_Rech($param){
+        $aSql = Recharges::select('username','userId','orderNum','created_at',DB::raw("'t01' as type"),'amount','balance',DB::raw("'' as issue"),DB::raw("'' as game_id"),DB::raw("'' as game_name"),DB::raw("'' as play_type"),'operation_id','operation_account','shou_info as msg',DB::raw("'' as freeze_money,'' as unfreeze_money,'' as nn_view_money"))
+            ->where(function ($sql) use($param){
+                $sql->where('payType','!=','adminAddMoney');
+                if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
+                    $sql->whereBetween('created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
+                }else{
+                    if(isset($param['time_point']) && array_key_exists('time_point',$param)) {
+                        if($param['time_point'] == 'today'){
+                            $time = date('Y-m-d');
+                            $sql->whereBetween('created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                        }elseif($param['time_point'] == 'yesterday'){
+                            $time = date('Y-m-d',strtotime('- 1 day',time()));
+                            $sql->whereBetween('created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                        }else{
+                            $time = date('Y-m-d',strtotime('- 2 day',time()));
+                            $sql->whereBetween('created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                        }
+                    }
+                }
+                if(isset($param['account_id']) && array_key_exists('account_id',$param)){
+                    $sql->where('userId','=',$param['account_id']);
+                }
+                if(isset($param['account']) && array_key_exists('account',$param)){
+                    $sql->where('username','=',$param['account']);
+                }
+                if(isset($param['game_id']) && array_key_exists('game_id',$param)){
+                    $sql->where('game_id','=',$param['game_id']);
+                }
+                if(isset($param['order_id']) && array_key_exists('order_id',$param)){
+                    $sql->where('orderNum','=',$param['order_id']);
+                }
+                if(isset($param['issue']) && array_key_exists('issue',$param)){
+                    $sql->where('issue','=',$param['issue']);
+                }
+                if(isset($param['amount_min']) && array_key_exists('amount_min',$param)){
+                    $sql->where('amount','>=',$param['amount_min']);
+                }
+                if(isset($param['amount_max']) && array_key_exists('amount_max',$param)){
+                    $sql->where('amount','<=',$param['amount_max']);
+                }
+            });
+        return $aSql;
+    }
+
     //资金明细组装
     public static function AssemblyFundDetails($param){
-        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id','game.game_name','capital.play_type','capital.operation_id','sub_account.account','capital.content',DB::raw("'' as freeze_money,'' as unfreeze_money,'' as nn_view_money"))
+        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id',DB::raw("'' as game_name"),'capital.play_type','capital.operation_id','sub_account.account','capital.content',DB::raw("'' as freeze_money,'' as unfreeze_money,'' as nn_view_money"))
             ->where(function ($sql) use($param){
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
                     $sql->whereBetween('capital.created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
@@ -95,7 +142,7 @@ class Capital extends Model
                 if(isset($param['amount_max']) && array_key_exists('amount_max',$param)){
                     $sql->where('capital.money','<=',$param['amount_max']);
                 }
-            })->leftJoin('game','game.game_id','=','capital.game_id')->leftJoin('users','users.id','=','capital.to_user')->leftJoin('sub_account','sub_account.sa_id','=','capital.operation_id');
+            })->leftJoin('users','users.id','=','capital.to_user')->leftJoin('sub_account','sub_account.sa_id','=','capital.operation_id');
         return $aSql;
     }
 
