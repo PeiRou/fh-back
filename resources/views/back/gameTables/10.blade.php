@@ -401,7 +401,7 @@
 
     {{--不出号码--}}
     <tr>
-        <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td" width="200">不出号码</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="deep-blue-td" width="200">不出号码</td>
         <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td" width="200"></td>
         <td valign="middle" colspan="1" rowspan="1" align="center">
             <div class="ui input">
@@ -417,7 +417,7 @@
 
     {{--必出号码--}}
     <tr>
-        <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td" width="200">必出号码</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="deep-blue-td" width="200">必出号码</td>
         <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td" width="200"></td>
         <td valign="middle" colspan="1" rowspan="1" align="center">
             <div class="ui input">
