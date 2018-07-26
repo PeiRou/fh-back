@@ -33,9 +33,9 @@
                         <li data-tag="first" data-id="5">天津时时彩</li>
                         <li data-tag="first" data-id="60">广东快乐十分</li>
                         <li data-tag="first" data-id="10">江苏快3</li>
-                        <li data-tag="first" data-id="10">北京快3</li>
-                        <li data-tag="first" data-id="10">广西快3</li>
-                        <li data-tag="first" data-id="10">湖北快3</li>
+                        <li data-tag="first" data-id="11">北京快3</li>
+                        <li data-tag="first" data-id="12">广西快3</li>
+                        <li data-tag="first" data-id="13">湖北快3</li>
                         <li data-tag="first" data-id="61">重庆幸运农场</li>
                         <li data-tag="first" data-id="65">北京快乐8</li>
                         <li data-tag="first" data-id="21">广东十一选五</li>
