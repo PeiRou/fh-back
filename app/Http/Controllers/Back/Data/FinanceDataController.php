@@ -428,7 +428,10 @@ class FinanceDataController extends Controller
                 if(empty($capital->content)){
                     return '-';
                 }else{
-                    return $capital->content;
+                    if(empty($capital->content2))
+                        return $capital->content;
+                    else
+                        return $capital->content2.'<br>'.$capital->content;
                 }
             })
             ->editColumn('play_type',function ($capital){

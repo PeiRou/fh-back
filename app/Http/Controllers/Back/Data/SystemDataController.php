@@ -55,7 +55,7 @@ class SystemDataController extends Controller
                 }
             })
             ->editColumn('control',function ($aPermissionsAuths) {
-                return '<span class="edit-link" onclick="jumpHref('.$aPermissionsAuths->id.')"> 查看下级 </a> | '
+                return '<span class="edit-link" onclick="jumpHref('.$aPermissionsAuths->id.')"> 查看下级 </span> | '
                     .'<span class="edit-link" onclick="edit('.$aPermissionsAuths->id.')"><i class="iconfont">&#xe602;</i> 修改</span>';
             })
             ->rawColumns(['control'])
