@@ -347,7 +347,6 @@ class FinanceDataController extends Controller
     public function capitalDetails(Request $request)
     {
         $param = $request->all();
-        $capitalSql = Capital::AssemblyFundDetails($param);
         if(isset($param['type']) && array_key_exists('type', $param)){
             if(in_array($param['type'],Capital::$includePlayTypeOption)){
                 $capital = Bets::AssemblyFundDetails($param);

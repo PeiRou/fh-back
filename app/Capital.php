@@ -54,7 +54,7 @@ class Capital extends Model
 
     //资金明细组装-充值
     public static function AssemblyFundDetails_Rech($param){
-        $aSql = Recharges::select('username','userId','orderNum','created_at',DB::raw("'t01' as type"),'amount','balance',DB::raw("'' as issue"),DB::raw("'' as game_id"),DB::raw("'' as game_name"),DB::raw("'' as play_type"),'operation_id','operation_account','shou_info as msg',DB::raw("'' as freeze_money,'' as unfreeze_money,'' as nn_view_money"))
+        $aSql = Recharges::select('username','userId','orderNum as order_id','created_at',DB::raw("'t01' as type"),'amount as money','balance',DB::raw("'' as issue"),DB::raw("'' as game_id"),DB::raw("'' as game_name"),DB::raw("'' as play_type"),'operation_id','operation_account as account','shou_info as content',DB::raw("'' as freeze_money,'' as unfreeze_money,'' as nn_view_money"))
             ->where(function ($sql) use($param){
                 $sql->where('payType','!=','adminAddMoney');
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){

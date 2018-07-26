@@ -22,7 +22,7 @@ class Bets extends Model
     }
 
     public static function AssemblyFundDetails($param){
-        $aSql = Bets::select(DB::raw("users.username,bet.user_id,bet.order_id,bet.created_at,bet.status,bet.bunko,'' as balance,bet.issue,bet.game_id,game.game_name,bet.play_name,'' as agent,'' as agent_id,bet.bet_info,bet.freeze_money,bet.unfreeze_money,bet.nn_view_money"))
+        $aSql = Bets::select(DB::raw("users.username,bet.user_id,bet.order_id,bet.created_at,bet.status,bet.bunko,'' as balance,bet.issue,bet.game_id,game.game_name,bet.play_name as play_type,'' as agent,'' as agent_id,bet.bet_info,bet.freeze_money,bet.unfreeze_money,bet.nn_view_money"))
             ->where(function ($sql) use ($param) {
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
                     $sql->whereBetween('bet.created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
