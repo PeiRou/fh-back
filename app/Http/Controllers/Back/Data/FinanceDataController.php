@@ -357,7 +357,7 @@ class FinanceDataController extends Controller
             }
         }else {
             $betsSql = Bets::AssemblyFundDetails($param);
-            $capital = $capitalSql->union($betsSql);
+            $capital = $capitalSql->union($betsSql)->orderBy('created_at','desc');
         }
         $playTypeOptions = Capital::$playTypeOption;
         return DataTables::of($capital)

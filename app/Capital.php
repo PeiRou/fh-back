@@ -15,7 +15,7 @@ class Capital extends Model
         't01' => '充值',
         //'t02' => '撤单[中奖金额]',
         //'t03' => '撤单[退水金额]',
-        //'t04' => '返利/手续费',
+        't04' => '返利/手续费',
         't05' => '下注',
         //'t06' => '重新开奖[中奖金额]',
         //'t07' => '重新开奖[退水金额]',
@@ -56,7 +56,7 @@ class Capital extends Model
         $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id','game.game_name','capital.play_type','capital.operation_id','sub_account.account','capital.content',DB::raw("'' as freeze_money,'' as unfreeze_money,'' as nn_view_money"))
             ->where(function ($sql) use($param){
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
-                    $sql->whereBetween('capital.created_at',[$param['startTime'] .' 00:00:00',$param['endTime'] .' 23:59:59']);
+                    $sql->whereBetween('capital.created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
                 }else{
                     if(isset($param['time_point']) && array_key_exists('time_point',$param)) {
                         if($param['time_point'] == 'today'){
@@ -67,7 +67,7 @@ class Capital extends Model
                             $sql->whereBetween('capital.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         }else{
                             $time = date('Y-m-d',strtotime('- 2 day',time()));
-                            $sql->where('capital.created_at','<=',$time . '23:59:59');
+                            $sql->whereBetween('capital.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         }
                     }
                 }
@@ -95,8 +95,19 @@ class Capital extends Model
                 if(isset($param['amount_max']) && array_key_exists('amount_max',$param)){
                     $sql->where('capital.money','<=',$param['amount_max']);
                 }
-            })->leftJoin('game','game.game_id','=','capital.game_id')->leftJoin('users','users.id','=','capital.to_user')->leftJoin('sub_account','sub_account.sa_id','=','capital.operation_id')
-            ->orderBy('capital.created_at','desc');
+            })->leftJoin('game','game.game_id','=','capital.game_id')->leftJoin('users','users.id','=','capital.to_user')->leftJoin('sub_account','sub_account.sa_id','=','capital.operation_id');
         return $aSql;
+    }
+
+    public function randOrder($fix)
+    {
+        $order_id_main = date('YmdHis').rand(10000000,99999999);
+        $order_id_len = strlen($order_id_main);
+        $order_id_sum = 0;
+        for($i=0; $i<$order_id_len; $i++){
+            $order_id_sum += (int)(substr($order_id_main,$i,1));
+        }
+        $order_id = $order_id_main . str_pad((100 - $order_id_sum % 100) % 100,2,'0',STR_PAD_LEFT);
+        return $fix.$order_id;
     }
 }

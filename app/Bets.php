@@ -24,16 +24,20 @@ class Bets extends Model
     public static function AssemblyFundDetails($param){
         $aSql = Bets::select(DB::raw("users.username,bet.user_id,bet.order_id,bet.created_at,bet.status,bet.bunko,'' as balance,bet.issue,bet.game_id,game.game_name,bet.play_name,'' as agent,'' as agent_id,bet.bet_info,bet.freeze_money,bet.unfreeze_money,bet.nn_view_money"))
             ->where(function ($sql) use ($param) {
-                if (isset($param['time_point']) && array_key_exists('time_point', $param)) {
-                    if ($param['time_point'] == 'today') {
-                        $time = date('Y-m-d');
-                        $sql->whereBetween('bet.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
-                    } elseif ($param['time_point'] == 'yesterday') {
-                        $time = date('Y-m-d', strtotime('- 1 day', time()));
-                        $sql->whereBetween('bet.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
-                    } else {
-                        $time = date('Y-m-d', strtotime('- 2 day', time()));
-                        $sql->where('bet.created_at', '<=', $time . '23:59:59');
+                if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
+                    $sql->whereBetween('bet.created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
+                }else{
+                    if (isset($param['time_point']) && array_key_exists('time_point', $param)) {
+                        if ($param['time_point'] == 'today') {
+                            $time = date('Y-m-d');
+                            $sql->whereBetween('bet.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                        } elseif ($param['time_point'] == 'yesterday') {
+                            $time = date('Y-m-d', strtotime('- 1 day', time()));
+                            $sql->whereBetween('bet.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                        } else {
+                            $time = date('Y-m-d', strtotime('- 2 day', time()));
+                            $sql->where('bet.created_at', '<=', $time . '23:59:59');
+                        }
                     }
                 }
                 if(isset($param['account_id']) && array_key_exists('account_id',$param)){
@@ -57,8 +61,7 @@ class Bets extends Model
                 if (isset($param['amount_max']) && array_key_exists('amount_max', $param)) {
                     $sql->where('bet.bunko', '<=', $param['amount_max']);
                 }
-            })->leftJoin('users', 'users.id', '=', 'bet.user_id')->leftJoin('game', 'game.game_id', '=', 'bet.game_id')
-            ->orderBy('bet.created_at','desc');
+            })->leftJoin('users', 'users.id', '=', 'bet.user_id')->leftJoin('game', 'game.game_id', '=', 'bet.game_id');
         return $aSql;
     }
 

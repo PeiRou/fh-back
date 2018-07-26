@@ -306,6 +306,7 @@ class ModalController extends Controller
         $payType = PayType::all();
         $levels = Levels::all();
         $getPayOnlineData = PayOnline::where('id',$id)->first();
+        $getPayOnlineData->levels = explode(",",$getPayOnlineData->levels);
         return view('back.modal.pay.editPayOnline')->with('payType',$payType)->with('levels',$levels)->with('id',$id)->with('payOnline',$getPayOnlineData);
     }
     //修改银行支付配置
@@ -314,6 +315,7 @@ class ModalController extends Controller
         $banks = Banks::where('status',1)->get();
         $levels = Levels::all();
         $payBank = PayOnline::where('id',$id)->first();
+        $payBank->levels = explode(",",$payBank->levels);
         return view('back.modal.pay.editPayBank',compact('banks','levels','payBank','id'));
     }
     //添加充值方式
@@ -345,6 +347,7 @@ class ModalController extends Controller
     {
         $levels = Levels::all();
         $payAlipay = PayOnline::where('id',$id)->first();
+        $payAlipay->levels = explode(",",$payAlipay->levels);
         return view('back.modal.pay.editPayAlipay',compact('levels','id','payAlipay'));
     }
     //添加微信配置
@@ -358,6 +361,7 @@ class ModalController extends Controller
     {
         $levels = Levels::all();
         $payWechat = PayOnline::where('id',$id)->first();
+        $payWechat->levels = explode(",",$payWechat->levels);
         return view('back.modal.pay.editPayWechat',compact('levels','id','payWechat'));
     }
     //添加财付通配置
@@ -371,6 +375,7 @@ class ModalController extends Controller
     {
         $levels = Levels::all();
         $payCft = PayOnline::where('id',$id)->first();
+        $payCft->levels = explode(",",$payCft->levels);
         return view('back.modal.pay.editPayCft',compact('levels','id','payCft'));
     }
     //充值驳回

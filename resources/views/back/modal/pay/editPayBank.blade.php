@@ -117,7 +117,7 @@
         <label>层设置</label>
         @foreach($levels as $item)
             <div class="ui checkbox">
-                <input type="checkbox" tabindex="0" value="{{ $item->value }}" name="levels[]" class="hidden">
+                <input type="checkbox" tabindex="0" value="{{ $item->value }}" name="levels[]" @foreach($payBank->levels as $items => $val) @if($val == $item->value) checked="checked"  @endif @endforeach class="hidden">
                 <label>{{ $item->name }}</label>
             </div>
         @endforeach

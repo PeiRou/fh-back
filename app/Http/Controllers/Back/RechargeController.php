@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back;
 
 use App\Recharges;
 use App\User;
+use App\Capital;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -17,15 +18,16 @@ class RechargeController extends Controller
         $getInfo = Recharges::where('id',$id)->first();
         $userId = $getInfo->userId;
         $amout = $getInfo->amount;
+        $rebate_or_fee = $getInfo->rebate_or_fee;           //返利或手续费
 
         $getUserInfo = User::where('id',$userId)->first();
         $userMoney = $getUserInfo->money;
         $userPayTimes = $getUserInfo->PayTimes;
         $userSaveMoneyCount = $getUserInfo->saveMoneyCount;
 
-        $nowMoney = $userMoney+$amout;
+        $nowMoney = $userMoney+$amout+$rebate_or_fee;
         $nowUserPayTimes = $userPayTimes+1;
-        $nowUserSaveMoneyCount = $userSaveMoneyCount + $amout;
+        $nowUserSaveMoneyCount = $userSaveMoneyCount + $amout + $rebate_or_fee;
 
         if($getInfo->addMoney == 1){
             return response()->json([
@@ -50,6 +52,21 @@ class RechargeController extends Controller
                         'process_date' => date('Y-m-d H:i:s')
                     ]);
                 if($updateRechargeStatus == 1){
+                    if(!empty($rebate_or_fee)){
+                        $capital = new Capital();
+                        $capital->to_user = $userId;
+                        $capital->user_type = 'user';
+                        $capital->order_id = $capital->randOrder('C');
+                        $capital->type = 't04';
+                        $capital->money = $rebate_or_fee;
+                        $capital->balance = $nowMoney;
+                        $capital->operation_id = 0;
+                        if($rebate_or_fee>0)
+                            $capital->content = '充值返利';
+                        else
+                            $capital->content = '充值手续费';
+                        $insert = $capital->save();
+                    }
                     return response()->json([
                         'status' => true
                     ]);
@@ -184,5 +201,4 @@ class RechargeController extends Controller
             'offlinePayToday' => number_format($offlinePayToday,2)
         ]);
     }
-
 }
