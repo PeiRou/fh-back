@@ -100,6 +100,7 @@ $(function () {
             {data:'orderNum'},
             {data:'payType'},
             {data:'amount'},
+            {data:'rebate_or_fee'},
             {data:'operation_account'},
             {data:'shou_info'},
             {data:'ru_info'},

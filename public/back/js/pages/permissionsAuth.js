@@ -13,6 +13,7 @@ $(function () {
         bLengthChange: false,
         processing: true,
         serverSide: true,
+        aLengthMenu: [[50]],
         ajax: {
             url : '/back/datatables/premissionsAuth',
             data : function (d) {
