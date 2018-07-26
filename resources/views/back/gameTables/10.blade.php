@@ -153,6 +153,284 @@
         </td>
     </tr>
 
+    {{--三同号--}}
+    <tr>
+        <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td" width="200">三同号</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td" width="200">111，222，333，444，555，666</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">三同通选</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+
+    {{--二同号--}}
+    <tr>
+        <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td" width="200">二同号</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td" width="200">11，22，33，44，55，66</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+
+    {{--跨度--}}
+    <tr>
+        <td valign="middle" colspan="1" rowspan="8" align="center" class="deep-blue-td" width="200">跨度</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td" width="200">0</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">1，5</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">2，4</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">3</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">大</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">小</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">单</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">双</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+
+    {{--牌点--}}
+    <tr>
+        <td valign="middle" colspan="1" rowspan="7" align="center" class="deep-blue-td" width="200">牌点</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td" width="200">1，10</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">2，9</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">3</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">4，7</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">5，6</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">8</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">大小单双</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+
+    {{--不出号码--}}
+    <tr>
+        <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td" width="200">不出号码</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td" width="200"></td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+
+    {{--必出号码--}}
+    <tr>
+        <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td" width="200">必出号码</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td" width="200"></td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+
     </tbody>
     <div class="foot-submit">
         <button class="ui primary button">保 存</button>
