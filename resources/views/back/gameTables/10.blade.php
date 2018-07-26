@@ -127,7 +127,7 @@
     {{--三连号--}}
     <tr>
         <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td">三连号</td>
-        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">123，234，345，456</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td" width="100">123，234，345，456</td>
         <td valign="middle" colspan="1" rowspan="1" align="center">
             <div class="ui input">
                 <input type="text" name="" value="">
