@@ -315,6 +315,9 @@ Route::get('/game/tables/81','Back\GameTableController@gameTable81'); //秒速�
 Route::get('/game/tables/99','Back\GameTableController@gameTable99'); //跑马
 Route::get('/game/tables/70','Back\GameTableController@gameTable70'); //六合彩
 Route::get('/game/tables/85','Back\GameTableController@gameTable85'); //幸运六合彩
+Route::get('/game/tables/11','Back\GameTableController@gameTable11'); //北京快三
+Route::get('/game/tables/12','Back\GameTableController@gameTable12'); //广西快三
+Route::get('/game/tables/13','Back\GameTableController@gameTable13'); //湖北快三
 //保存游戏赔率表格数据
 Route::post('/game/table/save/bjpk10','Back\GameTables\SaveGameOddsController@bjpk10');
 Route::post('/game/table/save/cqssc','Back\GameTables\SaveGameOddsController@cqssc');

@@ -122,7 +122,7 @@ class GameTableController extends Controller
     public function gameTable10()
     {
         $data = Play::where('gameId',10)->get();
-        $filter = ['sanjun_odds','sanjun_rebate','daxiao_odds','daxiao_rebate','weitou_odds','weitou_rebate','quantou_odds','quantou_rebate','changpai_odds','changpai_rebate','duanpai_odds','duanpai_rebate','0417_odds','0417_rebate','0516_odds','0516_rebate','0615_odds','0615_rebate','0714_odds','0714_rebate','0813_odds','0813_rebate','0912_odds','0912_rebate','1011_odds','1011_rebate'];
+        $filter = [];
         $fromDBOdds = collect([]);
         $fromDBRebate = collect([]);
         foreach ($data as $item){
@@ -139,6 +139,69 @@ class GameTableController extends Controller
             }
         }
         return view('back.gameTables.10')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
+    }
+
+    public function gameTable11(){
+        $data = Play::where('gameId',11)->get();
+        $filter = [];
+        $fromDBOdds = collect([]);
+        $fromDBRebate = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->odds_tag == $i)
+                {
+                    $fromDBOdds->put($item->odds_tag,$item->odds);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->rebate_tag == $s){
+                    $fromDBRebate->put($item->rebate_tag,$item->rebate);
+                }
+            }
+        }
+        return view('back.gameTables.11')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
+    }
+
+    public function gameTable12(){
+        $data = Play::where('gameId',12)->get();
+        $filter = [];
+        $fromDBOdds = collect([]);
+        $fromDBRebate = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->odds_tag == $i)
+                {
+                    $fromDBOdds->put($item->odds_tag,$item->odds);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->rebate_tag == $s){
+                    $fromDBRebate->put($item->rebate_tag,$item->rebate);
+                }
+            }
+        }
+        return view('back.gameTables.12')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
+    }
+
+    public function gameTable13(){
+        $data = Play::where('gameId',13)->get();
+        $filter = [];
+        $fromDBOdds = collect([]);
+        $fromDBRebate = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->odds_tag == $i)
+                {
+                    $fromDBOdds->put($item->odds_tag,$item->odds);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->rebate_tag == $s){
+                    $fromDBRebate->put($item->rebate_tag,$item->rebate);
+                }
+            }
+        }
+        return view('back.gameTables.13')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
     }
 
     public function gameTable61()
