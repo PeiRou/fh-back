@@ -123,6 +123,36 @@
             </div>
         </td>
     </tr>
+
+    {{--三连号--}}
+    <tr>
+        <td valign="middle" colspan="1" rowspan="2" align="center" class="deep-blue-td">三连号</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">123，234，345，456</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">三连通选</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+        <td valign="middle" colspan="1" rowspan="1" align="center">
+            <div class="ui input">
+                <input type="text" name="" value="">
+            </div>
+        </td>
+    </tr>
+
     </tbody>
     <div class="foot-submit">
         <button class="ui primary button">保 存</button>
