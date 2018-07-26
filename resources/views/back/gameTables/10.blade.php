@@ -181,21 +181,6 @@
     </tr>
 
     <tr>
-        <td valign="middle" colspan="1" rowspan="1" align="center" class="deep-blue-td">二同号</td>
-        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">11，22，33，44，55，66</td>
-        <td valign="middle" colspan="1" rowspan="1" align="center">
-            <div class="ui input">
-                <input type="text" name="changpai_odds" value="">
-            </div>
-        </td>
-        <td valign="middle" colspan="1" rowspan="1" align="center">
-            <div class="ui input">
-                <input type="text" name="changpai_rebate" value="">
-            </div>
-        </td>
-    </tr>
-
-    <tr>
         <td valign="middle" colspan="1" rowspan="1" align="center" class="deep-blue-td">短牌</td>
         <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td"></td>
         <td valign="middle" colspan="1" rowspan="1" align="center">
