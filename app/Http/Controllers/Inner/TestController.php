@@ -13,6 +13,6 @@ class TestController extends Controller
         $arrOpenCode = explode(',',$openCode);
         $playCate = 219;
         $PD_NUM = (int)$arrOpenCode[0] + (int)$arrOpenCode[1] + (int)$arrOpenCode[2];
-
+        echo $PD_NUM % 10;
     }
 }
