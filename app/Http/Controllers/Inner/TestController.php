@@ -33,7 +33,7 @@ class TestController extends Controller
         }
         if((int)$arrOpenCode[1] == (int)$arrOpenCode[2] && $isBaoZi == 0){
             foreach ($ETH_arr as $k => $v){
-                if((int)$arrOpenCode[0] == $k){
+                if((int)$arrOpenCode[1] == $k){
                     echo $v;
                 }
             }
