@@ -108,6 +108,7 @@ class SrcNoticeController extends Controller
         $MessagePush->sa_account = Session::get('account');
         $save = $MessagePush->save();
         if ($save == 1) {
+            $redis = Redis::connection();
             switch ($user_type){
                 case 1:             //1 部分用户
                     $users = explode(',',$user_str);
@@ -117,7 +118,6 @@ class SrcNoticeController extends Controller
                         ->get();
                     break;
                 case 2:             //2 在线用户
-                    $redis = Redis::connection();
                     $redis->select(2);
                     $keys = $redis->keys('user:'.'*');
                     $onlineUser = [];
@@ -143,7 +143,8 @@ class SrcNoticeController extends Controller
                         ->get();
                     break;
             }
-            var_dump($usersArray);
+            $redis->select(1);
+            $rsKeyH = 'chatList';         //切换到聊天平台
             foreach ($usersArray as $key => $user){
                 $tmp = [];
                 $tmp['user_id'] = $user->id;
@@ -154,8 +155,16 @@ class SrcNoticeController extends Controller
                 $tmp['send_sa_account'] = Session::get('account');
                 $tmp['created_at'] = date("Y-m-d H:i:s",time());
                 $msgdata [] = $tmp;
+                //消息推送
+                switch ($message_type){
+                    case 2:             //2 右下角弹出提示
+                        $redis->HSET($rsKeyH,'sendR='.$user->id,$content);
+                        break;
+                    case 3:             //3 页面中央弹出提示
+                        $redis->HSET($rsKeyH,'sendC='.$user->id,$content);
+                        break;
+                }
             }
-            var_dump($msgdata);
             if(isset($msgdata) && count($msgdata)>0)
                 DB::table('user_messages')->insert($msgdata);
             return response()->json([
