@@ -164,7 +164,7 @@
         </td>
         <td valign="middle" colspan="1" rowspan="1" align="center">
             <div class="ui input">
-                <input type="text" name="STH_odds" value="{{ $rebate['STH_rebate'] }}">
+                <input type="text" name="STH_rebate" value="{{ $rebate['STH_rebate'] }}">
             </div>
         </td>
     </tr>
