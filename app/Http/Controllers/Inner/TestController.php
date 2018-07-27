@@ -22,7 +22,9 @@ class TestController extends Controller
             6 => 4346
         ];
         foreach ($BUCHU_arr as $k => $v){
-
+            if(!in_array($k,$arrOpenCode)){
+                echo $v.'不在开奖号码中';
+            }
         }
     }
 }
