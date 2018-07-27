@@ -12,6 +12,7 @@ class TestController extends Controller
         $openCode ='1,2,3';
         $arrOpenCode = explode(',',$openCode);
         $playCate = 215;
+        $SLH_TX = 0;
         $SLH_string = $arrOpenCode[0].$arrOpenCode[1].$arrOpenCode[2];
         $SLH_arr = [
             '123' => 4299,
@@ -22,7 +23,9 @@ class TestController extends Controller
         foreach ($SLH_arr as $k => $v){
             if($k == $SLH_string){
                 echo $v;
+                $SLH_TX += $SLH_TX;
             }
         }
+        echo $SLH_TX;
     }
 }
