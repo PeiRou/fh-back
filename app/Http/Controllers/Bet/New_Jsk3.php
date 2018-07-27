@@ -9,6 +9,9 @@
 namespace App\Http\Controllers\Bet;
 
 
+use App\Bets;
+use Illuminate\Support\Facades\DB;
+
 class New_Jsk3
 {
     public function all($openCode,$issue,$gameId)
@@ -22,6 +25,16 @@ class New_Jsk3
         $this->PD($openCode,$gameId,$win); //牌点
         $this->BUCHU($openCode,$gameId,$win); //不出号码
         $this->BICHU($openCode,$gameId,$win); //必出号码
+        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        if($betCount > 0){
+            $bunko = $this->bunko($win,$gameId,$issue);
+            if($bunko == 1){
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue);
+                if($updateUserMoney == 1){
+                    return 1;
+                }
+            }
+        }
     }
 
     public function HZ($openCode,$gameId,$win)
@@ -244,6 +257,76 @@ class New_Jsk3
 
     public function BICHU($openCode,$gameId,$win)
     {
-        
+        $arrOpenCode = explode(',',$openCode);
+        $playCate = 221;
+        $BICHU_arr = [
+            1 => 4347,
+            2 => 4348,
+            3 => 4349,
+            4 => 4350,
+            5 => 4351,
+            6 => 4352
+        ];
+        foreach ($BICHU_arr as $k => $v){
+            if(in_array($k,$arrOpenCode)){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+    }
+
+    private function bunko($win,$gameId,$issue){
+        $id = [];
+        foreach ($win as $k=>$v){
+            $id[] = $v;
+        }
+        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        if($getUserBets){
+            $sql = "UPDATE bet SET bunko = CASE ";
+            $sql_lose = "UPDATE bet SET bunko = CASE ";
+            $ids = implode(',', $id);
+            if($ids && isset($ids)){
+                foreach ($getUserBets as $item){
+                    $bunko = $item->bet_money * $item->play_odds;
+                    $bunko_lose = 0-$item->bet_money;
+                    $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                    $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                }
+                $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                $run = DB::statement($sql);
+                if($run == 1){
+                    $run2 = DB::statement($sql_lose);
+                    if($run2 == 1){
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+
+    private function updateUserMoney($gameId,$issue){
+        $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id','bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
+        if($get){
+            $sql = "UPDATE users SET money = money+ CASE id ";
+            $users = [];
+            foreach ($get as $i){
+                $users[] = $i->user_id;
+                $sql .= "WHEN $i->user_id THEN $i->s ";
+            }
+
+            $ids = implode(',',$users);
+
+            if($ids && isset($ids)){
+                $sql .= "END WHERE id IN (0,$ids)";
+                $up = DB::statement($sql);
+                if($up == 1){
+                    return 1;
+                }
+            }
+        } else {
+            \Log::info('江苏快3已结算过，已阻止！');
+        }
     }
 }
