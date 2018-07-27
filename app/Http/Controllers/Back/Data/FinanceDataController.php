@@ -441,7 +441,7 @@ class FinanceDataController extends Controller
                     return $capital->play_type;
                 }
             })
-            ->rawColumns(['money','balance','content'])
+            ->rawColumns(['money','balance','content','issue'])
             ->make(true);
     }
     

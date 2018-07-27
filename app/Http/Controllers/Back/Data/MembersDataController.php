@@ -474,7 +474,6 @@ class MembersDataController extends Controller
             $capital = $capitalSql->union($RechSql)->union($betsSql)->orderBy('created_at','desc');
         }
         $playTypeOptions = Capital::$playTypeOption;
-
         return DataTables::of($capital)
             ->editColumn('type',function ($capital) use ($playTypeOptions){
                 if(strpos($capital->type,'t') === false) {
@@ -519,7 +518,7 @@ class MembersDataController extends Controller
                 {
                     return "-";
                 } else {
-                    return $capital->issue;
+                    return '<span style="color: #'.$capital->account.'">'.$capital->issue.'</span>';
                 }
             })
             ->editColumn('game', function ($capital){
@@ -556,7 +555,7 @@ class MembersDataController extends Controller
                         return $capital->content2.'<br>'.$capital->content;
                 }
             })
-            ->rawColumns(['money','balance','content'])
+            ->rawColumns(['money','balance','content','issue'])
             ->make(true);
     }
     
