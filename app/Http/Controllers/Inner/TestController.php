@@ -11,18 +11,18 @@ class TestController extends Controller
     {
         $openCode ='1,3,6';
         $arrOpenCode = explode(',',$openCode);
-        $playCate = 220;
-        $BUCHU_arr = [
-            1 => 4341,
-            2 => 4342,
-            3 => 4343,
-            4 => 4344,
-            5 => 4345,
-            6 => 4346
+        $playCate = 221;
+        $BICHU_arr = [
+            1 => 4347,
+            2 => 4348,
+            3 => 4349,
+            4 => 4350,
+            5 => 4351,
+            6 => 4352
         ];
-        foreach ($BUCHU_arr as $k => $v){
+        foreach ($BICHU_arr as $k => $v){
             if(!in_array($k,$arrOpenCode)){
-                echo $k.'不在开奖号码中</br>';
+                echo $k.'在开奖号码中</br>';
             }
         }
     }

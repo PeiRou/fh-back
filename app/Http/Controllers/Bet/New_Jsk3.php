@@ -223,7 +223,23 @@ class New_Jsk3
 
     public function BUCHU($openCode,$gameId,$win)
     {
-        
+        $arrOpenCode = explode(',',$openCode);
+        $playCate = 220;
+        $BUCHU_arr = [
+            1 => 4341,
+            2 => 4342,
+            3 => 4343,
+            4 => 4344,
+            5 => 4345,
+            6 => 4346
+        ];
+        foreach ($BUCHU_arr as $k => $v){
+            if(!in_array($k,$arrOpenCode)){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
     }
 
     public function BICHU($openCode,$gameId,$win)
