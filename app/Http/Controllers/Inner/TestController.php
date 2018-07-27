@@ -9,10 +9,18 @@ class TestController extends Controller
 {
     public function lhc()
     {
-        $HZ = 10;
-        $HZDS_arr = [3=>4279,4=>4280,5=>4281,6=>4282,7=>4283,8=>4284,9=>4285,10=>4286,11=>4287,12=>4288,13=>4289,14=>4290,15=>4291,16=>4292,17=>4293,18=>4294];
-        foreach ($HZDS_arr as $k => $v){
-            if($HZ == $k){
+        $openCode ='1,3,4';
+        $arrOpenCode = explode(',',$openCode);
+        $playCate = 215;
+        $SLH_string = $arrOpenCode[0].$arrOpenCode[1].$arrOpenCode[2];
+        $SLH_arr = [
+            '123' => 4299,
+            '234' => 4300,
+            '345' => 4301,
+            '456' => 4302,
+        ];
+        foreach ($SLH_arr as $k => $v){
+            if($k == $SLH_string){
                 echo $v;
             }
         }
