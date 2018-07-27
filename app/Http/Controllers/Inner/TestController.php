@@ -9,7 +9,7 @@ class TestController extends Controller
 {
     public function lhc()
     {
-        $openCode ='1,2,3';
+        $openCode ='1,3,4';
         $arrOpenCode = explode(',',$openCode);
         $playCate = 215;
         $SLH_TX = 0;
