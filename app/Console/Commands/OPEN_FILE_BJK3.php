@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class OPEN_FILE_BJK3 extends Command
 {
@@ -37,6 +39,12 @@ class OPEN_FILE_BJK3 extends Command
      */
     public function handle()
     {
-        //
+        $timeUp = date('09:00:00');
+        $str = "";
+        for($i=1;$i<=89;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
+            $str .= '"'.(string)$i.'":{"time":"'.$timeUp->toTimeString().'"},';
+        }
+        Storage::disk('gameTime')->put('bjk3.json',"{".rtrim($str,',')."}");
     }
 }
