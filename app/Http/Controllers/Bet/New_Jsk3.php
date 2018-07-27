@@ -16,6 +16,7 @@ class New_Jsk3
         $win = collect([]);
         $this->HZ($openCode,$gameId,$win); //和值
         $this->SLH($openCode,$gameId,$win); //三连号
+        $this->STH($openCode,$gameId,$win); //三同号
     }
 
     public function HZ($openCode,$gameId,$win)
@@ -62,6 +63,7 @@ class New_Jsk3
     {
         $arrOpenCode = explode(',',$openCode);
         $playCate = 215;
+        $SLH_TX = 0;
         $SLH_string = $arrOpenCode[0].$arrOpenCode[1].$arrOpenCode[2];
         $SLH_arr = [
             '123' => 4299,
@@ -71,8 +73,45 @@ class New_Jsk3
         ];
         foreach ($SLH_arr as $k => $v){
             if($k == $SLH_string){
-                echo $v;
+                $SLH_TX += 1;
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
             }
+        }
+        if($SLH_TX !== 0){
+            $playId = 4303;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+    }
+
+    public function STH($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode);
+        $playCate = 216;
+        $STH_TX = 0;
+        $STH_string = $arrOpenCode[0].$arrOpenCode[1].$arrOpenCode[2];
+        $STH_arr = [
+            '111' => 4304,
+            '222' => 4305,
+            '333' => 4306,
+            '444' => 4307,
+            '555' => 4308,
+            '666' => 4309,
+        ];
+        foreach ($STH_arr as $k => $v){
+            if($k == $STH_string){
+                $STH_TX += 1;
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        if($STH_TX !== 0){
+            $playId = 4310;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
         }
     }
 }
