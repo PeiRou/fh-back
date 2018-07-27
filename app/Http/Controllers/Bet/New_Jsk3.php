@@ -20,6 +20,8 @@ class New_Jsk3
         $this->ETH($openCode,$gameId,$win); //二同号
         $this->KD($openCode,$gameId,$win); //跨度
         $this->PD($openCode,$gameId,$win); //牌点
+        $this->BUCHU($openCode,$gameId,$win); //不出号码
+        $this->BICHU($openCode,$gameId,$win); //必出号码
     }
 
     public function HZ($openCode,$gameId,$win)
@@ -191,5 +193,41 @@ class New_Jsk3
         $arrOpenCode = explode(',',$openCode);
         $playCate = 219;
         $PD_NUM = (int)$arrOpenCode[0] + (int)$arrOpenCode[1] + (int)$arrOpenCode[2];
+        $PD_GEWEI = $PD_NUM % 10;
+        $PD_DX_arr = [0 => 4337, 6 => 4337, 7 => 4337, 8 => 4337, 9 => 4337, 1 => 4338, 2 => 4338, 3 => 4338, 4 => 4338, 5 => 4338];
+        $PD_PDZ_arr = [1 => 4327, 2 => 4328, 3 => 4329, 4 => 4330, 5 => 4331, 6 => 4332, 7 => 4333, 8 => 4334, 9 => 4335, 0 => 4336];
+        foreach ($PD_DX_arr as $k => $v){
+            if($PD_GEWEI == $k){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        if($PD_GEWEI%2 == 0){
+            $playId = 4340;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4339;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        foreach ($PD_PDZ_arr as $k => $v){
+            if($PD_GEWEI == $k){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+    }
+
+    public function BUCHU($openCode,$gameId,$win)
+    {
+        
+    }
+
+    public function BICHU($openCode,$gameId,$win)
+    {
+        
     }
 }

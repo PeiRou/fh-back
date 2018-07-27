@@ -11,19 +11,18 @@ class TestController extends Controller
     {
         $openCode ='1,3,6';
         $arrOpenCode = explode(',',$openCode);
-        $playCate = 219;
-        $PD_NUM = (int)$arrOpenCode[0] + (int)$arrOpenCode[1] + (int)$arrOpenCode[2];
-        $PD_GEWEI = $PD_NUM % 10;
-        $PD_DX_arr = [0 => 4323, 6 => 4323, 7 => 4323, 8 => 4323, 9 => 4323, 1 => 4324, 2 => 4324, 3 => 4324, 4 => 4324, 5 => 4324];
-        foreach ($PD_DX_arr as $k => $v){
-            if($PD_GEWEI == $k){
-                echo '大小'.$v;
-            }
-        }
-        if($PD_GEWEI%2 == 0){
-            echo "双";
-        } else {
-            echo '单';
+        return $arrOpenCode;
+        $playCate = 220;
+        $BUCHU_arr = [
+            1 => 4341,
+            2 => 4342,
+            3 => 4343,
+            4 => 4344,
+            5 => 4345,
+            6 => 4346
+        ];
+        foreach ($BUCHU_arr as $k => $v){
+
         }
     }
 }
