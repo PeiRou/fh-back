@@ -18,6 +18,7 @@ class New_Jsk3
         $this->SLH($openCode,$gameId,$win); //三连号
         $this->STH($openCode,$gameId,$win); //三同号
         $this->ETH($openCode,$gameId,$win); //二同号
+        $this->KD($openCode,$gameId,$win); //跨度
     }
 
     public function HZ($openCode,$gameId,$win)
@@ -121,16 +122,55 @@ class New_Jsk3
         $arrOpenCode = explode(',',$openCode);
         $playCate = 217;
         $isBaoZi = 0;
+        $ETH_arr = [
+            1 => 4311,
+            2 => 4312,
+            3 => 4313,
+            4 => 4314,
+            5 => 4315,
+            6 => 4316,
+        ];
         if((int)$arrOpenCode[0] == (int)$arrOpenCode[1] && (int)$arrOpenCode[0] == (int)$arrOpenCode[2]){
             $isBaoZi = 1;
         }
         if((int)$arrOpenCode[0] == (int)$arrOpenCode[1] && $isBaoZi == 0){
-            if((int)$arrOpenCode[0] == 1){
-
+            foreach ($ETH_arr as $k => $v){
+                if((int)$arrOpenCode[0] == $k){
+                    $playId = $v;
+                    $winCode = $gameId.$playCate.$playId;
+                    $win->push($winCode);
+                }
             }
         }
         if((int)$arrOpenCode[1] == (int)$arrOpenCode[2] && $isBaoZi == 0){
-            echo '后二'.$arrOpenCode[0];
+            foreach ($ETH_arr as $k => $v){
+                if((int)$arrOpenCode[1] == $k){
+                    $playId = $v;
+                    $winCode = $gameId.$playCate.$playId;
+                    $win->push($winCode);
+                }
+            }
+        }
+    }
+
+    public function KD($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode);
+        $playCate = 218;
+
+        $KD_NUM = (int)$arrOpenCode[2] - (int)$arrOpenCode[0];
+        $KD_DX_arr = [
+            0 => 4324,
+            1 => 4324,
+            2 => 4324,
+            3 => 4323,
+            4 => 4323,
+            5 => 4323
+        ];
+        foreach ($KD_DX_arr as $k => $v){
+            if($KD_NUM == $k){
+
+            }
         }
     }
 }
