@@ -23,7 +23,7 @@ class TestController extends Controller
         foreach ($SLH_arr as $k => $v){
             if($k == $SLH_string){
                 echo $v;
-                $SLH_TX += $SLH_TX;
+                $SLH_TX += 1;
             }
         }
         echo $SLH_TX;
