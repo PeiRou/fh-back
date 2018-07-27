@@ -22,7 +22,7 @@ class TestController extends Controller
         ];
         foreach ($BUCHU_arr as $k => $v){
             if(!in_array($k,$arrOpenCode)){
-                echo $v.'不在开奖号码中';
+                echo $k.'不在开奖号码中</br>';
             }
         }
     }
