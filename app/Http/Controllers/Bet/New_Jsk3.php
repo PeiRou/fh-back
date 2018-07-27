@@ -17,6 +17,7 @@ class New_Jsk3
         $this->HZ($openCode,$gameId,$win); //和值
         $this->SLH($openCode,$gameId,$win); //三连号
         $this->STH($openCode,$gameId,$win); //三同号
+        $this->ETH($openCode,$gameId,$win); //二同号
     }
 
     public function HZ($openCode,$gameId,$win)
@@ -112,6 +113,15 @@ class New_Jsk3
             $playId = 4310;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
+        }
+    }
+
+    public function ETH($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode);
+        $playCate = 217;
+        if((int)$arrOpenCode[0] == (int)$arrOpenCode[1]){
+            echo $arrOpenCode[0];
         }
     }
 }
