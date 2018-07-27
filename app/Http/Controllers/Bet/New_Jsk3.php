@@ -19,6 +19,7 @@ class New_Jsk3
         $this->STH($openCode,$gameId,$win); //三同号
         $this->ETH($openCode,$gameId,$win); //二同号
         $this->KD($openCode,$gameId,$win); //跨度
+        $this->PD($openCode,$gameId,$win); //牌点
     }
 
     public function HZ($openCode,$gameId,$win)
@@ -159,18 +160,36 @@ class New_Jsk3
         $playCate = 218;
 
         $KD_NUM = (int)$arrOpenCode[2] - (int)$arrOpenCode[0];
-        $KD_DX_arr = [
-            0 => 4324,
-            1 => 4324,
-            2 => 4324,
-            3 => 4323,
-            4 => 4323,
-            5 => 4323
-        ];
+        $KD_DX_arr = [0 => 4324, 1 => 4324, 2 => 4324, 3 => 4323, 4 => 4323, 5 => 4323];
+        $KD_DS_arr = [0 => 4326, 1 => 4325, 2 => 4326, 3 => 4325, 4 => 4326, 5 => 4325];
+        $KD_KDZ_arr = [0 => 4317, 1 => 4318, 2 => 4319, 3 => 4320, 4 => 4321, 5 => 4322];
         foreach ($KD_DX_arr as $k => $v){
             if($KD_NUM == $k){
-
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
             }
         }
+        foreach ($KD_DS_arr as $k => $v){
+            if($KD_NUM == $k){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        foreach ($KD_KDZ_arr as $k => $v){
+            if($KD_NUM == $k){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+    }
+
+    public function PD($openCode,$gameId,$win)
+    {
+        $arrOpenCode = explode(',',$openCode);
+        $playCate = 219;
+        $PD_NUM = (int)$arrOpenCode[0] + (int)$arrOpenCode[1] + (int)$arrOpenCode[2];
     }
 }
