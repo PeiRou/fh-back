@@ -21,7 +21,7 @@ class TestController extends Controller
             6 => 4352
         ];
         foreach ($BICHU_arr as $k => $v){
-            if(!in_array($k,$arrOpenCode)){
+            if(in_array($k,$arrOpenCode)){
                 echo $k.'在开奖号码中</br>';
             }
         }
