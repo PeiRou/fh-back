@@ -39,7 +39,7 @@ class OPEN_FILE_JSK3 extends Command
      */
     public function handle()
     {
-        $timeUp = date('08:29:00');
+        $timeUp = date('08:28:00');
         $str = "";
         for($i=1;$i<=82;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(10);
