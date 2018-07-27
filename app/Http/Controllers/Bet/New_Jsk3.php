@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Bet;
 
-
 use App\Bets;
 use Illuminate\Support\Facades\DB;
 
