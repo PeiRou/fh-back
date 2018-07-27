@@ -11,7 +11,6 @@ class TestController extends Controller
     {
         $openCode ='1,3,6';
         $arrOpenCode = explode(',',$openCode);
-        return $arrOpenCode;
         $playCate = 220;
         $BUCHU_arr = [
             1 => 4341,
