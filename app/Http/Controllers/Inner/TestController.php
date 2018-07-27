@@ -14,12 +14,12 @@ class TestController extends Controller
         $playCate = 217;
         $isBaoZi = 0;
         $ETH_arr = [
-            11 => 4311,
-            22 => 4312,
-            33 => 4313,
-            44 => 4314,
-            55 => 4315,
-            66 => 4316,
+            1 => 4311,
+            2 => 4312,
+            3 => 4313,
+            4 => 4314,
+            5 => 4315,
+            6 => 4316,
         ];
         if((int)$arrOpenCode[0] == (int)$arrOpenCode[1] && (int)$arrOpenCode[0] == (int)$arrOpenCode[2]){
             $isBaoZi = 1;
