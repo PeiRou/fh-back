@@ -281,38 +281,41 @@
         </li>
         @endif
         @if($hasPermission->hasPermission('activity') == "has")
-        <li class="nav-item"><a href="javascript:void(0)">
+        <li id="menu-activityManage" class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>
                 活动管理</a>
             <ul>
                 @if($hasPermission->hasPermission('activity.list') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>活动列表</span></a></li>
+                    <li id="menu-activityManage-list"><a href="{{ route('activity.list') }}"><cite></cite><span>活动列表</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('activity.condition') == "has")
+                    <li id="menu-activityManage-condition"><a href="{{ route('activity.condition') }}"><cite></cite><span>活动条件</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('activity.gift') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>奖品配置</span></a></li>
+                <li id="menu-activityManage-gift"><a href="{{ route('activity.gift') }}"><cite></cite><span>奖品配置</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('activity.review') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>派奖审核</span></a></li>
+                <li id="menu-activityManage-review"><a href="{{ route('activity.review') }}"><cite></cite><span>派奖审核</span></a></li>
                 @endif
             </ul>
         </li>
         @endif
         @if($hasPermission->hasPermission('agentSettle') == "has")
-        <li id="menu-agentSettle" class="nav-item"><a href="javascript:void(0)">
+        <li id="menu-agentManage" class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>
                 代理结算</a>
             <ul>
                 @if($hasPermission->hasPermission('agentSettle.report') == "has")
-                <li id="menu-agentSettle-report"><a href="{{ route('agentSettle.report') }}"><cite></cite><span>代理结算报表</span></a></li>
+                <li id="menu-agentManage-report"><a href="{{ route('agentSettle.report') }}"><cite></cite><span>代理结算报表</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('agentSettle.review') == "has")
-                <li id="menu-agentSettle-review"><a href="{{ route('agentSettle.review') }}"><cite></cite><span>代理结算审核</span></a></li>
+                <li id="menu-agentManage-review"><a href="{{ route('agentSettle.review') }}"><cite></cite><span>代理结算审核</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('agentSettle.draw') == "has")
-                <li id="menu-agentSettle-draw"><a href="{{ route('agentSettle.draw') }}"><cite></cite><span>代理提现</span></a></li>
+                <li id="menu-agentManage-draw"><a href="{{ route('agentSettle.draw') }}"><cite></cite><span>代理提现</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('agentSettle.setting') == "has")
-                <li id="menu-agentSettle-setting"><a href="{{ route('agentSettle.setting') }}"><cite></cite><span>代理结算配置</span></a></li>
+                <li id="menu-agentManage-setting"><a href="{{ route('agentSettle.setting') }}"><cite></cite><span>代理结算配置</span></a></li>
                 @endif
             </ul>
         </li>

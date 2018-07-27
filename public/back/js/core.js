@@ -111,6 +111,42 @@ $(function () {
             }
         })
     });
+    //上个月
+    $('#btnLastMonth_ym').on('click',function () {
+        $.ajax({
+            url:'/recharge/selectData/dateChange/lastMonth',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                $('#timeStart').val(data.start.substring(0,7));
+                $('#timeEnd').val(data.end.substring(0,7));
+            }
+        })
+    });
+    //上上个月
+    $('#btnLastLastMonth_ym').on('click',function () {
+        $.ajax({
+            url:'/recharge/selectData/dateChange/lastlastMonth',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                $('#timeStart').val(data.start.substring(0,7));
+                $('#timeEnd').val(data.end.substring(0,7));
+            }
+        })
+    });
+    //近两月
+    $('#btnLastTwoMonth_ym').on('click',function () {
+        $.ajax({
+            url:'/recharge/selectData/dateChange/lastthisMonth',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                $('#timeStart').val(data.start.substring(0,7));
+                $('#timeEnd').val(data.end.substring(0,7));
+            }
+        })
+    });
 });
 
 

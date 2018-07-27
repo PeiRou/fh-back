@@ -97,12 +97,31 @@ Route::group(['prefix' => 'back/control/payManage','middleware'=>['check-permiss
     Route::get('rechargeWay','Back\SrcViewController@rechargeWay')->name('pay.rechargeWay'); //支付层级配置
 });
 
+//代理结算
+Route::group(['prefix' => 'back/control/agentManage','middleware'=>['check-permission','domain-check','add-log-handle']],function () {
+    Route::get('agentSettleReport','Back\SrcViewController@agentSettleReport')->name('agentSettle.report'); //代理结算报表
+    Route::get('agentSettleReview','Back\SrcViewController@agentSettleReview')->name('agentSettle.review'); //代理结算审核
+    Route::get('agentSettleWithdraw','Back\SrcViewController@agentSettleWithdraw')->name('agentSettle.draw'); //代理提现
+    Route::get('agentSettleConfig','Back\SrcViewController@agentSettleConfig')->name('agentSettle.setting'); //代理结配置
+});
+
+//活动管理
+Route::group(['prefix' => 'back/control/activityManage','middleware'=>['check-permission','domain-check','add-log-handle']],function () {
+    Route::get('activityList','Back\SrcViewController@activityList')->name('activity.list'); //活动列表
+    Route::get('activityCondition','Back\SrcViewController@activityCondition')->name('activity.condition'); //活动条件
+    Route::get('activityPrize','Back\SrcViewController@activityPrize')->name('activity.gift'); //奖品配置
+    Route::get('activityReview','Back\SrcViewController@activityReview')->name('activity.review'); //派奖审核
+});
+
 //下拉菜单
 Route::group(['middleware'=>['add-log-handle']],function(){
     Route::get('/today/selectData/playCate/{gameId?}','Back\SrcViewController@playCate')->name('select.playCate'); // 下拉菜单获取玩法分类
     Route::get('/recharge/selectData/payOnline/{rechargeType?}','Back\SrcViewController@payOnlineSelectData')->name('select.payOnlineSelectData'); // 下拉菜单获取在线支付分类
     Route::get('/recharge/selectData/dateChange/{date?}','Back\SrcViewController@payOnlineDateChange')->name('select.payOnlineDateChange'); // 下拉菜单获取今日，昨日，上周
 });
+
+Route::get('getLevel','Back\SrcViewController@getLevel'); // ajax 获取分层列表
+Route::get('batchDelSendMessage','Back\SrcViewController@batchDelSendMessage'); // 批量删除
 
 Route::get('/back/datatables/subaccount','Back\Data\MembersDataController@subAccounts');
 Route::get('/back/datatables/generalAgent','Back\Data\MembersDataController@generalAgent');
@@ -118,7 +137,7 @@ Route::get('/back/datatables/games','Back\Data\GameDataController@games');
 Route::get('/back/datatables/onlineUser','Back\Data\MembersDataController@onlineUser');
 Route::get('/back/datatables/rechargeRecord','Back\Data\FinanceDataController@rechargeRecord');
 Route::get('/back/datatables/drawingRecord','Back\Data\FinanceDataController@drawingRecord');
-Route::get('/back/datatables/capitalDetails','Back\Data\FinanceDataController@capitalDetails'); //会员报表
+Route::get('/back/datatables/capitalDetails','Back\Data\FinanceDataController@capitalDetails'); //资金明细-表格数据
 Route::get('/back/datatables/memberReconciliation','Back\Data\FinanceDataController@memberReconciliation');
 Route::get('/back/datatables/agentReconciliation','Back\Data\FinanceDataController@agentReconciliation');
 Route::get('/back/datatables/reportGagent','Back\Data\ReportDataController@Gagent');
@@ -129,6 +148,7 @@ Route::get('/back/datatables/betToday','Back\Data\BetDataController@betToday');
 Route::get('/back/datatables/betHistory','Back\Data\BetDataController@betHistory');
 Route::get('/back/datatables/betRealTime','Back\Data\BetDataController@betRealTime');
 Route::get('/back/datatables/notice','Back\Data\NoticeDataController@notice');
+Route::get('/back/datatables/sendMessage','Back\Data\NoticeDataController@sendMessage');
 Route::get('/back/datatables/level','Back\Data\PayDataController@level');
 Route::get('/back/datatables/rechargeWay','Back\Data\PayDataController@rechargeWay');
 Route::get('/back/datatables/payOnline','Back\Data\PayDataController@payOnline');
@@ -145,6 +165,13 @@ Route::get('/back/datatables/openHistory/cqssc','Back\Data\openHistoryController
 Route::get('/back/datatables/openHistory/bjpk10','Back\Data\openHistoryController@bjpk10'); //历史开奖 - 北京PK10
 Route::get('/back/datatables/openHistory/bjkl8','Back\Data\openHistoryController@bjkl8'); //历史开奖 - 北京快乐8
 Route::get('/back/datatables/openHistory/lhc','Back\Data\openHistoryController@lhc'); //历史开奖 - 六合彩
+Route::get('/back/datatables/agentSettle/report','Back\Data\AgentSettleController@report'); //代理结算报表-表格数据
+Route::get('/back/datatables/agentSettle/review','Back\Data\AgentSettleController@review'); //代理结算审核-表格数据
+Route::get('/back/datatables/agentSettle/withdraw','Back\Data\AgentSettleController@withdraw'); //代理提现-表格数据
+Route::get('/back/datatables/activity/lists','Back\Data\ActivityController@lists'); //活动列表-表格数据
+Route::get('/back/datatables/activity/condition','Back\Data\ActivityController@condition'); //活动条件-表格数据
+Route::get('/back/datatables/activity/prize','Back\Data\ActivityController@prize'); //奖品配置-表格数据
+Route::get('/back/datatables/activity/review','Back\Data\ActivityController@review'); //派奖审核-表格数据
 
 //action
 Route::post('/action/admin/login','Back\SrcAccountController@login');
@@ -184,8 +211,29 @@ Route::post('/action/admin/addArticle','Back\SystemSettingController@addArticle'
 Route::post('/action/admin/delArticle','Back\SystemSettingController@delArticle');//删除文章
 Route::post('/action/admin/editArticle','Back\SystemSettingController@editArticle');//修改文章
 
+Route::post('/action/admin/agentSettle/settlement','Back\AgentSettleController@settlement'); //代理结算报表-手动结算
+Route::post('/action/admin/agentSettle/submitReview','Back\AgentSettleController@submitReview'); //代理结算报表-提交审核
+Route::post('/action/admin/agentSettle/submitSettle','Back\AgentSettleController@submitSettle'); //代理结算报表-提交结算
+Route::post('/action/admin/agentSettle/submitTurnDown','Back\AgentSettleController@submitTurnDown'); //代理结算报表-提交驳回
+Route::post('/action/admin/agentSettle/editReport','Back\AgentSettleController@editReport'); //代理结算报表-修改报表
+Route::post('/action/admin/agentSettle/editReview','Back\AgentSettleController@editReview'); //代理结算审核-修改审核
+Route::post('/action/admin/agentSettle/editConfig','Back\AgentSettleController@editConfig'); //代理结算配置-修改配置
+
+Route::post('/action/admin/activity/addActivity','Back\ActivityController@addActivity'); //活动列表-新增活动
+Route::post('/action/admin/activity/editActivity','Back\ActivityController@editActivity'); //活动列表-修改活动
+Route::post('/action/admin/activity/onOffActivity','Back\ActivityController@onOffActivity'); //活动列表-开启关闭
+Route::post('/action/admin/activity/addCondition','Back\ActivityController@addCondition'); //活动条件-新增条件
+Route::post('/action/admin/activity/editCondition','Back\ActivityController@editCondition'); //活动条件-修改条件
+Route::post('/action/admin/activity/delCondition','Back\ActivityController@delCondition'); //活动条件-删除条件
+Route::post('/action/admin/activity/addPrize','Back\ActivityController@addPrize'); //奖品配置-新增奖品
+Route::post('/action/admin/activity/editPrize','Back\ActivityController@editPrize'); //奖品配置-修改奖品
+Route::post('/action/admin/activity/delPrize','Back\ActivityController@delPrize'); //奖品配置-删除奖品
+Route::post('/action/admin/activity/reviewAward','Back\ActivityController@reviewAward'); //派奖审核-审核奖品
+
 Route::post('/action/admin/addNotice','Back\SrcNoticeController@addNotice'); //添加公告
 Route::post('/action/admin/delNoticeSetting','Back\SrcNoticeController@delNoticeSetting'); //添加公告
+Route::post('/action/admin/addSendMessage','Back\SrcNoticeController@addSendMessage'); //添加消息
+Route::post('/action/admin/delSendMessage','Back\SrcNoticeController@delSendMessage'); //删除消息
 
 Route::post('/action/admin/addBank','Back\SrcPayController@addBank');//添加银行
 Route::post('/action/admin/addLevel','Back\SrcPayController@addLevel');//添加层级
@@ -263,6 +311,7 @@ Route::get('/back/modal/viewUserContent/{id}','Back\Ajax\ModalController@viewUse
 Route::get('/back/modal/changeUserMoney/{id}','Back\Ajax\ModalController@changeUserMoney')->middleware('check-permission')->name('m.user.changeBalance');
 Route::get('/back/modal/userCapitalHistory/{id}','Back\Ajax\ModalController@userCapitalHistory')->middleware('check-permission')->name('m.user.viewDetails');
 Route::get('/back/modal/addNotice','Back\Ajax\ModalController@addNotice');
+Route::get('/back/modal/addSendMessage','Back\Ajax\ModalController@addSendMessage');
 Route::get('/back/modal/addLevel','Back\Ajax\ModalController@addLevel');
 Route::get('/back/modal/editLevel/{id}','Back\Ajax\ModalController@editLevel');
 Route::get('/back/modal/allExchangeLevel/{id}','Back\Ajax\ModalController@allExchangeLevel');
@@ -291,6 +340,14 @@ Route::get('/back/modal/openBjpk10/{id}','Back\Ajax\ModalController@openBjpk10')
 Route::get('/back/modal/openBjkl8/{id}','Back\Ajax\ModalController@openBjkl8');             //北京快乐8
 Route::get('/back/modal/openLhc/{id}','Back\Ajax\ModalController@openLhc');
 Route::get('/back/modal/reOpenLhc/{id}','Back\Ajax\ModalController@reOpenLhc');
+Route::get('/back/modal/editAgentSettleReport/{id}','Back\Ajax\ModalController@editAgentSettleReport'); //修改代理结算报表-模板
+Route::get('/back/modal/editAgentSettleReview/{id}','Back\Ajax\ModalController@editAgentSettleReview'); //修改代理结算审核-模板
+Route::get('/back/modal/addActivityList','Back\Ajax\ModalController@addActivityList'); //增加活动-模板
+Route::get('/back/modal/editActivityList/{id}','Back\Ajax\ModalController@editActivityList'); //修改活动-模板
+Route::get('/back/modal/addActivityCondition','Back\Ajax\ModalController@addActivityCondition'); //增加活动条件-模板
+Route::get('/back/modal/editActivityCondition/{id}','Back\Ajax\ModalController@editActivityCondition'); //修改活动条件-模板
+Route::get('/back/modal/addActivityPrize','Back\Ajax\ModalController@addActivityPrize'); //增加奖品配置-模板
+Route::get('/back/modal/editActivityPrize/{id}','Back\Ajax\ModalController@editActivityPrize'); //修改奖品配置-模板
 
 //游戏MODAL
 Route::get('/back/modal/gameSetting/{id}','Back\Ajax\ModalController@gameSetting');
@@ -344,6 +401,13 @@ Route::post('/game/table/save/xylhc','Back\GameTables\SaveGameOddsController@xyl
 Route::get('/error/403',function (){
     return view('403');
 })->name('error.403');
+
+//代理VIEW部分
+Route::get('/agent','Agent\AgentAccountController@login');
+Route::get('/agent/dash','Agent\AgentViewController@dash');
+Route::get('/agent/member','Agent\AgentViewController@ajaxMember');
+//代理Action部分
+Route::post('/agent/action/account/login','Agent\AgentAccountController@loginAction');
 
 //内部调试
 Route::get('/inner/playCate','Inner\innerController@playCate');

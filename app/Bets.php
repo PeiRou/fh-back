@@ -66,5 +66,11 @@ class Bets extends Model
         return $aSql;
     }
 
+    //获取结算初步信息
+    public static function preliminaryManualSettlement($array){
+        $sql = "SELECT count(bet.`bet_id`) AS `betCount`,sum(CASE WHEN bet.`bunko` > 0 THEN bet.`bunko` - bet.`bet_money` ELSE bet.`bunko` END) AS `sumBunko`,sum(bet.`bet_money`) AS `sumBetMoney`,bet.`user_id`,bet.`agent_id` FROM `bet` WHERE bet.`created_at` BETWEEN :startTime AND :endTime GROUP BY bet.`user_id`,bet.`agent_id`";
+        $sqlArray = ['startTime'=>$array['start'],'endTime'=>$array['end']];
+        return DB::select($sql,$sqlArray);
+    }
 
 }

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Back\Ajax;
 
+use App\Activity;
+use App\ActivityCondition;
+use App\ActivityPrize;
 use App\Agent;
 use App\Article;
 use App\Banks;
@@ -260,6 +263,14 @@ class ModalController extends Controller
         $levels = Levels::all();
         return view('back.modal.notice.addNotice')->with('levels',$levels);
     }
+    
+    //添加消息
+    public function addSendMessage()
+    {
+        $levels = Levels::all();
+        return view('back.modal.notice.addSendMessage')->with('levels',$levels);
+    }   
+    
     //修改用户层级
     public function editUserLevels($uid,$nowLevels)
     {
@@ -514,5 +525,58 @@ class ModalController extends Controller
     {
         $lhc = DB::table('game_lhc')->where('id',$id)->first();
         return view('back.modal.open.reOpenLHC',compact('lhc'));
+    }
+
+    //修改代理结算报表-模板
+    public function editAgentSettleReport($id){
+        $settleInfo = DB::table('agent_report')->where('agent_report_idx','=',$id)->first();
+        return view('back.modal.agentSettle.editAgentSettleReport',compact('settleInfo'));
+    }
+
+    //代理结算审核
+    public function editAgentSettleReview($id){
+        $settleInfo = DB::table('agent_report_review')->where('agent_report_idx','=',$id)->first();
+        return view('back.modal.agentSettle.editAgentSettleReview',compact('settleInfo'));
+    }
+
+    //新增活动-模板
+    public function addActivityList(){
+        $activityType = Activity::$activityType;
+        return view('back.modal.activity.addActivityList',compact('activityType'));
+    }
+
+    //修改活动-模板
+    public function editActivityList($id){
+        $activityType = Activity::$activityType;
+        $activityInfo = Activity::where('id','=',$id)->first();
+        return view('back.modal.activity.editActivityList',compact('activityType','activityInfo'));
+    }
+
+    //增加活动条件-模板
+    public function addActivityCondition(){
+        $activityLists = Activity::select('id','name')->orderBy('sort','asc')->get();
+        $prizeLists = ActivityPrize::select('id','name','quantity')->get();
+        return view('back.modal.activity.addActivityCondition',compact('activityLists','prizeLists'));
+    }
+
+    //修改活动条件-模板
+    public function editActivityCondition($id){
+        $activityLists = Activity::select('id','name')->orderBy('sort','asc')->get();
+        $prizeLists = ActivityPrize::select('id','name','quantity')->get();
+        $conditionInfo = ActivityCondition::getDetailInfoOne($id);
+        return view('back.modal.activity.editActivityCondition',compact('activityLists','prizeLists','conditionInfo'));
+    }
+
+    //增加奖品配置-模板
+    public function addActivityPrize(){
+        $prizeType = ActivityPrize::$prizeType;
+        return view('back.modal.activity.addActivityPrize',compact('prizeType'));
+    }
+
+    //修改奖品配置-模板
+    public function editActivityPrize($id){
+        $prizeType = ActivityPrize::$prizeType;
+        $prizeInfo = ActivityPrize::where('id','=',$id)->first();
+        return view('back.modal.activity.editActivityPrize',compact('prizeType','prizeInfo'));
     }
 }

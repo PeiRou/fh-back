@@ -2,9 +2,17 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Activity;
+use App\ActivitySend;
+use App\AgentDrawDetails;
+use App\AgentReport;
+use App\AgentReportBase;
+use App\AgentReportReview;
 use App\Capital;
 use App\Games;
+use App\Levels;
 use App\LogHandle;
+use App\MessagePush;
 use App\PayOnline;
 use App\PlayCates;
 use App\SubAccount;
@@ -336,7 +344,39 @@ class SrcViewController extends Controller
     {
         return view('back.messageSend');
     }
-    
+
+    /**
+     * 批量删除
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function batchDelSendMessage(Request $request)
+    {
+        $message_ids = explode(',', $request->message_ids);
+        foreach ($message_ids as $id) {
+            MessagePush::where('id', $id)->delete();
+        }
+        return response()->json([
+            'code' => 0,
+            'msg' => '删除成功'
+        ]);
+    }
+
+    /**
+     * 获取层级数据
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getLevel()
+    {
+        $levels = Levels::select('value as id','name')->get();
+        return response()->json([
+            'code' => 0,
+            'msg' => 'success',
+            'data' => $levels
+        ]);
+    }
+
+
     //游戏管理
     public function gameSetting()
     {
@@ -404,26 +444,30 @@ class SrcViewController extends Controller
         $routeLists = LogHandle::getTypeOption();
         return view('back.log.abnormal',compact('routeLists'));
     }
+
     //代理结算
     //代理结算报表
-    public function agentSettleReport()
-    {
-        return view('back.agentSettle.report');
+    public function agentSettleReport(){
+        //获取状态
+        $aStatus = AgentReport::$reportStatus;
+        return view('back.agentSettle.report',compact('aStatus'));
     }
     //代理结算审核
-    public function agentSettleReview()
-    {
-        return view('back.agentSettle.review');
+    public function agentSettleReview(){
+        //获取状态
+        $aStatus = AgentReportReview::$reportStatus;
+        return view('back.agentSettle.review',compact('aStatus'));
     }
-    //代理提款
-    public function agentSettleDraw()
-    {
-        return view('back.agentSettle.draw');
+    //代理结配置
+    public function agentSettleConfig(){
+        $aConfigInfo = AgentReportBase::getAgentBaseInfo();
+        return view('back.agentSettle.config',compact('aConfigInfo'));
     }
-    //代理结算配置
-    public function agentSettleSetting()
-    {
-        return view('back.agentSettle.setting');
+    //代理提现
+    public function agentSettleWithdraw(){
+        //获取状态
+        $aStatus = AgentDrawDetails::$reportStatus;
+        return view('back.agentSettle.withdraw',compact('aStatus'));
     }
 
     //充值配置
@@ -525,5 +569,36 @@ class SrcViewController extends Controller
                 'end' => date('Y-m-d', mktime(0,0,0,date('m')-1,$t,date('Y')))
             ]);
         }
+        if($date == 'lastlastMonth'){
+            return response()->json([
+                'start'=> date('Y-m-d', mktime(0,0,0,date('m')-2,1,date('Y'))),
+                'end' => date('Y-m-d', mktime(0,0,0,date('m')-2,$t,date('Y')))
+            ]);
+        }
+        if($date == 'lastthisMonth'){
+            return response()->json([
+                'start'=> date('Y-m-d', mktime(0,0,0,date('m')-2,1,date('Y'))),
+                'end' => date('Y-m-d', mktime(0,0,0,date('m')-1,$t,date('Y')))
+            ]);
+        }
+    }
+    //活动管理
+    //活动列表
+    public function activityList(){
+        return view('back.activity.list');
+    }
+    //活动条件
+    public function activityCondition(){
+        $aActivitys = Activity::select('id','name')->orderBy('sort','asc')->get();
+        return view('back.activity.condition',compact('aActivitys'));
+    }
+    //奖品配置
+    public function activityPrize(){
+        return view('back.activity.prize');
+    }
+    //派奖审核
+    public function activityReview(){
+        $aStatuss = ActivitySend::$activityStatus;
+        return view('back.activity.review',compact('aStatuss'));
     }
 }
