@@ -12,10 +12,15 @@ class TestController extends Controller
         $openCode ='1,1,1';
         $arrOpenCode = explode(',',$openCode);
         $playCate = 217;
-        if((int)$arrOpenCode[0] == (int)$arrOpenCode[1]){
+        $isBaoZi = 0;
+        if((int)$arrOpenCode[0] == (int)$arrOpenCode[1] && (int)$arrOpenCode[0] == (int)$arrOpenCode[2]){
+            $isBaoZi = 1;
+            echo '是豹子，不算，妈卖批！';
+        }
+        if((int)$arrOpenCode[0] == (int)$arrOpenCode[1] && $isBaoZi == 0){
             echo '前二'.$arrOpenCode[0];
         }
-        if((int)$arrOpenCode[1] == (int)$arrOpenCode[2]){
+        if((int)$arrOpenCode[1] == (int)$arrOpenCode[2] && $isBaoZi == 0){
             echo '后二'.$arrOpenCode[0];
         }
     }
