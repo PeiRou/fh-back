@@ -13,7 +13,10 @@ class TestController extends Controller
         $arrOpenCode = explode(',',$openCode);
         $playCate = 217;
         if((int)$arrOpenCode[0] == (int)$arrOpenCode[1]){
-            echo $arrOpenCode[0];
+            echo '前二'.$arrOpenCode[0];
+        }
+        if((int)$arrOpenCode[1] == (int)$arrOpenCode[2]){
+            echo '后二'.$arrOpenCode[0];
         }
     }
 }
