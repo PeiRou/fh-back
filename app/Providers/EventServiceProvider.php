@@ -52,12 +52,24 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunXYLHC' => [
             'App\Listeners\RunXYLHCEventListener',
         ],
+        'App\Events\RunJSK3' => [
+            'App\Listeners\RunJSK3EventListener',
+        ],
+        'App\Events\RunBJK3' => [
+            'App\Listeners\RunBJK3EventListener',
+        ],
+        'App\Events\RunGXK3' => [
+            'App\Listeners\RunGXK3EventListener',
+        ],
+        'App\Events\RunHBK3' => [
+            'App\Listeners\RunHBK3EventListener',
+        ],
         'App\Events\OpenMsscEvent' => [
             'App\Listeners\OpenMsscEventListener',
         ],
         'App\Events\OpenMssscEvent' => [
             'App\Listeners\OpenMssscEventListener',
-        ],
+        ]
     ];
     /**
      * Register any events for your application.
