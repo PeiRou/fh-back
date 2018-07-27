@@ -120,8 +120,17 @@ class New_Jsk3
     {
         $arrOpenCode = explode(',',$openCode);
         $playCate = 217;
-        if((int)$arrOpenCode[0] == (int)$arrOpenCode[1]){
-            echo $arrOpenCode[0];
+        $isBaoZi = 0;
+        if((int)$arrOpenCode[0] == (int)$arrOpenCode[1] && (int)$arrOpenCode[0] == (int)$arrOpenCode[2]){
+            $isBaoZi = 1;
+        }
+        if((int)$arrOpenCode[0] == (int)$arrOpenCode[1] && $isBaoZi == 0){
+            if((int)$arrOpenCode[0] == 1){
+
+            }
+        }
+        if((int)$arrOpenCode[1] == (int)$arrOpenCode[2] && $isBaoZi == 0){
+            echo '后二'.$arrOpenCode[0];
         }
     }
 }
