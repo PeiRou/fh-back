@@ -1,15 +1,15 @@
 @extends('back.master')
 
-@section('title','历史开奖-北京快乐8')
+@section('title','历史开奖-跑马')
 
 @section('page-css')
-    <link rel="stylesheet" href="{{ asset('back/css/pages/bjkl8.css') }}">
+    <link rel="stylesheet" href="{{ asset('back/css/pages/pk10.css') }}">
 @endsection
 
 @section('content')
     <div class="content-top">
         <div class="breadcrumb">
-            <b>位置：</b>北京快乐8历史记录
+            <b>位置：</b>秒速赛车历史记录
         </div>
     </div>
     <div class="table-content">
@@ -38,8 +38,9 @@
             <thead>
             <th width="8%">期号</th>
             <th width="10%">开奖时间</th>
-            <th align="center" width="32%">开出号码</th>
-            <th width="12%">总和</th>
+            <th width="20%">开出号码</th>
+            <th width="12%">冠亚军和</th>
+            <th width="12%">1~5龙虎</th>
             <th width="8%">状态</th>
             <th width="12%">操作</th>
             </tr>
@@ -51,5 +52,5 @@
 @section('page-js')
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
-    <script src="/back/js/pages/open_bjkl8.js"></script>
+    <script src="/back/js/pages/open_paoma.js"></script>
 @endsection

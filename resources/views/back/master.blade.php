@@ -187,6 +187,18 @@
                 @if($hasPermission->hasPermission('historyLottery.bjkl8') == "has")
                 <li id="menu-openManage-bjkl8"><a href="{{ route('historyLottery.bjkl8') }}"><cite></cite><span>北京快乐8</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('historyLottery.mssc') == "has")
+                <li id="menu-openManage-mssc"><a href="{{ route('historyLottery.mssc') }}"><cite></cite><span>秒速赛车</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.msft') == "has")
+                    <li id="menu-openManage-msft"><a href="{{ route('historyLottery.msft') }}"><cite></cite><span>秒速飞艇</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.paoma') == "has")
+                    <li id="menu-openManage-paoma"><a href="{{ route('historyLottery.paoma') }}"><cite></cite><span>跑马</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.msssc') == "has")
+                    <li id="menu-openManage-msssc"><a href="{{ route('historyLottery.msssc') }}"><cite></cite><span>秒速时时彩</span></a></li>
+                @endif
                 @if($hasPermission->hasPermission('historyLottery.xglhc') == "has")
                 <li id="menu-openManage-lhc"><a href="{{ route('historyLottery.xglhc') }}"><cite></cite><span>六合彩</span></a></li>
                 @endif

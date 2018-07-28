@@ -86,8 +86,8 @@
                     $('#datTable').DataTable().ajax.reload(null,false);
                 } else {
                     Calert(result.msg,'red');
-                    jc.close();
-                    $('#datTable').DataTable().ajax.reload(null,false);
+                    // jc.close();
+                    // $('#datTable').DataTable().ajax.reload(null,false);
                 }
             }
         });

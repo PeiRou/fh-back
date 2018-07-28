@@ -112,6 +112,40 @@ $(function () {
             }
         }
     });
+
+    $('#btn_search').on('click',function () {
+        dataTable.ajax.reload();
+
+    });
+
+    $('#reset').on('click',function () {
+        $('#issue').val('');                      //奖期
+        $('#issuedate').val('');              //开奖时间
+        dataTable.ajax.reload();
+    });
+
+    $('#rangeend').calendar({
+        type: 'date',
+        endCalendar: $('#issuedate'),
+        formatter: {
+            date: function (date, settings) {
+                if (!date) return '';
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                return year+'-'+month+'-'+day;
+            }
+        },
+        text: {
+            days: ['日', '一', '二', '三', '四', '五', '六'],
+            months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            today: '今天',
+            now: '现在',
+            am: 'AM',
+            pm: 'PM'
+        }
+    });
 });
 //豹子 顺子 对子 半顺 杂六
 function san(arrayNum){
@@ -148,7 +182,7 @@ function lhh(a,b){
 function opencqssc(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '北京PK10-手动开奖',
+        title: '重庆时时彩-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
         content: 'url:/back/modal/openCqssc/'+id,

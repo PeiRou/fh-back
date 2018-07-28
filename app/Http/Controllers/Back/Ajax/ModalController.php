@@ -489,6 +489,12 @@ class ModalController extends Controller
         $cqssc = DB::table('game_cqssc')->where('id',$id)->first();
         return view('back.modal.open.openCQSSC',compact('cqssc'));
     }
+    //秒速时时彩 - 手动开奖
+    public function openMsssc($id = '')
+    {
+        $cqssc = DB::table('game_msssc')->where('id',$id)->first();
+        return view('back.modal.open.openMSSSC',compact('cqssc'));
+    }
     //北京赛车 - 手动开奖
     public function openBjpk10($id = '')
     {
@@ -500,6 +506,21 @@ class ModalController extends Controller
     {
         $bjkl8 = DB::table('game_bjkl8')->where('id',$id)->first();
         return view('back.modal.open.openBJKL8',compact('bjkl8'));
+    }
+    //秒速赛车 - 手动开奖
+    public function openMssc($id = ''){
+        $mssc = DB::table('game_mssc')->where('id',$id)->first();
+        return view('back.modal.open.openMSSC',compact('mssc'));
+    }
+    //秒速飞艇 - 手动开奖
+    public function openMsft($id = ''){
+        $mssc = DB::table('game_msft')->where('id',$id)->first();
+        return view('back.modal.open.openMSFT',compact('mssc'));
+    }
+    //跑马 - 手动开奖
+    public function openPaoma($id = ''){
+        $mssc = DB::table('game_paoma')->where('id',$id)->first();
+        return view('back.modal.open.openPAOMA',compact('mssc'));
     }
     //添加六合彩
     public function addLhcNewIssue()

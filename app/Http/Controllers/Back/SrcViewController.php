@@ -265,6 +265,26 @@ class SrcViewController extends Controller
     {
         return view('back.open.bjkl8');
     }
+    //秒速赛车
+    public function openManage_mssc()
+    {
+        return view('back.open.mssc');
+    }
+    //秒速飞艇
+    public function openManage_msft()
+    {
+        return view('back.open.msft');
+    }
+    //跑马
+    public function openManage_paoma()
+    {
+        return view('back.open.paoma');
+    }
+    //秒速时时彩
+    public function openManage_msssc()
+    {
+        return view('back.open.msssc');
+    }
     //六合彩
     public function openManage_xglhc()
     {

@@ -19,8 +19,11 @@
                     <div class="two wide field">
                         <input type="text" id="issue" placeholder="期号">
                     </div>
-                    <div class="two wide field">
-                        <input type="text" id="issuedate" placeholder="开奖时间">
+                    <div class="ui calendar" id="rangeend" style="width: 108px;">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" id="issuedate" placeholder="开奖时间">
+                        </div>
                     </div>
                     <div class="field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询</button>
@@ -50,5 +53,7 @@
 @endsection
 
 @section('page-js')
+    <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
+    <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <script src="/back/js/pages/open_cqssc.js"></script>
 @endsection

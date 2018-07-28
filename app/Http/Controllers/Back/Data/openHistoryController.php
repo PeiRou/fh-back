@@ -51,6 +51,133 @@ class openHistoryController extends Controller
         return DataTables::of($HIS)
             ->make(true);
     }
+
+    //历史开奖 - 秒速赛车
+    public function mssc(Request $request){
+        $issue = $request->get('issue');
+        $issuedate = $request->get('issuedate');
+
+        if(!empty($issuedate))
+            $aIssuedate = explode('-',$issuedate);
+        else
+            $aIssuedate = array();
+        $HIS = DB::table('game_mssc')->select()
+            ->where(function ($query) use ($issue){             //奖期
+                if(isset($issue) && $issue){
+                    $query->where("issue",$issue);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //年
+                if(isset($aIssuedate) && $aIssuedate){
+                    $query->where("year",$aIssuedate[0]);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //月
+                if(isset($aIssuedate) && $aIssuedate){
+                    $aIssuedate[1] = intval($aIssuedate[1]);
+                    if($aIssuedate[1]<10)                       //如果小于10补0
+                        $aIssuedate[1] = "0".$aIssuedate[1];
+                    $query->where("month",$aIssuedate[1]);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //日
+                if(isset($aIssuedate) && $aIssuedate){
+                    $aIssuedate[2] = intval($aIssuedate[2]);
+                    if($aIssuedate[2]<10)                       //如果小于10补0
+                        $aIssuedate[2] = "0".$aIssuedate[2];
+                    $query->where("day",$aIssuedate[2]);
+                }
+            })
+            ->where('opentime','<=',date('Y-m-d H:i:s',time()))
+            ->orderBy('id','desc')->get();
+        return DataTables::of($HIS)
+            ->make(true);
+    }
+
+    //历史开奖 - 秒速飞艇
+    public function msft(Request $request){
+        $issue = $request->get('issue');
+        $issuedate = $request->get('issuedate');
+
+        if(!empty($issuedate))
+            $aIssuedate = explode('-',$issuedate);
+        else
+            $aIssuedate = array();
+        $HIS = DB::table('game_msft')->select()
+            ->where(function ($query) use ($issue){             //奖期
+                if(isset($issue) && $issue){
+                    $query->where("issue",$issue);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //年
+                if(isset($aIssuedate) && $aIssuedate){
+                    $query->where("year",$aIssuedate[0]);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //月
+                if(isset($aIssuedate) && $aIssuedate){
+                    $aIssuedate[1] = intval($aIssuedate[1]);
+                    if($aIssuedate[1]<10)                       //如果小于10补0
+                        $aIssuedate[1] = "0".$aIssuedate[1];
+                    $query->where("month",$aIssuedate[1]);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //日
+                if(isset($aIssuedate) && $aIssuedate){
+                    $aIssuedate[2] = intval($aIssuedate[2]);
+                    if($aIssuedate[2]<10)                       //如果小于10补0
+                        $aIssuedate[2] = "0".$aIssuedate[2];
+                    $query->where("day",$aIssuedate[2]);
+                }
+            })
+            ->where('opentime','<=',date('Y-m-d H:i:s',time()))
+            ->orderBy('id','desc')->get();
+        return DataTables::of($HIS)
+            ->make(true);
+    }
+
+    //历史开奖 - 跑马
+    public function paoma(Request $request){
+        $issue = $request->get('issue');
+        $issuedate = $request->get('issuedate');
+
+        if(!empty($issuedate))
+            $aIssuedate = explode('-',$issuedate);
+        else
+            $aIssuedate = array();
+        $HIS = DB::table('game_paoma')->select()
+            ->where(function ($query) use ($issue){             //奖期
+                if(isset($issue) && $issue){
+                    $query->where("issue",$issue);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //年
+                if(isset($aIssuedate) && $aIssuedate){
+                    $query->where("year",$aIssuedate[0]);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //月
+                if(isset($aIssuedate) && $aIssuedate){
+                    $aIssuedate[1] = intval($aIssuedate[1]);
+                    if($aIssuedate[1]<10)                       //如果小于10补0
+                        $aIssuedate[1] = "0".$aIssuedate[1];
+                    $query->where("month",$aIssuedate[1]);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //日
+                if(isset($aIssuedate) && $aIssuedate){
+                    $aIssuedate[2] = intval($aIssuedate[2]);
+                    if($aIssuedate[2]<10)                       //如果小于10补0
+                        $aIssuedate[2] = "0".$aIssuedate[2];
+                    $query->where("day",$aIssuedate[2]);
+                }
+            })
+            ->where('opentime','<=',date('Y-m-d H:i:s',time()))
+            ->orderBy('id','desc')->get();
+        return DataTables::of($HIS)
+            ->make(true);
+    }
+
     //重庆时时彩-表格数据
     public function cqssc(Request $request)
     {
@@ -62,6 +189,49 @@ class openHistoryController extends Controller
         else
             $aIssuedate = array();
         $HIS = DB::table('game_cqssc')->select()
+            ->where(function ($query) use ($issue){             //奖期
+                if(isset($issue) && $issue){
+                    $query->where("issue",$issue);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //年
+                if(isset($aIssuedate) && $aIssuedate){
+                    $query->where("year",$aIssuedate[0]);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //月
+                if(isset($aIssuedate) && $aIssuedate){
+                    $aIssuedate[1] = intval($aIssuedate[1]);
+                    if($aIssuedate[1]<10)                       //如果小于10补0
+                        $aIssuedate[1] = "0".$aIssuedate[1];
+                    $query->where("month",$aIssuedate[1]);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //日
+                if(isset($aIssuedate) && $aIssuedate){
+                    $aIssuedate[2] = intval($aIssuedate[2]);
+                    if($aIssuedate[2]<10)                       //如果小于10补0
+                        $aIssuedate[2] = "0".$aIssuedate[2];
+                    $query->where("day",$aIssuedate[2]);
+                }
+            })
+            ->where('opentime','<=',date('Y-m-d H:i:s',time()))
+            ->orderBy('id','desc')->get();
+        return DataTables::of($HIS)
+            ->make(true);
+    }
+
+    //秒速时时彩-表格数据
+    public function msssc(Request $request)
+    {
+        $issue = $request->get('issue');
+        $issuedate = $request->get('issuedate');
+
+        if(!empty($issuedate))
+            $aIssuedate = explode('-',$issuedate);
+        else
+            $aIssuedate = array();
+        $HIS = DB::table('game_msssc')->select()
             ->where(function ($query) use ($issue){             //奖期
                 if(isset($issue) && $issue){
                     $query->where("issue",$issue);

@@ -1,6 +1,6 @@
 $(function () {
     $('#menu-openManage').addClass('nav-show');
-    $('#menu-openManage-bjpk10').addClass('active');
+    $('#menu-openManage-paoma').addClass('active');
 
     dataTable = $('#datTable').DataTable({
         searching: false,
@@ -10,7 +10,7 @@ $(function () {
         serverSide: true,
         aLengthMenu: [[50]],
         ajax: {
-            url:'/back/datatables/openHistory/bjpk10',
+            url:'/back/datatables/openHistory/paoma',
             data:function (d) {
                 d.issue = $('#issue').val();                      //奖期
                 d.issuedate = $('#issuedate').val();              //开奖时间
@@ -134,10 +134,10 @@ function lhh(a,b){
 function openbjpk10(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '北京PK10-手动开奖',
+        title: '跑马-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content: 'url:/back/modal/openBjpk10/'+id,
+        content: 'url:/back/modal/openPaoma/'+id,
         buttons: {
             formSubmit: {
                 text:'确定',
