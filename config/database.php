@@ -55,13 +55,13 @@ return [
 //        ],
         'mysql' => [
             'driver' => 'mysql',
-            'read' => [
-                'host' => 'rr-j6cnipyc2834v6690.mysql.rds.aliyuncs.com'
-            ],
-            'write' => [
-                'host' => 'rm-j6cu60797usb9qsdz.mysql.rds.aliyuncs.com'
-            ],
-            //'host' => env('DB_HOST', '127.0.0.1'),
+            //'read' => [
+            //    'host' => 'rr-j6cnipyc2834v6690.mysql.rds.aliyuncs.com'
+            //],
+            //'write' => [
+            //    'host' => 'rm-j6cu60797usb9qsdz.mysql.rds.aliyuncs.com'
+            //],
+            'host' => 'rm-j6cu60797usb9qsdzrw.mysql.rds.aliyuncs.com',
             'port' => 3306,
             'database' => 'fh-db',
             'username' => 'laravel',
