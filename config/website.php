@@ -28,5 +28,5 @@ return [
         'rows'  =>'1',
     ],
     //后台地址
-    'backEndUrl' => ['f8710.com','www.f8710.com']
+    'backEndUrl' => ['fh888.f8710.com','fh888.f8710.com']
 ];
