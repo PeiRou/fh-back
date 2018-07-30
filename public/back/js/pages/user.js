@@ -7,14 +7,14 @@ $(function () {
 
     $(document).keyup(function(event){
         if(event.keyCode == 13){
-            dataTable.ajax.reload();
+            dataTable1.ajax.reload();
             getTotalMoney();
         }
     });
 
     getTotalMoney();
 
-    dataTable = $('#userTable').DataTable({
+    dataTable1 = $('#userTable').DataTable({
         searching: false,
         bLengthChange: false,
         ordering:false,
@@ -71,7 +71,7 @@ $(function () {
     });
     
     $('#btn_search').on('click',function () {
-        dataTable.ajax.reload();
+        dataTable1.ajax.reload();
         getTotalMoney();
     });
     // $('#reset').on('click',function () {
@@ -84,7 +84,7 @@ $(function () {
     //     $('#maxMoney').val("");
     //     $('#promoter').val("");
     //     $('#noLoginDays').val("");
-    //     dataTable.ajax.reload();
+    //     dataTable1.ajax.reload();
     // });
 });
 
