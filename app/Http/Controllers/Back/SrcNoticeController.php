@@ -80,6 +80,11 @@ class SrcNoticeController extends Controller
     //添加消息
     public function addSendMessage(Request $request)
     {
+        $redis = Redis::connection();
+        $redis->select(1);
+        if($redis->exists('addSend'))
+            return response()->json(['status'=>false,'msg'=>'请勿连续点击'],200);
+        $redis->setex('addSend',5,'ing');
         if($request->post('user_level') != null){
             $user_level =  $request->post('user_level','');
         }else{
@@ -109,7 +114,6 @@ class SrcNoticeController extends Controller
         $MessagePush->sa_account = Session::get('account');
         $save = $MessagePush->save();
         if ($save == 1) {
-            $redis = Redis::connection();
             switch ($user_type){
                 case 1:             //1 部分用户
                     $users = explode(',',$user_str);
@@ -144,7 +148,6 @@ class SrcNoticeController extends Controller
                         ->get();
                     break;
             }
-            $redis->select(1);
             $rsKeyH = 'chatList';         //切换到聊天平台
             foreach ($usersArray as $key => $user){
                 $tmp = [];
