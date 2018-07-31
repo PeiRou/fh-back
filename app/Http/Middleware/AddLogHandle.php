@@ -25,7 +25,7 @@ class AddLogHandle
         $ip = $request->ip();
         $ipList = Whitelist::getWhiteIpList();
         if(!in_array($ip,$ipList) && Session::get('account')!='admin'){
-            return redirect()->route('back.login');
+            return abort(503);
         }
         if(!$username = Session::get('account')){
             return redirect()->route('back.login');
