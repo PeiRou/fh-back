@@ -234,16 +234,17 @@ class SrcMemberController extends Controller
     //添加会员账号
     public function AddUser(Request $request)
     {
+        $agent = $request->input('agent');
+        $username = $request->input('username');
+        $password = Hash::make($request->input('password'));
+        $fullName = $request->input('fullName');
+
         if(empty($agent)){
             return response()->json([
                 'status'=>false,
                 'msg'=>'请选择用户代理层级'
             ]);
         }
-        $agent = $request->input('agent');
-        $username = $request->input('username');
-        $password = Hash::make($request->input('password'));
-        $fullName = $request->input('fullName');
 
         $check = User::where('username',$username)->count();
         if($check !== 0){
