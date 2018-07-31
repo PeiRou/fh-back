@@ -72,6 +72,7 @@ Route::group(['prefix' => 'back/control/systemManage','middleware'=>['check-perm
     Route::get('role','Back\SrcViewController@role')->name('system.role');  //角色管理
     Route::get('systemSetting','Back\SrcViewController@systemSetting')->name('system.systemSetting'); //系统参数配置
     Route::get('articleManage','Back\SrcViewController@articleManage')->name('system.articleManage'); //文章管理
+    Route::get('whitelist','Back\SrcViewController@whitelist')->name('system.whitelist'); //ip白名单设置
     Route::get('suggestManage','Back\SrcViewController@suggestManage')->name('system.suggest'); //建议反馈
 });
 
@@ -137,6 +138,7 @@ Route::get('/back/datatables/user','Back\Data\MembersDataController@user');
 Route::get('/back/datatables/premissions','Back\Data\SystemDataController@permissions'); //权限-表格数据
 Route::get('/back/datatables/premissionsAuth','Back\Data\SystemDataController@permissionsAuth'); //权限控制-表格数据
 Route::get('/back/datatables/roles','Back\Data\SystemDataController@roles'); //角色-表格数据
+Route::get('/back/datatables/whitelist','Back\Data\SystemDataController@whitelist'); //ip白名单设置-表格数据
 Route::get('/back/datatables/bank','Back\Data\PayDataController@bank');
 Route::get('/back/datatables/games','Back\Data\GameDataController@games');
 Route::get('/back/datatables/onlineUser','Back\Data\MembersDataController@onlineUser');
@@ -220,6 +222,9 @@ Route::post('/action/admin/systemSetting/edit','Back\SystemSettingController@edi
 Route::post('/action/admin/addArticle','Back\SystemSettingController@addArticle');//添加文章
 Route::post('/action/admin/delArticle','Back\SystemSettingController@delArticle');//删除文章
 Route::post('/action/admin/editArticle','Back\SystemSettingController@editArticle');//修改文章
+Route::post('/action/admin/addWhitelist','Back\SystemSettingController@addWhitelist');//添加ip白名单
+Route::post('/action/admin/delWhitelist','Back\SystemSettingController@delWhitelist');//删除ip白名单
+Route::post('/action/admin/editWhitelist','Back\SystemSettingController@editWhitelist');//修改ip白名单
 
 Route::post('/action/admin/agentSettle/settlement','Back\AgentSettleController@settlement'); //代理结算报表-手动结算
 Route::post('/action/admin/agentSettle/submitReview','Back\AgentSettleController@submitReview'); //代理结算报表-提交审核
@@ -304,6 +309,8 @@ Route::get('/back/modal/addPermissionAuth','Back\Ajax\ModalController@addPermiss
 Route::get('/back/modal/editPermissionAuth/{id}','Back\Ajax\ModalController@editPermissionAuth'); //修改权限控制
 Route::get('/back/modal/addRole','Back\Ajax\ModalController@addRole'); //添加角色
 Route::get('/back/modal/editRole/{id}','Back\Ajax\ModalController@editRole'); //修改角色
+Route::get('/back/modal/addWhitelist','Back\Ajax\ModalController@addWhitelist'); //添加ip白名单
+Route::get('/back/modal/editWhitelist/{id}','Back\Ajax\ModalController@editWhitelist'); //修改ip白名单
 Route::get('/back/modal/addSubAccount','Back\Ajax\ModalController@addSubAccount')->middleware('check-permission')->name('m.subAccount.add');
 Route::get('/back/modal/editSubAccount/{id}','Back\Ajax\ModalController@editSubAccount')->middleware('check-permission')->name('m.subAccount.edit');
 Route::get('/back/modal/googleSubAccount/{id}','Back\Ajax\ModalController@googleSubAccount')->middleware('check-permission')->name('m.subAccount.googleOTP');

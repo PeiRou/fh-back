@@ -14,6 +14,7 @@ use App\Levels;
 use App\LogHandle;
 use App\MessagePush;
 use App\PayOnline;
+use App\PermissionsAuth;
 use App\PlayCates;
 use App\SubAccount;
 use App\SystemSetting;
@@ -420,7 +421,8 @@ class SrcViewController extends Controller
         }else{
             $auth_id = 0;
         }
-        return view('back.system.permissionsAuth',compact('auth_id'));
+        $aPermissionsAuths = PermissionsAuth::getPermissionLowerLevelList();
+        return view('back.system.permissionsAuth',compact('auth_id','aPermissionsAuths'));
     }
 
     //权限
@@ -444,6 +446,10 @@ class SrcViewController extends Controller
     public function articleManage()
     {
         return view('back.system.articleManage');
+    }     
+    //ip白名单设置
+    public function whitelist(){
+        return view('back.system.whitelist');
     }
     //建议反馈
     public function suggestManage()
