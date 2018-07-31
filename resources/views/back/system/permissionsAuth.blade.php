@@ -12,6 +12,34 @@
         </div>
     </div>
     <div class="table-content">
+        <div class="table-quick-bar">
+            <div class="ui mini form">
+                <div class="fields">
+                    <div class="one wide field" style="width: 9% !important;">
+                        <input type="text" id="route_name" placeholder="路由别名">
+                    </div>
+                    <div class="one wide field">
+                        <select class="ui dropdown" id="pid" style='height:32px !important'>
+                            <option value="">权限：</option>
+                            @foreach($aPermissionsAuths as $aPermissionsAuth)
+                                <option value="{{ $aPermissionsAuth->id }}">--{{ $aPermissionsAuth->auth_name }}</option>
+                                @if(!empty($aPermissionsAuth->child))
+                                    @foreach($aPermissionsAuth->child as $child)
+                                        <option value="{{ $child->id }}">  |__{{ $child->auth_name }}</option>
+                                    @endforeach
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="one wide field">
+                        <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
+                    </div>
+                    <div class="one wide field">
+                        <button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <input id="exampleAuthId" type="hidden" value="{{ $auth_id }}">
         <table id="example" class="ui small table" cellspacing="0" width="100%">
             <thead>

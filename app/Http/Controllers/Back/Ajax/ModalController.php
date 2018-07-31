@@ -21,6 +21,7 @@ use App\RechargeWay;
 use App\Roles;
 use App\SubAccount;
 use App\User;
+use App\Whitelist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -57,6 +58,17 @@ class ModalController extends Controller
         $oPermissionsAuth = PermissionsAuth::getPermissionOne($id);
 
         return view('back.modal.system.editPermissionAuth',compact('aPermissionsAuths','aPermissionsTypes','oPermissionsAuth'));
+    }
+
+    //添加ip白名单
+    public function addWhitelist(){
+        return view('back.modal.system.addWhitelist');
+    }
+
+    //修改ip白名单
+    public function editWhitelist($id){
+        $aWhiteLists = Whitelist::where('id','=',$id)->first();
+        return view('back.modal.system.editWhitelist',compact('aWhiteLists'));
     }
 
     //添加角色

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Helpers\RouteConfig;
 use App\LogHandle;
+use App\Whitelist;
 use Closure;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -21,8 +22,20 @@ class AddLogHandle
      */
     public function handle($request, Closure $next)
     {
-        if(empty(Session::get('account_id')))
-            return view('back.O_adminLogin');
+        $ip = $request->ip();
+        $ipList = Whitelist::getWhiteIpList();
+        if(!in_array($ip,$ipList) && Session::get('account')!='admin'){
+            return redirect()->route('back.login');
+        }
+        if(!$username = Session::get('account')){
+            return redirect()->route('back.login');
+        }
+        if(!$name = Session::get('account_name')){
+            return redirect()->route('back.login');
+        }
+        if(!$user_id = Session::get('account_id')){
+            return redirect()->route('back.login');
+        }
         $routeData = LogHandle::getTypeAction(Route::currentRouteName());
         $ip = $request->ip();
         $params = $request->all();

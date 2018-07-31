@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\ActivityCondition;
 use App\Article;
 use App\SystemSetting;
+use App\Whitelist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class SystemSettingController extends Controller
 {
@@ -117,6 +120,85 @@ class SystemSettingController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => '删除失败，请稍后再试！'
+            ]);
+        }
+    }
+
+    //添加ip白名单
+    public function addWhitelist(Request $request){
+        $params = $request->post();
+        $validator = Validator::make($params,Whitelist::$role);
+        if($validator->fails()){
+            return response()->json([
+                'status'=> false,
+                'msg'=> $validator->errors()->first()
+            ]);
+        }
+        $data = [];
+        $data['ip'] = $params['ip'];
+        $data['content'] = $params['content'];
+        $data['admin_id'] = Session::get('account_id');
+        $data['admin_account'] = Session::get('account');
+        if(Whitelist::insert($data)){
+            return response()->json([
+                'status' => true
+            ]);
+        }else{
+            return response()->json([
+                'status' => false,
+                'msg' => '添加失败，请稍后再试！'
+            ]);
+        }
+    }
+
+    //删除ip白名单
+    public function delWhitelist(Request $request){
+        $params = $request->post();
+        if(!isset($params['id']) && array_key_exists('id',$params)){
+            return response()->json([
+                'status' => false,
+                'msg' => '参数错误'
+            ]);
+        }
+        if(Whitelist::where('id','=',$params['id'])->delete()){
+            return response()->json([
+                'status' => true
+            ]);
+        }else{
+            return response()->json([
+                'status' => false,
+                'msg' => '删除失败，请稍后再试！'
+            ]);
+        }
+    }
+
+    //修改ip白名单
+    public function editWhitelist(Request $request){
+        $params = $request->post();
+        $validator = Validator::make($params,Whitelist::$role);
+        if($validator->fails()){
+            return response()->json([
+                'status'=> false,
+                'msg'=> $validator->errors()->first()
+            ]);
+        }
+        if(!isset($params['id']) && array_key_exists('id',$params)){
+            return response()->json([
+                'status' => false,
+                'msg' => '参数错误'
+            ]);
+        }
+        $data = [];
+        $data['ip'] = $params['ip'];
+        $data['content'] = $params['content'];
+        if(Whitelist::where('id','=',$params['id'])->update($data)){
+            return response()->json([
+                'status' => true
+            ]);
+        }else{
+            return response()->json([
+                'status' => false,
+                'msg' => '修改失败，请稍后再试！'
             ]);
         }
     }

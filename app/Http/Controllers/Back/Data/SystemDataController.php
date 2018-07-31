@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back\Data;
 use App\Permissions;
 use App\PermissionsAuth;
 use App\Roles;
+use App\Whitelist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use PhpParser\Node\Expr\Array_;
@@ -43,9 +44,14 @@ class SystemDataController extends Controller
         if(isset($params['pid']) && array_key_exists('pid',$params)){
             $pid = $params['pid'];
         }else{
-            $pid = 0;
+            $pid = '';
         }
-        $aPermissionsAuths = PermissionsAuth::getPermissionList($pid);
+        if(isset($params['route_name']) && array_key_exists('route_name',$params)){
+            $route_name = $params['route_name'];
+        }else{
+            $route_name = '';
+        }
+        $aPermissionsAuths = PermissionsAuth::getPermissionList($pid,$route_name);
         return DataTables::of($aPermissionsAuths)
             ->editColumn('open',function ($aPermissionsAuths){
                 if($aPermissionsAuths->open == 0){
@@ -57,6 +63,18 @@ class SystemDataController extends Controller
             ->editColumn('control',function ($aPermissionsAuths) {
                 return '<span class="edit-link" onclick="jumpHref('.$aPermissionsAuths->id.')"> 查看下级 </span> | '
                     .'<span class="edit-link" onclick="edit('.$aPermissionsAuths->id.')"><i class="iconfont">&#xe602;</i> 修改</span>';
+            })
+            ->rawColumns(['control'])
+            ->make(true);
+    }
+
+    //ip白名单设置-表格数据
+    public function whitelist(Request $request){
+        $roles = Whitelist::all();
+        return DataTables::of($roles)
+            ->editColumn('control',function ($roles) {
+                return '<span class="edit-link" onclick="edit('.$roles->id.')"><i class="iconfont">&#xe602;</i> 修改 </a></span> | '
+                    .'<span class="edit-link" onclick="del('.$roles->id.')"> 删除</span>';
             })
             ->rawColumns(['control'])
             ->make(true);

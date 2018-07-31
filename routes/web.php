@@ -72,6 +72,7 @@ Route::group(['prefix' => 'back/control/systemManage','middleware'=>['check-perm
     Route::get('role','Back\SrcViewController@role')->name('system.role');  //角色管理
     Route::get('systemSetting','Back\SrcViewController@systemSetting')->name('system.systemSetting'); //系统参数配置
     Route::get('articleManage','Back\SrcViewController@articleManage')->name('system.articleManage'); //文章管理
+    Route::get('suggestManage','Back\SrcViewController@suggestManage')->name('system.suggest'); //建议反馈
 });
 
 //日志管理
@@ -161,6 +162,7 @@ Route::get('/back/datatables/payAlipay','Back\Data\PayDataController@payAlipay')
 Route::get('/back/datatables/payWechat','Back\Data\PayDataController@payWechat');
 Route::get('/back/datatables/payCft','Back\Data\PayDataController@payCft');
 Route::get('/back/datatables/article','Back\Data\ArticleController@article');
+Route::get('/back/datatables/suggest','Back\Data\SuggestController@index');
 Route::get('/back/datatables/userBetSearch','Back\Data\BetDataController@userBetSearch');
 Route::get('/back/datatables/log/login','Back\Data\LogDataController@login'); //登录日志
 Route::get('/back/datatables/logHandle','Back\Data\LogDataController@logHandle'); //操作日志

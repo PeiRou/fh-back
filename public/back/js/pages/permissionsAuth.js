@@ -3,6 +3,7 @@
  */
 
 var dataTable;
+var pid = $('#exampleAuthId').val();
 
 $(function () {
     $('#menu-systemManage').addClass('nav-show');
@@ -17,7 +18,8 @@ $(function () {
         ajax: {
             url : '/back/datatables/premissionsAuth',
             data : function (d) {
-                d.pid = $('#exampleAuthId').val();
+                d.pid = pid;
+                d.route_name = $('#route_name').val();
             }
         },
         columns: [
@@ -29,6 +31,20 @@ $(function () {
             {data: 'created_at'},
             {data: 'control'},
         ]
+    });
+
+    $('#btn_search').on('click',function () {
+        pid = $('#pid').val();
+        dataTable.ajax.reload();
+
+    });
+
+    $('#reset').on('click',function () {
+        $('#pid').val('');
+        pid = 0;
+        $('#route_name').val('');
+        dataTable.ajax.reload();
+
     });
 });
 
@@ -79,6 +95,7 @@ function edit(id) {
 }
 
 function jumpHref(id) {
+    pid = id;
     $('#exampleAuthId').val(id);
     dataTable.ajax.reload();
 }

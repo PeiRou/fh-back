@@ -28,10 +28,13 @@ class PermissionsAuth extends Model
     }
 
     //获取权限
-    public static function getPermissionList($pid = ''){
+    public static function getPermissionList($pid = '',$route_name = ''){
         $aSql = self::select('permissions_type.type_name','permissions_type.type_pefix','permissions_auth.open','permissions_auth.auth_name','permissions_auth.route_name','permissions_auth.created_at','permissions_auth.id','permissions_auth.pid','permissions_auth.type_id');
-        if(!empty($pid)){
+        if($pid !== ''){
             $aSql->where('pid','=',$pid);
+        }
+        if($route_name !== ''){
+            $aSql->where('route_name','=',$route_name);
         }
         return $aSql->join('permissions_type','permissions_type.id','=','permissions_auth.type_id')->get();
     }

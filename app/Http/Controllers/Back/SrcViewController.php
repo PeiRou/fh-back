@@ -445,7 +445,12 @@ class SrcViewController extends Controller
     {
         return view('back.system.articleManage');
     }
-
+    //建议反馈
+    public function suggestManage()
+    {
+        $today = date('Y-m-d');
+        return view('back.system.suggestManage',compact('today'));
+    }
     //日志管理
     //登录日志
     public function loginLog()
