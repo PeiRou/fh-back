@@ -22,7 +22,7 @@
                     <div class="ui calendar" id="rangeend" style="width: 108px;">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
-                            <input type="text" id="issuedate" placeholder="开奖时间">
+                            <input type="text" id="issuedate" placeholder="开奖时间" value="{{ date('Y-m-d') }}">
                         </div>
                     </div>
                     <div class="field">
