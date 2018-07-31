@@ -279,7 +279,6 @@ class MembersDataController extends Controller
         $noLoginDays = $request->get('noLoginDays');
         $aid = $request->get('aid');    //代理id
         $gaid = $request->get('gaid');    //总代id
-
         $users = DB::table('users')
             ->leftJoin('level','users.rechLevel','=','level.value')
             ->leftJoin('agent','users.agent','=','agent.a_id')
