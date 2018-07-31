@@ -350,14 +350,7 @@ class MembersDataController extends Controller
 //                } else {
 //                    return "<span class='off-line-point'></span>";
 //                }
-//                $userLastTime = strtotime($users->updated_at);
-//                $time = $now-$userLastTime;
-//                if($time > 3600)
-//                {
-//                    return "<span class='off-line-point'></span>";
-//                } else {
-//                    return "<span class='on-line-point'></span>";
-//                }
+                return "<span class='off-line-point'></span>";
             })
             ->editColumn('promoter',function ($users){
                 return empty($users->user_promoter) ? '无' : $users->user_promoter;
