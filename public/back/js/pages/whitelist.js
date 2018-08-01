@@ -37,7 +37,7 @@ function add() {
         theme: 'material',
         title: '添加ip白名单',
         closeIcon:true,
-        boxWidth:'46%',
+        boxWidth:'28%',
         content: 'url:/back/modal/addWhitelist',
         buttons: {
             formSubmit: {
