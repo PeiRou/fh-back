@@ -10,7 +10,7 @@ class TestController extends Controller
     public function lhc()
     {
         $a = 1;//豹子概率
-        $b = 2; //二同号概率
+        $b = 3; //二同号概率
         $c = 4; //三连号概率
         $d = rand(20,90); //其他
         $prize_arr = [
