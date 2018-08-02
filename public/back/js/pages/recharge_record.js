@@ -121,7 +121,7 @@ $(function () {
                 .column( 7 )
                 .data()
                 .reduce( function (a, b,c) {
-                    data[c].re_amount = intVal(data[c].re_status) == 4 ? data[c].re_amount :0;
+                    data[c].re_amount = intVal(data[c].re_status) == 2 ? data[c].re_amount :0;
                     return parseFloat((intVal(a) + intVal(data[c].re_amount)).toPrecision(12));
                 }, 0 );
 

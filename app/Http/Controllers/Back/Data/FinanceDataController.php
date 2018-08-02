@@ -86,7 +86,6 @@ class FinanceDataController extends Controller
         }
         $sql .= $where .$whereStaus. ' order by recharges.created_at desc ';
         Session::put('recharge_report',$where);
-        Session::put('recharge_report',$whereStaus);
         $recharge = DB::select($sql);
 
         return DataTables::of($recharge)
