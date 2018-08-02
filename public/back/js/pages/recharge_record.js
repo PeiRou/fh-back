@@ -116,13 +116,36 @@ $(function () {
             };
 
             // computing column Total of the complete result
-
+            var chkCount1 = 0;
+            var chkCount2 = 0;
+            var chkCount3 = 0;
+            var chkCount4 = 0;
             var Total7 = api
                 .column( 7 )
                 .data()
                 .reduce( function (a, b,c) {
-                    data[c].re_amount = intVal(data[c].re_status) == 2 ? data[c].re_amount :0;
-                    return parseFloat((intVal(a) + intVal(data[c].re_amount)).toPrecision(12));
+                    switch (data[c].re_status){
+                        case 1:
+                            chkCount1 = chkCount1 + intVal(data[c].re_amount);
+                            break;
+                        case 2:
+                            chkCount2 = chkCount2 + intVal(data[c].re_amount);
+                            break;
+                        case 3:
+                            chkCount3 = chkCount3 + intVal(data[c].re_amount);
+                            break;
+                        case 4:
+                            chkCount4 = chkCount4 + intVal(data[c].re_amount);
+                            break;
+                    }
+                    if(chkCount2>0)
+                        return parseFloat(chkCount2).toPrecision(12);
+                    else if(chkCount1>0)
+                        return parseFloat(chkCount1).toPrecision(12);
+                    else if(chkCount3>0)
+                        return parseFloat(chkCount3).toPrecision(12);
+                    else if(chkCount4>0)
+                        return parseFloat(chkCount4).toPrecision(12);
                 }, 0 );
 
             var Total8 = api
