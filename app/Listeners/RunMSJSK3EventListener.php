@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\RunJSK3;
+use App\Events\RunMSJSK3;
 use App\Http\Controllers\Bet\New_Jsk3;
 use App\Http\Controllers\Bet\New_Msjsk3;
 use Illuminate\Queue\InteractsWithQueue;
