@@ -10,9 +10,9 @@ class TestController extends Controller
     public function lhc()
     {
         $a = 1;//豹子概率
-        $b = 1; //二同号概率
-        $c = 2; //三连号概率
-        $d = 30; //其他
+        $b = 2; //二同号概率
+        $c = 4; //三连号概率
+        $d = 85; //其他
         $prize_arr = [
             111 => ['id'=>1,'rate'=>$a],
             222 => ['id'=>2,'rate'=>$a],
