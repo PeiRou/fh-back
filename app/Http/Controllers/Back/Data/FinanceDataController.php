@@ -70,6 +70,7 @@ class FinanceDataController extends Controller
         }
         if(empty($startTime) && empty($endTime))
             $where .= " and recharges.created_at = now() ";
+        $whereStaus = '';
         if(empty($findUserId) && empty($account_param)){
             if(isset($status) && $status){
                 $whereStaus = ' and recharges.status = '.$status;
