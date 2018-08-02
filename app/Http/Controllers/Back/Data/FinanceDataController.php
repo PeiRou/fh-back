@@ -71,7 +71,7 @@ class FinanceDataController extends Controller
             if(isset($payType) && $payType){
                 $where .= " and recharges.payType = '".$payType."'";
             }else{
-                $where .= " and recharges.payType != 'onlinePayment'";
+                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
             }
         }
         if(isset($startTime) && $startTime){
