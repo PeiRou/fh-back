@@ -107,8 +107,6 @@ $(function () {
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
-
-            getTotalRecharge();
             // converting to interger to find total
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -135,8 +133,9 @@ $(function () {
 
             // Update footer by showing the total with the reference of the column index
             $( api.column( 0 ).footer() ).html('总计');
-            $( api.column( 7 ).footer() ).html(Total7)
-            $( api.column( 8 ).footer() ).html(Total8)
+            $( api.column( 7 ).footer() ).html(Total7);
+            $( api.column( 8 ).footer() ).html(Total8);
+            getTotalRecharge();
         },
         language: {
             "zeroRecords": "暂无数据",
@@ -161,7 +160,6 @@ $('#btn_search').on('click',function () {
         $('#isSearch').val('yes');
         dataTable.ajax.reload();
     }
-    getTotalRecharge();
 });
 
 function getTotalRecharge() {

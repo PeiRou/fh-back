@@ -53,11 +53,6 @@ class FinanceDataController extends Controller
         if(isset($findUserId) && $findUserId){
             $where .= ' and recharges.userId = '.$findUserId->id;
         }
-        if(isset($status) && $status){
-            $where .= ' and recharges.status = '.$status;
-        }else{
-            $where .= ' and recharges.status in (1,2,3)';
-        }
         if(isset($account_param) && $account_param){
             if($account_type == 'account'){
                 $where .= " and recharges.username = '".$account_param."'";
@@ -67,10 +62,17 @@ class FinanceDataController extends Controller
                 $where .= " and recharges.operation_account = '".$account_param."'";
             }
         }
-        if(isset($payType) && $payType){
-            $where .= " and recharges.payType = '".$payType."'";
-        }else{
-            $where .= " and recharges.payType != 'onlinePayment'";
+        if(empty($findUserId) && empty($account_param)){
+            if(isset($status) && $status){
+                $where .= ' and recharges.status = '.$status;
+            }else{
+                $where .= ' and recharges.status in (1,2,3)';
+            }
+            if(isset($payType) && $payType){
+                $where .= " and recharges.payType = '".$payType."'";
+            }else{
+                $where .= " and recharges.payType != 'onlinePayment'";
+            }
         }
         if(isset($startTime) && $startTime){
             $where .= " and recharges.created_at >= '".$startTime." 00:00:00'";
