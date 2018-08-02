@@ -73,7 +73,7 @@ class TestController extends Controller
         ];
         $arr = [];
         foreach ($prize_arr as $key => $val) {
-            $arr[$val['id']] = $val['rate'];
+            $arr[$key] = $val['rate'];
         }
         $rid = $this->get_rand($arr);
         return $rid;
