@@ -76,8 +76,9 @@ class TestController extends Controller
             $arr[$key] = $val['rate'];
         }
         $rid = $this->get_rand($arr);
-        $x = explode('',$rid);
-        return $x[0];
+        $arr = str_split($rid) ;
+        $arrcont = array_count_values($arr);
+        return $arrcont;
     }
 
     private function get_rand($proArr) {
