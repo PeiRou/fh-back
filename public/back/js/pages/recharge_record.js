@@ -127,26 +127,26 @@ $(function () {
                     var status = intVal(data[c].re_status);
                     switch (status){
                         case 1:
-                            chkCount1 = (chkCount1 + intVal(data[c].re_amount)).toFixed(2);
+                            chkCount1 = chkCount1 + intVal(data[c].re_amount);
                             break;
                         case 2:
-                            chkCount2 = (chkCount2 + intVal(data[c].re_amount)).toFixed(2);
+                            chkCount2 = chkCount2 + intVal(data[c].re_amount);
                             break;
                         case 3:
-                            chkCount3 = (chkCount3 + intVal(data[c].re_amount)).toFixed(2);
+                            chkCount3 = chkCount3 + intVal(data[c].re_amount);
                             break;
                         case 4:
-                            chkCount4 = (chkCount4 + intVal(data[c].re_amount)).toFixed(2);
+                            chkCount4 = chkCount4 + intVal(data[c].re_amount);
                             break;
                     }
                     if(chkCount2>0)
-                        return chkCount2;
+                        return (chkCount2).toFixed(2);
                     else if(chkCount1>0)
-                        return chkCount1;
+                        return (chkCount1).toFixed(2);
                     else if(chkCount3>0)
-                        return chkCount3;
+                        return (chkCount3).toFixed(2);
                     else if(chkCount4>0)
-                        return chkCount4;
+                        return (chkCount4).toFixed(2);
                 }, 0 );
 
             var Total8 = api
