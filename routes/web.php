@@ -400,6 +400,7 @@ Route::get('/game/tables/85','Back\GameTableController@gameTable85'); //幸运�
 Route::get('/game/tables/11','Back\GameTableController@gameTable11'); //北京快三
 Route::get('/game/tables/12','Back\GameTableController@gameTable12'); //广西快三
 Route::get('/game/tables/13','Back\GameTableController@gameTable13'); //湖北快三
+Route::get('/game/tables/86','Back\GameTableController@gameTable86'); //秒速江苏快三
 //保存游戏赔率表格数据
 Route::post('/game/table/save/bjpk10','Back\GameTables\SaveGameOddsController@bjpk10');
 Route::post('/game/table/save/cqssc','Back\GameTables\SaveGameOddsController@cqssc');
@@ -421,6 +422,7 @@ Route::post('/game/table/save/msssc','Back\GameTables\SaveGameOddsController@mss
 Route::post('/game/table/save/paoma','Back\GameTables\SaveGameOddsController@paoma');
 Route::post('/game/table/save/lhc','Back\GameTables\SaveGameOddsController@lhc');
 Route::post('/game/table/save/xylhc','Back\GameTables\SaveGameOddsController@xylhc');
+Route::post('/game/table/save/msjsk3','Back\GameTables\SaveGameOddsController@msjsk3');
 
 //error
 Route::get('/error/403',function (){

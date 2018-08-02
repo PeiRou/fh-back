@@ -133,6 +133,12 @@ class SaveGameOddsController extends Controller
         return $this->updateBatch($data,99);
     }
 
+    public function msjsk3(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,86);
+    }
+
     function updateBatch($data,$id){
         $sqlOdds = "UPDATE play SET odds = CASE ";
         $sqlRebate = "";
