@@ -173,7 +173,7 @@ class RechargeController extends Controller
             ->where('recharges.payType','!=','onlinePayment')->where('recharges.status',2)->whereDate('recharges.created_at',date('Y-m-d'))->sum('recharges.amount');
 
         $where = Session::get('recharge_report');
-        $total = DB::select('select sum(amount) as total  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 and recharges.status =1 '.$where);
+        $total = DB::select('select sum(amount) as total  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 and recharges.status =4 '.$where);
         foreach ($total as&$val)
             $total = $val;
         return response()->json([
