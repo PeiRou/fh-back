@@ -76,7 +76,7 @@ class TestController extends Controller
             $arr[$key] = $val['rate'];
         }
         $rid = $this->get_rand($arr);
-        $x = explode(' ',$rid);
+        $x = explode('',$rid);
         return $x[0];
     }
 
