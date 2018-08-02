@@ -62,18 +62,6 @@ class FinanceDataController extends Controller
                 $where .= " and recharges.operation_account = '".$account_param."'";
             }
         }
-        if(empty($findUserId) && empty($account_param)){
-            if(isset($status) && $status){
-                $where .= ' and recharges.status = '.$status;
-            }else{
-                $where .= ' and recharges.status in (1,2,3)';
-            }
-            if(isset($payType) && $payType){
-                $where .= " and recharges.payType = '".$payType."'";
-            }else{
-                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
-            }
-        }
         if(isset($startTime) && $startTime){
             $where .= " and recharges.created_at >= '".$startTime." 00:00:00'";
         }
@@ -82,8 +70,23 @@ class FinanceDataController extends Controller
         }
         if(empty($startTime) && empty($endTime))
             $where .= " and recharges.created_at = now() ";
-        $sql .= $where . ' order by recharges.created_at desc ';
+        if(empty($findUserId) && empty($account_param)){
+            if(isset($status) && $status){
+                $whereStaus = ' and recharges.status = '.$status;
+                Session::put('recharge_report_status',$status);
+            }else{
+                $whereStaus = ' and recharges.status in (1,2,3)';
+                Session::put('recharge_report_status',2);
+            }
+            if(isset($payType) && $payType){
+                $where .= " and recharges.payType = '".$payType."'";
+            }else{
+                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
+            }
+        }
+        $sql .= $where .$whereStaus. ' order by recharges.created_at desc ';
         Session::put('recharge_report',$where);
+        Session::put('recharge_report',$whereStaus);
         $recharge = DB::select($sql);
 
         return DataTables::of($recharge)
