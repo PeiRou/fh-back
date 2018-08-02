@@ -64,6 +64,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunHBK3' => [
             'App\Listeners\RunHBK3EventListener',
         ],
+        'App\Events\RunMSJSK3' => [
+            'App\Listeners\RunMSJSK3EventListener',
+        ],
         'App\Events\OpenMsscEvent' => [
             'App\Listeners\OpenMsscEventListener',
         ],
