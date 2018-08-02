@@ -172,31 +172,12 @@ class RechargeController extends Controller
             })
             ->where('recharges.payType','!=','onlinePayment')->where('recharges.status',2)->whereDate('recharges.created_at',date('Y-m-d'))->sum('recharges.amount');
 
-        $total = DB::table('recharges')
-            ->leftJoin('users','recharges.userId', '=', 'users.id')
-            ->where(function ($q) use ($killTest){
-                if(isset($killTest) && $killTest){
-                    $q->where('users.agent','!=',2);
-                }
-            })
-            ->where(function ($q) use ($account) {
-                if($account && isset($account)){
-                    $q->where('recharges.username',$account);
-                }
-            })
-            ->where(function ($q) use ($rechType) {
-                if($rechType && isset($rechType)){
-                    $q->where('recharges.payType',$rechType);
-                }
-            })
-            ->where(function ($q) use ($payOnlineId) {
-                if($payOnlineId && isset($payOnlineId)){
-                    $q->where('recharges.pay_online_id',$payOnlineId);
-                }
-            })
-            ->where('recharges.status',2)->whereBetween('recharges.created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('recharges.amount');
+        $where = Session::get('recharge_report');
+        $total = DB::select('select sum(amount) as total  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 '.$where);
+        foreach ($total as&$val)
+            $total = $val;
         return response()->json([
-            'total' => number_format($total,2),
+            'total' => number_format($total->total,2),
             'onlinePayToday' => number_format($onlinePayToday,2),
             'offlinePayToday' => number_format($offlinePayToday,2)
         ]);

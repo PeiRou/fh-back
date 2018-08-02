@@ -21,8 +21,6 @@ $(function () {
         //     }}
     ]);
 
-    getTotalRecharge();
-
     $('#rangestart').calendar({
         type: 'date',
         endCalendar: $('#rangeend'),
@@ -107,6 +105,39 @@ $(function () {
             {data:'status'},
             {data:'control'},
         ],
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            getTotalRecharge();
+            // converting to interger to find total
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // computing column Total of the complete result
+
+            var Total7 = api
+                .column( 7 )
+                .data()
+                .reduce( function (a, b,c) {
+                    return parseFloat((intVal(a) + intVal(data[c].re_amount)).toPrecision(12));
+                }, 0 );
+
+            var Total8 = api
+                .column( 8 )
+                .data()
+                .reduce( function (a, b) {
+                    return parseFloat((intVal(a) + intVal(b)).toPrecision(12));
+                }, 0 );
+
+            // Update footer by showing the total with the reference of the column index
+            $( api.column( 0 ).footer() ).html('总计');
+            $( api.column( 7 ).footer() ).html(Total7)
+            $( api.column( 8 ).footer() ).html(Total8)
+        },
         language: {
             "zeroRecords": "暂无数据",
             "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",

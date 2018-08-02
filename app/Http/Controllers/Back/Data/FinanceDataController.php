@@ -13,6 +13,7 @@ use App\UserRecon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\DataTables;
 
 class FinanceDataController extends Controller
@@ -35,68 +36,53 @@ class FinanceDataController extends Controller
             $findUserId = DB::table('users')->where('fullName',$fullName)->first();
         }
 
-        $recharge = DB::table('recharges')
-            ->leftJoin('users','recharges.userId', '=', 'users.id')
-            ->select('users.id as uid','recharges.id as rid','recharges.created_at as re_created_at','recharges.process_date as re_process_date','recharges.username as re_username','recharges.userId as userId','users.fullName as user_fullName','users.money as user_money','recharges.payType as re_payType','recharges.amount as re_amount','rebate_or_fee','recharges.operation_account as re_operation_account','recharges.shou_info as re_shou_info','recharges.ru_info as re_ru_info','recharges.status as re_status','recharges.msg as re_msg','recharges.orderNum as re_orderNum','recharges.balance as re_balance')
-            ->where(function ($q) use ($killTestUser){
-                if(isset($killTestUser) && $killTestUser){
-                    $q->where('users.agent','!=',2);
-                }
-            })
-            ->where(function ($q) use ($pay_online_id){
-                if(isset($pay_online_id) && $pay_online_id){
-                    $q->where('recharges.pay_online_id',$pay_online_id);
-                }
-            })
-            ->where(function ($q) use ($amount){
-                if(isset($amount) && $amount){
-                    $q->where('recharges.amount',$amount);
-                }
-            })
-            ->where(function ($q) use ($findUserId){
-                if(isset($findUserId) && $findUserId){
-                    $q->where('recharges.userId',$findUserId->id);
-                }
-            })
-            ->where(function ($q) use ($status,$account_param){
-                if(isset($status) && $status){
-                    $q->where('recharges.status',$status);
-                } else {
-                    if($account_param == ""){
-                        $q->where('recharges.status','!=',4);
-                    }
-                }
-            })
-            ->where(function ($q) use ($account_type, $account_param){
-                if(isset($account_param) && $account_param){
-                    if($account_type == 'account'){
-                        $q->where('recharges.username',$account_param);
-                    }
-                    if($account_type == 'orderNum'){
-                        $q->where('recharges.orderNum',$account_param);
-                    }
-                    if($account_type == 'operation_account'){
-                        $q->where('recharges.operation_account',$account_param);
-                    }
-                }
-            })
-            ->where(function ($q) use ($payType,$account_type,$account_param) {
-                if(isset($payType) && $payType){
-                    $q->where('recharges.payType',$payType);
-                } else {
-                    if($account_param == ""){
-                        $q->where('recharges.payType','!=','onlinePayment');
-                    }
-                }
-            })
-            ->where(function ($q) use ($startTime,$endTime) {
-                if(isset($startTime) && $startTime || isset($endTime) && $endTime){
-                    $q->whereBetween('recharges.created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59']);
-                } else {
-                    $q->whereDate('recharges.created_at',date('Y-m-d'));
-                }
-            })
-            ->orderBy('recharges.created_at','desc')->get();
+        $sql = 'select users.id as uid,recharges.id as rid,recharges.created_at as re_created_at,recharges.process_date as re_process_date,recharges.username as re_username,recharges.userId as userId,users.fullName as user_fullName,users.money as user_money,recharges.payType as re_payType,recharges.amount as re_amount,rebate_or_fee,recharges.operation_account as re_operation_account,recharges.shou_info as re_shou_info,recharges.ru_info as re_ru_info,recharges.status as re_status,recharges.msg as re_msg,recharges.orderNum as re_orderNum,recharges.balance as re_balance from recharges 
+              JOIN users on recharges.userId = users.id WHERE 1 ';
+        $where = '';
+        if(isset($killTestUser) && $killTestUser){
+            $where .= ' and users.testFlag = 0 ';
+        }else{
+            $where .= ' and users.testFlag in (0,2) ';
+        }
+        if(isset($pay_online_id) && $pay_online_id){
+            $where .= ' and recharges.pay_online_id = '.$pay_online_id;
+        }
+        if(isset($amount) && $amount){
+            $where .= ' and recharges.amount = '.$amount;
+        }
+        if(isset($findUserId) && $findUserId){
+            $where .= ' and recharges.userId = '.$findUserId->id;
+        }
+        if(isset($status) && $status){
+            $where .= ' and recharges.status = '.$status;
+        }else{
+            $where .= ' and recharges.status in (1,2,3)';
+        }
+        if(isset($account_param) && $account_param){
+            if($account_type == 'account'){
+                $where .= " and recharges.username = '".$account_param."'";
+            }else if($account_type == 'orderNum'){
+                $where .= " and recharges.orderNum = '".$account_param."'";
+            }else if($account_type == 'operation_account'){
+                $where .= " and recharges.operation_account = '".$account_param."'";
+            }
+        }
+        if(isset($payType) && $payType){
+            $where .= " and recharges.payType = '".$payType."'";
+        }else{
+            $where .= " and recharges.payType != 'onlinePayment'";
+        }
+        if(isset($startTime) && $startTime){
+            $where .= " and recharges.created_at >= '".$startTime." 00:00:00'";
+        }
+        if(isset($endTime) && $endTime){
+            $where .= " and recharges.created_at <= '".$endTime." 23:59:59'";
+        }
+        if(empty($startTime) && empty($endTime))
+            $where .= " and recharges.created_at = now() ";
+        $sql .= $where . ' order by recharges.created_at desc ';
+        Session::put('recharge_report',$where);
+        $recharge = DB::select($sql);
 
         return DataTables::of($recharge)
             ->editColumn('created_at',function ($recharge){

@@ -1,6 +1,6 @@
 @extends('back.master')
 
-@section('title','文章管理')
+@section('title','ip白名单设置')
 
 @section('content')
     <div class="content-top">

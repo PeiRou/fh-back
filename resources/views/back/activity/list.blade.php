@@ -1,6 +1,6 @@
 @extends('back.master')
 
-@section('title','资金明细')
+@section('title','活动列表')
 
 @section('content')
     <div class="content-top">

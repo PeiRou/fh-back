@@ -1,11 +1,11 @@
 @extends('back.master')
 
-@section('title','资金明细')
+@section('title','活动条件')
 
 @section('content')
     <div class="content-top">
         <div class="breadcrumb">
-            <b>位置：</b>活动列表
+            <b>位置：</b>活动条件
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('capitalDetailsTable')"><i class="iconfont">&#xe61d;</i></span>
