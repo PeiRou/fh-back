@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'domain-check' => \App\Http\Middleware\domainCheck::class,
         'mobile-check' => \App\Http\Middleware\mobileCheck::class,
         'add-log-handle' => \App\Http\Middleware\AddLogHandle::class,
+        'check-ip' => \App\Http\Middleware\CheckIP::class,
     ];
 }

@@ -913,4 +913,24 @@ class SrcPayController extends Controller
             ]);
         }
     }
+
+    //设置排序
+    public function setSort(Request $request){
+        $params = $request->all();
+        $data = [];
+        foreach ($params['sort'] as $key => $value){
+            $data[$key]['sort'] = empty($value) ? 0 : $value;
+            $data[$key]['id'] = $params['id'][$key];
+        }
+        if(PayOnline::editBatchPayOnlineData($data)){
+            return response()->json([
+                'status' => true
+            ]);
+        }else{
+            return response()->json([
+                'status' => false,
+                'msg' => '排序失败'
+            ]);
+        }
+    }
 }

@@ -271,12 +271,12 @@
                 @endif
                 @if($hasPermission->hasPermission('system.articleManage') == "has")
                 <li id="menu-systemManage-article"><a href="{{ route('system.articleManage') }}"><cite></cite><span>文章管理</span></a></li>
-                @endif  
+                @endif
                 @if($hasPermission->hasPermission('system.whitelist') == "has")
                     <li id="menu-systemManage-whitelist"><a href="{{ route('system.whitelist') }}"><cite></cite><span>ip白名单设置</span></a></li>
                 @endif
-                @if($hasPermission->hasPermission('system.suggest') == "has")
-                    <li id="menu-systemManage-suggest"><a href="{{ route('system.suggest') }}"><cite></cite><span>建议反馈</span></a></li>
+                @if($hasPermission->hasPermission('system.feedback') == "has")
+                    <li id="menu-systemManage-feedback"><a href="{{ route('system.feedback') }}"><cite></cite><span>意见反馈</span></a></li>
                 @endif
             </ul>
         </li>

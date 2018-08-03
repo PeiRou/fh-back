@@ -10,6 +10,7 @@
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('payOnlineTable')"><i class="iconfont">&#xe61d;</i></span>
             <span onclick="addPayOnline()">添加</span>
+            <span onclick="setSort()">排序</span>
         </div>
     </div>
     <div class="table-content">
@@ -23,6 +24,7 @@
                 <th>状态</th>
                 <th>层级设置</th>
                 <th>备注说明</th>
+                <th>排序</th>
                 <th>操作</th>
             </tr>
             </thead>

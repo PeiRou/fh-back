@@ -9,6 +9,8 @@ use App\Agent;
 use App\Article;
 use App\Banks;
 use App\Capital;
+use App\Feedback;
+use App\FeedbackMessage;
 use App\Games;
 use App\GeneralAgent;
 use App\Levels;
@@ -69,6 +71,13 @@ class ModalController extends Controller
     public function editWhitelist($id){
         $aWhiteLists = Whitelist::where('id','=',$id)->first();
         return view('back.modal.system.editWhitelist',compact('aWhiteLists'));
+    }
+
+    //查看意见反馈
+    public function viewFeedback($id){
+        $aMessage = FeedbackMessage::getFeedbackMessageList($id);
+        $iFeedback = Feedback::getFeedbackInfoOne($id);
+        return view('back.modal.system.viewFeedback',compact('aMessage','iFeedback'));
     }
 
     //添加角色

@@ -2,14 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\RouteConfig;
 use App\LogHandle;
-use App\Whitelist;
 use Closure;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AddLogHandle
 {
@@ -22,11 +19,7 @@ class AddLogHandle
      */
     public function handle($request, Closure $next)
     {
-        $ip = $request->ip();
-        $ipList = Whitelist::getWhiteIpList();
-        if(!in_array($ip,$ipList) && Session::get('account')!='admin'){
-            return abort(503);
-        }
+
         if(!$username = Session::get('account')){
             return redirect()->route('back.login');
         }
@@ -37,12 +30,8 @@ class AddLogHandle
             return redirect()->route('back.login');
         }
         $routeData = LogHandle::getTypeAction(Route::currentRouteName());
-        $ip = $request->ip();
         $params = $request->all();
-        $username = Session::get('account');
-        $name = Session::get('account_name');
-        $user_id = Session::get('account_id');
-
+        $ip = $request->ip();
         $data = [
             'user_id' => $user_id,
             'username' => $username,
@@ -55,7 +44,7 @@ class AddLogHandle
             'param' => json_encode($params),
         ];
         if(DB::table('log_handle')->insert($data)){
-              return $next($request);
+            return $next($request);
         }
         return response()->json(['error'=>'Adding log failed']);
     }

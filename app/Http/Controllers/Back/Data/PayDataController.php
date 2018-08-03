@@ -16,11 +16,15 @@ class PayDataController extends Controller
     //在线支付配置
     public function payOnline()
     {
-        $payOnline = PayOnline::where('rechType','onlinePayment')->get();
+        $payOnline = PayOnline::where('rechType','onlinePayment')->orderBy('sort','asc')->get();
+        //获取支付类型
+        $aPayTypes = PayType::getPayTypeAllList();
         return DataTables::of($payOnline)
-            ->editColumn('payType', function ($payOnline){
-                $payTypeName = PayType::find($payOnline->payType);
-                return $payTypeName->rechName;
+            ->editColumn('payType', function ($payOnline) use ($aPayTypes){
+                if(isset($aPayTypes[$payOnline->payType]) && array_key_exists($payOnline->payType,$aPayTypes)){
+                    return $aPayTypes[$payOnline->payType];
+                }
+                return '-';
             })
             ->editColumn('status', function ($payOnline){
                 if($payOnline->status == 1){
@@ -39,6 +43,9 @@ class PayDataController extends Controller
                 }
                 return $data;
             })
+            ->editColumn('sort', function ($payOnline){
+                return "<input type='text' value='".$payOnline->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$payOnline->id."' name='sortId[]'>";
+            })
             ->editColumn('control', function ($payOnline){
                 if($payOnline->status === 1){
                     $statusText = '<span class="edit-link" onclick="status(\''.$payOnline->id.'\',\''.$payOnline->status.'\',\''.$payOnline->payeeName.'\')"><i class="iconfont">&#xe687;</i> 停用</span>';
@@ -50,14 +57,14 @@ class PayDataController extends Controller
                         <span class="edit-link" onclick="del(\''.$payOnline->id.'\',\''.$payOnline->payeeName.'\')"><i class="iconfont">&#xe600;</i> 删除</span> | 
                         <span class="edit-link" onclick="copy(\''.$payOnline->id.'\')"><i class="iconfont">&#xe66d;</i> 复制</span>';
             })
-            ->rawColumns(['control','status','levels'])
+            ->rawColumns(['control','status','levels','sort'])
             ->make(true);
     }
     
     //银行支付配置
     public function payBank()
     {
-        $payBank = PayOnline::where('rechType','bankTransfer')->get();
+        $payBank = PayOnline::where('rechType','bankTransfer')->orderBy('sort','asc')->get();
         return DataTables::of($payBank)
             ->editColumn('bank', function ($payBank){
                 $findBank = Banks::where('bank_id',$payBank->paramId)->first();
@@ -93,6 +100,9 @@ class PayDataController extends Controller
             ->editColumn('remark2', function ($payBank){
                 return $payBank->remark2;
             })
+            ->editColumn('sort', function ($payOnline){
+                return "<input type='text' value='".$payOnline->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$payOnline->id."' name='sortId[]'>";
+            })
             ->editColumn('control', function ($payBank){
                 if($payBank->status === 1){
                     $statusText = '<span class="edit-link" onclick="status(\''.$payBank->id.'\',\''.$payBank->status.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe687;</i> 停用</span>';
@@ -103,14 +113,14 @@ class PayDataController extends Controller
                         '.$statusText.' | 
                         <span class="edit-link" onclick="del(\''.$payBank->id.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
             })
-            ->rawColumns(['control','status','levels'])
+            ->rawColumns(['control','status','levels','sort'])
             ->make(true);
     }
     
     //支付宝配置
     public function payAlipay()
     {
-        $payAlipay = PayOnline::where('rechType','alipay')->get();
+        $payAlipay = PayOnline::where('rechType','alipay')->orderBy('sort','asc')->get();
         return DataTables::of($payAlipay)
             ->editColumn('payeeName', function ($payAlipay){
                 return $payAlipay->payeeName;
@@ -141,6 +151,9 @@ class PayDataController extends Controller
             ->editColumn('remark2', function ($payBank){
                 return $payBank->remark2;
             })
+            ->editColumn('sort', function ($payOnline){
+                return "<input type='text' value='".$payOnline->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$payOnline->id."' name='sortId[]'>";
+            })
             ->editColumn('control', function ($payBank){
                 if($payBank->status === 1){
                     $statusText = '<span class="edit-link" onclick="status(\''.$payBank->id.'\',\''.$payBank->status.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe687;</i> 停用</span>';
@@ -151,14 +164,14 @@ class PayDataController extends Controller
                         '.$statusText.' | 
                         <span class="edit-link" onclick="del(\''.$payBank->id.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
             })
-            ->rawColumns(['control','status','levels','qrCode'])
+            ->rawColumns(['control','status','levels','qrCode','sort'])
             ->make(true);
     }
 
     //微信配置
     public function payWechat()
     {
-        $payWechat = PayOnline::where('rechType','weixin')->get();
+        $payWechat = PayOnline::where('rechType','weixin')->orderBy('sort','asc')->get();
         return DataTables::of($payWechat)
             ->editColumn('payeeName', function ($payWechat){
                 return $payWechat->payeeName;
@@ -189,6 +202,9 @@ class PayDataController extends Controller
             ->editColumn('remark2', function ($payWechat){
                 return $payWechat->remark2;
             })
+            ->editColumn('sort', function ($payOnline){
+                return "<input type='text' value='".$payOnline->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$payOnline->id."' name='sortId[]'>";
+            })
             ->editColumn('control', function ($payBank){
                 if($payBank->status === 1){
                     $statusText = '<span class="edit-link" onclick="status(\''.$payBank->id.'\',\''.$payBank->status.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe687;</i> 停用</span>';
@@ -199,14 +215,14 @@ class PayDataController extends Controller
                         '.$statusText.' | 
                         <span class="edit-link" onclick="del(\''.$payBank->id.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
             })
-            ->rawColumns(['control','status','levels','qrCode'])
+            ->rawColumns(['control','status','levels','qrCode','sort'])
             ->make(true);
     }
     
     //财付通
     public function payCft()
     {
-        $payCft = PayOnline::where('rechType','cft')->get();
+        $payCft = PayOnline::where('rechType','cft')->orderBy('sort','asc')->get();
         return DataTables::of($payCft)
             ->editColumn('payeeName', function ($payCft){
                 return $payCft->payeeName;
@@ -237,6 +253,9 @@ class PayDataController extends Controller
             ->editColumn('remark2', function ($payCft){
                 return $payCft->remark2;
             })
+            ->editColumn('sort', function ($payOnline){
+                return "<input type='text' value='".$payOnline->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$payOnline->id."' name='sortId[]'>";
+            })
             ->editColumn('control', function ($payBank){
                 if($payBank->status === 1){
                     $statusText = '<span class="edit-link" onclick="status(\''.$payBank->id.'\',\''.$payBank->status.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe687;</i> 停用</span>';
@@ -247,7 +266,7 @@ class PayDataController extends Controller
                         '.$statusText.' | 
                         <span class="edit-link" onclick="del(\''.$payBank->id.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
             })
-            ->rawColumns(['control','status','levels','qrCode'])
+            ->rawColumns(['control','status','levels','qrCode','sort'])
             ->make(true);
     }
     

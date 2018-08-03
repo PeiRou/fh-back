@@ -9,6 +9,7 @@ use App\AgentReport;
 use App\AgentReportBase;
 use App\AgentReportReview;
 use App\Capital;
+use App\Feedback;
 use App\Games;
 use App\Levels;
 use App\LogHandle;
@@ -451,11 +452,11 @@ class SrcViewController extends Controller
     public function whitelist(){
         return view('back.system.whitelist');
     }
-    //建议反馈
-    public function suggestManage()
-    {
-        $today = date('Y-m-d');
-        return view('back.system.suggestManage',compact('today'));
+    //意见反馈
+    public function feedback(){
+        $aType = Feedback::$feedbackType;
+        $aStatus = Feedback::$feedbackStatus;
+        return view('back.system.feedback',compact('aType','aStatus'));
     }
     //日志管理
     //登录日志

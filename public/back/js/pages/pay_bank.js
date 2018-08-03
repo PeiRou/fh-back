@@ -17,6 +17,7 @@ $(function () {
             {data:'status'},
             {data:'levels'},
             {data:'remark2'},
+            {data:'sort'},
             {data:'control'}
         ],
         language: {
@@ -173,6 +174,36 @@ function del(id,name) {
             },
             cancel:{
                 text:'取消'
+            }
+        }
+    });
+}
+
+function setSort() {
+    var sort = new Array();
+    var sortId = new Array();
+    $("input[name='sort[]']").each(function (i,e) {
+        sort.push(e.value);
+    });
+    $("input[name='sortId[]']").each(function (i,e) {
+        sortId.push(e.value);
+    });
+    $.ajax({
+        url:'/action/admin/setSort',
+        type:'post',
+        dataType:'json',
+        data:{sort:sort,id:sortId},
+        success:function (data) {
+            if(data.status == true){
+                $('#payBankTable').DataTable().ajax.reload(null,false);
+            }else{
+                Calert(data.msg,'red')
+            }
+        },
+        error:function (e) {
+            if(e.status == 403)
+            {
+                Calert('您没有此项权限！无法继续！','red')
             }
         }
     });

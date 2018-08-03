@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Back;
 
 use App\ActivityCondition;
 use App\Article;
+use App\Feedback;
+use App\FeedbackMessage;
 use App\SystemSetting;
 use App\Whitelist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -199,6 +202,40 @@ class SystemSettingController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => '修改失败，请稍后再试！'
+            ]);
+        }
+    }
+
+    //问题回复
+    public function replyFeedback(Request $request){
+        $params = $request->post();
+        $validator = Validator::make($params,FeedbackMessage::$role);
+        if($validator->fails()){
+            return response()->json([
+                'status'=> false,
+                'msg'=> $validator->errors()->first()
+            ]);
+        }
+        $data = [];
+        $data['content'] = $params['content'];
+        $data['feedback_id'] = $params['feedback_id'];
+        $data['type'] = 2;
+        $data['admin_id'] = Session::get('account_id');
+        $data['name'] = Session::get('account_name');
+        $data['account'] = Session::get('account');
+        DB::beginTransaction();
+        $result1 = FeedbackMessage::insert($data);
+        $result2 = Feedback::where('id','=',$params['feedback_id'])->update(['status'=>2]);
+        if($result1 && $result2){
+            DB::commit();
+            return response()->json([
+                'status' => true
+            ]);
+        }else{
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'msg' => '回复失败，请稍后再试！'
             ]);
         }
     }
