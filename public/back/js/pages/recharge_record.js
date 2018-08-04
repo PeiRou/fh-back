@@ -5,10 +5,20 @@ $(function () {
 
     var clipboard = new ClipboardJS('.copyUsername');
     clipboard.on('success', function(e) {
-        alert($(this).attr('id'));
+        alert();
     });
     clipboard.on('error', function(e) {
         alert("代理链接复制失败！请手动复制")
+    });
+    var clipboardSnippets = new ClipboardJS('[data-clipboard-snippet]', {
+        target: function(trigger) {
+            return trigger.nextElementSibling;
+        }
+    });
+    clipboardSnippets.on('success', function(e) {
+        e.clearSelection();
+        alert('cop')
+        //showTooltip(e.trigger, 'Copied!');
     });
     // context.init({preventDoubleContext: false});
     // context.settings({compress: true});
