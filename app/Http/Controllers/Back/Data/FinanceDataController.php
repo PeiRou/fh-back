@@ -106,7 +106,7 @@ class FinanceDataController extends Controller
             ->editColumn('user',function ($recharge){
                 return '<span id="user_copy_'.$recharge->rid.'">'.$recharge->re_username.'</span>
 <button data-clipboard-target="#user_copy_value_'.$recharge->rid.'" class="copyUsername">复制</button>
-<input id="user_copy_value_'.$recharge->rid.'" type="text" readonly value="'.$recharge->re_username.'">';
+<input id="user_copy_value_'.$recharge->rid.'" type="text" readonly class="copyInput" value="'.$recharge->re_username.'">';
             })
             ->editColumn('trueName',function ($recharge){
                 return $recharge->user_fullName;
