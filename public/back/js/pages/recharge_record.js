@@ -3,12 +3,12 @@ $(function () {
     $('#menu-financeManage-rechargeRecord').addClass('active');
 
     var clipboard = new ClipboardJS('.copyUsername');
-    // clipboard.on('success', function(e) {
-    //     alert();
-    // });
-    // clipboard.on('error', function(e) {
-    //     alert("代理链接复制失败！请手动复制")
-    // });
+    clipboard.on('success', function(e) {
+
+    });
+    clipboard.on('error', function(e) {
+
+    });
     var clipboardSnippets = new ClipboardJS('[data-clipboard-snippet]', {
         target: function(trigger) {
             return trigger.nextElementSibling;
