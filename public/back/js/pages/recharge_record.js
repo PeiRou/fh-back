@@ -4,12 +4,12 @@ $(function () {
     $('#menu-financeManage-rechargeRecord').addClass('active');
 
     var clipboard = new ClipboardJS('.copyUsername');
-    clipboard.on('success', function(e) {
-        alert();
-    });
-    clipboard.on('error', function(e) {
-        alert("代理链接复制失败！请手动复制")
-    });
+    // clipboard.on('success', function(e) {
+    //     alert();
+    // });
+    // clipboard.on('error', function(e) {
+    //     alert("代理链接复制失败！请手动复制")
+    // });
     var clipboardSnippets = new ClipboardJS('[data-clipboard-snippet]', {
         target: function(trigger) {
             return trigger.nextElementSibling;
@@ -17,9 +17,27 @@ $(function () {
     });
     clipboardSnippets.on('success', function(e) {
         e.clearSelection();
-        alert('cop')
-        //showTooltip(e.trigger, 'Copied!');
+        showTooltip(e.trigger, 'Copied!');
     });
+    clipboardSnippets.on('error', function(e) {
+        showTooltip(e.trigger, fallbackMessage(e.action));
+    });
+    function showTooltip(elem, msg) {
+        elem.setAttribute('class', 'btn tooltipped tooltipped-s');
+        elem.setAttribute('aria-label', msg);
+    }
+    function fallbackMessage(action) {
+        var actionMsg = '';
+        var actionKey = (action === 'cut' ? 'X' : 'C');
+        if (/iPhone|iPad/i.test(navigator.userAgent)) {
+            actionMsg = 'No support :(';
+        } else if (/Mac/i.test(navigator.userAgent)) {
+            actionMsg = 'Press ⌘-' + actionKey + ' to ' + action;
+        } else {
+            actionMsg = 'Press Ctrl-' + actionKey + ' to ' + action;
+        }
+        return actionMsg;
+    }
     // context.init({preventDoubleContext: false});
     // context.settings({compress: true});
     // context.attach('#rechargeRecordTable', [
