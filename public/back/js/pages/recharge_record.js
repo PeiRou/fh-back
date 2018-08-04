@@ -5,7 +5,7 @@ $(function () {
 
     var clipboard = new ClipboardJS('.copyUsername');
     clipboard.on('success', function(e) {
-        alert("代理链接复制成功！")
+        alert(e);
     });
     clipboard.on('error', function(e) {
         alert("代理链接复制失败！请手动复制")
