@@ -9,51 +9,51 @@ $(function () {
     clipboard.on('error', function(e) {
 
     });
-    // var clipboardSnippets = new ClipboardJS('[data-clipboard-snippet]', {
-    //     target: function(trigger) {
-    //         return trigger.nextElementSibling;
-    //     }
-    // });
-    // clipboardSnippets.on('success', function(e) {
-    //     e.clearSelection();
-    //     showTooltip(e.trigger, 'Copied!');
-    // });
-    // clipboardSnippets.on('error', function(e) {
-    //     showTooltip(e.trigger, fallbackMessage(e.action));
-    // });
-    // function showTooltip(elem, msg) {
-    //     elem.setAttribute('class', 'btn tooltipped tooltipped-s');
-    //     elem.setAttribute('aria-label', msg);
-    // }
-    // function fallbackMessage(action) {
-    //     var actionMsg = '';
-    //     var actionKey = (action === 'cut' ? 'X' : 'C');
-    //     if (/iPhone|iPad/i.test(navigator.userAgent)) {
-    //         actionMsg = 'No support :(';
-    //     } else if (/Mac/i.test(navigator.userAgent)) {
-    //         actionMsg = 'Press ⌘-' + actionKey + ' to ' + action;
-    //     } else {
-    //         actionMsg = 'Press Ctrl-' + actionKey + ' to ' + action;
-    //     }
-    //     return actionMsg;
-    // }
-    // context.init({preventDoubleContext: false});
-    // context.settings({compress: true});
-    // context.attach('#rechargeRecordTable', [
-    //     {header: '便捷菜单'},
-    //     {text: '会员充值', href: '#'},
-    //     {text: '会员信息', href: '#'},
-    //     {divider: true},
-    //     // {text: 'Disable This Menu', action: function(e){
-    //     //         e.preventDefault();
-    //     //         context.destroy('html');
-    //     //         alert('html contextual menu destroyed!');
-    //     //     }},
-    //     // {text: 'Donate?', action: function(e){
-    //     //         e.preventDefault();
-    //     //         $('#donate').submit();
-    //     //     }}
-    // ]);
+    var clipboardSnippets = new ClipboardJS('[data-clipboard-snippet]', {
+        target: function(trigger) {
+            return trigger.nextElementSibling;
+        }
+    });
+    clipboardSnippets.on('success', function(e) {
+        e.clearSelection();
+        showTooltip(e.trigger, 'Copied!');
+    });
+    clipboardSnippets.on('error', function(e) {
+        showTooltip(e.trigger, fallbackMessage(e.action));
+    });
+    function showTooltip(elem, msg) {
+        elem.setAttribute('class', 'btn tooltipped tooltipped-s');
+        elem.setAttribute('aria-label', msg);
+    }
+    function fallbackMessage(action) {
+        var actionMsg = '';
+        var actionKey = (action === 'cut' ? 'X' : 'C');
+        if (/iPhone|iPad/i.test(navigator.userAgent)) {
+            actionMsg = 'No support :(';
+        } else if (/Mac/i.test(navigator.userAgent)) {
+            actionMsg = 'Press ⌘-' + actionKey + ' to ' + action;
+        } else {
+            actionMsg = 'Press Ctrl-' + actionKey + ' to ' + action;
+        }
+        return actionMsg;
+    }
+    context.init({preventDoubleContext: false});
+    context.settings({compress: true});
+    context.attach('#rechargeRecordTable', [
+        {header: '便捷菜单'},
+        {text: '会员充值', href: '#'},
+        {text: '会员信息', href: '#'},
+        {divider: true},
+        // {text: 'Disable This Menu', action: function(e){
+        //         e.preventDefault();
+        //         context.destroy('html');
+        //         alert('html contextual menu destroyed!');
+        //     }},
+        // {text: 'Donate?', action: function(e){
+        //         e.preventDefault();
+        //         $('#donate').submit();
+        //     }}
+    ]);
 
     $('#rangestart').calendar({
         type: 'date',
