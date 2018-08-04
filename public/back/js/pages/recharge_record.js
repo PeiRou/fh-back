@@ -3,7 +3,7 @@ $(function () {
     $('#menu-financeManage').addClass('nav-show');
     $('#menu-financeManage-rechargeRecord').addClass('active');
 
-    var clipboard = new ClipboardJS('.copyUrl');
+    var clipboard = new ClipboardJS('.copyUsername');
     clipboard.on('success', function(e) {
         alert("代理链接复制成功！")
     });
