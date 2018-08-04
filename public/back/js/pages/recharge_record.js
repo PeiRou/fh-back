@@ -2,13 +2,13 @@ $(function () {
     $('#menu-financeManage').addClass('nav-show');
     $('#menu-financeManage-rechargeRecord').addClass('active');
 
-    var clipboard = new ClipboardJS('.copyUsername');
-    clipboard.on('success', function(e) {
-
-    });
-    clipboard.on('error', function(e) {
-
-    });
+    // var clipboard = new ClipboardJS('.copyUsername');
+    // clipboard.on('success', function(e) {
+    //
+    // });
+    // clipboard.on('error', function(e) {
+    //
+    // });
     var clipboardSnippets = new ClipboardJS('[data-clipboard-snippet]', {
         target: function(trigger) {
             return trigger.nextElementSibling;
