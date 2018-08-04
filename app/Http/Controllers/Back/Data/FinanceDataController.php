@@ -104,7 +104,7 @@ class FinanceDataController extends Controller
                 return $recharge->re_orderNum;
             })
             ->editColumn('user',function ($recharge){
-                return $recharge->re_username;
+                return '<span id="user_copy_'.$recharge->rid.'">'.$recharge->re_username.'</span>';
             })
             ->editColumn('trueName',function ($recharge){
                 return $recharge->user_fullName;
@@ -177,7 +177,7 @@ class FinanceDataController extends Controller
                     }
                 }
             })
-            ->rawColumns(['amount','shou_info','ru_info','status','control','trueName'])
+            ->rawColumns(['amount','shou_info','ru_info','status','control','trueName','user'])
             ->make(true);
     }
     

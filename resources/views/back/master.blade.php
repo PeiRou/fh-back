@@ -22,6 +22,7 @@
     <script src="/vendor/dataTables/DataTables-1.10.16/js/dataTables.semanticui.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script src="/vendor/clipboard/dist/clipboard.js"></script>
     <script src="/vendor/contextJs/context.js"></script>
 </head>
 <body class="dash">

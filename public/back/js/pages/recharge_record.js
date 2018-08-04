@@ -3,6 +3,13 @@ $(function () {
     $('#menu-financeManage').addClass('nav-show');
     $('#menu-financeManage-rechargeRecord').addClass('active');
 
+    var clipboard = new ClipboardJS('.copyUrl');
+    clipboard.on('success', function(e) {
+        alert("代理链接复制成功！")
+    });
+    clipboard.on('error', function(e) {
+        alert("代理链接复制失败！请手动复制")
+    });
     // context.init({preventDoubleContext: false});
     // context.settings({compress: true});
     // context.attach('#rechargeRecordTable', [
