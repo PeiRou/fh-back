@@ -2,6 +2,12 @@ $(function () {
     $('#menu-financeManage').addClass('nav-show');
     $('#menu-financeManage-rechargeRecord').addClass('active');
 
+    var btns = document.querySelectorAll('.btn');
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener('mouseleave', clearTooltip);
+        btns[i].addEventListener('blur', clearTooltip);
+    }
+
     var clipboard = new ClipboardJS('.copyUsername');
     clipboard.on('success', function(e) {
 
@@ -21,6 +27,10 @@ $(function () {
     clipboardSnippets.on('error', function(e) {
         showTooltip(e.trigger, fallbackMessage(e.action));
     });
+    function clearTooltip(e) {
+        e.currentTarget.setAttribute('class', 'btn');
+        e.currentTarget.removeAttribute('aria-label');
+    }
     function showTooltip(elem, msg) {
         elem.setAttribute('class', 'btn tooltipped tooltipped-s');
         elem.setAttribute('aria-label', msg);
