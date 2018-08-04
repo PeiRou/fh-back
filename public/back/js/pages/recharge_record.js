@@ -4,7 +4,7 @@ $(function () {
 
     var clipboard = new ClipboardJS('.copyUsername');
     clipboard.on('success', function(e) {
-        alert(e.trigger)
+        console.log(e.trigger)
     });
     clipboard.on('error', function(e) {
         alert('复制失败')
