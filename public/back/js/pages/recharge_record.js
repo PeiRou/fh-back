@@ -16,7 +16,7 @@ $(function () {
     });
     clipboardSnippets.on('success', function(e) {
         e.clearSelection();
-        showTooltip(e.trigger, 'Copied!');
+        showTooltip(e.trigger, '已复制');
     });
     clipboardSnippets.on('error', function(e) {
         showTooltip(e.trigger, fallbackMessage(e.action));
