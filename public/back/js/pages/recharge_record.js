@@ -3,23 +3,23 @@ $(function () {
     $('#menu-financeManage').addClass('nav-show');
     $('#menu-financeManage-rechargeRecord').addClass('active');
 
-    context.init({preventDoubleContext: false});
-    context.settings({compress: true});
-    context.attach('#rechargeRecordTable', [
-        {header: '便捷菜单'},
-        {text: '会员充值', href: '#'},
-        {text: '会员信息', href: '#'},
-        {divider: true},
-        // {text: 'Disable This Menu', action: function(e){
-        //         e.preventDefault();
-        //         context.destroy('html');
-        //         alert('html contextual menu destroyed!');
-        //     }},
-        // {text: 'Donate?', action: function(e){
-        //         e.preventDefault();
-        //         $('#donate').submit();
-        //     }}
-    ]);
+    // context.init({preventDoubleContext: false});
+    // context.settings({compress: true});
+    // context.attach('#rechargeRecordTable', [
+    //     {header: '便捷菜单'},
+    //     {text: '会员充值', href: '#'},
+    //     {text: '会员信息', href: '#'},
+    //     {divider: true},
+    //     // {text: 'Disable This Menu', action: function(e){
+    //     //         e.preventDefault();
+    //     //         context.destroy('html');
+    //     //         alert('html contextual menu destroyed!');
+    //     //     }},
+    //     // {text: 'Donate?', action: function(e){
+    //     //         e.preventDefault();
+    //     //         $('#donate').submit();
+    //     //     }}
+    // ]);
 
     $('#rangestart').calendar({
         type: 'date',
