@@ -104,7 +104,7 @@ class FinanceDataController extends Controller
                 return $recharge->re_orderNum;
             })
             ->editColumn('user',function ($recharge){
-                return '<span class="copyUsername" data-clipboard-target="#user_copy_value_'.$recharge->rid.'" id="user_copy_'.$recharge->rid.'">'.$recharge->re_username.'</span><input id="user_copy_value_'.$recharge->rid.'" type="hidden" value="'.$recharge->re_username.'">';
+                return '<span class="copyUsername" data-clipboard-target="#user_copy_value_'.$recharge->rid.'" id="user_copy_'.$recharge->rid.'">'.$recharge->re_username.'</span><input id="user_copy_value_'.$recharge->rid.'" type="text" readonly style="width:1px;height:1px;background:none" value="'.$recharge->re_username.'">';
             })
             ->editColumn('trueName',function ($recharge){
                 return $recharge->user_fullName;
