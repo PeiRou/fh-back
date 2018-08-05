@@ -84,6 +84,7 @@ function ajaxData(gameList,gameData) {
             data:[]
         },
         series:{
+            type:'bar',
             data:[]
         }
     });
