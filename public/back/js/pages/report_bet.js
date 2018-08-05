@@ -30,7 +30,9 @@ $(function () {
             {data:'sumWinBunko'},
             {data:'countWinBunkoBet'},
             {data:'countWinBunkoMember'},
-            {data:'sumBunko'},
+            {data:function (data) {
+                    return data.sumBunko;
+                }},
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
