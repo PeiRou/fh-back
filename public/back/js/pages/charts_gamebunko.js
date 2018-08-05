@@ -46,6 +46,11 @@ $(function () {
                         position: 'inside'
                     }
                 },
+                itemStyle:{
+                    normal:{
+                        color:'#4ad2ff'
+                    }
+                },
                 data:[200, 170, -240, 244, 200, -220, 210]
             }
         ]
