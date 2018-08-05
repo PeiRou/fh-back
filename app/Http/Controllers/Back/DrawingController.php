@@ -14,6 +14,17 @@ class DrawingController extends Controller
     public function passDrawing(Request $request)
     {
         $id = $request->get('id');
+
+        //避免重复尝试锁定
+        Redis::select(5);
+        $key = 'passDraw';
+        if(Redis::exists($key.$id))
+            return response()->json([
+                'status' => false,
+                'msg' => '30秒内无法重复操作，请勿再试！'
+            ]);
+        Redis::setex($key.$id,30,'on');
+
         if($id){
             //获取用户ID
             $getUserId = DB::table('drawing')->where('id',$id)->first();
@@ -122,7 +133,7 @@ class DrawingController extends Controller
             ->where(function ($q) use ($killTest){
                 if(isset($killTest) && $killTest){
                     $q->where('users.testFlag',0);
-                } 
+                }
             })
             ->where(function ($q) use ($status) {
                 if($status && isset($status)){

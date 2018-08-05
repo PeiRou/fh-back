@@ -19,6 +19,8 @@ use App\PayType;
 use App\Permissions;
 use App\PermissionsAuth;
 use App\PermissionsType;
+use App\PromotionConfig;
+use App\PromotionReport;
 use App\RechargeWay;
 use App\Roles;
 use App\SubAccount;
@@ -355,6 +357,12 @@ class ModalController extends Controller
     {
         return view('back.modal.pay.addRechargeWay');
     }
+    //条件转移-模板
+    public function rechargeConditionalTransfer($id){
+        //获取层级
+        $aLevel = Levels::getLevelInfoList();
+        return view('back.modal.pay.rechargeConditionalTransfer',compact('aLevel','id'));
+    }
     //修改充值方式
     public function editRechargeWay($id)
     {
@@ -620,5 +628,22 @@ class ModalController extends Controller
         $prizeType = ActivityPrize::$prizeType;
         $prizeInfo = ActivityPrize::where('id','=',$id)->first();
         return view('back.modal.activity.editActivityPrize',compact('prizeType','prizeInfo'));
+    }
+
+    //增加推广配置-模板
+    public function addPromotionConfig(){
+        return view('back.modal.promotion.addPromotionConfig');
+    }
+
+    //修改推广配置-模板
+    public function editPromotionConfig($id){
+        $iPromotionInfo = PromotionConfig::getPromotionConfigInfoOne($id);
+        return view('back.modal.promotion.editPromotionConfig',compact('iPromotionInfo'));
+    }
+
+    //修改推广就算报表-模板
+    public function editPromotionReport($id){
+        $iPromotionInfo = PromotionReport::promotionInfoOne($id);
+        return view('back.modal.promotion.editPromotionReport',compact('iPromotionInfo'));
     }
 }

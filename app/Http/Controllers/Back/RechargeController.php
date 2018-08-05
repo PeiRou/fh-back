@@ -8,6 +8,7 @@ use App\Capital;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 
 class RechargeController extends Controller
@@ -15,6 +16,16 @@ class RechargeController extends Controller
     public function passRecharge(Request $request)
     {
         $id = $request->get('id');
+        //避免重复尝试锁定
+        Redis::select(5);
+        $key = 'passRech';
+        if(Redis::exists($key.$id))
+            return response()->json([
+                'status' => false,
+                'msg' => '30秒内无法重复操作，请勿再试！'
+            ]);
+        Redis::setex($key.$id,30,'on');
+
         $getInfo = Recharges::where('id',$id)->first();
         $userId = $getInfo->userId;
         $amout = $getInfo->amount;

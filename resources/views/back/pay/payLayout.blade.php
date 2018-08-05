@@ -29,5 +29,7 @@
 @endsection
 
 @section('page-js')
+    <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
+    <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <script src="/back/js/pages/pay_layout.js"></script>
 @endsection

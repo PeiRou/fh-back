@@ -80,26 +80,6 @@ class BetDataController extends Controller
                     $query->where("users.username",$username);
                 }
             })
-//            ->where(function ($query) use ($minMoney){
-//                if(isset($minMoney) && $minMoney){
-//                    $query->where("bet.bet_money",'>=',$minMoney);
-//                }
-//            })
-//            ->where(function ($query) use ($maxMoney){
-//                if(isset($maxMoney) && $maxMoney){
-//                    $query->where("bet.bet_money",'<=',$maxMoney);
-//                }
-//            })
-//            ->where(function ($query) use ($timeStart){
-//                if(isset($timeStart) && $timeStart){
-//                    $query->whereRaw('unix_timestamp(bet.created_at) >= '.$timeStart);
-//                }
-//            })
-//            ->where(function ($query) use ($timeEnd){
-//                if(isset($timeEnd) && $timeEnd){
-//                    $query->whereRaw('unix_timestamp(bet.created_at) <= '.$timeEnd);
-//                }
-//            })
             ->where('bet.testFlag',0)->orderBy('bet.created_at','desc')->get();
         return DataTables::of($bet)
             ->editColumn('order_id',function ($bet){

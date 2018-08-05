@@ -315,12 +315,12 @@ class PayDataController extends Controller
                 if($level->value == 0){
                     return '<span class="edit-link" onclick="edit(\''.$level->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> | 
                         <span class="edit-link" onclick="allExchange(\''.$level->id.'\')"><i class="iconfont">&#xe687;</i> 全部转移</span> | 
-                        <span class="edit-link" onclick="searchExchange(\''.$level->id.'\')"><i class="iconfont">&#xe66d;</i> 条件转移</span>';
+                        <span class="edit-link" onclick="searchExchange(\''.$level->value.'\')"><i class="iconfont">&#xe66d;</i> 条件转移</span>';
                 } else {
                     return '<span class="edit-link" onclick="edit(\''.$level->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> | 
                         <span class="edit-link" onclick="del(\''.$level->id.'\')"><i class="iconfont">&#xe600;</i> 删除</span> | 
                         <span class="edit-link" onclick="allExchange(\''.$level->id.'\')"><i class="iconfont">&#xe687;</i> 全部转移</span> | 
-                        <span class="edit-link" onclick="searchExchange(\''.$level->id.'\')"><i class="iconfont">&#xe66d;</i> 条件转移</span>';
+                        <span class="edit-link" onclick="searchExchange(\''.$level->value.'\')"><i class="iconfont">&#xe66d;</i> 条件转移</span>';
                 }
 
             })

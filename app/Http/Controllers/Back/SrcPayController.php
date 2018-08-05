@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Back;
 
 use App\Banks;
 use App\Levels;
+use App\Models\Chat\Users;
 use App\PayOnline;
 use App\RechargeWay;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SrcPayController extends Controller
 {
@@ -204,6 +206,33 @@ class SrcPayController extends Controller
                 'msg'=>"更新成功"
             ]);
         } else {
+            return response()->json([
+                'status'=>false,
+                'msg'=>'暂时无法更新，请稍后重试'
+            ]);
+        }
+    }
+
+    //部分全部转移
+    public function sectionExchangeLevel(Request $request){
+        $params = $request->post();
+        $validator = Validator::make($params,[
+            'to_id' => 'required|integer',
+            'form_id' => 'required|integer',
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'status'=> false,
+                'msg'=> $validator->errors()->first()
+            ]);
+        }
+        //获取转移用户
+        if(Users::userConditionTransfer($params)){
+            return response()->json([
+                'status'=>true,
+                'msg'=>"更新成功"
+            ]);
+        }else {
             return response()->json([
                 'status'=>false,
                 'msg'=>'暂时无法更新，请稍后重试'

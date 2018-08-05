@@ -121,11 +121,18 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('activityReview', 'Back\SrcViewController@activityReview')->name('activity.review'); //派奖审核
     });
 
-//下拉菜单
-    Route::group(['middleware' => ['add-log-handle']], function () {
-        Route::get('/today/selectData/playCate/{gameId?}', 'Back\SrcViewController@playCate')->name('select.playCate'); // 下拉菜单获取玩法分类
-        Route::get('/recharge/selectData/payOnline/{rechargeType?}', 'Back\SrcViewController@payOnlineSelectData')->name('select.payOnlineSelectData'); // 下拉菜单获取在线支付分类
-        Route::get('/recharge/selectData/dateChange/{date?}', 'Back\SrcViewController@payOnlineDateChange')->name('select.payOnlineDateChange'); // 下拉菜单获取今日，昨日，上周
+    //推广结算
+    Route::group(['prefix' => 'back/control/promotionManage','middleware'=>['check-permission','domain-check','add-log-handle']],function (){
+        Route::get('promotionReport','Back\SrcViewController@promotionReport')->name('promotion.report'); //推广结算报表
+        Route::get('promotionReview','Back\SrcViewController@promotionReview')->name('promotion.review'); //推广结算审核
+        Route::get('promotionSetting','Back\SrcViewController@promotionSetting')->name('promotion.setting'); //推广结算配置
+    });
+
+    //下拉菜单
+    Route::group(['middleware'=>['add-log-handle']],function(){
+        Route::get('/today/selectData/playCate/{gameId?}','Back\SrcViewController@playCate')->name('select.playCate'); // 下拉菜单获取玩法分类
+        Route::get('/recharge/selectData/payOnline/{rechargeType?}','Back\SrcViewController@payOnlineSelectData')->name('select.payOnlineSelectData'); // 下拉菜单获取在线支付分类
+        Route::get('/recharge/selectData/dateChange/{date?}','Back\SrcViewController@payOnlineDateChange')->name('select.payOnlineDateChange'); // 下拉菜单获取今日，昨日，上周
     });
 
     Route::get('getLevel', 'Back\SrcViewController@getLevel'); // ajax 获取分层列表
@@ -187,6 +194,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/activity/condition', 'Back\Data\ActivityController@condition'); //活动条件-表格数据
     Route::get('/back/datatables/activity/prize', 'Back\Data\ActivityController@prize'); //奖品配置-表格数据
     Route::get('/back/datatables/activity/review', 'Back\Data\ActivityController@review'); //派奖审核-表格数据
+    Route::get('/back/datatables/promotion/report','Back\Data\PromotionController@report'); //推广结算报表-表格数据
+    Route::get('/back/datatables/promotion/review','Back\Data\PromotionController@review'); //推广审核报表-表格数据
+    Route::get('/back/datatables/promotion/config','Back\Data\PromotionController@config'); //推广设置-表格数据
 
 //action
     Route::post('/action/admin/login', 'Back\SrcAccountController@login');
@@ -249,6 +259,12 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/activity/delPrize', 'Back\ActivityController@delPrize'); //奖品配置-删除奖品
     Route::post('/action/admin/activity/reviewAward', 'Back\ActivityController@reviewAward'); //派奖审核-审核奖品
 
+    Route::post('/action/admin/promotion/settlement','Back\PromotionController@settlement'); //推广结算报表-手动结算
+    Route::post('/action/admin/promotion/editReport','Back\PromotionController@editReport'); //推广结算报表-修改结算
+    Route::post('/action/admin/promotion/commitReport','Back\PromotionController@commitReport'); //推广结算报表-提交审核
+    Route::post('/action/admin/promotion/submitTurnDown','Back\PromotionController@submitTurnDown'); //推广结算审核-提交驳回
+    Route::post('/action/admin/promotion/addConfig','Back\PromotionController@addConfig'); //推广配置-新增配置
+    Route::post('/action/admin/promotion/editConfig','Back\PromotionController@editConfig'); //推广配置-修改配置
     Route::post('/action/admin/addNotice', 'Back\SrcNoticeController@addNotice'); //添加公告
     Route::post('/action/admin/delNoticeSetting', 'Back\SrcNoticeController@delNoticeSetting'); //添加公告
     Route::post('/action/admin/addSendMessage', 'Back\SrcNoticeController@addSendMessage'); //添加消息
@@ -260,6 +276,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/delLevelCheck', 'Back\SrcPayController@delLevelCheck');//删除层级检查
     Route::post('/action/admin/delLevel', 'Back\SrcPayController@delLevel');//删除层级
     Route::post('/action/admin/allExchangeLevel', 'Back\SrcPayController@allExchangeLevel');//层级全部转移
+    Route::post('/action/admin/sectionExchangeLevel','Back\SrcPayController@sectionExchangeLevel');//部分全部转移
     Route::post('/action/admin/addRechargeWay', 'Back\SrcPayController@addRechargeWay');//添加充值方式
     Route::post('/action/admin/editRechargeWay', 'Back\SrcPayController@editRechargeWay');//添加充值方式
     Route::post('/action/admin/changeOnlinePayStatus', 'Back\SrcPayController@changeOnlinePayStatus');//改变充值方式状态
@@ -343,6 +360,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editLevel/{id}', 'Back\Ajax\ModalController@editLevel');
     Route::get('/back/modal/allExchangeLevel/{id}', 'Back\Ajax\ModalController@allExchangeLevel');
     Route::get('/back/modal/addRechargeWay', 'Back\Ajax\ModalController@addRechargeWay');
+    Route::get('/back/modal/rechargeConditionalTransfer/{id}','Back\Ajax\ModalController@rechargeConditionalTransfer'); //条件转移-模板
     Route::get('/back/modal/editRechargeWay/{id}', 'Back\Ajax\ModalController@editRechargeWay');
     Route::get('/back/modal/addPayOnline', 'Back\Ajax\ModalController@addPayOnline');
     Route::get('/back/modal/editPayOnline/{id}', 'Back\Ajax\ModalController@editPayOnline');
@@ -379,6 +397,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editActivityCondition/{id}', 'Back\Ajax\ModalController@editActivityCondition'); //修改活动条件-模板
     Route::get('/back/modal/addActivityPrize', 'Back\Ajax\ModalController@addActivityPrize'); //增加奖品配置-模板
     Route::get('/back/modal/editActivityPrize/{id}', 'Back\Ajax\ModalController@editActivityPrize'); //修改奖品配置-模板
+    Route::get('/back/modal/editPromotionReport/{id}','Back\Ajax\ModalController@editPromotionReport'); //修改推广就算报表-模板
+    Route::get('/back/modal/addPromotionConfig','Back\Ajax\ModalController@addPromotionConfig'); //增加推广配置-模板
+    Route::get('/back/modal/editPromotionConfig/{id}','Back\Ajax\ModalController@editPromotionConfig'); //修改推广配置-模板
 
 //游戏MODAL
     Route::get('/back/modal/gameSetting/{id}', 'Back\Ajax\ModalController@gameSetting');

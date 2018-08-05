@@ -21,6 +21,7 @@ $(function () {
         processing: true,
         serverSide: true,
         aLengthMenu: [[50]],
+        "order": [],
         ajax: {
             url:'/back/datatables/user',
             data:function (d) {
