@@ -14,23 +14,35 @@
     <div class="table-content">
         <div class="table-quick-bar">
             <div class="ui mini form">
-                <div class="one wide field">
-                    <div class="ui calendar" id="rangestart">
-                        <div class="ui input left">
-                            <input type="text" id="timeStart" placeholder="起始日期" value="{{ date('Y-m-d',time()) }}">
+                <div class="fields">
+                    <div class="one wide field">
+                        <div class="ui calendar" id="rangestart" style="width: 108px;">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" id="startTime" placeholder="起始日期" value="{{ date('Y-m-d',time()) }}">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div style="line-height: 32px;">-</div>
-                <div class="one wide field">
-                    <div class="ui calendar" id="rangeend">
-                        <div class="ui input left">
-                            <input type="text" id="timeEnd" placeholder="结束日期" value="{{ date('Y-m-d',time()) }}">
+                    <div class="one wide field">
+                        <div class="ui calendar" id="rangeend" style="width: 108px;">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" id="endTime" placeholder="结束日期" value="{{ date('Y-m-d',time()) }}">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="one wide field">
-                    <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
+                    <div class="one wide field">
+                        <select class="ui dropdown" id="date_param" style='height:32px !important'>
+                            <option value="today">今天</option>
+                            <option value="yesterday">昨天</option>
+                            <option value="week">本周</option>
+                            <option value="month">本月</option>
+                            <option value="lastMonth">上月</option>
+                        </select>
+                    </div>
+                    <div class="one wide field">
+                        <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
+                    </div>
                 </div>
             </div>
         </div>
