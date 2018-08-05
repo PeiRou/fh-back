@@ -1205,6 +1205,8 @@ class New_Mssc
                 }
                 $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
                 $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                if(!isset($bunko) || empty($bunko))
+                    return 0;
                 $run = DB::statement($sql);
                 if($run == 1){
                     $run2 = DB::statement($sql_lose);
