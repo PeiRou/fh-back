@@ -28,7 +28,12 @@ $(function () {
                     return 0;
                 }},
             {data:'sumWinBunko'},
-            {data:'countWinBunkoBet'},
+            {data:function (data) {
+                    var countWinBunkoBet = data.countWinBunkoBet;
+                    var countBets =  data.countBets;
+                    var bfb = countWinBunkoBet/countBets * 100;
+                    return countWinBunkoBet+'('+bfb+'%)'
+                }},
             {data:'countWinBunkoMember'},
             {data:function (data) {
                 var sumBunko = data.sumBunko;
