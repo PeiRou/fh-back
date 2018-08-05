@@ -31,7 +31,12 @@ $(function () {
             {data:'countWinBunkoBet'},
             {data:'countWinBunkoMember'},
             {data:function (data) {
-                    return data.sumBunko;
+                var sumBunko = data.sumBunko;
+                if(sumBunko > 0){
+                    return '<span class="green-text">'+sumBunko+'</span>'
+                } else {
+                    return '<span class="red-text">'+sumBunko+'</span>'
+                }
                 }},
         ],
         "footerCallback": function ( row, data, start, end, display ) {
