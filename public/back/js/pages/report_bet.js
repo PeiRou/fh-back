@@ -23,10 +23,8 @@ $(function () {
                     return 0;
                 }},
             {data:'sumWinBunko'},
-            {data:'countWinBunko'},
-            {data:function () {
-                    return 0;
-                }},
+            {data:'countWinBunkoBet'},
+            {data:'countWinBunkoMember'},
             {data:'sumBunko'},
         ],
         language: {
