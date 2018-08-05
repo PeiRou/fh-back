@@ -11,6 +11,15 @@
             <span class="refresh-nav-btn" onclick="refreshTable('reportAgentTable')"><i class="iconfont">&#xe61d;</i></span>
         </div>
     </div>
+    <div class="table-content">
+        <div class="table-quick-bar">
+            <div class="ui mini form">
+                <div class="fields"></div>
+            </div>
+        </div>
+
+        <div id="gameBunkoCharts" style="width: 600px;height:400px;"></div>
+    </div>
 @endsection
 
 @section('page-js')
