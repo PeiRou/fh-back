@@ -156,10 +156,10 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $sql = "SELECT g.game_name,g.status,g.game_id, sum(b.bet_money) AS sumMoney,COUNT(b.bet_id) AS countBets,count(DISTINCT(b.user_id)) as countMember, sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bunko else 0 end) else(case WHEN bunko >0 then bunko else 0 end) end) as sumWinBunko, count(DISTINCT(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then b.user_id else Null end) else(case WHEN bunko >0 then b.user_id else Null end) end)) as countWinBunko, sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko FROM `bet` AS b RIGHT JOIN game as g ON g.game_id = b.game_id left join users u on b.user_id = u.id WHERE 1 u.testFlag = 0 ";
         $where = "";
         if(isset($starttime) && $starttime){
-            $where .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $where .= " and b.created_at >= '2018-08-05 00:00:00'";
         }
         if(isset($endtime) && $endtime){
-            $where .= " and b.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $where .= " and b.created_at <= '2018-08-05 23:59:59'";
         }
         $sql .= $where;
         $sql .= " GROUP BY g.game_id ";
