@@ -162,7 +162,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $whereBet .= " and b.created_at <= '2018-08-05 23:59:59'";
         }
         $sql .= $whereBet ;
-        $sql .= " WHERE 1 GROUP BY g.game_id ";
+        $sql .= " WHERE 1 GROUP BY g.game_id order BY b.bet_id desc";
         $bet = DB::select($sql);
         return DataTables::of($bet)
             ->make(true);
