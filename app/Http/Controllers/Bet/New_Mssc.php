@@ -44,6 +44,7 @@ class New_Mssc
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$gameId)->first();
+            \Log::Info($exeBase->excel_num.'---'.$excel.'mssc killing...');
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
                 \Log::Info('mssc killing...');
                 $this->excel($openCode,$exeBase,$issue,$gameId);
