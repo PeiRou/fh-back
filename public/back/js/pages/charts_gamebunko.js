@@ -33,7 +33,7 @@ $(function () {
             {
                 type : 'category',
                 axisTick : {show: false},
-                data : ['周一','周二','周三','周四','周五','周六','周日']
+                data : []
             }
         ],
         series : [
@@ -58,13 +58,14 @@ $(function () {
                         }
                     }
                 },
-                data:[200, 170, -240, 244, 200, -220, 210]
+                data:[]
             }
         ]
     };
     myChart.showLoading();
 
-    var gameList=[];
+    var gameList = [];
+    var gameData = [];
 
     $.ajax({
         type : "post",
@@ -73,9 +74,13 @@ $(function () {
         data : {},
         dataType : "json",        //返回数据形式为json
         success : function(result) {
+            console.log(result);
             result.forEach(function (value) {
-                console.log(value.game_name);
-            })
+                gameList.push(value.game_name);
+                // gameData.push()
+            });
+            myChart.hideLoading();
+            myChart.setOption({});
         }
     });
 
