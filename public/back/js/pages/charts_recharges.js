@@ -79,7 +79,7 @@ function ajaxData(timeList,rechargesData) {
             timeList = [];
             rechargesData = [];
             result.forEach(function (value) {
-                timeList.push(value.hours);
+                timeList.push(value.hours+'点');
                 rechargesData.push(value.sumAmount);
             });
             myChart.hideLoading();
