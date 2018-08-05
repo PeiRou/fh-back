@@ -51,7 +51,7 @@ class New_Mssc
             }else{
                 \Log::Info($issue.'----'.$openCode);
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $this->bunko($win,$gameId,$issue);
+                $bunko = $this->bunko($win,$gameId,$issue,$excel);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                     if($updateUserMoney == 1){
@@ -1186,15 +1186,21 @@ class New_Mssc
         return $win;
     }
 
-    private function bunko($win,$gameId,$issue){
+    private function bunko($win,$gameId,$issue,$excel=false){
+        if($excel) {
+            $table = 'excel_bet';
+            $getUserBets = DB::table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        }else{
+            $table = 'bet';
+            $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        }
         $id = [];
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         if($getUserBets){
-            $sql = "UPDATE bet SET bunko = CASE ";
-            $sql_lose = "UPDATE bet SET bunko = CASE ";
+            $sql = "UPDATE ".$table." SET bunko = CASE ";
+            $sql_lose = "UPDATE ".$table." SET bunko = CASE ";
             $ids = implode(',', $id);
             if($ids && isset($ids)){
                 foreach ($getUserBets as $item){
