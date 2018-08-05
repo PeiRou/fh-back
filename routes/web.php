@@ -37,6 +37,10 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('bet', 'Back\SrcViewController@reportBet')->name('report.bet'); // 投注报表
         Route::get('online', 'Back\SrcViewController@reportOnline')->name('report.online'); // 在线报表
     });
+//图表统计
+    Route::group(['prefix' => 'back/control/chartsManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
+        Route::get('gameBunko', 'Back\SrcViewController@chartsGameBunko')->name('charts.gameBunko'); // 盈亏统计
+    });
 //投注记录
     Route::group(['prefix' => 'back/control/betManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('today', 'Back\SrcViewController@betTodaySearch')->name('bet.todaySearch'); // 今日注单搜索

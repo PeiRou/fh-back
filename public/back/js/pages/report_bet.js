@@ -32,7 +32,7 @@ $(function () {
                     var countWinBunkoBet = data.countWinBunkoBet;
                     var countBets =  data.countBets;
                     var bfb = countWinBunkoBet/countBets * 100;
-                    return countWinBunkoBet+'('+bfb.toFixed(1)+'%)'
+                    return countWinBunkoBet+' ('+bfb.toFixed(1)+'%)'
                 }},
             {data:'countWinBunkoMember'},
             {data:function (data) {
