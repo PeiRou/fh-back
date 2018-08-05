@@ -77,10 +77,22 @@ $(function () {
             console.log(result);
             result.forEach(function (value) {
                 gameList.push(value.game_name);
-                // gameData.push()
+                gameData.push(value.sumBunko);
             });
             myChart.hideLoading();
-            myChart.setOption({});
+            myChart.setOption({
+                yAxis:{
+                    data:gameList
+                },
+                series:{
+                    data:gameData
+                }
+            });
+        },
+        error : function(errorMsg) {
+            //请求失败时执行该函数
+            alert("图表请求数据失败!");
+            myChart.hideLoading();
         }
     });
 
