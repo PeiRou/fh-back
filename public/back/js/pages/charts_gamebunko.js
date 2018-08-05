@@ -73,7 +73,7 @@ $(function () {
         data : {},
         dataType : "json",        //返回数据形式为json
         success : function(result) {
-            console.log(result);
+            console.log(result.game_name);
         }
     });
 
