@@ -342,6 +342,11 @@ class SrcViewController extends Controller
     {
         return view('back.charts.gameBunko');
     }
+    //充值统计
+    public function recharges()
+    {
+        return view('back.charts.recharges');
+    }
 
     //投注记录
     //今日注单搜索

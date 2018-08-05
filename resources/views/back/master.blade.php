@@ -151,6 +151,9 @@
                     @if($hasPermission->hasPermission('charts.gameBunko') == "has")
                         <li id="menu-chartsManage-gameBunko"><a href="{{ route('charts.gameBunko') }}"><cite></cite><span>盈亏统计</span></a></li>
                     @endif
+                    @if($hasPermission->hasPermission('charts.recharges') == "has")
+                        <li id="menu-chartsManage-recharges"><a href="{{ route('charts.recharges') }}"><cite></cite><span>充值统计</span></a></li>
+                    @endif
                 </ul>
             </li>
         @endif

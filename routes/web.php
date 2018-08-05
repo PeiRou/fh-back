@@ -40,6 +40,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 //图表统计
     Route::group(['prefix' => 'back/control/chartsManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('gameBunko', 'Back\SrcViewController@chartsGameBunko')->name('charts.gameBunko'); // 盈亏统计
+        Route::get('recharges', 'Back\SrcViewController@chartsRecharges')->name('charts.recharges'); // 充值统计
     });
 //投注记录
     Route::group(['prefix' => 'back/control/betManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
@@ -206,6 +207,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 
     //图表数据
     Route::post('/back/charts/gameBunko','Back\Charts\ChartsDataController@gameBunko');
+    Route::post('/back/charts/recharges','Back\Charts\ChartsDataController@recharges');
 
 //action
     Route::post('/action/admin/login', 'Back\SrcAccountController@login');
