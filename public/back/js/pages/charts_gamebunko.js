@@ -7,7 +7,7 @@ $(function () {
     // 指定图表的配置项和数据
     var option = {
         title: {
-            text: 'ECharts 入门示例'
+            text: '盈亏统计图表'
         },
         tooltip : {
             trigger: 'axis',
