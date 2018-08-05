@@ -73,7 +73,9 @@ $(function () {
         data : {},
         dataType : "json",        //返回数据形式为json
         success : function(result) {
-            console.log(result.game_name);
+            result.forEach(function (value) {
+                console.log(value.game_name);
+            })
         }
     });
 
