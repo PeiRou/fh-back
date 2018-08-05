@@ -162,7 +162,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $where .= " and g.status = 1 ";
         }
         if(isset($killCloseGame) && $killCloseGame){        //过滤未开启彩种
-            $where .= " and countBets >= 1 ";
+            $where .= " and b.user_id >= 1 ";
         }
         if(isset($starttime) && $starttime){
             $whereBet .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
