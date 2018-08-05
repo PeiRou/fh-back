@@ -46,7 +46,7 @@ class KILL_msssc extends Command
         if(isset($get) && $get){
             $opennum = rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9);
             if($get->excel_num !== 1){
-                \Log::Info('杀率:'.$get->issue);
+                \Log::Info('秒速时时彩 杀率:'.$get->issue);
                 event(new RunMsssc($opennum,$get->issue,$this->gameId,true)); //新--结算
                 $update = DB::table('game_msssc')->where('id',$get->id)->update([
                     'excel_num' => 1
@@ -58,3 +58,4 @@ class KILL_msssc extends Command
         }
     }
 }
+

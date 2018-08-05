@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Mssc
 {
-    public function all($openCode,$issue,$gameId)
-    {
+    private function exc_play($openCode,$gameId){
         $win = collect([]);
         $this->GYH($openCode,$gameId,$win);
         $this->GYH_ZD_NUM($openCode,$gameId,$win);
@@ -38,16 +37,74 @@ class New_Mssc
         $this->NUM8($openCode,$gameId,$win);
         $this->NUM9($openCode,$gameId,$win);
         $this->NUM10($openCode,$gameId,$win);
+        return $win;
+    }
+    public function all($openCode,$issue,$gameId,$excel)
+    {
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $bunko = $this->bunko($win,$gameId,$issue);
-            if($bunko == 1){
-                $updateUserMoney = $this->updateUserMoney($gameId,$issue);
-                if($updateUserMoney == 1){
-                    return 1;
+            $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$gameId)->first();
+            if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
+                $this->excel($openCode,$exeBase,$issue,$gameId);
+            }else{
+                \Log::Info($issue.'----'.$openCode);
+                $win = $this->exc_play($openCode,$gameId);
+                $bunko = $this->bunko($win,$gameId,$issue);
+                if($bunko == 1){
+                    $updateUserMoney = $this->updateUserMoney($gameId,$issue);
+                    if($updateUserMoney == 1){
+                        return 1;
+                    }
                 }
             }
         }
+    }
+    private function excel($openCode,$exeBase,$issue,$gameId){
+        for($i=0;$i< (int)$exeBase->excel_num;$i++){
+            if($i==0){
+                $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
+                if(empty($exeBet))
+                    DB::select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}'");
+            }else{
+                $openCode = $this->opennum();
+                DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
+            }
+            $win = $this->exc_play($openCode,$gameId);
+            $bunko = $this->bunko($win,$gameId,$issue,true);
+            if($bunko == 1){
+                $excBunko = DB::select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
+                $excBunko = $excBunko[0]->sumBunko;
+                $dataExcGame['game_id'] = $gameId;
+                $dataExcGame['issue'] = $issue;
+                $dataExcGame['opennum'] = $openCode;
+                $dataExcGame['bunko'] = $excBunko;
+                $dataExcGame['excel_num'] = $i+1;
+                $dataExcGame['created_at'] = date('Y-m-d H:i:s');
+                $dataExcGame['updated_at'] = date('Y-m-d H:i:s');
+                DB::table('excel_game')->insert([$dataExcGame]);
+            }
+        }
+        $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = ".$gameId." AND issue ='{$issue}') and game_id = ".$gameId." AND issue ='{$issue}' LIMIT 1";
+        $tmp = DB::select($aSql);
+        foreach ($tmp as&$value)
+            $openCode = $value->opennum;
+        \Log::Info('game_mssc:'.$openCode);
+        DB::table("game_mssc")->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
+        DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
+    }
+    private function opennum(){
+        $tmpArray = [0=>1,1=>2,2=>3,3=>4,4=>5,5=>6,6=>7,7=>8,8=>9,9=>10];
+        for ($i=0;$i<10;$i++){
+            $tmpLegth = count($tmpArray);
+            $tmpRand = rand(0,$tmpLegth-1);
+            $res[] = $tmpArray[$tmpRand];
+            unset($tmpArray[$tmpRand]);
+            $tmpArray2 = [];
+            foreach ($tmpArray as&$value)
+                $tmpArray2[] = $value;
+            $tmpArray = $tmpArray2;
+        }
+        return implode(',',$res);
     }
 
     private function GYH($openCode,$gameId,$win){
