@@ -8,7 +8,7 @@
             <b>位置：</b>盈亏统计
         </div>
         <div class="content-top-buttons">
-            <span class="refresh-nav-btn" onclick="refreshTable('reportAgentTable')"><i class="iconfont">&#xe61d;</i></span>
+            <span class="refresh-nav-btn" onclick="refreshCharts()"><i class="iconfont">&#xe61d;</i></span>
         </div>
     </div>
     <div class="table-content">
