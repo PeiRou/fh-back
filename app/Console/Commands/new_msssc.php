@@ -87,7 +87,9 @@ class new_msssc extends Command
             Redis::set('msssc:nextIssue',(int)$nextIssue+1);
             Redis::set('msssc:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-
+		$opennum = isset($res->excel_opennum)&&!empty($res->excel_opennum)?$res->excel_opennum:rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9);
+		\Log::info('获取KILL开奖'.$res->expect.'--'.$opennum);
+		\Log::info('获取origin开奖'.$res->expect.'--'.$res->opencode);
             try{
                 DB::table('game_msssc')->where('issue',$res->expect)->update([
                     'is_open' => 1,
