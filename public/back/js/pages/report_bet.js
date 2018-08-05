@@ -15,16 +15,19 @@ $(function () {
             data:function (d) {}
         },
         columns: [
-            {data:'username'},
-            {data:'fullName'},
-            {data:'agaccount'},
-            {data:'agaccount'},
-            {data:'agaccount'},
-            {data:'agaccount'},
-            {data:'agaccount'},
-            {data:'agaccount'},
-            {data:'agaccount'},
-            {data:'agaccount'},
+            {data:'game_name'},
+            {data:'sumMoney'},
+            {data:'countBets'},
+            {data:'countMember'},
+            {data:function () {
+                    return 0;
+                }},
+            {data:'sumWinBunko'},
+            {data:'countWinBunko'},
+            {data:function () {
+                    return 0;
+                }},
+            {data:'sumBunko'},
         ],
         language: {
             "zeroRecords": "暂无数据",
