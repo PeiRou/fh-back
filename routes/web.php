@@ -204,6 +204,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/promotion/review','Back\Data\PromotionController@review'); //推广审核报表-表格数据
     Route::get('/back/datatables/promotion/config','Back\Data\PromotionController@config'); //推广设置-表格数据
 
+    //图表数据
+    Route::post('/back/charts/gameBunko','Back\Charts\ChartsDataController@gameBunko');
+
 //action
     Route::post('/action/admin/login', 'Back\SrcAccountController@login');
     Route::post('/action/admin/logout', 'Back\SrcAccountController@logout');
