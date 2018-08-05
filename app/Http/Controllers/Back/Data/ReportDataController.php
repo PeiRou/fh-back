@@ -159,10 +159,10 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $whereBet = "";
         $where = "";
         if(isset($killZeroBetGame) && $killZeroBetGame){        //过滤零投注彩种
-            $where .= " and g.status = 1 ";
+            $where .= " and b.user_id >= 1 ";
         }
         if(isset($killCloseGame) && $killCloseGame){        //过滤未开启彩种
-            $where .= " and b.user_id >= 1 ";
+            $where .= " and g.status = 1 ";
         }
         if(isset($starttime) && $starttime){
             $whereBet .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
