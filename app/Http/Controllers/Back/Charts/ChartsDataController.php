@@ -38,7 +38,7 @@ class ChartsDataController extends Controller
     public function recharges()
     {
         $selectDay = '2018-08-05';
-        $sql = "SELECT Hour(created_at) , sum(amount) as sumAmount FROM `recharges` WHERE ";
+        $sql = "SELECT Hour(created_at) as hours, sum(amount) as sumAmount FROM `recharges` WHERE ";
         $where = "";
         if(isset($selectDay) && $selectDay){
             $where .= " created_at between '".date("Y-m-d 00:00:00",strtotime($selectDay))."' and '".date("Y-m-d 23:59:59",strtotime($selectDay))."'";
