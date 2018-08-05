@@ -62,10 +62,8 @@ $(function () {
             }
         ]
     };
-    myChart.showLoading();
-
-    var gameList = [];
-    var gameData = [];
+    gameList = [];
+    gameData = [];
     
     ajaxData(gameList,gameData);
 
@@ -76,9 +74,11 @@ $(function () {
 
 function refreshCharts() {
     myChart.showLoading();
+    ajaxData(gameList,gameData);
 }
 
 function ajaxData(gameList,gameData) {
+    myChart.showLoading();
     $.ajax({
         type : "post",
         async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
