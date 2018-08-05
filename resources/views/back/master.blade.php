@@ -144,12 +144,12 @@
         </li>
         @endif
         @if($hasPermission->hasPermission('charts') == "has")
-            <li id="menu-reportManage" class="nav-item"><a href="javascript:void(0)">
+            <li id="menu-chartsManage" class="nav-item"><a href="javascript:void(0)">
                     <span><img src="/back/old/images/leftico01.png"></span>
                     图表统计</a>
                 <ul>
                     @if($hasPermission->hasPermission('charts.gameBunko') == "has")
-                        <li id="menu-reportManage-gAgent"><a href="{{ route('charts.gameBunko') }}"><cite></cite><span>盈亏统计</span></a></li>
+                        <li id="menu-chartsManage-gameBunko"><a href="{{ route('charts.gameBunko') }}"><cite></cite><span>盈亏统计</span></a></li>
                     @endif
                 </ul>
             </li>

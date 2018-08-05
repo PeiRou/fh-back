@@ -335,6 +335,13 @@ class SrcViewController extends Controller
     {
         return view('back.reportOnline');
     }
+    
+    //图表统计
+    //盈亏统计
+    public function chartsGameBunko()
+    {
+        return view('back.charts.gameBunko');
+    }
 
     //投注记录
     //今日注单搜索
