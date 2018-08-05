@@ -32,23 +32,13 @@ $(function () {
         xAxis: [
             {
                 type: 'category',
-                data: ['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00'],
+                data: [],
                 axisPointer: {
                     type: 'shadow'
                 }
             }
         ],
         yAxis: [
-            // {
-            //     type: 'value',
-            //     name: '金额',
-            //     min: 0,
-            //     max: 250,
-            //     interval: 50,
-            //     axisLabel: {
-            //         formatter: '{value} ml'
-            //     }
-            // }
             {
                 type : 'value'
             }
@@ -57,7 +47,7 @@ $(function () {
             {
                 name:'充值',
                 type:'bar',
-                data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                data:[]
             },
             {
                 name:'提款',
@@ -67,6 +57,54 @@ $(function () {
         ]
     };
 
+    timeList = [];
+    rechargesData = [];
+
+    ajaxData(timeList,rechargesData);
+
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
 });
+
+function ajaxData(timeList,rechargesData) {
+    myChart.showLoading();
+    $.ajax({
+        type : "post",
+        async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url : "/back/charts/recharges",    //请求发送到TestServlet处
+        data : {},
+        dataType : "json",        //返回数据形式为json
+        success : function(result) {
+            console.log(result);
+            timeList = [];
+            rechargesData = [];
+            result.forEach(function (value) {
+                timeList.push(value.hours);
+                rechargesData.push(value.sumAmount);
+            });
+            myChart.hideLoading();
+            myChart.setOption({
+                xAxis:{
+                    data:timeList
+                },
+                series: [
+                    {
+                        name:'充值',
+                        type:'bar',
+                        data:rechargesData
+                    },
+                    {
+                        name:'提款',
+                        type:'bar',
+                        data:rechargesData
+                    }
+                ]
+            });
+        },
+        error : function(errorMsg) {
+            //请求失败时执行该函数
+            alert("图表请求数据失败!");
+            myChart.hideLoading();
+        }
+    });
+}
