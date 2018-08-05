@@ -79,15 +79,6 @@ function refreshCharts() {
 
 function ajaxData(gameList,gameData) {
     myChart.showLoading();
-    myChart.setOption({
-        yAxis:{
-            data:[]
-        },
-        series:{
-            type:'bar',
-            data:[]
-        }
-    });
     $.ajax({
         type : "post",
         async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
@@ -96,6 +87,8 @@ function ajaxData(gameList,gameData) {
         dataType : "json",        //返回数据形式为json
         success : function(result) {
             console.log(result);
+            gameList = [];
+            gameData = [];
             result.forEach(function (value) {
                 gameList.push(value.game_name);
                 gameData.push(value.sumBunko);
