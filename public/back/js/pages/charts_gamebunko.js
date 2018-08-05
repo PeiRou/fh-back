@@ -48,7 +48,9 @@ $(function () {
                 },
                 itemStyle:{
                     normal:{
-                        color:'#4ad2ff'
+                        color:function (e) {
+                            console.log(e);
+                        }
                     }
                 },
                 data:[200, 170, -240, 244, 200, -220, 210]
