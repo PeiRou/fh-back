@@ -79,6 +79,14 @@ function refreshCharts() {
 
 function ajaxData(gameList,gameData) {
     myChart.showLoading();
+    myChart.setOption({
+        yAxis:{
+            data:[]
+        },
+        series:{
+            data:[]
+        }
+    });
     $.ajax({
         type : "post",
         async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
