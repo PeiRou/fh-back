@@ -105,3 +105,16 @@ $(function () {
         }
     });
 });
+
+$('#date_param').on('change',function () {
+    var data = $(this).val();
+    $.ajax({
+        url:'/recharge/selectData/dateChange/'+data,
+        type:'get',
+        dataType:'json',
+        success:function (result) {
+            $('#startTime').val(result.start);
+            $('#endTime').val(result.end);
+        }
+    });
+});
