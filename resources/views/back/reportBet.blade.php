@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <table id="reportBetTable" class="ui right aligned small table" cellspacing="0" width="100%">
+        <table id="reportBetTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th width="120px">彩种</th>

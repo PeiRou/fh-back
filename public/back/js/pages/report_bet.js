@@ -106,6 +106,10 @@ $(function () {
     });
 });
 
+$('#btn_search').on('click',function () {
+    dataTable.ajax.reload();
+});
+
 $('#date_param').on('change',function () {
     var data = $(this).val();
     $.ajax({
