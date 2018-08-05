@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div id="gameBunkoCharts" style="width: 600px;height:400px;"></div>
+        <div id="gameBunkoCharts" style="width: 100%;height:600px;"></div>
     </div>
 @endsection
 
