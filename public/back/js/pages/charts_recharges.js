@@ -6,6 +6,9 @@ $(function () {
     myChart = echarts.init(document.getElementById('rechargeCharts'));
     // 指定图表的配置项和数据
     var option = {
+        title: {
+            text: '24小时充值统计图表'
+        },
         tooltip: {
             trigger: 'axis',
             axisPointer: {
