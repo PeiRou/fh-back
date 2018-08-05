@@ -48,8 +48,13 @@ $(function () {
                 },
                 itemStyle:{
                     normal:{
-                        color:function (e) {
-                            console.log(e);
+                        color:function (d) {
+                            var data = d.data;
+                            if(data > 0){
+                                return '#1cbf1c';
+                            } else {
+                                return '#fd3148';
+                            }
                         }
                     }
                 },
