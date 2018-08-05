@@ -161,8 +161,8 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         if(isset($endtime) && $endtime){
             $whereBet .= " and b.created_at <= '2018-08-05 23:59:59'";
         }
-        $sql .= $whereBet ." LEFT JOIN users as u ON u.id = b.user_id and u.testFlag = 0 ";
-        $sql .= " WHERE 1 GROUP BY g.game_id ";
+        $sql .= $whereBet ;
+        $sql .= " WHERE 1 and b.testFlag = 0 GROUP BY g.game_id ";
         $bet = DB::select($sql);
         return DataTables::of($bet)
             ->make(true);
