@@ -82,7 +82,7 @@ class New_Msssc
         $tmp = DB::select($aSql);
         foreach ($tmp as&$value)
             $openCode = $value->opennum;
-        \Log::Info($openCode);
+        \Log::Info('game_msssc:'.$openCode);
         DB::table("game_msssc")->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
         DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
     }
