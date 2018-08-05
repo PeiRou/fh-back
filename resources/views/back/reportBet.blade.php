@@ -12,6 +12,10 @@
                 <input type="checkbox" value="1" id="killZeroBetGame" checked>
                 过滤零投注彩种
             </label>
+            <label>
+                <input type="checkbox" value="1" id="killCloseGame" checked>
+                过滤未开启彩种
+            </label>
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('reportBetTable')"><i class="iconfont">&#xe61d;</i></span>

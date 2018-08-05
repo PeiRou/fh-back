@@ -157,8 +157,11 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $sql = "SELECT g.game_name,g.status,g.game_id, sum(b.bet_money) as sumMoney, COUNT(b.bet_id) AS countBets,count(DISTINCT(b.user_id)) as countMember, sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bunko else 0 end) else(case WHEN bunko >0 then bunko else 0 end) end) as sumWinBunko, count(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then b.bet_id else Null end) else(case WHEN bunko >0 then b.bet_id else Null end) end) as countWinBunkoBet, count(DISTINCT(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then b.user_id else Null end) else(case WHEN bunko >0 then b.user_id else Null end) end)) as countWinBunkoMember, sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko FROM `game` AS g LEFT JOIN bet as b ON g.game_id = b.game_id and b.testFlag = 0 ";
         $whereBet = "";
         $where = "";
-        if(isset($killZeroBetGame) && $killZeroBetGame){
+        if(isset($killZeroBetGame) && $killZeroBetGame){        //过滤零投注彩种
             $where .= " and g.status = 1 ";
+        }
+        if(isset($killZeroBetGame) && $killZeroBetGame){        //过滤未开启彩种
+            $where .= " and countBets >= 1 ";
         }
         if(isset($starttime) && $starttime){
             $whereBet .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";

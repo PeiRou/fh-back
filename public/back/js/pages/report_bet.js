@@ -16,6 +16,7 @@ $(function () {
                 d.startTime = $('#startTime').val();
                 d.endTime = $('#endTime').val();
                 d.killZeroBetGame = $('#killZeroBetGame:checked').val();
+                d.killCloseGame = $('#killCloseGame:checked').val();
             }
         },
         columns: [
