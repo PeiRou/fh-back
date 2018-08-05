@@ -103,5 +103,5 @@ $(function () {
 
 function refreshCharts() {
     myChart.showLoading();
-    loadChartsData
+    loadChartsData.ajax.reload();
 }
