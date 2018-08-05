@@ -34,6 +34,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('gagent', 'Back\SrcViewController@reportGagent')->name('report.gAgent'); // 总代理报表
         Route::get('agent', 'Back\SrcViewController@reportAgent')->name('report.agent'); // 代理报表
         Route::get('user', 'Back\SrcViewController@reportUser')->name('report.user'); // 会员报表
+        Route::get('bet', 'Back\SrcViewController@reportBet')->name('report.bet'); // 投注报表
         Route::get('online', 'Back\SrcViewController@reportOnline')->name('report.online'); // 在线报表
     });
 //投注记录

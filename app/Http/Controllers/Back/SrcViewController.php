@@ -325,6 +325,11 @@ class SrcViewController extends Controller
         $games = Games::where('status',1)->get();
         return view('back.reportUser',compact('games','ag','start','end'));
     }
+    //投注报表
+    public function reportBet()
+    {
+        return view('back.reportBet');
+    }
     //在线报表
     public function reportOnline()
     {
