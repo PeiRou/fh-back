@@ -148,6 +148,12 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             ->make(true);
     }
 
+    //投注报表
+    public function Bet(Request $request)
+    {
+
+    }
+
     //报表-总计
     public function Total()
     {
