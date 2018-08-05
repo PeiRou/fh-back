@@ -9,6 +9,15 @@ $(function () {
         title: {
             text: '24小时充值统计图表'
         },
+        tooltip: {
+            trigger: 'axis',
+            // axisPointer: {
+            //     type: 'cross',
+            //     crossStyle: {
+            //         color: '#999'
+            //     }
+            // }
+        },
         toolbox: {
             feature: {
                 dataView: {show: true, readOnly: false},
