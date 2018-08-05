@@ -3,7 +3,7 @@ $(function () {
     $('#menu-chartsManage-gameBunko').addClass('active');
 
     // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init($('#gameBunkoCharts'));
+    var myChart = echarts.init(document.getElementById('gameBunkoCharts'));
     // 指定图表的配置项和数据
     var option = {
         title: {
