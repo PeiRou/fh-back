@@ -7,6 +7,12 @@
         <div class="breadcrumb">
             <b>位置：</b>投注报表
         </div>
+        <div class="select-test-user">
+            <label>
+                <input type="checkbox" value="1" id="killZeroBetGame" checked>
+                过滤零投注彩种
+            </label>
+        </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('reportBetTable')"><i class="iconfont">&#xe61d;</i></span>
         </div>

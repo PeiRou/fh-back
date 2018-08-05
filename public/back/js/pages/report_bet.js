@@ -12,7 +12,11 @@ $(function () {
         aLengthMenu: [[100]],
         ajax: {
             url:'/back/datatables/reportBet',
-            data:function (d) {}
+            data:function (d) {
+                d.startTime = $('#startTime').val();
+                d.endTime = $('#endTime').val();
+                d.killZeroBetGame = $('#killZeroBetGame:checked').val();
+            }
         },
         columns: [
             {data:'game_name'},
