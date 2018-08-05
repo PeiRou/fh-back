@@ -164,7 +164,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $whereBet .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
         }
         if(isset($endtime) && $endtime){
-            $whereBet .= " and b.created_at <= '".date("Y-m-d 00:00:00",strtotime($endtime))."'";
+            $whereBet .= " and b.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
         }
         $sql .= $whereBet ;
         $sql .= " WHERE 1 ".$where." GROUP BY g.game_id order BY sumBunko asc";
