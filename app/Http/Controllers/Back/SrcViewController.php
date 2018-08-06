@@ -166,6 +166,8 @@ class SrcViewController extends Controller
             $gameTable = 'game_xylhc';
             $game_name = '幸运六合彩';
         }
+        if(!isset($gameTable))
+            return false;
         $get = DB::table($gameTable)->where('issue',$issue)->first();
         if($gameId == 70 || $gameId == 85){
             if($get->open_num == ''){
