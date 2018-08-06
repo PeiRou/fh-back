@@ -95,11 +95,11 @@ class new_mspk10 extends Command
             $opennum = isset($killopennum->excel_opennum)?$killopennum->excel_opennum:'';
             \Log::info('秒速赛车 获取KILL开奖'.$res->expect.'--'.$opennum);
             \Log::info('秒速赛车 获取origin开奖'.$res->expect.'--'.$res->opencode);
-            $niuniu = $this->exePK10nn($res->opencode);
             if(empty($opennum)){
                 $killniuniu = $this->exePK10nn($opennum);
                 \Log::info('秒速牛牛 获取KILL开奖'.$res->expect.'--'.$this->nn($killniuniu[0]).','.$this->nn($killniuniu[1]).','.$this->nn($killniuniu[2]).','.$this->nn($killniuniu[3]).','.$this->nn($killniuniu[4]).','.$this->nn($killniuniu[5]));
             }
+            $niuniu = $this->exePK10nn($res->opencode);
             \Log::info('秒速牛牛 获取origin开奖'.$res->expect.'--'.$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]));
             //---kill end
             try{
