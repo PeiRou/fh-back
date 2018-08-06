@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Events\RunMssc;
+use App\Events\RunMstf;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class KILL_mssc extends Command
+class KILL_msft extends Command
 {
     protected $gameId = 80;
     /**
@@ -14,14 +14,14 @@ class KILL_mssc extends Command
      *
      * @var string
      */
-    protected $signature = 'KILL_mssc';
+    protected $signature = 'KILL_msft';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '秒速赛车-定时杀率';
+    protected $description = '秒速飞艇-定时杀率';
 
     /**
      * Create a new command instance.
@@ -40,22 +40,24 @@ class KILL_mssc extends Command
      */
     public function handle()
     {
-        $tmp = DB::select('SELECT id,issue,excel_num FROM `game_mssc` WHERE id = (SELECT MAX(id) FROM `game_mssc` WHERE opentime <=now()+10 and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0');
+        $table = 'game_mssc';
+        $today = date('Y-m-d H:i:s',time()+10);
+        $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0");
         foreach ($tmp as&$value)
             $get = $value;
         if(isset($get) && $get){
             $opennum = $this->opennum();
             if(isset($get->excel_num) && $get->excel_num == 0){
-                \Log::Info('秒速赛车 杀率:'.$get->issue.'=='.$get->id);
-                $update = DB::table('game_mssc')->where('id',$get->id)->update([
+                \Log::Info('秒速飞艇 杀率:'.$get->issue.'=='.$get->id);
+                $update = DB::table($table)->where('id',$get->id)->update([
                     'excel_num' => 2
                 ]);
-                event(new RunMssc($opennum,$get->issue,$this->gameId,true)); //新--结算
-                $update = DB::table('game_mssc')->where('id',$get->id)->update([
+                event(new RunMstf($opennum,$get->issue,$this->gameId,true)); //新--结算
+                $update = DB::table($table)->where('id',$get->id)->update([
                     'excel_num' => 1
                 ]);
                 if($update !== 1){
-                    \Log::info("秒速赛车".$get->issue."杀率计算出错");
+                    \Log::info("秒速飞艇".$get->issue."杀率计算出错");
                 }
             }
         }
