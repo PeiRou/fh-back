@@ -92,7 +92,7 @@ class new_mspk10 extends Command
             Redis::set('msnn:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             //---kill start
             $killopennum = DB::table('game_mssc')->select('excel_opennum')->where('issue',$res->expect)->first();
-            $is_killopen = DB::table('excel_base')->select('is_open')->where('issue',$this->gameId)->first();
+            $is_killopen = DB::table('excel_base')->select('is_open')->where('game_id',$this->gameId)->first();
             $opennum = isset($killopennum->excel_opennum)?$killopennum->excel_opennum:'';
             \Log::info('秒速赛车 获取KILL开奖'.$res->expect.'--'.$opennum);
             \Log::info('秒速赛车 获取origin开奖'.$res->expect.'--'.$res->opencode);
