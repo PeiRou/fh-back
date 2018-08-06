@@ -97,7 +97,7 @@ class new_msssc extends Command
                     'year'=> date('Y'),
                     'month'=> date('m'),
                     'day'=>  date('d'),
-                    'opennum'=> $res->opencode
+                    'opennum'=> empty($opennum)?$res->opencode:$opennum
                 ]);
                 $this->clong->setKaijian('msssc',1,$res->opencode);
                 $this->clong->setKaijian('msssc',2,$res->opencode);
