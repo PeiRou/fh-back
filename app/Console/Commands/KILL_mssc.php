@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands;
 
-use App\Events\RunMstf;
+use App\Events\RunMssc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
 class KILL_msft extends Command
 {
-    protected $gameId = 82;
+    protected $gameId = 80;
     /**
      * The name and signature of the console command.
      *
@@ -48,16 +48,16 @@ class KILL_msft extends Command
         if(isset($get) && $get){
             $opennum = $this->opennum();
             if(isset($get->excel_num) && $get->excel_num == 0){
-                \Log::Info('秒速飞艇 杀率:'.$get->issue.'=='.$get->id);
-                $update = DB::table($table)->where('id',$get->id)->update([
+                \Log::Info('秒速赛车 杀率:'.$get->issue.'=='.$get->id);
+                $update = DB::table('game_mssc')->where('id',$get->id)->update([
                     'excel_num' => 2
                 ]);
-                event(new RunMstf($opennum,$get->issue,$this->gameId,true)); //新--结算
-                $update = DB::table($table)->where('id',$get->id)->update([
+                event(new RunMssc($opennum,$get->issue,$this->gameId,true)); //新--结算
+                $update = DB::table('game_mssc')->where('id',$get->id)->update([
                     'excel_num' => 1
                 ]);
                 if($update !== 1){
-                    \Log::info("秒速飞艇".$get->issue."杀率计算出错");
+                    \Log::info("秒速赛车".$get->issue."杀率计算出错");
                 }
             }
         }
