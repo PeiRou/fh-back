@@ -97,9 +97,9 @@ class new_mspk10 extends Command
             \Log::info('秒速赛车 获取origin开奖'.$res->expect.'--'.$res->opencode);
             if(!empty($opennum)){
                 $killniuniu = $this->exePK10nn($opennum);
-                \Log::info('秒速牛牛 获取KILL开奖'.$res->expect.'--'.$this->nn($killniuniu[0]).','.$this->nn($killniuniu[1]).','.$this->nn($killniuniu[2]).','.$this->nn($killniuniu[3]).','.$this->nn($killniuniu[4]).','.$this->nn($killniuniu[5]));
+                $killniuniu_num = $this->nn($killniuniu[0]).','.$this->nn($killniuniu[1]).','.$this->nn($killniuniu[2]).','.$this->nn($killniuniu[3]).','.$this->nn($killniuniu[4]).','.$this->nn($killniuniu[5]);
             }
-
+            $niuniu_num =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
             \Log::info('秒速牛牛 获取origin开奖'.$res->expect.'--'.$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]));
             //---kill end
             try{
@@ -108,9 +108,8 @@ class new_mspk10 extends Command
                     'year'=> date('Y'),
                     'month'=> date('m'),
                     'day'=>  date('d'),
-                    'opennum'=> $res->opencode,
-                    'niuniu' => $this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5])
-//                    'niuniu' => $this->nn($banker).','.$this->nn($player1).','.$this->nn($player2).','.$this->nn($player3).','.$this->nn($player4).','.$this->nn($player5)
+                    'opennum'=> empty($opennum)?$res->opencode:$opennum,
+                    'niuniu' => isset($killniuniu_num)&&!empty($killniuniu_num)?$killniuniu_num:$niuniu_num
                 ]);
                 $this->clong->setKaijian('mssc',1,$res->opencode);
                 $this->clong->setKaijian('mssc',2,$res->opencode);
