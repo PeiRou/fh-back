@@ -21,7 +21,7 @@ class KILL_mssc extends Command
      *
      * @var string
      */
-    protected $description = '秒速飞艇-定时杀率';
+    protected $description = '秒速赛车-定时杀率';
 
     /**
      * Create a new command instance.
