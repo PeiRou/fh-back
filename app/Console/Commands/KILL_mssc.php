@@ -14,7 +14,7 @@ class KILL_msft extends Command
      *
      * @var string
      */
-    protected $signature = 'KILL_msft';
+    protected $signature = 'KILL_mssc';
 
     /**
      * The console command description.
