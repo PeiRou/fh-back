@@ -122,7 +122,7 @@ class new_mspk10 extends Command
                     'day'=>  date('d'),
                     'opennum'=> $res->opencode,
 //                    'niuniu' => $this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5])
-                    'niuniu' => $banker.','.$player1.','.$player2.','.$player3.','.$player4.','.$player5
+                    'niuniu' => $this->nn($banker).','.$this->nn($player1).','.$this->nn($player2).','.$this->nn($player3).','.$this->nn($player4).','.$this->nn($player5)
                 ]);
                 $this->clong->setKaijian('mssc',1,$res->opencode);
                 $this->clong->setKaijian('mssc',2,$res->opencode);
