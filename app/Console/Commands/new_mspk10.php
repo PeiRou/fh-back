@@ -102,17 +102,18 @@ class new_mspk10 extends Command
             $niuniu_num =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
             \Log::info('秒速牛牛 获取origin开奖'.$res->expect.'--'.$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]));
             //---kill end
+            $opencode = empty($opennum)?$res->opencode:$opennum;
             try{
                 DB::table('game_mssc')->where('issue',$res->expect)->update([
                     'is_open' => 1,
                     'year'=> date('Y'),
                     'month'=> date('m'),
                     'day'=>  date('d'),
-                    'opennum'=> empty($opennum)?$res->opencode:$opennum,
+                    'opennum'=> $opencode,
                     'niuniu' => isset($killniuniu_num)&&!empty($killniuniu_num)?$killniuniu_num:$niuniu_num
                 ]);
-                $this->clong->setKaijian('mssc',1,$res->opencode);
-                $this->clong->setKaijian('mssc',2,$res->opencode);
+                $this->clong->setKaijian('mssc',1,$opencode);
+                $this->clong->setKaijian('mssc',2,$opencode);
             } catch (\Exception $exception){
                 \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             }

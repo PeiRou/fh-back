@@ -91,16 +91,17 @@ class new_msssc extends Command
 		$opennum = isset($killopennum->excel_opennum)?$killopennum->excel_opennum:'';
 		\Log::info('秒速时时彩 获取KILL开奖'.$res->expect.'--'.$opennum);
 		\Log::info('秒速时时彩 获取origin开奖'.$res->expect.'--'.$res->opencode);
+            $opencode = empty($opennum)?$res->opencode:$opennum;
             try{
                 DB::table('game_msssc')->where('issue',$res->expect)->update([
                     'is_open' => 1,
                     'year'=> date('Y'),
                     'month'=> date('m'),
                     'day'=>  date('d'),
-                    'opennum'=> empty($opennum)?$res->opencode:$opennum
+                    'opennum'=> $opencode
                 ]);
-                $this->clong->setKaijian('msssc',1,$res->opencode);
-                $this->clong->setKaijian('msssc',2,$res->opencode);
+                $this->clong->setKaijian('msssc',1,$opencode);
+                $this->clong->setKaijian('msssc',2,$opencode);
             } catch (\Exception $exception){
                 \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             }
