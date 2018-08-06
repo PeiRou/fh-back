@@ -167,7 +167,9 @@ class SrcViewController extends Controller
             $game_name = '幸运六合彩';
         }
         if(!isset($gameTable))
-            return false;
+            return response()->json([
+                'status' => false
+            ]);
         $get = DB::table($gameTable)->where('issue',$issue)->first();
         if($gameId == 70 || $gameId == 85){
             if($get->open_num == ''){
