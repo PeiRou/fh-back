@@ -80,7 +80,7 @@ class new_msjsk3 extends Command
                     'year'=> date('Y'),
                     'month'=> date('m'),
                     'day'=>  date('d'),
-                    'opennum'=> $res->opencode
+                    'opennum'=> empty($opennum)?$res->opencode:$opennum
                 ]);
             } catch (\Exception $exception){
                 \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
