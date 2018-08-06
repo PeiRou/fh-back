@@ -34,7 +34,8 @@ class New_Msjsk3
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
                 \Log::Info('msjsk3 killing...');
                 $this->excel($openCode,$exeBase,$issue,$gameId,'game_msjsk3');
-            }else{
+            }
+            if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue);
                 if($bunko == 1){

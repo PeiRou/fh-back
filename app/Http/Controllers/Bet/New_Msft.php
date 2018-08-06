@@ -48,7 +48,8 @@ class New_Msft
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
                 \Log::Info('msft killing...');
                 $this->excel($openCode,$exeBase,$issue,$gameId,'game_msft');
-            }else{
+            }
+            if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue);
                 if($bunko == 1){

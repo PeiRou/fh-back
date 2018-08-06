@@ -70,11 +70,12 @@ class new_msjsk3 extends Command
             //---kill start
             $table = 'game_msjsk3';
             $killopennum = DB::table($table)->select('excel_opennum')->where('issue',$res->expect)->first();
+            $is_killopen = DB::table('excel_base')->select('is_open')->where('issue',$this->gameId)->first();
             $opennum = isset($killopennum->excel_opennum)?$killopennum->excel_opennum:'';
             \Log::info('秒速江苏快3 获取KILL开奖'.$res->expect.'--'.$opennum);
             \Log::info('秒速江苏快3 获取origin开奖'.$res->expect.'--'.$res->opencode);
             //---kill end
-            $opencode = empty($opennum)?$res->opencode:$opennum;
+            $opencode = empty($opennum)||($is_killopen->is_open==0)?$res->opencode:$opennum;
             try{
                 DB::table('game_msjsk3')->where('issue',$res->expect)->update([
                     'is_open' => 1,

@@ -92,6 +92,7 @@ class new_mspk10 extends Command
             Redis::set('msnn:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             //---kill start
             $killopennum = DB::table('game_mssc')->select('excel_opennum')->where('issue',$res->expect)->first();
+            $is_killopen = DB::table('excel_base')->select('is_open')->where('issue',$this->gameId)->first();
             $opennum = isset($killopennum->excel_opennum)?$killopennum->excel_opennum:'';
             \Log::info('秒速赛车 获取KILL开奖'.$res->expect.'--'.$opennum);
             \Log::info('秒速赛车 获取origin开奖'.$res->expect.'--'.$res->opencode);
@@ -102,7 +103,8 @@ class new_mspk10 extends Command
             $niuniu_num =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
             \Log::info('秒速牛牛 获取origin开奖'.$res->expect.'--'.$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]));
             //---kill end
-            $opencode = empty($opennum)?$res->opencode:$opennum;
+            $opencode = empty($opennum)||($is_killopen->is_open==0)?$res->opencode:$opennum;
+            $openniuniu = (isset($killniuniu_num)&&!empty($killniuniu_num))?$killniuniu_num:$niuniu_num;
             try{
                 DB::table('game_mssc')->where('issue',$res->expect)->update([
                     'is_open' => 1,
@@ -110,7 +112,7 @@ class new_mspk10 extends Command
                     'month'=> date('m'),
                     'day'=>  date('d'),
                     'opennum'=> $opencode,
-                    'niuniu' => isset($killniuniu_num)&&!empty($killniuniu_num)?$killniuniu_num:$niuniu_num
+                    'niuniu' => $openniuniu
                 ]);
                 $this->clong->setKaijian('mssc',1,$opencode);
                 $this->clong->setKaijian('mssc',2,$opencode);

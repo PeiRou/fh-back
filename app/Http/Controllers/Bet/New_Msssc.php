@@ -40,7 +40,8 @@ class New_Msssc
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
                 \Log::Info('msssc killing...');
                 $this->excel($openCode,$exeBase,$issue,$gameId);
-            }else{
+            }
+            if(!$excel){
                 \Log::Info($issue.'----'.$openCode);
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue,false);
