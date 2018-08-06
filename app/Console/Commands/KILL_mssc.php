@@ -40,7 +40,7 @@ class KILL_msft extends Command
      */
     public function handle()
     {
-        $table = 'game_msjsk3';
+        $table = 'game_mssc';
         $today = date('Y-m-d H:i:s',time()+10);
         $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0");
         foreach ($tmp as&$value)
