@@ -29,7 +29,7 @@ class RunMSJSK3EventListener
      */
     public function handle(RunMSJSK3 $event)
     {
-        $up = $this->MSJSK3->all($event->openCode,$event->openIssue,$event->gameId);
+        $up = $this->MSJSK3->all($event->openCode,$event->openIssue,$event->gameId,$event->excel);
         return $up;
     }
 }

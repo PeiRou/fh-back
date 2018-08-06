@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
@@ -66,6 +67,13 @@ class new_msjsk3 extends Command
             Redis::set('msjsk3:nextIssue',(int)$nextIssue+1);
             Redis::set('msjsk3:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msjsk3:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+            //---kill start
+            $table = 'game_msjsk3';
+            $killopennum = DB::table($table)->select('excel_opennum')->where('issue',$res->expect)->first();
+            $opennum = isset($killopennum->excel_opennum)?$killopennum->excel_opennum:'';
+            \Log::info('秒速江苏快3 获取KILL开奖'.$res->issue.'--'.$opennum);
+            \Log::info('秒速江苏快3 获取origin开奖'.$res->issue.'--'.$res->opencode);
+            //---kill end
             try{
                 DB::table('game_msjsk3')->where('issue',$res->expect)->update([
                     'is_open' => 1,
