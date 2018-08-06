@@ -185,7 +185,7 @@ class RechargeController extends Controller
 
         $where = Session::get('recharge_report');
         $whereStatus = Session::get('recharge_report_status');
-        \Log::info('select sum(amount) as total  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 and recharges.status = '.$whereStatus." ".$where);
+//        \Log::info('select sum(amount) as total  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 and recharges.status = '.$whereStatus." ".$where);
         $total = DB::select('select sum(amount) as total  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 and recharges.status = '.$whereStatus." ".$where);
         foreach ($total as&$val)
             $total = $val;
