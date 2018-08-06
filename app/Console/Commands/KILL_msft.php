@@ -43,9 +43,10 @@ class KILL_msft extends Command
         $table = 'game_mssc';
         $today = date('Y-m-d H:i:s',time()+10);
         $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0");
+        $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$this->gameId)->first();
         foreach ($tmp as&$value)
             $get = $value;
-        if(isset($get) && $get){
+        if(isset($get) && $get && !empty($exeBase)){
             $opennum = $this->opennum();
             if(isset($get->excel_num) && $get->excel_num == 0){
                 \Log::Info('秒速飞艇 杀率:'.$get->issue.'=='.$get->id);
