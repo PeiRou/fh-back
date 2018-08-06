@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class KILL_msft extends Command
 {
-    protected $gameId = 80;
+    protected $gameId = 82;
     /**
      * The name and signature of the console command.
      *
