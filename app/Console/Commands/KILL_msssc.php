@@ -40,7 +40,7 @@ class KILL_msssc extends Command
      */
     public function handle()
     {
-        $tmp = DB::select('SELECT id,issue,excel_num FROM `game_msssc` WHERE id = (SELECT MIN(id) FROM `game_msssc` WHERE opentime <=now()+16 and is_open=0 and excel_num=0)');
+        $tmp = DB::select('SELECT id,issue,excel_num FROM `game_msssc` WHERE id = (SELECT MIN(id) FROM `game_msssc` WHERE opentime <=now()+10 and is_open=0 and excel_num=0)');
         foreach ($tmp as&$value)
             $get = $value;
         if(isset($get) && $get){

@@ -88,7 +88,7 @@ class new_msssc extends Command
             Redis::set('msssc:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             $killopennum = DB::table('game_msssc')->select('excel_opennum')->where('issue',$res->expect)->first();
-		$opennum = isset($killopennum->excel_opennum)&&!empty($killopennum->excel_opennum)?$killopennum->excel_opennum:$res->opencode;
+		$opennum = isset($killopennum->excel_opennum)?$killopennum->excel_opennum:'';
 		\Log::info('秒速时时彩 获取KILL开奖'.$res->expect.'--'.$opennum);
 		\Log::info('秒速时时彩 获取origin开奖'.$res->expect.'--'.$res->opencode);
             try{
