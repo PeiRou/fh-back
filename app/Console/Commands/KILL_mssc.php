@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Events\RunMssc;
+use App\Events\RunMstf;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -52,7 +52,7 @@ class KILL_msft extends Command
                 $update = DB::table($table)->where('id',$get->id)->update([
                     'excel_num' => 2
                 ]);
-                event(new RunMssc($opennum,$get->issue,$this->gameId,true)); //新--结算
+                event(new RunMstf($opennum,$get->issue,$this->gameId,true)); //新--结算
                 $update = DB::table($table)->where('id',$get->id)->update([
                     'excel_num' => 1
                 ]);
