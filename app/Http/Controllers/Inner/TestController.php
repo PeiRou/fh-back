@@ -11,6 +11,8 @@ class TestController extends Controller
     {
         $nums = range(1,10);
         shuffle($nums);
+        shuffle($nums);
+        shuffle($nums);
         return $nums;
     }
 }
