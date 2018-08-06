@@ -103,7 +103,6 @@ class new_mspk10 extends Command
             \Log::info('秒速牛牛 获取origin开奖'.$res->expect.'--'.$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]));
             //---kill end
             try{
-                \Log::info($niuniu);
                 DB::table('game_mssc')->where('issue',$res->expect)->update([
                     'is_open' => 1,
                     'year'=> date('Y'),
