@@ -75,7 +75,7 @@ class New_Msssc
                 $dataExcGame['excel_num'] = $i+1;
                 $dataExcGame['created_at'] = date('Y-m-d H:i:s');
                 $dataExcGame['updated_at'] = date('Y-m-d H:i:s');
-                DB::table('excel_game')->insert([$dataExcGame]);select sum(amount) as total  from recharges LEFT JOIN users on recharges.userId
+                DB::table('excel_game')->insert([$dataExcGame]);
             }
         }
         $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = ".$gameId." AND issue ='{$issue}') and game_id = ".$gameId." AND issue ='{$issue}' LIMIT 1";
