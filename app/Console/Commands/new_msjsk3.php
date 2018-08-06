@@ -74,13 +74,14 @@ class new_msjsk3 extends Command
             \Log::info('秒速江苏快3 获取KILL开奖'.$res->expect.'--'.$opennum);
             \Log::info('秒速江苏快3 获取origin开奖'.$res->expect.'--'.$res->opencode);
             //---kill end
+            $opencode = empty($opennum)?$res->opencode:$opennum;
             try{
                 DB::table('game_msjsk3')->where('issue',$res->expect)->update([
                     'is_open' => 1,
                     'year'=> date('Y'),
                     'month'=> date('m'),
                     'day'=>  date('d'),
-                    'opennum'=> empty($opennum)?$res->opencode:$opennum
+                    'opennum'=> $opencode
                 ]);
             } catch (\Exception $exception){
                 \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());

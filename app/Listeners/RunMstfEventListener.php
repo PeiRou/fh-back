@@ -28,7 +28,7 @@ class RunMstfEventListener
      */
     public function handle(RunMstf $event)
     {
-        $up = $this->msft->all($event->openCode,$event->openIssue,$event->gameId);
+        $up = $this->msft->all($event->openCode,$event->openIssue,$event->gameId,$event->excel);
         return $up;
     }
 }

@@ -10,7 +10,7 @@ class Excel
             case 'game_msjsk3':
                 return $this->opennum_k3();
                 break;
-            case 'ft':
+            case 'game_msft':
             case 'game_mssc':
                 return $this->opennum_pk10();
                 break;
