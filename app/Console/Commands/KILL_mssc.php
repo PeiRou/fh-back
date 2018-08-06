@@ -6,7 +6,7 @@ use App\Events\RunMssc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class KILL_msft extends Command
+class KILL_mssc extends Command
 {
     protected $gameId = 80;
     /**
