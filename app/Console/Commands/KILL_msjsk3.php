@@ -42,7 +42,8 @@ class KILL_msjsk3 extends Command
     public function handle()
     {
         $table = 'game_msjsk3';
-        $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <=now()+9 and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0");
+        $taday = date('Y-m-d H:i:s',time()+9);
+        $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$taday}' and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0");
         foreach ($tmp as&$value)
             $get = $value;
         if(isset($get) && $get){
