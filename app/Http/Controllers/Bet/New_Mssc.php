@@ -73,8 +73,10 @@ class New_Mssc
             $win = $this->exc_play($openCode,$gameId);
             $bunko = $this->bunko($win,$gameId,$issue,true);
             if($bunko == 1){
-                $excBunko = DB::select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
-                $excBunko = $excBunko[0]->sumBunko;
+                $tmp = DB::select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
+                foreach ($tmp as&$value)
+                    $excBunko = $value->sumBunko;
+                \Log::info('秒速PK10 :'.$excBunko);
                 $dataExcGame['game_id'] = $gameId;
                 $dataExcGame['issue'] = $issue;
                 $dataExcGame['opennum'] = $openCode;
@@ -93,6 +95,7 @@ class New_Mssc
         DB::table("game_mssc")->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
         DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
     }
+    //产生开号
     private function opennum(){
         $tmpArray = [0=>1,1=>2,2=>3,3=>4,4=>5,5=>6,6=>7,7=>8,8=>9,9=>10];
         for ($i=0;$i<10;$i++){

@@ -91,27 +91,16 @@ class new_mspk10 extends Command
             Redis::set('msnn:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msnn:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             //---kill start
-            $killopennum = DB::table('game_msssc')->select('excel_opennum')->where('issue',$res->expect)->first();
+            $killopennum = DB::table('game_mssc')->select('excel_opennum')->where('issue',$res->expect)->first();
             $opennum = isset($killopennum->excel_opennum)?$killopennum->excel_opennum:'';
             \Log::info('秒速赛车 获取KILL开奖'.$res->expect.'--'.$opennum);
             \Log::info('秒速赛车 获取origin开奖'.$res->expect.'--'.$res->opencode);
-//            if(empty($opennum)){
-//                $killniuniu = $this->exePK10nn($opennum);
-//                \Log::info('秒速牛牛 获取KILL开奖'.$res->expect.'--'.$this->nn($killniuniu[0]).','.$this->nn($killniuniu[1]).','.$this->nn($killniuniu[2]).','.$this->nn($killniuniu[3]).','.$this->nn($killniuniu[4]).','.$this->nn($killniuniu[5]));
-//            }
+            if(!empty($opennum)){
+                $killniuniu = $this->exePK10nn($opennum);
+                \Log::info('秒速牛牛 获取KILL开奖'.$res->expect.'--'.$this->nn($killniuniu[0]).','.$this->nn($killniuniu[1]).','.$this->nn($killniuniu[2]).','.$this->nn($killniuniu[3]).','.$this->nn($killniuniu[4]).','.$this->nn($killniuniu[5]));
+            }
 
             \Log::info('秒速牛牛 获取origin开奖'.$res->expect.'--'.$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]));
-
-
-            $replace = str_replace('10','0',$res->opencode);
-            $explodeNum = explode(',',$replace);
-            $banker = (int)$explodeNum[0].(int)$explodeNum[1].(int)$explodeNum[2].(int)$explodeNum[3].(int)$explodeNum[4];
-            $player1 = (int)$explodeNum[1].(int)$explodeNum[2].(int)$explodeNum[3].(int)$explodeNum[4].(int)$explodeNum[5];
-            $player2 = (int)$explodeNum[2].(int)$explodeNum[3].(int)$explodeNum[4].(int)$explodeNum[5].(int)$explodeNum[6];
-            $player3 = (int)$explodeNum[3].(int)$explodeNum[4].(int)$explodeNum[5].(int)$explodeNum[6].(int)$explodeNum[7];
-            $player4 = (int)$explodeNum[4].(int)$explodeNum[5].(int)$explodeNum[6].(int)$explodeNum[7].(int)$explodeNum[8];
-            $player5 = (int)$explodeNum[5].(int)$explodeNum[6].(int)$explodeNum[7].(int)$explodeNum[8].(int)$explodeNum[9];
-
             //---kill end
             try{
                 \Log::info($niuniu);
@@ -121,8 +110,8 @@ class new_mspk10 extends Command
                     'month'=> date('m'),
                     'day'=>  date('d'),
                     'opennum'=> $res->opencode,
-//                    'niuniu' => $this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5])
-                    'niuniu' => $this->nn($banker).','.$this->nn($player1).','.$this->nn($player2).','.$this->nn($player3).','.$this->nn($player4).','.$this->nn($player5)
+                    'niuniu' => $this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5])
+//                    'niuniu' => $this->nn($banker).','.$this->nn($player1).','.$this->nn($player2).','.$this->nn($player3).','.$this->nn($player4).','.$this->nn($player5)
                 ]);
                 $this->clong->setKaijian('mssc',1,$res->opencode);
                 $this->clong->setKaijian('mssc',2,$res->opencode);

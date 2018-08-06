@@ -40,13 +40,16 @@ class KILL_mssc extends Command
      */
     public function handle()
     {
-        $tmp = DB::select('SELECT id,issue,excel_num FROM `game_mssc` WHERE id = (SELECT MIN(id) FROM `game_mssc` WHERE opentime <=now()+10 and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0');
+        $tmp = DB::select('SELECT id,issue,excel_num FROM `game_mssc` WHERE id = (SELECT MAX(id) FROM `game_mssc` WHERE opentime <=now()+10 and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0');
         foreach ($tmp as&$value)
             $get = $value;
         if(isset($get) && $get){
             $opennum = $this->opennum();
-            if($get->excel_num !== 1){
-                \Log::Info('秒速赛车 杀率:'.$get->issue);
+            if(isset($get->excel_num) && $get->excel_num == 0){
+                \Log::Info('秒速赛车 杀率:'.$get->issue.'=='.$get->id);
+                $update = DB::table('game_mssc')->where('id',$get->id)->update([
+                    'excel_num' => 2
+                ]);
                 event(new RunMssc($opennum,$get->issue,$this->gameId,true)); //新--结算
                 $update = DB::table('game_mssc')->where('id',$get->id)->update([
                     'excel_num' => 1
