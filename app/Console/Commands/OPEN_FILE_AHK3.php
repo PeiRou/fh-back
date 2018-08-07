@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
-class OPEN_FILE_BJK3 extends Command
+class OPEN_FILE_AHK3 extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'OPEN_FILE_BJK3';
+    protected $signature = 'OPEN_FILE_AHK3';
 
     /**
      * The console command description.
@@ -39,12 +39,18 @@ class OPEN_FILE_BJK3 extends Command
      */
     public function handle()
     {
-        $timeUp = date('09:00:00');
+        $timeUp = date('08:40:00');
         $str = "";
-        for($i=1;$i<=89;$i++){
+        for($i=1;$i<=80;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(10);
-            $str .= '"'.(string)$i.'":{"time":"'.$timeUp->toTimeString().'"},';
+            if(strlen($i) == 1){
+                $i = '00'.$i;
+            }
+            if(strlen($i) == 2){
+                $i = '0'.$i;
+            }
+            $str .= '"'.(string)$i.'":{"time":"'.$timeUp->toTimeString().'","issue":"'.(string)$i.'"},';
         }
-        Storage::disk('gameTime')->put('bjk3.json',"{".rtrim($str,',')."}");
+        Storage::disk('gameTime')->put('ahk3.json',"{".rtrim($str,',')."}");
     }
 }
