@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Bet;
 use App\Bets;
 use Illuminate\Support\Facades\DB;
 
-class New_Bjk3
+class New_Ahk3
 {
     public function all($openCode,$issue,$gameId)
     {
@@ -325,7 +325,7 @@ class New_Bjk3
                 }
             }
         } else {
-            \Log::info('北京快3已结算过，已阻止！');
+            \Log::info('安徽快3已结算过，已阻止！');
         }
     }
 }
