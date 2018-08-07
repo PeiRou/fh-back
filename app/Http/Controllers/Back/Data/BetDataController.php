@@ -430,6 +430,21 @@ class BetDataController extends Controller
             ->make(true);
     }
 
+    public function betNumTotal(Request $request)
+    {
+        $searchType = $request->get('searchType');
+        $total = DB::table('bet')
+            ->where(function ($query) use ($searchType){
+                if($searchType && isset($searchType)){
+                    $data = Carbon::now()->addDay(-1)->toDateTimeString();
+                    $query->whereDate('created_at',date('Y-m-d',strtotime($data)));
+                } else {
+                    $query->whereDate('created_at',date('Y-m-d'));
+                }
+            })->where('bunko',0)->sum('bet_money');
+        return $total;
+    }
+
     private function play($gameId,$playCate,$play,$odds){
         $cate_txt = PlayCates::where('gameId',$gameId)->where('id',$playCate)->first();
         $play_txt = Play::where('gameId',$gameId)->where('id',$play)->first();

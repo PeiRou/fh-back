@@ -153,7 +153,35 @@ $(function () {
     });
 });
 
+function getTotalBet() {
+    var searchType = $('#searchType').val();
+    var game = $('#game').val();
+    var playCate = $('#playCate').val();
+    var issue = $('#issue').val();
+    var status = $('#status').val();
+    var order = $('#order').val();
+    var username = $('#username').val();
+    $.ajax({
+        url: '/action/betTodat/total',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            searchType: searchType,
+            game: game,
+            playCate: playCate,
+            issue: issue,
+            status: status,
+            order: order,
+            username:username
+        },
+        success: function (data) {
+            console.log(data);
+        }
+    });
+}
+
 $('#btn_search').on('click',function () {
+    getTotalBet();
     dataTable.ajax.reload();
 });
 
