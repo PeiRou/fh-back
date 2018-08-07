@@ -459,7 +459,7 @@ class BetDataController extends Controller
                     $query->where('game_id',$game);
                 }
             })
-            ->sum('bet_money');
+            ->where('testFlag',0)->sum('bet_money');
         return $total;
     }
 
