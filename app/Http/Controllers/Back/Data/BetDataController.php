@@ -432,35 +432,35 @@ class BetDataController extends Controller
 
     public function betNumTotal(Request $request)
     {
-//        $searchType = $request->get('searchType');
-//        $status = $request->get('status');
-//        $game = $request->get('game');
-//        $total = DB::table('bet')
-//            ->where(function ($query) use ($searchType){
-//                if($searchType && isset($searchType)){
-//                    $data = Carbon::now()->addDay(-1)->toDateTimeString();
-//                    $query->whereDate('created_at',date('Y-m-d',strtotime($data)));
-//                } else {
-//                    $query->whereDate('created_at',date('Y-m-d'));
-//                }
-//            })->where(function ($query) use($status){
-//                if($status && isset($status)){
-//                    if($status == 'weijiesuan'){
-//                        $query->where('bunko',0);
-//                    } else if($status == 'jiesuan'){
-//                        $query->where('bunko','!=',0);
-//                    } else {
-//                        $query->where('bunko',-0.01);
-//                    }
-//                }
-//            })
-//            ->where(function ($query) use ($game){
-//                if($game && isset($game)){
-//                    $query->where('game_id',$game);
-//                }
-//            })
-//            ->where('testFlag',0)->sum('bet_money');
-//        return $total;
+        $searchType = $request->get('searchType');
+        $status = $request->get('status');
+        $game = $request->get('game');
+        $total = DB::table('bet')
+            ->where(function ($query) use ($searchType){
+                if($searchType && isset($searchType)){
+                    $data = Carbon::now()->addDay(-1)->toDateTimeString();
+                    $query->whereDate('created_at',date('Y-m-d',strtotime($data)));
+                } else {
+                    $query->whereDate('created_at',date('Y-m-d'));
+                }
+            })->where(function ($query) use($status){
+                if($status && isset($status)){
+                    if($status == 'weijiesuan'){
+                        $query->where('bunko',0);
+                    } else if($status == 'jiesuan'){
+                        $query->where('bunko','!=',0);
+                    } else {
+                        $query->where('bunko',-0.01);
+                    }
+                }
+            })
+            ->where(function ($query) use ($game){
+                if($game && isset($game)){
+                    $query->where('game_id',$game);
+                }
+            })
+            ->where('testFlag',0)->sum('bet_money');
+        return $total;
     }
 
     private function play($gameId,$playCate,$play,$odds){
