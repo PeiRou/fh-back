@@ -1,9 +1,9 @@
-<!-- 北京快3 -->
-<form id="game11Form" action="{{ url('/game/table/save/bjk3') }}">
+<!-- 安徽快3 -->
+<form id="game11Form" action="{{ url('/game/table/save/ahk3') }}">
 <table align="center" class="ui celled small table">
     <tbody>
     <tr class="firstRow">
-        <td valign="middle" rowspan="1" colspan="4" align="center" class="blue-title-table">北京快3</td>
+        <td valign="middle" rowspan="1" colspan="4" align="center" class="blue-title-table">安徽快3</td>
     </tr>
     <tr>
         <td valign="middle" colspan="1" rowspan="9" align="center" class="deep-blue-td">和值</td>

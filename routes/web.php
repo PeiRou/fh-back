@@ -446,7 +446,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/table/save/tjssc', 'Back\GameTables\SaveGameOddsController@tjssc');
     Route::post('/game/table/save/gdklsf', 'Back\GameTables\SaveGameOddsController@gdklsf');
     Route::post('/game/table/save/jsk3', 'Back\GameTables\SaveGameOddsController@jsk3');
-    Route::post('/game/table/save/bjk3', 'Back\GameTables\SaveGameOddsController@bjk3');
+    Route::post('/game/table/save/ahk3', 'Back\GameTables\SaveGameOddsController@ahk3');
     Route::post('/game/table/save/gxk3', 'Back\GameTables\SaveGameOddsController@gxk3');
     Route::post('/game/table/save/hbk3', 'Back\GameTables\SaveGameOddsController@hbk3');
     Route::post('/game/table/save/cqxync', 'Back\GameTables\SaveGameOddsController@cqxync');
