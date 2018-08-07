@@ -81,6 +81,9 @@
                     </div>
                 </div>
             </div>
+            <div class="total-nums">
+                未结算总额：<span id="unBunkoTotal" style="font-size: 13pt;">0</span>
+            </div>
         </div>
         <table id="betTodayTable" class="ui small table" cellspacing="0" width="100%">
             <thead>
