@@ -2,15 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Events\RunMssc;
-use App\Http\Controllers\Bet\New_Mssc;
+use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Bet\Clong;
 
 class new_mspk10 extends Command
@@ -91,20 +87,15 @@ class new_mspk10 extends Command
             Redis::set('msnn:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msnn:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             //---kill start
-            $killopennum = DB::table('game_mssc')->select('excel_opennum')->where('issue',$res->expect)->first();
-            $is_killopen = DB::table('excel_base')->select('is_open')->where('game_id',$this->gameId)->first();
-            $opennum = isset($killopennum->excel_opennum)?$killopennum->excel_opennum:'';
-            \Log::info('秒速赛车 获取KILL开奖'.$res->expect.'--'.$opennum);
-            \Log::info('秒速赛车 获取origin开奖'.$res->expect.'--'.$res->opencode);
-            if(!empty($opennum)){
-                $killniuniu = $this->exePK10nn($opennum);
-                $killniuniu_num = $this->nn($killniuniu[0]).','.$this->nn($killniuniu[1]).','.$this->nn($killniuniu[2]).','.$this->nn($killniuniu[3]).','.$this->nn($killniuniu[4]).','.$this->nn($killniuniu[5]);
-            }
-            $niuniu_num =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
-            \Log::info('秒速牛牛 获取origin开奖'.$res->expect.'--'.$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]));
+            $table = 'game_mssc';
+            $excel = new Excel();
+            $opennum = $excel->kill_count($table,$res->expect,$this->gameId,$res->opencode);
             //---kill end
-            $opencode = empty($opennum)||($is_killopen->is_open==0)?$res->opencode:$opennum;
-            $openniuniu = (isset($killniuniu_num)&&!empty($killniuniu_num))?$killniuniu_num:$niuniu_num;
+            $opencode = empty($opennum)?$res->opencode:$opennum;
+
+            //处理秒速牛牛
+            $niuniu = $this->exePK10nn($opencode);
+            $openniuniu =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
             try{
                 DB::table('game_mssc')->where('issue',$res->expect)->update([
                     'is_open' => 1,
@@ -123,6 +114,8 @@ class new_mspk10 extends Command
     }
     //处理秒速牛牛
     private function exePK10nn($opencode){
+        if(empty($opencode))
+            return false;
         $replace = str_replace('10','0',$opencode);
         $explodeNum = explode(',',$replace);
         $banker = (int)$explodeNum[0].(int)$explodeNum[1].(int)$explodeNum[2].(int)$explodeNum[3].(int)$explodeNum[4];

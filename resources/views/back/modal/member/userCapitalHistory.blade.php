@@ -198,10 +198,14 @@
         });
 
         $('#btn_search_user').on('click', function () {
+            if($('#game_id').val()){
+                $('#capital_type').val('t05');
+            }
             dataTable.ajax.reload();
         });
 
         $('#reset_user').on('click', function () {
+            $('#game_id').val("");
             $('#capital_type').val("");
             $('#issue').val("");
             $('#timeStart').val("");

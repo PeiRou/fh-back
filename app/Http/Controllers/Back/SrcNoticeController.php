@@ -139,6 +139,7 @@ class SrcNoticeController extends Controller
                 case 3:             //3 所有用户
                     $usersArray = DB::table('users')
                         ->select('id','username')
+                        ->whereIn('testFlag',[0,2])
                         ->get();
                     break;
                 case 4:             //4 支付层级
@@ -149,6 +150,7 @@ class SrcNoticeController extends Controller
                     break;
             }
             $rsKeyH = 'chatList';         //切换到聊天平台
+            $redis->select(1);
             foreach ($usersArray as $key => $user){
                 $tmp = [];
                 $tmp['user_id'] = $user->id;
@@ -206,6 +208,26 @@ class SrcNoticeController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => '暂时无法删除，请稍后重试'
+            ]);
+        }
+    }
+
+    //设置公告顺序
+    public function setNoticeOrder(Request $request){
+        $params = $request->all();
+        $data = [];
+        foreach ($params['sort'] as $key => $value){
+            $data[$key]['sort'] = empty($value) ? 0 : $value;
+            $data[$key]['id'] = $params['id'][$key];
+        }
+        if(Notices::editBatchNoticesData($data)){
+            return response()->json([
+                'status' => true
+            ]);
+        }else{
+            return response()->json([
+                'status' => false,
+                'msg' => '排序失败'
             ]);
         }
     }

@@ -44,6 +44,12 @@ class OpenHistoryController extends Controller
         'n4' => 'required|integer|max:10',
         'n5' => 'required|integer|max:10',
     ];
+    private $role3 = [
+        'id' => 'required',
+        'n1' => 'required|integer|max:6',
+        'n2' => 'required|integer|max:6',
+        'n3' => 'required|integer|max:6',
+    ];
 
     //验证器数据
     public function verifyData($data,$type = 1){
@@ -319,6 +325,57 @@ class OpenHistoryController extends Controller
         $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5;
 
         $update = DB::table('game_msssc')->where('id',$id)->update([
+            'opennum' => $openNum,
+            'is_open' => 1
+        ]);
+        if($update == 1){
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => '开奖数据添加失败！'
+            ]);
+        }
+    }
+
+    //添加秒速快三开奖数据
+    public function addK3Data(Request $request)
+    {
+        $type = $request->get('type');
+        switch ($type){
+            case 'msjsk3':
+                $table = 'game_msjsk3';
+                break;
+            case 'jsk3':
+                $table = 'game_jsk3';
+                break;
+            case 'ahk3':
+                $table = 'game_ahk3';
+                break;
+            case 'jlk3':
+                $table = 'game_ahk3';
+                break;
+            default:
+                return response()->json(['status' => false,'msg' => '参数不为空！']);
+        }
+        $verifyData = $this->verifyData($request->all(),3);
+        if($verifyData['stauts']){
+            return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
+        }
+        $id = $this->notTen($request->get('id'));
+        $info = DB::table($table)->select('opentime')->where('id',$id)->first();
+        if(strtotime($info->opentime) > time())
+            return response()->json(['status' => false,'msg' => '请勿提早开奖']);
+        $n1 = $request->get('n1');
+        $n2 = $request->get('n2');
+        $n3 = $request->get('n3');
+        $msg = $this->notTen($request->get('msg'));
+
+        $openNum = $n1.','.$n2.','.$n3;
+
+        $update = DB::table($table)->where('id',$id)->update([
             'opennum' => $openNum,
             'is_open' => 1
         ]);

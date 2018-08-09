@@ -188,6 +188,9 @@
                 @if($hasPermission->hasPermission('game.handicapSetting') == "has")
                 <li id="menu-gameManage-handicapSetting"><a href="{{ route('game.handicapSetting') }}"><cite></cite><span>盘口设定</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('game.killSetting') == "has")
+                <li id="menu-gameManage-killSetting"><a href="{{ route('game.killSetting') }}"><cite></cite><span>杀率设定</span></a></li>
+                @endif
             </ul>
         </li>
         @endif
@@ -212,10 +215,22 @@
                     <li id="menu-openManage-msft"><a href="{{ route('historyLottery.msft') }}"><cite></cite><span>秒速飞艇</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.paoma') == "has")
-                    <li id="menu-openManage-paoma"><a href="{{ route('historyLottery.paoma') }}"><cite></cite><span>跑马</span></a></li>
+                    <li id="menu-openManage-paoma"><a href="{{ route('historyLottery.paoma') }}"><cite></cite><span>香港跑马</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.msssc') == "has")
                     <li id="menu-openManage-msssc"><a href="{{ route('historyLottery.msssc') }}"><cite></cite><span>秒速时时彩</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.msjsk3') == "has")
+                    <li id="menu-openManage-msjsk3"><a href="{{ route('historyLottery.msjsk3') }}"><cite></cite><span>秒速快3</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.jsk3') == "has")
+                    <li id="menu-openManage-jsk3"><a href="{{ route('historyLottery.jsk3') }}"><cite></cite><span>江苏快3</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.ahk3') == "has")
+                    <li id="menu-openManage-ahk3"><a href="{{ route('historyLottery.ahk3') }}"><cite></cite><span>安徽快3</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.jlk3') == "has")
+                    <li id="menu-openManage-jlk3"><a href="{{ route('historyLottery.jlk3') }}"><cite></cite><span>吉林快3</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.xglhc') == "has")
                 <li id="menu-openManage-lhc"><a href="{{ route('historyLottery.xglhc') }}"><cite></cite><span>六合彩</span></a></li>
@@ -369,6 +384,23 @@
                 @endif
             </ul>
         </li>
+        @endif
+        @if($hasPermission->hasPermission('promotion') == "has")
+            <li id="menu-promotionManage" class="nav-item"><a href="javascript:void(0)">
+                    <span><img src="/back/old/images/leftico01.png"></span>
+                    推广结算</a>
+                <ul>
+                    @if($hasPermission->hasPermission('promotion.report') == "has")
+                        <li id="menu-promotionManage-report"><a href="{{ route('promotion.report') }}"><cite></cite><span>推广结算报表</span></a></li>
+                    @endif
+                    @if($hasPermission->hasPermission('promotion.review') == "has")
+                        <li id="menu-promotionManage-review"><a href="{{ route('promotion.review') }}"><cite></cite><span>推广结算审核</span></a></li>
+                    @endif
+                    @if($hasPermission->hasPermission('promotion.setting') == "has")
+                        <li id="menu-promotionManage-setting"><a href="{{ route('promotion.setting') }}"><cite></cite><span>推广结算配置</span></a></li>
+                    @endif
+                </ul>
+            </li>
         @endif
     </ul>
 </div>

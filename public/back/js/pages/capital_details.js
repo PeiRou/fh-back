@@ -100,6 +100,9 @@ $(function () {
 
     dataTable = createTable(columns);
     $('#btn_search').on('click',function () {
+        if($('#game').val()){
+            $('#type').val('t05');
+        }
         var type = $('#type').val();
         var time_point = $('#time_point').val();
         var account = $('#account').val();

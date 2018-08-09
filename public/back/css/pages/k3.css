@@ -1,0 +1,37 @@
+.T_K3{
+    margin: 0 auto;
+}
+.T_K3 span{
+    display: block;
+    float: left;
+    margin-right: 7px;
+}
+.T_K3 span b{
+    width: 21px;
+    height: 21px;
+    display: block;
+}
+.T_K3 b{
+    margin: 3px 0 0 3px;
+    height: 27px !important;
+    width: 27px !important;
+    background: url(/back/img/ball_4.png) no-repeat;
+}
+.T_K3 .b1 {
+    background-position:0 0
+}
+.T_K3 .b2 {
+    background-position:0 -27px
+}
+.T_K3 .b3 {
+    background-position:0 -54px
+}
+.T_K3 .b4 {
+    background-position:0 -81px
+}
+.T_K3 .b5 {
+    background-position:0 -108px
+}
+.T_K3 .b6 {
+    background-position:0 -135px
+}

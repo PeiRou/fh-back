@@ -22,11 +22,12 @@ class RunPaoma
      *
      * @return void
      */
-    public function __construct($openCode,$openIssue,$gameId)
+    public function __construct($openCode,$openIssue,$gameId,$excel)
     {
         $this->openCode  = $openCode;
         $this->openIssue = $openIssue;
         $this->gameId    = $gameId;
+        $this->excel    = $excel;
     }
 
     /**

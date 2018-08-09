@@ -2,13 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Events\RunMstf;
+use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Bet\Clong;
 
 class new_msft extends Command
@@ -91,13 +89,10 @@ class new_msft extends Command
             Redis::set('msft:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             //---kill start
             $table = 'game_msft';
-            $killopennum = DB::table($table)->select('excel_opennum')->where('issue',$res->expect)->first();
-            $is_killopen = DB::table('excel_base')->select('is_open')->where('game_id',$this->gameId)->first();
-            $opennum = isset($killopennum->excel_opennum)?$killopennum->excel_opennum:'';
-            \Log::info('秒速飞艇 获取KILL开奖'.$res->expect.'--'.$opennum);
-            \Log::info('秒速飞艇 获取origin开奖'.$res->expect.'--'.$res->opencode);
+            $excel = new Excel();
+            $opennum = $excel->kill_count($table,$res->expect,$this->gameId,$res->opencode);
             //---kill end
-            $opencode = empty($opennum)||($is_killopen->is_open==0)?$res->opencode:$opennum;
+            $opencode = empty($opennum)?$res->opencode:$opennum;
             try{
                 DB::table('game_msft')->where('issue',$res->expect)->update([
                     'is_open' => 1,
@@ -106,8 +101,8 @@ class new_msft extends Command
                     'day'=>  date('d'),
                     'opennum'=> $opencode
                 ]);
-                $this->clong->setKaijian('msft',1,$res->opencode);
-                $this->clong->setKaijian('msft',2,$res->opencode);
+                $this->clong->setKaijian('msft',1,$opencode);
+                $this->clong->setKaijian('msft',2,$opencode);
             } catch (\Exception $exception){
                 \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             }

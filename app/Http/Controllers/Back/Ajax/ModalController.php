@@ -141,6 +141,12 @@ class ModalController extends Controller
         $game = Games::find($id);
         return view('back.modal.game.gameSetting',compact('id','game'));
     }
+    //杀率设置
+    public function killSetting($id)
+    {
+        $game = DB::table('excel_base')->select('game.game_name','excel_base.kill_rate')->leftjoin('game','excel_base.game_id','=','game.game_id')->where('excel_base_idx',$id)->first();
+        return view('back.modal.game.killSetting',compact('id','game'));
+    }
     
     //添加总代理账号
     public function addGeneralAgent()
@@ -361,7 +367,8 @@ class ModalController extends Controller
     public function rechargeConditionalTransfer($id){
         //获取层级
         $aLevel = Levels::getLevelInfoList();
-        return view('back.modal.pay.rechargeConditionalTransfer',compact('aLevel','id'));
+        $iLevelInfo = Levels::where('id','=',$id)->first();
+        return view('back.modal.pay.rechargeConditionalTransfer',compact('aLevel','iLevelInfo'));
     }
     //修改充值方式
     public function editRechargeWay($id)
@@ -550,6 +557,30 @@ class ModalController extends Controller
     public function openPaoma($id = ''){
         $mssc = DB::table('game_paoma')->where('id',$id)->first();
         return view('back.modal.open.openPAOMA',compact('mssc'));
+    }
+    //秒速快三 - 手动开奖
+    public function openMsjsk3($id = ''){
+        $k3 = DB::table('game_msjsk3')->where('id',$id)->first();
+        $type = 'msjsk3';
+        return view('back.modal.open.openK3',compact('k3','type'));
+    }
+    //江苏快三 - 手动开奖
+    public function openJsk3($id = ''){
+        $k3 = DB::table('game_jsk3')->where('id',$id)->first();
+        $type = 'jsk3';
+        return view('back.modal.open.openK3',compact('k3','type'));
+    }
+    //安徽快三 - 手动开奖
+    public function openAhk3($id = ''){
+        $k3 = DB::table('game_ahk3')->where('id',$id)->first();
+        $type = 'ahk3';
+        return view('back.modal.open.openK3',compact('k3','type'));
+    }
+    //吉林快三 - 手动开奖
+    public function openJlk3($id = ''){
+        $k3 = DB::table('game_jlk3')->where('id',$id)->first();
+        $type = 'jlk3';
+        return view('back.modal.open.openK3',compact('k3','type'));
     }
     //添加六合彩
     public function addLhcNewIssue()

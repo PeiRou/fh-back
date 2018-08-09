@@ -33,11 +33,14 @@ class NoticeDataController extends Controller
                         break;
                 }
             })
+            ->editColumn('sort', function ($notice){
+                return "<input type='text' value='".$notice->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$notice->id."' name='sortId[]'>";
+            })
             ->editColumn('control',function ($notice){
                 return '<span class="edit-link" onclick="edit(\''.$notice->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> |
                         <span class="edit-link" onclick="del(\''.$notice->id.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
             })
-            ->rawColumns(['control'])
+            ->rawColumns(['control','sort'])
             ->make(true);
     }
 

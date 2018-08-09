@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back\Data;
 
 use App\Games;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
 
@@ -66,6 +67,26 @@ class GameDataController extends Controller
                 return '<span class="edit-link" onclick="setting(\''.$games->g_id.'\')"><i class="iconfont">&#xe64c;</i> 设置</span> | '.$fengpan.' | '.$status;
             })
             ->rawColumns(['holiday_start','holiday_end','fengpan','status','control','order'])
+            ->make(true);
+    }
+    //杀率数据
+    public function gamekillsetting()
+    {
+        $games = DB::table('excel_base')
+            ->select(DB::raw('excel_base.*,game.game_name'))
+            ->leftJoin('game', 'excel_base.game_id', '=', 'game.game_id')
+            ->get();
+        return DataTables::of($games)
+            ->editColumn('real_rate',function ($games){
+                $total = $games->bet_lose + $games->bet_win;
+                if($total>0)
+                    return round(($games->bet_lose-$games->bet_win) / $total,3);
+                else
+                    return 0;
+            })
+            ->editColumn('kill_rate',function ($games){
+                return floatval($games->kill_rate);
+            })
             ->make(true);
     }
 }

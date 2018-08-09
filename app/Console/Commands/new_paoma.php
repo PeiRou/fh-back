@@ -2,15 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Events\RunMssc;
-use App\Http\Controllers\Bet\New_Mssc;
+use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Bet\Clong;
 
 class new_paoma extends Command
@@ -84,17 +80,22 @@ class new_paoma extends Command
             Redis::set('paoma:nextIssue',(int)$nextIssue+1);
             Redis::set('paoma:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('paoma:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-
+            //---kill start
+            $table = 'game_paoma';
+            $excel = new Excel();
+            $opennum = $excel->kill_count($table,$res->expect,$this->gameId,$res->opencode);
+            //---kill end
+            $opencode = empty($opennum)?$res->opencode:$opennum;
             try{
                 DB::table('game_paoma')->where('issue',$res->expect)->update([
                     'is_open' => 1,
                     'year'=> date('Y'),
                     'month'=> date('m'),
                     'day'=>  date('d'),
-                    'opennum'=> $res->opencode
+                    'opennum'=> $opencode
                 ]);
-                $this->clong->setKaijian('paoma',1,$res->opencode);
-                $this->clong->setKaijian('paoma',2,$res->opencode);
+                $this->clong->setKaijian('paoma',1,$opencode);
+                $this->clong->setKaijian('paoma',2,$opencode);
             } catch (\Exception $exception){
                 \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             }

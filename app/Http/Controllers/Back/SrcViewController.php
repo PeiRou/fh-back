@@ -17,6 +17,9 @@ use App\MessagePush;
 use App\PayOnline;
 use App\PermissionsAuth;
 use App\PlayCates;
+use App\PromotionConfig;
+use App\PromotionReport;
+use App\PromotionReview;
 use App\SubAccount;
 use App\SystemSetting;
 use App\User;
@@ -293,6 +296,26 @@ class SrcViewController extends Controller
     {
         return view('back.open.msssc');
     }
+    //秒速快3
+    public function openManage_msjsk3()
+    {
+        return view('back.open.msjsk3');
+    }
+    //江苏快3
+    public function openManage_jsk3()
+    {
+        return view('back.open.jsk3');
+    }
+    //安徽快3
+    public function openManage_ahk3()
+    {
+        return view('back.open.ahk3');
+    }
+    //吉林快3
+    public function openManage_jlk3()
+    {
+        return view('back.open.jlk3');
+    }
     //六合彩
     public function openManage_xglhc()
     {
@@ -423,16 +446,22 @@ class SrcViewController extends Controller
 
 
     //游戏管理
+    //游戏设定
     public function gameSetting()
     {
-        return view('back.gameSetting');
+        return view('back.gameManage.gameSetting');
     }
     //盘口设定
     public function handicapSetting()
     {
         $gameData = json_decode(Storage::disk('local')->get('gameData.php'),true);
         $game = Games::all();
-        return view('back.handicapSetting',compact('gameData','game'));
+        return view('back.gameManage.handicapSetting',compact('gameData','game'));
+    }
+    //杀率设定
+    public function killSetting()
+    {
+        return view('back.gameManage.killSetting');
     }
 
     //权限控制
@@ -655,5 +684,26 @@ class SrcViewController extends Controller
     public function activityReview(){
         $aStatuss = ActivitySend::$activityStatus;
         return view('back.activity.review',compact('aStatuss'));
+    }
+
+    //推广结算报表
+    public function promotionReport(){
+        $aStatus = PromotionReport::$reportStatus;
+        //获取层级
+        $aLevel = PromotionConfig::get();
+        return view('back.promotion.report',compact('aStatus','aLevel'));
+    }
+
+    //推广结算审核
+    public function promotionReview(){
+        $aStatus = PromotionReview::$reportStatus;
+        //获取层级
+        $aLevel = PromotionConfig::get();
+        return view('back.promotion.review',compact('aStatus','aLevel'));
+    }
+
+    //推广结算配置
+    public function promotionSetting(){
+        return view('back.promotion.config');
     }
 }

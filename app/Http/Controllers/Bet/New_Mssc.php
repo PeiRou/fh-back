@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Bet;
 
 use App\Bets;
+use App\Excel;
 use Illuminate\Support\Facades\DB;
 
 class New_Mssc
@@ -46,12 +47,13 @@ class New_Mssc
             $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$gameId)->first();
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
                 \Log::Info('mssc killing...');
-                $this->excel($openCode,$exeBase,$issue,$gameId);
+                $this->excel($openCode,$exeBase,$issue,$gameId,'game_mssc');
             }
             if(!$excel){
-                \Log::Info($issue.'----'.$openCode);
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue,$excel);
+                $excel = new Excel();
+                $excel->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                     if($updateUserMoney == 1){
@@ -61,14 +63,18 @@ class New_Mssc
             }
         }
     }
-    private function excel($openCode,$exeBase,$issue,$gameId){
+
+    private function excel($openCode,$exeBase,$issue,$gameId,$table = ''){
+        if(empty($table))
+            return false;
         for($i=0;$i< (int)$exeBase->excel_num;$i++){
             if($i==0){
                 $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
                 if(empty($exeBet))
-                    DB::select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}' and testFlag = 0");
+                    DB::select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}'");
             }else{
-                $openCode = $this->opennum();
+                $excel = new Excel();
+                $openCode = $excel->opennum($table);
                 DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
             }
             $win = $this->exc_play($openCode,$gameId);
@@ -77,7 +83,7 @@ class New_Mssc
                 $tmp = DB::select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)
                     $excBunko = $value->sumBunko;
-                \Log::info('秒速PK10 :'.$excBunko);
+                \Log::info('秒速时时彩 :'.$excBunko);
                 $dataExcGame['game_id'] = $gameId;
                 $dataExcGame['issue'] = $issue;
                 $dataExcGame['opennum'] = $openCode;
@@ -92,24 +98,9 @@ class New_Mssc
         $tmp = DB::select($aSql);
         foreach ($tmp as&$value)
             $openCode = $value->opennum;
-        \Log::Info('game_mssc:'.$openCode);
-        DB::table("game_mssc")->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
+        \Log::Info($table.':'.$openCode);
+        DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
         DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
-    }
-    //产生开号
-    private function opennum(){
-        $tmpArray = [0=>1,1=>2,2=>3,3=>4,4=>5,5=>6,6=>7,7=>8,8=>9,9=>10];
-        for ($i=0;$i<10;$i++){
-            $tmpLegth = count($tmpArray);
-            $tmpRand = rand(0,$tmpLegth-1);
-            $res[] = $tmpArray[$tmpRand];
-            unset($tmpArray[$tmpRand]);
-            $tmpArray2 = [];
-            foreach ($tmpArray as&$value)
-                $tmpArray2[] = $value;
-            $tmpArray = $tmpArray2;
-        }
-        return implode(',',$res);
     }
 
     private function GYH($openCode,$gameId,$win){

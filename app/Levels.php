@@ -10,6 +10,6 @@ class Levels extends Model
 
     //获取层级选项
     public static function getLevelInfoList(){
-        return self::select('name','id')->where('status','=',1)->get();
+        return self::select('name','id','value')->where('status','=',1)->get();
     }
 }

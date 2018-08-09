@@ -38,6 +38,8 @@ class New_Msjsk3
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue);
+                $excel = new Excel();
+                $excel->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                     if($updateUserMoney == 1){
@@ -55,7 +57,7 @@ class New_Msjsk3
             if($i==0){
                 $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
                 if(empty($exeBet))
-                    DB::select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}' and testFlag = 0");
+                    DB::select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}'");
             }else{
                 $excel = new Excel();
                 $openCode = $excel->opennum($table);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back;
 use App\Games;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Expr\Array_;
 
@@ -104,5 +105,51 @@ class SrcGameController extends Controller
 //        $arr = array_values($arr);
 //        $a = json_decode($gameData,true);
 //        return $a['80_twoFace_odds'];
+    }
+    //修改杀率开启和停用状态
+    public function killStatus(Request $request)
+    {
+        $id = $request->get('id');
+        $type = $request->get('type');
+
+        $update = DB::table('excel_base')->where('excel_base_idx',$id)
+            ->update([
+                'is_open'=>$type
+            ]);
+        if($update == 1){
+            return response()->json([
+                'status'=>true,
+                'msg'=>'ok'
+            ]);
+        } else {
+            return response()->json([
+                'status'=>false,
+                'msg'=>'暂时无法更新，请稍后重试'
+            ]);
+        }
+    }
+    //修改杀率保留营利比
+    public function editKillSetting(Request $request)
+    {
+        $id = $request->input('id');
+        $rate = $request->input('kill_rate');
+
+        if(isset($id) && $id){
+            $update = DB::table('excel_base')->where('excel_base_idx',$id)
+                ->update([
+                    'kill_rate'=>$rate
+                ]);
+            if($update == 1){
+                return response()->json([
+                    'status'=>true,
+                    'msg'=>'ok'
+                ]);
+            } else {
+                return response()->json([
+                    'status'=>false,
+                    'msg'=>'暂时无法更新，请稍后重试'
+                ]);
+            }
+        }
     }
 }

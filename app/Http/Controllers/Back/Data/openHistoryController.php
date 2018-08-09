@@ -263,6 +263,7 @@ class openHistoryController extends Controller
         return DataTables::of($HIS)
             ->make(true);
     }
+
     //北京快乐8-表格数据
     public function bjkl8(Request $request)
     {
@@ -305,6 +306,68 @@ class openHistoryController extends Controller
         return DataTables::of($HIS)
             ->make(true);
     }
+
+    //快三-表格数据
+    public function k3(Request $request)
+    {
+        $issue = $request->get('issue');
+        $issuedate = $request->get('issuedate');
+        $type = $request->get('type');
+        switch ($type){
+            case 'msjsk3':
+                $table = 'game_msjsk3';
+                break;
+            case 'jsk3':
+                $table = 'game_jsk3';
+                break;
+            case 'ahk3':
+                $table = 'game_ahk3';
+                break;
+            case 'jlk3':
+                $table = 'game_jlk3';
+                break;
+            default:
+                return false;
+                break;
+
+        }
+        if(!empty($issuedate))
+            $aIssuedate = explode('-',$issuedate);
+        else
+            $aIssuedate = array();
+        $HIS = DB::table($table)->select()
+            ->where(function ($query) use ($issue){             //奖期
+                if(isset($issue) && $issue){
+                    $query->where("issue",$issue);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //年
+                if(isset($aIssuedate) && $aIssuedate){
+                    $query->where("year",$aIssuedate[0]);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //月
+                if(isset($aIssuedate) && $aIssuedate){
+                    $aIssuedate[1] = intval($aIssuedate[1]);
+                    if($aIssuedate[1]<10)                       //如果小于10补0
+                        $aIssuedate[1] = "0".$aIssuedate[1];
+                    $query->where("month",$aIssuedate[1]);
+                }
+            })
+            ->where(function ($query) use ($aIssuedate){        //日
+                if(isset($aIssuedate) && $aIssuedate){
+                    $aIssuedate[2] = intval($aIssuedate[2]);
+                    if($aIssuedate[2]<10)                       //如果小于10补0
+                        $aIssuedate[2] = "0".$aIssuedate[2];
+                    $query->where("day",$aIssuedate[2]);
+                }
+            })
+            ->where('opentime','<=',date('Y-m-d H:i:s',time()))
+            ->orderBy('id','desc')->get();
+        return DataTables::of($HIS)
+            ->make(true);
+    }
+
     public function lhc(Request $request)
     {
         $lhc = DB::table('game_lhc')->orderBy('id','DESC')->get();

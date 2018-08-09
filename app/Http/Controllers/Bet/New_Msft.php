@@ -51,7 +51,9 @@ class New_Msft
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $this->bunko($win,$gameId,$issue);
+                $bunko = $this->bunko($win,$gameId,$issue,$excel);
+                $excel = new Excel();
+                $excel->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                     if($updateUserMoney == 1){
@@ -99,21 +101,6 @@ class New_Msft
         \Log::Info($table.':'.$openCode);
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
         DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
-    }
-    //产生开号
-    private function opennum(){
-        $tmpArray = [0=>1,1=>2,2=>3,3=>4,4=>5,5=>6,6=>7,7=>8,8=>9,9=>10];
-        for ($i=0;$i<10;$i++){
-            $tmpLegth = count($tmpArray);
-            $tmpRand = rand(0,$tmpLegth-1);
-            $res[] = $tmpArray[$tmpRand];
-            unset($tmpArray[$tmpRand]);
-            $tmpArray2 = [];
-            foreach ($tmpArray as&$value)
-                $tmpArray2[] = $value;
-            $tmpArray = $tmpArray2;
-        }
-        return implode(',',$res);
     }
 
     private function GYH($openCode,$gameId,$win){
@@ -1193,31 +1180,39 @@ class New_Msft
         return $win;
     }
 
-    private function bunko($win,$gameId,$issue){
+    private function bunko($win,$gameId,$issue,$excel){
+        if($excel) {
+            $table = 'excel_bet';
+            $getUserBets = DB::table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        }else{
+            $table = 'bet';
+            $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        }
         $id = [];
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         if($getUserBets){
-            $sql = "UPDATE bet SET bunko = CASE ";
-            $sql_lose = "UPDATE bet SET bunko = CASE ";
+            $sql = "UPDATE ".$table." SET bunko = CASE ";
+            $sql_lose = "UPDATE ".$table." SET bunko = CASE ";
             $ids = implode(',', $id);
-            foreach ($getUserBets as $item){
-                $bunko = $item->bet_money * $item->play_odds;
-                $bunko_lose = 0-$item->bet_money;
-                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-            }
-            $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            if(!isset($bunko) || empty($bunko))
-                return 0;
-            $run = DB::statement($sql);
-            if($run == 1){
-                $run2 = DB::statement($sql_lose);
-                if($run2 == 1){
-                    return 1;
+            if($ids && isset($ids)){
+                foreach ($getUserBets as $item){
+                    $bunko = $item->bet_money * $item->play_odds;
+                    $bunko_lose = 0-$item->bet_money;
+                    $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                    $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                }
+                $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                if(!isset($bunko) || empty($bunko))
+                    return 0;
+                $run = DB::statement($sql);
+                if($run == 1){
+                    $run2 = DB::statement($sql_lose);
+                    if($run2 == 1){
+                        return 1;
+                    }
                 }
             }
         }

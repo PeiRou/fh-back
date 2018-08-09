@@ -2,8 +2,7 @@
 Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/', 'Home\IndexController@index')->middleware('mobile-check');
 
-    Route::get('/getCaptcha', function () {
-    });
+    Route::get('/getCaptcha',function(){});
 
     Route::get('/src/agent', 'Back\SrcViewController@AgentLogin'); // 代理登录页面
     Route::get('/back/control', 'Back\SrcViewController@AdminLogin')->name('back.login')->middleware('domain-check'); // 管理登录页面
@@ -58,6 +57,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::group(['prefix' => 'back/control/gameManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('gameSetting', 'Back\SrcViewController@gameSetting')->name('game.gameSetting'); //游戏设定
         Route::get('handicapSetting', 'Back\SrcViewController@handicapSetting')->name('game.handicapSetting'); //盘口设定
+        Route::get('killSetting', 'Back\SrcViewController@killSetting')->name('game.killSetting'); //杀率设定
     });
 
 //开奖管理
@@ -69,6 +69,10 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('mssc', 'Back\SrcViewController@openManage_mssc')->name('historyLottery.mssc'); //秒速赛车
         Route::get('msft', 'Back\SrcViewController@openManage_msft')->name('historyLottery.msft'); //秒速飞艇
         Route::get('paoma', 'Back\SrcViewController@openManage_paoma')->name('historyLottery.paoma'); //跑马
+        Route::get('msjsk3', 'Back\SrcViewController@openManage_msjsk3')->name('historyLottery.msjsk3'); //秒速快3
+        Route::get('jsk3', 'Back\SrcViewController@openManage_jsk3')->name('historyLottery.jsk3'); //江苏快3
+        Route::get('ahk3', 'Back\SrcViewController@openManage_ahk3')->name('historyLottery.ahk3'); //安徽快3
+        Route::get('jlk3', 'Back\SrcViewController@openManage_ljk3')->name('historyLottery.jlk3'); //吉林快3
         Route::get('lhc', 'Back\SrcViewController@openManage_xglhc')->name('historyLottery.xglhc'); //六合彩
         Route::get('xylhc', 'Back\SrcViewController@openManage_xylhc')->name('historyLottery.xylhc'); //幸运六合彩
     });
@@ -157,6 +161,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/feedback', 'Back\Data\SystemDataController@feedback'); //建议反馈-表格数据
     Route::get('/back/datatables/bank', 'Back\Data\PayDataController@bank');
     Route::get('/back/datatables/games', 'Back\Data\GameDataController@games');
+    Route::get('/back/datatables/gamekillsetting', 'Back\Data\GameDataController@gamekillsetting');
     Route::get('/back/datatables/onlineUser', 'Back\Data\MembersDataController@onlineUser');
     Route::get('/back/datatables/rechargeRecord', 'Back\Data\FinanceDataController@rechargeRecord');
     Route::get('/back/datatables/drawingRecord', 'Back\Data\FinanceDataController@drawingRecord');
@@ -194,6 +199,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/openHistory/msft', 'Back\Data\openHistoryController@msft'); //历史开奖 - 秒速飞艇
     Route::get('/back/datatables/openHistory/paoma', 'Back\Data\openHistoryController@paoma'); //历史开奖 - 跑马
     Route::get('/back/datatables/openHistory/lhc', 'Back\Data\openHistoryController@lhc'); //历史开奖 - 六合彩
+    Route::get('/back/datatables/openHistory/k3', 'Back\Data\openHistoryController@k3'); //历史开奖 - 秒速快三
     Route::get('/back/datatables/agentSettle/report', 'Back\Data\AgentSettleController@report'); //代理结算报表-表格数据
     Route::get('/back/datatables/agentSettle/review', 'Back\Data\AgentSettleController@review'); //代理结算审核-表格数据
     Route::get('/back/datatables/agentSettle/withdraw', 'Back\Data\AgentSettleController@withdraw'); //代理提现-表格数据
@@ -278,6 +284,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/promotion/editConfig','Back\PromotionController@editConfig'); //推广配置-修改配置
     Route::post('/action/admin/addNotice', 'Back\SrcNoticeController@addNotice'); //添加公告
     Route::post('/action/admin/delNoticeSetting', 'Back\SrcNoticeController@delNoticeSetting'); //添加公告
+    Route::post('/action/admin/setNoticeOrder', 'Back\SrcNoticeController@setNoticeOrder'); //设置公告顺序
     Route::post('/action/admin/addSendMessage', 'Back\SrcNoticeController@addSendMessage'); //添加消息
     Route::post('/action/admin/delSendMessage', 'Back\SrcNoticeController@delSendMessage'); //删除消息
 
@@ -288,6 +295,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/delLevel', 'Back\SrcPayController@delLevel');//删除层级
     Route::post('/action/admin/allExchangeLevel', 'Back\SrcPayController@allExchangeLevel');//层级全部转移
     Route::post('/action/admin/sectionExchangeLevel','Back\SrcPayController@sectionExchangeLevel');//部分全部转移
+    Route::post('/action/admin/sectionDisplayLevel','Back\SrcPayController@sectionDisplayLevel');//部分转移显示
     Route::post('/action/admin/addRechargeWay', 'Back\SrcPayController@addRechargeWay');//添加充值方式
     Route::post('/action/admin/editRechargeWay', 'Back\SrcPayController@editRechargeWay');//添加充值方式
     Route::post('/action/admin/changeOnlinePayStatus', 'Back\SrcPayController@changeOnlinePayStatus');//改变充值方式状态
@@ -309,6 +317,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/changeGameFengPan', 'Back\SrcGameController@changeGameFengPan');//修改游戏开封盘状态
     Route::post('/action/admin/changeGameStatus', 'Back\SrcGameController@changeGameStatus');//修改游戏开启和停用状态
     Route::post('/action/admin/saveOddsRebate', 'Back\SrcGameController@saveOddsRebate');//修改游戏开启和停用状态
+    Route::post('/action/admin/killStatus', 'Back\SrcGameController@killStatus')->middleware('check-permission')->name('game.killStatus'); //杀率开关
+    Route::post('/action/admin/editKillSetting', 'Back\SrcGameController@editKillSetting')->middleware('check-permission')->name('game.editKillSetting'); //修改杀率保留营利比
 
     Route::post('/action/admin/passRecharge', 'Back\RechargeController@passRecharge'); //通过充值申请
     Route::post('/action/admin/passOnlineRecharge', 'Back\RechargeController@passOnlineRecharge'); //通过在线充值申请
@@ -334,6 +344,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/openMssc', 'Back\OpenHistoryController@addMsscData');     //添加秒速赛车开奖数据
     Route::post('/action/admin/openMsft', 'Back\OpenHistoryController@addMsftData');     //添加秒速飞艇开奖数据
     Route::post('/action/admin/openPaoma', 'Back\OpenHistoryController@addPaomaData');     //添加跑马开奖数据
+    Route::post('/action/admin/openK3', 'Back\OpenHistoryController@addK3Data');     //添加快三开奖数据
     Route::post('/action/admin/openLhc', 'Back\OpenHistoryController@addLhcData');
     Route::post('/action/admin/reOpenLhc', 'Back\OpenHistoryController@reOpenLhcData');
 
@@ -400,6 +411,10 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/openMssc/{id}', 'Back\Ajax\ModalController@openMssc');             //秒速赛车 - 手动开奖
     Route::get('/back/modal/openMsft/{id}', 'Back\Ajax\ModalController@openMsft');             //秒速飞艇 - 手动开奖
     Route::get('/back/modal/openPaoma/{id}', 'Back\Ajax\ModalController@openPaoma');             //跑马 - 手动开奖
+    Route::get('/back/modal/openMsjsk3/{id}', 'Back\Ajax\ModalController@openMsjsk3');             //秒速快三 - 手动开奖
+    Route::get('/back/modal/openJsk3/{id}', 'Back\Ajax\ModalController@openJsk3');             //江苏快三 - 手动开奖
+    Route::get('/back/modal/openAhk3/{id}', 'Back\Ajax\ModalController@openAhk3');             //安徽快三 - 手动开奖
+    Route::get('/back/modal/openJlk3/{id}', 'Back\Ajax\ModalController@openJlk3');             //吉林快三 - 手动开奖
     Route::get('/back/modal/openLhc/{id}', 'Back\Ajax\ModalController@openLhc');
     Route::get('/back/modal/reOpenLhc/{id}', 'Back\Ajax\ModalController@reOpenLhc');
     Route::get('/back/modal/editAgentSettleReport/{id}', 'Back\Ajax\ModalController@editAgentSettleReport'); //修改代理结算报表-模板
@@ -416,6 +431,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 
 //游戏MODAL
     Route::get('/back/modal/gameSetting/{id}', 'Back\Ajax\ModalController@gameSetting');
+    Route::get('/back/modal/killSetting/{id}', 'Back\Ajax\ModalController@killSetting');     //杀率设置
 
     Route::get('/web/api/select2/agents', 'Back\Api\ApiController@agents');
     Route::post('/web/api/check/user/username', 'Back\Api\ApiController@checkUserUsername');

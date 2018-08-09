@@ -86,14 +86,15 @@ class Users extends Model
 
     public static function getTransferUserInfo($params){
         $sqlArray = [];
-        $aSql = 'SELECT COUNT(`id`) AS `count`,SUM(`amount`) AS `amount`,`userId` FROM `recharges` WHERE `status` = 2 ';
+        $sqlArray['form_id'] = $params['form_id'];
+        $aSql = 'SELECT COUNT(`recharges`.`id`) AS `count`,SUM(`amount`) AS `amount`,`userId` FROM `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId` AND `users`.`rechLevel` = :form_id WHERE `recharges`.`status` = 2 ';
         if(!empty($params['startTime'])){
             $sqlArray['startTime'] = $params['startTime'] . ' 00:00:00';
-            $aSql .= 'AND `created_at` >= :startTime ';
+            $aSql .= 'AND `recharges`.`created_at` >= :startTime ';
         }
         if(!empty($params['endTime'])){
             $sqlArray['endTime'] = $params['endTime'] . ' 23:59:59';
-            $aSql .= 'AND `created_at` <= :endTime ';
+            $aSql .= 'AND `recharges`.`created_at` <= :endTime ';
         }
         $aSql .= 'GROUP BY `userId`';
         return DB::select($aSql,$sqlArray);
@@ -114,7 +115,10 @@ class Users extends Model
     }
 
     public static function userConditionTransfer($params){
-        $aUserId = self::getTransferUserId($params);
-        return self::whereIn('id',$aUserId)->where('rechLevel','=',$params['form_id'])->update(['rechLevel'=>$params['to_id']]);
+        return self::whereIn('id',$params['user_id'])->where('rechLevel','=',$params['form_id'])->update(['rechLevel'=>$params['to_id']]);
+    }
+
+    public static function userConditionDisplay($aUserId){
+        return self::select('name','username')->whereIn('id',$aUserId)->get()->toArray();
     }
 }

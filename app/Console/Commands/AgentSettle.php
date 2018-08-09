@@ -119,7 +119,7 @@ class AgentSettle extends Command
         }
         AgentReport::where('year_month','=',$yearMonth)->delete();
         AgentReportReview::where('year_month','=',$yearMonth)->delete();
-        AgentReport::where('created_at','<',$yearMonthDay)->update(['status'=>4]);
+        AgentReport::where('created_at','<',$yearMonthDay)->where('status','=',0)->update(['status'=>4]);
         AgentReport::insert($aAgentInfos);
         $this->info('Console settlement successfully.');
     }

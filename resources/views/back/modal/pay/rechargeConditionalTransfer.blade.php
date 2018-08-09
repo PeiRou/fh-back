@@ -2,9 +2,9 @@
     <div class="field">
         <label>迁移至</label>
         <div class="ui input icon">
-            <select name="to_id">
+            <select name="to_id" id="to_id">
                 @foreach($aLevel as $iLevel)
-                    <option value="{{ $iLevel->id }}"> {{ $iLevel->name }} </option>
+                    <option value="{{ $iLevel->value }}"> {{ $iLevel->name }} </option>
                 @endforeach
             </select>
         </div>
@@ -41,10 +41,16 @@
             <input type="text" name="recharge" />
         </div>
     </div>
-    <input value="{{ $id }}" name="form_id" type="hidden">
-    <br/><br/><br/><br/><br/><br/>
+    <input value="{{ $iLevelInfo->value }}" name="form_id" id="form_id" type="hidden">
+    <div>
+        <button type="button" id="displayUser">显示转移用户</button>(请先显示用户在确定提交)
+        <div id="username" style="min-height: 100px;">
+
+        </div>
+    </div>
 </form>
 <script>
+    var userId = [];
     $('#addBankForm').formValidation({
         framework: 'semantic',
         icon: {
@@ -59,12 +65,32 @@
         $.ajax({
             url: $form.attr('action'),
             type: 'POST',
-            data: $form.serialize(),
+            data: {to_id:$('#to_id').val(),form_id:$('#form_id').val(),user_id:userId},
             success: function(result) {
                 if(result.status == true){
                     Calert(result.msg,'green');
                     jc.close();
                     $('#bankTable').DataTable().ajax.reload(null,false);
+                }else {
+                    Calert(result.msg,'red');
+                }
+            }
+        });
+    });
+
+    $('#displayUser').on('click',function () {
+        $.ajax({
+            url: '/action/admin/sectionDisplayLevel',
+            type: 'POST',
+            data: $('#addBankForm').serialize(),
+            success: function(result) {
+                if(result.status == true){
+                    var html = '';
+                    $.each(result.data.display,function (i,e) {
+                        html += '<span style="display: inline-block;margin: 0 0 .28571429rem 0;color: rgba(0,0,0,.87);font-size: .92857143em;font-weight: 700;text-transform: none;margin-right: 10px;">'+ e.username + '</span>';
+                    });
+                    $('#username').html(html);
+                    userId = result.data.userId;
                 }else {
                     Calert(result.msg,'red');
                 }

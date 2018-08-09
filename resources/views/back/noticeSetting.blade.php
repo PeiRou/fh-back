@@ -8,6 +8,7 @@
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('noticeTable')"><i class="iconfont">&#xe61d;</i></span>
             <span onclick="addNotice()">添加公告</span>
+            <span onclick="setSort()">排序</span>
         </div>
     </div>
     <div class="table-content">
@@ -21,6 +22,7 @@
                 <th width="150px">添加时间</th>
                 <th width="150px">修改时间</th>
                 <th>用户层级</th>
+                <th>排序</th>
                 <th width="150px">操作</th>
             </tr>
             </thead>

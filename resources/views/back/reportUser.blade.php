@@ -68,7 +68,7 @@
                         <a class="fluid ui mini blue button"  id="btnLastMonth">上月</a>
                     </div>
                     <div class="ui checkbox">
-                        <input type="checkbox" id="chkTest" checked="checked">
+                        <input type="checkbox" id="chkTest" checked="checked" value="1">
                         <label>过滤测试用户</label>
                     </div>
                     <div class="ui checkbox">

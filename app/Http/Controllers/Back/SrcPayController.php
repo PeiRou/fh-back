@@ -219,6 +219,7 @@ class SrcPayController extends Controller
         $validator = Validator::make($params,[
             'to_id' => 'required|integer',
             'form_id' => 'required|integer',
+            'user_id' => 'required|array',
         ]);
         if($validator->fails()){
             return response()->json([
@@ -238,6 +239,21 @@ class SrcPayController extends Controller
                 'msg'=>'暂时无法更新，请稍后重试'
             ]);
         }
+    }
+
+    //部分转移显示
+    public function sectionDisplayLevel(Request $request){
+        $params = $request->post();
+        $validator = Validator::make($params,[
+            'form_id' => 'required|integer',
+        ]);
+        $data = [];
+        $data['userId'] = Users::getTransferUserId($params);
+        $data['display'] = Users::userConditionDisplay($data['userId']);
+        return response()->json([
+            'status' => true,
+            'data' => $data
+        ]);
     }
 
     //添加充值方式
