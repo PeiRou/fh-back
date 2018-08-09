@@ -73,6 +73,13 @@ class New_Paoma
                     }
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("跑马" . $issue . "结算出错");
+            }
         }
     }
 

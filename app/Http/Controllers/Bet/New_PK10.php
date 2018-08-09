@@ -54,6 +54,13 @@ class New_PK10
                     }
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("北京PK10" . $issue . "结算出错");
+            }
         }
     }
 

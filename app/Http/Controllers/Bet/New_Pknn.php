@@ -34,6 +34,13 @@ class New_Pknn
                     }
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("PK10牛牛" . $issue . "结算出错");
+            }
         }
     }
 

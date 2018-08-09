@@ -32,6 +32,13 @@ class New_Msnn
                     \Log::info("秒速牛牛" . $issue . "结算出错");
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("秒速牛牛" . $issue . "结算出错");
+            }
         }
     }
 

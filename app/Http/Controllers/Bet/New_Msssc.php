@@ -66,6 +66,13 @@ class New_Msssc
                     }
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("秒速时时彩" . $issue . "结算出错");
+            }
         }
     }
 
