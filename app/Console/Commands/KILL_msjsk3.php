@@ -42,14 +42,11 @@ class KILL_msjsk3 extends Command
     public function handle()
     {
         $table = 'game_msjsk3';
-        $today = date('Y-m-d H:i:s',time()+9);
-        $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0");
-        $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$this->gameId)->first();
-        foreach ($tmp as&$value)
-            $get = $value;
+        $excel = new Excel();
+        $get = $excel->getNeedKillIssue($table);
+        $exeBase = $excel->getKillBase($this->gameId);
         if(isset($get) && $get && !empty($exeBase)){
             //开奖号码
-            $excel = new Excel();
             $opennum = $excel->opennum($table);
             if(isset($get->excel_num) && $get->excel_num == 0){
                 \Log::Info('秒速江苏快3 杀率:'.$get->issue.'=='.$get->id);

@@ -50,6 +50,23 @@ class Excel
         }
         return $opennum;
     }
+    //取得杀率信息
+    public function getKillBase($gameId){
+        $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$gameId)->first();
+        return $exeBase;
+    }
+    //取得最新的需要计算杀率
+    public function getNeedKillIssue($table){
+        if(empty($table))
+            return false;
+        $today = date('Y-m-d H:i:s',time()+9);
+        $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0");
+        if(empty($tmp))
+            return false;
+        foreach ($tmp as&$value)
+            $res = $value;
+        return $res;
+    }
     //取得最新的需要结算奖期
     public function getNeedBunkoIssue($table){
         if(empty($table))
