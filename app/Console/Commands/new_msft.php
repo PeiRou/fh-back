@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Bet\Clong;
 
 class new_msft extends Command

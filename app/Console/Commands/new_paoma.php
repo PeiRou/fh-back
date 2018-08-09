@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\Bet\Clong;
+use Illuminate\Support\Facades\Storage;
 
 class new_paoma extends Command
 {
