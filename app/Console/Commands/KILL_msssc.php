@@ -42,26 +42,18 @@ class KILL_msssc extends Command
     public function handle()
     {
         $table = 'game_msssc';
-        $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <=now()+10 and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0");
-        $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$this->gameId)->first();
-        foreach ($tmp as&$value)
-            $get = $value;
+        $excel = new Excel();
+        $get = $excel->getNeedKillIssue($table);
+        $exeBase = $excel->getKillBase($this->gameId);
         if(isset($get) && $get && !empty($exeBase)){
-            $update = DB::table($table)->where('id',$get->id)->update([
-                'excel_num' => 2
-            ]);
             //开奖号码
-            $excel = new Excel();
             $opennum = $excel->opennum($table);
             if(isset($get->excel_num) && $get->excel_num == 0){
                 \Log::Info('秒速时时彩 杀率:'.$get->issue.'=='.$get->id);
-                event(new RunMsssc($opennum,$get->issue,$this->gameId,true)); //新--结算
                 $update = DB::table($table)->where('id',$get->id)->update([
-                    'excel_num' => 1
+                    'excel_num' => 2
                 ]);
-                if($update !== 1){
-                    \Log::info("秒速时时彩".$get->issue."杀率计算出错");
-                }
+                event(new RunMsssc($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
             }
         }
     }

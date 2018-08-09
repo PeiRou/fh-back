@@ -28,7 +28,7 @@ class RunCqsscEventListener
      */
     public function handle(RunCqssc $event)
     {
-        $up = $this->cqssc->all($event->openCode,$event->openIssue,$event->gameId);
+        $up = $this->cqssc->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }

@@ -28,7 +28,7 @@ class RunMsscEventListener implements ShouldQueue
      */
     public function handle(RunMssc $event)
     {
-        $up = $this->mssc->all($event->openCode,$event->openIssue,$event->gameId,$event->excel);
+        $up = $this->mssc->all($event->openCode,$event->openIssue,$event->gameId,$event->id,$event->excel);
         return $up;
     }
 }

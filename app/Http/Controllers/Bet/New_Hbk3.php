@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Hbk3
 {
-    public function all($openCode,$issue,$gameId)
+    public function all($openCode,$issue,$gameId,$id)
     {
         $win = collect([]);
         $this->HZ($openCode,$gameId,$win); //和值
@@ -24,13 +24,19 @@ class New_Hbk3
         $this->PD($openCode,$gameId,$win); //牌点
         $this->BUCHU($openCode,$gameId,$win); //不出号码
         $this->BICHU($openCode,$gameId,$win); //必出号码
+        $table = 'game_hbk3';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                 if($updateUserMoney == 1){
-                    return 1;
+                    $update = DB::table($table)->where('id',$id)->update([
+                        'bunko' => 1
+                    ]);
+                    if ($update !== 1) {
+                        \Log::info("湖北快3" . $issue . "结算出错");
+                    }
                 }
             }
         }

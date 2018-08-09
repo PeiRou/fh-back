@@ -17,6 +17,7 @@ class RunAHK3
     public $openCode;
     public $openIssue;
     public $gameId;
+    public $id;
     /**
      * Create a new event instance.
      *

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Excel;
 use App\Events\RunMsssc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -40,17 +41,15 @@ class BUNKO_msssc extends Command
      */
     public function handle()
     {
-        $get = DB::table('game_msssc')->where('is_open',1)->orderBy('opentime','desc')->take(1)->first();
-        if($get){
-            if($get->bunko !== 1){
-                event(new RunMsssc($get->opennum,$get->issue,$this->gameId,false)); //新--结算
-                $update = DB::table('game_msssc')->where('id',$get->id)->update([
-                    'bunko' => 1
-                ]);
-                if($update !== 1){
-                    \Log::info("秒速时时彩".$get->issue."结算出错");
-                }
-            }
+        $table = 'game_msssc';
+        $excel = new Excel();
+        $get = $excel->getNeedBunkoIssue($table);
+        if ($get) {
+            $update = DB::table($table)->where('id', $get->id)->update([
+                'bunko' => 2
+            ]);
+            if($update)
+                event(new RunMsssc($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
         }
     }
 }

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Bjkl8
 {
-    public function all($openCode,$issue,$gameId)
+    public function all($openCode,$issue,$gameId,$id)
     {
         $win = collect([]);
         $this->ZM($openCode,$gameId,$win);
@@ -21,13 +21,19 @@ class New_Bjkl8
         $this->QHH($openCode,$gameId,$win);
         $this->DSH($openCode,$gameId,$win);
         $this->WX($openCode,$gameId,$win);
+        $table = 'game_bjkl8';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                 if($updateUserMoney == 1){
-                    return 1;
+                    $update = DB::table($table)->where('id',$id)->update([
+                        'bunko' => 1
+                    ]);
+                    if ($update !== 1) {
+                        \Log::info("北京快乐8" . $issue . "结算出错");
+                    }
                 }
             }
         }

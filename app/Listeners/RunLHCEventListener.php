@@ -28,7 +28,7 @@ class RunLHCEventListener
      */
     public function handle(RunLHC $event)
     {
-        $up = $this->LHC->all($event->openCode,$event->openIssue,$event->gameId);
+        $up = $this->LHC->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }

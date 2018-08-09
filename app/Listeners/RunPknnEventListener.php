@@ -28,7 +28,7 @@ class RunPknnEventListener
      */
     public function handle(RunPknn $event)
     {
-        $up = $this->pknn->all($event->openCode,$event->nn,$event->openIssue,$event->gameId);
+        $up = $this->pknn->all($event->openCode,$event->nn,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }

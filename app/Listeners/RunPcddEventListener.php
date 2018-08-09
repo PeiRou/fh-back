@@ -28,7 +28,7 @@ class RunPcddEventListener
      */
     public function handle(RunPcdd $event)
     {
-        $up = $this->pcdd->all($event->openCode,$event->openIssue,$event->gameId);
+        $up = $this->pcdd->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }

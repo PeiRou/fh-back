@@ -48,7 +48,8 @@ class BUNKO_msjsk3 extends Command
             $update = DB::table($table)->where('id', $get->id)->update([
                 'bunko' => 2
             ]);
-            event(new RunMSJSK3($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
+            if($update)
+                event(new RunMSJSK3($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
         }
     }
 }

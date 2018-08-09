@@ -78,6 +78,17 @@ class Excel
             $res = $value;
         return $res;
     }
+    //取得最新的需要结算NN奖期
+    public function getNeedNNBunkoIssue($table){
+        if(empty($table))
+            return false;
+        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <=now() and is_open=1 and nn_bunko = 0)");
+        if(empty($tmp))
+            return false;
+        foreach ($tmp as&$value)
+            $res = $value;
+        return $res;
+    }
     //取得最新的开奖奖期
     public function getOpenIssue($table){
         if(empty($table))

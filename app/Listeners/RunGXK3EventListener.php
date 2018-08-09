@@ -28,7 +28,7 @@ class RunGXK3EventListener
      */
     public function handle(RunGXK3 $event)
     {
-        $up = $this->GXK3->all($event->openCode,$event->openIssue,$event->gameId);
+        $up = $this->GXK3->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }

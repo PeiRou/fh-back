@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_PK10
 {
-    public function all($openCode,$issue,$gameId)
+    public function all($openCode,$issue,$gameId,$id)
     {
         $win = collect([]);
         $this->GYH($openCode,$gameId,$win);
@@ -39,13 +39,19 @@ class New_PK10
         $this->NUM8($openCode,$gameId,$win);
         $this->NUM9($openCode,$gameId,$win);
         $this->NUM10($openCode,$gameId,$win);
+        $table = 'game_bjpk10';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                 if($updateUserMoney == 1){
-                    return 1;
+                    $update = DB::table($table)->where('id',$id)->update([
+                        'bunko' => 1
+                    ]);
+                    if (!$update) {
+                        \Log::info("北京PK10" . $issue . "结算出错");
+                    }
                 }
             }
         }

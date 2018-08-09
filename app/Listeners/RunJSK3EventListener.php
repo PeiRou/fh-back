@@ -28,7 +28,7 @@ class RunJSK3EventListener
      */
     public function handle(RunJSK3 $event)
     {
-        $up = $this->JSK3->all($event->openCode,$event->openIssue,$event->gameId);
+        $up = $this->JSK3->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }

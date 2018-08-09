@@ -28,7 +28,7 @@ class RunBjkl8EventListener
      */
     public function handle(RunBjkl8 $event)
     {
-        $up = $this->bjkl8->all($event->openCode,$event->openIssue,$event->gameId);
+        $up = $this->bjkl8->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }

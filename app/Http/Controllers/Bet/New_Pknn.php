@@ -14,19 +14,24 @@ use Illuminate\Support\Facades\Session;
 
 class New_Pknn
 {
-    public function all($openCode,$nn,$issue,$gameId)
+    public function all($openCode,$nn,$issue,$gameId,$id)
     {
         $win = collect([]);
         $lose = collect([]);
         $this->NN($openCode,$nn,$gameId,$win,$lose);
+        $table = 'game_pknn';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$lose,$nn,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                 if($updateUserMoney == 1){
-                    //\Log::info('PK10牛牛第'.$issue.'已结算');
-                    return 1;
+                    $update = DB::table($table)->where('id',$id)->update([
+                        'bunko' => 1
+                    ]);
+                    if (!$update) {
+                        \Log::info("PK10牛牛" . $issue . "结算出错");
+                    }
                 }
             }
         }

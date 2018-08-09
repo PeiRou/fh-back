@@ -40,24 +40,36 @@ class New_Mssc
         $this->NUM10($openCode,$gameId,$win);
         return $win;
     }
-    public function all($openCode,$issue,$gameId,$excel)
+    public function all($openCode,$issue,$gameId,$id,$excel)
     {
+        $table = 'game_mssc';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$gameId)->first();
+            $excelModel = new Excel();
+            $exeBase = $excelModel->getNeedKillIssue($table);
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
                 \Log::Info('mssc killing...');
-                $this->excel($openCode,$exeBase,$issue,$gameId,'game_mssc');
+                $this->excel($openCode,$exeBase,$issue,$gameId,$table);
+                $update = DB::table($table)->where('id',$id)->update([
+                    'excel_num' => 1
+                ]);
+                if($update !== 1){
+                    \Log::info("秒速赛车".$issue."杀率计算出错");
+                }
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $this->bunko($win,$gameId,$issue,$excel);
-                $excel = new Excel();
-                $excel->bet_total($issue,$gameId);
+                $bunko = $this->bunko($win,$gameId,$issue);
+                $excelModel->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                     if($updateUserMoney == 1){
-                        return 1;
+                        $update = DB::table($table)->where('id',$id)->update([
+                            'bunko' => 1
+                        ]);
+                        if ($update !== 1) {
+                            \Log::info("秒速赛车" . $issue . "结算出错");
+                        }
                     }
                 }
             }

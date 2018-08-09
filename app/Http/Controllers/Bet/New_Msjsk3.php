@@ -31,7 +31,8 @@ class New_Msjsk3
         $table = 'game_msjsk3';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$gameId)->first();
+            $excelModel = new Excel();
+            $exeBase = $excelModel->getNeedKillIssue($table);
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
                 \Log::Info('msjsk3 killing...');
                 $this->excel($openCode,$exeBase,$issue,$gameId,$table);
@@ -45,8 +46,7 @@ class New_Msjsk3
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue);
-                $excel = new Excel();
-                $excel->bet_total($issue,$gameId);
+                $excelModel->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                     if($updateUserMoney == 1){

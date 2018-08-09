@@ -28,7 +28,7 @@ class RunMsnnEventListener
      */
     public function handle(RunMsnn $event)
     {
-        $up = $this->msnn->all($event->openCode,$event->nn,$event->openIssue,$event->gameId);
+        $up = $this->msnn->all($event->openCode,$event->nn,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }

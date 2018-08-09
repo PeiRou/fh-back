@@ -17,17 +17,19 @@ class RunMstf
     public $openCode;
     public $openIssue;
     public $gameId;
+    public $id;
     public $excel;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($openCode,$openIssue,$gameId,$excel)
+    public function __construct($openCode,$openIssue,$gameId,$id,$excel)
     {
         $this->openCode  = $openCode;
         $this->openIssue = $openIssue;
         $this->gameId    = $gameId;
+        $this->id    = $id;
         $this->excel = $excel;
     }
 

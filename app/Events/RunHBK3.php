@@ -17,16 +17,18 @@ class RunHBK3
     public $openCode;
     public $openIssue;
     public $gameId;
+    public $id;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($openCode,$openIssue,$gameId)
+    public function __construct($openCode,$openIssue,$gameId,$id)
     {
         $this->openCode  = $openCode;
         $this->openIssue = $openIssue;
         $this->gameId    = $gameId;
+        $this->id    = $id;
     }
 
     /**

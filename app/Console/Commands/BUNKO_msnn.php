@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Excel;
 use App\Events\RunMsnn;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -40,17 +41,15 @@ class BUNKO_msnn extends Command
      */
     public function handle()
     {
-        $get = DB::table('game_mssc')->where('is_open',1)->orderBy('opentime','desc')->take(1)->first();
-        if($get){
-            if($get->nn_bunko !== 1){
-                event(new RunMsnn($get->opennum,$get->niuniu,$get->issue,$this->gameId)); //新--结算
-                $update = DB::table('game_mssc')->where('id',$get->id)->update([
-                    'nn_bunko' => 1
-                ]);
-                if($update !== 1){
-                    \Log::info("秒速牛牛".$get->issue."结算出错");
-                }
-            }
+        $table = 'game_mssc';
+        $excel = new Excel();
+        $get = $excel->getNeedNNBunkoIssue($table);
+        if ($get) {
+            $update = DB::table($table)->where('id', $get->id)->update([
+                'bunko' => 2
+            ]);
+            if($update)
+                event(new RunMsnn($get->opennum,$get->niuniu, $get->issue, $this->gameId, $get->id)); //新--结算
         }
     }
 }

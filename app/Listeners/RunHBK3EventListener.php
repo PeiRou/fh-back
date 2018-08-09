@@ -28,7 +28,7 @@ class RunHBK3EventListener
      */
     public function handle(RunHBK3 $event)
     {
-        $up = $this->HBK3->all($event->openCode,$event->openIssue,$event->gameId);
+        $up = $this->HBK3->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }

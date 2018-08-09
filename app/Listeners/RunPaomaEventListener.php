@@ -28,7 +28,7 @@ class RunPaomaEventListener
      */
     public function handle(RunPaoma $event)
     {
-        $up = $this->paoma->all($event->openCode,$event->openIssue,$event->gameId,$event->excel);
+        $up = $this->paoma->all($event->openCode,$event->openIssue,$event->gameId,$event->id,$event->excel);
         return $up;
     }
 }

@@ -26,7 +26,7 @@ class New_LHC
     }
 
 
-    public function all($openCode,$issue,$gameId)
+    public function all($openCode,$issue,$gameId,$id)
     {
         $win = collect([]);
         $this->TM($openCode,$gameId,$win);
@@ -38,13 +38,19 @@ class New_LHC
         $this->WX($openCode,$gameId,$win);
         $this->QSB($openCode,$gameId,$win);
         $this->PTYXWS($openCode,$gameId,$win);
+        $table = 'game_lhc';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($openCode,$win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                 if($updateUserMoney == 1){
-                    return 1;
+                    $update = DB::table($table)->where('id',$id)->update([
+                        'bunko' => 1
+                    ]);
+                    if (!$update) {
+                        \Log::info("六合彩" . $issue . "结算出错");
+                    }
                 }
             }
         }

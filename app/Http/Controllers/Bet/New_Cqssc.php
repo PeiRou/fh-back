@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Cqssc
 {
-    public function all($openCode,$issue,$gameId)
+    public function all($openCode,$issue,$gameId,$id)
     {
         $win = collect([]);
         $this->NUM1($openCode,$gameId,$win);
@@ -30,13 +30,19 @@ class New_Cqssc
         $this->QIANSAN($openCode,$gameId,$win);
         $this->ZHONGSAN($openCode,$gameId,$win);
         $this->HOUSAN($openCode,$gameId,$win);
+        $table = 'game_cqssc';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                 if($updateUserMoney == 1){
-                    return 1;
+                    $update = DB::table($table)->where('id',$id)->update([
+                        'bunko' => 1
+                    ]);
+                    if (!$update) {
+                        \Log::info("重庆时时彩" . $issue . "结算出错");
+                    }
                 }
             }
         }

@@ -28,7 +28,7 @@ class RunMssscEventListener
      */
     public function handle(RunMsssc $event)
     {
-        $up = $this->msssc->all($event->openCode,$event->openIssue,$event->gameId,$event->excel);
+        $up = $this->msssc->all($event->openCode,$event->openIssue,$event->gameId,$event->id,$event->excel);
         return $up;
     }
 }

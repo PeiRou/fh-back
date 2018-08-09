@@ -13,19 +13,25 @@ use Illuminate\Support\Facades\DB;
 
 class New_Pcdd
 {
-    public function all($openCode,$issue,$gameId)
+    public function all($openCode,$issue,$gameId,$id)
     {
         $win = collect([]);
         $this->HH($openCode,$gameId,$win); //混合
         $this->BS($openCode,$gameId,$win); //波色
         $this->TM($openCode,$gameId,$win); //特码
+        $table = 'game_pcdd';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                 if($updateUserMoney == 1){
-                    return 1;
+                    $update = DB::table($table)->where('id',$id)->update([
+                        'bunko' => 1
+                    ]);
+                    if (!$update) {
+                        \Log::info("PC蛋蛋" . $issue . "结算出错");
+                    }
                 }
             }
         }

@@ -28,7 +28,7 @@ class RunPk10EventListener
      */
     public function handle(RunPk10 $event)
     {
-        $up = $this->pk10->all($event->openCode,$event->openIssue,$event->gameId);
+        $up = $this->pk10->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }
