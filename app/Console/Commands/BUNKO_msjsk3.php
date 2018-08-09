@@ -42,7 +42,8 @@ class BUNKO_msjsk3 extends Command
     public function handle()
     {
         $table = 'game_msjsk3';
-        $get = Excel::getNeedBunkoIssue($table);
+        $excel = new Excel();
+        $get = $excel->getNeedBunkoIssue($table);
         if ($get) {
             $update = DB::table($table)->where('id', $get->id)->update([
                 'bunko' => 2
