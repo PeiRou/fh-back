@@ -17,6 +17,7 @@ class RunPaoma
     public $openCode;
     public $openIssue;
     public $gameId;
+    public $excel;
     /**
      * Create a new event instance.
      *
