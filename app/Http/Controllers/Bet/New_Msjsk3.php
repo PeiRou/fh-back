@@ -50,7 +50,6 @@ class New_Msjsk3
                         $update = DB::table($table)->where('id',$id)->update([
                             'bunko' => 1
                         ]);
-                        return $update;
                     }
                 }
             }
