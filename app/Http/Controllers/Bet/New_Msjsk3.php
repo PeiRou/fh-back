@@ -26,7 +26,7 @@ class New_Msjsk3
         $this->BICHU($openCode,$gameId,$win); //必出号码
         return $win;
     }
-    public function all($openCode,$issue,$gameId,$excel)
+    public function all($openCode,$issue,$gameId,$id,$excel)
     {
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
@@ -43,7 +43,10 @@ class New_Msjsk3
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                     if($updateUserMoney == 1){
-                        return 1;
+                        $update = DB::table('game_msjsk3')->where('id',$id)->update([
+                            'bunko' => 1
+                        ]);
+                        return $update;
                     }
                 }
             }
