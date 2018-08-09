@@ -28,7 +28,7 @@ class RunAHK3EventListener
      */
     public function handle(RunAHK3 $event)
     {
-        $up = $this->AHK3->all($event->openCode,$event->openIssue,$event->gameId);
+        $up = $this->AHK3->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }

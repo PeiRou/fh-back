@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Excel;
 use App\Events\RunMSJSK3;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -40,9 +41,10 @@ class BUNKO_msjsk3 extends Command
      */
     public function handle()
     {
-        $get = DB::table('game_msjsk3')->where('is_open', 1)->where('bunko', 0)->orderBy('opentime', 'desc')->first();
+        $table = 'game_msjsk3';
+        $get = Excel::getNeedBunkoIssue($table);
         if ($get) {
-            $update = DB::table('game_msjsk3')->where('id', $get->id)->update([
+            $update = DB::table($table)->where('id', $get->id)->update([
                 'bunko' => 2
             ]);
             event(new RunMSJSK3($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算

@@ -44,12 +44,6 @@ class BUNKO_ahk3 extends Command
         if($get){
             if($get->bunko !== 1){
                 event(new RunAHK3($get->opennum,$get->issue,$this->gameId)); //新--结算
-                $update = DB::table('game_ahk3')->where('id',$get->id)->update([
-                    'bunko' => 1
-                ]);
-                if($update !== 1){
-                    \Log::info("安徽快3".$get->issue."结算出错");
-                }
             }
         }
     }

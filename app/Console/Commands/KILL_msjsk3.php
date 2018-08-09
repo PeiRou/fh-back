@@ -57,9 +57,6 @@ class KILL_msjsk3 extends Command
                     'excel_num' => 2
                 ]);
                 event(new RunMSJSK3($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
-                if($update !== 1){
-                    \Log::info("秒速江苏快3".$get->issue."杀率计算出错");
-                }
             }
         }
     }
