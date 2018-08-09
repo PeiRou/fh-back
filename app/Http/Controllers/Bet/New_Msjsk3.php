@@ -28,12 +28,16 @@ class New_Msjsk3
     }
     public function all($openCode,$issue,$gameId,$id,$excel)
     {
+        $table = 'game_msjsk3';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$gameId)->first();
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
                 \Log::Info('msjsk3 killing...');
-                $this->excel($openCode,$exeBase,$issue,$gameId,'game_msjsk3');
+                $this->excel($openCode,$exeBase,$issue,$gameId,$table);
+                $update = DB::table($table)->where('id',$id)->update([
+                    'excel_num' => 1
+                ]);
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
@@ -43,7 +47,7 @@ class New_Msjsk3
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                     if($updateUserMoney == 1){
-                        $update = DB::table('game_msjsk3')->where('id',$id)->update([
+                        $update = DB::table($table)->where('id',$id)->update([
                             'bunko' => 1
                         ]);
                         return $update;
