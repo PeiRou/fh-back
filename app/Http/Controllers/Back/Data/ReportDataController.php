@@ -135,7 +135,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         if(isset($ag) && $ag > 0 ){
             $where .= " and u.agent = ".$ag;
         }
-        if(isset($chkTest) && $chkTest=='on'){
+        if(isset($chkTest) && $chkTest=='1'){
             $where .= " and u.testFlag = 0 ";
         }else {
             $where .= " and u.testFlag in (0,2) ";
@@ -148,8 +148,6 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         return DataTables::of($user)
             ->make(true);
     }
-
-
 
     //投注报表
     public function Bet(Request $request)
