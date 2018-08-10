@@ -36,6 +36,13 @@ class New_Bjkl8
                     }
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("北京快乐8" . $issue . "结算出错");
+            }
         }
     }
 

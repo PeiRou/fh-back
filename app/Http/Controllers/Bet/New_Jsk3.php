@@ -39,6 +39,13 @@ class New_Jsk3
                     }
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("江苏快3" . $issue . "结算出错");
+            }
         }
     }
 

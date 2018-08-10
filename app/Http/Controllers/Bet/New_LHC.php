@@ -53,6 +53,13 @@ class New_LHC
                     }
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("六合彩" . $issue . "结算出错");
+            }
         }
     }
     

@@ -34,6 +34,13 @@ class New_Pcdd
                     }
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("PC蛋蛋" . $issue . "结算出错");
+            }
         }
     }
 

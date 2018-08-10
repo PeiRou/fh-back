@@ -23,14 +23,24 @@ class New_Msnn
         $table = 'game_mssc';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $updateUserMoney = $this->updateUserMoney($gameId,$issue);
-            if($updateUserMoney == 1){
-                $update = DB::table($table)->where('id',$id)->update([
-                    'bunko' => 1
-                ]);
-                if (!$update) {
-                    \Log::info("秒速牛牛" . $issue . "结算出错");
+            $bunko = $this->bunko($win,$lose,$nn,$gameId,$issue);
+            if($bunko == 1) {
+                $updateUserMoney = $this->updateUserMoney($gameId, $issue);
+                if($updateUserMoney == 1){
+                    $update = DB::table($table)->where('id',$id)->update([
+                        'nn_bunko' => 1
+                    ]);
+                    if (!$update) {
+                        \Log::info("秒速牛牛" . $issue . "结算出错");
+                    }
                 }
+            }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'nn_bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("秒速牛牛" . $issue . "结算出错");
             }
         }
     }

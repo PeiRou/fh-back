@@ -59,7 +59,7 @@ class New_Paoma
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $this->bunko($win,$gameId,$issue);
+                $bunko = $this->bunko($win,$gameId,$issue,$excel);
                 $excelModel->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
@@ -72,6 +72,13 @@ class New_Paoma
                         }
                     }
                 }
+            }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("跑马" . $issue . "结算出错");
             }
         }
     }
@@ -1192,7 +1199,7 @@ class New_Paoma
         return $win;
     }
 
-    private function bunko($win,$gameId,$issue,$excel){
+    private function bunko($win,$gameId,$issue,$excel=false){
         if($excel) {
             $table = 'excel_bet';
             $getUserBets = DB::table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();

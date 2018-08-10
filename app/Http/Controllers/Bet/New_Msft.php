@@ -73,6 +73,13 @@ class New_Msft
                     }
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("秒速飞艇" . $issue . "结算出错");
+            }
         }
     }
 

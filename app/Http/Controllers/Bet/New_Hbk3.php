@@ -39,6 +39,13 @@ class New_Hbk3
                     }
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("湖北快3" . $issue . "结算出错");
+            }
         }
     }
 

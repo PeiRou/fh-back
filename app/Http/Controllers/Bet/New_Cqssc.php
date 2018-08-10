@@ -45,6 +45,13 @@ class New_Cqssc
                     }
                 }
             }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("重庆时时彩" . $issue . "结算出错");
+            }
         }
     }
 
