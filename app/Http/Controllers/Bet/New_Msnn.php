@@ -17,8 +17,6 @@ class New_Msnn
 {
     public function all($openCode,$nn,$issue,$gameId,$id)
     {
-        \Log::info($openCode);
-        \Log::info($nn);
         $win = collect([]);
         $lose = collect([]);
         $this->NN($openCode,$nn,$gameId,$win,$lose);
