@@ -26,7 +26,7 @@ class New_Msnn
             $updateUserMoney = $this->updateUserMoney($gameId,$issue);
             if($updateUserMoney == 1){
                 $update = DB::table($table)->where('id',$id)->update([
-                    'bunko' => 1
+                    'nn_bunko' => 1
                 ]);
                 if (!$update) {
                     \Log::info("秒速牛牛" . $issue . "结算出错");
@@ -34,7 +34,7 @@ class New_Msnn
             }
         }else{
             $update = DB::table($table)->where('id',$id)->update([
-                'bunko' => 1
+                'nn_bunko' => 1
             ]);
             if ($update !== 1) {
                 \Log::info("秒速牛牛" . $issue . "结算出错");
