@@ -17,9 +17,9 @@ return [
     //试玩同一账号允许操作次数
     'guestTryTimes' => 20,
     //官方开奖
-    'guanServerUrl' => 'http://156.235.192.178:8881/api/guan/',
+    'guanServerUrl' => env('GUAN_SERVER_URL'),
     //开奖服务器URL
-    'openServerUrl'=> 'http://172.31.197.39:8881/api/',
+    'openServerUrl'=> env('OPEN_SERVER_URL'),
     //第三方开奖接口
     'openApi' => [
         'url'   =>'http://e.apiplus.net/newly.do',
@@ -28,5 +28,5 @@ return [
         'rows'  =>'1',
     ],
     //后台地址
-    'backEndUrl' => ['fh888.f8710.com','fh888.f8710.com']
+    'backEndUrl' => [env('BACK_IP_1'),env('BACK_IP_1')]
 ];
