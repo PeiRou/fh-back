@@ -55,13 +55,14 @@ return [
 //        ],
         'mysql' => [
             'driver' => 'mysql',
-            //'read' => [
-            //    'host' => 'rr-j6cnipyc2834v6690.mysql.rds.aliyuncs.com'
-            //],
-            //'write' => [
-            //    'host' => 'rm-j6cu60797usb9qsdz.mysql.rds.aliyuncs.com'
-            //],
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'read' => [
+                'host' => env('DB_READ_HOST_1'),
+                'host' => env('DB_READ_HOST_2')
+            ],
+            'write' => [
+                'host' => env('DB_WRITE_HOST_1')
+            ],
+            //'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
