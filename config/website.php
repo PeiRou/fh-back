@@ -28,5 +28,5 @@ return [
         'rows'  =>'1',
     ],
     //后台地址
-    'backEndUrl' => [env('BACK_IP_1'),env('BACK_IP_1')]
+    'backEndUrl' => [env('BACK_IP_1'),env('BACK_IP_2')]
 ];
