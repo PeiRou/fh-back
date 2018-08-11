@@ -34,7 +34,7 @@
 </div>
 <div class="nav-top">
     <div class="nav-logo">
-        <a href="{{ url('/back/control/dash') }}"><img src="/back/img/logo.png"></a>
+        <a href="{{ url('/back/control/dash') }}"><img src="{{ env('BACK_LOGO') }}"></a>
     </div>
     {{--<div class="online-count">--}}
         {{--在线 <span>?</span>--}}
