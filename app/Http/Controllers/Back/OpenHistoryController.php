@@ -500,10 +500,15 @@ class OpenHistoryController extends Controller
         ]);
         if($update == 1){
             $getIssue = DB::table('game_lhc')->where('id',$id)->first();
-            event(new RunLHC($openNum,$getIssue->issue,70)); //触发六合彩结算事件
-            return response()->json([
-                'status' => true
+            $update = DB::table('game_lhc')->where('id', $id)->update([
+                'bunko' => 2
             ]);
+            if ($update == 1){
+                event(new RunLHC($openNum,$getIssue->issue,70,$id)); //触发六合彩结算事件
+                return response()->json([
+                    'status' => true
+                ]);
+            }
         } else {
             return response()->json([
                 'status' => false,

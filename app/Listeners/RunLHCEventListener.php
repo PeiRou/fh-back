@@ -7,7 +7,7 @@ use App\Http\Controllers\Bet\New_LHC;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RunLHCEventListener
+class RunLHCEventListener implements ShouldQueue
 {
     public $LHC;
     /**
