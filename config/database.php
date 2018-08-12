@@ -56,8 +56,7 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'read' => [
-                'host' => env('DB_READ_HOST_1'),
-                'host' => env('DB_READ_HOST_2')
+                'host' =>  [env('DB_READ_HOST_1'),env('DB_READ_HOST_2')]
             ],
             'write' => [
                 'host' => env('DB_WRITE_HOST_1')
