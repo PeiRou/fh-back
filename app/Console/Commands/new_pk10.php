@@ -61,8 +61,8 @@ class new_pk10 extends Command
             }
         });
         if($filtered!=null){
-            $nowIssueTime = strtotime(date('Y-m-d').' '.$filtered['time']);
-            $getIssue = DB::table('game_bjpk10')->whereRaw('unix_timestamp(opentime) = '.$nowIssueTime)->first();
+            $nowIssueTime = date('Y-m-d').' '.$filtered['time'];
+            $getIssue = DB::table('game_bjpk10')->where('opentime','=',$nowIssueTime)->first();
             $nextIssue = $getIssue->issue;
 
             if(strtotime($filtered['time']) == strtotime('23:57:30')){
