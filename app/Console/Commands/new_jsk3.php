@@ -54,8 +54,8 @@ class new_jsk3 extends Command
             }
         });
         if($filtered!=null){
-            $nowIssueTime = strtotime(date('Y-m-d').' '.$filtered['time']);
-            $getIssue = DB::table('game_jsk3')->whereRaw('unix_timestamp(opentime) = '.$nowIssueTime)->first();
+            $nowIssueTime = date('Y-m-d').' '.$filtered['time'];
+            $getIssue = DB::table('game_jsk3')->where('opentime','=',$nowIssueTime)->first();
             $nextIssue = $getIssue->issue;
 
             if(strtotime($filtered['time']) == strtotime('22:09:00')){

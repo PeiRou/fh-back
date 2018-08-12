@@ -61,8 +61,8 @@ class new_cqssc extends Command
             }
         });
         if($filtered!=null){
-            $nowIssueTime = strtotime(date('Y-m-d').' '.$filtered['time']);
-            $getIssue = DB::table('game_cqssc')->whereRaw('unix_timestamp(opentime) = '.$nowIssueTime)->first();
+            $nowIssueTime = date('Y-m-d').' '.$filtered['time'];
+            $getIssue = DB::table('game_cqssc')->where('opentime','=',$nowIssueTime)->first();
             $nextIssue = $getIssue->issue;
 
             if(strtotime(date('H:i:s')) >= strtotime('00:00:00') && strtotime(date('H:i:s')) <= strtotime('01:55:00')){

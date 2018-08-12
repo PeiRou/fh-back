@@ -59,8 +59,8 @@ class new_pcdd extends Command
 //            }
         });
         if($filtered!=null){
-            $nowIssueTime = strtotime(date('Y-m-d').' '.$filtered['time']);
-            $getIssue = DB::table('game_pcdd')->whereRaw('unix_timestamp(opentime) = '.$nowIssueTime)->first();
+            $nowIssueTime = date('Y-m-d').' '.$filtered['time'];
+            $getIssue = DB::table('game_pcdd')->where('opentime','=',$nowIssueTime)->first();
             $nextIssue = $getIssue->issue;
 
             if(strtotime($filtered['time']) == strtotime('23:55:00')){
