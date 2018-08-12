@@ -32,7 +32,7 @@ class Excel
             $data['bet_win'] = DB::raw('bet_win + '.$excBunko->sumBunko);
         else
             $data['bet_lose'] = DB::raw('bet_lose + '.abs($excBunko->sumBunko));
-        \Log::info($gameId.'**'.$exceBase->excel_base_idx.'--'.$excBunko->sumBet_money.'=='.$excBunko->sumBunko);
+//        \Log::info($gameId.'**'.$exceBase->excel_base_idx.'--'.$excBunko->sumBet_money.'=='.$excBunko->sumBunko);
         DB::table('excel_base')->where('excel_base_idx', $exceBase->excel_base_idx)->update($data);
     }
     //计算是否开杀
