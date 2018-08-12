@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Excel;
 use App\Events\RunXYLHC;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -40,12 +41,15 @@ class BUNKO_xylhc extends Command
      */
     public function handle()
     {
-        //$get = DB::table($table)->where("is_open",1)->where('bunko',0)->orderBy('opentime','desc')->first();
-        $get = DB::table('game_xylhc')->where('is_open',1)->where('bunko',0)->orderBy('opentime','desc')->first();
+        $table = 'game_xylhc';
+        $excel = new Excel();
+        $get = $excel->getNeedBunkoIssue($table);
         if($get){
-            if($get->bunko !== 1){
+            $update = DB::table($table)->where('id', $get->id)->update([
+                'bunko' => 2
+            ]);
+            if($update)
                 event(new RunXYLHC($get->open_num,$get->issue,$this->gameId,$get->id)); //新--结算
-            }
         }
     }
 }

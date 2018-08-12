@@ -71,7 +71,8 @@ class Excel
     public function getNeedBunkoIssue($table){
         if(empty($table))
             return false;
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <=now() and is_open=1 and bunko = 0)");
+        $today = date('Y-m-d H:i:s',time());
+        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0)");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -82,7 +83,8 @@ class Excel
     public function getNeedNNBunkoIssue($table){
         if(empty($table))
             return false;
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <=now() and is_open=1 and nn_bunko = 0)");
+        $today = date('Y-m-d H:i:s',time());
+        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0)");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -93,7 +95,8 @@ class Excel
     public function getOpenIssue($table){
         if(empty($table))
             return false;
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <=now() and is_open=1)");
+        $today = date('Y-m-d H:i:s',time());
+        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1)");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -104,7 +107,8 @@ class Excel
     public function getNextIssue($table){
         if(empty($table))
             return false;
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <=now() and is_open=0)");
+        $today = date('Y-m-d H:i:s',time());
+        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=0)");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -115,7 +119,8 @@ class Excel
     public function getNeedtIssue($table){
         if(empty($table))
             return false;
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE opentime <=now() and is_open=0)");
+        $today = date('Y-m-d H:i:s',time());
+        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE opentime <='".$today."' and is_open=0)");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)

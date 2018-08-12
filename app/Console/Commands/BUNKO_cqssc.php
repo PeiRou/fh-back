@@ -43,13 +43,13 @@ class BUNKO_cqssc extends Command
     {
         $table = 'game_cqssc';
         $excel = new Excel();
-//        $get = $excel->getNeedBunkoIssue($table);
-        $get = DB::table($table)->where("is_open",1)->where('bunko',0)->orderBy('opentime','desc')->first();
+        $get = $excel->getNeedBunkoIssue($table);
         if($get){
             $update = DB::table($table)->where('id', $get->id)->update([
                 'bunko' => 2
             ]);
-            event(new RunCqssc($get->opennum,$get->issue,$this->gameId,$get->id)); //新--结算
+            if($update)
+                event(new RunCqssc($get->opennum,$get->issue,$this->gameId,$get->id)); //新--结算
         }
     }
 }
