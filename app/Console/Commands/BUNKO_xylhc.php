@@ -40,7 +40,8 @@ class BUNKO_xylhc extends Command
      */
     public function handle()
     {
-        $get = DB::table('game_xylhc')->where('is_open',1)->orderBy('opentime','desc')->take(1)->first();
+        //$get = DB::table($table)->where("is_open",1)->where('bunko',0)->orderBy('opentime','desc')->first();
+        $get = DB::table('game_xylhc')->where('is_open',1)->where('bunko',0)->orderBy('opentime','desc')->first();
         if($get){
             if($get->bunko !== 1){
                 event(new RunXYLHC($get->open_num,$get->issue,$this->gameId,$get->id)); //新--结算

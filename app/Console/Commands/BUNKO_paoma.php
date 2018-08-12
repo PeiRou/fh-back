@@ -43,7 +43,8 @@ class BUNKO_paoma extends Command
     {
         $table = 'game_paoma';
         $excel = new Excel();
-        $get = $excel->getNeedBunkoIssue($table);
+//        $get = $excel->getNeedBunkoIssue($table);
+        $get = DB::table($table)->where("is_open",1)->where('bunko',0)->orderBy('opentime','desc')->first();
         if ($get) {
             $update = DB::table($table)->where('id', $get->id)->update([
                 'bunko' => 2

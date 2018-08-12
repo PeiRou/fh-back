@@ -44,6 +44,7 @@ class BUNKO_msnn extends Command
         $table = 'game_mssc';
         $excel = new Excel();
         $get = $excel->getNeedNNBunkoIssue($table);
+        $get = DB::table($table)->where("is_open",1)->where('nn_bunko',0)->orderBy('opentime','desc')->first();
         if ($get) {
             $update = DB::table($table)->where('id', $get->id)->update([
                 'nn_bunko' => 2
