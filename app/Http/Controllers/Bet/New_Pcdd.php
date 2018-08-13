@@ -299,7 +299,7 @@ class New_Pcdd
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
                 //\Log::info($sql);
-                $up = DB::statement($sql);
+                $up = DB::connection('mysql::write')->statement($sql);
                 if($up == 1){
                     return 1;
                 }

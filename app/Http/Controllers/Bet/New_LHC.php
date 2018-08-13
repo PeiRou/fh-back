@@ -1324,7 +1324,7 @@ class New_LHC
             $ids = implode(',',$users);
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
-                $up = DB::statement($sql);
+                $up = DB::connection('mysql::write')->statement($sql);
                 if($up == 1){
                     return 1;
                 }

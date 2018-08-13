@@ -1306,10 +1306,10 @@ class New_XYLHC
 //            }
 
             if($run == 1){
-                $run2 = DB::statement($sql_lose);
+                $run2 = DB::connection('mysql::write')->statement($sql_lose);
                 if($run2 == 1){
                     if($sql_zxb !== 0){
-                        $run3 = DB::statement($sql_zxb);
+                        $run3 = DB::connection('mysql::write')->statement($sql_zxb);
                         if($run3 == 1){
                             return 1;
                         }
@@ -1334,7 +1334,7 @@ class New_XYLHC
             $ids = implode(',',$users);
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
-                $up = DB::statement($sql);
+                $up = DB::connection('mysql::write')->statement($sql);
                 if($up == 1){
                     return 1;
                 }
