@@ -12,6 +12,40 @@
         </div>
     </div>
     <div class="table-content">
+        <div class="table-quick-bar">
+            <div class="ui mini form">
+                <div class="fields">
+                    <div style="line-height: 32px;">筛选：</div>
+                    <div class="one wide field">
+                        <select class="ui dropdown" id="status" style='height:32px !important'>
+                            <option value="">所有</option>
+                            @foreach($aStatus as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div style="line-height: 32px;">搜索：</div>
+                    <div class="one wide field">
+                        <select class="ui dropdown" id="type" style='height:32px !important'>
+                            <option value="1">帐号</option>
+                            <option value="2">名称</option>
+                        </select>
+                    </div>
+                    <div class="one wide field">
+                        <input type="text" id="name">
+                    </div>
+                    <div class="one wide field">
+                        <input type="text" id="day" placeholder="未登录天数">
+                    </div>
+                    <div class="one wide field">
+                        <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
+                    </div>
+                    <div class="one wide field">
+                        <button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <input type="hidden" id="gaid" value="{{$gaid}}">
         <table id="agentTable" class="ui small table" cellspacing="0" width="100%">
             <thead>

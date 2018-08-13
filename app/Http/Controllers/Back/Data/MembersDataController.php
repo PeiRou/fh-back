@@ -597,17 +597,9 @@ class MembersDataController extends Controller
     //在线会员
     public function onlineUser()
     {
-        Redis::select(2);
-        $keys = Redis::keys('user:'.'*');
-        $onlineUser = [];
-        foreach ($keys as $item){
-            $data = "[".Redis::get($item)."]";
-            $get = json_decode($data,true);
-            $onlineUser[] = $get[0]['user_id'];
-        }
-        $ids = implode(',',$onlineUser);
-        $user = User::select()
-            ->whereIn('id',$onlineUser)->get();
+        $user = DB::table('users')
+            ->join('users_logintime', 'users.id', '=', 'users_logintime.user_id')
+            ->where('users_logintime.logintime','>=',time()-300)->get();
         return DataTables::of($user)
             ->editColumn('online',function (){
                 return "<span class='on-line-point'></span>";

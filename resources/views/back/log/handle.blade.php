@@ -15,14 +15,14 @@
                     <div class="ui calendar" id="rangestart" style="width: 108px;">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
-                            <input type="text" id="startTime" value="" placeholder="开始时间">
+                            <input type="text" id="startTime" value="{{date("Y-m-d")}}" placeholder="开始时间">
                         </div>
                     </div>
                     <div style="line-height: 32px;">-</div>
                     <div class="ui calendar" id="rangeend" style="width: 108px;">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
-                            <input type="text" id="endTime" value="" placeholder="结束时间">
+                            <input type="text" id="endTime" value="{{date("Y-m-d")}}" placeholder="结束时间">
                         </div>
                     </div>
                     <div class="one wide field">

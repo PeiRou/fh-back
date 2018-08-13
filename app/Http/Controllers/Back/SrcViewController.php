@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back;
 
 use App\Activity;
 use App\ActivitySend;
+use App\Agent;
 use App\AgentDrawDetails;
 use App\AgentReport;
 use App\AgentReportBase;
@@ -16,6 +17,8 @@ use App\LogHandle;
 use App\MessagePush;
 use App\PayOnline;
 use App\PermissionsAuth;
+use App\PlatformDeposit;
+use App\PlatformSettlement;
 use App\PlayCates;
 use App\PromotionConfig;
 use App\PromotionReport;
@@ -70,7 +73,8 @@ class SrcViewController extends Controller
     public function agent(Request $request)
     {
         $gaid = $request->get('id');
-        return view('back.agent',compact('gaid'));
+        $aStatus = Agent::$agentStatus;
+        return view('back.agent',compact('gaid','aStatus'));
     }
     //会员
     public function user(Request $request)
@@ -705,5 +709,18 @@ class SrcViewController extends Controller
     //推广结算配置
     public function promotionSetting(){
         return view('back.promotion.config');
+    }
+
+    //平台费用结算
+    public function platformSettlement(){
+        $aStatus = PlatformSettlement::$PlatformStatus;
+        return view('back.platform.settlement',compact('aStatus'));
+    }
+
+    //付款记录
+    public function platformRecord(){
+        $aStatus = PlatformDeposit::$PlatformStatus;
+        $aType = PlatformDeposit::$PlatformType;
+        return view('back.platform.record',compact('aStatus','aType'));
     }
 }

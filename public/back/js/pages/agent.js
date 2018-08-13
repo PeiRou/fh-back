@@ -5,7 +5,7 @@ $(function () {
     $('#menu-userManage').addClass('nav-show');
     $('#menu-userManage-agent').addClass('active');
 
-    $('#agentTable').DataTable({
+    var dataTable = $('#agentTable').DataTable({
         searching: false,
         bLengthChange: false,
         aLengthMenu: [[50]],
@@ -16,6 +16,10 @@ $(function () {
             url :'/back/datatables/agent',
             data:function (d) {
                 d.gaid = $('#gaid').val();
+                d.status = $('#status').val();
+                d.type = $('#type').val();
+                d.name = $('#name').val();
+                d.day = $('#day').val();
             }
         },
         columns: [
@@ -46,6 +50,18 @@ $(function () {
             }
         }
     })
+
+    $('#btn_search').on('click',function () {
+        dataTable.ajax.reload();
+    });
+
+    $('#reset').on('click',function () {
+        $('#status').val('');
+        $('#type').val('');
+        $('#name').val('');
+        $('#day').val('');
+        dataTable.ajax.reload();
+    });
 });
 
 function addAgent() {

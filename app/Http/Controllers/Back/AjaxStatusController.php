@@ -39,7 +39,7 @@ class AjaxStatusController extends Controller
             $getDrawCount = Drawing::where('status',0)->count();
 
             Redis::select(2);           //前台
-            $onlineUserCount = Redis::dbsize();
+            $onlineUserCount = DB::table('users_logintime')->where('logintime','>=',time()-300)->count();
 
             Redis::select(4);           //后台
             $onlineAdminCount = Redis::dbsize();

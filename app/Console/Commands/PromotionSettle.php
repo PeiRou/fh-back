@@ -44,8 +44,8 @@ class PromotionSettle extends Command
         ini_set('memory_limit','1024M');
         $date = new GetDate();
         //获取昨天时间段
-        //$yesterday = $date->yesterdayDate();
-        $yesterday = ['start'=>'2018-05-01','end'=>'2018-07-30'];
+        $yesterday = $date->yesterdayDate();
+        //$yesterday = ['start'=>'2018-05-01','end'=>'2018-07-30'];
         //投注时间
         $current = date('Y-m-d',strtotime($yesterday['start']));
         //获取推广结算数据

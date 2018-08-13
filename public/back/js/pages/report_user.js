@@ -81,23 +81,15 @@ $(function () {
             {data:'username'},              //账号
             {data:'fullName'},              //全名
             {data:'agaccount'},             //上级代理
-            {data:function () {             //充值金额
-                    return 0 ;
-                }},
-            {data:function () {             //取款金额
-                    return 0 ;
-                }},
+            {data:'sumRecharges'},
+            {data:'sumDrawing'},
             {data:function (data) {         //笔数
                     return '<a href="/back/control/userManage/userBetList/'+data.id+'">'+data.countBet+'</a>';
                 }},
             {data:'sumMoney'},             //投注金额
             {data:'sumWinbet'},             //赢利投注金额
-            {data:function () {             //活动金额
-                    return 0 ;
-                }},
-            {data:function () {             //充值优惠/手续费
-                    return 0 ;
-                }},
+            {data:'sumActivity'},
+            {data:'sumRecharge_fee'},
             {data:function () {             //代理赔率金额
                     return 0 ;
                 }},
@@ -133,9 +125,13 @@ $(function () {
                 type:'get',
                 dataType:'json',
                 success:function (data) {
+                    $( api.column( 3 ).footer() ).html(data.result.sumRecharges);
+                    $( api.column( 4 ).footer() ).html(data.result.sumDrawing);
                     $( api.column( 5 ).footer() ).html(data.result.countBet);
                     $( api.column( 6 ).footer() ).html(data.result.sumMoney);
                     $( api.column( 7 ).footer() ).html(data.result.sumWinbet);
+                    $( api.column( 8 ).footer() ).html(data.result.sumActivity);
+                    $( api.column( 9 ).footer() ).html(data.result.sumRecharge_fee);
                     $( api.column( 12 ).footer() ).html(data.result.sumBunko);
                     $( api.column( 14 ).footer() ).html(data.result.sumBunko);
                 }
@@ -143,10 +139,6 @@ $(function () {
             // Update footer by showing the total with the reference of the column index
             $( api.column( 0 ).footer() ).html('总计');
             $( api.column( 1 ).footer() ).html(monTotal);
-            // $( api.column( 3 ).footer() ).html(wedTotal);
-            // $( api.column( 4 ).footer() ).html(thuTotal);
-            // $( api.column( 8 ).footer() ).html(Total8);
-            // $( api.column( 9 ).footer() ).html(Total9);
             // $( api.column( 10 ).footer() ).html(Total10);
             // $( api.column( 11 ).footer() ).html(Total11);
             // $( api.column( 13 ).footer() ).html(Total13);

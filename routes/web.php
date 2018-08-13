@@ -138,6 +138,12 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('promotionSetting','Back\SrcViewController@promotionSetting')->name('promotion.setting'); //推广结算配置
     });
 
+    //平台费用
+    Route::group(['prefix' => 'back/control/platformManage','middleware'=>['check-permission','domain-check','add-log-handle']],function (){
+        Route::get('platformSettlement','Back\SrcViewController@platformSettlement')->name('platform.settlement'); //平台费用结算
+        Route::get('platformRecord','Back\SrcViewController@platformRecord')->name('platform.payRecord'); //付款记录
+    });
+
     //下拉菜单
     Route::group(['middleware'=>['add-log-handle']],function(){
         Route::get('/today/selectData/playCate/{gameId?}','Back\SrcViewController@playCate')->name('select.playCate'); // 下拉菜单获取玩法分类
@@ -210,6 +216,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/promotion/report','Back\Data\PromotionController@report'); //推广结算报表-表格数据
     Route::get('/back/datatables/promotion/review','Back\Data\PromotionController@review'); //推广审核报表-表格数据
     Route::get('/back/datatables/promotion/config','Back\Data\PromotionController@config'); //推广设置-表格数据
+    Route::get('/back/datatables/platform/settlement','Back\Data\PlatformController@settlement'); //平台费用结算-表格数据
+    Route::get('/back/datatables/platform/record','Back\Data\PlatformController@record'); //付款记录-表格数据
 
     //图表数据
     Route::post('/back/charts/gameBunko','Back\Charts\ChartsDataController@gameBunko');
@@ -218,6 +226,8 @@ Route::group(['middleware'=>['check-ip']],function () {
 //action
     Route::post('/action/admin/login', 'Back\SrcAccountController@login');
     Route::post('/action/admin/logout', 'Back\SrcAccountController@logout');
+
+    Route::post('/action/admin/addPlatformSettlement', 'Back\PlatformController@addPlatformSettlement');//平台费用结算-手动结算
 
     Route::post('/action/admin/addGeneralAgent', 'Back\SrcMemberController@addGeneralAgent');//添加总代理
     Route::post('/action/admin/editGeneralAgent', 'Back\SrcMemberController@editGeneralAgent');//修改总代理
@@ -374,9 +384,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/userChangeAgent/{id}', 'Back\Ajax\ModalController@userChangeAgent')->middleware('check-permission')->name('m.user.changeAgent');
     Route::get('/back/modal/userChangeFullName/{id}', 'Back\Ajax\ModalController@userChangeFullName')->middleware('check-permission')->name('m.user.editTrueName');
     Route::get('/back/modal/viewUserInfo/{id}', 'Back\Ajax\ModalController@viewUserInfo')->middleware('check-permission')->name('m.user.viewDetails');
-    Route::get('/back/modal/editUserInfo/{id}', 'Back\Ajax\ModalController@editUserInfo')->middleware('check-permission')->name('m.user.edit');
+    Route::get('/back/modal/editUserInfo/{id}', 'Back\Ajax\ModalController@editUserInfo')->middleware('check-permission')->name('m.user.edit');         //修改会员资料
     Route::get('/back/modal/viewUserContent/{id}', 'Back\Ajax\ModalController@viewUserContent')->middleware('check-permission')->name('m.user.viewDetails');
-    Route::get('/back/modal/changeUserMoney/{id}', 'Back\Ajax\ModalController@changeUserMoney')->middleware('check-permission')->name('m.user.changeBalance');
+    Route::get('/back/modal/changeUserMoney/{id}', 'Back\Ajax\ModalController@changeUserMoney')->middleware('check-permission')->name('m.user.changeBalance');      //修改会员馀额
     Route::get('/back/modal/userCapitalHistory/{id}', 'Back\Ajax\ModalController@userCapitalHistory')->middleware('check-permission')->name('m.user.viewDetails');
     Route::get('/back/modal/addNotice', 'Back\Ajax\ModalController@addNotice');
     Route::get('/back/modal/addSendMessage', 'Back\Ajax\ModalController@addSendMessage');

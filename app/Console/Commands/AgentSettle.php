@@ -59,7 +59,7 @@ class AgentSettle extends Command
         //获取平台配置
         $aAgentBaseInfo = AgentReportBase::getAgentBaseInfo();
         //获取所有代理商
-        $aAgentAlls = Agent::getAgentAllBunko($yearMonth);
+        $aAgentAlls = Agent::getAgentAllBunko();
         //代理结算信息整合
         $aAgentInfos = [];
         foreach ($aAgentAlls as $aAgentKey => $aAgentAll){

@@ -372,15 +372,15 @@
         </li>
         @endif
         @if($hasPermission->hasPermission('platform') == "has")
-        <li class="nav-item"><a href="javascript:void(0)">
+        <li id="menu-platformManage"  class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>
                 平台费用</a>
             <ul>
                 @if($hasPermission->hasPermission('platform.settlement') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>平台费用结算</span></a></li>
+                <li id="menu-platformManage-settlement"><a href="{{ route('platform.settlement') }}"><cite></cite><span>平台费用结算</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('platform.payRecord') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>付款记录</span></a></li>
+                <li id="menu-platformManage-payRecord"><a href="{{ route('platform.payRecord') }}"><cite></cite><span>付款记录</span></a></li>
                 @endif
             </ul>
         </li>

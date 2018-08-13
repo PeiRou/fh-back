@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Session;
 
 class ReportDataController extends Controller
 {
-
     //总代理报表
     public function Gagent(Request $request)
     {
@@ -22,26 +21,40 @@ class ReportDataController extends Controller
 
         $aSql = "SELECT zd.ga_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,zd.account as zdaccount, sum(b.bet_money) as sumMoney,
 sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko 
-FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.agent = ag.a_id LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id WHERE 1 ";
+sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko,
+sum(case WHEN cp.type = 't08' then cp.money else 0 end) as sumActivity,
+sum(case WHEN cp.type = 't04' then cp.money else 0 end) as sumRecharge_fee ";
         $where = "";
+        $whereB = "";
+        $whereU = "";
+        $whereCp = "";
         if(isset($game) && $game){
-            $where .= " and b.game_id = ".$game;
+            $whereB .= " and b.game_id = ".$game;
         }
         if(isset($account) && $account){
             $where .= " and zd.account = '".$account."'";
         }
         if(isset($starttime) && $starttime){
-            $where .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereB .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereCp .= " and cp.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
         }
         if(isset($endtime) && $endtime){
-            $where .= " and b.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereB .= " and b.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereCp .= " and cp.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
         }
         if(isset($chkTest) && $chkTest=='on'){
-            $where .= " and u.testFlag = 0";
+            $whereB .= " and b.testFlag = 0";
+            $whereU .= " and u.testFlag = 0";
         }else{
-            $where .= " and u.testFlag in(0,2)";
+            $whereB .= " and b.testFlag in(0,2)";
+            $whereU .= " and u.testFlag in(0,2)";
         }
+        $aSql .= " FROM (select user_id,game_id,agent_id,count(bet_id) as bet_id,sum(bet_money) as bet_money,sum(bunko) as bunko,sum(nn_view_money) as nn_view_money from bet b where 1 ".$whereB." group by user_id,game_id) b ";
+        $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
+        $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
+        $aSql .= " LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id ";
+        $aSql .= " LEFT JOIN (select type,to_user,sum(money) as money from `capital` cp where 1 ".$whereCp." group by to_user,type) cp ON cp.to_user = u.id and cp.type in ('t08','t04') ";
+        $aSql .= " WHERE 1 ";
         $aSql .= $where;
         Session::put('reportSql',$aSql);
         $aSql .= " GROUP BY zd.ga_id ORDER BY sumBunko ASC ";
@@ -62,26 +75,48 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
 
         $aSql = "SELECT ag.a_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,ag.name as agname, 
 sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko 
-FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.agent = ag.a_id WHERE 1";
+sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko, 
+sum(case WHEN cp.type = 't08' then cp.money else 0 end) as sumActivity,
+sum(case WHEN cp.type = 't04' then cp.money else 0 end) as sumRecharge_fee,
+sum(dr.amount) as sumDrawing,
+sum(re.amount) as sumRecharges ";
         $where = "";
+        $whereB = "";
+        $whereU = "";
+        $whereCp = "";
+        $whereDr = "";
+        $whereRe = "";
         if(isset($game) && $game){
-            $where .= " and b.game_id = ".$game;
+            $whereB .= " and b.game_id = ".$game;
         }
         if(isset($account) && $account){
             $where .= " and ag.account = '".$account."'";
         }
         if(isset($starttime) && $starttime){
-            $where .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereB .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereCp .= " and cp.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereDr .= " and dr.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereRe .= " and re.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
         }
         if(isset($endtime) && $endtime){
-            $where .= " and b.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereB .= " and b.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereCp .= " and cp.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereDr .= " and dr.created_at <= '".date("Y-m-d 23:59:59",strtotime($starttime))."'";
+            $whereRe .= " and re.created_at <= '".date("Y-m-d 23:59:59",strtotime($starttime))."'";
         }
         if(isset($zd) && $zd>0 ){
-            $where .= " and ag.gagent_id = ".$zd;
+            $where .= " and ag.gagent_id = ".$zd." and u.testFlag in(0,2)";
         }else{
-            $where .= " and u.testFlag = 0 ";
+            $whereB .= " and b.testFlag = 0 ";
+            $whereU .= " and u.testFlag = 0 ";
         }
+        $aSql .= " FROM (select user_id,game_id,agent_id,count(bet_id) as bet_id,sum(bet_money) as bet_money,sum(bunko) as bunko,sum(nn_view_money) as nn_view_money from bet b where 1 ".$whereB." group by user_id,game_id) b ";
+        $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
+        $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
+        $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` dr where 1 ".$whereDr." group by user_id) dr on dr.user_id = u.id and dr.status = 2 ";
+        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` re where 1 ".$whereRe." group by userId) re ON re.userId = u.id and re.status = 2 ";
+        $aSql .= " LEFT JOIN (select type,to_user,sum(money) as money from `capital` cp where 1 ".$whereCp." group by to_user,type) cp ON cp.to_user = u.id and cp.type in ('t08','t04') ";
+        $aSql .= " WHERE 1 ";
         $aSql .= $where;
         Session::put('reportSql',$aSql);
         $aSql .= " GROUP BY u.agent ORDER BY sumBunko ASC ";
@@ -104,27 +139,36 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         $chkDouble = $request->get('chkDouble');        //显示重复姓名会员
         $ag = $request->get('ag');            //代理帐号
 
-        $aUser = '`users`';
-        if(isset($chkDouble) && $chkDouble=="on"){
-            $aUser = "(select * from users WHERE fullName in(select fullName from users group by fullName having count(fullName) > 1))";
-        }
-
         $aSql = "SELECT u.id,u.username,u.fullName,u.agent,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,
 sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko
-            FROM {$aUser} u LEFT JOIN `bet` b on u.id = b.user_id LEFT JOIN `agent` ag on u.agent = ag.a_id WHERE 1 ";
+sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko,
+sum(case WHEN cp.type = 't08' then cp.money else 0 end) as sumActivity,
+sum(case WHEN cp.type = 't04' then cp.money else 0 end) as sumRecharge_fee,
+sum(dr.amount) as sumDrawing,
+sum(re.amount) as sumRecharges ";
         $where = "";
+        $whereB = "";
+        $whereU = "";
+        $whereCp = "";
+        $whereDr = "";
+        $whereRe = "";
         if(isset($game) && $game){
-            $where .= " and b.game_id = ".$game;
+            $whereB .= " and b.game_id = ".$game;
         }
         if(isset($account) && $account){
             $where .= " and u.username = '".$account."'";
         }
         if(isset($starttime) && $starttime){
-            $where .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereB .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereCp .= " and cp.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereDr .= " and dr.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereRe .= " and re.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
         }
         if(isset($endtime) && $endtime){
-            $where .= " and b.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereB .= " and b.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereCp .= " and cp.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereDr .= " and dr.created_at <= '".date("Y-m-d 23:59:59",strtotime($starttime))."'";
+            $whereRe .= " and re.created_at <= '".date("Y-m-d 23:59:59",strtotime($starttime))."'";
         }
         if(isset($minBunko) && $minBunko){
             $where .= " and sumBunko >= ".$minBunko;
@@ -133,13 +177,30 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $where .= " and sumBunko <= ".$maxBunko;
         }
         if(isset($ag) && $ag > 0 ){
-            $where .= " and u.agent = ".$ag;
+            $whereU .= " and u.agent = ".$ag;
         }
         if(isset($chkTest) && $chkTest=='1'){
-            $where .= " and u.testFlag = 0 ";
+            $whereB .= " and b.testFlag = 0 ";
+            $whereU .= " and u.testFlag = 0 ";
         }else {
-            $where .= " and u.testFlag in (0,2) ";
+            $whereB .= " and b.testFlag in (0,2) ";
+            $whereU .= " and u.testFlag in (0,2) ";
         }
+
+        $aSql .= " FROM (select user_id,game_id,agent_id,count(bet_id) as bet_id,sum(bet_money) as bet_money,sum(bunko) as bunko,sum(nn_view_money) as nn_view_money from bet b where 1 ".$whereB." group by user_id,game_id) b ";
+
+        if(isset($chkDouble) && $chkDouble=="on"){      //显示重复姓名会员
+            $aUser = "(select * from users WHERE fullName in(select fullName from users group by fullName having count(fullName) >= 2) and ".$whereU.")";
+            $aSql .= " JOIN ".$aUser." u on b.user_id = u.id ";
+        }else{
+            $aUser = "(select * from `users` u where 1 ".$whereU.")";
+            $aSql .= " LEFT JOIN ".$aUser." u on b.user_id = u.id ";
+        }
+        $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
+        $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` dr where 1 ".$whereDr." group by user_id) dr on dr.user_id = u.id and dr.status = 2 ";
+        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` re where 1 ".$whereRe." group by userId) re ON re.userId = u.id and re.status = 2 ";
+        $aSql .= " LEFT JOIN (select type,to_user,sum(money) as money from `capital` cp where 1 ".$whereCp." group by to_user,type) cp ON cp.to_user = u.id and cp.type in ('t08','t04') ";
+        $aSql .= " WHERE 1 ";
         $aSql .= $where;
         Session::put('reportSql',$aSql);
         $aSql .= " GROUP BY u.id ORDER BY sumBunko ASC ";
@@ -177,7 +238,6 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         return DataTables::of($bet)
             ->make(true);
     }
-
 
     //报表-总计
     public function Total()

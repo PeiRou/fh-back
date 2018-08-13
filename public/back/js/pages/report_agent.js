@@ -80,21 +80,13 @@ $(function () {
                 return '<a href="/back/control/reportManage/user?ag='+data.a_id+'&start='+timeStart+'&end='+timeEnd+'">'+data.agaccount + '(<font color="gray">'+data.agname+'</font>)</a>';
             }},
             {data:'countMember'},             //会员数
-            {data:function () {             //充值金额
-                    return 0 ;
-                }},
-            {data:function () {             //取款金额
-                    return 0 ;
-                }},
+            {data:'sumRecharges'},
+            {data:'sumDrawing'},
             {data:'countBet'},              //笔数
             {data:'sumMoney'},             //投注金额
             {data:'sumWinbet'},             //赢利投注金额
-            {data:function () {             //活动金额
-                    return 0 ;
-                }},
-            {data:function () {             //充值优惠/手续费
-                    return 0 ;
-                }},
+            {data:'sumActivity'},           //活动
+            {data:'sumRecharge_fee'},       //充值手续费
             {data:function () {             //代理赔率金额
                     return 0 ;
                 }},
@@ -124,9 +116,13 @@ $(function () {
                 dataType:'json',
                 success:function (data) {
                     $( api.column( 1 ).footer() ).html(data.result.countMember);
+                    $( api.column( 2 ).footer() ).html(data.result.sumDrawing);
+                    $( api.column( 3 ).footer() ).html(data.result.sumRecharges);
                     $( api.column( 4 ).footer() ).html(data.result.countBet);
                     $( api.column( 5 ).footer() ).html(data.result.sumMoney);
                     $( api.column( 6 ).footer() ).html(data.result.sumWinbet);
+                    $( api.column( 7 ).footer() ).html(data.result.sumActivity);
+                    $( api.column( 8 ).footer() ).html(data.result.sumRecharge_fee);
                     $( api.column( 11 ).footer() ).html(data.result.sumBunko);
                     $( api.column( 13 ).footer() ).html(data.result.sumBunko);
                 }

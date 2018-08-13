@@ -83,12 +83,8 @@ $(function () {
             {data:'countBet'},              //笔数
             {data:'sumMoney'},             //投注金额
             {data:'sumWinbet'},             //赢利投注金额
-            {data:function () {             //活动金额
-                    return 0 ;
-                }},
-            {data:function () {             //充值优惠/手续费
-                    return 0 ;
-                }},
+            {data:'sumActivity'},
+            {data:'sumRecharge_fee'},
             {data:function () {             //代理赔率金额
                     return 0 ;
                 }},
