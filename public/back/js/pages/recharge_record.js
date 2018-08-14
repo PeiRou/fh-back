@@ -323,7 +323,7 @@ function errorOnlinePay(id){
                 btnClass: 'btn-red',
                 action: function(){
                     $.ajax({
-                        url:'/action/admin/passOnlineRecharge',
+                        url:'/action/admin/addRechargeError',
                         type:'post',
                         dataType:'json',
                         data:{id:id},
