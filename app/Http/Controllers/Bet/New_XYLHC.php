@@ -1273,31 +1273,6 @@ class New_XYLHC
             $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
             $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
             $run = DB::statement($sql);
-
-            $zxbz_playCate = 175; //特码分类ID
-            $zxbz_ids = [];
-            $zxbz_lose_ids = [];
-            $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
-            foreach ($get as $item) {
-                $open = explode(',', $openCode);
-                $user = explode(',', $item->bet_info);
-                $bi = array_intersect($open, $user);
-                if (empty($bi)) {
-                    $zxbz_ids[] = $item->bet_id;
-                } else {
-                    $zxbz_lose_ids[] = $item->bet_id;
-                }
-            }
-            $ids_zxbz = implode(',', $zxbz_ids);
-            $ids_zxbz_lose = implode(',', $zxbz_lose_ids);
-//            \Log::info('自选不中--》中了：'.$ids_zxbz);
-//            \Log::info('自选不中--》没中：'.$ids_zxbz_lose);
-            if($ids_zxbz){
-                $sql_zxb = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
-            } else {
-                $sql_zxb = 0;
-            }
-
 //            if ($ids_zxbz_lose) {
 //                $sql_zxb = "UPDATE bet SET bunko = 0-bet_money WHERE `bet_id` IN ($ids_zxbz_lose)"; //未中奖的SQL语句
 //                $run_xzbz_lose = DB::statement($sql_zxb);
@@ -1306,6 +1281,29 @@ class New_XYLHC
 //            }
 
             if($run == 1){
+                $zxbz_playCate = 175; //特码分类ID
+                $zxbz_ids = [];
+                $zxbz_lose_ids = [];
+                $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
+                foreach ($get as $item) {
+                    $open = explode(',', $openCode);
+                    $user = explode(',', $item->bet_info);
+                    $bi = array_intersect($open, $user);
+                    if (empty($bi)) {
+                        $zxbz_ids[] = $item->bet_id;
+                    } else {
+                        $zxbz_lose_ids[] = $item->bet_id;
+                    }
+                }
+                $ids_zxbz = implode(',', $zxbz_ids);
+                $ids_zxbz_lose = implode(',', $zxbz_lose_ids);
+//            \Log::info('自选不中--》中了：'.$ids_zxbz);
+//            \Log::info('自选不中--》没中：'.$ids_zxbz_lose);
+                if($ids_zxbz){
+                    $sql_zxb = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
+                } else {
+                    $sql_zxb = 0;
+                }
                 $run2 = DB::connection('mysql::write')->statement($sql_lose);
                 if($run2 == 1){
                     if($sql_zxb !== 0){
@@ -1323,7 +1321,6 @@ class New_XYLHC
 
     function updateUserMoney($gameId,$issue){
         $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        \Log::info('lucky lhc'.$get);
         if($get){
             $sql = "UPDATE users SET money = money+ CASE id ";
             $users = [];
