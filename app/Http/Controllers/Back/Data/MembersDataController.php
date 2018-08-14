@@ -75,10 +75,28 @@ class MembersDataController extends Controller
     public function agent(Request $request)
     {
         $ga_id = $request->get('gaid');
+        $params = $request->post();
         $aSql = "SELECT ag.*,COUNT(DISTINCT((case WHEN u.testFlag in (0,2) then u.id else NULL end))) as countMember FROM `agent` ag LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 ";
         $where = "";
         if(isset($ga_id) && $ga_id>0 ){
             $where .= " and ag.gagent_id = ".$ga_id;
+        }
+        if(isset($params['status']) && array_key_exists('status',$params)){
+            $where .= " and ag.status = ".$params['status'];
+        }
+        if(isset($params['name']) && array_key_exists('name',$params)){
+            if(isset($params['type']) && array_key_exists('type',$params)){
+                if($params['type'] == 1){
+                    $where .= " and ag.account = '".$params['name']."'";
+                }elseif($params['type'] == 2){
+                    $where .= " and ag.name = '".$params['name']."'";
+                }
+            }
+        }
+        if(isset($params['day']) && array_key_exists('day',$params)){
+            $time = date('Y-m-d',strtotime(-$params['day'].' day'));
+//            var_dump($time);die();
+            $where .= " and ag.updated_at <= '".$time."'";
         }
         $aSql = $aSql.$where." GROUP BY ag.a_id ORDER BY ag.created_at desc ";
         $allAgent = DB::select($aSql);
