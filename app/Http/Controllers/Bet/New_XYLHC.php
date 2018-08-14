@@ -1281,6 +1281,7 @@ class New_XYLHC
 //            }
 
             if($run == 1){
+                \Log::info('幸运六合彩第一次结算');
                 $zxbz_playCate = 175; //特码分类ID
                 $zxbz_ids = [];
                 $zxbz_lose_ids = [];
@@ -1297,8 +1298,8 @@ class New_XYLHC
                 }
                 $ids_zxbz = implode(',', $zxbz_ids);
                 $ids_zxbz_lose = implode(',', $zxbz_lose_ids);
-//            \Log::info('自选不中--》中了：'.$ids_zxbz);
-//            \Log::info('自选不中--》没中：'.$ids_zxbz_lose);
+                \Log::info('自选不中-->中了：'.$ids_zxbz);
+                \Log::info('自选不中-->没中：'.$ids_zxbz_lose);
                 if($ids_zxbz){
                     $sql_zxb = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
                 } else {
@@ -1306,12 +1307,15 @@ class New_XYLHC
                 }
                 $run2 = DB::connection('mysql::write')->statement($sql_lose);
                 if($run2 == 1){
+                    \Log::info('幸运六合彩第一次结算:自选不中结算-【输】');
                     if($sql_zxb !== 0){
                         $run3 = DB::connection('mysql::write')->statement($sql_zxb);
                         if($run3 == 1){
+                            \Log::info('幸运六合彩第一次结算:自选不中结算-【赢】');
                             return 1;
                         }
                     } else {
+                        \Log::info('幸运六合彩第一次结算:自选不中结算-【没有中奖】');
                         return 1;
                     }
                 }
@@ -1327,12 +1331,15 @@ class New_XYLHC
             foreach ($get as $i){
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->s ";
+                \Log::info('会员派彩：'.$i->s);
             }
             $ids = implode(',',$users);
             if($ids && isset($ids)){
+                \Log::info('准备派彩的会员：'.$ids);
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::connection('mysql::write')->statement($sql);
                 if($up == 1){
+                    \Log::info('已派彩：'.$ids);
                     return 1;
                 }
             }
