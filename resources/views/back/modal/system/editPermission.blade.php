@@ -70,7 +70,6 @@
                 tempDepNames.push(obj.value)
             });
             $('#permission_selected').val(tempDepNames);
-            console.log(tempDepNames)
         }
         
         function count() {
