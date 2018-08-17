@@ -19,6 +19,8 @@ class openHistoryController extends Controller
             $issuedate = time();
         else
             $issuedate = strtotime($issuedate);
+        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
+            $issuedate = time();
 
         $HIS = DB::table('game_bjpk10')->select()
             ->where(function ($query) use ($issue){             //奖期
@@ -46,6 +48,8 @@ class openHistoryController extends Controller
             $issuedate = time();
         else
             $issuedate = strtotime($issuedate);
+        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
+            $issuedate = time();
 
         $HIS = DB::table('game_mssc')->select()
             ->where(function ($query) use ($issue){             //奖期
@@ -73,6 +77,8 @@ class openHistoryController extends Controller
             $issuedate = time();
         else
             $issuedate = strtotime($issuedate);
+        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
+            $issuedate = time();
 
         $HIS = DB::table('game_msft')->select()
             ->where(function ($query) use ($issue){             //奖期
@@ -100,6 +106,8 @@ class openHistoryController extends Controller
             $issuedate = time();
         else
             $issuedate = strtotime($issuedate);
+        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
+            $issuedate = time();
 
         $HIS = DB::table('game_paoma')->select()
             ->where(function ($query) use ($issue){             //奖期
