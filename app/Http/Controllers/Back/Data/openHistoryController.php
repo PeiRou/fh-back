@@ -162,38 +162,25 @@ class openHistoryController extends Controller
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
 
-        if(!empty($issuedate))
-            $aIssuedate = explode('-',$issuedate);
+        if(empty($issuedate))
+            $issuedate = time();
         else
-            $aIssuedate = array();
+            $issuedate = strtotime($issuedate);
+        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
+            $issuedate = time();
+
         $HIS = DB::table('game_msssc')->select()
             ->where(function ($query) use ($issue){             //奖期
                 if(isset($issue) && $issue){
                     $query->where("issue",$issue);
                 }
             })
-            ->where(function ($query) use ($aIssuedate){        //年
-                if(isset($aIssuedate) && $aIssuedate){
-                    $query->where("year",$aIssuedate[0]);
+            ->where(function ($query) use ($issuedate){        //
+                if(isset($issuedate) && $issuedate){
+                    $query->where("opentime",'<=',date('Y-m-d H:i:s',$issuedate));
+                    $query->where("opentime",'>=',date('Y-m-d 00:00:00',$issuedate));
                 }
             })
-            ->where(function ($query) use ($aIssuedate){        //月
-                if(isset($aIssuedate) && $aIssuedate){
-                    $aIssuedate[1] = intval($aIssuedate[1]);
-                    if($aIssuedate[1]<10)                       //如果小于10补0
-                        $aIssuedate[1] = "0".$aIssuedate[1];
-                    $query->where("month",$aIssuedate[1]);
-                }
-            })
-            ->where(function ($query) use ($aIssuedate){        //日
-                if(isset($aIssuedate) && $aIssuedate){
-                    $aIssuedate[2] = intval($aIssuedate[2]);
-                    if($aIssuedate[2]<10)                       //如果小于10补0
-                        $aIssuedate[2] = "0".$aIssuedate[2];
-                    $query->where("day",$aIssuedate[2]);
-                }
-            })
-            ->where('opentime','<=',date('Y-m-d H:i:s',time()))
             ->orderBy('id','desc')->get();
         return DataTables::of($HIS)
             ->make(true);
@@ -205,38 +192,24 @@ class openHistoryController extends Controller
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
 
-        if(!empty($issuedate))
-            $aIssuedate = explode('-',$issuedate);
+        if(empty($issuedate))
+            $issuedate = time();
         else
-            $aIssuedate = array();
+            $issuedate = strtotime($issuedate);
+        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
+            $issuedate = time();
         $HIS = DB::table('game_bjkl8')->select()
             ->where(function ($query) use ($issue){             //奖期
                 if(isset($issue) && $issue){
                     $query->where("issue",$issue);
                 }
             })
-            ->where(function ($query) use ($aIssuedate){        //年
-                if(isset($aIssuedate) && $aIssuedate){
-                    $query->where("year",$aIssuedate[0]);
+            ->where(function ($query) use ($issuedate){        //
+                if(isset($issuedate) && $issuedate){
+                    $query->where("opentime",'<=',date('Y-m-d H:i:s',$issuedate));
+                    $query->where("opentime",'>=',date('Y-m-d 00:00:00',$issuedate));
                 }
             })
-            ->where(function ($query) use ($aIssuedate){        //月
-                if(isset($aIssuedate) && $aIssuedate){
-                    $aIssuedate[1] = intval($aIssuedate[1]);
-                    if($aIssuedate[1]<10)                       //如果小于10补0
-                        $aIssuedate[1] = "0".$aIssuedate[1];
-                    $query->where("month",$aIssuedate[1]);
-                }
-            })
-            ->where(function ($query) use ($aIssuedate){        //日
-                if(isset($aIssuedate) && $aIssuedate){
-                    $aIssuedate[2] = intval($aIssuedate[2]);
-                    if($aIssuedate[2]<10)                       //如果小于10补0
-                        $aIssuedate[2] = "0".$aIssuedate[2];
-                    $query->where("day",$aIssuedate[2]);
-                }
-            })
-            ->where('opentime','<=',date('Y-m-d H:i:s',time()))
             ->orderBy('id','desc')->get();
         return DataTables::of($HIS)
             ->make(true);
@@ -266,38 +239,26 @@ class openHistoryController extends Controller
                 break;
 
         }
-        if(!empty($issuedate))
-            $aIssuedate = explode('-',$issuedate);
+
+        if(empty($issuedate))
+            $issuedate = time();
         else
-            $aIssuedate = array();
+            $issuedate = strtotime($issuedate);
+        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
+            $issuedate = time();
+
         $HIS = DB::table($table)->select()
             ->where(function ($query) use ($issue){             //奖期
                 if(isset($issue) && $issue){
                     $query->where("issue",$issue);
                 }
             })
-            ->where(function ($query) use ($aIssuedate){        //年
-                if(isset($aIssuedate) && $aIssuedate){
-                    $query->where("year",$aIssuedate[0]);
+            ->where(function ($query) use ($issuedate){        //
+                if(isset($issuedate) && $issuedate){
+                    $query->where("opentime",'<=',date('Y-m-d H:i:s',$issuedate));
+                    $query->where("opentime",'>=',date('Y-m-d 00:00:00',$issuedate));
                 }
             })
-            ->where(function ($query) use ($aIssuedate){        //月
-                if(isset($aIssuedate) && $aIssuedate){
-                    $aIssuedate[1] = intval($aIssuedate[1]);
-                    if($aIssuedate[1]<10)                       //如果小于10补0
-                        $aIssuedate[1] = "0".$aIssuedate[1];
-                    $query->where("month",$aIssuedate[1]);
-                }
-            })
-            ->where(function ($query) use ($aIssuedate){        //日
-                if(isset($aIssuedate) && $aIssuedate){
-                    $aIssuedate[2] = intval($aIssuedate[2]);
-                    if($aIssuedate[2]<10)                       //如果小于10补0
-                        $aIssuedate[2] = "0".$aIssuedate[2];
-                    $query->where("day",$aIssuedate[2]);
-                }
-            })
-            ->where('opentime','<=',date('Y-m-d H:i:s',time()))
             ->orderBy('id','desc')->get();
         return DataTables::of($HIS)
             ->make(true);
