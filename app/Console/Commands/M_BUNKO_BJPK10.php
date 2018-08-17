@@ -41,9 +41,9 @@ class M_BUNKO_BJPK10 extends Command
      */
     public function handle()
     {
-        $openNum = '01,08,02,09,05,03,10,06,04,07';
-        $openIssue = '698882';
-        $id = 11198;
+        $openNum = '07,06,05,09,01,02,10,04,03,08';
+        $openIssue = '698896';
+        $id = 11212;
         event(new RunPk10($openNum, $openIssue, $this->gameId, $id)); //新--结算
     }
 }
