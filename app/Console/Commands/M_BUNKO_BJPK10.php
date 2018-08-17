@@ -41,15 +41,9 @@ class M_BUNKO_BJPK10 extends Command
      */
     public function handle()
     {
-        $table = 'game_bjpk10';
-        $excel = new Excel();
-        $get = $excel->getNeedBunkoIssue($table);
-        if ($get) {
-            $update = DB::table($table)->where('id', $get->id)->update([
-                'bunko' => 2
-            ]);
-            if($update)
-                event(new RunPk10($get->opennum, $get->issue, $this->gameId, $get->id)); //新--结算
-        }
+        $openNum = '01,08,02,09,05,03,10,06,04,07';
+        $openIssue = '698882';
+        $id = 11198;
+        event(new RunPk10($openNum, $openIssue, $this->gameId, $id)); //新--结算
     }
 }
