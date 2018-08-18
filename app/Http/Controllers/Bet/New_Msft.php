@@ -1240,19 +1240,19 @@ class New_Msft
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->s ";
             }
-            //\Log::info($users);
+
             $ids = implode(',',$users);
-            //\Log::info($ids);
+
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
-                //\Log::info($sql);
                 $up = DB::connection('mysql::write')->statement($sql);
-                if($up !== 1){
+                if($up != 1){
                     return 1;
                 }
             }
         } else {
             \Log::info('秒速飞艇已结算过，已阻止！');
         }
+        return 0;
     }
 }

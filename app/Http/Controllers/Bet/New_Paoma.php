@@ -64,22 +64,16 @@ class New_Paoma
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                     if($updateUserMoney == 1){
-                        $update = DB::table($table)->where('id',$id)->update([
-                            'bunko' => 1
-                        ]);
-                        if ($update !== 1) {
-                            \Log::info("跑马" . $issue . "结算出错");
-                        }
+                        \Log::info("跑马" . $issue . "结算出错");
                     }
                 }
             }
-        }else{
-            $update = DB::table($table)->where('id',$id)->update([
-                'bunko' => 1
-            ]);
-            if ($update !== 1) {
-                \Log::info("跑马" . $issue . "结算出错");
-            }
+        }
+        $update = DB::table($table)->where('id',$id)->update([
+            'bunko' => 1
+        ]);
+        if ($update !== 1) {
+            \Log::info("跑马" . $issue . "结算not Finshed");
         }
     }
 
@@ -1252,12 +1246,13 @@ class New_Paoma
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::connection('mysql::write')->statement($sql);
-                if($up == 1){
+                if($up != 1){
                     return 1;
                 }
             }
         } else {
             \Log::info('跑马已结算过，已阻止！');
         }
+        return 0;
     }
 }

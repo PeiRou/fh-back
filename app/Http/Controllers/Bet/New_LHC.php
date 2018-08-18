@@ -1319,12 +1319,13 @@ class New_LHC
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::connection('mysql::write')->statement($sql);
-                if($up !== 1){
+                if($up != 1){
                     return 1;
                 }
             }
         } else {
             \Log::info('六合彩已结算过，已阻止！');
         }
+        return 0;
     }
 }

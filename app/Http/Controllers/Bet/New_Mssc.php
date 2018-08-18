@@ -1247,7 +1247,6 @@ class New_Mssc
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::connection('mysql::write')->statement($sql);
                 if($up != 1){
-                    \Log::info($up);
                     return 1;
                 }
             }

@@ -327,12 +327,13 @@ class New_Hbk3
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::connection('mysql::write')->statement($sql);
-                if($up !== 1){
+                if($up != 1){
                     return 1;
                 }
             }
         } else {
             \Log::info('湖北快3已结算过，已阻止！');
         }
+        return 0;
     }
 }

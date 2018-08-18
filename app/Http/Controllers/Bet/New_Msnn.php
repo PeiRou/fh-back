@@ -27,21 +27,15 @@ class New_Msnn
             if($bunko == 1) {
                 $updateUserMoney = $this->updateUserMoney($gameId, $issue);
                 if($updateUserMoney == 1){
-                    $update = DB::table($table)->where('id',$id)->update([
-                        'nn_bunko' => 1
-                    ]);
-                    if (!$update) {
-                        \Log::info("秒速牛牛" . $issue . "结算出错");
-                    }
+                    \Log::info("秒速牛牛" . $issue . "结算出错");
                 }
             }
-        }else{
-            $update = DB::table($table)->where('id',$id)->update([
-                'nn_bunko' => 1
-            ]);
-            if ($update !== 1) {
-                \Log::info("秒速牛牛" . $issue . "结算出错");
-            }
+        }
+        $update = DB::table($table)->where('id',$id)->update([
+            'nn_bunko' => 1
+        ]);
+        if ($update !== 1) {
+            \Log::info("秒速牛牛" . $issue . "结算not Finshed");
         }
     }
 
@@ -288,9 +282,12 @@ class New_Msnn
         if($ids && isset($ids)){
             $sql .= "END WHERE id IN (0,$ids)";
             $up = DB::connection('mysql::write')->statement($sql);
-            if($up == 1){
+            if($up != 1){
                 return 1;
             }
+        }else {
+            \Log::info('秒速牛牛已结算过，已阻止！');
         }
+        return 0;
     }
 }
