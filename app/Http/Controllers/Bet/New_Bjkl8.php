@@ -27,22 +27,16 @@ class New_Bjkl8
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
-                if($updateUserMoney == 1){
-                    $update = DB::table($table)->where('id',$id)->update([
-                        'bunko' => 1
-                    ]);
-                    if ($update !== 1) {
-                        \Log::info("北京快乐8" . $issue . "结算出错");
-                    }
+                if($updateUserMoney !== 1){
+                    \Log::info("北京快乐8" . $issue . "结算出错");
                 }
             }
-        }else{
-            $update = DB::table($table)->where('id',$id)->update([
-                'bunko' => 1
-            ]);
-            if ($update !== 1) {
-                \Log::info("北京快乐8" . $issue . "结算出错");
-            }
+        }
+        $update = DB::table($table)->where('id',$id)->update([
+            'bunko' => 1
+        ]);
+        if ($update !== 1) {
+            \Log::info("北京快乐8" . $issue . "结算not Finshed");
         }
     }
 

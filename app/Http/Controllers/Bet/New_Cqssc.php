@@ -36,22 +36,16 @@ class New_Cqssc
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
-                if($updateUserMoney == 1){
-                    $update = DB::table($table)->where('id',$id)->update([
-                        'bunko' => 1
-                    ]);
-                    if (!$update) {
-                        \Log::info("重庆时时彩" . $issue . "结算出错");
-                    }
+                if($updateUserMoney !== 1){
+                    \Log::info("重庆时时彩" . $issue . "结算出错");
                 }
             }
-        }else{
-            $update = DB::table($table)->where('id',$id)->update([
-                'bunko' => 1
-            ]);
-            if ($update !== 1) {
-                \Log::info("重庆时时彩" . $issue . "结算出错");
-            }
+        }
+        $update = DB::table($table)->where('id',$id)->update([
+            'bunko' => 1
+        ]);
+        if ($update !== 1) {
+            \Log::info("重庆时时彩" . $issue . "结算not Finshed");
         }
     }
 
