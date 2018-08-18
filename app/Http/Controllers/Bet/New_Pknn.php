@@ -34,7 +34,7 @@ class New_Pknn
             'bunko' => 1
         ]);
         if ($update !== 1) {
-            \Log::info("PK10牛牛" . $issue . "结算出错");
+            \Log::info("PK10牛牛" . $issue . "结算not Finshed");
         }
     }
 
