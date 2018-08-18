@@ -293,7 +293,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/promotion/addConfig','Back\PromotionController@addConfig'); //推广配置-新增配置
     Route::post('/action/admin/promotion/editConfig','Back\PromotionController@editConfig'); //推广配置-修改配置
     Route::post('/action/admin/addNotice', 'Back\SrcNoticeController@addNotice'); //添加公告
-    Route::post('/action/admin/delNoticeSetting', 'Back\SrcNoticeController@delNoticeSetting'); //添加公告
+    Route::post('/action/admin/editNotice', 'Back\SrcNoticeController@editNotice'); //修改公告
+    Route::post('/action/admin/delNoticeSetting', 'Back\SrcNoticeController@delNoticeSetting'); //删除公告
     Route::post('/action/admin/setNoticeOrder', 'Back\SrcNoticeController@setNoticeOrder'); //设置公告顺序
     Route::post('/action/admin/addSendMessage', 'Back\SrcNoticeController@addSendMessage'); //添加消息
     Route::post('/action/admin/delSendMessage', 'Back\SrcNoticeController@delSendMessage'); //删除消息
@@ -388,7 +389,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/viewUserContent/{id}', 'Back\Ajax\ModalController@viewUserContent')->middleware('check-permission')->name('m.user.viewDetails');
     Route::get('/back/modal/changeUserMoney/{id}', 'Back\Ajax\ModalController@changeUserMoney')->middleware('check-permission')->name('m.user.changeBalance');      //修改会员馀额
     Route::get('/back/modal/userCapitalHistory/{id}', 'Back\Ajax\ModalController@userCapitalHistory')->middleware('check-permission')->name('m.user.viewDetails');
-    Route::get('/back/modal/addNotice', 'Back\Ajax\ModalController@addNotice');
+    Route::get('/back/modal/addNotice', 'Back\Ajax\ModalController@addNotice');     //公告管理-添加公告
+    Route::get('/back/modal/editNotice/{id}', 'Back\Ajax\ModalController@editNotice');     //公告管理-修改公告
     Route::get('/back/modal/addSendMessage', 'Back\Ajax\ModalController@addSendMessage');
     Route::get('/back/modal/addLevel', 'Back\Ajax\ModalController@addLevel');
     Route::get('/back/modal/editLevel/{id}', 'Back\Ajax\ModalController@editLevel');

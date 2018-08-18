@@ -9,6 +9,15 @@ class Notices extends Model
 {
     protected $table = 'notice';
 
+    //公告类型
+    public static $noticesStatus = [
+        '1' => '1.最新消息(投注区底部公告)',
+        '2' => '2.最新消息(登录弹窗公告)',
+        '3' => '3.推广页公告',
+        '4' => '4.所有类型公告(包含：1、2、3)',
+        '5' => '5.代理专属公告',
+    ];
+
     //修改排序
     public static function editBatchNoticesData($data){
         return DB::update(self::updateBatchStitching('notice',$data,['sort'],'id'));
@@ -34,5 +43,10 @@ class Notices extends Model
         $endStr .= ')';
         $aSql .= $endStr;
         return $aSql;
+    }
+
+    //获取公告
+    public static function getNoticesInfoOne($id){
+        return self::where('id','=',$id)->first();
     }
 }

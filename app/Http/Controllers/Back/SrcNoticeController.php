@@ -47,6 +47,24 @@ class SrcNoticeController extends Controller
         }
     }
 
+    //修改公告
+    public function editNotice(Request $request){
+        $data = [
+            'title' => $request->input('title'),
+            'content' => $request->input('content'),
+            'type' => $request->input('type'),
+            'userLevel' => empty($request->input('level_id')) ? null : implode(',',$request->input('level_id')),
+        ];
+        if(empty($request->input('id'))){
+            return response()->json(['status' => false, 'msg' => "修改参数错误"]);
+        }
+        if(Notices::where('id','=',$request->input('id'))->update($data)){
+            return response()->json(['status' => true, 'msg' => "修改成功"]);
+        }else{
+            return response()->json(['status' => false, 'msg' => "修改失败"]);
+        }
+    }
+
     //删除公告
     public function delNoticeSetting(Request $request)
     {

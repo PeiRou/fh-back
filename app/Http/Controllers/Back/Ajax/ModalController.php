@@ -14,6 +14,7 @@ use App\FeedbackMessage;
 use App\Games;
 use App\GeneralAgent;
 use App\Levels;
+use App\Notices;
 use App\PayOnline;
 use App\PayType;
 use App\Permissions;
@@ -291,6 +292,15 @@ class ModalController extends Controller
     {
         $levels = Levels::all();
         return view('back.modal.notice.addNotice')->with('levels',$levels);
+    }
+
+    //公告管理-修改公告
+    public function editNotice($id){
+        $levels = Levels::all();
+        $iNotice = Notices::getNoticesInfoOne($id);
+        $iNotice->userLevel = empty($iNotice->userLevel) ? [] : explode(',',$iNotice->userLevel);
+        $aStatus = Notices::$noticesStatus;
+        return view('back.modal.notice.editNotice')->with('levels',$levels)->with('iNotice',$iNotice)->with('aStatus',$aStatus);
     }
     
     //添加消息

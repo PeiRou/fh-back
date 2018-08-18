@@ -144,17 +144,17 @@
                     }
                 }
             },
-            email: {
-                validators: {
-                    emailAddress: {
-                        message: '邮箱地址格式错误'
-                    },
-                    regexp: {
-                        regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
-                        message: '邮箱地址格式错误'
-                    }
-                }
-            }
+            // email: {
+            //     validators: {
+            //         emailAddress: {
+            //             message: '邮箱地址格式错误'
+            //         },
+            //         regexp: {
+            //             regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
+            //             message: '邮箱地址格式错误'
+            //         }
+            //     }
+            // }
         }
     }).on('err.validator.fv', function(e, data) {
         // data.bv        --> The FormValidation.Base instance
