@@ -13,11 +13,11 @@
             <div class="ui mini form">
                 <div class="fields">
                     <div class="one wide field">
-                        <input type="text" id="account" value="{{date("Y-m-d")}}" placeholder="开始时间">
+                        <input type="text" id="startTime" value="{{date("Y-m-d")}}" placeholder="开始时间">
                     </div>
                     <div style="line-height: 32px;">-</div>
                     <div class="one wide field">
-                        <input type="text" id="mobile" value="{{date("Y-m-d")}}" placeholder="结束时间">
+                        <input type="text" id="endTime" value="{{date("Y-m-d")}}" placeholder="结束时间">
                     </div>
                     <div class="one wide field">
                         <input type="text" id="username" placeholder="用户账户">

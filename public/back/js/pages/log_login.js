@@ -16,6 +16,8 @@ $(function () {
                 d.ip = $('#ip').val();
                 d.loginHost = $('#login_host').val();
                 d.ipInfo = $('#ip_info').val();
+                d.startTime = $('#startTime').val();
+                d.endTime = $('#endTime').val();
             }
         },
         columns: [

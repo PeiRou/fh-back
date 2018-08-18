@@ -17,6 +17,8 @@ class LogDataController extends Controller
         $ip = $request->get('ip');
         $loginHost = $request->get('loginHost');
         $ipInfo = $request->get('ipInfo');
+        $startTime = $request->get('startTime');
+        $endTime = $request->get('endTime');
 
         $loginLog = DB::table('log_login')
             ->where(function ($q) use ($username){
@@ -37,6 +39,16 @@ class LogDataController extends Controller
             ->where(function ($q) use ($ipInfo){
                 if($ipInfo && isset($ipInfo)){
                     $q->where('ip_info',$ipInfo);
+                }
+            })
+            ->where(function ($q) use ($startTime){
+                if($startTime && isset($startTime)){
+                    $q->where('create_at','>=',$startTime . ' 00:00:00');
+                }
+            })
+            ->where(function ($q) use ($endTime){
+                if($endTime && isset($endTime)){
+                    $q->where('create_at','<=',$endTime . ' 23:59:59');
                 }
             })
             ->orderBy('id','DESC')->get();
