@@ -25,22 +25,16 @@ class New_Pknn
             $bunko = $this->bunko($win,$lose,$nn,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
-                if($updateUserMoney == 1){
-                    $update = DB::table($table)->where('id',$id)->update([
-                        'bunko' => 1
-                    ]);
-                    if (!$update) {
-                        \Log::info("PK10牛牛" . $issue . "结算出错");
-                    }
+                if($updateUserMoney !== 1){
+                    \Log::info("PK10牛牛" . $issue . "结算出错");
                 }
             }
-        }else{
-            $update = DB::table($table)->where('id',$id)->update([
-                'bunko' => 1
-            ]);
-            if ($update !== 1) {
-                \Log::info("PK10牛牛" . $issue . "结算出错");
-            }
+        }
+        $update = DB::table($table)->where('id',$id)->update([
+            'bunko' => 1
+        ]);
+        if ($update !== 1) {
+            \Log::info("PK10牛牛" . $issue . "结算出错");
         }
     }
 
