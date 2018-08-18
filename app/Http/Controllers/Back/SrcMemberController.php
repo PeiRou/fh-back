@@ -415,6 +415,11 @@ class SrcMemberController extends Controller
         $money = $request->input('money');
         $content = $request->input('content');
         $getUserBalance = User::find($uid);
+        if(empty($content))
+            return response()->json([
+                'status'=>false,
+                'msg'=>'请输入余额变动备注！'
+            ]);
         Redis::select(5);
         $key = 'addMy';
         if(!Redis::exists($key.$uid)){
@@ -499,7 +504,8 @@ class SrcMemberController extends Controller
                             'ip_info' => '-',
                             'draw_type' => 2,
                             'status' => 2,
-                            'platform' => 1
+                            'platform' => 1,
+                            'msg' => $content
                         ]);
                         if($insert == 1){
                             $updateBalance = User::where('id',$uid)
