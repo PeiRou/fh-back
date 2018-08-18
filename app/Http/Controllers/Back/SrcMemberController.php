@@ -411,6 +411,7 @@ class SrcMemberController extends Controller
     public function changeUserMoney(Request $request)
     {
         $loginAccount = Session::get('account_id');
+        $loginAccountName = Session::get('account_name');
         $uid = $request->input('uid');
         $money = $request->input('money');
         $content = $request->input('content');
@@ -531,6 +532,7 @@ class SrcMemberController extends Controller
                     }
 
                 } else {
+                    \Log::info('资金操作失败 order_id:'.$capital->order_id.' type:'.$capital->type.' sa_id:'.$capital->operation_id.' sa_name:'.$loginAccountName);
                     return response()->json([
                         'status'=>false,
                         'msg'=>'资金操作失败，请稍后再试！'
