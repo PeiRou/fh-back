@@ -423,7 +423,7 @@ class SrcMemberController extends Controller
         Redis::select(5);
         $key = 'addMy';
         if(!Redis::exists($key.$uid)){
-            Redis::setex($key.$uid,5,'on');
+            Redis::setex($key.$uid,60,'on');
             try{
                 $newBalance = $getUserBalance->money + $money;
                 if($newBalance < 0)
