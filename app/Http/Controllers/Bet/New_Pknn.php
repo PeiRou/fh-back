@@ -280,9 +280,10 @@ class New_Pknn
         if($ids && isset($ids)){
             $sql .= "END WHERE id IN (0,$ids)";
             $up = DB::connection('mysql::write')->statement($sql);
-            if($up !== 1){
+            if($up != 1){
                 return 1;
             }
         }
+        return 0;
     }
 }

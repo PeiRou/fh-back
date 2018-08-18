@@ -46,21 +46,15 @@ class New_PK10
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                 if($updateUserMoney == 1){
-                    $update = DB::table($table)->where('id',$id)->update([
-                        'bunko' => 1
-                    ]);
-                    if (!$update) {
-                        \Log::info("北京PK10" . $issue . "结算出错");
-                    }
+                    \Log::info("北京PK10" . $issue . "结算出错");
                 }
             }
-        }else{
-            $update = DB::table($table)->where('id',$id)->update([
-                'bunko' => 1
-            ]);
-            if ($update !== 1) {
-                \Log::info("北京PK10" . $issue . "结算出错");
-            }
+        }
+        $update = DB::table($table)->where('id',$id)->update([
+            'bunko' => 1
+        ]);
+        if ($update !== 1) {
+            \Log::info("北京PK10" . $issue . "结算not Finshed");
         }
     }
 
@@ -1186,12 +1180,13 @@ class New_PK10
                 $sql .= "END WHERE id IN (0,$ids)";
                 //\Log::info($sql);
                 $up = DB::connection('mysql::write')->statement($sql);
-                if($up == 1){
+                if($up != 1){
                     return 1;
                 }
             }
         } else {
             \Log::info('北京赛车已结算过，已阻止！');
         }
+        return 0;
     }
 }
