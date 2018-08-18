@@ -420,10 +420,11 @@ class SrcMemberController extends Controller
                 'status'=>false,
                 'msg'=>'请输入余额变动备注！'
             ]);
-        Redis::select(5);
+        $redis = Redis::connection();
+        $redis->select(5);
         $key = 'addMy';
-        if(!Redis::exists($key.$uid)){
-            Redis::setex($key.$uid,60,'on');
+        if(!$redis->exists($key.$uid)){
+            $redis->setex($key.$uid,61,'on');
             try{
                 $newBalance = $getUserBalance->money + $money;
                 if($newBalance < 0)
@@ -456,7 +457,7 @@ class SrcMemberController extends Controller
                         $recharges->orderNum = payOrderNumber();
                         $recharges->payType = 'adminAddMoney';
                         $recharges->amount = $money;
-                        $recharges->balance = $getUserBalance->money;
+                        $recharges->balance = $getUserBalance->money+$money;
                         $recharges->shou_info = "后台加钱：".$content;
                         $recharges->msg = $content;
 
@@ -467,11 +468,10 @@ class SrcMemberController extends Controller
                         $recharges->operation_account = Session::get('account');
                         $save = $recharges->save();
                         if($save == 1){
-                            $updateBalance = User::where('id',$uid)
-                                ->update([
-                                    'money'=>$newBalance
-                                ]);
-                            if($updateBalance == 1){
+                            $updateUserMoney = DB::table('users')->where('id',$uid)->update([
+                                'money' => DB::raw('money + '.$money)
+                            ]);
+                            if($updateUserMoney == 1){
                                 return response()->json([
                                     'status'=>true,
                                     'msg'=>'ok'
@@ -508,11 +508,10 @@ class SrcMemberController extends Controller
                             'msg' => $content
                         ]);
                         if($insert == 1){
-                            $updateBalance = User::where('id',$uid)
-                                ->update([
-                                    'money'=>$newBalance
-                                ]);
-                            if($updateBalance == 1){
+                            $updateUserMoney = DB::table('users')->where('id',$uid)->update([
+                                'money' => DB::raw('money + '.$money)
+                            ]);
+                            if($updateUserMoney == 1){
                                 return response()->json([
                                     'status'=>true,
                                     'msg'=>'ok'
