@@ -423,7 +423,7 @@ class SrcMemberController extends Controller
         $redis = Redis::connection();
         $redis->select(5);
         $key = 'addMy';
-        if(!$redis->exists($key.$uid)){
+        if(!$redis->exists($key.$uid.$money)){
             $redis->setex($key.$uid,61,'on');
             try{
                 $newBalance = $getUserBalance->money + $money;
@@ -542,7 +542,7 @@ class SrcMemberController extends Controller
         }else{
             return response()->json([
                 'status'=>false,
-                'msg'=>'同一个用户5秒内无法重复操作，请稍后再试！'
+                'msg'=>'同一个用户同资金61秒内无法重复操作，请稍后再试！'
             ]);
         }
     }
