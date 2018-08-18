@@ -305,17 +305,22 @@ class FinanceDataController extends Controller
                 }
             })
             ->editColumn('status',function ($drawing){
+                $txt = '';
                 if($drawing->dr_status == 0){
-                    return '<span class="orange-text">未受理</span>';
+                    $txt .= '<span class="orange-text">未受理</span>';
                 } else if($drawing->dr_status == 1) {
-                    return '<span class="blue-text">处理中</span>';
+                    $txt .= '<span class="blue-text">处理中</span>';
                 } else if($drawing->dr_status == 2) {
-                    return '<span class="green-text"><b>通过</b></span>';
+                    $txt .= '<span class="green-text"><b>通过</b></span>';
                 } else if($drawing->dr_status == 3) {
-                    return '<span class="red-text"><b>不通过</b></span> <span class="tips-icon"><i data-position="left center" data-tooltip="'.$drawing->dr_msg.'" data-inverted class="iconfont">&#xe61e;</i></span>';
+                    $txt .= '<span class="red-text"><b>不通过</b></span> ';
                 } else if($drawing->dr_status == 3) {
-                    return '锁定';
+                    $txt .= '锁定';
                 }
+                if($drawing->dr_msg != '') {
+                $txt .= '<span class="tips-icon"><i data-position="left center" data-tooltip="'.$drawing->dr_msg.'" data-inverted class="iconfont">&#xe61e;</i></span>';
+                }
+                return $txt;
             })
             ->editColumn('platform',function ($drawing){
                 if($drawing->dr_platform == 1){
