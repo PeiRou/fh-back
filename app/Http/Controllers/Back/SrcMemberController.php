@@ -375,9 +375,15 @@ class SrcMemberController extends Controller
         $uid = $request->input('uid');
         $password = $request->input('password');
         $fundPwd = $request->input('fundPwd');
+        $bank_id = $request->input('bank');
+        if(!empty($bank_id))
+            $bank = DB::table('bank')->select('name')->where('bank_id',$bank_id)->first();
+        else
+            $bank = '';
         $data = collect([
             'status'=>$request->input('status'),
-            'bank_id'=>$request->input('bank'),
+            'bank_id'=>$bank_id,
+            'bank_name'=>$bank->name,
             'bank_num'=>$request->input('bank_num'),
             'bank_addr'=>$request->input('bank_addr'),
             'mobile'=>$request->input('mobile'),
