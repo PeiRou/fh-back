@@ -43,12 +43,12 @@ class LogDataController extends Controller
             })
             ->where(function ($q) use ($startTime){
                 if($startTime && isset($startTime)){
-                    $q->where('create_at','>=',$startTime . ' 00:00:00');
+                    $q->where('login_time','>=',$startTime . ' 00:00:00');
                 }
             })
             ->where(function ($q) use ($endTime){
                 if($endTime && isset($endTime)){
-                    $q->where('create_at','<=',$endTime . ' 23:59:59');
+                    $q->where('login_time','<=',$endTime . ' 23:59:59');
                 }
             })
             ->orderBy('id','DESC')->get();
