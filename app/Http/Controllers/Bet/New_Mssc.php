@@ -64,22 +64,16 @@ class New_Mssc
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
                     if($updateUserMoney == 1){
-                        $update = DB::table($table)->where('id',$id)->update([
-                            'bunko' => 1
-                        ]);
-                        if ($update !== 1) {
-                            \Log::info("秒速赛车" . $issue . "结算出错");
-                        }
+                        \Log::info("秒速赛车" . $issue . "结算出错");
                     }
                 }
-            }else{
-                $update = DB::table($table)->where('id',$id)->update([
-                    'bunko' => 1
-                ]);
-                if ($update !== 1) {
-                    \Log::info("秒速赛车" . $issue . "结算出错");
-                }
             }
+        }
+        $update = DB::table($table)->where('id',$id)->update([
+            'bunko' => 1
+        ]);
+        if($update == 1){
+            \Log::info("秒速赛车" . $issue . "结算not Finshed");
         }
     }
 
