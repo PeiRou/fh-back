@@ -63,7 +63,7 @@ class New_Msft
                 $excelModel->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue);
-                    if($updateUserMoney !== 1){
+                    if($updateUserMoney == 1){
                         \Log::info("秒速飞艇" . $issue . "结算出错");
                     }
                 }
@@ -1247,7 +1247,7 @@ class New_Msft
                 $sql .= "END WHERE id IN (0,$ids)";
                 //\Log::info($sql);
                 $up = DB::connection('mysql::write')->statement($sql);
-                if($up == 1){
+                if($up !== 1){
                     return 1;
                 }
             }

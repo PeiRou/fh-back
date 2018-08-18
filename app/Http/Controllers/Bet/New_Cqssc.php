@@ -36,7 +36,7 @@ class New_Cqssc
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
-                if($updateUserMoney !== 1){
+                if($updateUserMoney == 1){
                     \Log::info("重庆时时彩" . $issue . "结算出错");
                 }
             }

@@ -30,7 +30,7 @@ class New_Gxk3
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
-                if($updateUserMoney !== 1){
+                if($updateUserMoney == 1){
                     \Log::info("广西快3" . $issue . "结算出错");
                 }
             }
@@ -327,7 +327,7 @@ class New_Gxk3
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::connection('mysql::write')->statement($sql);
-                if($up == 1){
+                if($up !== 1){
                     return 1;
                 }
             }

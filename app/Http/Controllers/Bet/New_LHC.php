@@ -44,7 +44,7 @@ class New_LHC
             $bunko = $this->BUNKO($openCode,$win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
-                if($updateUserMoney !== 1){
+                if($updateUserMoney == 1){
                     \Log::info("六合彩" . $issue . "结算出错");
                 }
             }
@@ -1319,7 +1319,7 @@ class New_LHC
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::connection('mysql::write')->statement($sql);
-                if($up == 1){
+                if($up !== 1){
                     return 1;
                 }
             }

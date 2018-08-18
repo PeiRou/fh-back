@@ -25,7 +25,7 @@ class New_Pknn
             $bunko = $this->bunko($win,$lose,$nn,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue);
-                if($updateUserMoney !== 1){
+                if($updateUserMoney == 1){
                     \Log::info("PK10牛牛" . $issue . "结算出错");
                 }
             }
@@ -280,7 +280,7 @@ class New_Pknn
         if($ids && isset($ids)){
             $sql .= "END WHERE id IN (0,$ids)";
             $up = DB::connection('mysql::write')->statement($sql);
-            if($up == 1){
+            if($up !== 1){
                 return 1;
             }
         }
