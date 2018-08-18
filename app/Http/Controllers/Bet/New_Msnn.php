@@ -277,7 +277,7 @@ class New_Msnn
 
     public function updateUserMoney($gameId,$issue)
     {
-        $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
+        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
         $sql = "UPDATE users SET money = money+ CASE id ";
         $users = [];
         foreach ($get as $i){

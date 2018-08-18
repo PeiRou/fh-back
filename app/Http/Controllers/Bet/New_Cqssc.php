@@ -825,7 +825,7 @@ class New_Cqssc
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
+        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         $sql = "UPDATE bet SET bunko = CASE ";
         $sql_lose = "UPDATE bet SET bunko = CASE ";
         $ids = implode(',', $id);
@@ -848,36 +848,60 @@ class New_Cqssc
 
 
     private function updateUserMoney($gameId, $issue){
-        $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id','bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->where('status',0)->groupBy('user_id')->get();
+//        $get = DB::table('bet')->select(DB::raw("sum(bunko) as s"),'user_id','bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->where('status',0)->groupBy('user_id')->get();
+//        if($get){
+//            $sql = "UPDATE users SET money = money+ CASE id ";
+//            $users = [];
+//            $betsId = [];
+//            foreach ($get as $i){
+//                $users[] = $i->user_id;
+//                $sql .= "WHEN $i->user_id THEN $i->s ";
+//            }
+//
+//            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
+//
+//            foreach ($getBets as $m){
+//                $betsId[] = $m->bet_id;
+//            }
+//            //\Log::info($users);
+//            $ids = implode(',',$users);
+//            $bets = implode(',',$betsId);
+//            if($ids && isset($ids)){
+//                $sql .= "END WHERE id IN (0,$ids)";
+//                //\Log::info($sql);
+//                $up = DB::connection('mysql::write')->statement($sql);
+//                if($up == 1){
+//                    $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
+//                    $update_bet_status = DB::connection('mysql::write')->statement($sql_bet_status);
+//                    if($update_bet_status == 1){
+//                        return 1;
+//                    }
+//                } else {
+//                    \Log::info('更新用户余额，失败！');
+//                }
+//            }
+//        } else {
+//            \Log::info('重庆时时彩已结算过，已阻止！');
+//        }
+
+        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
         if($get){
             $sql = "UPDATE users SET money = money+ CASE id ";
             $users = [];
-            $betsId = [];
             foreach ($get as $i){
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->s ";
             }
 
-            $getBets = DB::table('bet')->select('bet_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',0)->get();
-
-            foreach ($getBets as $m){
-                $betsId[] = $m->bet_id;
-            }
             //\Log::info($users);
             $ids = implode(',',$users);
-            $bets = implode(',',$betsId);
+            //\Log::info($ids);
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
                 //\Log::info($sql);
                 $up = DB::connection('mysql::write')->statement($sql);
                 if($up == 1){
-                    $sql_bet_status = "UPDATE bet SET status = 2 WHERE `bet_id` IN ($bets)";
-                    $update_bet_status = DB::connection('mysql::write')->statement($sql_bet_status);
-                    if($update_bet_status == 1){
-                        return 1;
-                    }
-                } else {
-                    \Log::info('更新用户余额，失败！');
+                    return 1;
                 }
             }
         } else {
