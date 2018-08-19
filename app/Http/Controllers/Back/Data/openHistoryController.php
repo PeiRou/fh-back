@@ -15,16 +15,15 @@ class openHistoryController extends Controller
             return false;
         $now = time();
 
-        if(empty($issue)&&empty($issuedate))
-            $issuedate = $now;
-        else
-            $issuedate = strtotime($issuedate);
-
         if(empty($issue)){
+            if(empty($issuedate))
+                $issuedate = $now;
             if(date('Y-m-d',$issuedate) == date('Y-m-d')){
+                $issuedate = $now;
                 $arrayIssuedate['start'] = date('Y-m-d H:i:s',$issuedate);
                 $arrayIssuedate['end'] = date('Y-m-d 00:00:00',$issuedate);
             }else{
+                $issuedate = strtotime($issuedate);
                 $arrayIssuedate['start'] = date('Y-m-d 23:59:59',$issuedate);
                 $arrayIssuedate['end'] = date('Y-m-d 00:00:00',$issuedate);
             }
