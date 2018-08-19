@@ -18,6 +18,8 @@ class openHistoryController extends Controller
         if(empty($issue)){
             if(empty($issuedate))
                 $issuedate = $now;
+            else
+                $issuedate = strtotime($issuedate);
             if(date('Y-m-d',$issuedate) == date('Y-m-d')){
                 $issuedate = $now;
                 $arrayIssuedate['start'] = date('Y-m-d H:i:s',$issuedate);
