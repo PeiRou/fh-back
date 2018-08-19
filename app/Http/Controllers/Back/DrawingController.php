@@ -82,6 +82,7 @@ class DrawingController extends Controller
         $userId = $getUserId->user_id;
         $userAmount = $getUserId->amount;
 
+        DB::beginTransaction();
         $update = Drawing::where('id',$id)
             ->update([
                 'operation_id' => Session::get('account_id'),
@@ -91,22 +92,16 @@ class DrawingController extends Controller
                 'status' => 3,
                 'msg' => $msg
             ]);
-        if($update == 1){
-
-            $getUser = DB::table('users')->where('id',$userId)->first();
-            $userMoney = $getUser->money;
-            $back_total_money = (int)$userMoney + (int)$userAmount;
-
-            $updateUserMoney = DB::table('users')->where('id',$userId)->update([
-                'money' => $back_total_money
+        $updateUserMoney = DB::table('users')->where('id',$userId)->update([
+            'money' => DB::raw('money + '.$userAmount)
+        ]);
+        if($update == 1 && $updateUserMoney){
+            DB::commit();
+            return response()->json([
+                'status' => true
             ]);
-
-            if($updateUserMoney == 1){
-                return response()->json([
-                    'status' => true
-                ]);
-            }
         } else {
+            DB::rollBack();
             return response()->json([
                 'status' => false,
                 'msg' => '更新用户提款状态失败，请重试！'
