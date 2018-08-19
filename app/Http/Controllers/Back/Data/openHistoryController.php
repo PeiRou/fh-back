@@ -9,32 +9,47 @@ use Yajra\DataTables\DataTables;
 
 class openHistoryController extends Controller
 {
-    //北京赛车-表格数据
-    public function bjpk10(Request $request)
-    {
-        $issue = $request->get('issue');
-        $issuedate = $request->get('issuedate');
+    private function getPostData($table,$issue,$issuedate){
+        if(empty($table))
+            return false;
+        $now = time();
 
-        if(empty($issuedate))
-            $issuedate = time();
+        if(empty($issue))
+            $issuedate = $now;
         else
             $issuedate = strtotime($issuedate);
-        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
-            $issuedate = time();
 
-        $HIS = DB::table('game_bjpk10')->select()
+        if(empty($issue)){
+            if(date('Y-m-d',$issuedate) == date('Y-m-d')){
+                $arrayIssuedate['start'] = date('Y-m-d H:i:s',$issuedate);
+                $arrayIssuedate['end'] = date('Y-m-d 00:00:00',$issuedate);
+            }else{
+                $arrayIssuedate['start'] = date('Y-m-d 23:59:59',$issuedate);
+                $arrayIssuedate['end'] = date('Y-m-d 00:00:00',$issuedate);
+            }
+        }
+        $HIS = DB::table($table)->select()
             ->where(function ($query) use ($issue){             //奖期
                 if(isset($issue) && $issue){
                     $query->where("issue",$issue);
                 }
             })
-            ->where(function ($query) use ($issuedate){        //年
-                if(isset($issuedate) && $issuedate){
-                    $query->where("opentime",'<=',date('Y-m-d H:i:s',$issuedate));
-                    $query->where("opentime",'>=',date('Y-m-d 00:00:00',$issuedate));
+            ->where(function ($query) use ($arrayIssuedate){        //
+                if(isset($arrayIssuedate) && $arrayIssuedate){
+                    $query->where("opentime",'<=',$arrayIssuedate['start']);
+                    $query->where("opentime",'>=',$arrayIssuedate['end']);
                 }
             })
             ->orderBy('id','desc')->get();
+        return $HIS;
+    }
+    //北京赛车-表格数据
+    public function bjpk10(Request $request)
+    {
+        $issue = $request->get('issue');
+        $issuedate = $request->get('issuedate');
+        $table = 'game_bjpk10';
+        $HIS = $this->getPostData($table,$issue,$issuedate);
         return DataTables::of($HIS)
             ->make(true);
     }
@@ -43,27 +58,8 @@ class openHistoryController extends Controller
     public function mssc(Request $request){
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
-
-        if(empty($issuedate))
-            $issuedate = time();
-        else
-            $issuedate = strtotime($issuedate);
-        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
-            $issuedate = time();
-
-        $HIS = DB::table('game_mssc')->select()
-            ->where(function ($query) use ($issue){             //奖期
-                if(isset($issue) && $issue){
-                    $query->where("issue",$issue);
-                }
-            })
-            ->where(function ($query) use ($issuedate){        //
-                if(isset($issuedate) && $issuedate){
-                    $query->where("opentime",'<=',date('Y-m-d H:i:s',$issuedate));
-                    $query->where("opentime",'>=',date('Y-m-d 00:00:00',$issuedate));
-                }
-            })
-            ->orderBy('id','desc')->get();
+        $table = 'game_mssc';
+        $HIS = $this->getPostData($table,$issue,$issuedate);
         return DataTables::of($HIS)
             ->make(true);
     }
@@ -162,26 +158,7 @@ class openHistoryController extends Controller
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
 
-        if(empty($issuedate))
-            $issuedate = time();
-        else
-            $issuedate = strtotime($issuedate);
-        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
-            $issuedate = time();
 
-        $HIS = DB::table('game_msssc')->select()
-            ->where(function ($query) use ($issue){             //奖期
-                if(isset($issue) && $issue){
-                    $query->where("issue",$issue);
-                }
-            })
-            ->where(function ($query) use ($issuedate){        //
-                if(isset($issuedate) && $issuedate){
-                    $query->where("opentime",'<=',date('Y-m-d H:i:s',$issuedate));
-                    $query->where("opentime",'>=',date('Y-m-d 00:00:00',$issuedate));
-                }
-            })
-            ->orderBy('id','desc')->get();
         return DataTables::of($HIS)
             ->make(true);
     }
