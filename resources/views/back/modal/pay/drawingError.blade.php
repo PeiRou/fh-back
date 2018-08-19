@@ -38,7 +38,7 @@
                     Calert('提款状态已更新','green');
                     $('#drawingRecordTable').DataTable().ajax.reload(null,false);
                 } else {
-                    Calert(data.msg,'red')
+                    Calert(result.msg,'red')
                 }
             }
         });

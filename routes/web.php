@@ -23,7 +23,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 //财务管理
     Route::group(['prefix' => 'back/control/financeManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('rechargeRecord', 'Back\SrcViewController@rechargeRecord')->name('finance.rechargeRecord'); // 充值记录
-        Route::get('drawingRecord', 'Back\SrcViewController@drawingRecord')->name('finance.drawingRecord'); // 充值记录
+        Route::get('drawingRecord', 'Back\SrcViewController@drawingRecord')->name('finance.drawingRecord'); // 提款记录
         Route::get('capitalDetails', 'Back\SrcViewController@capitalDetails')->name('finance.capitalDetails'); // 资金明细
         Route::get('memberReconciliation', 'Back\SrcViewController@memberReconciliation')->name('finance.memberReconciliation'); // 会员对账
         Route::get('agentReconciliation', 'Back\SrcViewController@agentReconciliation')->name('finance.agentReconciliation'); // 代理对账

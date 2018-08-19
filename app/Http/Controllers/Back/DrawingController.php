@@ -40,13 +40,23 @@ class DrawingController extends Controller
 
             $lock = $getUserId->locked;
             if($lock == 0){
-                $update = DB::table('drawing')->where('id',$id)->update([
+                $data = [
                     'status' => 2,
                     'operation_id' => Session::get('account_id'),
                     'operation_account' => Session::get('account_name'),
                     'process_date' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s')
-                ]);
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'locked' => 1
+                ];
+                if(empty($getUserId->bank_id)){
+                    $data['bank_id'] = $getUserInfo->bank_id;
+                    $bank = DB::table('bank')->where('bank_id',$data['bank_id'])->first();
+                    $data['fullName'] = $getUserInfo->fullName;
+                    $data['bank_name'] = $bank->name;
+                    $data['bank_num'] = $getUserInfo->bank_num;
+                    $data['bank_addr'] = $getUserInfo->bank_addr;
+                }
+                $update = DB::table('drawing')->where('id',$id)->update($data);
                 if($update == 1){
                     $updateUserInfo = User::where('id',$userId)
                         ->update([
@@ -79,19 +89,35 @@ class DrawingController extends Controller
         $msg = $request->input('msg');
 
         $getUserId = Drawing::where('id',$id)->first();
+        if($getUserId->locked)
+            return response()->json([
+                'status' => false,
+                'msg' => '用户提款申请已被处理！'
+            ]);
         $userId = $getUserId->user_id;
         $userAmount = $getUserId->amount;
-
+        //获取用户的数据
+        $getUserInfo = User::where('id',$userId)->first();
+        $data = [
+            'operation_id' => Session::get('account_id'),
+            'operation_account' => Session::get('account_name'),
+            'process_date' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+            'status' => 3,
+            'msg' => $msg,
+            'locked' => 1
+        ];
+        if(empty($getUserId->bank_id)){
+            $data['bank_id'] = $getUserInfo->bank_id;
+            $bank = DB::table('bank')->where('bank_id',$data['bank_id'])->first();
+            $data['fullName'] = $getUserInfo->fullName;
+            $data['bank_name'] = $bank->name;
+            $data['bank_num'] = $getUserInfo->bank_num;
+            $data['bank_addr'] = $getUserInfo->bank_addr;
+        }
         DB::beginTransaction();
         $update = Drawing::where('id',$id)
-            ->update([
-                'operation_id' => Session::get('account_id'),
-                'operation_account' => Session::get('account_name'),
-                'process_date' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-                'status' => 3,
-                'msg' => $msg
-            ]);
+            ->update($data);
         $updateUserMoney = DB::table('users')->where('id',$userId)->update([
             'money' => DB::raw('money + '.$userAmount)
         ]);
