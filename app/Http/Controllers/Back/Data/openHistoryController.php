@@ -25,7 +25,6 @@ class openHistoryController extends Controller
                 $arrayIssuedate['start'] = date('Y-m-d H:i:s',$issuedate);
                 $arrayIssuedate['end'] = date('Y-m-d 00:00:00',$issuedate);
             }else{
-                $issuedate = strtotime($issuedate);
                 $arrayIssuedate['start'] = date('Y-m-d 23:59:59',$issuedate);
                 $arrayIssuedate['end'] = date('Y-m-d 00:00:00',$issuedate);
             }
