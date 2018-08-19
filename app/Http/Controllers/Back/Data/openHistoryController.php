@@ -9,7 +9,8 @@ use Yajra\DataTables\DataTables;
 
 class openHistoryController extends Controller
 {
-    private function getPostData($table,$issue,$issuedate){
+    private function getPostData($table,$issue,$issuedate)
+    {
         if(empty($table))
             return false;
         $now = time();
@@ -55,7 +56,8 @@ class openHistoryController extends Controller
     }
 
     //历史开奖 - 秒速赛车
-    public function mssc(Request $request){
+    public function mssc(Request $request)
+    {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
         $table = 'game_mssc';
@@ -65,59 +67,23 @@ class openHistoryController extends Controller
     }
 
     //历史开奖 - 秒速飞艇
-    public function msft(Request $request){
+    public function msft(Request $request)
+    {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
-
-        if(empty($issuedate))
-            $issuedate = time();
-        else
-            $issuedate = strtotime($issuedate);
-        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
-            $issuedate = time();
-
-        $HIS = DB::table('game_msft')->select()
-            ->where(function ($query) use ($issue){             //奖期
-                if(isset($issue) && $issue){
-                    $query->where("issue",$issue);
-                }
-            })
-            ->where(function ($query) use ($issuedate){        //
-                if(isset($issuedate) && $issuedate){
-                    $query->where("opentime",'<=',date('Y-m-d H:i:s',$issuedate));
-                    $query->where("opentime",'>=',date('Y-m-d 00:00:00',$issuedate));
-                }
-            })
-            ->orderBy('id','desc')->get();
+        $table = 'game_msft';
+        $HIS = $this->getPostData($table,$issue,$issuedate);
         return DataTables::of($HIS)
             ->make(true);
     }
 
     //历史开奖 - 跑马
-    public function paoma(Request $request){
+    public function paoma(Request $request)
+    {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
-
-        if(empty($issuedate))
-            $issuedate = time();
-        else
-            $issuedate = strtotime($issuedate);
-        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
-            $issuedate = time();
-
-        $HIS = DB::table('game_paoma')->select()
-            ->where(function ($query) use ($issue){             //奖期
-                if(isset($issue) && $issue){
-                    $query->where("issue",$issue);
-                }
-            })
-            ->where(function ($query) use ($issuedate){        //
-                if(isset($issuedate) && $issuedate){
-                    $query->where("opentime",'<=',date('Y-m-d H:i:s',$issuedate));
-                    $query->where("opentime",'>=',date('Y-m-d 00:00:00',$issuedate));
-                }
-            })
-            ->orderBy('id','desc')->get();
+        $table = 'game_paoma';
+        $HIS = $this->getPostData($table,$issue,$issuedate);
         return DataTables::of($HIS)
             ->make(true);
     }
@@ -127,27 +93,8 @@ class openHistoryController extends Controller
     {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
-
-        if(empty($issuedate))
-            $issuedate = time();
-        else
-            $issuedate = strtotime($issuedate);
-        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
-            $issuedate = time();
-
-        $HIS = DB::table('game_cqssc')->select()
-            ->where(function ($query) use ($issue){             //奖期
-                if(isset($issue) && $issue){
-                    $query->where("issue",$issue);
-                }
-            })
-            ->where(function ($query) use ($issuedate){        //
-                if(isset($issuedate) && $issuedate){
-                    $query->where("opentime",'<=',date('Y-m-d H:i:s',$issuedate));
-                    $query->where("opentime",'>=',date('Y-m-d 00:00:00',$issuedate));
-                }
-            })
-            ->orderBy('id','desc')->get();
+        $table = 'game_cqssc';
+        $HIS = $this->getPostData($table,$issue,$issuedate);
         return DataTables::of($HIS)
             ->make(true);
     }
@@ -157,8 +104,8 @@ class openHistoryController extends Controller
     {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
-
-
+        $table = 'game_msssc';
+        $HIS = $this->getPostData($table,$issue,$issuedate);
         return DataTables::of($HIS)
             ->make(true);
     }
@@ -168,26 +115,8 @@ class openHistoryController extends Controller
     {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
-
-        if(empty($issuedate))
-            $issuedate = time();
-        else
-            $issuedate = strtotime($issuedate);
-        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
-            $issuedate = time();
-        $HIS = DB::table('game_bjkl8')->select()
-            ->where(function ($query) use ($issue){             //奖期
-                if(isset($issue) && $issue){
-                    $query->where("issue",$issue);
-                }
-            })
-            ->where(function ($query) use ($issuedate){        //
-                if(isset($issuedate) && $issuedate){
-                    $query->where("opentime",'<=',date('Y-m-d H:i:s',$issuedate));
-                    $query->where("opentime",'>=',date('Y-m-d 00:00:00',$issuedate));
-                }
-            })
-            ->orderBy('id','desc')->get();
+        $table = 'game_bjkl8';
+        $HIS = $this->getPostData($table,$issue,$issuedate);
         return DataTables::of($HIS)
             ->make(true);
     }
@@ -195,8 +124,6 @@ class openHistoryController extends Controller
     //快三-表格数据
     public function k3(Request $request)
     {
-        $issue = $request->get('issue');
-        $issuedate = $request->get('issuedate');
         $type = $request->get('type');
         switch ($type){
             case 'msjsk3':
@@ -216,27 +143,9 @@ class openHistoryController extends Controller
                 break;
 
         }
-
-        if(empty($issuedate))
-            $issuedate = time();
-        else
-            $issuedate = strtotime($issuedate);
-        if(date('Y-m-d',$issuedate) == date('Y-m-d'))
-            $issuedate = time();
-
-        $HIS = DB::table($table)->select()
-            ->where(function ($query) use ($issue){             //奖期
-                if(isset($issue) && $issue){
-                    $query->where("issue",$issue);
-                }
-            })
-            ->where(function ($query) use ($issuedate){        //
-                if(isset($issuedate) && $issuedate){
-                    $query->where("opentime",'<=',date('Y-m-d H:i:s',$issuedate));
-                    $query->where("opentime",'>=',date('Y-m-d 00:00:00',$issuedate));
-                }
-            })
-            ->orderBy('id','desc')->get();
+        $issue = $request->get('issue');
+        $issuedate = $request->get('issuedate');
+        $HIS = $this->getPostData($table,$issue,$issuedate);
         return DataTables::of($HIS)
             ->make(true);
     }
