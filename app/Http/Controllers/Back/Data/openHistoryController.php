@@ -14,7 +14,7 @@ class openHistoryController extends Controller
             return false;
         $now = time();
 
-        if(empty($issue))
+        if(empty($issue)&&empty($issuedate))
             $issuedate = $now;
         else
             $issuedate = strtotime($issuedate);
