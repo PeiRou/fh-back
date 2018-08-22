@@ -39,8 +39,9 @@ class AjaxStatusController extends Controller
             $getCount = Recharges::where('status',1)->where('payType','!=','onlinePayment')->count();
             $getDrawCount = Drawing::where('status',0)->count();
 
-            Redis::select(2);           //前台
-            $onlineUserCount = DB::table('users_logintime')->where('logintime','>=',time()-300)->count();
+            Redis::select(6);           //前台
+//            $onlineUserCount = DB::table('users_logintime')->where('logintime','>=',time()-300)->count();
+            $onlineUserCount = Redis::dbsize();
 
             Redis::select(4);           //后台
             $onlineAdminCount = Redis::dbsize();
