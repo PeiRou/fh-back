@@ -623,6 +623,7 @@ class MembersDataController extends Controller
             $get = json_decode($data,true);
             $onlineUser[] = $get[0]['user_id'];
         }
+        $ids = implode(',',$onlineUser);
         $user = User::select()
             ->whereIn('id',$onlineUser)->get();
         return DataTables::of($user)
