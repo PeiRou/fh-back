@@ -1338,11 +1338,12 @@ class New_XYLHC
                     //\Log::info('幸运六合彩第一次结算:自选不中结算-【输】');
                     if($sql_zxb !== 0){
                         $run3 = DB::connection('mysql::write')->statement($sql_zxb);
+                        \Log::info('RUN3===>'.$run3);
                         if($run3 == 1){
                             if($sql_hexiao !== 0){
                                 $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
                                 if($run4 == 1){
-                                    \Log::info('合肖已运行');
+                                    \Log::info('RUN4===>'.$run4);
                                     return 1;
                                 }
                             }
