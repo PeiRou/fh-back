@@ -1318,7 +1318,7 @@ class New_XYLHC
                     $hexiao_open = explode(',', $tema_SX);
                     $hexiao_user = explode(',', $item->bet_info);
                     $hexiao_bi = array_intersect($hexiao_open, $hexiao_user);
-                    \Log::info('合肖'.$hexiao_bi);
+                    \Log::info($hexiao_bi);
                     if ($hexiao_bi) {
                         \Log::info('合肖BET_ID'.$item->bet_id);
                         $hexiao_ids[] = $item->bet_id;
