@@ -1254,6 +1254,8 @@ class New_XYLHC
     //投注结算
     function BUNKO($openCode,$win,$gameId,$issue)
     {
+        $bunko_index = 0;
+
         $openCodeArr = explode(',',$openCode);
         $tema = $openCodeArr[6]; //特码号码
         $tema_SX = $this->LHC_SX->shengxiao($tema); //特码生肖
@@ -1325,33 +1327,30 @@ class New_XYLHC
 
                 $run2 = DB::connection('mysql::write')->statement($sql_lose);
                 if($run2 == 1){
-                    \Log::info('LOSE语句已执行');
-                    //\Log::info('幸运六合彩第一次结算:自选不中结算-【输】');
+                    $bunko_index += 1;
                     if($sql_zxb !== 0){
-                        \Log::info('自选不中结算');
                         $run3 = DB::connection('mysql::write')->statement($sql_zxb);
                         if($run3 == 1){
-                            return 1;
-                            //\Log::info('幸运六合彩第一次结算:自选不中结算-【赢】');
+                            $bunko_index += 1;
                         }
                     } else {
-                        \Log::info('没有自选不中结算');
-                        //\Log::info('幸运六合彩第一次结算:自选不中结算-【没有中奖】');
-                        return 1;
+                        $bunko_index += 1;
                     }
 
                     if($sql_hexiao !== 0){
-                        \Log::info('进入合肖结算');
                         $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
                         if($run4 == 1){
-                            \Log::info('合肖结算结束');
-                            return 1;
+                            $bunko_index += 1;
                         }
                     } else {
-                        \Log::info('没有合肖结算');
-                        return 1;
+                        $bunko_index += 1;
                     }
                 }
+            }
+
+            if($bunko_index !== 0){
+                \Log::info('BUNKO:'.$bunko_index);
+                return 1;
             }
         }
     }
