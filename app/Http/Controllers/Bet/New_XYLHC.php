@@ -1236,6 +1236,62 @@ class New_XYLHC
         }
     }
 
+    //总肖
+    public function ZONGXIAO($openCode,$gameId,$win)
+    {
+        $playCate = 174;
+        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+        $sx1 = $this->LHC_SX->shengxiao($arrOpenCode[0]);
+        $sx2 = $this->LHC_SX->shengxiao($arrOpenCode[1]);
+        $sx3 = $this->LHC_SX->shengxiao($arrOpenCode[2]);
+        $sx4 = $this->LHC_SX->shengxiao($arrOpenCode[3]);
+        $sx5 = $this->LHC_SX->shengxiao($arrOpenCode[4]);
+        $sx6 = $this->LHC_SX->shengxiao($arrOpenCode[5]);
+        $sx7 = $this->LHC_SX->shengxiao($arrOpenCode[6]);
+        $openSX = [$sx1,$sx2,$sx3,$sx4,$sx5,$sx6,$sx7];
+        $countOpen = array_count_values($openSX);
+        $count = count($countOpen);
+        if($count == 2){
+            $playId = 3745;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($count == 3){
+            $playId = 3746;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($count == 4){
+            $playId = 3747;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($count == 5){
+            $playId = 3748;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($count == 6){
+            $playId = 3749;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($count == 7){
+            $playId = 3750;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($count%2 == 0){
+            $playId = 3752;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 3751;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+    }
+
     function SB_Color($num){
         //红色
         if($num == 1 || $num == 2 || $num == 7 || $num == 8 || $num == 12 || $num == 13 || $num == 18 || $num == 19 || $num == 23 || $num == 24 || $num == 29 || $num == 30 || $num == 34 || $num == 35 || $num == 40 || $num == 45 || $num == 46){
