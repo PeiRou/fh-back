@@ -1314,7 +1314,18 @@ class New_XYLHC
                 $hexiao_ids = [];
                 $getHexiao = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
                 foreach ($getHexiao as $item) {
-
+                    $hexiao_open = [$tema_SX];
+                    $hexiao_user = explode(',', $item->bet_info);
+                    $hexiao_bi = array_intersect($hexiao_open, $hexiao_user);
+                    if ($hexiao_bi) {
+                        $hexiao_ids[] = $item->bet_id;
+                    }
+                }
+                $ids_hexiao = implode(',', $hexiao_ids);
+                if($ids_hexiao){
+                    $sql_hexiao = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_hexiao)"; //中奖的SQL语句
+                } else {
+                    $sql_hexiao = 0;
                 }
                 //合肖-----结束
 
@@ -1324,8 +1335,13 @@ class New_XYLHC
                     if($sql_zxb !== 0){
                         $run3 = DB::connection('mysql::write')->statement($sql_zxb);
                         if($run3 == 1){
+                            if($sql_hexiao !== 0){
+                                $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
+                                if($run4 == 1){
+                                    return 1;
+                                }
+                            }
                             //\Log::info('幸运六合彩第一次结算:自选不中结算-【赢】');
-                            return 1;
                         }
                     } else {
                         //\Log::info('幸运六合彩第一次结算:自选不中结算-【没有中奖】');
