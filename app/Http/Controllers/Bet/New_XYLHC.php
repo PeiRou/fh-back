@@ -1320,7 +1320,7 @@ class New_XYLHC
                     $hexiao_bi = array_intersect($hexiao_open, $hexiao_user);
                     \Log::info($hexiao_bi);
                     if ($hexiao_bi) {
-                        \Log::info('合肖BET_ID'.$item->bet_id);
+                        \Log::info($item->bet_id);
                         $hexiao_ids[] = $item->bet_id;
                     }
                 }
