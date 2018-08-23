@@ -1334,6 +1334,7 @@ class New_XYLHC
                 //合肖-----结束
 
                 $run2 = DB::connection('mysql::write')->statement($sql_lose);
+                \Log::info('run2==>'.$run2);
                 if($run2 == 1){
                     //\Log::info('幸运六合彩第一次结算:自选不中结算-【输】');
                     if($sql_zxb !== 0){
