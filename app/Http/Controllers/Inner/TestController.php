@@ -17,7 +17,7 @@ class TestController extends Controller
         if ($bi) {
             $zxbz_ids[] = '中';
         } else {
-            $zxbz_lose_ids[] = '不中';
+            $zxbz_ids[] = '不中';
         }
         return $zxbz_ids;
     }
