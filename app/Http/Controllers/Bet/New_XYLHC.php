@@ -1313,6 +1313,7 @@ class New_XYLHC
                 $hexiao_playCate = 166; //分类ID
                 $hexiao_ids = [];
                 $getHexiao = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
+                \Log::info('合肖特码'.$tema_SX);
                 foreach ($getHexiao as $item) {
                     $hexiao_open = explode(',', $tema_SX);
                     $hexiao_user = explode(',', $item->bet_info);
