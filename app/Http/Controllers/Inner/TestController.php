@@ -9,16 +9,8 @@ class TestController extends Controller
 {
     public function lhc()
     {
-        $zxbz_ids = [];
-        $zxbz_lose_ids = [];
-        $open = ['龙'];
-        $user = explode(',', '羊,鸡,狗,龙');
-        $bi = array_intersect($open, $user);
-        if ($bi) {
-            $zxbz_ids[] = '中';
-        } else {
-            $zxbz_ids[] = '不中';
-        }
-        return $zxbz_ids;
+        $open = ['鼠','鸡','羊','马','兔','虎','羊'];
+        $countOpen = array_count_values($open);
+        return $countOpen;
     }
 }
