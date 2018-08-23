@@ -1277,12 +1277,6 @@ class New_XYLHC
             $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
             $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
             $run = DB::statement($sql);
-//            if ($ids_zxbz_lose) {
-//                $sql_zxb = "UPDATE bet SET bunko = 0-bet_money WHERE `bet_id` IN ($ids_zxbz_lose)"; //未中奖的SQL语句
-//                $run_xzbz_lose = DB::statement($sql_zxb);
-//            } else {
-//                $run_xzbz_lose = 0;
-//            }
 
             if($run == 1){
                 //自选不中------开始
