@@ -1331,14 +1331,17 @@ class New_XYLHC
 
                 $run2 = DB::connection('mysql::write')->statement($sql_lose);
                 if($run2 == 1){
+                    \Log::info('LOSE语句已执行');
                     //\Log::info('幸运六合彩第一次结算:自选不中结算-【输】');
                     if($sql_zxb !== 0){
+                        \Log::info('自选不中结算');
                         $run3 = DB::connection('mysql::write')->statement($sql_zxb);
                         if($run3 == 1){
                             return 1;
                             //\Log::info('幸运六合彩第一次结算:自选不中结算-【赢】');
                         }
                     } else {
+                        \Log::info('没有自选不中结算');
                         //\Log::info('幸运六合彩第一次结算:自选不中结算-【没有中奖】');
                         return 1;
                     }
@@ -1351,6 +1354,7 @@ class New_XYLHC
                             return 1;
                         }
                     } else {
+                        \Log::info('没有合肖结算');
                         return 1;
                     }
                 }
