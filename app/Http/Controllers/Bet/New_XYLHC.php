@@ -1089,7 +1089,7 @@ class New_XYLHC
         }
     }
 
-    //平特一肖位数
+    //平特一肖尾数
     public function PTYXWS($openCode,$gameId,$win)
     {
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
@@ -1254,6 +1254,10 @@ class New_XYLHC
     //投注结算
     function BUNKO($openCode,$win,$gameId,$issue)
     {
+        $openCodeArr = explode(',',$openCode);
+        $tema = $openCodeArr[6]; //特码号码
+        $tema_SX = $this->LHC_SX->shengxiao($tema); //特码生肖
+
         $id = [];
         foreach ($win as $k=>$v){
             $id[] = $v;
@@ -1281,7 +1285,7 @@ class New_XYLHC
 //            }
 
             if($run == 1){
-                //\Log::info('幸运六合彩第一次结算');
+                //自选不中------开始
                 $zxbz_playCate = 175; //特码分类ID
                 $zxbz_ids = [];
                 $zxbz_lose_ids = [];
@@ -1297,7 +1301,6 @@ class New_XYLHC
                     }
                 }
                 $ids_zxbz = implode(',', $zxbz_ids);
-                $ids_zxbz_lose = implode(',', $zxbz_lose_ids);
                 //\Log::info('自选不中-->中了：'.$ids_zxbz);
                 //\Log::info('自选不中-->没中：'.$ids_zxbz_lose);
                 if($ids_zxbz){
@@ -1305,6 +1308,16 @@ class New_XYLHC
                 } else {
                     $sql_zxb = 0;
                 }
+                //自选不中------结束
+                //合肖-----开始
+                $hexiao_playCate = 166; //分类ID
+                $hexiao_ids = [];
+                $getHexiao = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
+                foreach ($getHexiao as $item) {
+
+                }
+                //合肖-----结束
+
                 $run2 = DB::connection('mysql::write')->statement($sql_lose);
                 if($run2 == 1){
                     //\Log::info('幸运六合彩第一次结算:自选不中结算-【输】');

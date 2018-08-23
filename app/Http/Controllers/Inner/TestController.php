@@ -9,11 +9,16 @@ class TestController extends Controller
 {
     public function lhc()
     {
-        $nums = range(1,10);
-        shuffle($nums);
-        shuffle($nums);
-        shuffle($nums);
-        $opennums = $nums[0].','.$nums[1].','.$nums[2].','.$nums[3].','.$nums[4].','.$nums[5].','.$nums[6].','.$nums[7].','.$nums[8].','.$nums[9];
-        return $opennums;
+        $zxbz_ids = [];
+        $zxbz_lose_ids = [];
+        $open = explode(',', '龙');
+        $user = explode(',', '羊,鸡,狗');
+        $bi = array_intersect($open, $user);
+        if (empty($bi)) {
+            $zxbz_ids[] = '中';
+        } else {
+            $zxbz_lose_ids[] = '不中';
+        }
+        return $zxbz_ids.'====='.$zxbz_lose_ids;
     }
 }
