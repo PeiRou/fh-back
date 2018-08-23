@@ -1313,19 +1313,15 @@ class New_XYLHC
                 $hexiao_playCate = 166; //分类ID
                 $hexiao_ids = [];
                 $getHexiao = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
-                \Log::info('合肖特码'.$tema_SX);
                 foreach ($getHexiao as $item) {
                     $hexiao_open = explode(',', $tema_SX);
                     $hexiao_user = explode(',', $item->bet_info);
                     $hexiao_bi = array_intersect($hexiao_open, $hexiao_user);
-                    \Log::info($hexiao_bi);
                     if ($hexiao_bi) {
-                        \Log::info($item->bet_id);
                         $hexiao_ids[] = $item->bet_id;
                     }
                 }
                 $ids_hexiao = implode(',', $hexiao_ids);
-                \Log::info($ids_hexiao);
                 if($ids_hexiao){
                     $sql_hexiao = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_hexiao)"; //中奖的SQL语句
                 } else {
@@ -1334,24 +1330,25 @@ class New_XYLHC
                 //合肖-----结束
 
                 $run2 = DB::connection('mysql::write')->statement($sql_lose);
-                \Log::info('run2==>'.$run2);
                 if($run2 == 1){
                     //\Log::info('幸运六合彩第一次结算:自选不中结算-【输】');
                     if($sql_zxb !== 0){
                         $run3 = DB::connection('mysql::write')->statement($sql_zxb);
-                        \Log::info('RUN3===>'.$run3);
                         if($run3 == 1){
-                            if($sql_hexiao !== 0){
-                                $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
-                                if($run4 == 1){
-                                    \Log::info('RUN4===>'.$run4);
-                                    return 1;
-                                }
-                            }
+                            return 1;
                             //\Log::info('幸运六合彩第一次结算:自选不中结算-【赢】');
                         }
                     } else {
                         //\Log::info('幸运六合彩第一次结算:自选不中结算-【没有中奖】');
+                        return 1;
+                    }
+
+                    if($sql_hexiao !== 0){
+                        $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
+                        if($run4 == 1){
+                            return 1;
+                        }
+                    } else {
                         return 1;
                     }
                 }
