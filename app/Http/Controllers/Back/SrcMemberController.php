@@ -305,6 +305,9 @@ class SrcMemberController extends Controller
         $key = 'user:'.md5($uid);
         Redis::select(2);
         Redis::del($key);
+        Redis::select(6);
+        $key = 'urtime:'.md5($uid);
+        Redis::del($key);
         return response()->json([
             'status'=>true,
             'msg'=>'会员已被强制踢下线！'
