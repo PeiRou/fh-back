@@ -1327,31 +1327,31 @@ class New_XYLHC
 
                 $run2 = DB::connection('mysql::write')->statement($sql_lose);
                 if($run2 == 1){
-                    $bunko_index += 1;
+                    $bunko_index++;
                     if($sql_zxb !== 0){
                         $run3 = DB::connection('mysql::write')->statement($sql_zxb);
                         if($run3 == 1){
-                            $bunko_index += 1;
+                            $bunko_index++;
                         }
                     } else {
-                        $bunko_index += 1;
+                        $bunko_index++;
                     }
 
                     if($sql_hexiao !== 0){
                         $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
                         if($run4 == 1){
-                            $bunko_index += 1;
+                            $bunko_index++;
                         }
                     } else {
-                        $bunko_index += 1;
+                        $bunko_index++;
                     }
                 }
             }
+        }
 
-            if($bunko_index !== 0){
-                \Log::info('BUNKO:'.$bunko_index);
-                return 1;
-            }
+        if($bunko_index !== 0){
+            \Log::info('BUNKO:'.$bunko_index);
+            return 1;
         }
     }
 
