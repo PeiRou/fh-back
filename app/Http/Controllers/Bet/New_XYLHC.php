@@ -1314,7 +1314,7 @@ class New_XYLHC
                 $hexiao_ids = [];
                 $getHexiao = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
                 foreach ($getHexiao as $item) {
-                    $hexiao_open = [$tema_SX];
+                    $hexiao_open = explode(',', $tema_SX);
                     $hexiao_user = explode(',', $item->bet_info);
                     $hexiao_bi = array_intersect($hexiao_open, $hexiao_user);
                     if ($hexiao_bi) {
