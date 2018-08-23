@@ -1344,8 +1344,10 @@ class New_XYLHC
                     }
 
                     if($sql_hexiao !== 0){
+                        \Log::info('进入合肖结算');
                         $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
                         if($run4 == 1){
+                            \Log::info('合肖结算结束');
                             return 1;
                         }
                     } else {
