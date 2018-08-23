@@ -19,6 +19,6 @@ class TestController extends Controller
         } else {
             $zxbz_lose_ids[] = '不中';
         }
-        return $zxbz_ids.'====='.$zxbz_lose_ids;
+        return $zxbz_ids;
     }
 }
