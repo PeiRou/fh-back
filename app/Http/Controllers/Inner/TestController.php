@@ -14,7 +14,7 @@ class TestController extends Controller
         $open = explode(',', '龙');
         $user = explode(',', '羊,鸡,狗');
         $bi = array_intersect($open, $user);
-        if (empty($bi)) {
+        if ($bi) {
             $zxbz_ids[] = '中';
         } else {
             $zxbz_lose_ids[] = '不中';
