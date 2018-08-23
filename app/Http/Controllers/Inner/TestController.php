@@ -11,6 +11,6 @@ class TestController extends Controller
     {
         $open = ['鼠','鸡','羊','马','兔','虎','羊'];
         $countOpen = array_count_values($open);
-        return $countOpen;
+        return count($countOpen);
     }
 }
