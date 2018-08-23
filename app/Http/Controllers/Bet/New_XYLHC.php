@@ -1325,6 +1325,7 @@ class New_XYLHC
                     }
                 }
                 $ids_hexiao = implode(',', $hexiao_ids);
+                \Log::info($ids_hexiao);
                 if($ids_hexiao){
                     $sql_hexiao = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_hexiao)"; //中奖的SQL语句
                 } else {
@@ -1341,6 +1342,7 @@ class New_XYLHC
                             if($sql_hexiao !== 0){
                                 $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
                                 if($run4 == 1){
+                                    \Log::info('合肖已运行');
                                     return 1;
                                 }
                             }
