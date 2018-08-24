@@ -11,8 +11,8 @@ class TestController extends Controller
     {
         $CombinList = ['A','B','C','D'];
         $count = count($CombinList);
-        for($i=1;$i<count($CombinList);$i++){
-            echo $i;
+        for($i=1;$i<=count($CombinList);$i++){
+            echo $CombinList[$i];
         }
     }
 }
