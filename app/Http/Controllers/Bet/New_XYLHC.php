@@ -1927,7 +1927,7 @@ class New_XYLHC
         }
 
         if($bunko_index !== 0){
-            \Log::info('BUNKO:'.$bunko_index);
+            //\Log::info('BUNKO:'.$bunko_index);
             return 1;
         }
     }
