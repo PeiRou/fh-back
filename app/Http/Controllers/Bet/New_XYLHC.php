@@ -1863,6 +1863,7 @@ class New_XYLHC
                 //合肖-----结束
                 //正肖-----开始
                 $zx_playCate = 172; //分类ID
+                $zx_id = [];
                 $zx_plays = ['鼠'=>3729,'牛'=>3730,'虎'=>3731,'兔'=>3732,'龙'=>3733,'蛇'=>3734,'马'=>3735,'羊'=>3736,'猴'=>3737,'鸡'=>3738,'狗'=>3739,'猪'=>3740];
                 $arrOpenCode = explode(',',$openCode); // 分割开奖号码
                 $sx1 = $this->LHC_SX->shengxiao($arrOpenCode[0]);
@@ -1872,9 +1873,24 @@ class New_XYLHC
                 $sx5 = $this->LHC_SX->shengxiao($arrOpenCode[4]);
                 $sx6 = $this->LHC_SX->shengxiao($arrOpenCode[5]);
                 $openSX = [$sx1,$sx2,$sx3,$sx4,$sx5,$sx6];
-                foreach ($openSX as $item){
-
+                $countOpen = array_count_values($openSX);
+                $zx_sql = "UPDATE bet SET bunko = CASE play_id ";
+                foreach ($countOpen as $kk => $vv){
+                    foreach ($zx_plays as $k => $v){
+                        if ($kk == $k){
+                            $zx_id[] = $gameId.$zx_playCate.$v;
+                            $playId = $gameId.$zx_playCate.$v;
+                            $zx_sql .= sprintf("WHEN %d THEN (bet_money * play_odds) * %d ", $playId, $vv);
+                        }
+                    }
                 }
+                $zx_ids = implode(',',$zx_id);
+                if($zx_ids && isset($zx_ids)){
+                    $zx_sql .= "END WHERE play_id IN ($zx_ids) AND `issue` = $issue AND `game_id` = $gameId";
+                } else {
+                    $zx_sql = 0;
+                }
+
                 //正肖-----结束
 
                 $run2 = DB::connection('mysql::write')->statement($sql_lose);
@@ -1892,6 +1908,15 @@ class New_XYLHC
                     if($sql_hexiao !== 0){
                         $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
                         if($run4 == 1){
+                            $bunko_index++;
+                        }
+                    } else {
+                        $bunko_index++;
+                    }
+
+                    if($zx_sql !== 0){
+                        $run5 = DB::connection('mysql::write')->statement($zx_sql);
+                        if($run5 == 1){
                             $bunko_index++;
                         }
                     } else {
