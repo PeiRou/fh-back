@@ -52,10 +52,23 @@ class TestController extends Controller
             }
         }
 
-        foreach ($key_01 as $item){
-            $kk[] = $item;
+        $person =$this->my_sort($key_01,'',SORT_ASC,SORT_STRING);
+        return $person;
+    }
+
+    function my_sort($arrays,$sort_key,$sort_order=SORT_ASC,$sort_type=SORT_NUMERIC ){
+        if(is_array($arrays)){
+            foreach ($arrays as $array){
+                if(is_array($array)){
+                    $key_arrays[] = $array[$sort_key];
+                }else{
+                    return false;
+                }
+            }
+        }else{
+            return false;
         }
-        rsort($kk);
-        return $kk;
+        array_multisort($key_arrays,$sort_order,$sort_type,$arrays);
+        return $arrays;
     }
 }
