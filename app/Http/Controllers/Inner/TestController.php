@@ -55,7 +55,7 @@ class TestController extends Controller
         foreach ($key_01 as $item){
             $kk[] = $item;
         }
-        array_multisort($kk, SORT_DESC, $key_01);
-        return $key_01;
+        rsort($kk);
+        return $kk;
     }
 }
