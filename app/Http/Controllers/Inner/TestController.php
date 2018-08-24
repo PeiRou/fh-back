@@ -46,29 +46,24 @@ class TestController extends Controller
                 for($b = $key + 2; $b < count($a); $b++)
                 {
                     if($value !== $a[$i] && $a[$i] !== $a[$b]){
-                       $key_01[] = [$value,$a[$i],$a[$b]];
+                        $key_01[] = [$value, $a[$i], $a[$b]];
+                        $length =count($key_01);
+                        for($n=0;$n<$length-1;$n++){
+                            //内层循环n-i-1
+                            for($i=0;$i<$length-$n-1;$i++){
+                                //判断数组元素大小，交换位置，实现从小往大排序
+                                if($key_01[$i]>$key_01[$i+1]){
+                                    $temp=$key_01[$i+1];
+                                    $key_01[$i+1]=$key_01[$i];
+                                    $key_01[$i]=$temp;
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
 
-        $person =$this->my_sort($key_01,'',SORT_ASC,SORT_STRING);
-        return $person;
-    }
-
-    function my_sort($arrays,$sort_key,$sort_order=SORT_ASC,$sort_type=SORT_NUMERIC ){
-        if(is_array($arrays)){
-            foreach ($arrays as $array){
-                if(is_array($array)){
-                    $key_arrays[] = $array[$sort_key];
-                }else{
-                    return false;
-                }
-            }
-        }else{
-            return false;
-        }
-        array_multisort($key_arrays,$sort_order,$sort_type,$arrays);
-        return $arrays;
+        print_r($key_01);
     }
 }
