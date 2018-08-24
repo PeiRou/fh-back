@@ -11,6 +11,7 @@ class TestController extends Controller
     {
         $CombinList = ['A','B','C','D'];
         $count = count($CombinList);
+        echo "['A','B','C','D']";
         for($i=0;$i<count($CombinList);$i++){
             $sit = $i+1;
             echo $CombinList[$i].'在数组中是第'.$sit.'位';
