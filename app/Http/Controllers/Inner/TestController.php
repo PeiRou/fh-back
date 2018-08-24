@@ -46,11 +46,19 @@ class TestController extends Controller
                             $key_01[] = [$value, $a[$i], $a[$b]];
                         }
                     }
+                    for($c = $key + 3; $c < count($a); $c++)
+                    {
+                        if($value !== $a[$i] && $a[$i] !== $a[$b] && $a[$b] !== $a[$c]){
+                            if($value < $a[$i] && $a[$i] < $a[$b] && $a[$b] < $a[$c]){
+                                $key_02[] = [$value, $a[$i], $a[$b], $a[$c]];
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        return $key_00;
+        return $key_02;
         //print_r($key_01);
     }
 }
