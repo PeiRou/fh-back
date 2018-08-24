@@ -10,8 +10,9 @@ class TestController extends Controller
     public function lhc()
     {
         $CombinList = ['A','B','C','D'];
-        foreach ($CombinList as $item){
-            echo $item;
+        $count = count($CombinList);
+        for($i=0;$i<=count($CombinList);$i++){
+            echo $i;
         }
     }
 }
