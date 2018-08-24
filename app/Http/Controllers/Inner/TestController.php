@@ -50,7 +50,7 @@ class TestController extends Controller
             }
         }
 
-        print_r($key_00);
-        print_r($key_01);
+        return $key_00;
+        //print_r($key_01);
     }
 }
