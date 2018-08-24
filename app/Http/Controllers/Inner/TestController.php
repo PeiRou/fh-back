@@ -47,11 +47,11 @@ class TestController extends Controller
                 {
                     if($value !== $a[$i] && $a[$i] !== $a[$b]){
                         $key_01[] = [$value,$a[$i],$a[$b]];
-                        $keys[] = sort($key_01);
+                        sort($key_01);
                     }
                 }
             }
         }
-        return $keys;
+        return $key_01;
     }
 }
