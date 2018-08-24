@@ -21,6 +21,6 @@ class TestController extends Controller
                 }
             }
         }
-        return $arr;
+        print_r($arr);
     }
 }
