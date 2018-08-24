@@ -9,10 +9,7 @@ class TestController extends Controller
 {
     public function lhc()
     {
-        $CombinList = array(1 => array("Student10", "Student11"),
-            2 => array("Student20", "Student21", "Student22"),
-            3 => array("Student30"),
-            4 => array("Student40", "Student41", "Student42", "Student43"));
+        $CombinList = ['A','B','C','D'];
         /* 计算C(a,1) * C(b, 1) * ... * C(n, 1)的值 */
         $CombineCount = 1;
         foreach($CombinList as $Key => $Value)
