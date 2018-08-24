@@ -35,7 +35,7 @@ class TestController extends Controller
 //        //print_r($arr);
 //        return $temp;
 
-        $a = [1,2,3,4,5,6,7,8,9,10];
+        $a = [1,2,3,4,5];
         foreach($a as $key => $value) {
             for($i = $key + 1; $i < count($a); $i++) {
                 $key_00[] = [$value,$a[$i]];
