@@ -9,43 +9,40 @@ class TestController extends Controller
 {
     public function lhc()
     {
-        $array = array();
-        for($i=1;$i<=8;$i++){
-
-            for($j=1;$j<=8;$j++){
-                if($j == $i) continue;
-                $br1 = 0;
-                foreach($array as $val){
-                    if(preg_match('/'.$i.'/',$val) && preg_match('/'.$j.'/',$val)){
-                        $br1 = 1;
-                        break;
+        $CombinList = array(1 => array("Student10", "Student11"),
+            2 => array("Student20", "Student21", "Student22"),
+            3 => array("Student30"),
+            4 => array("Student40", "Student41", "Student42", "Student43"));
+        /* 计算C(a,1) * C(b, 1) * ... * C(n, 1)的值 */
+        $CombineCount = 1;
+        foreach($CombinList as $Key => $Value)
+        {
+            $CombineCount *= count($Value);
+        }
+        $RepeatTime = $CombineCount;
+        foreach($CombinList as $ClassNo => $StudentList)
+        {
+            // $StudentList中的元素在拆分成组合后纵向出现的最大重复次数
+            $RepeatTime = $RepeatTime / count($StudentList);
+            $StartPosition = 1;
+            // 开始对每个班级的学生进行循环
+            foreach($StudentList as $Student)
+            {
+                $TempStartPosition = $StartPosition;
+                $SpaceCount = $CombineCount / count($StudentList) / $RepeatTime;
+                for($J = 1; $J <= $SpaceCount; $J ++)
+                {
+                    for($I = 0; $I < $RepeatTime; $I ++)
+                    {
+                        $Result[$TempStartPosition + $I][$ClassNo] = $Student;
                     }
+                    $TempStartPosition += $RepeatTime * count($StudentList);
                 }
-                if($br1 == 1) continue;
-
-                for($k=1;$k<=8;$k++){
-                    if($k == $i || $k == $j) continue;
-                    $br2 = 0;
-                    foreach($array as $val){
-                        if(preg_match('/'.$i.'/',$val) && preg_match('/'.$j.'/',$val)){
-                            $br2 = 1;
-                            break;
-                        }
-                        if(preg_match('/'.$i.'/',$val) && preg_match('/'.$k.'/',$val)){
-                            $br2 = 1;
-                            break;
-                        }
-                        if(preg_match('/'.$j.'/',$val) && preg_match('/'.$k.'/',$val)){
-                            $br2 = 1;
-                            break;
-                        }
-                    }
-                    if($br2 == 1) continue;
-                    $tmp = $i.$j.$k;
-                    $array[] = $tmp;
-                }
+                $StartPosition += $RepeatTime;
             }
         }
-        print_r($array);
+        /* 打印结果 */
+        echo "<pre>";
+        print_r($Result);
     }
 }
