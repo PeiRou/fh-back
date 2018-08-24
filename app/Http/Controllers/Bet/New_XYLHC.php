@@ -37,6 +37,7 @@ class New_XYLHC
         $this->QSB($openCode,$gameId,$win);
         $this->PTYXWS($openCode,$gameId,$win);
         $this->ZONGXIAO($openCode,$gameId,$win);
+        $this->ZMT($openCode,$gameId,$win);
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->BUNKO($openCode,$win,$gameId,$issue);
@@ -1293,6 +1294,367 @@ class New_XYLHC
         }
     }
 
+    //正码特
+    public function ZMT($openCode,$gameId,$win){
+        $arrOpenCode = explode(',',$openCode);
+        $playCate = 169;
+        $zm1 = (int)$arrOpenCode[0];
+        $zm2 = (int)$arrOpenCode[1];
+        $zm3 = (int)$arrOpenCode[2];
+        $zm4 = (int)$arrOpenCode[3];
+        $zm5 = (int)$arrOpenCode[4];
+        $zm6 = (int)$arrOpenCode[5];
+
+        $zm1_add_zero = str_pad($zm1,2,"0",STR_PAD_LEFT); //十位补零
+        $zm1_over = str_split($zm1_add_zero); //拆分个位 十位
+        $zm1_tou = (int)$zm1_over[0];
+        $zm1_wei = (int)$zm1_over[1];
+        $zm1_heshu = $zm1_tou+$zm1_wei;
+
+        $zm2_add_zero = str_pad($zm2,2,"0",STR_PAD_LEFT); //十位补零
+        $zm2_over = str_split($zm2_add_zero); //拆分个位 十位
+        $zm2_tou = (int)$zm2_over[0];
+        $zm2_wei = (int)$zm2_over[1];
+        $zm2_heshu = $zm2_tou+$zm2_wei;
+
+        $zm3_add_zero = str_pad($zm3,2,"0",STR_PAD_LEFT); //十位补零
+        $zm3_over = str_split($zm3_add_zero); //拆分个位 十位
+        $zm3_tou = (int)$zm3_over[0];
+        $zm3_wei = (int)$zm3_over[1];
+        $zm3_heshu = $zm3_tou+$zm3_wei;
+
+        $zm4_add_zero = str_pad($zm4,2,"0",STR_PAD_LEFT); //十位补零
+        $zm4_over = str_split($zm4_add_zero); //拆分个位 十位
+        $zm4_tou = (int)$zm4_over[0];
+        $zm4_wei = (int)$zm4_over[1];
+        $zm4_heshu = $zm4_tou+$zm4_wei;
+
+        $zm5_add_zero = str_pad($zm5,2,"0",STR_PAD_LEFT); //十位补零
+        $zm5_over = str_split($zm5_add_zero); //拆分个位 十位
+        $zm5_tou = (int)$zm5_over[0];
+        $zm5_wei = (int)$zm5_over[1];
+        $zm5_heshu = $zm5_tou+$zm5_wei;
+
+        $zm6_add_zero = str_pad($zm6,2,"0",STR_PAD_LEFT); //十位补零
+        $zm6_over = str_split($zm6_add_zero); //拆分个位 十位
+        $zm6_tou = (int)$zm6_over[0];
+        $zm6_wei = (int)$zm6_over[1];
+        $zm6_heshu = $zm6_tou+$zm6_wei;
+
+        $zm1_nums = [1=>3857,2=>3858,3=>3859,4=>3860,5=>3861,6=>3862,7=>3863,8=>3864,9=>3865,10=>3866,11=>3867,12=>3868,13=>3869,14=>3870,15=>3871,16=>3872,17=>3873,18=>3874,19=>3875,20=>3876,21=>3877,22=>3878,23=>3879,24=>3880,25=>3881,26=>3882,27=>3883,28=>3884,29=>3885,30=>3886,31=>3887,32=>3888,33=>3889,34=>3890,35=>3891,36=>3892,37=>3893,38=>3894,39=>3895,40=>3896,41=>3897,42=>3898,43=>3899,44=>3900,45=>3901,46=>3902,47=>3903,48=>3904,49=>3905];
+        $zm2_nums = [1=>3919,2=>3920,3=>3921,4=>3922,5=>3923,6=>3924,7=>3925,8=>3926,9=>3927,10=>3928,11=>3929,12=>3930,13=>3931,14=>3932,15=>3933,16=>3934,17=>3935,18=>3936,19=>3937,20=>3938,21=>3939,22=>3940,23=>3941,24=>3942,25=>3943,26=>3944,27=>3945,28=>3946,29=>3947,30=>3948,31=>3949,32=>3950,33=>3951,34=>3952,35=>3953,36=>3954,37=>3955,38=>3956,39=>3957,40=>3958,41=>3959,42=>3960,43=>3961,44=>3962,45=>3963,46=>3964,47=>3965,48=>3966,49=>3967];
+        $zm3_nums = [1=>3981,2=>3982,3=>3983,4=>3984,5=>3985,6=>3986,7=>3987,8=>3988,9=>3989,10=>3990,11=>3991,12=>3992,13=>3993,14=>3994,15=>3995,16=>3996,17=>3997,18=>3998,19=>3999,20=>4000,21=>4001,22=>4002,23=>4003,24=>4004,25=>4005,26=>4006,27=>4007,28=>4008,29=>4009,30=>4010,31=>4011,32=>4012,33=>4013,34=>4014,35=>4015,36=>4016,37=>4017,38=>4018,39=>4019,40=>4020,41=>4021,42=>4022,43=>4023,44=>4024,45=>4025,46=>4026,47=>4027,48=>4028,49=>4029];
+        $zm4_nums = [1=>4043,2=>4044,3=>4045,4=>4046,5=>4047,6=>4048,7=>4049,8=>4050,9=>4051,10=>4052,11=>4053,12=>4054,13=>4055,14=>4056,15=>4057,16=>4058,17=>4059,18=>4060,19=>4061,20=>4062,21=>4063,22=>4064,23=>4065,24=>4066,25=>4067,26=>4068,27=>4069,28=>4070,29=>4071,30=>4072,31=>4073,32=>4074,33=>4075,34=>4076,35=>4077,36=>4078,37=>4079,38=>4080,39=>4081,40=>4082,41=>4083,42=>4084,43=>4085,44=>4086,45=>4087,46=>4088,47=>4089,48=>4090,49=>4091];
+        $zm5_nums = [1=>4105,2=>4106,3=>4107,4=>4108,5=>4109,6=>4110,7=>4111,8=>4112,9=>4113,10=>4114,11=>4115,12=>4116,13=>4117,14=>4118,15=>4119,16=>4120,17=>4121,18=>4122,19=>4123,20=>4124,21=>4125,22=>4126,23=>4127,24=>4128,25=>4129,26=>4130,27=>4131,28=>4132,29=>4133,30=>4134,31=>4135,32=>4136,33=>4137,34=>4138,35=>4139,36=>4140,37=>4141,38=>4142,39=>4143,40=>4144,41=>4145,42=>4146,43=>4147,44=>4148,45=>4149,46=>4150,47=>4151,48=>4152,49=>4153];
+        $zm6_nums = [1=>4167,2=>4168,3=>4169,4=>4170,5=>4171,6=>4172,7=>4173,8=>4174,9=>4175,10=>4176,11=>4177,12=>4178,13=>4179,14=>4180,15=>4181,16=>4182,17=>4183,18=>4184,19=>4185,20=>4186,21=>4187,22=>4188,23=>4189,24=>4190,25=>4191,26=>4192,27=>4193,28=>4194,29=>4195,30=>4196,31=>4197,32=>4198,33=>4199,34=>4200,35=>4201,36=>4202,37=>4203,38=>4204,39=>4205,40=>4206,41=>4207,42=>4208,43=>4209,44=>4210,45=>4211,46=>4212,47=>4213,48=>4214,49=>4215];
+        foreach ($zm1_nums as $k => $v){
+            if($zm1 == $k){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        foreach ($zm2_nums as $k => $v){
+            if($zm2 == $k){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        foreach ($zm3_nums as $k => $v){
+            if($zm3 == $k){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        foreach ($zm4_nums as $k => $v){
+            if($zm4 == $k){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        foreach ($zm5_nums as $k => $v){
+            if($zm5 == $k){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        foreach ($zm6_nums as $k => $v){
+            if($zm6 == $k){
+                $playId = $v;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        //正1====两面====开始
+        if($zm1%2 == 0){ //双
+            $playId = 3907;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 3906;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm1 <= 24){ //小
+            $playId = 3909;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 3908;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm1_heshu%2 == 0){//合双
+            $playId = 3911;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 3910;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm1) == 'R'){
+            $playId = 3914;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm1) == 'B'){
+            $playId = 3915;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm1) == 'G'){
+            $playId = 3916;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        //正1====两面====结束
+        //正2====两面====开始
+        if($zm2%2 == 0){ //双
+            $playId = 3969;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 3968;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm2 <= 24){ //小
+            $playId = 3971;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 3970;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm2_heshu%2 == 0){//合双
+            $playId = 3973;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 3972;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm2) == 'R'){
+            $playId = 3976;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm2) == 'B'){
+            $playId = 3977;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm2) == 'G'){
+            $playId = 3978;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        //正2====两面====结束
+        //正3====两面====开始
+        if($zm3%2 == 0){ //双
+            $playId = 4031;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4030;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm3 <= 24){ //小
+            $playId = 4033;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4032;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm3_heshu%2 == 0){//合双
+            $playId = 4035;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4034;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm3) == 'R'){
+            $playId = 4038;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm3) == 'B'){
+            $playId = 4039;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm3) == 'G'){
+            $playId = 4040;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        //正3====两面====结束
+        //正4====两面====开始
+        if($zm4%2 == 0){ //双
+            $playId = 4093;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4092;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm4 <= 24){ //小
+            $playId = 4095;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4094;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm4_heshu%2 == 0){//合双
+            $playId = 4097;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4096;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm4) == 'R'){
+            $playId = 4100;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm4) == 'B'){
+            $playId = 4101;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm4) == 'G'){
+            $playId = 4102;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        //正4====两面====结束
+        //正5====两面====开始
+        if($zm5%2 == 0){ //双
+            $playId = 4154;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4155;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm5 <= 24){ //小
+            $playId = 4157;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4156;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm5_heshu%2 == 0){//合双
+            $playId = 4159;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4158;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm5) == 'R'){
+            $playId = 4162;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm5) == 'B'){
+            $playId = 4163;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm5) == 'G'){
+            $playId = 4164;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        //正5====两面====结束
+        //正6====两面====开始
+        if($zm6%2 == 0){ //双
+            $playId = 4217;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4216;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm6 <= 24){ //小
+            $playId = 4219;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4218;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm6_heshu%2 == 0){//合双
+            $playId = 4221;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else {
+            $playId = 4220;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm6) == 'R'){
+            $playId = 4224;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm6) == 'B'){
+            $playId = 4225;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($this->SB_Color($zm6) == 'G'){
+            $playId = 4226;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        //正6====两面====结束
+    }
+
     function SB_Color($num){
         //红色
         if($num == 1 || $num == 2 || $num == 7 || $num == 8 || $num == 12 || $num == 13 || $num == 18 || $num == 19 || $num == 23 || $num == 24 || $num == 29 || $num == 30 || $num == 34 || $num == 35 || $num == 40 || $num == 45 || $num == 46){
@@ -1412,6 +1774,7 @@ class New_XYLHC
         }
     }
 
+    //更新用户余额
     function updateUserMoney($gameId,$issue){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
         if($get){
