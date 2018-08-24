@@ -9,15 +9,43 @@ class TestController extends Controller
 {
     public function lhc()
     {
-        $zx_plays = ['鼠'=>3729,'牛'=>3730,'虎'=>3731,'兔'=>3732,'龙'=>3733,'蛇'=>3734,'马'=>3735,'羊'=>3736,'猴'=>3737,'鸡'=>3738,'狗'=>3739,'猪'=>3740];
-        $openSX = ['鼠','虎','龙','蛇','羊','鸡'];
-        $countOpen = array_count_values($openSX);
-        foreach ($countOpen as $kk => $vv){
-            foreach ($zx_plays as $k => $v){
-                if ($kk == $k){
-                    echo $v.'</br>';
+        $array = array();
+        for($i=1;$i<=8;$i++){
+
+            for($j=1;$j<=8;$j++){
+                if($j == $i) continue;
+                $br1 = 0;
+                foreach($array as $val){
+                    if(preg_match('/'.$i.'/',$val) && preg_match('/'.$j.'/',$val)){
+                        $br1 = 1;
+                        break;
+                    }
+                }
+                if($br1 == 1) continue;
+
+                for($k=1;$k<=8;$k++){
+                    if($k == $i || $k == $j) continue;
+                    $br2 = 0;
+                    foreach($array as $val){
+                        if(preg_match('/'.$i.'/',$val) && preg_match('/'.$j.'/',$val)){
+                            $br2 = 1;
+                            break;
+                        }
+                        if(preg_match('/'.$i.'/',$val) && preg_match('/'.$k.'/',$val)){
+                            $br2 = 1;
+                            break;
+                        }
+                        if(preg_match('/'.$j.'/',$val) && preg_match('/'.$k.'/',$val)){
+                            $br2 = 1;
+                            break;
+                        }
+                    }
+                    if($br2 == 1) continue;
+                    $tmp = $i.$j.$k;
+                    $array[] = $tmp;
                 }
             }
         }
+        print_r($array);
     }
 }
