@@ -46,7 +46,8 @@ class TestController extends Controller
                 for($b = $key + 2; $b < count($a); $b++)
                 {
                     if($value !== $a[$i] && $a[$i] !== $a[$b]){
-                       $key_01[] = rsort([$value,$a[$i],$a[$b]]);
+                        $kkk = [$value,$a[$i],$a[$b]];
+                       $key_01[] = rsort($kkk);
                     }
                 }
             }
