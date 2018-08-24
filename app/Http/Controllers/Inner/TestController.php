@@ -14,6 +14,7 @@ class TestController extends Controller
         //echo "['A','B','C','D']</br>";
         $arr = [];
         $arr3 = [];
+        $temp = [];
         for($i=0;$i<count($CombinList);$i++){
             $sit = $i+1;
             for($b=0;$b<=$sit-1;$b++){
@@ -22,12 +23,16 @@ class TestController extends Controller
                 }
                 for($z=0;$z<=$sit-3;$z++){
                     if($CombinList[$i] !== $CombinList[$b] && $CombinList[$b] !== $CombinList[$z]){
-                        $arr3[] = array_unique([$CombinList[$i],$CombinList[$b],$CombinList[$z]]);
+                        $temp[] = $CombinList[$i].','.$CombinList[$b].','.$CombinList[$z];
                     }
                 }
             }
         }
+        $temp = array_unique($temp);
+        foreach ($temp as $k => $v){
+            $temp[$k] = explode(",",$v);   //再将拆开的数组重新组装
+        }
         //print_r($arr);
-        return $arr3;
+        return $temp;
     }
 }
