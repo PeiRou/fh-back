@@ -19,6 +19,5 @@ class TestController extends Controller
                 }
             }
         }
-        return $countOpen;
     }
 }
