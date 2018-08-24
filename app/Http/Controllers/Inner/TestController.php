@@ -45,7 +45,9 @@ class TestController extends Controller
 
                 for($b = $key + 2; $b < count($a); $b++)
                 {
-                    echo $value.",".$a[$i].",".$a[$b]."\n";
+                    if($value !== $a[$i] && $a[$i] !== $a[$b]){
+                        echo $value.",".$a[$i].",".$a[$b]."\n";
+                    }
                 }
             }
         }
