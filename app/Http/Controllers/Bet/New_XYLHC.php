@@ -1836,8 +1836,6 @@ class New_XYLHC
                     }
                 }
                 $ids_zxbz = implode(',', $zxbz_ids);
-                //\Log::info('自选不中-->中了：'.$ids_zxbz);
-                //\Log::info('自选不中-->没中：'.$ids_zxbz_lose);
                 if($ids_zxbz){
                     $sql_zxb = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
                 } else {
@@ -1863,6 +1861,9 @@ class New_XYLHC
                     $sql_hexiao = 0;
                 }
                 //合肖-----结束
+                //正肖-----开始
+                $zx_playCate = 172; //分类ID
+                //正肖-----结束
 
                 $run2 = DB::connection('mysql::write')->statement($sql_lose);
                 if($run2 == 1){

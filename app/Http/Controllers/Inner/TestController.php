@@ -9,8 +9,8 @@ class TestController extends Controller
 {
     public function lhc()
     {
-        $open = ['鼠','鸡','羊','马','兔','虎','羊'];
+        $open = ['鼠','羊','羊','马','兔','虎'];
         $countOpen = array_count_values($open);
-        return count($countOpen);
+        return $countOpen;
     }
 }
