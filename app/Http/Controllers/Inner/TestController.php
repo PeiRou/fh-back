@@ -11,7 +11,7 @@ class TestController extends Controller
     {
         $CombinList = ['A','B','C','D'];
         $count = count($CombinList);
-        echo "['A','B','C','D']</br>";
+        //echo "['A','B','C','D']</br>";
         $arr = [];
         $arr3 = [];
         for($i=0;$i<count($CombinList);$i++){
@@ -27,7 +27,7 @@ class TestController extends Controller
                 }
             }
         }
-        print_r($arr);
-        print_r($arr3);
+        //print_r($arr);
+        return $arr3;
     }
 }
