@@ -1647,11 +1647,11 @@ class New_XYLHC
         //正4====两面====结束
         //正5====两面====开始
         if($zm5%2 == 0){ //双
-            $playId = 4154;
+            $playId = 4155;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         } else {
-            $playId = 4155;
+            $playId = 4154;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }
