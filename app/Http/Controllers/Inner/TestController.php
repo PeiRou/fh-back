@@ -46,10 +46,10 @@ class TestController extends Controller
                 for($b = $key + 2; $b < count($a); $b++)
                 {
                     if($value !== $a[$i] && $a[$i] !== $a[$b]){
-                        if($a[$i]>$a[$i+1]){
-                            $temp=$a[$i+1];
-                            $a[$i+1]=$a[$i];
-                            $a[$i]=$temp;
+                        if($a[$b]>$a[$b+1]){
+                            $temp=$a[$b+1];
+                            $a[$b+1]=$a[$b];
+                            $a[$b]=$temp;
                             $key_01[] = $temp;
                         }
                        // $key_01[] = [$value,$a[$i],$a[$b]];
