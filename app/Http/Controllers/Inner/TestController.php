@@ -21,7 +21,7 @@ class TestController extends Controller
                     $arr[] = $CombinList[$i].','.$CombinList[$b];
                 }
                 for($z=0;$z<=$sit-2;$z++){
-                    if($CombinList[$i] !== $CombinList[$b] && $CombinList[$i] !== $CombinList[$z]){
+                    if($CombinList[$i] !== $CombinList[$b] && $CombinList[$b] !== $CombinList[$z]){
                         $arr3[] = $CombinList[$i].','.$CombinList[$b].','.$CombinList[$z];
                     }
                 }
