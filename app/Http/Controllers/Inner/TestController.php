@@ -39,9 +39,14 @@ class TestController extends Controller
 
         foreach($a as $key => $value)
         {
-            for($i = $key + 2; $i < count($a); $i++)
+            for($i = $key + 1; $i < count($a); $i++)
             {
                 echo $value.",".$a[$i]."\n";
+
+                for($b = $key + 2; $b < count($a); $b++)
+                {
+                    echo $value.",".$a[$i].",".$a[$b]."\n";
+                }
             }
         }
     }
