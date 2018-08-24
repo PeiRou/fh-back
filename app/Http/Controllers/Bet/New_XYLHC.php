@@ -1394,7 +1394,7 @@ class New_XYLHC
             $playId = 3907;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        } else {
+        } else { //单
             $playId = 3906;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
@@ -1403,7 +1403,7 @@ class New_XYLHC
             $playId = 3909;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        } else {
+        } else { //大
             $playId = 3908;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
@@ -1412,8 +1412,28 @@ class New_XYLHC
             $playId = 3911;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        } else {
+        } else { //合单
             $playId = 3910;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm1_heshu >= 7){ //合大
+            $playId = 3912;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm1_heshu <= 6){ //合小
+            $playId = 3913;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm1_wei == 5 || $zm1_wei == 6 || $zm1_wei == 7 || $zm1_wei == 8 || $zm1_wei == 9){ //尾大
+            $playId = 3917;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm1_wei == 0 || $zm1_wei == 1 || $zm1_wei == 2 || $zm1_wei == 3 || $zm1_wei == 4){ //尾小
+            $playId = 3918;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }
@@ -1461,6 +1481,26 @@ class New_XYLHC
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }
+        if($zm2_heshu >= 7){ //合大
+            $playId = 3974;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm2_heshu <= 6){ //合小
+            $playId = 3975;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm2_wei == 5 || $zm2_wei == 6 || $zm2_wei == 7 || $zm2_wei == 8 || $zm2_wei == 9){ //尾大
+            $playId = 3979;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm2_wei == 0 || $zm2_wei == 1 || $zm2_wei == 2 || $zm2_wei == 3 || $zm2_wei == 4){ //尾小
+            $playId = 3980;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
         if($this->SB_Color($zm2) == 'R'){
             $playId = 3976;
             $winCode = $gameId.$playCate.$playId;
@@ -1502,6 +1542,26 @@ class New_XYLHC
             $win->push($winCode);
         } else {
             $playId = 4034;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm3_heshu >= 7){ //合大
+            $playId = 4036;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm3_heshu <= 6){ //合小
+            $playId = 4037;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm3_wei == 5 || $zm3_wei == 6 || $zm3_wei == 7 || $zm3_wei == 8 || $zm3_wei == 9){ //尾大
+            $playId = 4041;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm3_wei == 0 || $zm3_wei == 1 || $zm3_wei == 2 || $zm3_wei == 3 || $zm3_wei == 4){ //尾小
+            $playId = 4042;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }
@@ -1549,6 +1609,26 @@ class New_XYLHC
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }
+        if($zm4_heshu >= 7){ //合大
+            $playId = 4098;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm4_heshu <= 6){ //合小
+            $playId = 4099;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm4_wei == 5 || $zm4_wei == 6 || $zm4_wei == 7 || $zm4_wei == 8 || $zm4_wei == 9){ //尾大
+            $playId = 4103;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm4_wei == 0 || $zm4_wei == 1 || $zm4_wei == 2 || $zm4_wei == 3 || $zm4_wei == 4){ //尾小
+            $playId = 4104;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
         if($this->SB_Color($zm4) == 'R'){
             $playId = 4100;
             $winCode = $gameId.$playCate.$playId;
@@ -1593,6 +1673,26 @@ class New_XYLHC
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }
+        if($zm5_heshu >= 7){ //合大
+            $playId = 4160;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm5_heshu <= 6){ //合小
+            $playId = 4161;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm5_wei == 5 || $zm5_wei == 6 || $zm5_wei == 7 || $zm5_wei == 8 || $zm5_wei == 9){ //尾大
+            $playId = 4165;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm5_wei == 0 || $zm5_wei == 1 || $zm5_wei == 2 || $zm5_wei == 3 || $zm5_wei == 4){ //尾小
+            $playId = 4166;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
         if($this->SB_Color($zm5) == 'R'){
             $playId = 4162;
             $winCode = $gameId.$playCate.$playId;
@@ -1634,6 +1734,26 @@ class New_XYLHC
             $win->push($winCode);
         } else {
             $playId = 4220;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm6_heshu >= 7){ //合大
+            $playId = 4222;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm6_heshu <= 6){ //合小
+            $playId = 4223;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm6_wei == 5 || $zm6_wei == 6 || $zm6_wei == 7 || $zm6_wei == 8 || $zm6_wei == 9){ //尾大
+            $playId = 4227;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        if($zm6_wei == 0 || $zm6_wei == 1 || $zm6_wei == 2 || $zm6_wei == 3 || $zm6_wei == 4){ //尾小
+            $playId = 4228;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }
