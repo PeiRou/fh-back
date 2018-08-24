@@ -22,7 +22,7 @@ class TestController extends Controller
                 }
                 for($z=0;$z<=$sit-3;$z++){
                     if($CombinList[$i] !== $CombinList[$b] && $CombinList[$b] !== $CombinList[$z]){
-                        $arr3[] = [$CombinList[$i],$CombinList[$b],$CombinList[$z]];
+                        $arr3[] = array_unique([$CombinList[$i],$CombinList[$b],$CombinList[$z]]);
                     }
                 }
             }
