@@ -16,7 +16,9 @@ class TestController extends Controller
         for($i=0;$i<count($CombinList);$i++){
             $sit = $i+1;
             for($b=0;$b<=$sit-1;$b++){
-                $arr[] = $CombinList[$i].','.$CombinList[$b];
+                if($CombinList[$i] !== $CombinList[$b]){
+                    $arr[] = $CombinList[$i].','.$CombinList[$b];
+                }
             }
         }
         return $arr;
