@@ -12,11 +12,13 @@ class TestController extends Controller
         $CombinList = ['A','B','C','D'];
         $count = count($CombinList);
         echo "['A','B','C','D']</br>";
+        $arr = [];
         for($i=0;$i<count($CombinList);$i++){
             $sit = $i+1;
             for($b=0;$b<=$sit-1;$b++){
-                echo $CombinList[$i].','.$CombinList[$b];
+                $arr[] = $CombinList[$i].','.$CombinList[$b];
             }
         }
+        return $arr;
     }
 }
