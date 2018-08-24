@@ -36,13 +36,9 @@ class TestController extends Controller
 //        return $temp;
 
         $a = [1,2,3,4,5,6,7,8,9,10];
-
-        foreach($a as $key => $value)
-        {
-            for($i = $key + 1; $i < count($a); $i++)
-            {
-                //echo $value.",".$a[$i]."\n";
-
+        foreach($a as $key => $value) {
+            for($i = $key + 1; $i < count($a); $i++) {
+                $key_00[] = [$value,$a[$i]];
                 for($b = $key + 2; $b < count($a); $b++)
                 {
                     if($value !== $a[$i] && $a[$i] !== $a[$b]){
@@ -53,6 +49,8 @@ class TestController extends Controller
                 }
             }
         }
-        return $key_01;
+
+        print_r($key_00);
+        print_r($key_01);
     }
 }
