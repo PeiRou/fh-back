@@ -13,14 +13,19 @@ class TestController extends Controller
         $count = count($CombinList);
         echo "['A','B','C','D']</br>";
         $arr = [];
+        $arr3 = [];
         for($i=0;$i<count($CombinList);$i++){
             $sit = $i+1;
             for($b=0;$b<=$sit-1;$b++){
                 if($CombinList[$i] !== $CombinList[$b]){
                     $arr[] = $CombinList[$i].','.$CombinList[$b];
                 }
+                for($z=0;$z<=$sit-2;$z++){
+                    $arr3[] = $CombinList[$i].','.$CombinList[$b].','.$CombinList[$z];
+                }
             }
         }
         print_r($arr);
+        print_r($arr3);
     }
 }
