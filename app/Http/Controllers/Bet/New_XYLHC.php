@@ -1941,15 +1941,12 @@ class New_XYLHC
             foreach ($get as $i){
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->s ";
-                //\Log::info('会员派彩：'.$i->s);
             }
             $ids = implode(',',$users);
             if($ids && isset($ids)){
-                //\Log::info('准备派彩的会员：'.$ids);
                 $sql .= "END WHERE id IN (0,$ids)";
                 $up = DB::connection('mysql::write')->statement($sql);
                 if($up == 1){
-                    //\Log::info('已派彩：'.$ids);
                     return 1;
                 }
             }
