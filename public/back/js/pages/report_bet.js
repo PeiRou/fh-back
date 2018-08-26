@@ -2,6 +2,56 @@ $(function () {
     $('#menu-reportManage').addClass('nav-show');
     $('#menu-reportManage-bet').addClass('active');
 
+    var today = new Date();
+    $('#rangestart').calendar({
+        type: 'date',
+        endCalendar: $('#rangeend'),
+        formatter: {
+            date: function (date, settings) {
+                if (!date) return '';
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                return year+'-'+month+'-'+day;
+            }
+        },
+        text: {
+            days: ['日', '一', '二', '三', '四', '五', '六'],
+            months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            today: '今天',
+            now: '现在',
+            am: 'AM',
+            pm: 'PM'
+        },
+        minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 99),
+        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    });
+    $('#rangeend').calendar({
+        type: 'date',
+        startCalendar: $('#rangestart'),
+        formatter: {
+            date: function (date, settings) {
+                if (!date) return '';
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                return year+'-'+month+'-'+day;
+            }
+        },
+        text: {
+            days: ['日', '一', '二', '三', '四', '五', '六'],
+            months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            today: '今天',
+            now: '现在',
+            am: 'AM',
+            pm: 'PM'
+        },
+        minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 99),
+        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    });
+
     dataTable = $('#reportBetTable').DataTable({
         searching: false,
         bLengthChange: false,

@@ -3,6 +3,8 @@
 @section('title','投注报表')
 
 @section('content')
+    <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
+    <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>投注报表
