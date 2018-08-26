@@ -16,7 +16,7 @@ class PayDataController extends Controller
     //在线支付配置
     public function payOnline()
     {
-        $payOnline = PayOnline::where('rechType','onlinePayment')->orderBy('sort','asc')->get();
+        $payOnline = PayOnline::where('rechType','onlinePayment')->orderBy('status','desc')->orderBy('sort','asc')->get();
         //获取支付类型
         $aPayTypes = PayType::getPayTypeAllList();
         return DataTables::of($payOnline)
