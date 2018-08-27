@@ -65,12 +65,14 @@ class new_mspk10 extends Command
                 $date = Carbon::parse(date('Y-m-d'))->addDays(-1);
                 $params =  [
                     'issue' => date('ymd',strtotime($date)).$filtered['issue'],
-                    'openTime' => date('Y-m-d ').$filtered['time']
+                    'openTime' => date('Y-m-d ').$filtered['time'],
+                    'shareData' => env('SHARE_OPEN_DATA')
                 ];
             } else {
                 $params =  [
                     'issue' => date('ymd').$filtered['issue'],
-                    'openTime' => date('Y-m-d ').$filtered['time']
+                    'openTime' => date('Y-m-d ').$filtered['time'],
+                    'shareData' => env('SHARE_OPEN_DATA')
                 ];
             }
             $res = curl(Config::get('website.openServerUrl').$this->code,$params,1);
