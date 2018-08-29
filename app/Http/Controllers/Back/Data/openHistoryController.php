@@ -138,6 +138,12 @@ class openHistoryController extends Controller
             case 'jlk3':
                 $table = 'game_jlk3';
                 break;
+            case 'hbk3':
+                $table = 'game_hbk3';
+                break;
+            case 'gxk3':
+                $table = 'game_gxk3';
+                break;
             default:
                 return false;
                 break;

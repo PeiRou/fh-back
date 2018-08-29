@@ -141,6 +141,11 @@ class Excel
             case 'game_msssc':
                 return $this->opennum_ssc();
                 break;
+            case 'game_bjkl8':
+                return $this->opennum_kl8();
+            case 'game_xylhc':
+                return $this->opennum_lhc();
+                break;
         }
         return false;
     }
@@ -169,5 +174,18 @@ class Excel
     }
     private function opennum_ssc(){
         return rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9);
+    }
+    private function opennum_kl8(){
+        $arr = range(1,80,1);
+        shuffle($arr);   //打乱数组
+        $newarr = array_splice($arr,0,20);
+        sort($newarr);
+        return implode(",",$newarr);
+    }
+    private function opennum_lhc(){
+        $arr = range(1,49,1);
+        shuffle($arr);   //打乱数组
+        $newarr = array_splice($arr,0,7);
+        return implode(",",$newarr);
     }
 }

@@ -297,69 +297,53 @@ class MembersDataController extends Controller
         $noLoginDays = $request->get('noLoginDays');
         $aid = $request->get('aid');    //代理id
         $gaid = $request->get('gaid');    //总代id
-        $users = DB::table('users')
-            ->leftJoin('level','users.rechLevel','=','level.value')
-            ->leftJoin('agent','users.agent','=','agent.a_id')
-            ->leftJoin('general_agent', 'agent.gagent_id', '=', 'general_agent.ga_id')
-            ->select('users.promoter as user_promoter','level.name as level_name','users.id as uid','users.rechLevel as user_rechLevel','users.created_at as user_created_at','users.updated_at as user_updated_at','users.username as user_username','users.fullName as user_fullName','agent.account as ag_account','users.money as user_money','users.status as user_status','users.PayTimes as user_PayTimes','users.DrawTimes as user_DrawTimes','users.saveMoneyCount as user_saveMoneyCount','users.drawMoneyCount as user_drawMoneyCount','users.lastLoginTime as user_lastLoginTime','users.content as user_content')
-            ->where(function ($query) use($status){
-                if(isset($status) && $status){
-                    $query->where('users.status','=',$status);
-                }
-            })
-	    ->where(function ($query) use($gaid){
-                if(isset($gaid) && $gaid>0){
-                    $query->where('gagent_id',$gaid);
-                }
-            })
-	    ->where(function ($query) use($aid){
-                if(isset($aid) && $aid>0){
-                    $query->where('users.agent',$aid);
-                }
-            })
-            ->where(function ($query) use($agent){
-                if(isset($agent) && $agent){
-                    $query->where('users.agent',$agent);
-                }
-            })
-            ->where(function ($query) use($rechLevel){
-                if(isset($rechLevel) && $rechLevel){
-                    $query->where('users.rechLevel','=',$rechLevel);
-                }
-            })
-            ->where(function ($query) use($account){
-                if(isset($account) && $account){
-                    $query->where('users.username','=',$account)
-                        ->orWhere('users.email','=',$account)
-                        ->orWhere('users.fullName','=',$account);
-                }
-            })
-            ->where(function ($query) use($mobile){
-                if(isset($mobile) && $mobile){
-                    $query->where('users.mobile','=',$mobile);
-                }
-            })
-            ->where(function ($query) use($qq){
-                if(isset($qq) && $qq){
-                    $query->where('users.qq','=',$qq);
-                }
-            })
-            ->where(function ($query) use($minMoney,$maxMoney){
-                if(isset($minMoney) && $minMoney || isset($maxMoney) && $maxMoney){
-                    $query->where('users.money','>=',$minMoney)->where('users.money','<=',$maxMoney);
-                }
-            })
-            ->where(function ($query) use($promoter){
-                if(isset($promoter) && $promoter){
-                    $query->where('users.promoter','=',$promoter);
-                }
-            })
-            ->where(function ($query) use($noLoginDays){
-                if(isset($noLoginDays) && $noLoginDays){
-                    $query->where('users.noLoginDays','=',$noLoginDays);
-                }
-            })
-            ->where('users.testFlag','!=',1)->orderBy('users.created_at','desc')->get();
+        $start = empty($request->get('start'))?0:$request->get('start');
+        $length = empty($request->get('length'))?50:$request->get('length');
+
+        $sql = ' FROM (select id ,agent,testFlag,users.promoter as user_promoter ,users.id as uid,users.rechLevel as user_rechLevel,users.created_at as user_created_at,users.updated_at as user_updated_at,users.username as user_username,users.email as user_email,users.fullName as user_fullName,users.money as user_money,users.status as user_status,users.PayTimes as user_PayTimes,users.DrawTimes as user_DrawTimes,users.saveMoneyCount as user_saveMoneyCount,users.drawMoneyCount as user_drawMoneyCount,users.lastLoginTime as user_lastLoginTime,users.content as user_content  from users ) u_fileds 
+            left Join (SELECT name as level_name,value FROM level) lv on u_fileds.user_rechLevel = lv.value 
+            left Join (SELECT a_id,account,gagent_id as ag_account FROM agent) ag on u_fileds.agent = ag.a_id  where 1 and testFlag in(0,2) ';
+
+        if(isset($status) && $status){
+            $sql .=' and users.status = ' .$status;
+        }
+        if(isset($gaid) && $gaid>0){
+            $sql .= ' and ag.gagent_id = '.$gaid;
+        }
+        if(isset($aid) && $aid>0){
+            $sql .= ' and u_fileds.agent = '.$aid;
+        }
+        if(isset($agent) && $agent){
+            $sql .= ' and u_fileds.agent = '.$agent;
+        }
+        if(isset($rechLevel) && $rechLevel){
+            $sql .= ' and u_fileds.user_rechLevel = '. $rechLevel;
+        }
+        if(isset($account) && $account){
+            $sql .= " AND (u_fileds.user_username = '".$account ."'";
+            $sql .= " OR u_fileds.user_email = '".$account ."'";
+            $sql .= " OR u_fileds.user_fullName = '".$account ."')";
+        }
+        if(isset($mobile) && $mobile){
+            $sql .= " AND u_fileds.mobile = '".$mobile."'";
+        }
+        if(isset($qq) && $qq){
+            $sql .= " AND u_fileds.qq = '".$qq."'";
+        }
+        if(isset($minMoney) && $minMoney ){
+            $sql .= ' AND u_fileds.money >= '.$minMoney;
+        }
+        if(isset($maxMoney) && $maxMoney ){
+            $sql .= ' AND u_fileds.money <= '.$maxMoney;
+        }
+        if(isset($promoter) && $promoter ){
+            $sql .= ' AND u_fileds.promoter = '.$promoter;
+        }
+        if(isset($noLoginDays) && $noLoginDays ){
+            $sql .= ' AND u_fileds.noLoginDays = '.$noLoginDays;
+        }
+        $users = DB::select('select * '.$sql.'  ORDER BY id desc '.'LIMIT '.$start.','.$length);
+        $usersCount = DB::select('select count(id) AS count '.$sql);
         return DataTables::of($users)
             ->editColumn('online',function ($users) {
 //                $key = 'user:'.md5($users->uid);
@@ -455,6 +439,8 @@ class MembersDataController extends Controller
                         </ul>";
             })
             ->rawColumns(['online','user','balance','status','control','created_at','updated_at','content','rechLevel','saveMoneyCount','drawMoneyCount'])
+            ->setTotalRecords($usersCount[0]->count)
+            ->skipPaging()
             ->make(true);
     }
 

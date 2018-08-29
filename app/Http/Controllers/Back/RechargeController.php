@@ -43,7 +43,7 @@ class RechargeController extends Controller
         if($getInfo->addMoney == 1){
             return response()->json([
                 'status' => false,
-                'msg' => '用户充值已完成，请勿再试！'
+                'msg' => '充值已处理过，该次操作无效！'
             ]);
         } else {
             //更新用户余额
@@ -99,6 +99,13 @@ class RechargeController extends Controller
     public function passOnlineRecharge(Request $request)
     {
         $id = $request->get('id');
+        $getInfo = Recharges::where('id',$id)->first();
+        if($getInfo->addMoney == 1){
+            return response()->json([
+                'status' => false,
+                'msg' => '充值已处理过，该次操作无效！'
+            ]);
+        }
         $updateRechargeStatus = Recharges::where('id',$id)
             ->update([
                 'operation_id' => Session::get('account_id'),
@@ -130,7 +137,7 @@ class RechargeController extends Controller
         if($getInfo->addMoney == 1){
             return response()->json([
                 'status' => false,
-                'msg' => '用户充值已完成，请勿再试！'
+                'msg' => '充值已处理过，该次操作无效！'
             ]);
         } else {
             $update = Recharges::where('id',$id)
@@ -169,7 +176,7 @@ class RechargeController extends Controller
             ->leftJoin('users','recharges.userId', '=', 'users.id')
             ->where(function ($q) use ($killTest){
                 if(isset($killTest) && $killTest){
-                    $q->where('users.agent','!=',2);
+                    $q->where('users.testFlag',0);
                 }
             })
             ->where('recharges.payType','onlinePayment')->where('recharges.status',2)->whereDate('recharges.created_at',date('Y-m-d'))->sum('recharges.amount');
@@ -178,7 +185,7 @@ class RechargeController extends Controller
             ->leftJoin('users','recharges.userId', '=', 'users.id')
             ->where(function ($q) use ($killTest){
                 if(isset($killTest) && $killTest){
-                    $q->where('users.agent','!=',2);
+                    $q->where('users.testFlag',0);
                 }
             })
             ->where('recharges.payType','!=','onlinePayment')->where('recharges.status',2)->whereDate('recharges.created_at',date('Y-m-d'))->sum('recharges.amount');

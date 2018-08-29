@@ -50,12 +50,6 @@ class New_Msft
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
                 \Log::Info('msft killing...');
                 $this->excel($openCode,$exeBase,$issue,$gameId,$table);
-                $update = DB::table($table)->where('id',$id)->update([
-                    'excel_num' => 1
-                ]);
-                if($update !== 1){
-                    \Log::info("秒速飞艇".$issue."杀率计算出错");
-                }
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
@@ -69,11 +63,20 @@ class New_Msft
                 }
             }
         }
-        $update = DB::table($table)->where('id',$id)->update([
-            'bunko' => 1
-        ]);
-        if ($update !== 1) {
-            \Log::info("秒速飞艇" . $issue . "结算not Finshed");
+        if($excel){
+            $update = DB::table($table)->where('id',$id)->update([
+                'excel_num' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("秒速飞艇" . $issue . "杀率not Finshed");
+            }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("秒速飞艇" . $issue . "结算not Finshed");
+            }
         }
     }
 

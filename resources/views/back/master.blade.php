@@ -229,6 +229,12 @@
                 @if($hasPermission->hasPermission('historyLottery.ahk3') == "has")
                     <li id="menu-openManage-ahk3"><a href="{{ route('historyLottery.ahk3') }}"><cite></cite><span>安徽快3</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('historyLottery.hbk3') == "has")
+                    <li id="menu-openManage-hbk3"><a href="{{ route('historyLottery.hbk3') }}"><cite></cite><span>湖北快3</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.gxk3') == "has")
+                    <li id="menu-openManage-gxck3"><a href="{{ route('historyLottery.gxk3') }}"><cite></cite><span>广西快3</span></a></li>
+                @endif
                 @if($hasPermission->hasPermission('historyLottery.jlk3') == "has")
                     <li id="menu-openManage-jlk3"><a href="{{ route('historyLottery.jlk3') }}"><cite></cite><span>吉林快3</span></a></li>
                 @endif

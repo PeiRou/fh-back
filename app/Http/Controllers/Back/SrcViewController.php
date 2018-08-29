@@ -320,6 +320,16 @@ class SrcViewController extends Controller
     {
         return view('back.open.jlk3');
     }
+    //湖北快3
+    public function openManage_hbk3()
+    {
+        return view('back.open.hbk3');
+    }
+    //广西快3
+    public function openManage_gxk3()
+    {
+        return view('back.open.gxk3');
+    }
     //六合彩
     public function openManage_xglhc()
     {

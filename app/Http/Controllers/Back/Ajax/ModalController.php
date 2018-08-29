@@ -592,6 +592,18 @@ class ModalController extends Controller
         $type = 'jlk3';
         return view('back.modal.open.openK3',compact('k3','type'));
     }
+    //湖北快三 - 手动开奖
+    public function openHbk3($id = ''){
+        $k3 = DB::table('game_hbk3')->where('id',$id)->first();
+        $type = 'hbk3';
+        return view('back.modal.open.openK3',compact('k3','type'));
+    }
+    //广西快三 - 手动开奖
+    public function openGxk3($id = ''){
+        $k3 = DB::table('game_gxk3')->where('id',$id)->first();
+        $type = 'gxk3';
+        return view('back.modal.open.openK3',compact('k3','type'));
+    }
     //添加六合彩
     public function addLhcNewIssue()
     {

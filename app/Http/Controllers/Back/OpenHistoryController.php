@@ -355,7 +355,13 @@ class OpenHistoryController extends Controller
                 $table = 'game_ahk3';
                 break;
             case 'jlk3':
-                $table = 'game_ahk3';
+                $table = 'game_jlk3';
+                break;
+            case 'hbk3':
+                $table = 'game_hbk3';
+                break;
+            case 'gxk3':
+                $table = 'game_gxk3';
                 break;
             default:
                 return response()->json(['status' => false,'msg' => '参数不为空！']);

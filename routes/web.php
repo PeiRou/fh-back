@@ -73,6 +73,8 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('jsk3', 'Back\SrcViewController@openManage_jsk3')->name('historyLottery.jsk3'); //江苏快3
         Route::get('ahk3', 'Back\SrcViewController@openManage_ahk3')->name('historyLottery.ahk3'); //安徽快3
         Route::get('jlk3', 'Back\SrcViewController@openManage_ljk3')->name('historyLottery.jlk3'); //吉林快3
+        Route::get('hbk3', 'Back\SrcViewController@openManage_hbk3')->name('historyLottery.hbk3'); //湖北快3
+        Route::get('gxk3', 'Back\SrcViewController@openManage_gxk3')->name('historyLottery.gxk3'); //广西快3
         Route::get('lhc', 'Back\SrcViewController@openManage_xglhc')->name('historyLottery.xglhc'); //六合彩
         Route::get('xylhc', 'Back\SrcViewController@openManage_xylhc')->name('historyLottery.xylhc'); //幸运六合彩
     });
@@ -427,6 +429,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/openJsk3/{id}', 'Back\Ajax\ModalController@openJsk3');             //江苏快三 - 手动开奖
     Route::get('/back/modal/openAhk3/{id}', 'Back\Ajax\ModalController@openAhk3');             //安徽快三 - 手动开奖
     Route::get('/back/modal/openJlk3/{id}', 'Back\Ajax\ModalController@openJlk3');             //吉林快三 - 手动开奖
+    Route::get('/back/modal/openHbk3/{id}', 'Back\Ajax\ModalController@openHbk3');             //湖北快三 - 手动开奖
+    Route::get('/back/modal/openGxk3/{id}', 'Back\Ajax\ModalController@openGxk3');             //广西快三 - 手动开奖
     Route::get('/back/modal/openLhc/{id}', 'Back\Ajax\ModalController@openLhc');
     Route::get('/back/modal/reOpenLhc/{id}', 'Back\Ajax\ModalController@reOpenLhc');
     Route::get('/back/modal/editAgentSettleReport/{id}', 'Back\Ajax\ModalController@editAgentSettleReport'); //修改代理结算报表-模板

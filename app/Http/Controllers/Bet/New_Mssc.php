@@ -69,11 +69,20 @@ class New_Mssc
                 }
             }
         }
-        $update = DB::table($table)->where('id',$id)->update([
-            'bunko' => 1
-        ]);
-        if($update !== 1){
-            \Log::info("秒速赛车" . $issue . "结算not Finshed");
+        if($excel){
+            $update = DB::table($table)->where('id',$id)->update([
+                'excel_num' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("秒速赛车" . $issue . "杀率not Finshed");
+            }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info("秒速赛车" . $issue . "结算not Finshed");
+            }
         }
     }
 

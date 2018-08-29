@@ -29,6 +29,11 @@ class DrawingController extends Controller
         if($id){
             //获取用户ID
             $getUserId = DB::table('drawing')->where('id',$id)->first();
+            if($getUserId->locked)
+                return response()->json([
+                    'status' => false,
+                    'msg' => '提现已处理过，该次操作无效！'
+                ]);
             $userId = $getUserId->user_id;
             //获取用户的数据
             $getUserInfo = User::where('id',$userId)->first();
@@ -92,7 +97,7 @@ class DrawingController extends Controller
         if($getUserId->locked)
             return response()->json([
                 'status' => false,
-                'msg' => '用户提款申请已被处理！'
+                'msg' => '提现已处理过，该次操作无效！'
             ]);
         $userId = $getUserId->user_id;
         $userAmount = $getUserId->amount;
