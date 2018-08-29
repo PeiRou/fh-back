@@ -67,7 +67,7 @@ class new_msssc extends Command
             }
         });
         if($filtered!=null){
-            if($filtered['issue'] >= 793 && $filtered['issue'] <= 985){
+            if($filtered['issue'] >= 792 && $filtered['issue'] <= 985){
                 $date = Carbon::parse(date('Y-m-d'))->addDays(-1);
                 $params =  [
                     'issue' => date('ymd',strtotime($date)).$filtered['issue'],
