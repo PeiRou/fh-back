@@ -57,7 +57,8 @@ class new_msjsk3 extends Command
         if($filtered!=null){
             $params =  [
                 'issue' => date('Ymd').$filtered['issue'],
-                'openTime' => date('Y-m-d ').$filtered['time']
+                'openTime' => date('Y-m-d ').$filtered['time'],
+                'shareData' => env('SHARE_OPEN_DATA')
             ];
             $res = curl(Config::get('website.openServerUrl').$this->code,$params,1);
             $res = json_decode($res);
