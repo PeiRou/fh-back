@@ -77,8 +77,6 @@ class new_mspk10 extends Command
             }
             $res = curl(Config::get('website.openServerUrl').$this->code,$params,1);
             $res = json_decode($res);
-            //处理秒速牛牛
-            $niuniu = $this->exePK10nn($res->opencode);
 
             $nextIssue = $res->expect;
             $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(60)->toDateTimeString();
