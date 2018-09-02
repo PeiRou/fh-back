@@ -6,6 +6,7 @@ $(function () {
     $('#menu-payManage-payLayout').addClass('active');
 
     $('#levelTable').DataTable({
+        aLengthMenu: [[50]],
         searching: false,
         bLengthChange: false,
         processing: true,
