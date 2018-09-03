@@ -70,6 +70,12 @@ return [
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
+            'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'options'   => array(
+                PDO::MYSQL_ATTR_SSL_CA    => '/home/.../ca-cert.pem',
+                PDO::MYSQL_ATTR_SSL_CERT    => '/home/.../cert.pem',
+                PDO::MYSQL_ATTR_SSL_KEY    => '/home/.../key.pem'
+            ),
             'strict' => false, //SQL严格模式
             'engine' => null,
         ],
