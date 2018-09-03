@@ -30,10 +30,10 @@ class New_Msjsk3
     {
         $table = 'game_msjsk3';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        \Log::info($betCount);
         if($betCount > 0){
             $excelModel = new Excel();
             $exeBase = $excelModel->getNeedKillIssue($table);
-            \Log::info($exeBase);
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
                 \Log::Info('msjsk3 killing...');
                 $this->excel($openCode,$exeBase,$issue,$gameId,$table);
