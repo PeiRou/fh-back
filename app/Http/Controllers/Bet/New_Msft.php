@@ -1204,7 +1204,7 @@ class New_Msft
         return $win;
     }
 
-    private function bunko($win,$gameId,$issue,$excel){
+    private function bunko($win,$gameId,$issue,$excel=false){
         if($excel) {
             $table = 'excel_bet';
             $getUserBets = DB::connection('mysql::write')->table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
