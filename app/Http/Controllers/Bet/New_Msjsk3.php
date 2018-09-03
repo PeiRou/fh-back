@@ -30,9 +30,8 @@ class New_Msjsk3
     {
         $table = 'game_msjsk3';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
-        \Log::info(122222);
-        \Log::info($betCount);
         if($betCount > 0){
+            \Log::info($betCount);
             $excelModel = new Excel();
             $exeBase = $excelModel->getNeedKillIssue($table);
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
