@@ -33,8 +33,9 @@ class New_Msjsk3
         if($betCount > 0){
             \Log::info($betCount);
             $excelModel = new Excel();
-            $exeBase = $excelModel->getNeedKillIssue($table,2);
-            if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
+            $exeIssue = $excelModel->getNeedKillIssue($table,2);
+            $exeBase = $excelModel->getNeedKillBase($gameId);
+            if(isset($exeIssue->excel_num) && $exeBase->excel_num > 0 && $excel){
                 $update = DB::table($table)->where('id',$id)->update([
                     'excel_num' => 3
                 ]);
@@ -89,12 +90,12 @@ class New_Msjsk3
             }else{
                 $excel = new Excel();
                 $openCode = $excel->opennum($table);
-                DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
+                DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
             }
             $win = $this->exc_play($openCode,$gameId);
             $bunko = $this->bunko($win,$gameId,$issue,true);
             if($bunko == 1){
-                $tmp = DB::select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
+                $tmp = DB::connection('mysql::write')->select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)
                     $excBunko = $value->sumBunko;
                 \Log::info('秒速快三 :'.$excBunko);

@@ -67,6 +67,17 @@ class Excel
             $res = $value;
         return $res;
     }
+    //取得需要计算杀率BASE
+    public function getNeedKillBase($gameId){
+        if(empty($gameId))
+            return false;
+        $tmp = DB::select("SELECT excel_num FROM excel_base WHERE game_id = ".$gameId);
+        if(empty($tmp))
+            return false;
+        foreach ($tmp as&$value)
+            $res = $value;
+        return $res;
+    }
     //取得最新的需要结算奖期
     public function getNeedBunkoIssue($table){
         if(empty($table))
