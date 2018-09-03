@@ -111,6 +111,7 @@ class New_Msjsk3
         \Log::Info($table.':'.$openCode);
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
         DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
+        DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->where('game_id',$gameId)->delete();
     }
 
     public function HZ($openCode,$gameId,$win)
