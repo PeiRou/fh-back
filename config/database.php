@@ -56,7 +56,13 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'read' => [
-                'host' =>  [env('DB_READ_HOST_1'),env('DB_READ_HOST_2')]
+                'host' =>  [env('DB_READ_HOST_1'),env('DB_READ_HOST_2')],
+                'sslmode' => env('DB_SSLMODE', 'prefer'),
+                'options'   => array(
+                    PDO::MYSQL_ATTR_SSL_CA    => '/www/wwwroot/fh-back/fh-back/ssl/server-ca.pem',
+                    PDO::MYSQL_ATTR_SSL_CERT    => '/www/wwwroot/fh-back/fh-back/ssl/client-cert.pem',
+                    PDO::MYSQL_ATTR_SSL_KEY    => '/www/wwwroot/fh-back/fh-back/ssl/client-key.pem'
+                ),
             ],
             'write' => [
                 'host' => env('DB_WRITE_HOST_1')
@@ -70,12 +76,6 @@ return [
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
-            'sslmode' => env('DB_SSLMODE', 'prefer'),
-            'options'   => array(
-                PDO::MYSQL_ATTR_SSL_CA    => '/www/wwwroot/fh-back/fh-back/ssl/server-ca.pem',
-                PDO::MYSQL_ATTR_SSL_CERT    => '/www/wwwroot/fh-back/fh-back/ssl/client-cert.pem',
-                PDO::MYSQL_ATTR_SSL_KEY    => '/www/wwwroot/fh-back/fh-back/ssl/client-key.pem'
-            ),
             'strict' => false, //SQL严格模式
             'engine' => null,
         ],
