@@ -39,6 +39,7 @@ class New_Msjsk3
                 $update = DB::table($table)->where('id',$id)->update([
                     'excel_num' => 1
                 ]);
+                \Log::info("秒速江苏快3" . $issue .date('Y-m-d H:i:s'));
                 if($update !== 1){
                     \Log::info("秒速江苏快3".$issue."杀率计算出错");
                 }
@@ -66,7 +67,6 @@ class New_Msjsk3
             $update = DB::table($table)->where('id',$id)->update([
                 'bunko' => 1
             ]);
-            \Log::info("秒速江苏快3" . $issue .date('Y-m-d H:i:s'));
             if ($update !== 1) {
                 \Log::info("秒速江苏快3" . $issue . "结算not Finshed");
             }
