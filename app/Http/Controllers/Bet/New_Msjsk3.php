@@ -38,7 +38,7 @@ class New_Msjsk3
                 $update = DB::table($table)->where('id',$id)->where('excel_num',2)->update([
                     'excel_num' => 3
                 ]);
-                if($update !== 1) {
+                if($update == 1) {
                     \Log::Info('msjsk3 killing...');
                     $this->excel($openCode, $exeBase, $issue, $gameId, $table);
                 }
