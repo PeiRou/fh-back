@@ -97,7 +97,8 @@ class New_Msjsk3
                 $dataExcGame['issue'] = $issue;
                 $dataExcGame['opennum'] = $openCode;
                 $dataExcGame['bunko'] = $excBunko;
-                $dataExcGame['excel_num'] = $ii+1;
+                $dataExcGame['excel_num'] = $ii;
+                $dataExcGame['excel_num']++;
                 $dataExcGame['created_at'] = date('Y-m-d H:i:s');
                 $dataExcGame['updated_at'] = date('Y-m-d H:i:s');
                 DB::table('excel_game')->insert([$dataExcGame]);
