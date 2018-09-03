@@ -31,22 +31,16 @@ class New_Msjsk3
         $table = 'game_msjsk3';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            \Log::info($betCount);
             $excelModel = new Excel();
             $exeIssue = $excelModel->getNeedKillIssue($table,2);
             $exeBase = $excelModel->getNeedKillBase($gameId);
             if(isset($exeIssue->excel_num) && $exeBase->excel_num > 0 && $excel){
-                $update = DB::table($table)->where('id',$id)->update([
+                $update = DB::table($table)->where('id',$id)->where('excel_num',2)->update([
                     'excel_num' => 3
                 ]);
-                \Log::Info('msjsk3 killing...');
-                $this->excel($openCode,$exeBase,$issue,$gameId,$table);
-                $update = DB::table($table)->where('id',$id)->update([
-                    'excel_num' => 1
-                ]);
-                \Log::info("秒速江苏快3" . $issue .date('Y-m-d H:i:s'));
-                if($update !== 1){
-                    \Log::info("秒速江苏快3".$issue."杀率计算出错");
+                if($update !== 1) {
+                    \Log::Info('msjsk3 killing...');
+                    $this->excel($openCode, $exeBase, $issue, $gameId, $table);
                 }
             }
             if(!$excel){
@@ -65,7 +59,6 @@ class New_Msjsk3
             $update = DB::table($table)->where('id',$id)->update([
                 'excel_num' => 1
             ]);
-            \Log::info("秒速江苏快3--2" . $issue .date('Y-m-d H:i:s'));
             if ($update !== 1) {
                 \Log::info("秒速江苏快3" . $issue . "杀率not Finshed");
             }
@@ -82,8 +75,9 @@ class New_Msjsk3
     private function excel($openCode,$exeBase,$issue,$gameId,$table = ''){
         if(empty($table))
             return false;
-        for($i=0;$i< (int)$exeBase->excel_num;$i++){
-            if($i==0){
+        for($ii=0;$ii< (int)$exeBase->excel_num;$ii++){
+            \Log::info($ii);
+            if($ii==0){
                 $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
                 if(empty($exeBet))
                     DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}'");
