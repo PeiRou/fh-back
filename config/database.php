@@ -72,9 +72,9 @@ return [
             'prefix' => '',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
             'options'   => array(
-                PDO::MYSQL_ATTR_SSL_CA    => '/home/.../ca-cert.pem',
-                PDO::MYSQL_ATTR_SSL_CERT    => '/home/.../cert.pem',
-                PDO::MYSQL_ATTR_SSL_KEY    => '/home/.../key.pem'
+                PDO::MYSQL_ATTR_SSL_CA    => '/www/wwwroot/fh-back/fh-back/ssl/server-ca.pem',
+                PDO::MYSQL_ATTR_SSL_CERT    => '/www/wwwroot/fh-back/fh-back/ssl/client-cert.pem',
+                PDO::MYSQL_ATTR_SSL_KEY    => '/www/wwwroot/fh-back/fh-back/ssl/client-key.pem'
             ),
             'strict' => false, //SQL严格模式
             'engine' => null,
