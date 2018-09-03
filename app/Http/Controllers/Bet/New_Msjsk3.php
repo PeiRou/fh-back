@@ -75,9 +75,8 @@ class New_Msjsk3
     private function excel($openCode,$exeBase,$issue,$gameId,$table = ''){
         if(empty($table))
             return false;
-        for($ii=0;$ii< (int)$exeBase->excel_num;$ii++){
-            \Log::info($ii);
-            if($ii==0){
+        for($i=0;$i< (int)$exeBase->excel_num;$i++){
+            if($i==0){
                 $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
                 if(empty($exeBet))
                     DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}'");
@@ -97,7 +96,7 @@ class New_Msjsk3
                 $dataExcGame['issue'] = $issue;
                 $dataExcGame['opennum'] = $openCode;
                 $dataExcGame['bunko'] = $excBunko;
-                $dataExcGame['excel_num'] = $ii;
+                $dataExcGame['excel_num'] = $i;
                 $dataExcGame['excel_num']++;
                 $dataExcGame['created_at'] = date('Y-m-d H:i:s');
                 $dataExcGame['updated_at'] = date('Y-m-d H:i:s');
