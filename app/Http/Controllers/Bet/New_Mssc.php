@@ -110,7 +110,7 @@ class New_Mssc
                 $dataExcGame['issue'] = $issue;
                 $dataExcGame['opennum'] = $openCode;
                 $dataExcGame['bunko'] = $excBunko;
-                $dataExcGame['excel_num'] = $i+1;
+                $dataExcGame['excel_num'] = $i;
                 $dataExcGame['excel_num']++;
                 $dataExcGame['created_at'] = date('Y-m-d H:i:s');
                 $dataExcGame['updated_at'] = date('Y-m-d H:i:s');
