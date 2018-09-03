@@ -61,6 +61,7 @@ class Excel
             return false;
         $today = date('Y-m-d H:i:s',time()+9);
         $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0");
+        \Log::info($tmp);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
