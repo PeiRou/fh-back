@@ -33,8 +33,11 @@ class New_Msjsk3
         if($betCount > 0){
             \Log::info($betCount);
             $excelModel = new Excel();
-            $exeBase = $excelModel->getNeedKillIssue($table);
+            $exeBase = $excelModel->getNeedKillIssue($table,2);
             if(isset($exeBase->excel_num) && $exeBase->excel_num > 0 && $excel){
+                $update = DB::table($table)->where('id',$id)->update([
+                    'excel_num' => 3
+                ]);
                 \Log::Info('msjsk3 killing...');
                 $this->excel($openCode,$exeBase,$issue,$gameId,$table);
                 $update = DB::table($table)->where('id',$id)->update([

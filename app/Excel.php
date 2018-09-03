@@ -56,12 +56,11 @@ class Excel
         return $exeBase;
     }
     //取得最新的需要计算杀率
-    public function getNeedKillIssue($table){
+    public function getNeedKillIssue($table,$status=0){
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time()+9);
-        $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0");
-        \Log::info("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=0) and is_open=0 and bunko=0 and excel_num=0");
+        $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=".$status.") and is_open=0 and bunko=0 and excel_num=".$status);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
