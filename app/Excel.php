@@ -23,7 +23,7 @@ class Excel
             $data['bet_lose'] = abs($todayBet->sumBunkoLose);
             DB::table('excel_base')->where('excel_base_idx',$exceBase->excel_base_idx)->update($data);
         }
-        $tmp = DB::select("SELECT sum(bet_money) as sumBet_money,(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
+        $tmp = DB::select("SELECT sum(bet_money) as sumBet_money,(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM bet WHERE issue = '{$issue}' and game_id = '{$gameId}' and testFlag = 0 ");
         foreach ($tmp as&$value)
             $excBunko = $value;
         $data = [];
