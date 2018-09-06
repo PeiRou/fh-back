@@ -21,17 +21,17 @@ class ExportExcelController extends Controller
         ];
         $exportRecharges = DB::table('recharges')
             ->leftJoin('users','recharges.userId','=','users.id')
-            ->select('users.id as user_id')
+            ->select('users.username as username')
             ->where('recharges.payType',$rechargesType)
             ->whereBetween('recharges.created_at',[$startTime.' 00:00:00',$endTime.' 23:59:59'])
             ->get();
         foreach ($exportRecharges as $item){
             $cellData[] = [
-                $item->user_id,
-                $item->user_id,
-                $item->user_id,
-                $item->user_id,
-                $item->user_id,
+                $item->username,
+                $item->username,
+                $item->username,
+                $item->username,
+                $item->username,
             ];
         }
         return $cellData;
