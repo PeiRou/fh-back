@@ -412,23 +412,28 @@ function excelRecharges() {
     var rechargesType = $('#recharge_type').val();
     var startTime = $('#startTime').val();
     var endTime = $('#endTime').val();
-    jc = $.confirm({
-        title: '导出充值记录',
-        theme: 'material',
-        type: 'orange',
-        boxWidth:'25%',
-        content: '您选择了导出【'+startTime+' - '+endTime+'】范围内的【'+rechargesType+'】数据，确定导出吗？',
-        buttons: {
-            confirm: {
-                text:'确定',
-                btnClass: 'btn-orange',
-                action: function(){
+    if(rechargesType == ''){
+        Calert('请先选择充值类型，再尝试导出数据','red','error');
+    } else {
+        jc = $.confirm({
+            title: '导出充值记录',
+            theme: 'material',
+            type: 'orange',
+            boxWidth:'25%',
+            content: '您选择了导出【'+startTime+' - '+endTime+'】范围内的【'+rechargesType+'】数据，确定导出吗？',
+            buttons: {
+                confirm: {
+                    text:'确定',
+                    btnClass: 'btn-orange',
+                    action: function(){
 
+                    }
+                },
+                cancel:{
+                    text:'取消'
                 }
-            },
-            cancel:{
-                text:'取消'
             }
-        }
-    });
+        });
+    }
+
 }
