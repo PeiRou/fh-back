@@ -467,6 +467,7 @@ class SrcMemberController extends Controller
                         $recharges->username = $getUserBalance->username;
                         $recharges->orderNum = payOrderNumber();
                         $recharges->payType = 'adminAddMoney';
+                        $recharges->levels = $getUserBalance->rechLevel;
                         $recharges->amount = $money;
                         $recharges->balance = $getUserBalance->money+$money;
                         $recharges->shou_info = "后台加钱：".$content;
