@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
+    <title>会员注单详情</title>
 
     <link rel="stylesheet" href="/vendor/Semantic/semantic.min.css">
     <link rel="stylesheet" href="/vendor/confirm/dist/jquery-confirm.min.css">
@@ -75,6 +75,7 @@
                     <input type="checkbox" name="games" id="games" checked value="{{ $item->game_id }}"> {{ $item->game_name }}
                 </label>
             @endforeach
+            <button type="button">反选</button>
         </div>
     </div>
     <div class="table-quick-bar" style="margin-top: 0;padding-top: 11px;padding-left: 3px;">
