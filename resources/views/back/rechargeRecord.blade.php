@@ -19,7 +19,7 @@
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('rechargeRecordTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="addSubAccount()">导出充值</span>
+            <span onclick="excelRecharges()">导出充值</span>
         </div>
     </div>
     <div class="table-content">

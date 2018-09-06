@@ -407,3 +407,25 @@ $('#account_type').on('change',function () {
         $('#account_param').attr('placeholder','操作人账号');
     }
 });
+
+function excelRecharges() {
+    jc = $.confirm({
+        title: '导出充值记录',
+        theme: 'material',
+        type: 'orange',
+        boxWidth:'25%',
+        content: 'text',
+        buttons: {
+            confirm: {
+                text:'确定',
+                btnClass: 'btn-orange',
+                action: function(){
+
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
