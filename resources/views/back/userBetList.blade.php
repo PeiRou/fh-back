@@ -70,7 +70,7 @@
 </head>
 <body>
 <div class="user-bet-list">
-    <div class="title">会员：{{ $getUserInfo->username }}-注单详情</div>
+    <div class="title">会员：<span id="changeUserDisplayName">{{ $getUserInfo->username }}</span>-注单详情</div>
     <div class="games">
         <div class="title">游戏选择：</div>
         <div class="list">
@@ -356,6 +356,7 @@
         });
 
         $('#btn_search').on('click',function () {
+            $('#changeUserDisplayName').text($('#username').val());
             getCheckBox();
             getTotalWin();
             if(check_val.length !== 0){
