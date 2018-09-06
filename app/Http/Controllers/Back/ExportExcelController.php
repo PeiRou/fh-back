@@ -22,14 +22,14 @@ class ExportExcelController extends Controller
             ['1','2','3','4','5','6','7','8','9','10','11'],
             ['1','2','3','4','5','6','7','8','9','10','11'],
         ];
-        Excel::create('充值记录',function ($excel) use ($cellData){
+        Excel::create('111',function ($excel) use ($cellData){
             $excel->sheet('123', function($sheet) use ($cellData){
                 $sheet->rows($cellData);
             });
         })->export('xls');
 
-        return response()->json([
-            'status' => true
-        ]);
+//        return response()->json([
+//            'status' => true
+//        ]);
     }
 }
