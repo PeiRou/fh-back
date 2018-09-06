@@ -412,6 +412,26 @@ function excelRecharges() {
     var rechargesType = $('#recharge_type').val();
     var startTime = $('#startTime').val();
     var endTime = $('#endTime').val();
+    switch (rechargesType) {
+        case 'onlinePayment':
+            var rechargesTypeName = '在线充值';
+            break;
+        case 'bankTransfer':
+            var rechargesTypeName = '银行汇款';
+            break;
+        case 'alipay':
+            var rechargesTypeName = '支付宝转账';
+            break;
+        case 'weixin':
+            var rechargesTypeName = '微信转账';
+            break;
+        case 'cft':
+            var rechargesTypeName = '财付通转账';
+            break;
+        case 'adminAddMoney':
+            var rechargesTypeName = '后台加钱';
+            break;
+    }
     if(rechargesType == ''){
         Calert('请先选择充值类型，再尝试导出数据','red','error');
     } else {
@@ -420,7 +440,7 @@ function excelRecharges() {
             theme: 'material',
             type: 'orange',
             boxWidth:'25%',
-            content: '您选择了导出【'+startTime+' - '+endTime+'】范围内的【'+rechargesType+'】数据，确定导出吗？',
+            content: '您选择了导出【'+startTime+' - '+endTime+'】范围内的【'+rechargesTypeName+'】数据，确定导出吗？',
             buttons: {
                 confirm: {
                     text:'确定',
