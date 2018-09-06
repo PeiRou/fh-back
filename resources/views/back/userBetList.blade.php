@@ -62,6 +62,10 @@
             padding: 20px;
             color: #b5b5b5;
         }
+        .select_btn{
+            font-size: 12px;
+            padding: 4px 8px;
+        }
     </style>
 </head>
 <body>
@@ -75,7 +79,7 @@
                     <input type="checkbox" name="games" id="games" checked value="{{ $item->game_id }}"> {{ $item->game_name }}
                 </label>
             @endforeach
-            <button type="button">反选</button>
+            <button type="button" class="select_btn" id="reverse">反选</button>
         </div>
     </div>
     <div class="table-quick-bar" style="margin-top: 0;padding-top: 11px;padding-left: 3px;">
@@ -183,6 +187,7 @@
         // $('body').on('click',function () {
         //     $('.show-open').hide();
         // });
+
 
         getCheckBox();
         getTotalWin();
@@ -389,7 +394,9 @@
         //     dataTable.ajax.reload();
         // });
     });
-    
+
+
+
     function getTotalWin() {
         var userId = {{ $getUserInfo->id }};
         var date = $('#date').val();
@@ -464,6 +471,12 @@
                 $('#startTime').val(result.start);
                 $('#endTime').val(result.end);
             }
+        });
+    });
+
+    $("#reverse").click(function () {
+        $(".list :checkbox").each(function () {
+            $(this).prop("checked", !$(this).prop("checked"));
         });
     });
 </script>
