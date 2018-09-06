@@ -446,25 +446,26 @@ function excelRecharges() {
                     text:'确定',
                     btnClass: 'btn-orange',
                     action: function(){
-                        $.ajax({
-                            url:'/action/admin/exportExcel/userRecharges',
-                            type:'post',
-                            dataType:'json',
-                            data:{startTime:startTime,endTime:endTime,rechargesType:rechargesType},
-                            success:function (data) {
-                                if(data.status == true){
-                                    Calert('充值数据已导出','green');
-                                } else {
-                                    Calert(data.msg,'red')
-                                }
-                            },
-                            error:function (e) {
-                                if(e.status == 403)
-                                {
-                                    Calert('您没有此项权限！无法继续！','red')
-                                }
-                            }
-                        });
+                        window.location.href = '/action/admin/exportExcel/userRecharges?startTime='+startTime+'&endTime='+endTime+'&rechargesType='+rechargesType;
+                        // $.ajax({
+                        //     url:'/action/admin/exportExcel/userRecharges',
+                        //     type:'post',
+                        //     dataType:'json',
+                        //     data:{startTime:startTime,endTime:endTime,rechargesType:rechargesType},
+                        //     success:function (data) {
+                        //         if(data.status == true){
+                        //             Calert('充值数据已导出','green');
+                        //         } else {
+                        //             Calert(data.msg,'red')
+                        //         }
+                        //     },
+                        //     error:function (e) {
+                        //         if(e.status == 403)
+                        //         {
+                        //             Calert('您没有此项权限！无法继续！','red')
+                        //         }
+                        //     }
+                        // });
                     }
                 },
                 cancel:{
