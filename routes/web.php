@@ -361,6 +361,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/openLhc', 'Back\OpenHistoryController@addLhcData');
     Route::post('/action/admin/reOpenLhc', 'Back\OpenHistoryController@reOpenLhcData');
 
+    Route::post('/action/admin/exportExcel/userRecharges','Back\ExportExcelController@exportExcelForRecharges'); //导出充值数据为Excel文件
+
 //Modal
     Route::get('/back/modal/addPermission', 'Back\Ajax\ModalController@addPermission'); //添加权限
     Route::get('/back/modal/editPermission/{id}', 'Back\Ajax\ModalController@editPermission'); //修改权限
