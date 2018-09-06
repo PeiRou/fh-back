@@ -26,7 +26,7 @@ class ExportExcelController extends Controller
             $excel->sheet('123', function($sheet) use ($cellData){
                 $sheet->rows($cellData);
             });
-        })->export('xls');
+        })->export('xlsx');
 
 //        return response()->json([
 //            'status' => true
