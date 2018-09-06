@@ -43,6 +43,7 @@ class ExportExcelController extends Controller
             ->leftJoin('users','recharges.userId','=','users.id')
             ->select('users.username as username','recharges.amount as amount','recharges.operation_account as operation_account','recharges.shou_info as shou_info','recharges.status as re_status')
             ->where('recharges.payType',$rechargesType)
+            ->where('users.testFlag',0)
             ->whereBetween('recharges.created_at',[$startTime.' 00:00:00',$endTime.' 23:59:59'])
             ->get();
         foreach ($exportRecharges as $item){
