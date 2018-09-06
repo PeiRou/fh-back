@@ -105,6 +105,10 @@
                     </select>
                 </div>
                 <div class="one wide field">
+                    <input type="text" id="username" value="{{ $getUserInfo->username }}" placeholder="会员账号">
+                    <input type="hidden" id="userid" value="{{ $userId }}">
+                </div>
+                <div class="one wide field">
                     <input type="text" id="issue" placeholder="期数">
                 </div>
                 <div class="one wide field">
@@ -255,22 +259,13 @@
                 url:'/back/datatables/userBetSearch',
                 data:function (d) {
                     d.games = check_val;
-                    d.userId = '{{ $userId }}';
+                    d.userName = $('#username').val();
                     d.date = $('#date').val();
                     d.status = $('#status').val();
                     d.startTime = $('#startTime').val();
                     d.endTime = $('#endTime').val();
                     d.issue = $('#issue').val();
                     d.orderNum = $('#orderNum').val();
-                    // d.end = $('#endTime').val();
-                //     d.rechLevel = $('#rechLevel').val();
-                //     d.account = $('#account').val();
-                //     d.mobile = $('#mobile').val();
-                //     d.qq = $('#qq').val();
-                //     d.minMoney = $('#minMoney').val();
-                //     d.maxMoney = $('#maxMoney').val();
-                //     d.promoter = $('#promoter').val();
-                //     d.noLoginDays = $('#noLoginDays').val();
                 }
             },
             columns: [
@@ -400,7 +395,7 @@
 
 
     function getTotalWin() {
-        var userId = {{ $getUserInfo->id }};
+        var username = $('#username').val();
         var date = $('#date').val();
         var startTime = $('#startTime').val();
         var endTime = $('#endTime').val();
@@ -411,7 +406,7 @@
             url:'/action/userBetList/total',
             type:'post',
             dataType:'json',
-            data:{userId:userId,date:date,startTime:startTime,endTime:endTime,_token:token,issue:issue,orderNum:orderNum},
+            data:{username:username,date:date,startTime:startTime,endTime:endTime,_token:token,issue:issue,orderNum:orderNum},
             success:function (data) {
                 var winTotal = data[0]['winTotal'];
                 var betTotal = data[0]['betTotal'];

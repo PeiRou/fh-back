@@ -348,6 +348,7 @@ class BetDataController extends Controller
     public function userBetSearch(Request $request)
     {
         $games = $request->get('games');
+        $username = $request->get('userName');
         $userId = $request->get('userId');
         $date = $request->get('date');
         $status = $request->get('status');
@@ -355,7 +356,7 @@ class BetDataController extends Controller
         $end = $request->get('endTime');
         $issue = $request->get('issue');
         $orderNum = $request->get('orderNum');
-        $user = DB::table('users')->where('id',$userId)->first();
+        $user = DB::table('users')->where('username',$username)->first();
 //        return count($games);
         $bet = DB::table('bet')
             ->leftJoin('game','bet.game_id','=','game.game_id')
@@ -382,7 +383,7 @@ class BetDataController extends Controller
                     $query->whereBetween('bet.created_at',[$start.' 00:00:00', $end.' 23:59:59']);
                 }
             })
-            ->where('bet.user_id',$userId)->orderBy('bet.created_at','desc')->get();
+            ->where('bet.user_id',$user->id)->orderBy('bet.created_at','desc')->get();
         return DataTables::of($bet)
             ->editColumn('order_id',function ($bet){
                 return '<span>'.$bet->bet_order_id.'</span>';
