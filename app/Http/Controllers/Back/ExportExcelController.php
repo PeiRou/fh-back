@@ -14,6 +14,26 @@ class ExportExcelController extends Controller
         $startTime = $request->get('startTime');
         $endTime = $request->get('endTime');
         $rechargesType = $request->get('rechargesType');
+        switch ($rechargesType){
+            case 'onlinePayment':
+                $fileTypeName = '在线充值';
+                break;
+            case 'bankTransfer':
+                $fileTypeName = '银行汇款';
+                break;
+            case 'alipay':
+                $fileTypeName = '支付宝转账';
+                break;
+            case 'weixin':
+                $fileTypeName = '微信转账';
+                break;
+            case 'cft':
+                $fileTypeName = '财付通转账';
+                break;
+            case 'adminAddMoney':
+                $fileTypeName = '后台加钱';
+                break;
+        }
 
         $cellData = [
 //            ['订单日期','处理日期','会员','余额','订单号','付款方式','交易金额','操作人','收款信息','入款信息','状态'],
@@ -46,11 +66,11 @@ class ExportExcelController extends Controller
                 $re_status,
             ];
         }
-        return $cellData;
-//        Excel::create('111',function ($excel) use ($cellData){
-//            $excel->sheet('123', function($sheet) use ($cellData){
-//                $sheet->rows($cellData);
-//            });
-//        })->export('xls');
+//        return $cellData;
+        Excel::create('【'.$fileTypeName.'】充值数据-['.$startTime.'-'.$endTime.']',function ($excel) use ($cellData,$fileTypeName){
+            $excel->sheet($fileTypeName, function($sheet) use ($cellData){
+                $sheet->rows($cellData);
+            });
+        })->export('xls');
     }
 }
