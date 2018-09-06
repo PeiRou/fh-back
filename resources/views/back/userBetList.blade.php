@@ -79,6 +79,8 @@
                     <input type="checkbox" name="games" id="games" checked value="{{ $item->game_id }}"> {{ $item->game_name }}
                 </label>
             @endforeach
+            <button type="button" class="select_btn" id="selectAll">全选</button>
+            <button type="button" class="select_btn" id="unSelect">全不选</button>
             <button type="button" class="select_btn" id="reverse">反选</button>
         </div>
     </div>
@@ -478,6 +480,14 @@
         $(".list :checkbox").each(function () {
             $(this).prop("checked", !$(this).prop("checked"));
         });
+    });
+    //全选
+    $("#selectAll").click(function () {
+        $(".list :checkbox").prop("checked", true);
+    });
+    //全不选
+    $("#unSelect").click(function () {
+        $(".list :checkbox").prop("checked", false);
     });
 </script>
 </body>
