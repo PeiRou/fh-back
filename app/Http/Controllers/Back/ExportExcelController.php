@@ -21,17 +21,29 @@ class ExportExcelController extends Controller
         ];
         $exportRecharges = DB::table('recharges')
             ->leftJoin('users','recharges.userId','=','users.id')
-            ->select('users.username as username','recharges.amount as amount')
+            ->select('users.username as username','recharges.amount as amount','recharges.operation_account as operation_account','recharges.shou_info as shou_info','recharges.status as re_status')
             ->where('recharges.payType',$rechargesType)
             ->whereBetween('recharges.created_at',[$startTime.' 00:00:00',$endTime.' 23:59:59'])
             ->get();
         foreach ($exportRecharges as $item){
+            if($item->re_status == 1){
+                $re_status = '未受理';
+            }
+            if($item->re_status == 2){
+                $re_status = '充值成功';
+            }
+            if($item->re_status == 3){
+                $re_status = '充值失败';
+            }
+            if($item->re_status == 4){
+                $re_status = '在线充值中';
+            }
             $cellData[] = [
                 $item->username,
                 $item->amount,
-                $item->username,
-                $item->username,
-                $item->username,
+                $item->operation_account,
+                $item->shou_info,
+                $re_status,
             ];
         }
         return $cellData;
