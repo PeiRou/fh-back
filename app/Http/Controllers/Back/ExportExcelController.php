@@ -15,12 +15,12 @@ class ExportExcelController extends Controller
         $endTime = $request->get('endTime');
         $rechargesType = $request->get('rechargesType');
 
-        $exportData = [
+        $cellData = [
             ['订单日期','处理日期','会员','余额','订单号','付款方式','交易金额','操作人','收款信息','入款信息','状态'],
         ];
         $exportRecharges = DB::table('recharges')->where('payType',$rechargesType)->whereBetween('created_at',[$startTime.' 00:00:00',$endTime.' 23:59:59'])->get();
         foreach ($exportRecharges as $item){
-            $exportData[] = [
+            $cellData[] = [
                 $item->created_at,
                 $item->process_date,
                 $item->userId,
@@ -35,7 +35,7 @@ class ExportExcelController extends Controller
             ];
         }
 
-        return $exportData;
+        //return $exportData;
 
 //        $cellData = [
 //            ['订单日期','处理日期','会员','余额','订单号','付款方式','交易金额','操作人','收款信息','入款信息','状态'],
@@ -45,11 +45,11 @@ class ExportExcelController extends Controller
 //            ['1','2','3','4','5','6','7','8','9','10','11'],
 //            ['1','2','3','4','5','6','7','8','9','10','11'],
 //        ];
-//        Excel::create('111',function ($excel) use ($cellData){
-//            $excel->sheet('123', function($sheet) use ($cellData){
-//                $sheet->rows($cellData);
-//            });
-//        })->export('xls');
+        Excel::create('111',function ($excel) use ($cellData){
+            $excel->sheet('123', function($sheet) use ($cellData){
+                $sheet->rows($cellData);
+            });
+        })->export('xls');
 
 //        return response()->json([
 //            'status' => true
