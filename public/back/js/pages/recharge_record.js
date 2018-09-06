@@ -409,12 +409,15 @@ $('#account_type').on('change',function () {
 });
 
 function excelRecharges() {
+    var rechargesType = $('#recharge_type').val();
+    var startTime = $('#startTime').val();
+    var endTime = $('#endTime').val();
     jc = $.confirm({
         title: '导出充值记录',
         theme: 'material',
         type: 'orange',
         boxWidth:'25%',
-        content: 'text',
+        content: '您选择了导出【'+startTime+' - '+endTime+'】范围内的【'+rechargesType+'】数据，确定导出吗？',
         buttons: {
             confirm: {
                 text:'确定',
