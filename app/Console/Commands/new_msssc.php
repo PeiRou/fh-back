@@ -62,7 +62,7 @@ class new_msssc extends Command
 //                return $value;
 //            }
             $timeDiff = Carbon::now()->diffInSeconds(Carbon::parse($value['time']));
-            if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3){
+            if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3 || $timeDiff == 4 || $timeDiff == 5){
                 return $value;
             }
         });

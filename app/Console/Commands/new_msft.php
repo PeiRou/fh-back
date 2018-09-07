@@ -56,7 +56,7 @@ class new_msft extends Command
         $nowTimeAdd3 = Carbon::parse($nowTime)->addSeconds(3);
         $filtered = collect($data)->first(function ($value, $key) use ($nowTime, $nowTimeAdd1, $nowTimeAdd2, $nowTimeAdd3) {
             $timeDiff = Carbon::now()->diffInSeconds(Carbon::parse($value['time']));
-            if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3){
+            if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3 || $timeDiff == 4 || $timeDiff == 5){
                 return $value;
             }
 //            if(strtotime($value['time']) == strtotime($nowTime) || strtotime($value['time']) == strtotime($nowTimeAdd1) || strtotime($value['time']) == strtotime($nowTimeAdd2) || strtotime($value['time']) == strtotime($nowTimeAdd3)){

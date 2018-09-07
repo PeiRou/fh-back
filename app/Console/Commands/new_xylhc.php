@@ -55,7 +55,7 @@ class new_xylhc extends Command
         $nowTime    = date('H:i:s');
         $filtered = collect($data)->first(function ($value, $key) use ($nowTime) {
             $timeDiff = Carbon::now()->diffInSeconds(Carbon::parse($value['time']));
-            if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3){
+            if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3 || $timeDiff == 4 || $timeDiff == 5){
                 return $value;
             }
         });
