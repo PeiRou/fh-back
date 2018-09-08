@@ -85,22 +85,28 @@ class ActivityController extends Controller
     //派奖审核-表格数据
     public function review(Request $request){
         $params = $request->all();
-        $datas = ActivitySend::where(function ($sql) use ($params){
+        $datas = ActivitySend::select('activity_send.*','users.fullname','users.rechLevel as lv','level.name as levelname')->where(function ($sql) use ($params){
             if(isset($params['status']) && array_key_exists('status',$params)){
-                $sql->where('status','=',$params['status']);
+                $sql->where('activity_send.status','=',$params['status']);
             }
             if(isset($params['user_account']) && array_key_exists('user_account',$params)){
-                $sql->where('user_account','=',$params['user_account']);
+                $sql->where('activity_send.user_account','=',$params['user_account']);
             }
             if(isset($params['time']) && array_key_exists('time',$params)){
-                $sql->wherebetween('created_at',[$params['time'] . ' 00:00:00',$params['time'] . ' 23:59:59']);
+                $sql->wherebetween('activity_send.created_at',[$params['time'] . ' 00:00:00',$params['time'] . ' 23:59:59']);
             }
         })
-            ->orderBy('created_at','desc')->get();
+            ->join('users','users.id','=','activity_send.user_id')
+            ->join('level','level.value','=','users.rechLevel')
+            ->orderBy('activity_send.created_at','desc')->get();
         $sendStatus = ActivitySend::$activityStatus;
         return DataTables::of($datas)
             ->editColumn('user_account',function ($datas) {
-                return  $datas->user_account.'('.$datas->user_name.')';
+                if($datas->rechlevel=='111')        //黑名单
+                    $levedsp = '-<font color="red"><b>'.$datas->levelname.'</b></font>)';
+                else
+                    $levedsp = '-<font color="green"><b>'.$datas->levelname.'</b></font>)';
+                return  $datas->user_account.'('.$datas->fullname.$levedsp;
             })
             ->editColumn('created_at',function ($datas) {
                 return  str_replace('-','/',substr($datas->created_at,0,16));
