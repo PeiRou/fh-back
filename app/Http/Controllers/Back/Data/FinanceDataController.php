@@ -104,7 +104,7 @@ class FinanceDataController extends Controller
                 return $recharge->re_orderNum;
             })
             ->editColumn('user',function ($recharge){
-                return '<span>'.$recharge->re_username.'</span><span>('.$recharge->level_name.')</span>';
+                return '<span>'.$recharge->re_username.'</span><span> (<b>'.$recharge->level_name.'</b>)</span>';
             })
             ->editColumn('trueName',function ($recharge){
                 return $recharge->user_fullName;
