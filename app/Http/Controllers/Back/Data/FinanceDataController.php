@@ -36,7 +36,7 @@ class FinanceDataController extends Controller
             $findUserId = DB::table('users')->where('fullName',$fullName)->first();
         }
 
-        $sql = 'select users.id as uid,recharges.id as rid,recharges.created_at as re_created_at,recharges.levels as re_levels,recharges.process_date as re_process_date,recharges.username as re_username,recharges.userId as userId,users.fullName as user_fullName,users.money as user_money,recharges.payType as re_payType,recharges.amount as re_amount,rebate_or_fee,recharges.operation_account as re_operation_account,recharges.shou_info as re_shou_info,recharges.ru_info as re_ru_info,recharges.status as re_status,recharges.msg as re_msg,level.name as level_name,recharges.orderNum as re_orderNum,recharges.re_sysPayOrder,recharges.balance as re_balance from recharges 
+        $sql = 'select users.id as uid,recharges.id as rid,recharges.created_at as re_created_at,recharges.levels as re_levels,recharges.process_date as re_process_date,recharges.username as re_username,recharges.userId as userId,users.fullName as user_fullName,users.money as user_money,recharges.payType as re_payType,recharges.amount as re_amount,rebate_or_fee,recharges.operation_account as re_operation_account,recharges.shou_info as re_shou_info,recharges.ru_info as re_ru_info,recharges.status as re_status,recharges.msg as re_msg,level.name as level_name,recharges.orderNum as re_orderNum,recharges.balance as re_balance from recharges 
               JOIN users on recharges.userId = users.id JOIN level on level.value = users.rechLevel WHERE 1 ';
         $where = '';
         if(isset($killTestUser) && $killTestUser){

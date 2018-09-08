@@ -101,12 +101,7 @@ $(function () {
             {data:'user'},
             {data:'trueName'},
             {data:'balance'},
-            {data:function (data) {
-                if(data.re_sysPayOrder==''||data.re_sysPayOrder==null)
-                    return data.orderNum;
-                else
-                    return data.orderNum + '<br><font color="red">商户的系统订单：</font>' + data.re_sysPayOrder;
-                }},
+            {data:'orderNum'},
             {data:'payType'},
             {data:'amount'},
             {data:'rebate_or_fee'},
