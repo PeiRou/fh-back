@@ -41,7 +41,11 @@ class Excel
         $is_killopen = DB::table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win')->where('game_id',$gameId)->first();
         $opennum = '';
         if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1)&&!empty($is_killopen->count_date)){
-            $lose_losewin_rate = $is_killopen->is_open?($is_killopen->bet_lose-$is_killopen->bet_win)/($is_killopen->bet_lose + $is_killopen->bet_win):0;
+            $total = $is_killopen->bet_lose + $is_killopen->bet_win;
+            if($total>0)
+                $lose_losewin_rate = $is_killopen->is_open?($is_killopen->bet_lose-$is_killopen->bet_win)/$total:0;
+            else
+                $lose_losewin_rate =0;
             $opennum = $lose_losewin_rate>$is_killopen->kill_rate?'':$killopennum->excel_opennum;
             \Log::info($table.':杀率设置'.json_encode($is_killopen));
             \Log::info($table.':输赢比 '.$lose_losewin_rate);
