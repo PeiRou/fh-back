@@ -103,9 +103,9 @@ $(function () {
             {data:'balance'},
             {data:function (data) {
                     if(data.sysPayOrder==''||data.sysPayOrder==null)
-                        return data.orderNum;
+                        return data.re_orderNum;
                     else
-                        return data.orderNum + '<br><font color="red">商户的系统订单：</font>' + data.sysPayOrder;
+                        return data.re_orderNum + '<br><font color="red">商户的系统订单：</font>' + data.sysPayOrder;
                 }},
             {data:'payType'},
             {data:'amount'},
