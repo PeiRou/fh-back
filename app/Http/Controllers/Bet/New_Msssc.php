@@ -111,6 +111,7 @@ class New_Msssc
             }
         }
         $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = ".$gameId." AND issue ='{$issue}') and game_id = ".$gameId." AND issue ='{$issue}' LIMIT 1";
+        \Log::info('秒速时时彩: '.$aSql);
         $tmp = DB::select($aSql);
         foreach ($tmp as&$value)
             $openCode = $value->opennum;
