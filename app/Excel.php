@@ -27,6 +27,8 @@ class Excel
         foreach ($tmp as&$value)
             $excBunko = $value;
         $data = [];
+        $excBunko->sumBet_money = !isset($excBunko->sumBet_money)||empty($excBunko->sumBet_money)?0:$excBunko->sumBet_money;
+        $excBunko->sumBunko = !isset($excBunko->sumBunko)||empty($excBunko->sumBunko)?0:$excBunko->sumBunko;
         $data['bet_money'] = DB::raw('bet_money + '.$excBunko->sumBet_money);
         if($excBunko->sumBunko>0)
             $data['bet_win'] = DB::raw('bet_win + '.$excBunko->sumBunko);
