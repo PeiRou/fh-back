@@ -26,7 +26,7 @@ class Excel
         $tmp = DB::connection('mysql::write')->select("SELECT sum(bet_money) as sumBet_money,(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM bet WHERE issue = '{$issue}' and game_id = '{$gameId}' and testFlag = 0 ");
         foreach ($tmp as&$value)
             $excBunko = $value;
-        \Log::info($excBunko);
+//        \Log::info($excBunko);
         $data = [];
         $excBunko->sumBet_money = !isset($excBunko->sumBet_money)||empty($excBunko->sumBet_money)?0:$excBunko->sumBet_money;
         $excBunko->sumBunko = !isset($excBunko->sumBunko)||empty($excBunko->sumBunko)?0:$excBunko->sumBunko;
