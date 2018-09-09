@@ -24,19 +24,20 @@ class Excel
             DB::table('excel_base')->where('excel_base_idx',$exceBase->excel_base_idx)->update($data);
         }
         $tmp = DB::connection('mysql::write')->select("SELECT sum(bet_money) as sumBet_money,(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM bet WHERE issue = '{$issue}' and game_id = '{$gameId}' and testFlag = 0 ");
-        foreach ($tmp as&$value)
+        foreach ($tmp as&$value){
             $excBunko = $value;
-//        \Log::info($excBunko);
-        $data = [];
-        $excBunko->sumBet_money = !isset($excBunko->sumBet_money)||empty($excBunko->sumBet_money)?0:$excBunko->sumBet_money;
-        $excBunko->sumBunko = !isset($excBunko->sumBunko)||empty($excBunko->sumBunko)?0:$excBunko->sumBunko;
-        $data['bet_money'] = DB::raw('bet_money + '.$excBunko->sumBet_money);
-        if($excBunko->sumBunko>0)
-            $data['bet_win'] = DB::raw('bet_win + '.$excBunko->sumBunko);
-        else
-            $data['bet_lose'] = DB::raw('bet_lose + '.abs($excBunko->sumBunko));
-        \Log::info($gameId.'**'.$exceBase->excel_base_idx.'--'.$excBunko->sumBet_money.'=='.$excBunko->sumBunko);
-        DB::table('excel_base')->where('excel_base_idx', $exceBase->excel_base_idx)->update($data);
+            \Log::info(json_encode($excBunko));
+            $data = [];
+            $excBunko->sumBet_money = !isset($excBunko->sumBet_money)||empty($excBunko->sumBet_money)?0:$excBunko->sumBet_money;
+            $excBunko->sumBunko = !isset($excBunko->sumBunko)||empty($excBunko->sumBunko)?0:$excBunko->sumBunko;
+            $data['bet_money'] = DB::raw('bet_money + '.$excBunko->sumBet_money);
+            if($excBunko->sumBunko>0)
+                $data['bet_win'] = DB::raw('bet_win + '.$excBunko->sumBunko);
+            else
+                $data['bet_lose'] = DB::raw('bet_lose + '.abs($excBunko->sumBunko));
+            \Log::info($gameId.'**'.$exceBase->excel_base_idx.'--'.$excBunko->sumBet_money.'=='.$excBunko->sumBunko);
+            DB::table('excel_base')->where('excel_base_idx', $exceBase->excel_base_idx)->update($data);
+        }
     }
     //计算是否开杀
     public function kill_count($table,$issue,$gameId,$opencode){
