@@ -105,7 +105,7 @@ class New_Mssc
                 $tmp = DB::connection('mysql::write')->select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)
                     $excBunko = $value->sumBunko;
-                \Log::info('秒速时时彩 :'.$openCode.' => '.$excBunko);
+                \Log::info('秒速赛车 :'.$openCode.' => '.$excBunko);
                 $dataExcGame['game_id'] = $gameId;
                 $dataExcGame['issue'] = $issue;
                 $dataExcGame['opennum'] = $openCode;
