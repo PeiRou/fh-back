@@ -267,7 +267,7 @@
                     d.orderNum = $('#orderNum').val();
                 },
                 error:function (data) {
-                    console.log(data);
+                    console.log(data.msg);
                 }
             },
             columns: [
