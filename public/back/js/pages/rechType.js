@@ -13,7 +13,6 @@ $(function () {
         columns: [
             {data:'id'},
             {data:'name'},
-            {data:'onlineType'},
             {data:'rechType'},
             {data:'sort'},
             {data:'control'}

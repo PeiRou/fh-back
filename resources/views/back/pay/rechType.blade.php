@@ -17,7 +17,6 @@
             <tr>
                 <th>编号ID</th>
                 <th>显示名称</th>
-                <th>显示是否在线</th>
                 <th>标识</th>
                 <th>排序</th>
                 <th width="150">操作</th>
