@@ -6,6 +6,7 @@
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>操作日志
+            <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
     </div>
     <div class="table-content">

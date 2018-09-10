@@ -6,6 +6,7 @@
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>资金明细
+            <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('capitalDetailsTable')"><i class="iconfont">&#xe61d;</i></span>
@@ -40,11 +41,19 @@
                     <div class="one wide field">
                         <input type="text" id="issue" placeholder="期号">
                     </div>
-                    <div class="one wide field" style="width: 9% !important;">
+                    <div class="one wide field" style="width: 9% !important;" id="type-div">
                         <select class="ui dropdown" id="type" style='height:32px !important'>
                             <option value="">类型</option>
                             @foreach($playTypes as $key => $playtype)
                                 <option value="{{ $key }}">{{ $playtype }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="one wide field" style="width: 9% !important;display: none;" id="rechargesType-div">
+                        <select class="ui dropdown" id="rechargesType" style='height:32px !important'>
+                            <option value="">加钱类型</option>
+                            @foreach($aRechargesType as $kRechargesType => $iRechargesType)
+                                <option value="{{ $kRechargesType }}">{{ $iRechargesType }}</option>
                             @endforeach
                         </select>
                     </div>

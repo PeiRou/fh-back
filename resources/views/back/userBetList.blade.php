@@ -193,7 +193,6 @@
         //     $('.show-open').hide();
         // });
 
-
         getCheckBox();
         getTotalWin();
         var intVal = function ( i ) {
@@ -383,9 +382,7 @@
             }
         });
     });
-
-
-
+    
     function getTotalWin() {
         var username = $('#username').val();
         var date = $('#date').val();

@@ -6,6 +6,7 @@
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>充值记录
+            <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
         <div class="select-test-user">
             <label>
@@ -42,6 +43,14 @@
 
                         </select>
                     </div>
+                    <div class="one wide field" id="Recharges_id-Div" style="display: none">
+                        <select class="ui dropdown" id="Recharges_id" style='height:32px !important'>
+                            <option value="">加钱方式</option>
+                            @foreach($aRechargesType as $kRechargesType => $iRechargesType)
+                                <option value="{{ $kRechargesType }}">{{ $iRechargesType }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="one wide field">
                         <select class="ui dropdown" id="rechargeType" style='height:32px !important'>
                             <option value="">收款方式</option>
@@ -62,6 +71,7 @@
                         <select class="ui dropdown" id="account_type" style='height:32px !important'>
                             <option value="account">用户账号</option>
                             <option value="orderNum">订单号</option>
+                            <option value="sysOrderNum">商户订单号</option>
                             <option value="operation_account">操作人账号</option>
                         </select>
                     </div>

@@ -80,6 +80,17 @@ $(function () {
         //dataTable.ajax.reload();
     });
 
+    $(document).keyup(function(e){
+        var key = e.which;
+        if(key == 13 || key == 32){
+            dataTable.destroy();
+            // 列改变了，需要清空table
+            $("#capitalDetailsTable").empty();
+            dataTable = createTable(columns);
+            //dataTable.ajax.reload();
+        }
+    });
+
     $('#reset').on('click',function () {
         $('#username').val('');
         $('#type_id').val('');

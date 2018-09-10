@@ -10,6 +10,7 @@ use App\ActivityPrize;
 use App\ActivitySend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -409,5 +410,14 @@ class ActivityController extends Controller
                 'msg'=>'审核失败'
             ]);
         }
+    }
+
+    //活动数据统计-每日统计
+    public function dailyStatistics(){
+        Artisan::call('Activity:DailyStatistics');
+        return response()->json([
+            'status'=>true,
+            'msg'=>'统计成功'
+        ]);
     }
 }

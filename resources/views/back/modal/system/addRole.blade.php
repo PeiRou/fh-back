@@ -43,7 +43,12 @@
                 type: 'POST',
                 data: $form.serialize(),
                 success: function(result) {
-
+                    if(result.status == true){
+                        jc2.close();
+                        $('#roleTable').DataTable().ajax.reload(null,false);
+                    }else{
+                        alert(result.msg);
+                    }
                 }
             });
         });

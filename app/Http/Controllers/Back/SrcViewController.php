@@ -23,6 +23,7 @@ use App\PlayCates;
 use App\PromotionConfig;
 use App\PromotionReport;
 use App\PromotionReview;
+use App\Recharges;
 use App\SubAccount;
 use App\SystemSetting;
 use App\User;
@@ -237,7 +238,8 @@ class SrcViewController extends Controller
     public function rechargeRecord()
     {
         $today = date('Y-m-d');
-        return view('back.rechargeRecord',compact('today'));
+        $aRechargesType = Recharges::$rechargesType;
+        return view('back.rechargeRecord',compact('today','aRechargesType'));
     }
     //提款记录
     public function drawingRecord()
@@ -252,8 +254,8 @@ class SrcViewController extends Controller
         $games = Games::getGameOption();
         $playTypes = Capital::$playTypeOption;
         $capitalTimes = Capital::getCapitalTimeOption();
-
-        return view('back.capitalDetails',compact('games','playTypes','capitalTimes'));
+        $aRechargesType = Recharges::$rechargesType;
+        return view('back.capitalDetails',compact('games','playTypes','capitalTimes','aRechargesType'));
     }
     //会员对账
     public function memberReconciliation()
@@ -611,6 +613,10 @@ class SrcViewController extends Controller
     {
         return view('back.pay.rechargeWay');
     }
+    //支付前端显示
+    public function rechType(){
+        return view('back.pay.rechType');
+    }
 
     public function payOnlineSelectData($rechargeType = "")
     {
@@ -700,6 +706,15 @@ class SrcViewController extends Controller
     public function activityReview(){
         $aStatuss = ActivitySend::$activityStatus;
         return view('back.activity.review',compact('aStatuss'));
+    }
+    //每日数据统计
+    public function activityDaily(){
+        return view('back.activity.daily');
+    }
+    //活动数据统计
+    public function activityData(){
+        $aActivityType = Activity::$activityType;
+        return view('back.activity.data',compact('aActivityType'));
     }
 
     //推广结算报表

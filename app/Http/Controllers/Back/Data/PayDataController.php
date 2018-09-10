@@ -7,6 +7,7 @@ use App\Levels;
 use App\PayOnline;
 use App\PayType;
 use App\RechargeWay;
+use App\RechType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
@@ -398,6 +399,25 @@ class PayDataController extends Controller
                         <span class="edit-link" onclick="del(\''.$rechargeWay->id.'\',\''.$rechargeWay->type.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
             })
             ->rawColumns(['status','control'])
+            ->make(true);
+    }
+    //支付前端显示
+    public function rechType(){
+        $rechType = RechType::orderBy('sort','asc')->get();
+        return DataTables::of($rechType)
+            ->editColumn('control', function ($rechType){
+                return '';
+            })
+            ->editColumn('onlineType', function ($rechType){
+                if ($rechType->onlineType == 1)
+                    return '在线';
+                else
+                    return '离线';
+            })
+            ->editColumn('sort', function ($rechType){
+                return "<input type='text' value='".$rechType->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$rechType->id."' name='sortId[]'>";
+            })
+            ->rawColumns(['sort','control'])
             ->make(true);
     }
 }

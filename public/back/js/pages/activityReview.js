@@ -5,7 +5,8 @@ $(function () {
     $('#menu-activityManage').addClass('nav-show');
     $('#menu-activityManage-review').addClass('active');
 
-    dataTable = $('#capitalDetailsTable').DataTable({
+    dataTable = $('#capitalDetailsTable').DataTable({  
+        aLengthMenu: [[50]],
         searching: false,
         bLengthChange: false,
         processing: true,
@@ -15,7 +16,16 @@ $(function () {
         ajax: {
             url:'/back/datatables/activity/review',
             data:function (d) {
-                d.activity_id = $('#activity_id').val();
+                d.status = $('#status').val();
+                d.user_account = $('#user_account').val();
+                d.time = $('#endTime').val();
+            },
+            dataSrc:function (json) {
+                memberTotal(json.filterMoney);
+                for ( var i=0, ien=json.data.length ; i<ien ; i++ ) {
+                    json.data[i][0] = '<a href="/message/'+json.data[i][0]+'>View message</a>';
+                }
+                return json.data;
             }
         },
         columns: [
@@ -42,7 +52,22 @@ $(function () {
             }
         },
     });
+
+    $(document).keyup(function(e){
+        var key = e.which;
+        if(key == 13 || key == 32){
+            dataTable.ajax.reload();
+        }
+    });
+
     $('#btn_search').on('click',function () {
+        dataTable.ajax.reload();
+
+    });
+    $('#reset').on('click',function () {
+        $('#status').val('');
+        $('#user_account').val('');
+        $('#endTime').val('');
         dataTable.ajax.reload();
 
     });
@@ -136,4 +161,8 @@ function editStatus(id,status,name) {
             }
         }
     });
+}
+
+function memberTotal(filterMoney) {
+    $('#filterMoney').text(filterMoney);
 }

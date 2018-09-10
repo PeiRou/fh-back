@@ -9,6 +9,8 @@
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>今日注单搜索
+            <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
+            <input id="checkMark" type="checkbox" style="margin-left: 10px;"/> 是否过滤六合彩
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('betTodayTable')"><i class="iconfont">&#xe61d;</i></span>
@@ -18,6 +20,7 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
+                    <input type="hidden" id="markSix" name="markSix" value="1">
                     <div class="one wide field">
                         <select class="ui dropdown" id="searchType" style='height:32px !important'>
                             <option value="">今日注单</option>

@@ -136,6 +136,7 @@ class SrcMemberController extends Controller
             'wechat'=>$request->input('wechat'),
             'editodds'=>$request->input('editodds'),
             'content'=>$request->input('content'),
+            'name'=>$request->input('name'),
         ]);
         if(!empty($password)){
             $data->put('password',Hash::make($password));
@@ -303,10 +304,12 @@ class SrcMemberController extends Controller
     {
         $uid = $request->get('id');
         $key = 'user:'.md5($uid);
-        Redis::select(2);
+        $redis = Redis::connection();
+        $redis->select(2);
+        $user = (array)json_decode($redis->get($key),true);
         Redis::del($key);
         Redis::select(6);
-        $key = 'urtime:'.md5($uid);
+        $key = 'urtime:'.$user['user_session_id'];
         Redis::del($key);
         return response()->json([
             'status'=>true,
@@ -425,6 +428,7 @@ class SrcMemberController extends Controller
         $uid = $request->input('uid');
         $money = $request->input('money');
         $content = $request->input('content');
+        $adminAddMoney = $request->input('admin_add_money');
         $getUserBalance = User::find($uid);
         if(empty($content))
             return response()->json([
@@ -459,6 +463,7 @@ class SrcMemberController extends Controller
                 $capital->balance = $newBalance;
                 $capital->operation_id = $loginAccount;
                 $capital->content = $content;
+                $capital->rechargesType = $adminAddMoney;
                 $insert = $capital->save();
                 if($insert == 1){
                     if($money > 0){
@@ -467,7 +472,6 @@ class SrcMemberController extends Controller
                         $recharges->username = $getUserBalance->username;
                         $recharges->orderNum = payOrderNumber();
                         $recharges->payType = 'adminAddMoney';
-                        $recharges->levels = $getUserBalance->rechLevel;
                         $recharges->amount = $money;
                         $recharges->balance = $getUserBalance->money+$money;
                         $recharges->shou_info = "后台加钱：".$content;
@@ -478,6 +482,7 @@ class SrcMemberController extends Controller
                         $recharges->process_date = date('Y-m-d H:i:s');
                         $recharges->operation_id = Session::get('account_id');
                         $recharges->operation_account = Session::get('account');
+                        $recharges->admin_add_money = $adminAddMoney;
                         $save = $recharges->save();
                         if($save == 1){
                             $updateUserMoney = DB::table('users')->where('id',$uid)->update([

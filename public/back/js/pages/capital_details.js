@@ -46,6 +46,7 @@ function createTable(columns) {
                 d.amount_max = $('#amount_max').val();
                 d.startTime = $('#startTime').val();
                 d.endTime = $('#endTime').val();
+                d.recharges_id = $('#rechargesType').val();
             }
         },
         columns: columns,
@@ -119,6 +120,27 @@ $(function () {
     });
 
 
+    $(document).keyup(function(e){
+        var key = e.which;
+        if(key == 13 || key == 32){
+            if($('#game').val()){
+                $('#type').val('t05');
+            }
+            var type = $('#type').val();
+            var time_point = $('#time_point').val();
+            var account = $('#account').val();
+            var search = typeTable(type,time_point,account);
+
+            if(search == true){
+                dataTable.destroy();
+                // 列改变了，需要清空table
+                $("#capitalDetailsTable").empty();
+                dataTable = createTable(columns);
+                //dataTable.ajax.reload();
+            }
+        }
+    });
+
     $('#rangestart').calendar({
         type: 'date',
         endCalendar: $('#startTime'),
@@ -147,7 +169,14 @@ $(function () {
         },
         text: text
     });
-
+    $('#type').on('change',function () {
+        var value = $(this).val();
+        if(value === 't18'){
+            $('#rechargesType-div').show();
+        }else{
+            $('#rechargesType-div').hide();
+        }
+    });
 });
 
 function typeTable(type,time_point,account) {

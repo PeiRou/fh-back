@@ -19,8 +19,10 @@ class LogDataController extends Controller
         $ipInfo = $request->get('ipInfo');
         $startTime = $request->get('startTime');
         $endTime = $request->get('endTime');
+        $start = $request->get('start');
+        $length = $request->get('length');
 
-        $loginLog = DB::table('log_login')
+        $loginLogSql = DB::table('log_login')
             ->where(function ($q) use ($username){
                 if($username && isset($username)){
                     $q->where('username',$username);
@@ -50,15 +52,18 @@ class LogDataController extends Controller
                 if($endTime && isset($endTime)){
                     $q->where('login_time','<=',$endTime . ' 23:59:59');
                 }
-            })
-            ->orderBy('id','DESC')->get();
+            });
+        $loginLogCount = $loginLogSql->count();
+        $loginLog = $loginLogSql->orderBy('id','DESC')->skip($start)->take($length)->get();
         return DataTables::of($loginLog)
+            ->setTotalRecords($loginLogCount)
+            ->skipPaging()
             ->make(true);
     }
 
     public function logHandle(Request $request){
         $param = $request->all();
-        $logHandle = LogHandle::where(function ($sql) use ($param){
+        $logHandleSql = LogHandle::where(function ($sql) use ($param){
             if(isset($param['username']) && array_key_exists('username',$param)){
                 $sql->where('username','=',$param['username']);
             }
@@ -74,7 +79,9 @@ class LogDataController extends Controller
             if(isset($param['endTime']) && array_key_exists('endTime',$param)){
                 $sql->where('create_at','<=',$param['endTime'] . ' 23:59:59');
             }
-        })->orderBy('create_at','desc')->get();
+        });
+        $logHandleCount =  $logHandleSql->count();
+        $logHandle = $logHandleSql->orderBy('create_at','desc')->skip($param['start'])->take($param['length'])->get();
         return DataTables::of($logHandle)
             ->editColumn('param',function ($logHandle){
                 if(empty(json_decode($logHandle->param))){
@@ -83,12 +90,14 @@ class LogDataController extends Controller
                     return $logHandle->param;
                 }
             })
+            ->setTotalRecords($logHandleCount)
+            ->skipPaging()
             ->make(true);
     }
 
     public function logAbnormal(Request $request){
         $param = $request->all();
-        $logAbnormal = LogAbnormal::where(function ($sql) use ($param){
+        $logAbnormalSql = LogAbnormal::where(function ($sql) use ($param){
             if(isset($param['type_id']) && array_key_exists('type_id',$param)){
                 $sql->where('type_id','=',$param['type_id']);
             }
@@ -101,7 +110,9 @@ class LogDataController extends Controller
             if(isset($param['endTime']) && array_key_exists('endTime',$param)){
                 $sql->where('create_at','<=',$param['endTime'] . ' 23:59:59');
             }
-        })->orderBy('create_at','desc')->get();
+        });
+        $logAbnormalCount = $logAbnormalSql->count();
+        $logAbnormal = $logAbnormalSql->orderBy('create_at','desc')->skip($param['start'])->take($param['length'])->get();
         return DataTables::of($logAbnormal)
             ->editColumn('param',function ($logHandle){
                 if(empty(json_decode($logHandle->param))){
@@ -131,6 +142,8 @@ class LogDataController extends Controller
                     return $logHandle->route;
                 }
             })
+            ->setTotalRecords($logAbnormalCount)
+            ->skipPaging()
             ->make(true);
     }
 }

@@ -29,6 +29,7 @@ class New_Msjsk3
     public function all($openCode,$issue,$gameId,$id,$excel)
     {
         $table = 'game_msjsk3';
+        $gameName = '秒速江苏快3';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
@@ -48,9 +49,9 @@ class New_Msjsk3
                 $bunko = $this->bunko($win,$gameId,$issue);
                 $excelModel->bet_total($issue,$gameId);
                 if($bunko == 1){
-                    $updateUserMoney = $this->updateUserMoney($gameId,$issue);
+                    $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                     if($updateUserMoney == 1){
-                        \Log::info("秒速江苏快3" . $issue . "结算出错");
+                        \Log::info($gameName . $issue . "结算出错");
                     }
                 }
             }
@@ -60,14 +61,14 @@ class New_Msjsk3
                 'excel_num' => 1
             ]);
             if ($update !== 1) {
-                \Log::info("秒速江苏快3" . $issue . "杀率not Finshed");
+                \Log::info($gameName . $issue . "杀率not Finshed");
             }
         }else{
             $update = DB::table($table)->where('id',$id)->update([
                 'bunko' => 1
             ]);
             if ($update !== 1) {
-                \Log::info("秒速江苏快3" . $issue . "结算not Finshed");
+                \Log::info($gameName . $issue . "结算not Finshed");
             }
         }
     }
@@ -388,30 +389,5 @@ class New_Msjsk3
                 }
             }
         }
-    }
-
-    private function updateUserMoney($gameId,$issue){
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        if($get){
-            $sql = "UPDATE users SET money = money+ CASE id ";
-            $users = [];
-            foreach ($get as $i){
-                $users[] = $i->user_id;
-                $sql .= "WHEN $i->user_id THEN $i->s ";
-            }
-
-            $ids = implode(',',$users);
-
-            if($ids && isset($ids)){
-                $sql .= "END WHERE id IN (0,$ids)";
-                $up = DB::connection('mysql::write')->statement($sql);
-                if($up != 1){
-                    return 1;
-                }
-            }
-        } else {
-            \Log::info('秒速江苏快3已结算过，已阻止！');
-        }
-        return 0;
     }
 }

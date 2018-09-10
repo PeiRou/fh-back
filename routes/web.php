@@ -115,6 +115,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('bindBank', 'Back\SrcViewController@bindBank')->name('pay.bindBank'); //绑定银行配置
         Route::get('payLayout', 'Back\SrcViewController@payLayout')->name('pay.payLayout'); //支付层级配置
         Route::get('rechargeWay', 'Back\SrcViewController@rechargeWay')->name('pay.rechargeWay'); //支付层级配置
+        Route::get('rechType', 'Back\SrcViewController@rechType')->name('pay.rechType'); //支付前端显示
     });
 
 //代理结算
@@ -131,6 +132,8 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('activityCondition', 'Back\SrcViewController@activityCondition')->name('activity.condition'); //活动条件
         Route::get('activityPrize', 'Back\SrcViewController@activityPrize')->name('activity.gift'); //奖品配置
         Route::get('activityReview', 'Back\SrcViewController@activityReview')->name('activity.review'); //派奖审核
+        Route::get('activityDaily', 'Back\SrcViewController@activityDaily')->name('activity.daily'); //每日数据统计
+        Route::get('activityData', 'Back\SrcViewController@activityData')->name('activity.data'); //活动数据统计
     });
 
     //推广结算
@@ -188,6 +191,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/sendMessage', 'Back\Data\NoticeDataController@sendMessage');
     Route::get('/back/datatables/level', 'Back\Data\PayDataController@level');
     Route::get('/back/datatables/rechargeWay', 'Back\Data\PayDataController@rechargeWay');
+    Route::get('/back/datatables/rechType', 'Back\Data\PayDataController@rechType');
     Route::get('/back/datatables/payOnline', 'Back\Data\PayDataController@payOnline');
     Route::get('/back/datatables/payBank', 'Back\Data\PayDataController@payBank');
     Route::get('/back/datatables/payAlipay', 'Back\Data\PayDataController@payAlipay');
@@ -215,6 +219,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/activity/condition', 'Back\Data\ActivityController@condition'); //活动条件-表格数据
     Route::get('/back/datatables/activity/prize', 'Back\Data\ActivityController@prize'); //奖品配置-表格数据
     Route::get('/back/datatables/activity/review', 'Back\Data\ActivityController@review'); //派奖审核-表格数据
+    Route::get('/back/datatables/activity/daily', 'Back\Data\ActivityController@daily'); //每日数据统计-表格数据
+    Route::get('/back/datatables/activity/data', 'Back\Data\ActivityController@data'); //每日活动统计-表格数据
     Route::get('/back/datatables/promotion/report','Back\Data\PromotionController@report'); //推广结算报表-表格数据
     Route::get('/back/datatables/promotion/review','Back\Data\PromotionController@review'); //推广审核报表-表格数据
     Route::get('/back/datatables/promotion/config','Back\Data\PromotionController@config'); //推广设置-表格数据
@@ -287,6 +293,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/activity/editPrize', 'Back\ActivityController@editPrize'); //奖品配置-修改奖品
     Route::post('/action/admin/activity/delPrize', 'Back\ActivityController@delPrize'); //奖品配置-删除奖品
     Route::post('/action/admin/activity/reviewAward', 'Back\ActivityController@reviewAward'); //派奖审核-审核奖品
+    Route::post('/action/admin/activity/dailyStatistics', 'Back\ActivityController@dailyStatistics'); //活动数据统计-每日统计
 
     Route::post('/action/admin/promotion/settlement','Back\PromotionController@settlement'); //推广结算报表-手动结算
     Route::post('/action/admin/promotion/editReport','Back\PromotionController@editReport'); //推广结算报表-修改结算
@@ -325,6 +332,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/addPayCft', 'Back\SrcPayController@addPayCft');//添加财付通配置
     Route::post('/action/admin/editPayCft', 'Back\SrcPayController@editPayCft');//修改财付通配置
     Route::post('/action/admin/setSort', 'Back\SrcPayController@setSort');//设置排序
+    Route::post('/action/admin/rechType/setSort', 'Back\SrcPayController@rechTypeSetSort');//设置排序
 
     Route::post('/action/admin/editGameSetting', 'Back\SrcGameController@editGameSetting');//修改游戏设定
     Route::post('/action/admin/changeGameFengPan', 'Back\SrcGameController@changeGameFengPan');//修改游戏开封盘状态

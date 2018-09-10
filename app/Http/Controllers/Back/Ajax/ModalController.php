@@ -22,6 +22,7 @@ use App\PermissionsAuth;
 use App\PermissionsType;
 use App\PromotionConfig;
 use App\PromotionReport;
+use App\Recharges;
 use App\RechargeWay;
 use App\Roles;
 use App\SubAccount;
@@ -277,14 +278,16 @@ class ModalController extends Controller
     public function changeUserMoney($id)
     {
         $user = User::find($id);
-        return view('back.modal.member.changeUserMoney',compact('user'));
+        $aRechargesType = Recharges::$rechargesType;
+        return view('back.modal.member.changeUserMoney',compact('user','aRechargesType'));
     }
     //查看用户资金明细
     public function userCapitalHistory($id)
     {
         $games = Games::getGameOption();
         $capitalTimes = Capital::$playTypeOption;
-        return view('back.modal.member.userCapitalHistory')->with('uid',$id)->with('games',$games)->with('capitalTimes',$capitalTimes);
+        $aRechargesType = Recharges::$rechargesType;
+        return view('back.modal.member.userCapitalHistory')->with('uid',$id)->with('games',$games)->with('capitalTimes',$capitalTimes)->with('aRechargesType',$aRechargesType);
     }
 
     //添加公告

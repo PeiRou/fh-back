@@ -10,7 +10,7 @@ class Swoole
         $param['type'] = $type;
         $param['room'] = $room;
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, env('WS_CURL',"http:127.0.0.1").":".env('WS_PORT',9500));
+        curl_setopt($ch, CURLOPT_URL, env('WS_CURL',"http://127.0.0.1").":".env('WS_PORT',9500));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);

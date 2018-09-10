@@ -36,6 +36,7 @@ class New_Msssc
     public function all($openCode,$issue,$gameId,$id,$excel)
     {
         $table = 'game_msssc';
+        $gameName = '秒速时时彩';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
@@ -55,9 +56,9 @@ class New_Msssc
                 $bunko = $this->bunko($win,$gameId,$issue,$excel);
                 $excelModel->bet_total($issue,$gameId);
                 if($bunko == 1){
-                    $updateUserMoney = $this->updateUserMoney($gameId,$issue);
+                    $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                     if($updateUserMoney == 1){
-                        \Log::info("秒速时时彩" . $issue . "结算出错");
+                        \Log::info($gameName . $issue . "结算出错");
                     }
                 }
             }
@@ -67,14 +68,14 @@ class New_Msssc
                 'excel_num' => 1
             ]);
             if ($update !== 1) {
-                \Log::info("秒速时时彩" . $issue . "杀率not Finshed");
+                \Log::info($gameName . $issue . "杀率not Finshed");
             }
         }else{
             $update = DB::table($table)->where('id',$id)->update([
                 'bunko' => 1
             ]);
             if ($update !== 1) {
-                \Log::info("秒速时时彩" . $issue . "结算not Finshed");
+                \Log::info($gameName . $issue . "结算not Finshed");
             }
         }
     }
@@ -86,7 +87,7 @@ class New_Msssc
             if($i==0){
                 $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
                 if(empty($exeBet))
-                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}' and bet.testFlag = 0");
+                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}' and bet.testFlag in (0,2)");
             }else{
                 $excel = new Excel();
                 $openCode = $excel->opennum($table);
@@ -98,7 +99,7 @@ class New_Msssc
                 $tmp = DB::connection('mysql::write')->select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)
                     $excBunko = $value->sumBunko;
-                \Log::info('秒速时时彩 : '.$openCode.' => '.$excBunko);
+                \Log::info('秒速时时彩 :'.$excBunko);
                 $dataExcGame['game_id'] = $gameId;
                 $dataExcGame['issue'] = $issue;
                 $dataExcGame['opennum'] = $openCode;
@@ -111,7 +112,6 @@ class New_Msssc
             }
         }
         $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = ".$gameId." AND issue ='{$issue}') and game_id = ".$gameId." AND issue ='{$issue}' LIMIT 1";
-        \Log::info('秒速时时彩: '.$aSql);
         $tmp = DB::select($aSql);
         foreach ($tmp as&$value)
             $openCode = $value->opennum;
@@ -924,30 +924,5 @@ class New_Msssc
                 }
             }
         }
-    }
-
-    private function updateUserMoney($gameId,$issue){
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        if($get){
-            $sql = "UPDATE users SET money = money+ CASE id ";
-            $users = [];
-            foreach ($get as $i){
-                $users[] = $i->user_id;
-                $sql .= "WHEN $i->user_id THEN $i->s ";
-            }
-            //\Log::info($users);
-            $ids = implode(',',$users);
-            //\Log::info($ids);
-            if($ids && isset($ids)){
-                $sql .= "END WHERE id IN (0,$ids)";
-                $up = DB::connection('mysql::write')->statement($sql);
-                if($up != 1){
-                    return 1;
-                }
-            }
-        } else {
-            \Log::info('秒速时时彩已结算过，已阻止！');
-        }
-        return 0;
     }
 }

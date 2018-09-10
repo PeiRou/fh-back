@@ -53,7 +53,8 @@ class KILL_msft extends Command
                 $update = DB::table($table)->where('id',$get->id)->update([
                     'excel_num' => 2
                 ]);
-                event(new RunMstf($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
+                if($update)
+                    event(new RunMstf($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
             }
         }
     }

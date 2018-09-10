@@ -77,6 +77,7 @@ $(function () {
                 d.maxMoney = $('#maxMoney').val();
                 d.timeStart = $('#timeStart').val();
                 d.timeEnd = $('#timeEnd').val();
+                d.markSix = $('#markSix').val();
             }
         },
         columns: [
@@ -180,6 +181,13 @@ function getTotalBet() {
     });
 }
 
+$(document).keyup(function(e){
+    var key = e.which;
+    if(key == 13 || key == 32){
+        dataTable.ajax.reload();
+    }
+});
+
 $('#btn_search').on('click',function () {
     getTotalBet();
     dataTable.ajax.reload();
@@ -200,4 +208,11 @@ $('#game').on('change',function () {
             $("#playCate").html(str);
         }
     });
+});
+
+$('#checkMark').on('change',function () {
+    if($(this).is(':checked'))
+        $('#markSix').val(2);
+    else
+        $('#markSix').val(1);
 });

@@ -17,12 +17,11 @@ class AjaxStatusController extends Controller
         $sessionId = Session::get('account_session_id');
         $saId = Session::get('account_id');
         $key = 'sa:'.md5($saId);
-        Redis::select(4);
-        if(Redis::exists($key)){
-            $data = "[".Redis::get($key)."]";
-            $dataDecode =  json_decode($data,true);
-            $session_Id = $dataDecode[0]['session_id'];
-            if($session_Id !== $sessionId){
+        $redis = Redis::connection();
+        $redis->select(4);
+        if($redis->exists($key)){
+            $session_Id = (array)json_decode($redis->get($key),true);
+            if($session_Id['session_id'] != $sessionId){
                 Session::flush();
                 return response()->json([
                     'status'=>false,
@@ -34,16 +33,33 @@ class AjaxStatusController extends Controller
                 'sa_id' => (string)$saId
             ];
             $jsonEncode = json_encode($redisData);
-            Redis::setex($key,600,$jsonEncode);     //重新赋予后台登陆时间
+            $redis->setex($key,600,$jsonEncode);     //重新赋予后台登陆时间
 
             $getCount = Recharges::where('status',1)->where('payType','!=','onlinePayment')->count();
             $getDrawCount = Drawing::where('status',0)->count();
 
-            Redis::select(6);           //前台
-//            $onlineUserCount = DB::table('users_logintime')->where('logintime','>=',time()-300)->count();
-            $onlineUserCount = Redis::dbsize();
+            $redis->select(6);           //前台
+            $keys = $redis->keys('urtime:'.'*');
+            $onlineUserCount = 0;
+            foreach ($keys as $item){
+                $redis->select(6);           //前台
+                $redisUser = $redis->get($item);
+                $redisUser = (array)json_decode($redisUser,true);
+                $redis->select(2);
+                $keyUser = 'user:'.md5($redisUser['user_id']);
+                if(!$redis->exists($keyUser)){
+                    $redis->select(6);
+                    $redis->del($item);
+                }else{
+                    $redisUser = $redis->get($keyUser);
+                    $redisUser = (array)json_decode($redisUser,true);
+                    if($redisUser['testFlag']==0){
+                        $onlineUserCount++;
+                    }
+                }
+            }
 
-            Redis::select(4);           //后台
+            $redis->select(4);           //后台
             $onlineAdminCount = Redis::dbsize();
 
             return response()->json([

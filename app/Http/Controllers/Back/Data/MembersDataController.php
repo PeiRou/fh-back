@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Back\Data;
 use App\Agent;
 use App\Bets;
 use App\Capital;
+use App\Drawing;
 use App\GeneralAgent;
 use App\Levels;
+use App\Recharges;
 use App\Roles;
 use App\SubAccount;
 use App\User;
@@ -23,10 +25,13 @@ use Yajra\DataTables\DataTables;
 class MembersDataController extends Controller
 {
     //总代理 - 表格数据
-    public function generalAgent()
+    public function generalAgent(Request $request)
     {
-        $aSql = "SELECT g.*,count(DISTINCT(ag.a_id)) as countAgent,count(DISTINCT((case WHEN u.testFlag in (0,2) then u.id else NULL end))) as countMember FROM `general_agent` g LEFT JOIN `agent` ag on g.ga_id = ag.gagent_id LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 GROUP BY g.ga_id ";
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $aSql = "SELECT g.*,count(DISTINCT(ag.a_id)) as countAgent,count(DISTINCT((case WHEN u.testFlag in (0,2) then u.id else NULL end))) as countMember FROM `general_agent` g LEFT JOIN `agent` ag on g.ga_id = ag.gagent_id LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 GROUP BY g.ga_id LIMIT $start,$length";
         $allGeneralAgent = DB::select($aSql);
+        $agentCount = DB::select('SELECT COUNT(`ga_id`) AS `count` FROM general_agent');
         return DataTables::of($allGeneralAgent)
             ->editColumn('online', function ($allGeneralAgent){
                 return '<span id="gagent_'.$allGeneralAgent->ga_id.'"><span class="tag-offline">离线</span></span>';
@@ -68,6 +73,8 @@ class MembersDataController extends Controller
                 }
             })
             ->rawColumns(['online','account','agent','members','balance','status','control'])
+            ->setTotalRecords($agentCount[0]->count)
+            ->skipPaging()
             ->make(true);
     }
 
@@ -75,8 +82,11 @@ class MembersDataController extends Controller
     public function agent(Request $request)
     {
         $ga_id = $request->get('gaid');
+        $start = $request->get('start');
+        $length = $request->get('length');
         $params = $request->post();
         $aSql = "SELECT ag.*,COUNT(DISTINCT((case WHEN u.testFlag in (0,2) then u.id else NULL end))) as countMember FROM `agent` ag LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 ";
+        $cSql = "SELECT ag.a_id FROM `agent` ag LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 ";
         $where = "";
         if(isset($ga_id) && $ga_id>0 ){
             $where .= " and ag.gagent_id = ".$ga_id;
@@ -98,8 +108,10 @@ class MembersDataController extends Controller
 //            var_dump($time);die();
             $where .= " and ag.updated_at <= '".$time."'";
         }
-        $aSql = $aSql.$where." GROUP BY ag.a_id ORDER BY ag.created_at desc ";
+        $aSql = $aSql.$where." GROUP BY ag.a_id ORDER BY ag.created_at desc LIMIT $start,$length";
         $allAgent = DB::select($aSql);
+        $cSql = "SELECT count(temp.a_id) AS `count` FROM (".$cSql.$where." GROUP BY ag.a_id) as temp";
+        $countAgent = DB::select($cSql);
         return DataTables::of($allAgent)
             ->editColumn('online', function ($allAgent){
                 return '<span id="agent_'.$allAgent->a_id.'"><span class="tag-offline">离线</span></span>';
@@ -163,18 +175,22 @@ class MembersDataController extends Controller
                 }
             })
             ->rawColumns(['online','agent','members','balance','status','editOdds','content','control'])
+            ->setTotalRecords($countAgent[0]->count)
+            ->skipPaging()
             ->make(true);
     }
 
     //代理的资金明细
     public function agentCapital($id, Request $request)
     {
+        $start = $request->get('start');
+        $length = $request->get('length');
         $capitalType = $request->get('capital_type');
         $issue = $request->get('issue');
         $startTime = strtotime($request->get('startTime').' 00:00:00');
         $endTime = strtotime($request->get('endTime').' 23:59:59');
         $loginId = Session::get('account_id');
-        $capital = Capital::where(function($q) use($startTime,$endTime,$capitalType,$issue,$loginId,$id){
+        $capitalModel = Capital::where(function($q) use($startTime,$endTime,$capitalType,$issue,$loginId,$id){
             if(isset($capitalType) && $capitalType)
             {
                 $q->whereRaw('type = "'.$capitalType.'"');
@@ -192,7 +208,9 @@ class MembersDataController extends Controller
                 $q->whereRaw('unix_timestamp(created_at) <= '.$endTime);
             }
             $q->whereRaw('to_user = '.$id.' and user_type = "agent"');
-        })->orderBy('created_at','desc')->get();
+        });
+        $capital = $capitalModel->orderBy('created_at','desc')->skip($start)->take($length)->get();
+        $capitalCount = $capitalModel->count();
 
         return DataTables::of($capital)
             ->editColumn('type', function($capital){
@@ -278,6 +296,8 @@ class MembersDataController extends Controller
                 return $getSubAccount->account."(".$getSubAccount->name.")";
             })
             ->rawColumns(['money','balance'])
+            ->setTotalRecords($capitalCount)
+            ->skipPaging()
             ->make(true);
     }
 
@@ -451,29 +471,80 @@ class MembersDataController extends Controller
         $param['type'] = $request->get('capital_type');
         $param['startTime'] = $request->get('startTime');
         $param['endTime'] = $request->get('endTime');
+        $param['recharges_id'] = $request->get('recharges_id');
         $param['account_id'] = $id;
+        $start = $request->get('start');
+        $length = $request->get('length');
+
+        $aSql = "SELECT SUM(CASE WHEN `payType` = 'onlinePayment' THEN `amount` ELSE 0 END) AS `payOnline`,
+                  SUM(CASE WHEN `payType` IN ('bankTransfer','alipay','wechat','cft') THEN `amount` ELSE 0 END) AS `payOffline`,
+                  SUM(CASE WHEN `payType` = 'adminAddMoney' THEN `amount` ELSE 0 END) AS `payManual`,
+                  SUM(`rebate_or_fee`) AS `payFormalities` FROM `recharges` WHERE `userId` = $id AND `status` = 2";
+
+        $aBetSql = "SELECT sum(case WHEN `game_id` in (90,91) then `nn_view_money` else(case when `bunko` >0 then `bunko` - `bet_money` else `bunko` end)end) as `payBetting` FROM `bet` WHERE `user_id` = $id";
+
+        $aDrawingSql = "SELECT SUM(`amount`) AS `payDrawing` FROM `drawing` WHERE status = 2 AND `user_id` = $id ";
+        if(isset($param['startTime']) && array_key_exists('startTime', $param)){
+            $aSql .= " AND `created_at` >= '".$param['startTime']."'";
+            $aBetSql .= " AND `created_at` >= '".$param['startTime']."'";
+            $aDrawingSql .= " AND `created_at` >= '".$param['startTime']."'";
+        }
+        if(isset($param['endTime']) && array_key_exists('endTime', $param)){
+            $aSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
+            $aBetSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
+            $aDrawingSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
+        }
+        $payRecharges = DB::select($aSql)[0];
+        $payBet = DB::select($aBetSql)[0];
+        $payDrawing = DB::select($aDrawingSql)[0];
+        $payFunds = [
+            'payOnline' => empty($payRecharges->payOnline)?0:$payRecharges->payOnline,
+            'payManual' => empty($payRecharges->payManual)?0:$payRecharges->payManual,
+            'payOffline' => empty($payRecharges->payOffline)?0:$payRecharges->payOffline,
+            'payFormalities' => empty($payRecharges->payFormalities)?0:$payRecharges->payFormalities,
+            'payBetting' => empty($payBet->payBetting)?0:$payBet->payBetting,
+            'payDrawing' => empty($payDrawing->payDrawing)?0:$payDrawing->payDrawing,
+        ];
         if(isset($param['type']) && array_key_exists('type', $param)){
             if(in_array($param['type'],Capital::$includePlayTypeOption)){
                 $capital = Bets::AssemblyFundDetails($param);
+                $capitalCount = $capital->count();
+                $capital = $capital->skip($start)->take($length)->get();
             }else if($param['type']=='t01'){        //充值
                 $capital = Capital::AssemblyFundDetails_Rech($param);
+                $capitalCount = $capital->count();
+                $capital = $capital->skip($start)->take($length)->get();
             }else if($param['type']=='t04'){        //返利/手续费
                 $capital = Capital::AssemblyFundDetails($param);
+                $capitalCount = $capital->count();
+                $capital = $capital->skip($start)->take($length)->get();
+            }else if($param['type'] === 't15' || $param['type'] === 't17'){        //提现和提现失败
+                $capital = Drawing::AssemblyFundDetails($param,$param['type']);
+                $capitalCount = $capital->count();
+                $capital = $capital->skip($start)->take($length)->get();
             }else{
                 $capitalSql = Capital::AssemblyFundDetails($param);
-                $capital = $capitalSql->orderBy('bet_id','desc')->get();
+                $capital = $capitalSql->orderBy('bet_id','desc')->skip($start)->take($length)->get();
+                $capitalCount = $capitalSql->count();
             }
         }else {
             $capitalSql = Capital::AssemblyFundDetails($param);
             $betsSql = Bets::AssemblyFundDetails($param);
             $RechSql = Capital::AssemblyFundDetails_Rech($param);
-            $capital = $capitalSql->union($RechSql)->union($betsSql)->orderBy('created_at','desc')->orderBy('bet_id','desc');
+            $drawingSql = Drawing::AssemblyFundDetails($param);
+            $capitalCount = $capitalSql->count() + $betsSql->count() + $RechSql->count() + $drawingSql->count();
+            $capital = $capitalSql->union($RechSql)->union($betsSql)->union($drawingSql)->orderBy('created_at','desc')->orderBy('bet_id','desc')->skip($start)->take($length);
         }
         $playTypeOptions = Capital::$playTypeOption;
+        $rechargesType = Recharges::$rechargesType;
+
         return DataTables::of($capital)
-            ->editColumn('type',function ($capital) use ($playTypeOptions){
+            ->editColumn('type',function ($capital) use ($playTypeOptions,$rechargesType){
                 if(strpos($capital->type,'t') === false) {
                     return $playTypeOptions['t05'];
+                }
+                if($capital->type === 't18' && !empty($capital->rechargesType)){
+                    return $playTypeOptions[$capital->type].'(<span class="red-text">'.$rechargesType[$capital->rechargesType].'</span>)';
                 }
                 return $playTypeOptions[$capital->type];
             })
@@ -485,12 +556,7 @@ class MembersDataController extends Controller
                         else
                             return '<span class="red-text">下注:'.$capital->nn_view_money.'</span>'.'<span class="gary-text">(冻结:'.$capital->freeze_money.')</span>'.'<span class="gary-text">(解冻:'.$capital->freeze_money.')</span>';
                     }else{
-                        if($capital->money < 0)
-                        {
-                            return '<span class="green-text">'.$capital->money.'</span>';
-                        } else {
-                            return '<span class="red-text">下注:'.$capital->money.'</span>';
-                        }
+                        return '<span class="green-text">-'.$capital->money.'</span>';
                     }
                 }else{
                     if($capital->money < 0)
@@ -551,7 +617,10 @@ class MembersDataController extends Controller
                         return $capital->content2.'<br>'.$capital->content;
                 }
             })
-            ->rawColumns(['money','balance','content','issue'])
+            ->rawColumns(['money','balance','content','issue','type'])
+            ->setTotalRecords($capitalCount)
+            ->skipPaging()
+            ->with('payFunds',$payFunds)
             ->make(true);
     }
     
@@ -559,6 +628,7 @@ class MembersDataController extends Controller
     public function subAccounts()
     {
         $subAccounts = SubAccount::all();
+        $subAccountsCount = SubAccount::count();
         return DataTables::of($subAccounts)
             ->editColumn('online', function ($subAccounts){
                 Redis::select(4);
@@ -595,22 +665,29 @@ class MembersDataController extends Controller
                 }
             })
             ->rawColumns(['online','status','control'])
+            ->setTotalRecords($subAccountsCount)
+            ->skipPaging()
             ->make(true);
     }
 
     //在线会员
-    public function onlineUser()
+    public function onlineUser(Request $request)
     {
-        Redis::select(6);
-        $keys = Redis::keys('urtime:'.'*');
+
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $redis = Redis::connection();
+        $redis->select(6);
+        $keys = $redis->keys('urtime:'.'*');
         $onlineUser = [];
         foreach ($keys as $item){
-            $data = "[".Redis::get($item)."]";
-            $get = json_decode($data,true);
-            $onlineUser[] = $get[0]['user_id'];
+            $redisUser = $redis->get($item);
+            $redisUser = (array)json_decode($redisUser,true);
+            $onlineUser[] = $redisUser['user_id'];
         }
         $user = User::select()
-            ->whereIn('id',$onlineUser)->get();
+            ->whereIn('id',$onlineUser)->where('testFlag',0)->skip($start)->take($length)->get();
+        $userCount = User::whereIn('id',$onlineUser)->where('testFlag',0)->count();
         return DataTables::of($user)
             ->editColumn('online',function (){
                 return "<span class='on-line-point'></span>";
@@ -660,6 +737,8 @@ class MembersDataController extends Controller
                 return '<span class="edit-link" onclick="getOut(\''.$user->id.'\',\''.$user->username.'\')"><i class="iconfont">&#xeab6;</i> 踢下线</span>';
             })
             ->rawColumns(['account','online','status','login_client','control','login_ip_info','login_ip','money'])
+            ->setTotalRecords($userCount)
+            ->skipPaging()
             ->make(true);
     }
 }

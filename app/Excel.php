@@ -6,6 +6,62 @@ use Illuminate\Support\Facades\DB;
 
 class Excel
 {
+    /**
+     * 更新赢钱的用户馀额
+     * @param $gameId
+     * @param $issue
+     * @param string $gameName
+     * @return int
+     */
+    public function updateUserMoney($gameId,$issue,$gameName=''){
+        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
+        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','order_id','issue')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->get();
+        if($get){
+            //更新返奖的用户馀额
+            $sql = "UPDATE users SET money = money+ CASE id ";
+            $users = [];
+            foreach ($get as $i){
+                $users[] = $i->user_id;
+                $sql .= "WHEN $i->user_id THEN $i->s ";
+            }
+            $getAfterUser = DB::connection('mysql::write')->table('users')->select('id','money')->whereIn('id',$users)->get();
+            $ids = implode(',',$users);
+            if($ids && isset($ids)){
+                $sql .= "END WHERE id IN (0,$ids)";
+                $up = DB::connection('mysql::write')->statement($sql);
+                if($up != 1){
+                    return 1;
+                }
+            }
+            $capData = [];
+            $capUsers = [];
+            foreach ($getAfterUser as&$val){
+                $capUsers[$val->id] = $val->money;
+            }
+            //新增有返奖的用户的资金明细
+            foreach ($getDt as $i){
+                $tmpCap = [];
+                $tmpCap['to_user'] = $i->user_id;
+                $tmpCap['user_type'] = 'user';
+                $tmpCap['order_id'] = $i->order_id;
+                $tmpCap['type'] = 't09';
+                $tmpCap['money'] = $i->bunko;
+                $tmpCap['balance'] = $capUsers[$i->user_id];
+                $tmpCap['operation_id'] = 0;
+                $tmpCap['content'] = $gameName.' 第'.$i->issue.'期 返奖';
+                $tmpCap['created_at'] = date('Y-m-d H:i:s');
+                $tmpCap['updated_at'] = date('Y-m-d H:i:s');
+                $capData[] = $tmpCap;
+            }
+            $capIns = DB::table('capital')->insert($capData);
+            if($capIns != 1){
+                return 1;
+            }
+        } else {
+            \Log::info($gameName.'已结算过，已阻止！');
+        }
+        return 0;
+    }
     //计算当日总输赢
     public function bet_total($issue,$gameId){
         $exceBase = DB::table('excel_base')->select('excel_base_idx','count_date')->where('game_id',$gameId)->first();
@@ -35,7 +91,7 @@ class Excel
                 $data['bet_win'] = DB::raw('bet_win + '.$excBunko->sumBunko);
             else
                 $data['bet_lose'] = DB::raw('bet_lose + '.abs($excBunko->sumBunko));
-            \Log::info($gameId.'**'.$exceBase->excel_base_idx.'--'.$excBunko->sumBet_money.'=='.$excBunko->sumBunko);
+            //\Log::info($gameId.'**'.$exceBase->excel_base_idx.'--'.$excBunko->sumBet_money.'=='.$excBunko->sumBunko);
             DB::table('excel_base')->where('excel_base_idx', $exceBase->excel_base_idx)->update($data);
         }
     }
@@ -47,9 +103,9 @@ class Excel
         if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1)&&!empty($is_killopen->count_date)){
             $total = $is_killopen->bet_lose + $is_killopen->bet_win;
             if($total>0)
-                $lose_losewin_rate = $is_killopen->is_open?($is_killopen->bet_lose-$is_killopen->bet_win)/$total:0;
+                $lose_losewin_rate = $is_killopen->is_open?(($is_killopen->bet_lose-$is_killopen->bet_win)/$total):0;
             else
-                $lose_losewin_rate =0;
+                $lose_losewin_rate = 0;
             $opennum = $lose_losewin_rate>$is_killopen->kill_rate?'':$killopennum->excel_opennum;
             \Log::info($table.':杀率设置'.json_encode($is_killopen));
             \Log::info($table.':输赢比 '.$lose_losewin_rate);

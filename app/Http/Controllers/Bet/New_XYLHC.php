@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Bet;
 
+use App\Excel;
 use App\Helpers\LHC_SX;
 use Illuminate\Support\Facades\DB;
 
@@ -38,19 +39,21 @@ class New_XYLHC
         $this->PTYXWS($openCode,$gameId,$win);
         $this->ZONGXIAO($openCode,$gameId,$win);
         $this->ZMT($openCode,$gameId,$win);
+        $gameName = '幸运六合彩';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
+            $excelModel = new Excel();
             $bunko = $this->BUNKO($openCode,$win,$gameId,$issue);
             if($bunko == 1){
-                $updateUserMoney = $this->updateUserMoney($gameId,$issue);
+                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
                     $update = DB::table('game_xylhc')->where('id',$id)->update([
                         'bunko' => 1
                     ]);
                     if($update == 1){
-                        echo '幸运六合彩'.$issue.'已结算';
+                        echo $gameName.$issue.'已结算';
                     } else {
-                        echo '幸运六合彩'.$issue.'结算失败！';
+                        echo $gameName.$issue.'结算失败！';
                     }
                 }
             }
@@ -59,9 +62,9 @@ class New_XYLHC
                 'bunko' => 1
             ]);
             if($update == 1){
-                echo '幸运六合彩'.$issue.'已结算';
+                echo $gameName.$issue.'已结算';
             } else {
-                echo '幸运六合彩'.$issue.'结算失败！';
+                echo $gameName.$issue.'结算失败！';
             }
         }
     }
@@ -1927,31 +1930,7 @@ class New_XYLHC
         }
 
         if($bunko_index !== 0){
-            //\Log::info('BUNKO:'.$bunko_index);
             return 1;
-        }
-    }
-
-    //更新用户余额
-    function updateUserMoney($gameId,$issue){
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        if($get){
-            $sql = "UPDATE users SET money = money+ CASE id ";
-            $users = [];
-            foreach ($get as $i){
-                $users[] = $i->user_id;
-                $sql .= "WHEN $i->user_id THEN $i->s ";
-            }
-            $ids = implode(',',$users);
-            if($ids && isset($ids)){
-                $sql .= "END WHERE id IN (0,$ids)";
-                $up = DB::connection('mysql::write')->statement($sql);
-                if($up == 1){
-                    return 1;
-                }
-            }
-        } else {
-            \Log::info('幸运六合彩已结算过，已阻止！');
         }
     }
 }

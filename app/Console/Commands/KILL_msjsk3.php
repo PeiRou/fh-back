@@ -53,7 +53,8 @@ class KILL_msjsk3 extends Command
                 $update = DB::table($table)->where('id',$get->id)->update([
                     'excel_num' => 2
                 ]);
-                event(new RunMSJSK3($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
+                if($update)
+                    event(new RunMSJSK3($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
             }
         }
     }

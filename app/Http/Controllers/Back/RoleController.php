@@ -12,6 +12,12 @@ class RoleController extends Controller
     public function addNewRole(Request $request)
     {
         $permission_id = $request->input('permission_id');
+        if(empty($permission_id)){
+            return response()->json([
+                'status'=>false,
+                'msg'=>'请选择权限'
+            ]);
+        }
         $role_name = $request->input('role_name');
         $new_permission_id = implode(',',$permission_id);
 
@@ -19,7 +25,17 @@ class RoleController extends Controller
         $role->name = $role_name;
         $role->permission_id = $new_permission_id;
         $role->type = 'system';
-        $role->save();
+
+        if($role->save()){
+            return response()->json([
+                'status'=>true
+            ]);
+        }else{
+            return response()->json([
+                'status'=>false,
+                'msg'=>'暂时无法修改，请稍后重试'
+            ]);
+        }
     }
 
     //修改角色

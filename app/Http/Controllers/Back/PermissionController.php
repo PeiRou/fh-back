@@ -20,7 +20,16 @@ class PermissionController extends Controller
         $permission->name = $name;
         $permission->auth = $permissions;
         $permission->group_name = $permission_group;
-        $permission->save();
+        if($permission->save()){
+            return response()->json([
+                'status'=>true
+            ]);
+        }else{
+            return response()->json([
+                'status'=>false,
+                'msg'=>'暂时无法添加，请稍后重试'
+            ]);
+        }
     }
 
     //修改权限

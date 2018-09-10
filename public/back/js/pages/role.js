@@ -10,6 +10,7 @@ $(function () {
         bLengthChange: false,
         processing: true,
         serverSide: true,
+        aLengthMenu: [[50]],
         ajax: '/back/datatables/roles',
         columns: [
             {data: 'id'},

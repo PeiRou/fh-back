@@ -8,6 +8,7 @@
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>历史注单搜索
+            <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('betHistoryTable')"><i class="iconfont">&#xe61d;</i></span>

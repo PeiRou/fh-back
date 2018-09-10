@@ -5,7 +5,7 @@ $(function () {
     $('#menu-financeManage').addClass('nav-show');
     $('#menu-financeManage-agentReconciliation').addClass('active');
 
-    $('#agentReconciliationTable').DataTable({
+    var dataTable = $('#agentReconciliationTable').DataTable({
         searching: false,
         bLengthChange: false,
         processing: true,
@@ -27,6 +27,13 @@ $(function () {
                 "next":       "下一页",
                 "previous":   "上一页"
             }
+        }
+    });
+
+    $(document).keyup(function(e){
+        var key = e.which;
+        if(key == 13 || key == 32){
+            dataTable.ajax.reload();
         }
     });
 });

@@ -21,7 +21,7 @@ class Capital extends Model
         //'t06' => '重新开奖[中奖金额]',
         //'t07' => '重新开奖[退水金额]',
         't08' => '活动',
-        //'t09' => '奖金',
+        't09' => '奖金',
         't10' => '代理结算佣金',
         't11' => '代理佣金提现',
         't12' => '代理佣金提现失败退回',
@@ -54,9 +54,10 @@ class Capital extends Model
 
     //资金明细组装-充值
     public static function AssemblyFundDetails_Rech($param){
-        $aSql = Recharges::select('username','userId','orderNum as order_id','created_at',DB::raw("'t01' as type"),'amount as money','balance',DB::raw("'' as issue"),DB::raw("'' as game_id"),DB::raw("'' as game_name"),DB::raw("'' as play_type"),'operation_id','operation_account as account','shou_info as content','ru_info as content2',DB::raw("'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,amount as c_money,'' as bet_id"))
+        $aSql = Recharges::select('username','userId','orderNum as order_id','created_at',DB::raw("'t01' as type"),'amount as money','balance',DB::raw("'' as issue"),DB::raw("'' as game_id"),DB::raw("'' as game_name"),DB::raw("'' as play_type"),'operation_id','operation_account as account','shou_info as content','ru_info as content2',DB::raw("'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,amount as c_money,'' as bet_id,'' as rechargesType"))
             ->where(function ($sql) use($param){
                 $sql->where('payType','!=','adminAddMoney');
+                $sql->where('status','=',2);
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
                     $sql->whereBetween('created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
                 }else{
@@ -100,7 +101,7 @@ class Capital extends Model
 
     //资金明细组装
     public static function AssemblyFundDetails($param){
-        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id',DB::raw("'' as game_name"),'capital.play_type','capital.operation_id','sub_account.account','capital.content',DB::raw("'' as content2,'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,capital.money as c_money,'' as bet_id"))
+        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id',DB::raw("'' as game_name"),'capital.play_type','capital.operation_id','sub_account.account','capital.content',DB::raw("'' as content2,'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,capital.money as c_money,'' as bet_id"),'capital.rechargesType')
             ->where(function ($sql) use($param){
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
                     $sql->whereBetween('capital.created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
@@ -135,6 +136,9 @@ class Capital extends Model
                 }
                 if(isset($param['type']) && array_key_exists('type',$param)){
                     $sql->where('capital.type','=',$param['type']);
+                    if($param['type'] === 't18' && isset($param['recharges_id']) && array_key_exists('recharges_id',$param)){
+                        $sql->where('capital.rechargesType','=',$param['recharges_id']);
+                    }
                 }
                 if(isset($param['amount_min']) && array_key_exists('amount_min',$param)){
                     $sql->where('capital.money','>=',$param['amount_min']);

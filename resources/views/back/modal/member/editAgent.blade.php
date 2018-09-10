@@ -20,9 +20,9 @@
 
     <div class="two fields">
         <div class="field">
-            <label>代理账号密码</label>
+            <label>报表显示名</label>
             <div class="ui input icon">
-                <input type="text" name="password" placeholder="留空视为不修改"/>
+                <input type="text" name="name" value="{{ $info->name }}"/>
             </div>
         </div>
         <div class="field">
@@ -99,6 +99,12 @@
     </div>
 
     <div class="two fields">
+        <div class="field">
+            <label>代理账号密码</label>
+            <div class="ui input icon">
+                <input type="text" name="password" placeholder="留空视为不修改"/>
+            </div>
+        </div>
         <div class="field">
             <label>开启赔率修改权限</label>
             <div class="ui input icon">

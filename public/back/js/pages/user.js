@@ -70,6 +70,13 @@ $(function () {
             }
         }
     });
+
+    $(document).keyup(function(e){
+        var key = e.which;
+        if(key == 13 || key == 32){
+            dataTable1.ajax.reload();
+        }
+    });
     
     $('#btn_search').on('click',function () {
         dataTable1.ajax.reload();

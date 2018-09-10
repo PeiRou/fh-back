@@ -7,6 +7,7 @@ use App\Levels;
 use App\Models\Chat\Users;
 use App\PayOnline;
 use App\RechargeWay;
+use App\RechType;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -968,6 +969,25 @@ class SrcPayController extends Controller
             $data[$key]['id'] = $params['id'][$key];
         }
         if(PayOnline::editBatchPayOnlineData($data)){
+            return response()->json([
+                'status' => true
+            ]);
+        }else{
+            return response()->json([
+                'status' => false,
+                'msg' => '排序失败'
+            ]);
+        }
+    }
+    //支付前端显示排序
+    public function rechTypeSetSort(Request $request){
+        $params = $request->all();
+        $data = [];
+        foreach ($params['sort'] as $key => $value){
+            $data[$key]['sort'] = empty($value) ? 0 : $value;
+            $data[$key]['id'] = $params['id'][$key];
+        }
+        if(RechType::editBatchPayOnlineData($data)){
             return response()->json([
                 'status' => true
             ]);

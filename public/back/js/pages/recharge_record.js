@@ -93,6 +93,7 @@ $(function () {
                 d.startTime = $('#startTime').val();
                 d.endTime = $('#endTime').val();
                 d.killTestUser = $('#killTestUser:checked').val();
+                d.recharges_id = $('#Recharges_id').val();
             }
         },
         columns: [
@@ -185,6 +186,22 @@ $(function () {
                 "next":       "下一页",
                 "previous":   "上一页"
             }
+        }
+    });
+
+    $(document).keyup(function(e){
+        var key = e.which;
+        if(key == 13 || key == 32){
+            dataTable.ajax.reload();
+        }
+    });
+
+    $('#recharge_type').on('change',function () {
+        var value = $(this).val();
+        if(value === 'adminAddMoney'){
+            $('#Recharges_id-Div').show();
+        }else{
+            $('#Recharges_id-Div').hide();
         }
     });
 });
@@ -410,6 +427,9 @@ $('#account_type').on('change',function () {
     }
     if(account_type == "operation_account"){
         $('#account_param').attr('placeholder','操作人账号');
+    }          
+    if(account_type == "sysOrderNum"){
+    	$('#account_param').attr('placeholder','商户订单号');
     }
 });
 

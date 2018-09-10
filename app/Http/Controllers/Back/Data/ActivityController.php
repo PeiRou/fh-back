@@ -6,6 +6,7 @@ use App\Activity;
 use App\ActivityCondition;
 use App\ActivityPrize;
 use App\ActivitySend;
+use App\ActivityStatistics;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
@@ -85,7 +86,7 @@ class ActivityController extends Controller
     //派奖审核-表格数据
     public function review(Request $request){
         $params = $request->all();
-        $datas = ActivitySend::select('activity_send.*','users.fullname','users.rechLevel as lv','level.name as levelname')->where(function ($sql) use ($params){
+        $datasSql = ActivitySend::where(function ($sql) use ($params){
             if(isset($params['status']) && array_key_exists('status',$params)){
                 $sql->where('activity_send.status','=',$params['status']);
             }
@@ -94,11 +95,17 @@ class ActivityController extends Controller
             }
             if(isset($params['time']) && array_key_exists('time',$params)){
                 $sql->wherebetween('activity_send.created_at',[$params['time'] . ' 00:00:00',$params['time'] . ' 23:59:59']);
+            }else{
+                $sql->wherebetween('activity_send.created_at',[date('Y-m-d 00:00:00'),date('Y-m-d 23:59:59')]);
             }
         })
             ->join('users','users.id','=','activity_send.user_id')
             ->join('level','level.value','=','users.rechLevel')
-            ->orderBy('activity_send.created_at','desc')->get();
+            ->join('activity_prize','activity_prize.id','=','activity_send.prize_id');
+        $datasCount = $datasSql->count();
+        $datas = $datasSql->select('activity_send.*','users.fullname','users.rechLevel as lv','level.name as levelname','activity_prize.type as pType','activity_prize.quantity as pQuantity')
+            ->orderBy('activity_send.created_at','desc')->skip($params['start'])->take($params['length'])->get();
+        $filterMoney = $datasSql->whereIn('activity_send.status',[4,5])->sum('activity_prize.quantity');
         $sendStatus = ActivitySend::$activityStatus;
         return DataTables::of($datas)
             ->editColumn('user_account',function ($datas) {
@@ -128,12 +135,45 @@ class ActivityController extends Controller
             })
             ->editColumn('control',function ($datas) {
                 $html = '<span class="edit-link" onclick="jumpHref(\''.$datas->user_id.'\')"> 注单明细 </span>';
-                if($datas->status == 2) {
+                if(($datas->status == 2) && (($datas->pQuantity != 0) || ($datas->pType != 2))) {
                     $html .= ' | <span class="edit-link" onclick="editStatus(' . $datas->id . ',1,\'驳回\')"> 驳回 </span> | <span class="edit-link" onclick="editStatus(' . $datas->id . ',2,\'通过\')"> 通过 </span>';
                 }
                 return  $html;
             })
             ->rawColumns(['control','user_account'])
+            ->setTotalRecords($datasCount)
+            ->skipPaging()
+            ->with('filterMoney',$filterMoney)
+            ->make(true);
+    }
+
+    //每日数据统计-表格数据
+    public function daily(Request $request){
+        $params = $request->all();
+
+    }
+
+    //每日活动统计-表格数据
+    public function data(Request $request){
+        $aParam = $request->all();
+        $aDataSql = ActivityStatistics::where(function ($aSql) use ($aParam) {
+            if(isset($aParam['user_account']) && array_key_exists('user_account',$aParam))
+                $aSql->where('user_account',$aParam['user_account']);
+            if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam))
+                $aSql->where('day','>=',$aParam['startTime']);
+            if(isset($aParam['endTime']) && array_key_exists('endTime',$aParam))
+                $aSql->where('day','<=',$aParam['endTime']);
+            if(isset($aParam['activity_type']) && array_key_exists('activity_type',$aParam))
+                $aSql->where('activity_type',$aParam['activity_type']);
+        });
+        $aDataCount = $aDataSql->count();
+        $aData = $aDataSql->orderBy('day','desc')->orderby('created_at','desc')->skip($aParam['start'])->take($aParam['length'])->get();
+        return DataTables::of($aData)
+            ->editColumn('user_account',function ($aData) {
+                return  $aData->user_account.'('.$aData->user_name.')';
+            })
+            ->setTotalRecords($aDataCount)
+            ->skipPaging()
             ->make(true);
     }
 }

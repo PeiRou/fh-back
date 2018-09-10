@@ -18,6 +18,14 @@
         </div>
     </div>
     <div class="field">
+        <label>加钱类型</label>
+        <select class="ui dropdown" id="admin_add_money" name="admin_add_money" style='height:32px !important'>
+            @foreach($aRechargesType as $kRechargesType => $iRechargesType)
+                <option value="{{ $kRechargesType }}">{{ $iRechargesType }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="field">
         <label>备注</label>
         <div class="ui input icon">
             <input type="text" name="content" placeholder="备注必填"/>

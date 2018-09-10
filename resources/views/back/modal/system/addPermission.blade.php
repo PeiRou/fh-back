@@ -242,7 +242,12 @@
                 type: 'POST',
                 data: $form.serialize(),
                 success: function(result) {
-
+                    if(result.status == true){
+                        jc1.close();
+                        $('#example').DataTable().ajax.reload(null,false);
+                    }else{
+                        alert(result.msg);
+                    }
                 }
             });
         });

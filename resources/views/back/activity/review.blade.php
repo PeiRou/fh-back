@@ -6,6 +6,7 @@
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>派奖审核
+            <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('capitalDetailsTable')"><i class="iconfont">&#xe61d;</i></span>
@@ -17,8 +18,8 @@
             <div class="ui mini form">
                 <div class="fields">
                     <div class="one wide field">
-                        <select class="ui dropdown" id="activity_id" style='height:32px !important'>
-                            <option value="">活动名称：</option>
+                        <select class="ui dropdown" id="status" style='height:32px !important'>
+                            <option value="">活动状态：</option>
                             @foreach($aStatuss as $key => $aStatus)
                                 <option value="{{ $key }}">{{ $aStatus }}</option>
                             @endforeach
@@ -40,6 +41,9 @@
                         <button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>
                     </div>
                 </div>
+            </div>
+            <div class="total-nums">
+                审核通过的中奖金额：<span style="font-size: 13pt;" id="filterMoney">0</span>
             </div>
         </div>
         <table id="capitalDetailsTable" class="ui small table" cellspacing="0" width="100%">

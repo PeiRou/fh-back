@@ -116,8 +116,8 @@ $(function () {
                 dataType:'json',
                 success:function (data) {
                     $( api.column( 1 ).footer() ).html(data.result.countMember);
-                    $( api.column( 2 ).footer() ).html(data.result.sumDrawing);
-                    $( api.column( 3 ).footer() ).html(data.result.sumRecharges);
+                    $( api.column( 2 ).footer() ).html(data.result.sumRecharges);
+                    $( api.column( 3 ).footer() ).html(data.result.sumDrawing);
                     $( api.column( 4 ).footer() ).html(data.result.countBet);
                     $( api.column( 5 ).footer() ).html(data.result.sumMoney);
                     $( api.column( 6 ).footer() ).html(data.result.sumWinbet);
@@ -152,6 +152,14 @@ $(function () {
             }
         }
     });
+
+    $(document).keyup(function(e){
+        var key = e.which;
+        if(key == 13 || key == 32){
+            dataTable.ajax.reload();
+        }
+    });
+
     $('#btn_search').on('click',function () {
         dataTable.ajax.reload();
     });

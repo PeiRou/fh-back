@@ -100,6 +100,13 @@ $(function () {
     });
 });
 
+$(document).keyup(function(e){
+    var key = e.which;
+    if(key == 13 || key == 32){
+        dataTable.ajax.reload();
+    }
+});
+
 $('#btn_search').on('click',function () {
     // if($('#username').val() == "" || $('#order').val() == ""){
     //     Calert('至少需要选择一个筛选类型进行查询','red')

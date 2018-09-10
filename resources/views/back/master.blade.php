@@ -36,9 +36,6 @@
     <div class="nav-logo">
         <a href="{{ url('/back/control/dash') }}"><img src="{{ env('BACK_LOGO') }}"></a>
     </div>
-    {{--<div class="online-count">--}}
-        {{--在线 <span>?</span>--}}
-    {{--</div>--}}
     <div class="nav-user-info">
         <ul style="margin-top: 20px;">
             <li onclick="javascript:(location.href='/back/control/userManage/sub_account')">当前子帐号在线人数：<span id="onlineAdminCount">0</span></li>
@@ -57,11 +54,6 @@
                 <b id="drawingCount">0</b>
             </a>
         </div>
-        {{--<ul>--}}
-            {{--<li>{{ Session::get('account') }}</li>--}}
-            {{--<li class="li-hover">修改密码</li>--}}
-            {{--<li class="li-hover" onclick="logout()">退出登录</li>--}}
-        {{--</ul>--}}
     </div>
 </div>
 @inject('hasPermission','App\Http\Proxy\CheckPermission')
@@ -290,6 +282,9 @@
                 @if($hasPermission->hasPermission('pay.rechargeWay') == "has")
                 <li id="menu-payManage-rechargeWay"><a href="{{ route('pay.rechargeWay') }}"><cite></cite><span>充值方式配置</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('pay.rechType') == "has")
+                <li id="menu-payManage-rechType"><a href="{{ route('pay.rechType') }}"><cite></cite><span>支付前端显示</span></a></li>
+                @endif
             </ul>
         </li>
         @endif
@@ -349,10 +344,16 @@
                     <li id="menu-activityManage-condition"><a href="{{ route('activity.condition') }}"><cite></cite><span>活动条件</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('activity.gift') == "has")
-                <li id="menu-activityManage-gift"><a href="{{ route('activity.gift') }}"><cite></cite><span>奖品配置</span></a></li>
+                    <li id="menu-activityManage-gift"><a href="{{ route('activity.gift') }}"><cite></cite><span>奖品配置</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('activity.review') == "has")
-                <li id="menu-activityManage-review"><a href="{{ route('activity.review') }}"><cite></cite><span>派奖审核</span></a></li>
+                    <li id="menu-activityManage-review"><a href="{{ route('activity.review') }}"><cite></cite><span>派奖审核</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('activity.daily') == "has")
+                    <li id="menu-activityManage-daily"><a href="{{ route('activity.daily') }}"><cite></cite><span>每日数据统计</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('activity.data') == "has")
+                    <li id="menu-activityManage-data"><a href="{{ route('activity.data') }}"><cite></cite><span>活动数据统计</span></a></li>
                 @endif
             </ul>
         </li>
@@ -411,9 +412,6 @@
     </ul>
 </div>
 <div class="main-content">
-    {{--@inject('onlineData','App\Helpers\OnlineRedis')--}}
-    {{--<input type="hidden" id="onlineUserDataInput" value="{{ $onlineData->getOnlineData() }}">--}}
-    {{--<input type="hidden" id="accountIdInput" value="{{ Session::get('account_id') }}">--}}
     @yield('content')
 </div>
 
@@ -422,20 +420,7 @@
 <script src="/vendor/formvalidation/dist/js/framework/semantic.min.js"></script>
 <script src="/back/js/core.js"></script>
 @yield('page-js')
-{{--<script src="/js/socket.io.js"></script>--}}
 <script>
-    {{--$(function () {--}}
-        {{--var userid = '{{ Session::get('account_id') }}';--}}
-        {{--var username = '{{ Session::get('account') }}';--}}
-        {{--var socket = io.connect('{{ env('SOCKET_URL') }}');--}}
-        {{--socket.emit('login',{userid:userid, username:username});--}}
-        {{--socket.on('login',function (data) {--}}
-            {{--$('.online-count span').html(data.onlineCount);--}}
-        {{--});--}}
-        {{--socket.on('logout',function (data) {--}}
-            {{--$('.online-count span').html(data.onlineCount);--}}
-        {{--});--}}
-    {{--})--}}
 </script>
 </body>
 </html>

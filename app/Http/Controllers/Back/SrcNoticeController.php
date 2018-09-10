@@ -138,11 +138,12 @@ class SrcNoticeController extends Controller
                     $usersArray = DB::table('users')
                         ->select('id','username')
                         ->whereIn('username', $users)
+                        ->whereIn('testFlag', [0,2])
                         ->get();
                     break;
                 case 2:             //2 在线用户
-                    $redis->select(2);
-                    $keys = $redis->keys('user:'.'*');
+                    $redis->select(6);
+                    $keys = $redis->keys('urtime:'.'*');
                     $onlineUser = [];
                     foreach ($keys as $item){
                         $data = "[".Redis::get($item)."]";
@@ -152,6 +153,7 @@ class SrcNoticeController extends Controller
                     $usersArray = DB::table('users')
                         ->select('id','username')
                         ->whereIn('id', $onlineUser)
+                        ->whereIn('testFlag', [0,2])
                         ->get();
                     break;
                 case 3:             //3 所有用户
@@ -164,6 +166,7 @@ class SrcNoticeController extends Controller
                     $usersArray = DB::table('users')
                         ->select('id','username')
                         ->where('rechLevel', $user_level)
+                        ->whereIn('testFlag', [0,2])
                         ->get();
                     break;
             }

@@ -32,11 +32,13 @@ class FinanceDataController extends Controller
         $pay_online_id = $request->get('pay_online_id');
         $amount = $request->get('amount');
         $fullName = $request->get('fullName');
+        $start = $request->get('start');
+        $length = $request->get('length');
         if($fullName && isset($fullName)){
             $findUserId = DB::table('users')->where('fullName',$fullName)->first();
         }
 
-        $sql = 'select users.id as uid,recharges.id as rid,recharges.created_at as re_created_at,recharges.levels as re_levels,recharges.process_date as re_process_date,recharges.username as re_username,recharges.userId as userId,users.fullName as user_fullName,users.money as user_money,recharges.payType as re_payType,recharges.amount as re_amount,rebate_or_fee,recharges.operation_account as re_operation_account,recharges.shou_info as re_shou_info,recharges.ru_info as re_ru_info,recharges.status as re_status,recharges.msg as re_msg,level.name as level_name,recharges.orderNum as re_orderNum,recharges.sysPayOrder as re_sysPayOrder,recharges.balance as re_balance from recharges 
+        $sql = ' from recharges 
               JOIN users on recharges.userId = users.id JOIN level on level.value = users.rechLevel WHERE 1 ';
         $where = '';
         if(isset($killTestUser) && $killTestUser){
@@ -60,6 +62,8 @@ class FinanceDataController extends Controller
                 $where .= " and recharges.orderNum = '".$account_param."'";
             }else if($account_type == 'operation_account'){
                 $where .= " and recharges.operation_account = '".$account_param."'";
+            }else if($account_type == 'sysOrderNum'){
+                $where .= " and recharges.sysPayOrder = '".$account_param."'";
             }
         }
         if(isset($startTime) && $startTime){
@@ -85,9 +89,11 @@ class FinanceDataController extends Controller
                 $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
             }
         }
-        $sql .= $where .$whereStaus. ' order by recharges.created_at desc ';
+        $sql1 = 'SELECT users.id as uid,recharges.id as rid,recharges.created_at as re_created_at,recharges.process_date as re_process_date,recharges.username as re_username,recharges.userId as userId,users.fullName as user_fullName,users.money as user_money,recharges.payType as re_payType,recharges.amount as re_amount,rebate_or_fee,recharges.operation_account as re_operation_account,recharges.shou_info as re_shou_info,recharges.ru_info as re_ru_info,recharges.status as re_status,recharges.msg as re_msg,recharges.orderNum as re_orderNum,recharges.sysPayOrder as re_sysPayOrder,recharges.balance as re_balance,users.rechLevel as user_rechLevel,level.name as level_name '.$sql.$where .$whereStaus. ' order by recharges.created_at desc ';
+        $aSqlCount = 'select count(recharges.id) AS count '.$sql.$where .$whereStaus;
         Session::put('recharge_report',$where);
-        $recharge = DB::select($sql);
+        $recharge = DB::select($sql1 ." LIMIT ".$start.','.$length);
+        $rechargeCount = DB::select($aSqlCount);
 
         return DataTables::of($recharge)
             ->editColumn('created_at',function ($recharge){
@@ -178,6 +184,8 @@ class FinanceDataController extends Controller
                 }
             })
             ->rawColumns(['amount','shou_info','ru_info','status','control','trueName','user'])
+            ->setTotalRecords($rechargeCount[0]->count)
+            ->skipPaging()
             ->make(true);
     }
     
@@ -191,8 +199,10 @@ class FinanceDataController extends Controller
         $account_type = $request->get('account_type');
         $account_param = $request->get('account_param');
         $rechLevel = $request->get('rechLevel');
+        $start = $request->get('start');
+        $length = $request->get('length');
 
-        $drawing = DB::table('drawing')
+        $drawingSQL = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
             ->leftJoin('level','users.rechLevel','=','level.value')
             ->select('drawing.created_at as dr_created_at','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.fullName as draw_fullName','drawing.bank_name as draw_bank_name','drawing.bank_num as draw_bank_num','drawing.bank_addr as draw_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id','users.username as user_username','drawing.balance as dr_balance','drawing.order_id as dr_order_id','drawing.operation_account as dr_operation_account','level.name as level_name','users.DrawTimes as user_DrawTimes','drawing.total_bet as dr_total_bet')
@@ -238,8 +248,9 @@ class FinanceDataController extends Controller
                     $q->whereDate('drawing.created_at',date('Y-m-d'));
                 }
             })
-            ->orderBy('drawing.created_at','desc')->get();
-
+            ->orderBy('drawing.created_at','desc');
+        $drawing = $drawingSQL->skip($start)->take($length)->get();
+        $drawingCount = $drawingSQL->count();
         return DataTables::of($drawing)
             ->editColumn('created_at',function ($drawing){
                 return date('m/d H:i',strtotime($drawing->dr_created_at));
@@ -339,6 +350,8 @@ class FinanceDataController extends Controller
                 }
             })
             ->rawColumns(['rechLevel','amount','username','bank_info','status','control','ip_info','total_bet'])
+            ->setTotalRecords($drawingCount)
+            ->skipPaging()
             ->make(true);
     }
     
@@ -346,22 +359,40 @@ class FinanceDataController extends Controller
     public function capitalDetails(Request $request)
     {
         $param = $request->all();
+        $start = $request->get('start');
+        $length = $request->get('length');
+        if(empty($param['account']))            //预设没有填用户的时候没有任何值
+            return array('draw'=>1,'recordsTotal'=>0,'recordsFiltered'=>0,'data'=>[]);
+
         if(isset($param['type']) && array_key_exists('type', $param)){
             if(in_array($param['type'],Capital::$includePlayTypeOption)){
                 $capital = Bets::AssemblyFundDetails($param);
+                $capitalCount = $capital->count();
+                $capital = $capital->skip($start)->take($length)->get();
             }else if($param['type']=='t01'){        //充值
                 $capital = Capital::AssemblyFundDetails_Rech($param);
+                $capitalCount = $capital->count();
+                $capital = $capital->skip($start)->take($length)->get();
             }else if($param['type']=='t04'){        //返利/手续费
                 $capital = Capital::AssemblyFundDetails($param);
+                $capitalCount = $capital->count();
+                $capital = $capital->skip($start)->take($length)->get();
+            }else if($param['type'] === 't15' || $param['type'] === 't17'){        //提现和提现失败
+                $capital = Drawing::AssemblyFundDetails($param,$param['type']);
+                $capitalCount = $capital->count();
+                $capital = $capital->skip($start)->take($length)->get();
             }else{
                 $capitalSql = Capital::AssemblyFundDetails($param);
-                $capital = $capitalSql->orderBy('bet_id','desc')->get();
+                $capital = $capitalSql->orderBy('bet_id','desc')->skip($start)->take($length)->get();
+                $capitalCount = $capitalSql->count();
             }
         }else {
             $capitalSql = Capital::AssemblyFundDetails($param);
             $betsSql = Bets::AssemblyFundDetails($param);
             $RechSql = Capital::AssemblyFundDetails_Rech($param);
-            $capital = $capitalSql->union($RechSql)->union($betsSql)->orderBy('created_at','desc')->orderBy('bet_id','desc');
+            $drawingSql = Drawing::AssemblyFundDetails($param);
+            $capitalCount = $capitalSql->count() + $betsSql->count() + $RechSql->count() + $drawingSql->count();
+            $capital = $capitalSql->union($RechSql)->union($betsSql)->union($drawingSql)->orderBy('created_at','desc')->orderBy('bet_id','desc')->skip($start)->take($length);
         }
         $playTypeOptions = Capital::$playTypeOption;
         return DataTables::of($capital)
@@ -386,12 +417,7 @@ class FinanceDataController extends Controller
                         else
                             return '<span class="red-text">下注:'.$capital->nn_view_money.'</span>'.'<span class="gary-text">(冻结:'.$capital->freeze_money.')</span>'.'<span class="gary-text">(解冻:'.$capital->freeze_money.')</span>';
                     }else{
-                        if($capital->money < 0)
-                        {
-                            return '<span class="green-text">'.$capital->money.'</span>';
-                        } else {
-                            return '<span class="red-text">下注:'.$capital->money.'</span>';
-                        }
+                        return '<span class="green-text">-'.$capital->money.'</span>';
                     }
                 }else{
                     if($capital->money < 0)
@@ -441,6 +467,8 @@ class FinanceDataController extends Controller
                 }
             })
             ->rawColumns(['money','balance','content','issue'])
+            ->setTotalRecords($capitalCount)
+            ->skipPaging()
             ->make(true);
     }
     

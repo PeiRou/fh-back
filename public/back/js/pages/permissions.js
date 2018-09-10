@@ -10,6 +10,7 @@ $(function () {
         bLengthChange: false,
         processing: true,
         serverSide: true,
+        aLengthMenu: [[50]],
         ajax: '/back/datatables/premissions',
         columns: [
             {data: 'id'},
@@ -37,7 +38,6 @@ function addPermission() {
                     if(!form){
                         return false;
                     }
-                    alert(1);
                     return false;
                 }
             }

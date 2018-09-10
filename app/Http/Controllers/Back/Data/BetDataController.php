@@ -28,8 +28,11 @@ class BetDataController extends Controller
         $maxMoney = $request->get('maxMoney');
         $timeStart = strtotime($request->get('timeStart')." 00:00:00");
         $timeEnd = strtotime($request->get('timeEnd')." 23:59:59");
+        $markSix = $request->get('markSix');
+        $start = $request->get('start');
+        $length = $request->get('length');
 
-        $bet = DB::table('bet')
+        $betSQl = DB::table('bet')
             ->leftJoin('game','bet.game_id','=','game.game_id')
             ->leftJoin('users','bet.user_id','=','users.id')
             ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at','bet.platform as bet_platform','bet.bet_info as bet_bet_info')
@@ -42,6 +45,12 @@ class BetDataController extends Controller
                 } else {
                     $now = date('Y-m-d');
                     $query->whereDate('bet.created_at',$now);
+                }
+            })
+            ->where(function ($query) use ($markSix){
+                if(isset($markSix) && $markSix){
+                    if($markSix == 2)
+                        $query->where("bet.game_id",'!=',70);
                 }
             })
             ->where(function ($query) use($status){
@@ -80,7 +89,9 @@ class BetDataController extends Controller
                     $query->where("users.username",$username);
                 }
             })
-            ->where('bet.testFlag',0)->orderBy('bet.created_at','desc')->get();
+            ->where('bet.testFlag',0);
+        $betCount = $betSQl->count();
+        $bet = $betSQl->orderBy('bet.created_at','desc')->skip($start)->take($length)->get();
         return DataTables::of($bet)
             ->editColumn('order_id',function ($bet){
                 return $bet->bet_order_id;
@@ -131,6 +142,8 @@ class BetDataController extends Controller
                 return "取消注单";
             })
             ->rawColumns(['user','play','issue','bunko','bet_money','platform'])
+            ->setTotalRecords($betCount)
+            ->skipPaging()
             ->make(true);
     }
     
@@ -148,9 +161,11 @@ class BetDataController extends Controller
         $timeEnd = strtotime($request->get('timeEnd')." 23:59:59");
         $monthStart = date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y')));
         $monthEnd = date('Y-m-d',mktime(23,59,59,date('m'),date('t'),date('Y')));
+        $start = $request->get('start');
+        $length = $request->get('length');
 
         if($startSearch == 1){
-            $bet = DB::table('bet')
+            $betSQL = DB::table('bet')
                 ->leftJoin('game','bet.game_id','=','game.game_id')
                 ->leftJoin('users','bet.user_id','=','users.id')
                 ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at','bet.platform as bet_platform')
@@ -199,9 +214,12 @@ class BetDataController extends Controller
                         }
                     }
                 })
-                ->where('bet.testFlag',0)->whereBetween('bet.created_at',[$monthStart.' 00:00:00', $monthEnd.' 23:59:59'])->orderBy('bet.created_at','desc')->get();
+                ->where('bet.testFlag',0)->whereBetween('bet.created_at',[$monthStart.' 00:00:00', $monthEnd.' 23:59:59']);
+            $betCount = $betSQL->count();
+            $bet = $betSQL->orderBy('bet.created_at','desc')->skip($start)->take($length)->get();
         } else {
-            $bet = Bets::where('order_id',888888)->get();
+            $betCount = Bets::where('order_id',888888)->count();
+            $bet = Bets::where('order_id',888888)->skip($start)->take($length)->get();
         }
         return DataTables::of($bet)
             ->editColumn('order_id',function ($bet){
@@ -266,6 +284,8 @@ class BetDataController extends Controller
                 }
             })
             ->rawColumns(['user','play','issue','bunko','bet_money','platform'])
+            ->setTotalRecords($betCount)
+            ->skipPaging()
             ->make(true);
     }
     
@@ -276,6 +296,8 @@ class BetDataController extends Controller
         $issue = $request->get('issue');
         $username = $request->get('username');
         $minMoney = $request->get('minMoney');
+        $start = $request->get('start');
+        $length = $request->get('length');
         if(isset($games) && $games){
             $foreach = explode(',',implode(',',$games));
             $q = '';
@@ -286,7 +308,7 @@ class BetDataController extends Controller
             $q = '';
         }
 
-        $bet = DB::table('bet')
+        $betSQL = DB::table('bet')
             ->leftJoin('game','bet.game_id','=','game.game_id')
             ->leftJoin('users','bet.user_id','=','users.id')
             ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at','bet.platform as bet_platform','bet.play_rebate as bet_bet_rebate')
@@ -310,7 +332,9 @@ class BetDataController extends Controller
                     $query->where('bet.bet_money','>=',$minMoney);
                 }
             })
-            ->where('bet.testFlag',0)->where('bet.bunko',0)->orderBy('bet.created_at','desc')->get();
+            ->where('bet.testFlag',0)->where('bet.bunko',0);
+        $betCount = $betSQL->count();
+        $bet = $betSQL->orderBy('bet.created_at','desc')->skip($start)->take($length)->get();
         return DataTables::of($bet)
             ->editColumn('order_id',function ($bet){
                 return $bet->bet_order_id;
@@ -341,6 +365,8 @@ class BetDataController extends Controller
                 return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span>";
             })
             ->rawColumns(['user','play','issue','bunko','bet_money','bet_rebate'])
+            ->setTotalRecords($betCount)
+            ->skipPaging()
             ->make(true);
     }
     
