@@ -267,8 +267,8 @@
                     d.orderNum = $('#orderNum').val();
                 },
                 error:function (data) {
+
                     alert(data.responseJSON.msg);
-                    dataTable = null;
                 }
             },
             columns: [
