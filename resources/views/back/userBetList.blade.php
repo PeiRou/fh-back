@@ -265,6 +265,9 @@
                     d.endTime = $('#endTime').val();
                     d.issue = $('#issue').val();
                     d.orderNum = $('#orderNum').val();
+                },
+                success:function (data) {
+                    console.log(data);
                 }
             },
             columns: [
@@ -359,8 +362,7 @@
             getCheckBox();
             getTotalWin();
             if(check_val.length !== 0){
-                var reload = dataTable.ajax.reload();
-                console.log(reload);
+                dataTable.ajax.reload();
             } else {
                 $.alert({
                     icon: 'warning sign icon',
