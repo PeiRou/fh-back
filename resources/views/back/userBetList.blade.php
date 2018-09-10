@@ -268,7 +268,7 @@
                 },
                 error:function (data) {
                     alert(data.responseJSON.msg);
-                    $('#userBetTable').DataTable().clear().draw();
+                    $('#userBetTable').DataTable().clear();
                 }
             },
             columns: [
