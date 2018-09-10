@@ -21,7 +21,7 @@
             <span class="refresh-nav-btn" onclick="refreshTable('userTable')"><i class="iconfont">&#xe61d;</i></span>
             <span onclick="">导出用户数据</span>
             <span onclick="">更新邮箱</span>
-            <span onclick="">回访用户</span>
+            <span onclick="returnVisit()">回访用户</span>
             <span onclick="addUser()">添加会员</span>
         </div>
     </div>

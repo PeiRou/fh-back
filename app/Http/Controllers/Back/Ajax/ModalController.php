@@ -699,4 +699,9 @@ class ModalController extends Controller
         $iPromotionInfo = PromotionReport::promotionInfoOne($id);
         return view('back.modal.promotion.editPromotionReport',compact('iPromotionInfo'));
     }
+
+    //会员回访用户-模板
+    public function returnVisit(){
+        return view('back.modal.member.returnVisit');
+    }
 }

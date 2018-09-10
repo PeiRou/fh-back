@@ -361,6 +361,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/openLhc', 'Back\OpenHistoryController@addLhcData');
     Route::post('/action/admin/reOpenLhc', 'Back\OpenHistoryController@reOpenLhcData');
 
+    Route::any('/action/admin/member/returnVisit','Back\MemberController@returnVisit')->middleware('check-permission')->name('member.returnVisit'); //会员-回访用户
+
     Route::get('/action/admin/exportExcel/userRecharges','Back\ExportExcelController@exportExcelForRecharges'); //导出充值数据为Excel文件
 
 //Modal
@@ -446,6 +448,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editPromotionReport/{id}','Back\Ajax\ModalController@editPromotionReport'); //修改推广就算报表-模板
     Route::get('/back/modal/addPromotionConfig','Back\Ajax\ModalController@addPromotionConfig'); //增加推广配置-模板
     Route::get('/back/modal/editPromotionConfig/{id}','Back\Ajax\ModalController@editPromotionConfig'); //修改推广配置-模板
+    Route::get('/back/modal/returnVisit','Back\Ajax\ModalController@returnVisit'); //会员回访用户-模板
 
 //游戏MODAL
     Route::get('/back/modal/gameSetting/{id}', 'Back\Ajax\ModalController@gameSetting');
