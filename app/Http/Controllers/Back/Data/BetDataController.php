@@ -439,7 +439,7 @@ class BetDataController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => '用户不存在，请核实！'
-            ]);
+            ],403);
         }
     }
 
