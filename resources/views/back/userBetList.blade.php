@@ -265,6 +265,9 @@
                     d.endTime = $('#endTime').val();
                     d.issue = $('#issue').val();
                     d.orderNum = $('#orderNum').val();
+                },
+                error:function (data) {
+                    console.log(data.msg);
                 }
             },
             columns: [
@@ -378,18 +381,6 @@
                 });
             }
         });
-        // $('#reset').on('click',function () {
-        //     $('#status').val("");
-        //     $('#rechLevel').val("");
-        //     $('#account').val("");
-        //     $('#mobile').val("");
-        //     $('#qq').val("");
-        //     $('#minMoney').val("");
-        //     $('#maxMoney').val("");
-        //     $('#promoter').val("");
-        //     $('#noLoginDays').val("");
-        //     dataTable.ajax.reload();
-        // });
     });
 
 
