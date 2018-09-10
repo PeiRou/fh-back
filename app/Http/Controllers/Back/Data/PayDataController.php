@@ -408,12 +408,6 @@ class PayDataController extends Controller
             ->editColumn('control', function ($rechType){
                 return '';
             })
-            ->editColumn('onlineType', function ($rechType){
-                if ($rechType->onlineType == 1)
-                    return '在线';
-                else
-                    return '离线';
-            })
             ->editColumn('sort', function ($rechType){
                 return "<input type='text' value='".$rechType->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$rechType->id."' name='sortId[]'>";
             })
