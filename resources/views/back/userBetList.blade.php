@@ -266,7 +266,7 @@
                     d.issue = $('#issue').val();
                     d.orderNum = $('#orderNum').val();
                 },
-                success:function (data) {
+                error:function (data) {
                     console.log(data);
                 }
             },
