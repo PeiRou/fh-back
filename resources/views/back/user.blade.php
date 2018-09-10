@@ -116,4 +116,10 @@
 
 @section('page-js')
     <script src="/back/js/pages/user.js"></script>
+    <script>
+        @if(session('message'))
+            var message = '{{ session('message') }}';
+            alert(message);
+        @endif
+    </script>
 @endsection

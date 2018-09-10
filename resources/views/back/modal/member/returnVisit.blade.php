@@ -49,13 +49,6 @@
                     }
                 }
             },
-            money: {
-                validators: {
-                    notEmpty: {
-                        message: '请输入存款金额'
-                    }
-                }
-            },
         }
     }).on('success.form.fv', function(e) {
         e.preventDefault();
