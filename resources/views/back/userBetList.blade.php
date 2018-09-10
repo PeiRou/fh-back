@@ -359,7 +359,8 @@
             getCheckBox();
             getTotalWin();
             if(check_val.length !== 0){
-                dataTable.ajax.reload();
+                var reload = dataTable.ajax.reload();
+                console.log(reload);
             } else {
                 $.alert({
                     icon: 'warning sign icon',
@@ -378,18 +379,6 @@
                 });
             }
         });
-        // $('#reset').on('click',function () {
-        //     $('#status').val("");
-        //     $('#rechLevel').val("");
-        //     $('#account').val("");
-        //     $('#mobile').val("");
-        //     $('#qq').val("");
-        //     $('#minMoney').val("");
-        //     $('#maxMoney').val("");
-        //     $('#promoter').val("");
-        //     $('#noLoginDays').val("");
-        //     dataTable.ajax.reload();
-        // });
     });
 
 
