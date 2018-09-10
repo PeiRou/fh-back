@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Bet;
 
 use App\Bets;
+use App\Excel;
 use Illuminate\Support\Facades\DB;
 
 class New_Cqssc
@@ -31,13 +32,15 @@ class New_Cqssc
         $this->ZHONGSAN($openCode,$gameId,$win);
         $this->HOUSAN($openCode,$gameId,$win);
         $table = 'game_cqssc';
+        $gameName = '重庆时时彩';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
+            $excelModel = new Excel();
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
-                $updateUserMoney = $this->updateUserMoney($gameId,$issue);
+                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
-                    \Log::info("重庆时时彩" . $issue . "结算出错");
+                    \Log::info($gameName . $issue . "结算出错");
                 }
             }
         }
@@ -45,7 +48,7 @@ class New_Cqssc
             'bunko' => 1
         ]);
         if ($update !== 1) {
-            \Log::info("重庆时时彩" . $issue . "结算not Finshed");
+            \Log::info($gameName . $issue . "结算not Finshed");
         }
     }
 
@@ -838,31 +841,5 @@ class New_Cqssc
                 return 1;
             }
         }
-    }
-
-
-    private function updateUserMoney($gameId, $issue){
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        if($get){
-            $sql = "UPDATE users SET money = money+ CASE id ";
-            $users = [];
-            foreach ($get as $i){
-                $users[] = $i->user_id;
-                $sql .= "WHEN $i->user_id THEN $i->s ";
-            }
-
-            $ids = implode(',',$users);
-
-            if($ids && isset($ids)){
-                $sql .= "END WHERE id IN (0,$ids)";
-                $up = DB::connection('mysql::write')->statement($sql);
-                if($up != 1){
-                    return 1;
-                }
-            }
-        } else {
-            \Log::info('重庆时时彩已结算过，已阻止！');
-        }
-        return 0;
     }
 }

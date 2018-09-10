@@ -21,7 +21,7 @@ class New_Pcdd
         $this->BS($openCode,$gameId,$win); //波色
         $this->TM($openCode,$gameId,$win); //特码
         $table = 'game_pcdd';
-        $gameName = '跑马';
+        $gameName = 'PC蛋蛋';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();

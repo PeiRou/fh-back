@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\Bet;
 
-
+use App\Excel;
 use App\Helpers\LHC_SX;
 use Illuminate\Support\Facades\DB;
 
@@ -41,13 +41,15 @@ class New_LHC
         $this->ZONGXIAO($openCode,$gameId,$win);
         $this->ZMT($openCode,$gameId,$win);
         $table = 'game_lhc';
+        $gameName = '六合彩';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
+            $excelModel = new Excel();
             $bunko = $this->BUNKO($openCode,$win,$gameId,$issue);
             if($bunko == 1){
-                $updateUserMoney = $this->updateUserMoney($gameId,$issue);
+                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
-                    \Log::info("六合彩" . $issue . "结算出错");
+                    \Log::info($gameName . $issue . "结算出错");
                 }
             }
         }
@@ -55,7 +57,7 @@ class New_LHC
             'bunko' => 1
         ]);
         if ($update !== 1) {
-            \Log::info("六合彩" . $issue . "结算not Finshed");
+            \Log::info($gameName . $issue . "结算not Finshed");
         }
     }
     
@@ -1923,29 +1925,5 @@ class New_LHC
             //\Log::info('BUNKO:'.$bunko_index);
             return 1;
         }
-    }
-
-    //更新用户余额
-    function updateUserMoney($gameId,$issue){
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        if($get){
-            $sql = "UPDATE users SET money = money+ CASE id ";
-            $users = [];
-            foreach ($get as $i){
-                $users[] = $i->user_id;
-                $sql .= "WHEN $i->user_id THEN $i->s ";
-            }
-            $ids = implode(',',$users);
-            if($ids && isset($ids)){
-                $sql .= "END WHERE id IN (0,$ids)";
-                $up = DB::connection('mysql::write')->statement($sql);
-                if($up != 1){
-                    return 1;
-                }
-            }
-        } else {
-            \Log::info('六合彩已结算过，已阻止！');
-        }
-        return 0;
     }
 }

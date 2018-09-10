@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Bet;
 
 use App\Bets;
+use App\Excel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -20,13 +21,15 @@ class New_Pknn
         $lose = collect([]);
         $this->NN($openCode,$nn,$gameId,$win,$lose);
         $table = 'game_pknn';
+        $gameName = 'PK10牛牛';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = $this->bunko($win,$lose,$nn,$gameId,$issue);
             if($bunko == 1){
-                $updateUserMoney = $this->updateUserMoney($gameId,$issue);
+                $excelModel = new Excel();
+                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
-                    \Log::info("PK10牛牛" . $issue . "结算出错");
+                    \Log::info($gameName . $issue . "结算出错");
                 }
             }
         }
@@ -34,17 +37,12 @@ class New_Pknn
             'bunko' => 1
         ]);
         if ($update !== 1) {
-            \Log::info("PK10牛牛" . $issue . "结算not Finshed");
+            \Log::info($gameName . $issue . "结算not Finshed");
         }
     }
 
     public function NN($openCode,$nn,$gameId,$win,$lose)
     {
-//        $nn = '10,7,8,1,10,-1';
-//        $openCode = '4,7,6,3,10,1,8,9,2,5';
-        //\Log::info($openCode);
-        //\Log::info($nn);
-
         $niuniuArr = explode(',',$nn); //分割牛牛结果
         $explodeNum = explode(',',$openCode); //分割秒速赛车开奖结果
 
@@ -265,25 +263,5 @@ class New_Pknn
                 return 1;
             }
         }
-    }
-
-    public function updateUserMoney($gameId,$issue)
-    {
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        $sql = "UPDATE users SET money = money+ CASE id ";
-        $users = [];
-        foreach ($get as $i){
-            $users[] = $i->user_id;
-            $sql .= "WHEN $i->user_id THEN $i->s ";
-        }
-        $ids = implode(',',$users);
-        if($ids && isset($ids)){
-            $sql .= "END WHERE id IN (0,$ids)";
-            $up = DB::connection('mysql::write')->statement($sql);
-            if($up != 1){
-                return 1;
-            }
-        }
-        return 0;
     }
 }

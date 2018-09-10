@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Bet;
 
 use App\Bets;
+use App\Excel;
 use Illuminate\Support\Facades\DB;
 
 class New_Gxk3
@@ -25,13 +26,15 @@ class New_Gxk3
         $this->BUCHU($openCode,$gameId,$win); //不出号码
         $this->BICHU($openCode,$gameId,$win); //必出号码
         $table = 'game_gxk3';
+        $gameName = '广西快3';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
+            $excelModel = new Excel();
             $bunko = $this->bunko($win,$gameId,$issue);
             if($bunko == 1){
-                $updateUserMoney = $this->updateUserMoney($gameId,$issue);
+                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
-                    \Log::info("广西快3" . $issue . "结算出错");
+                    \Log::info($gameName . $issue . "结算出错");
                 }
             }
         }
@@ -39,7 +42,7 @@ class New_Gxk3
             'bunko' => 1
         ]);
         if ($update !== 1) {
-            \Log::info("广西快3" . $issue . "结算not Finshed");
+            \Log::info($gameName . $issue . "结算not Finshed");
         }
     }
 
