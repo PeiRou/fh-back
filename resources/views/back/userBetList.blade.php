@@ -267,7 +267,8 @@
                     d.orderNum = $('#orderNum').val();
                 },
                 error:function (data) {
-                    console.log(data.responseJSON.msg);
+                    alert(data.responseJSON.msg);
+                    $('#userBetTable').DataTable().clear().draw();
                 }
             },
             columns: [
