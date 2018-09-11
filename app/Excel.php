@@ -46,7 +46,7 @@ class Excel
                 $tmpCap['order_id'] = $i->order_id;
                 $tmpCap['type'] = 't09';
                 $tmpCap['money'] = $i->bunko;
-                $tmpCap['balance'] = $capUsers[$i->user_id];
+                $tmpCap['balance'] = round($capUsers[$i->user_id]+$i->bunko,3);
                 $tmpCap['operation_id'] = 0;
                 $tmpCap['content'] = $gameName.' 第'.$i->issue.'期 返奖';
                 $tmpCap['created_at'] = date('Y-m-d H:i:s');
