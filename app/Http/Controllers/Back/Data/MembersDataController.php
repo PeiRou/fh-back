@@ -85,7 +85,7 @@ class MembersDataController extends Controller
         $start = $request->get('start');
         $length = $request->get('length');
         $params = $request->post();
-        $aSql = "SELECT ag.*,COUNT(DISTINCT((case WHEN u.testFlag in (0,2) then u.id else NULL end))) as countMember FROM `agent` ag LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 ";
+        $aSql = "SELECT ag.*,COUNT(DISTINCT((case WHEN u.testFlag in (0,2) then u.id else NULL end))) as countMember,`general_agent`.`account` AS `gAccount` FROM `agent` ag LEFT JOIN `users` u on ag.a_id = u.agent JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id`WHERE 1 ";
         $cSql = "SELECT ag.a_id FROM `agent` ag LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 ";
         $where = "";
         if(isset($ga_id) && $ga_id>0 ){
@@ -117,8 +117,7 @@ class MembersDataController extends Controller
                 return '<span id="agent_'.$allAgent->a_id.'"><span class="tag-offline">离线</span></span>';
             })
             ->editColumn('general_agent', function ($allAgent){
-                $get = GeneralAgent::find($allAgent->gagent_id);
-                return $get->account;
+                return $allAgent->gAccount;
             })
             ->editColumn('agent', function ($allAgent){
                 return $allAgent->account." <span class='gary-text'>(".$allAgent->name.")</span>";
