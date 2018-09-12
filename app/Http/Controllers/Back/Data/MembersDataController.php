@@ -320,7 +320,7 @@ class MembersDataController extends Controller
         $start = empty($request->get('start'))?0:$request->get('start');
         $length = empty($request->get('length'))?50:$request->get('length');
 
-        $sql = ' FROM (select id ,agent,testFlag,users.promoter as user_promoter ,users.id as uid,users.rechLevel as user_rechLevel,users.created_at as user_created_at,users.updated_at as user_updated_at,users.username as user_username,users.email as user_email,users.fullName as user_fullName,users.money as user_money,users.status as user_status,users.PayTimes as user_PayTimes,users.DrawTimes as user_DrawTimes,users.saveMoneyCount as user_saveMoneyCount,users.drawMoneyCount as user_drawMoneyCount,users.lastLoginTime as user_lastLoginTime,users.content as user_content  from users ) u_fileds 
+        $sql = ' FROM (select id ,agent,testFlag,users.mobile as user_mobile,users.qq as user_qq,users.promoter as user_promoter ,users.id as uid,users.rechLevel as user_rechLevel,users.created_at as user_created_at,users.updated_at as user_updated_at,users.username as user_username,users.email as user_email,users.fullName as user_fullName,users.money as user_money,users.status as user_status,users.PayTimes as user_PayTimes,users.DrawTimes as user_DrawTimes,users.saveMoneyCount as user_saveMoneyCount,users.drawMoneyCount as user_drawMoneyCount,users.lastLoginTime as user_lastLoginTime,users.content as user_content  from users ) u_fileds 
             left Join (SELECT name as level_name,value FROM level) lv on u_fileds.user_rechLevel = lv.value 
             left Join (SELECT a_id,account as ag_account,gagent_id FROM agent) ag on u_fileds.agent = ag.a_id  where 1 and testFlag in(0,2) ';
 
@@ -345,22 +345,22 @@ class MembersDataController extends Controller
             $sql .= " OR u_fileds.user_fullName = '".$account ."')";
         }
         if(isset($mobile) && $mobile){
-            $sql .= " AND u_fileds.mobile = '".$mobile."'";
+            $sql .= " AND u_fileds.user_mobile = '".$mobile."'";
         }
         if(isset($qq) && $qq){
-            $sql .= " AND u_fileds.qq = '".$qq."'";
+            $sql .= " AND u_fileds.user_qq = '".$qq."'";
         }
         if(isset($minMoney) && $minMoney ){
-            $sql .= ' AND u_fileds.money >= '.$minMoney;
+            $sql .= ' AND u_fileds.user_money >= '.$minMoney;
         }
         if(isset($maxMoney) && $maxMoney ){
-            $sql .= ' AND u_fileds.money <= '.$maxMoney;
+            $sql .= ' AND u_fileds.user_money <= '.$maxMoney;
         }
         if(isset($promoter) && $promoter ){
-            $sql .= ' AND u_fileds.promoter = '.$promoter;
+            $sql .= ' AND u_fileds.user_promoter = '.$promoter;
         }
         if(isset($noLoginDays) && $noLoginDays ){
-            $sql .= ' AND u_fileds.noLoginDays = '.$noLoginDays;
+            $sql .= ' AND u_fileds.user_lastLoginTime <= "'.date('Y-m-d 23:59:59',strtotime('-'.$noLoginDays.' day')).'"';
         }
         $users = DB::select('select * '.$sql.'  ORDER BY id desc '.'LIMIT '.$start.','.$length);
         $usersCount = DB::select('select count(id) AS count '.$sql);
