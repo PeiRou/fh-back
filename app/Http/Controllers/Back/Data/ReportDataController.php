@@ -63,39 +63,70 @@ FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.a
         $starttime = $request->get('timeStart');
         $endtime = $request->get('timeEnd');
         $zd = $request->get('zd');            //总代帐号
+        $start = $request->get('start');
+        $length = $request->get('length');
 
-        $aSql = "SELECT ag.a_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,ag.name as agname, 
+        $aSql1 = "SELECT ag.a_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,ag.name as agname, 
 sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko ,
-'' as sumRecharge_fee,
-'' as sumRecharges,
-'' as sumDrawing, 
-'' as sumActivity 
-FROM `bet` b LEFT JOIN `users` u on b.user_id = u.id LEFT JOIN `agent` ag on u.agent = ag.a_id WHERE 1";
+sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko, 
+sum(case WHEN cp.type = 't08' then cp.money else 0 end) as sumActivity,
+sum(case WHEN cp.type = 't04' then cp.money else 0 end) as sumRecharge_fee,
+sum(dr.amount) as sumDrawing,
+sum(re.amount) as sumRecharges ";
         $where = "";
+        $whereB = "";
+        $whereU = "";
+        $whereCp = "";
+        $whereDr = "";
+        $whereRe = "";
         if(isset($game) && $game){
-            $where .= " and b.game_id = ".$game;
+            $whereB .= " and game_id = ".$game;
         }
         if(isset($account) && $account){
             $where .= " and ag.account = '".$account."'";
         }
         if(isset($starttime) && $starttime){
-            $where .= " and b.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereCp .= " and cp.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereDr .= " and dr.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereRe .= " and re.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
         }
         if(isset($endtime) && $endtime){
-            $where .= " and b.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereCp .= " and cp.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereDr .= " and dr.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereRe .= " and re.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
         }
         if(isset($zd) && $zd>0 ){
-            $where .= " and ag.gagent_id = ".$zd;
+            $where .= " and ag.gagent_id = ".$zd." and u.testFlag in(0,2)";
         }else{
-            $where .= " and u.testFlag = 0 ";
+            $whereB .= " and testFlag = 0 ";
+            $whereU .= " and u.testFlag = 0 ";
         }
+        $aSql = "";
+        $aSql .= " FROM (select * from bet b where 1 ".$whereB." group by user_id,game_id) b ";
+        $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
+        $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
+        $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` dr where 1 ".$whereDr." group by user_id) dr on dr.user_id = u.id and dr.status = 2 ";
+        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` re where 1 ".$whereRe." group by userId) re ON re.userId = u.id and re.status = 2 ";
+        $aSql .= " LEFT JOIN (select type,to_user,sum(money) as money from `capital` cp where 1 ".$whereCp." group by to_user,type) cp ON cp.to_user = u.id and cp.type in ('t08','t04') ";
+        $aSql .= " WHERE 1 ";
         $aSql .= $where;
+        $aSqlCount = "SELECT COUNT(DISTINCT(u.agent)) AS count ".$aSql;
+        $aSql = $aSql1.$aSql;
         Session::put('reportSql',$aSql);
-        $aSql .= " GROUP BY u.agent ORDER BY sumBunko ASC ";
+        $aSql .= " GROUP BY u.agent ORDER BY sumBunko ASC LIMIT ".$start.','.$length;
         $agent = DB::select($aSql);
-
+        $agentCount = DB::select($aSqlCount);
         return DataTables::of($agent)
+            ->editColumn('sumRecharges',function ($agent){
+                return empty($agent->sumRecharges)?0:$agent->sumRecharges;
+            })
+            ->editColumn('sumDrawing',function ($agent){
+                return empty($agent->sumDrawing)?0:$agent->sumDrawing;
+            })
+            ->setTotalRecords($agentCount[0]->count)
+            ->skipPaging()
             ->make(true);
     }
 
