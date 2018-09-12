@@ -53,7 +53,7 @@ sum(case WHEN cp.type = 't04' then cp.money else 0 end) as sumRecharge_fee ";
             $whereU .= " and u.testFlag in(0,2)";
         }
         $aSql = "";
-        $aSql .= " FROM (select * from bet where 1 ".$whereB." group by user_id,game_id) b ";
+        $aSql .= " FROM (select * from bet where 1 ".$whereB.") b ";
         $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
         $aSql .= " LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id ";
@@ -122,7 +122,7 @@ sum(re.amount) as sumRecharges ";
             $whereU .= " and u.testFlag = 0 ";
         }
         $aSql = "";
-        $aSql .= " FROM (select * from bet b where 1 ".$whereB." group by user_id,game_id) b ";
+        $aSql .= " FROM (select * from bet b where 1 ".$whereB.") b ";
         $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
         $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` dr where 1 ".$whereDr." group by user_id) dr on dr.user_id = u.id and dr.status = 2 ";
@@ -212,7 +212,7 @@ sum(re.amount) as sumRecharges ";
         }
 
         $aSql = "";
-        $aSql .= " FROM (select * from bet where 1 ".$whereB." group by user_id,game_id) b ";
+        $aSql .= " FROM (select * from bet where 1 ".$whereB.") b ";
 
         if(isset($chkDouble) && $chkDouble=="on"){      //显示重复姓名会员
             $aUser = "(select * from users WHERE fullName in(select fullName from users group by fullName having count(fullName) >= 2) and ".$whereU.")";
@@ -264,7 +264,7 @@ sum(re.amount) as sumRecharges ";
         if(isset($endtime) && $endtime){
             $whereBet .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
         }
-        $sql = "LEFT JOIN (select * from bet where 1 AND testFlag = 0 ".$whereBet." group by user_id,game_id) as b ON g.game_id = b.game_id";
+        $sql = "LEFT JOIN (select * from bet where 1 AND testFlag = 0 ".$whereBet.") as b ON g.game_id = b.game_id";
         $aSqlCount = "SELECT COUNT(DISTINCT(g.game_id)) AS count FROM `game` AS g ".$sql." WHERE 1 ".$where;
         $sql .= " WHERE 1 ".$where." GROUP BY g.game_id order BY sumBunko asc LIMIT ".$start.','.$length;
         $sql = $sql1.$sql;
