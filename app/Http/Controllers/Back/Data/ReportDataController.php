@@ -25,8 +25,7 @@ class ReportDataController extends Controller
         $aSql1 = "SELECT zd.ga_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,zd.account as zdaccount, sum(b.bet_money) as sumMoney,
 sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
 sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko,
-sum(case WHEN cp.type = 't08' then cp.money else 0 end) as sumActivity,
-sum(case WHEN cp.type = 't04' then cp.money else 0 end) as sumRecharge_fee ";
+cp.sumActivity,cp.sumRecharge_fee";
         $where = "";
         $whereB = "";
         $whereU = "";
@@ -39,11 +38,11 @@ sum(case WHEN cp.type = 't04' then cp.money else 0 end) as sumRecharge_fee ";
         }
         if(isset($starttime) && $starttime){
             $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereCp .= " and cp.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
         }
         if(isset($endtime) && $endtime){
             $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereCp .= " and cp.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
         }
         if(isset($chkTest) && $chkTest=='on'){
             $whereB .= " and testFlag = 0";
@@ -57,7 +56,7 @@ sum(case WHEN cp.type = 't04' then cp.money else 0 end) as sumRecharge_fee ";
         $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
         $aSql .= " LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id ";
-        $aSql .= " LEFT JOIN (select type,to_user,sum(money) as money from `capital` cp where 1 ".$whereCp." group by to_user,type) cp ON cp.to_user = u.id and cp.type in ('t08','t04') ";
+        $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
         $aSql .= " WHERE 1 ";
         $aSql .= $where;
         $aSqlCount = "SELECT COUNT(DISTINCT(zd.ga_id)) AS count ".$aSql;
@@ -87,8 +86,7 @@ sum(case WHEN cp.type = 't04' then cp.money else 0 end) as sumRecharge_fee ";
         $aSql1 = "SELECT ag.a_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,ag.name as agname, 
 sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
 sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko, 
-sum(case WHEN cp.type = 't08' then cp.money else 0 end) as sumActivity,
-sum(case WHEN cp.type = 't04' then cp.money else 0 end) as sumRecharge_fee,
+cp.sumActivity,cp.sumRecharge_fee,
 sum(dr.amount) as sumDrawing,
 sum(re.amount) as sumRecharges ";
         $where = "";
@@ -105,15 +103,15 @@ sum(re.amount) as sumRecharges ";
         }
         if(isset($starttime) && $starttime){
             $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereCp .= " and cp.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereDr .= " and dr.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereRe .= " and re.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
         }
         if(isset($endtime) && $endtime){
             $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereCp .= " and cp.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereDr .= " and dr.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereRe .= " and re.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
         }
         if(isset($zd) && $zd>0 ){
             $where .= " and ag.gagent_id = ".$zd." and u.testFlag in(0,2)";
@@ -125,9 +123,9 @@ sum(re.amount) as sumRecharges ";
         $aSql .= " FROM (select * from bet b where 1 ".$whereB.") b ";
         $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
-        $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` dr where 1 ".$whereDr." group by user_id) dr on dr.user_id = u.id and dr.status = 2 ";
-        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` re where 1 ".$whereRe." group by userId) re ON re.userId = u.id and re.status = 2 ";
-        $aSql .= " LEFT JOIN (select type,to_user,sum(money) as money from `capital` cp where 1 ".$whereCp." group by to_user,type) cp ON cp.to_user = u.id and cp.type in ('t08','t04') ";
+        $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` where status = 2 ".$whereDr." group by user_id) dr on dr.user_id = u.id ";
+        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2 ".$whereRe." group by userId) re ON re.userId = u.id ";
+        $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
         $aSql .= " WHERE 1 ";
         $aSql .= $where;
         $aSqlCount = "SELECT COUNT(DISTINCT(u.agent)) AS count ".$aSql;
@@ -166,8 +164,7 @@ sum(re.amount) as sumRecharges ";
         $aSql1 = "SELECT u.id,u.username,u.fullName,u.agent,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,
 sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
 sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko,
-sum(case WHEN cp.type = 't08' then cp.money else 0 end) as sumActivity,
-sum(case WHEN cp.type = 't04' then cp.money else 0 end) as sumRecharge_fee,
+cp.sumActivity,cp.sumRecharge_fee,
 sum(dr.amount) as sumDrawing,
 sum(re.amount) as sumRecharges ";
         $where = "";
@@ -184,15 +181,15 @@ sum(re.amount) as sumRecharges ";
         }
         if(isset($starttime) && $starttime){
             $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereCp .= " and cp.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereDr .= " and dr.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereRe .= " and re.created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
+            $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
         }
         if(isset($endtime) && $endtime){
             $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereCp .= " and cp.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereDr .= " and dr.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereRe .= " and re.created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
+            $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
         }
         if(isset($minBunko) && $minBunko){
             $where .= " and sumBunko >= ".$minBunko;
@@ -222,9 +219,9 @@ sum(re.amount) as sumRecharges ";
             $aSql .= " LEFT JOIN ".$aUser." u on b.user_id = u.id ";
         }
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
-        $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` dr where 1 ".$whereDr." group by user_id) dr on dr.user_id = u.id and dr.status = 2 ";
-        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` re where 1 ".$whereRe." group by userId) re ON re.userId = u.id and re.status = 2 ";
-        $aSql .= " LEFT JOIN (select type,to_user,sum(money) as money from `capital` cp where 1 ".$whereCp." group by to_user,type) cp ON cp.to_user = u.id and cp.type in ('t08','t04') ";
+        $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` where status = 2 ".$whereDr." group by user_id) dr on dr.user_id = u.id ";
+        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2".$whereRe." group by userId) re ON re.userId = u.id ";
+        $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
         $aSql .= " WHERE 1 ";
         $aSql .= $where;
         $aSqlCount = "SELECT COUNT(DISTINCT(u.id)) AS count ".$aSql;
@@ -268,6 +265,7 @@ sum(re.amount) as sumRecharges ";
         $aSqlCount = "SELECT COUNT(DISTINCT(g.game_id)) AS count FROM `game` AS g ".$sql." WHERE 1 ".$where;
         $sql .= " WHERE 1 ".$where." GROUP BY g.game_id order BY sumBunko asc LIMIT ".$start.','.$length;
         $sql = $sql1.$sql;
+        var_dump($sql);die();
         $bet = DB::select($sql);
         $agentCount = DB::select($aSqlCount);
         return DataTables::of($bet)
