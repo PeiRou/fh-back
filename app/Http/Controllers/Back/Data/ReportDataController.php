@@ -86,9 +86,7 @@ cp.sumActivity,cp.sumRecharge_fee";
         $aSql1 = "SELECT ag.a_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,ag.name as agname, 
 sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
 sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko, 
-cp.sumActivity,cp.sumRecharge_fee,
-sum(dr.amount) as sumDrawing,
-sum(re.amount) as sumRecharges ";
+cp.sumActivity,cp.sumRecharge_fee,dr.amount as sumDrawing,re.amount as sumRecharges ";
         $where = "";
         $whereB = "";
         $whereU = "";
@@ -124,7 +122,7 @@ sum(re.amount) as sumRecharges ";
         $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
         $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` where status = 2 ".$whereDr." group by user_id) dr on dr.user_id = u.id ";
-        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2 ".$whereRe." group by userId) re ON re.userId = u.id ";
+        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2 AND payType != 'adminAddMoney' ".$whereRe." group by userId) re ON re.userId = u.id ";
         $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
         $aSql .= " WHERE 1 ";
         $aSql .= $where;
@@ -164,9 +162,7 @@ sum(re.amount) as sumRecharges ";
         $aSql1 = "SELECT u.id,u.username,u.fullName,u.agent,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,
 sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
 sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko,
-cp.sumActivity,cp.sumRecharge_fee,
-sum(dr.amount) as sumDrawing,
-sum(re.amount) as sumRecharges ";
+cp.sumActivity,cp.sumRecharge_fee,dr.amount as sumDrawing,re.amount as sumRecharges ";
         $where = "";
         $whereB = "";
         $whereU = "";
@@ -220,7 +216,7 @@ sum(re.amount) as sumRecharges ";
         }
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
         $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` where status = 2 ".$whereDr." group by user_id) dr on dr.user_id = u.id ";
-        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2".$whereRe." group by userId) re ON re.userId = u.id ";
+        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2 AND payType != 'adminAddMoney' ".$whereRe." group by userId) re ON re.userId = u.id ";
         $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
         $aSql .= " WHERE 1 ";
         $aSql .= $where;
