@@ -265,7 +265,6 @@ sum(re.amount) as sumRecharges ";
         $aSqlCount = "SELECT COUNT(DISTINCT(g.game_id)) AS count FROM `game` AS g ".$sql." WHERE 1 ".$where;
         $sql .= " WHERE 1 ".$where." GROUP BY g.game_id order BY sumBunko asc LIMIT ".$start.','.$length;
         $sql = $sql1.$sql;
-        var_dump($sql);die();
         $bet = DB::select($sql);
         $agentCount = DB::select($aSqlCount);
         return DataTables::of($bet)
