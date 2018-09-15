@@ -70,7 +70,7 @@ class MemberController extends Controller
         $todayTime = date('Y-m-d');
         Excel::create('【'.$todayTime.'】导出用户数据-['.$aParam['startTime'].'-'.$aParam['endTime'].']',function ($excel) use ($aData,$todayTime){
             $excel->sheet('【'.$todayTime.'】导出用户数据', function($sheet) use ($aData,$todayTime){
-                $sheet->appendRow(['用户账号','用户姓名','用户邮箱','用户手机','新增时间','未登录时间','是否存款','存款金额记录','存款总额']);
+                $sheet->appendRow(['用户账号','用户姓名','用户邮箱','用户手机','开户银行','银行卡号','支行地址','微信','新增时间','未登录时间','是否存款','存款金额记录','存款总额','备注信息']);
                 $sheetHeight = [
                     1 => 20,
                 ];
@@ -80,11 +80,16 @@ class MemberController extends Controller
                         empty($iData->fullName)?'':$iData->fullName,
                         empty($iData->email)?'':$iData->email,
                         empty($iData->mobile)?'':$iData->mobile,
+                        empty($iData->bank_name)?'':$iData->bank_name,
+                        empty($iData->bank_num)?'':$iData->bank_num,
+                        empty($iData->bank_addr)?'':$iData->bank_addr,
+                        empty($iData->wechat)?'':$iData->wechat,
                         $iData->created_at,
                         floor((strtotime($todayTime) - strtotime(substr($iData->lastLoginTime,0,10)))/3600/24),
                         empty($iData->sumAmount)?'否':'是',
                         empty($iData->sumAmount)?'0.00':$iData->sumAmount,
                         empty($iData->saveMoneyCount)?'0.00':$iData->saveMoneyCount,
+                        empty($iData->content)?'0.00':$iData->content,
                     ]);
                     $sheetHeight[$kData + 2] = 20;
                 }
@@ -97,8 +102,13 @@ class MemberController extends Controller
                     'E'    =>  18,
                     'F'    =>  10,
                     'G'    =>  10,
-                    'H'    =>  12,
+                    'H'    =>  10,
                     'I'    =>  10,
+                    'J'    =>  10,
+                    'K'    =>  10,
+                    'L'    =>  10,
+                    'M'    =>  10,
+                    'N'    =>  10,
                 ));
             });
         })->export('xls');
