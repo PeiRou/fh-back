@@ -370,6 +370,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/reOpenLhc', 'Back\OpenHistoryController@reOpenLhcData');
 
     Route::any('/action/admin/member/returnVisit','Back\MemberController@returnVisit')->middleware('check-permission')->name('member.returnVisit'); //会员-回访用户
+    Route::any('/action/admin/member/exportUser','Back\MemberController@exportUser')->middleware('check-permission')->name('member.exportUser'); //会员-导出用户数据
 
     Route::get('/action/admin/exportExcel/userRecharges','Back\ExportExcelController@exportExcelForRecharges'); //导出充值数据为Excel文件
 
@@ -457,7 +458,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/addPromotionConfig','Back\Ajax\ModalController@addPromotionConfig'); //增加推广配置-模板
     Route::get('/back/modal/editPromotionConfig/{id}','Back\Ajax\ModalController@editPromotionConfig'); //修改推广配置-模板
     Route::get('/back/modal/returnVisit','Back\Ajax\ModalController@returnVisit')->middleware('check-permission')->name('member.returnVisit.view'); //会员回访用户-模板
-
+    Route::get('/back/modal/exportUser','Back\Ajax\ModalController@exportUser')->middleware('check-permission')->name('member.exportUser.view'); //导出用户数据-模板
 //游戏MODAL
     Route::get('/back/modal/gameSetting/{id}', 'Back\Ajax\ModalController@gameSetting');
     Route::get('/back/modal/killSetting/{id}', 'Back\Ajax\ModalController@killSetting');     //杀率设置

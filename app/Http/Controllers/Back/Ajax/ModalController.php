@@ -707,4 +707,9 @@ class ModalController extends Controller
     public function returnVisit(){
         return view('back.modal.member.returnVisit');
     }
+
+    //导出用户数据-模板
+    public function exportUser(){
+        return view('back.modal.member.exportUser');
+    }
 }

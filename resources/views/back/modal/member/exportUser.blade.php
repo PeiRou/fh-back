@@ -1,41 +1,32 @@
 <form id="addAgentForm" class="ui mini form" action="{{ url('/action/admin/member/returnVisit') }}" style="height: 320px;">
     <div class="field">
-        <label>未登录方式</label>
-        <div class="ui input icon">
-            <select id="login_type" name="login_type">
-                <option value="1">未登录天数</option>
-                <option value="2">未登录时间</option>
-            </select>
-        </div>
-    </div>
-    <div class="field" id="login_day-div">
-        <label>未登录天数</label>
-        <div class="ui input icon">
-            <input type="text" name="day" id="day"/>
-        </div>
-    </div>
-    <div class="field" id="login_date-div" style="display: none;">
-        <label>未登录天数</label>
+        <label>创建时间</label>
         <div class="ui input icon">
             <div class="ui calendar" id="rangestart" style="width: 40%;">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" id="startDay" name="startDay" placeholder="起始日期" value="{{ date('Y-m-d',time()) }}">
+                    <input type="text" id="startDay" name="startDay" placeholder="起始日期" value="">
                 </div>
             </div>
             -
             <div class="ui calendar" id="rangeend" style="width: 40%;">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" id="endDay" name="endDay" placeholder="结束日期" value="{{ date('Y-m-d',time()) }}">
+                    <input type="text" id="endDay" name="endDay" placeholder="结束日期" value="">
                 </div>
             </div>
         </div>
     </div>
     <div class="field">
-        <label>存款金额</label>
+        <label>用户账号</label>
         <div class="ui input icon">
-            <input type="text" name="money" id="money"/>
+            <input type="text" name="username" id="username"/>
+        </div>
+    </div>
+    <div class="field">
+        <label>Google验证码</label>
+        <div class="ui input icon">
+            <input type="text" name="code" id="code"/>
         </div>
     </div>
 </form>
@@ -50,19 +41,19 @@
             validating: 'refresh icon'
         },
         fields: {
-            login_type:{
+            code:{
                 validators: {
                     notEmpty: {
-                        message: '请选择未登录方式'
+                        message: '请输入Google验证码'
                     }
                 }
-            }
+            },
         }
     }).on('success.form.fv', function(e) {
         e.preventDefault();
         var $form = $(e.target),
             fv    = $form.data('formValidation');
-        window.location.href = "{{ url('/action/admin/member/returnVisit') }}?startDay="+$('#startDay').val()+"&endDay="+$('#endDay').val()+"&money="+$('#money').val()+"&login_type="+$('#login_type').val()+"&day="+$('#day').val();
+        window.location.href = "{{ url('/action/admin/member/exportUser') }}?startTime="+$('#startDay').val()+"&endTime="+$('#endDay').val()+"&username="+$('#username').val()+"&code="+$('#code').val();
     });
 
     var today = new Date();
@@ -113,15 +104,5 @@
         },
         minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 99),
         maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate())
-    });
-    $('#login_type').on('change',function () {
-        var type = $(this).val();
-        if(type == 1){
-            $('#login_day-div').show();
-            $('#login_date-div').hide();
-        }else if(type == 2){
-            $('#login_day-div').hide();
-            $('#login_date-div').show();
-        }
     });
 </script>
