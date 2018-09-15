@@ -39,7 +39,8 @@ class AjaxStatusController extends Controller
             $getCount = Recharges::where('status',1)->where('payType','!=','onlinePayment')->count();
             $getDrawCount = Drawing::where('status',0)->count();
 
-            $feedbackCount = Feedback::where('status','=',1)->count();
+            $todayTime = date('Y-m-d');
+            $feedbackCount = Feedback::where('status','=',1)->whereBetween('created_at',[$todayTime,$todayTime.' 23:59:59'])->count();
 
             $redis->select(6);           //前台
             $keys = $redis->keys('urtime:'.'*');

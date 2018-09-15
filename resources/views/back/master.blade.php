@@ -40,7 +40,7 @@
         <ul style="margin-top: 20px;">
             <li onclick="javascript:(location.href='/back/control/userManage/sub_account')">当前子帐号在线人数：<span id="onlineAdminCount">0</span></li>
             <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')">当前在线人数：<span id="onlineUserCount">0</span></li>
-            <li onclick="javascript:(location.href='/back/control/systemManage/feedback')">反馈意见：<span id="feedbackCount">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/systemManage/feedback')" id="feedbackContent">今天未回复反馈：<span id="feedbackCount">0</span></li>
             <li>修改密码</li>
             <li onclick="logout()">退出</li>
         </ul>
