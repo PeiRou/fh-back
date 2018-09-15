@@ -168,6 +168,7 @@ function checkRecharge() {
                 if(data.status === true){
                     $('#onlineUserCount').html(data.onlineUser);
                     $('#onlineAdminCount').html(data.onlineAdmin);
+                    $('#feedbackCount').html(data.feedbackCount);
 
                     if(nowCount == null){
                         ling = data.count;

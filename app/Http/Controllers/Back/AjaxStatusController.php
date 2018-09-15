@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\Drawing;
+use App\Feedback;
 use App\Recharges;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -38,6 +39,8 @@ class AjaxStatusController extends Controller
             $getCount = Recharges::where('status',1)->where('payType','!=','onlinePayment')->count();
             $getDrawCount = Drawing::where('status',0)->count();
 
+            $feedbackCount = Feedback::where('status','=',1)->count();
+
             $redis->select(6);           //前台
             $keys = $redis->keys('urtime:'.'*');
             $onlineUserCount = 0;
@@ -68,6 +71,7 @@ class AjaxStatusController extends Controller
                 'drawCount' => $getDrawCount,
                 'onlineUser' => $onlineUserCount,
                 'onlineAdmin' => $onlineAdminCount,
+                'feedbackCount' => $feedbackCount
             ]);
         }else{
             Session::flush();
