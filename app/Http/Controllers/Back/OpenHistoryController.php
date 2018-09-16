@@ -700,56 +700,56 @@ class OpenHistoryController extends Controller
     //幸运六合彩重新开奖
     public function reOpenXylhcData(Request $request)
     {
-        $id = $request->get('id');
-        $n1 = $request->get('n1');
-        $n2 = $request->get('n2');
-        $n3 = $request->get('n3');
-        $n4 = $request->get('n4');
-        $n5 = $request->get('n5');
-        $n6 = $request->get('n6');
-        $n7 = $request->get('n7');
-        $msg = $request->get('msg');
-
-        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7;
-        $totalNum = (int)$n1+(int)$n2+(int)$n3+(int)$n4+(int)$n5+(int)$n6+(int)$n7;
-
-        $update = DB::table('game_xylhc')->where('id',$id)->update([
-            'n1' => $n1,
-            'n2' => $n2,
-            'n3' => $n3,
-            'n4' => $n4,
-            'n5' => $n5,
-            'n6' => $n6,
-            'n7' => $n7,
-            'n1_sb' => $this->LHC->sebo($n1),
-            'n2_sb' => $this->LHC->sebo($n2),
-            'n3_sb' => $this->LHC->sebo($n3),
-            'n4_sb' => $this->LHC->sebo($n4),
-            'n5_sb' => $this->LHC->sebo($n5),
-            'n6_sb' => $this->LHC->sebo($n6),
-            'n7_sb' => $this->LHC->sebo($n7),
-            'n1_sx' => $this->LHC->shengxiao($n1),
-            'n2_sx' => $this->LHC->shengxiao($n2),
-            'n3_sx' => $this->LHC->shengxiao($n3),
-            'n4_sx' => $this->LHC->shengxiao($n4),
-            'n5_sx' => $this->LHC->shengxiao($n5),
-            'n6_sx' => $this->LHC->shengxiao($n6),
-            'n7_sx' => $this->LHC->shengxiao($n7),
-            'msg' => $msg,
-            'open_num' => $openNum,
-            'total_num' => $totalNum,
-            'is_open' => 1
-        ]);
-        if($update == 1){
-            return response()->json([
-                'status' => true
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'msg' => '开奖数据添加失败！'
-            ]);
-        }
+//        $id = $request->get('id');
+//        $n1 = $request->get('n1');
+//        $n2 = $request->get('n2');
+//        $n3 = $request->get('n3');
+//        $n4 = $request->get('n4');
+//        $n5 = $request->get('n5');
+//        $n6 = $request->get('n6');
+//        $n7 = $request->get('n7');
+//        $msg = $request->get('msg');
+//
+//        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7;
+//        $totalNum = (int)$n1+(int)$n2+(int)$n3+(int)$n4+(int)$n5+(int)$n6+(int)$n7;
+//
+//        $update = DB::table('game_xylhc')->where('id',$id)->update([
+//            'n1' => $n1,
+//            'n2' => $n2,
+//            'n3' => $n3,
+//            'n4' => $n4,
+//            'n5' => $n5,
+//            'n6' => $n6,
+//            'n7' => $n7,
+//            'n1_sb' => $this->LHC->sebo($n1),
+//            'n2_sb' => $this->LHC->sebo($n2),
+//            'n3_sb' => $this->LHC->sebo($n3),
+//            'n4_sb' => $this->LHC->sebo($n4),
+//            'n5_sb' => $this->LHC->sebo($n5),
+//            'n6_sb' => $this->LHC->sebo($n6),
+//            'n7_sb' => $this->LHC->sebo($n7),
+//            'n1_sx' => $this->LHC->shengxiao($n1),
+//            'n2_sx' => $this->LHC->shengxiao($n2),
+//            'n3_sx' => $this->LHC->shengxiao($n3),
+//            'n4_sx' => $this->LHC->shengxiao($n4),
+//            'n5_sx' => $this->LHC->shengxiao($n5),
+//            'n6_sx' => $this->LHC->shengxiao($n6),
+//            'n7_sx' => $this->LHC->shengxiao($n7),
+//            'msg' => $msg,
+//            'open_num' => $openNum,
+//            'total_num' => $totalNum,
+//            'is_open' => 1
+//        ]);
+//        if($update == 1){
+//            return response()->json([
+//                'status' => true
+//            ]);
+//        } else {
+//            return response()->json([
+//                'status' => false,
+//                'msg' => '开奖数据添加失败！'
+//            ]);
+//        }
     }
 
     function randColor(){
