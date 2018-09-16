@@ -8,6 +8,7 @@ use App\GeneralAgent;
 use App\Recharges;
 use App\SubAccount;
 use App\User;
+use App\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -219,6 +220,11 @@ class SrcMemberController extends Controller
     //删除代理账号
     public function delAgent($id)
     {
+        if(Users::where('agent',$id)->count() > 0)
+            return response()->json([
+                'status'=>false,
+                'msg'=>'该代理下存在用户！'
+            ]);
         $del = Agent::find($id)->delete();
         if($del == 1){
             return response()->json([

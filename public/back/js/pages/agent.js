@@ -222,6 +222,8 @@ function del(id,agentName) {
                         success:function (data) {
                             if(data.status == true){
                                 $('#agentTable').DataTable().ajax.reload(null,false)
+                            }else{
+                                Calert(data.msg,'red')
                             }
                         },
                         error:function (e) {
