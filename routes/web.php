@@ -211,6 +211,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/openHistory/msft', 'Back\Data\openHistoryController@msft'); //历史开奖 - 秒速飞艇
     Route::get('/back/datatables/openHistory/paoma', 'Back\Data\openHistoryController@paoma'); //历史开奖 - 跑马
     Route::get('/back/datatables/openHistory/lhc', 'Back\Data\openHistoryController@lhc'); //历史开奖 - 六合彩
+    Route::get('/back/datatables/openHistory/xylhc', 'Back\Data\openHistoryController@xylhc'); //历史开奖 - 幸运六合彩
     Route::get('/back/datatables/openHistory/k3', 'Back\Data\openHistoryController@k3'); //历史开奖 - 秒速快三
     Route::get('/back/datatables/agentSettle/report', 'Back\Data\AgentSettleController@report'); //代理结算报表-表格数据
     Route::get('/back/datatables/agentSettle/review', 'Back\Data\AgentSettleController@review'); //代理结算审核-表格数据
@@ -356,7 +357,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/userBetList/total', 'Back\SrcViewController@userBetListTotal'); //用户注单页面下注统计
 
     Route::post('/action/admin/addLhcNewIssue', 'Back\OpenHistoryController@addLhcNewIssue');
+    Route::post('/action/admin/addXylhcNewIssue', 'Back\OpenHistoryController@addXylhcNewIssue');
     Route::post('/action/admin/editLhcNewIssue', 'Back\OpenHistoryController@editLhcNewIssue');
+    Route::post('/action/admin/editXylhcNewIssue', 'Back\OpenHistoryController@editXylhcNewIssue');
 
     Route::post('/action/admin/openCqssc', 'Back\OpenHistoryController@addCqsscData');     //添加重庆时时彩开奖数据
     Route::post('/action/admin/openMsssc', 'Back\OpenHistoryController@addMssscData');     //添加秒速时时彩开奖数据
@@ -367,7 +370,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/openPaoma', 'Back\OpenHistoryController@addPaomaData');     //添加跑马开奖数据
     Route::post('/action/admin/openK3', 'Back\OpenHistoryController@addK3Data');     //添加快三开奖数据
     Route::post('/action/admin/openLhc', 'Back\OpenHistoryController@addLhcData');
+    Route::post('/action/admin/openXylhc', 'Back\OpenHistoryController@addXylhcData');
     Route::post('/action/admin/reOpenLhc', 'Back\OpenHistoryController@reOpenLhcData');
+    Route::post('/action/admin/reOpenXylhc', 'Back\OpenHistoryController@reOpenXylhcData');
 
     Route::any('/action/admin/member/returnVisit','Back\MemberController@returnVisit')->middleware('check-permission')->name('member.returnVisit'); //会员-回访用户
     Route::any('/action/admin/member/exportUser','Back\MemberController@exportUser')->middleware('check-permission')->name('member.exportUser'); //会员-导出用户数据
@@ -430,7 +435,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/drawingError/{id}', 'Back\Ajax\ModalController@drawingError');
     Route::get('/back/modal/user48hoursInfo/{uid}', 'Back\Ajax\ModalController@user48hoursInfo');
     Route::get('/back/modal/addLhcNewIssue', 'Back\Ajax\ModalController@addLhcNewIssue');
+    Route::get('/back/modal/addXylhcNewIssue', 'Back\Ajax\ModalController@addXylhcNewIssue');
     Route::get('/back/modal/editLhcNewIssue/{id}', 'Back\Ajax\ModalController@editLhcNewIssue');
+    Route::get('/back/modal/editXylhcNewIssue/{id}', 'Back\Ajax\ModalController@editXylhcNewIssue');
     Route::get('/back/modal/openCqssc/{id}', 'Back\Ajax\ModalController@openCqssc');             //重庆时时彩 - 手动开奖
     Route::get('/back/modal/openMsssc/{id}', 'Back\Ajax\ModalController@openMsssc');             //秒速时时彩 - 手动开奖
     Route::get('/back/modal/openBjpk10/{id}', 'Back\Ajax\ModalController@openBjpk10');           //北京PK10 - 手动开奖
@@ -445,7 +452,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/openHbk3/{id}', 'Back\Ajax\ModalController@openHbk3');             //湖北快三 - 手动开奖
     Route::get('/back/modal/openGxk3/{id}', 'Back\Ajax\ModalController@openGxk3');             //广西快三 - 手动开奖
     Route::get('/back/modal/openLhc/{id}', 'Back\Ajax\ModalController@openLhc');
+    Route::get('/back/modal/openXylhc/{id}', 'Back\Ajax\ModalController@openXylhc');
     Route::get('/back/modal/reOpenLhc/{id}', 'Back\Ajax\ModalController@reOpenLhc');
+    Route::get('/back/modal/reOpenXylhc/{id}', 'Back\Ajax\ModalController@reOpenXylhc');
     Route::get('/back/modal/editAgentSettleReport/{id}', 'Back\Ajax\ModalController@editAgentSettleReport'); //修改代理结算报表-模板
     Route::get('/back/modal/editAgentSettleReview/{id}', 'Back\Ajax\ModalController@editAgentSettleReview'); //修改代理结算审核-模板
     Route::get('/back/modal/addActivityList', 'Back\Ajax\ModalController@addActivityList'); //增加活动-模板
