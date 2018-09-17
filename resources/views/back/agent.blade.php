@@ -71,5 +71,10 @@
 
 @section('page-js')
     <script src="/back/js/pages/agent.js"></script>
-    <script></script>
+    <script>
+                @if(session('message'))
+        var message = '{{ session('message') }}';
+        alert(message);
+        @endif
+    </script>
 @endsection
