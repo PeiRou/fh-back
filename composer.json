@@ -12,12 +12,13 @@
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
+        "maatwebsite/excel": "~2.1",
         "phpgangsta/googleauthenticator": "dev-master",
         "predis/predis": "^1.1",
+        "pusher/pusher-php-server": "^3.2",
         "spatie/laravel-permission": "^2.7",
         "tymon/jwt-auth": "dev-develop",
-        "yajra/laravel-datatables-oracle": "~8.0",
-        "maatwebsite/excel": "~2.1"
+        "yajra/laravel-datatables-oracle": "~8.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
