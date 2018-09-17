@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Events\BackPusherEvent;
 use App\Recharges;
 use App\User;
 use App\Capital;
@@ -78,6 +79,7 @@ class RechargeController extends Controller
                             $capital->content = '充值手续费';
                         $insert = $capital->save();
                     }
+                    event(new BackPusherEvent('充值成功提醒','充值到账',array('fnotice-'.$userId)));
                     return response()->json([
                         'status' => true
                     ]);
