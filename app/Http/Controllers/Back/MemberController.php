@@ -20,7 +20,7 @@ class MemberController extends Controller
         $todayTime = date('Y-m-d');
         Excel::create('【'.$todayTime.'】回访用户',function ($excel) use ($aData,$todayTime){
             $excel->sheet('【'.$todayTime.'】回访用户', function($sheet) use ($aData,$todayTime){
-                $sheet->appendRow(['用户账号','用户姓名','用户邮箱','用户手机','新增时间','未登录时间','是否存款','存款金额记录','取款金额记录']);
+                $sheet->appendRow(['用户账号','用户姓名','用户邮箱','用户手机','新增时间','未登录时间','是否存款','存款金额记录','后台加钱记录','取款金额记录']);
                 $sheetHeight = [
                     1 => 20,
                 ];
@@ -32,8 +32,9 @@ class MemberController extends Controller
                         empty($iData->mobile)?'':$iData->mobile,
                         $iData->created_at,
                         floor((strtotime($todayTime) - strtotime(substr($iData->lastLoginTime,0,10)))/3600/24),
-                        empty($iData->sumAmount)?'否':'是',
+                        empty($iData->sumReAmount)?'否':'是',
                         empty($iData->sumReAmount)?'0.00':$iData->sumReAmount,
+                        empty($iData->sumReAmountAd)?'0.00':$iData->sumReAmountAd,
                         empty($iData->sumDrAmount)?'0.00':$iData->sumDrAmount,
                     ]);
                     $sheetHeight[$kData + 2] = 20;
@@ -70,7 +71,7 @@ class MemberController extends Controller
         $todayTime = date('Y-m-d');
         Excel::create('【'.$todayTime.'】导出用户数据-['.$aParam['startTime'].'-'.$aParam['endTime'].']',function ($excel) use ($aData,$todayTime){
             $excel->sheet('【'.$todayTime.'】导出用户数据', function($sheet) use ($aData,$todayTime){
-                $sheet->appendRow(['用户账号','用户姓名','用户邮箱','用户手机','开户银行','银行卡号','支行地址','微信','新增时间','未登录时间','是否存款','存款金额记录','取款金额记录','备注信息']);
+                $sheet->appendRow(['用户账号','用户姓名','用户邮箱','用户手机','开户银行','银行卡号','支行地址','微信','新增时间','未登录时间','是否存款','存款金额记录','后台加钱记录','取款金额记录','备注信息']);
                 $sheetHeight = [
                     1 => 20,
                 ];
@@ -86,8 +87,9 @@ class MemberController extends Controller
                         empty($iData->wechat)?'':$iData->wechat,
                         $iData->created_at,
                         floor((strtotime($todayTime) - strtotime(substr($iData->lastLoginTime,0,10)))/3600/24),
-                        empty($iData->sumAmount)?'否':'是',
-                        empty($iData->sumAmount)?'0.00':$iData->sumAmount,
+                        empty($iData->sumReAmount)?'否':'是',
+                        empty($iData->sumReAmount)?'0.00':$iData->sumReAmount,
+                        empty($iData->sumReAmountAd)?'0.00':$iData->sumReAmountAd,
                         empty($iData->sumDrAmount)?'0.00':$iData->sumDrAmount,
                         empty($iData->content)?'0.00':$iData->content,
                     ]);
