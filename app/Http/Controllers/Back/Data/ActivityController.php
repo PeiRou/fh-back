@@ -119,6 +119,8 @@ class ActivityController extends Controller
                 return  str_replace('-','/',substr($datas->created_at,0,16));
             })
             ->editColumn('status',function ($datas) use ($sendStatus){
+                if($datas->pQuantity == 0 && $datas->pType == 2)
+                    return $sendStatus[4];
                 return  $sendStatus[$datas->status];
             })
             ->editColumn('admin_account',function ($datas){

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\Events\RunLHC;
+use App\Events\RunXYLHC;
 use App\Helpers\LHC_SX;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -437,6 +438,38 @@ class OpenHistoryController extends Controller
         }
     }
 
+    public function addXylhcNewIssue(Request $request){
+        $issue = $request->get('issue');
+        $end_time = $request->get('end_time');
+        $open_time = $request->get('open_time');
+
+        $findIssue = DB::table('game_xylhc')->where('issue',$issue)->count();
+        if($findIssue == 0){
+            $insert = DB::table('game_xylhc')->insert([
+                'issue' => $issue,
+                'is_open' => 0,
+                'opentime' => $open_time,
+                'endtime' => $end_time,
+                'color' => $this->randColor()
+            ]);
+            if($insert == 1){
+                return response()->json([
+                    'status' => true
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'msg' => '添加新期数异常，请稍后再试！'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => '本期记录已经存在，请勿重复添加！'
+            ]);
+        }
+    }
+
     public function editLhcNewIssue(Request $request)
     {
         $id = $request->get('id');
@@ -445,6 +478,30 @@ class OpenHistoryController extends Controller
         $open_time = $request->get('open_time');
 
         $update = DB::table('game_lhc')->where('id',$id)->update([
+            'issue' => $issue,
+            'endtime' => $end_time,
+            'opentime' => $open_time
+        ]);
+        if($update == 1){
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => '修改期数异常，请稍后再试！'
+            ]);
+        }
+    }
+
+    public function editXylhcNewIssue(Request $request)
+    {
+        $id = $request->get('id');
+        $issue = $request->get('issue');
+        $end_time = $request->get('end_time');
+        $open_time = $request->get('open_time');
+
+        $update = DB::table('game_xylhc')->where('id',$id)->update([
             'issue' => $issue,
             'endtime' => $end_time,
             'opentime' => $open_time
@@ -523,6 +580,68 @@ class OpenHistoryController extends Controller
         }
     }
 
+    //添加幸运六合彩开奖数据
+    public function addXylhcData(Request $request)
+    {
+        $id = $request->get('id');
+        $n1 = $request->get('n1');
+        $n2 = $request->get('n2');
+        $n3 = $request->get('n3');
+        $n4 = $request->get('n4');
+        $n5 = $request->get('n5');
+        $n6 = $request->get('n6');
+        $n7 = $request->get('n7');
+        $msg = $request->get('msg');
+
+        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7;
+        $totalNum = (int)$n1+(int)$n2+(int)$n3+(int)$n4+(int)$n5+(int)$n6+(int)$n7;
+
+        $update = DB::table('game_xylhc')->where('id',$id)->update([
+            'n1' => $n1,
+            'n2' => $n2,
+            'n3' => $n3,
+            'n4' => $n4,
+            'n5' => $n5,
+            'n6' => $n6,
+            'n7' => $n7,
+            'n1_sb' => $this->LHC->sebo($n1),
+            'n2_sb' => $this->LHC->sebo($n2),
+            'n3_sb' => $this->LHC->sebo($n3),
+            'n4_sb' => $this->LHC->sebo($n4),
+            'n5_sb' => $this->LHC->sebo($n5),
+            'n6_sb' => $this->LHC->sebo($n6),
+            'n7_sb' => $this->LHC->sebo($n7),
+            'n1_sx' => $this->LHC->shengxiao($n1),
+            'n2_sx' => $this->LHC->shengxiao($n2),
+            'n3_sx' => $this->LHC->shengxiao($n3),
+            'n4_sx' => $this->LHC->shengxiao($n4),
+            'n5_sx' => $this->LHC->shengxiao($n5),
+            'n6_sx' => $this->LHC->shengxiao($n6),
+            'n7_sx' => $this->LHC->shengxiao($n7),
+            'msg' => $msg,
+            'open_num' => $openNum,
+            'total_num' => $totalNum,
+            'is_open' => 1
+        ]);
+        if($update == 1){
+            $getIssue = DB::table('game_xylhc')->where('id',$id)->first();
+            $update = DB::table('game_xylhc')->where('id', $id)->update([
+                'bunko' => 2
+            ]);
+            if ($update == 1){
+                event(new RunXYLHC($openNum,$getIssue->issue,85,$id)); //触发六合彩结算事件
+                return response()->json([
+                    'status' => true
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => '开奖数据添加失败！'
+            ]);
+        }
+    }
+
     //六合彩重新开奖
     public function reOpenLhcData(Request $request)
     {
@@ -576,6 +695,61 @@ class OpenHistoryController extends Controller
                 'msg' => '开奖数据添加失败！'
             ]);
         }
+    }
+
+    //幸运六合彩重新开奖
+    public function reOpenXylhcData(Request $request)
+    {
+//        $id = $request->get('id');
+//        $n1 = $request->get('n1');
+//        $n2 = $request->get('n2');
+//        $n3 = $request->get('n3');
+//        $n4 = $request->get('n4');
+//        $n5 = $request->get('n5');
+//        $n6 = $request->get('n6');
+//        $n7 = $request->get('n7');
+//        $msg = $request->get('msg');
+//
+//        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7;
+//        $totalNum = (int)$n1+(int)$n2+(int)$n3+(int)$n4+(int)$n5+(int)$n6+(int)$n7;
+//
+//        $update = DB::table('game_xylhc')->where('id',$id)->update([
+//            'n1' => $n1,
+//            'n2' => $n2,
+//            'n3' => $n3,
+//            'n4' => $n4,
+//            'n5' => $n5,
+//            'n6' => $n6,
+//            'n7' => $n7,
+//            'n1_sb' => $this->LHC->sebo($n1),
+//            'n2_sb' => $this->LHC->sebo($n2),
+//            'n3_sb' => $this->LHC->sebo($n3),
+//            'n4_sb' => $this->LHC->sebo($n4),
+//            'n5_sb' => $this->LHC->sebo($n5),
+//            'n6_sb' => $this->LHC->sebo($n6),
+//            'n7_sb' => $this->LHC->sebo($n7),
+//            'n1_sx' => $this->LHC->shengxiao($n1),
+//            'n2_sx' => $this->LHC->shengxiao($n2),
+//            'n3_sx' => $this->LHC->shengxiao($n3),
+//            'n4_sx' => $this->LHC->shengxiao($n4),
+//            'n5_sx' => $this->LHC->shengxiao($n5),
+//            'n6_sx' => $this->LHC->shengxiao($n6),
+//            'n7_sx' => $this->LHC->shengxiao($n7),
+//            'msg' => $msg,
+//            'open_num' => $openNum,
+//            'total_num' => $totalNum,
+//            'is_open' => 1
+//        ]);
+//        if($update == 1){
+//            return response()->json([
+//                'status' => true
+//            ]);
+//        } else {
+//            return response()->json([
+//                'status' => false,
+//                'msg' => '开奖数据添加失败！'
+//            ]);
+//        }
     }
 
     function randColor(){

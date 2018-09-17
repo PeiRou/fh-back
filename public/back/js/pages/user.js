@@ -139,6 +139,37 @@ function returnVisit() {
     });
 }
 
+function exportUser() {
+    jc = $.confirm({
+        theme: 'material',
+        title: '导出用户数据',
+        closeIcon:true,
+        boxWidth:'30%',
+        content: 'url:/back/modal/exportUser',
+        buttons: {
+            formSubmit: {
+                text:'确定提交',
+                btnClass: 'btn-blue',
+                action: function () {
+                    var form = this.$content.find('#addAgentForm').data('formValidation').validate().isValid();
+                    if(form){
+                        jc.close();
+                    }
+                    return false;
+                }
+            }
+        },
+        contentLoaded: function(data, status, xhr){
+            $('.jconfirm-content').css('overflow','hidden');
+            if(data.status == 403)
+            {
+                this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
+                $('.jconfirm-buttons').hide();
+            }
+        }
+    });
+}
+
 function editLevels(uid,nowLevel) {
     jc = $.confirm({
         theme: 'material',

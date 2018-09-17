@@ -18,10 +18,10 @@
             <div class="ui mini form">
                 <div class="fields">
                     <div class="one wide field">
-                        <input type="text" id="account" placeholder="期号">
+                        <input type="text" id="issue" placeholder="期号">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="mobile" placeholder="开奖时间">
+                        <input type="text" id="time" value="{{ date('Y-m-d') }}" placeholder="开奖时间">
                     </div>
                     <div class="field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询</button>
@@ -55,5 +55,7 @@
 @endsection
 
 @section('page-js')
+    <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
+    <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <script src="/back/js/pages/open_lhc.js"></script>
 @endsection
