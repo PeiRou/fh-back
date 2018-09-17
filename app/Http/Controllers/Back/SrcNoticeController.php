@@ -172,6 +172,7 @@ class SrcNoticeController extends Controller
             }
             $rsKeyH = 'chatList';         //切换到聊天平台
             $redis->select(1);
+            $redis->multi();
             foreach ($usersArray as $key => $user){
                 $tmp = [];
                 $tmp['user_id'] = $user->id;
@@ -192,6 +193,7 @@ class SrcNoticeController extends Controller
                         break;
                 }
             }
+            $redis->exec();
             $swoole = new Swoole();
             switch ($message_type){
                 case 2:             //2 右下角弹出提示

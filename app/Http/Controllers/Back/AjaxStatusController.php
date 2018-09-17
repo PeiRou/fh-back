@@ -50,8 +50,9 @@ class AjaxStatusController extends Controller
                 $redisUser = $redis->get($item);
                 $redisUser = (array)json_decode($redisUser,true);
                 $redis->select(2);
+                $redisUser['user_id'] = isset($redisUser['user_id'])?$redisUser['user_id']:'';
                 $keyUser = 'user:'.md5($redisUser['user_id']);
-                if(!$redis->exists($keyUser)){
+                if(empty($redisUser['user_id']) || !$redis->exists($keyUser)){
                     $redis->select(6);
                     $redis->del($item);
                 }else{
