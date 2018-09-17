@@ -50,6 +50,7 @@ class MemberController extends Controller
                     'G'    =>  10,
                     'H'    =>  12,
                     'I'    =>  10,
+                    'J'    =>  10,
                 ));
             });
         })->export('xls');
@@ -111,6 +112,7 @@ class MemberController extends Controller
                     'L'    =>  10,
                     'M'    =>  10,
                     'N'    =>  10,
+                    'O'    =>  10,
                 ));
             });
         })->export('xls');
