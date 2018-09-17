@@ -58,6 +58,52 @@ class MemberController extends Controller
         })->export('xls');
     }
 
+    public function visitMember($agentId,$name){
+        ini_set('memory_limit','1024M');
+        $aData = Users::exportUserData(['agentId'=>$agentId]);
+        if(empty($aData))
+            return redirect('/back/control/userManage/agent')->with('message', '该条件下没有会员');
+        $todayTime = date('Y-m-d');
+        Excel::create('【'.$todayTime.'】回访用户',function ($excel) use ($aData,$todayTime){
+            $excel->sheet('【'.$todayTime.'】回访用户', function($sheet) use ($aData,$todayTime){
+                $sheet->appendRow(['用户账号','用户姓名','用户邮箱','用户手机','新增时间','未登录时间','是否存款','存款金额记录','后台加钱记录','取款金额记录','后台扣钱记录']);
+                $sheetHeight = [
+                    1 => 20,
+                ];
+                foreach ($aData as $kData => $iData){
+                    $sheet->appendRow([
+                        $iData->username,
+                        empty($iData->fullName)?'':$iData->fullName,
+                        empty($iData->email)?'':$iData->email,
+                        empty($iData->mobile)?'':$iData->mobile,
+                        $iData->created_at,
+                        floor((strtotime($todayTime) - strtotime(substr($iData->lastLoginTime,0,10)))/3600/24),
+                        empty($iData->sumReAmount)?'否':'是',
+                        empty($iData->sumReAmount)?'0.00':$iData->sumReAmount,
+                        empty($iData->sumReAmountAd)?'0.00':$iData->sumReAmountAd,
+                        empty($iData->sumDrAmount)?'0.00':$iData->sumDrAmount,
+                        empty($iData->sumDrAmountAd)?'0.00':$iData->sumDrAmountAd,
+                    ]);
+                    $sheetHeight[$kData + 2] = 20;
+                }
+                $sheet->setHeight($sheetHeight);
+                $sheet->setWidth(array(
+                    'A'    =>  10,
+                    'B'    =>  20,
+                    'C'    =>  10,
+                    'D'    =>  15,
+                    'E'    =>  18,
+                    'F'    =>  10,
+                    'G'    =>  10,
+                    'H'    =>  12,
+                    'I'    =>  12,
+                    'J'    =>  12,
+                    'K'    =>  12,
+                ));
+            });
+        })->export('xls');
+    }
+
     public function exportUser(Request $request){
         ini_set('memory_limit','1024M');
         $aParam = $request->all();

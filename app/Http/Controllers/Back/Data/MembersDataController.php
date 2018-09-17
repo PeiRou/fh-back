@@ -176,6 +176,7 @@ class MembersDataController extends Controller
                             <span class="edit-link" onclick="capital(\''.$allAgent->a_id.'\')"><i class="iconfont">&#xe67e;</i> 资金明细</span> | 
                             <span class="edit-link" onclick="panSetting(\''.$allAgent->a_id.'\')"><i class="iconfont">&#xe6dd;</i> 盘口设定</span> | 
                             <span class="edit-link" onclick="exportMember(\''.$allAgent->a_id.'\',\''.$allAgent->account.'\')"><i class="iconfont">&#xe818;</i> 导出会员</span> | 
+                            <span class="edit-link" onclick="visitMember(\''.$allAgent->a_id.'\',\''.$allAgent->account.'\')"><i class="iconfont">&#xe818;</i> 回访会员</span> | 
                             <span class="edit-link" onclick="del(\''.$allAgent->a_id.'\',\''.$allAgent->account.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
                 }
             })

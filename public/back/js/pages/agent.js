@@ -264,6 +264,28 @@ function exportMember(id,name) {
     });
 }
 
+function visitMember(id,name) {
+    jc = $.confirm({
+        title: '确定要导出回访会员',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '这是一个需要注意的操作，导出该代理下所有回访会员',
+        buttons: {
+            confirm: {
+                text:'确定导出',
+                btnClass: 'btn-red',
+                action: function(){
+                    window.location.href = '/action/admin/member/visitMember/'+id+'/'+name;
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
+
 function edit(id) {
     jc = $.confirm({
         theme: 'material',
