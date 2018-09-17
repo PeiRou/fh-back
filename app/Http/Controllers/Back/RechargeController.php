@@ -79,7 +79,7 @@ class RechargeController extends Controller
                             $capital->content = '充值手续费';
                         $insert = $capital->save();
                     }
-                    event(new BackPusherEvent('充值成功提醒','您的充值订单【'.$getInfo->order_id.'】已到账，充值金额：'.$amout.'元',array('fnotice-'.$userId)));
+                    event(new BackPusherEvent('充值成功提醒','您的充值订单【'.$getInfo->orderNum.'】已到账，充值金额：'.$amout.'元',array('fnotice-'.$userId)));
                     return response()->json([
                         'status' => true
                     ]);
