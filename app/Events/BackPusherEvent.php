@@ -11,12 +11,14 @@ class BackPusherEvent extends Event implements ShouldBroadcast
 {
     use SerializesModels;
 
+    public $type;
     public $title;
     public $info;
     public $users;
 
-    public function __construct($title,$info,$users)
+    public function __construct($type,$title,$info,$users)
     {
+        $this->type = $type;
         $this->title = $title;
         $this->info = $info;
         $this->users = $users;
@@ -34,6 +36,6 @@ class BackPusherEvent extends Event implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        return ['title' => $this->title,'info' => $this->info];
+        return ['type' => $this->type, 'title' => $this->title, 'info' => $this->info];
     }
 }
