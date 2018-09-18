@@ -72,6 +72,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\OpenMssscEvent' => [
             'App\Listeners\OpenMssscEventListener',
+        ],
+        'App\Events\BackPusherEvent' => [
+            'App\Listeners\BackPusherEventListener',
         ]
     ];
     /**
