@@ -125,7 +125,8 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                 return $allAgent->account." <span class='gary-text'>(".$allAgent->name.")</span>";
             })
             ->editColumn('members', function ($allAgent){
-                return "<a class='tag-green' href='/back/control/userManage/user?id=".$allAgent->a_id."'>".$allAgent->countMember."</a>";
+                $count = empty($allAgent->countMember)?0:$allAgent->countMember;
+                return "<a class='tag-green' href='/back/control/userManage/user?id=".$allAgent->a_id."'>".$count."</a>";
             })
             ->editColumn('balance', function ($allAgent){
                 if($allAgent->balance == 0)
