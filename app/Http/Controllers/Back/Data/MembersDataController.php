@@ -85,32 +85,34 @@ class MembersDataController extends Controller
         $start = $request->get('start');
         $length = $request->get('length');
         $params = $request->post();
-        $aSql = "SELECT ag.*,COUNT(DISTINCT((case WHEN u.testFlag in (0,2) then u.id else NULL end))) as countMember,`general_agent`.`account` AS `gAccount` FROM `agent` ag LEFT JOIN `users` u on ag.a_id = u.agent JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id`WHERE 1 ";
-        $cSql = "SELECT ag.a_id FROM `agent` ag LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 ";
+        $aSql = "SELECT * FROM `agent` WHERE 1 ";
+        $cSql = "SELECT COUNT(`a_id`) AS `count` FROM `agent`  WHERE 1";
         $where = "";
         if(isset($ga_id) && $ga_id>0 ){
-            $where .= " and ag.gagent_id = ".$ga_id;
+            $where .= " and gagent_id = ".$ga_id;
         }
         if(isset($params['status']) && array_key_exists('status',$params)){
-            $where .= " and ag.status = ".$params['status'];
+            $where .= " and status = ".$params['status'];
         }
         if(isset($params['name']) && array_key_exists('name',$params)){
             if(isset($params['type']) && array_key_exists('type',$params)){
                 if($params['type'] == 1){
-                    $where .= " and ag.account = '".$params['name']."'";
+                    $where .= " and account = '".$params['name']."'";
                 }elseif($params['type'] == 2){
-                    $where .= " and ag.name = '".$params['name']."'";
+                    $where .= " and name = '".$params['name']."'";
                 }
             }
         }
         if(isset($params['day']) && array_key_exists('day',$params)){
             $time = date('Y-m-d',strtotime(-$params['day'].' day'));
 //            var_dump($time);die();
-            $where .= " and ag.updated_at <= '".$time."'";
+            $where .= " and updated_at <= '".$time."'";
         }
-        $aSql = $aSql.$where." GROUP BY ag.a_id ORDER BY ag.created_at desc LIMIT $start,$length";
+        $aSql = "SELECT ag.*,`u`.`countMember`,`general_agent`.`account` AS `gAccount` FROM (".$aSql.$where." ORDER BY created_at desc LIMIT ".$start.",".$length.") AS ag 
+LEFT JOIN (SELECT COUNT(id) AS countMember,agent FROM `users` WHERE testFlag IN(0,2) GROUP BY `agent`) u on ag.a_id = u.agent 
+JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`.`created_at` DESC";
         $allAgent = DB::select($aSql);
-        $cSql = "SELECT count(temp.a_id) AS `count` FROM (".$cSql.$where." GROUP BY ag.a_id) as temp";
+        $cSql = $cSql.$where;
         $countAgent = DB::select($cSql);
         return DataTables::of($allAgent)
             ->editColumn('online', function ($allAgent){
