@@ -249,8 +249,8 @@ class FinanceDataController extends Controller
                 }
             })
             ->orderBy('drawing.created_at','desc');
-        $drawing = $drawingSQL->skip($start)->take($length)->get();
         $drawingCount = $drawingSQL->count();
+        $drawing = $drawingSQL->skip($start)->take($length)->get();
         return DataTables::of($drawing)
             ->editColumn('created_at',function ($drawing){
                 return date('m/d H:i',strtotime($drawing->dr_created_at));
