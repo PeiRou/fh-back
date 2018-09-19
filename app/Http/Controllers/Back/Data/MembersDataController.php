@@ -29,7 +29,13 @@ class MembersDataController extends Controller
     {
         $start = $request->get('start');
         $length = $request->get('length');
-        $aSql = "SELECT g.*,count(DISTINCT(ag.a_id)) as countAgent,count(DISTINCT((case WHEN u.testFlag in (0,2) then u.id else NULL end))) as countMember FROM `general_agent` g LEFT JOIN `agent` ag on g.ga_id = ag.gagent_id LEFT JOIN `users` u on ag.a_id = u.agent WHERE 1 GROUP BY g.ga_id LIMIT $start,$length";
+//        $aSql = "SELECT g.*,count(DISTINCT(ag.a_id)) as countAgent,count(DISTINCT((case WHEN u.testFlag in (0,2) then u.id else NULL end))) as countMember FROM `general_agent` g
+//LEFT JOIN `agent` ag on g.ga_id = ag.gagent_id
+//LEFT JOIN `users` u on ag.a_id = u.agent GROUP BY g.ga_id LIMIT $start,$length";
+        $aSql = "SELECT g.*,count(DISTINCT(ag.a_id)) as countAgent,SUM(u.`idCount`) as countMember FROM `general_agent` g 
+LEFT JOIN `agent` ag on g.ga_id = ag.gagent_id 
+LEFT JOIN (SELECT COUNT(`id`) AS `idCount`,`agent` FROM `users` WHERE `testFlag` IN(0,2) GROUP BY `agent`) u on ag.a_id = u.agent 
+GROUP BY g.ga_id LIMIT $start,$length";
         $allGeneralAgent = DB::select($aSql);
         $agentCount = DB::select('SELECT COUNT(`ga_id`) AS `count` FROM general_agent');
         return DataTables::of($allGeneralAgent)
