@@ -53,4 +53,10 @@ class Drawing extends Model
             });
         return $aSql;
     }
+
+    public static function getDailyStatistics($dayTime){
+        return self::select(DB::raw("'user_id','COUNT(id) AS idCount','SUM(amount)' AS amountSum"))
+            ->where('status',2)->whereBetween('created_at',[$dayTime,$dayTime.' 23:59:59'])
+            ->groupBy('user_id')->get();
+    }
 }

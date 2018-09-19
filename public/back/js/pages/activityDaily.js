@@ -12,12 +12,13 @@ $(function () {
         serverSide: true,
         ordering: false,
         destroy: true,
+        aLengthMenu: [[50]],
         ajax: {
-            url:'/back/datatables/activity/review',
+            url:'/back/datatables/activity/daily',
             data:function (d) {
-                d.status = $('#status').val();
                 d.user_account = $('#user_account').val();
-                d.time = $('#endTime').val();
+                d.startTime = $('#startTime').val();
+                d.endTime = $('#endTime').val();
             },
             dataSrc:function (json) {
                 for ( var i=0, ien=json.data.length ; i<ien ; i++ ) {
@@ -27,14 +28,17 @@ $(function () {
             }
         },
         columns: [
+            {data:'date'},
             {data:'user_account'},
-            {data:'prize_name'},
+            {data:'user_time'},
+            {data:'recharges_count'},
+            {data:'recharges_money'},
+            {data:'drawing_count'},
+            {data:'drawing_money'},
+            {data:'bet_count'},
+            {data:'bet_money'},
+            {data:'bet_bunko'},
             {data:'created_at'},
-            {data:'activity_name'},
-            {data:'status'},
-            {data:'admin_account'},
-            {data:'updated_at'},
-            {data:'control'}
         ],
         language: {
             "zeroRecords": "暂无数据",
@@ -114,46 +118,23 @@ $(function () {
         }
     });
 });
-
-function jumpHref(id) {
-    window.open('/back/control/userManage/userBetList/'+id);
-}
-
-function editStatus(id,status,name) {
-    jc = $.confirm({
-        title: '确定要'+ name +'吗？',
-        theme: 'material',
-        type: 'red',
-        boxWidth:'25%',
-        content: '请确认您的操作',
-        buttons: {
-            confirm: {
-                text:'确定',
-                btnClass: 'btn-red',
-                action: function(){
-                    $.ajax({
-                        url:'/action/admin/activity/reviewAward',
-                        type:'post',
-                        dataType:'json',
-                        data:{id:id,status:status},
-                        success:function (data) {
-                            if(data.status == true){
-                                $('#capitalDetailsTable').DataTable().ajax.reload(null,false);
-                            }else{
-                                Calert(data.msg,'red')
-                            }
-                        },
-                        error:function (e) {
-                            if(e.status == 403)
-                            {
-                                Calert('您没有此项权限！无法继续！','red')
-                            }
-                        }
-                    });
-                }
-            },
-            cancel:{
-                text:'取消'
+function statistics() {
+    $.ajax({
+        url:'/action/admin/activity/dailyStatistics',
+        type:'post',
+        dataType:'json',
+        success:function (data) {
+            if(data.status == true){
+                Calert(data.msg,'green');
+                $('#capitalDetailsTable').DataTable().ajax.reload(null,false);
+            }else{
+                Calert(data.msg,'red');
+            }
+        },
+        error:function (e) {
+            if(e.status == 403)
+            {
+                Calert('您没有此项权限！无法继续！','red')
             }
         }
     });

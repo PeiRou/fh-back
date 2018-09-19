@@ -382,10 +382,13 @@ class BetDataController extends Controller
         $end = $request->get('endTime');
         $issue = $request->get('issue');
         $orderNum = $request->get('orderNum');
+        $startPage = $request->get('start');
+        $lengthPage = $request->get('length');
+//        $user = DB::table('users')->where('id',$userId)->first();
         $user = DB::table('users')->where('username',$username)->first();
 
         if($user){
-            $bet = DB::table('bet')
+            $betSql = DB::table('bet')
                 ->leftJoin('game','bet.game_id','=','game.game_id')
                 ->select('bet.bet_id as bet_bet_id','bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko','bet.created_at as bet_created_at','bet.play_odds as bet_play_odds','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.platform as bet_platform','bet.game_id as bet_game_id','bet.freeze_money as bet_freeze_money','bet.nn_view_money as bet_nn_view_money','bet.bet_info as bet_bet_info')
                 ->where(function ($query) use ($games){
@@ -410,7 +413,12 @@ class BetDataController extends Controller
                         $query->whereBetween('bet.created_at',[$start.' 00:00:00', $end.' 23:59:59']);
                     }
                 })
-                ->where('bet.user_id',$user->id)->orderBy('bet.created_at','desc')->get();
+                ->where('bet.user_id',$user->id);
+            $betCount = $betSql->count();
+            $bet = $betSql->orderBy('bet.created_at','desc')->skip($startPage)->take($lengthPage)->get();
+            $currentIssue = '';
+            $currentColor = '';
+            $betModel = new Bets();
             return DataTables::of($bet)
                 ->editColumn('order_id',function ($bet){
                     return '<span>'.$bet->bet_order_id.'</span>';
@@ -424,8 +432,12 @@ class BetDataController extends Controller
                 ->editColumn('game',function ($bet){
                     return '<span>'.$bet->g_game_name.'</span>';
                 })
-                ->editColumn('issue',function ($bet){
-                    return '<div style="position: relative"><div class="show-open" id="openH_'.$bet->bet_bet_id.'"></div><span onmouseover="showOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" onmouseout="hideOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" style="color: #'.$bet->bet_color.';cursor: pointer;">'.$bet->bet_issue.'</span></div>';
+                ->editColumn('issue',function ($bet) use(&$currentIssue,&$currentColor,$betModel){
+                    if($currentIssue != $bet->bet_issue){
+                        $currentIssue = $bet->bet_issue;
+                        $currentColor = $this->getRandColor($currentColor,$bet->bet_color,$betModel);
+                    }
+                    return '<div style="position: relative"><div class="show-open" id="openH_'.$bet->bet_bet_id.'"></div><span onmouseover="showOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" onmouseout="hideOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" style="color: #'.$currentColor.';cursor: pointer;">'.$bet->bet_issue.'</span></div>';
                 })
                 ->editColumn('play',function ($bet){
                     if($bet->bet_playcate_id == 175){
@@ -506,5 +518,17 @@ class BetDataController extends Controller
         $cate_txt = PlayCates::where('gameId',$gameId)->where('id',$playCate)->first();
         $play_txt = Play::where('gameId',$gameId)->where('id',$play)->first();
         return "<span class='blue-text'>$cate_txt->name - </span><span class='blue-text'>$play_txt->name</span> @ <span class='red-text'>$odds</span>";
+    }
+
+    private function getRandColor($needColor,$currentColor,$betModel){
+        if($needColor === $currentColor){
+            $needColor = $betModel->randColor();
+            if($needColor === $currentColor)
+                return $this->getRandColor($needColor,$currentColor,$betModel);
+            else
+                return $needColor;
+        }else{
+            return $currentColor;
+        }
     }
 }

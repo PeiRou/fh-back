@@ -25,12 +25,22 @@ class SrcMemberController extends Controller
         $name = $request->input('name');
         $password = $request->input('password');
 
-        $generalAgent = new GeneralAgent();
-        $generalAgent->account = $account;
-        $generalAgent->name = $name;
-        $generalAgent->usertype = '888';
-        $generalAgent->password = Hash::make($password);
-        $insert = $generalAgent->save();
+        $has = GeneralAgent::where('account',$account)->first();
+        if(!empty($has))
+            return response()->json([
+                'status'=>false,
+                'msg'=>'此总代理帐号已存在！'
+            ]);
+        try{
+            $generalAgent = new GeneralAgent();
+            $generalAgent->account = $account;
+            $generalAgent->name = $name;
+            $generalAgent->usertype = '888';
+            $generalAgent->password = Hash::make($password);
+            $insert = $generalAgent->save();
+        }catch (\exception $e){
+            $insert = 0;
+        }
         if($insert == 1){
             return response()->json([
                 'status'=>true,
@@ -100,13 +110,23 @@ class SrcMemberController extends Controller
         $password = $request->input('password');
         $editOdds = $request->input('editodds');
 
-        $agent = new Agent();
-        $agent->gagent_id = $gagent;
-        $agent->account = $account;
-        $agent->name = $name;
-        $agent->password = Hash::make($password);
-        $agent->editodds = $editOdds;
-        $insert = $agent->save();
+        $has = Agent::where('account',$account)->first();
+        if(!empty($has))
+            return response()->json([
+                'status'=>false,
+                'msg'=>'此代理帐号已存在！'
+            ]);
+        try {
+            $agent = new Agent();
+            $agent->gagent_id = $gagent;
+            $agent->account = $account;
+            $agent->name = $name;
+            $agent->password = Hash::make($password);
+            $agent->editodds = $editOdds;
+            $insert = $agent->save();
+        }catch (\exception $e){
+            $insert = 0;
+        }
         if($insert == 1){
             return response()->json([
                 'status'=>true,

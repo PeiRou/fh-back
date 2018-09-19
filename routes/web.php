@@ -295,6 +295,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/activity/delPrize', 'Back\ActivityController@delPrize'); //奖品配置-删除奖品
     Route::post('/action/admin/activity/reviewAward', 'Back\ActivityController@reviewAward'); //派奖审核-审核奖品
     Route::post('/action/admin/activity/dailyStatistics', 'Back\ActivityController@dailyStatistics'); //活动数据统计-每日统计
+    Route::post('/action/admin/activity/dataStatistics', 'Back\ActivityController@dataStatistics'); //每日数据统计-每日统计
 
     Route::post('/action/admin/promotion/settlement','Back\PromotionController@settlement'); //推广结算报表-手动结算
     Route::post('/action/admin/promotion/editReport','Back\PromotionController@editReport'); //推广结算报表-修改结算
