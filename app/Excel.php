@@ -70,30 +70,33 @@ class Excel
         if(empty($exceBase->count_date) || $exceBase->count_date!=date("Y-m-d")){
             $todaystart = date("Y-m-d 00:00:00");
             $todayend = date("Y-m-d 23:59:59");
-            $tmp = DB::select("SELECT sum(bet_money) as sumBet_money,sum(case when bunko >0 then bunko-bet_money else 0 end) as sumBunkoWin,sum(case when bunko < 0 then bunko else 0 end) as sumBunkoLose FROM bet WHERE game_id = '{$gameId}' and created_at BETWEEN '{$todaystart}' and '{$todayend}' and bunko != 0 and testFlag = 0 ");
-            foreach ($tmp as&$value)
-                $todayBet = $value;
-            $data['count_date'] = date("Y-m-d");
-            $data['bet_money'] = $todayBet->sumBet_money;
-            $data['bet_win'] = $todayBet->sumBunkoWin;
-            $data['bet_lose'] = abs($todayBet->sumBunkoLose);
-            DB::table('excel_base')->where('excel_base_idx',$exceBase->excel_base_idx)->update($data);
+            $where = " and created_at BETWEEN '{$todaystart}' and '{$todayend}' and bunko != 0 ";
+            $tmp = $this->countAllLoseWin($gameId,$where);
+            foreach ($tmp as&$todayBet){
+                $data = array();
+                $data['count_date'] = date("Y-m-d");
+                $data['bet_money'] = $todayBet->sumBet_money;
+                $data['bet_win'] = $todayBet->sumBunkoWin;
+                $data['bet_lose'] = abs($todayBet->sumBunkoLose);
+            }
+        }else{
+            $where = " and issue = '{$issue}' ";
+            $tmp = $this->countAllLoseWin($gameId,$where);
+            foreach ($tmp as&$excBunko){
+                $data = array();
+                $excBunko->sumBet_money = !isset($excBunko->sumBet_money)||empty($excBunko->sumBet_money)?0:$excBunko->sumBet_money;
+                $excBunko->sumBunkoWin = !isset($excBunko->sumBunkoWin)||empty($excBunko->sumBunkoWin)?0:$excBunko->sumBunkoWin;
+                $excBunko->sumBunkoLose = !isset($excBunko->sumBunkoLose)||empty($excBunko->sumBunkoLose)?0:$excBunko->sumBunkoLose;
+                $data['bet_money'] = DB::raw('bet_money + '.$excBunko->sumBet_money);
+                $data['bet_win'] = DB::raw('bet_win + '.$excBunko->sumBunkoWin);
+                $data['bet_lose'] = DB::raw('bet_lose + '.abs($excBunko->sumBunkoLose));
+            }
         }
-        $tmp = DB::select("SELECT sum(bet_money) as sumBet_money,sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM bet WHERE issue = '{$issue}' and game_id = '{$gameId}' and testFlag = 0 ");
-        foreach ($tmp as&$value){
-            $excBunko = $value;
-            \Log::info($gameId.' => '.$issue.' => '.json_encode($excBunko));
-            $data = [];
-            $excBunko->sumBet_money = !isset($excBunko->sumBet_money)||empty($excBunko->sumBet_money)?0:$excBunko->sumBet_money;
-            $excBunko->sumBunko = !isset($excBunko->sumBunko)||empty($excBunko->sumBunko)?0:$excBunko->sumBunko;
-            $data['bet_money'] = DB::raw('bet_money + '.$excBunko->sumBet_money);
-            if($excBunko->sumBunko>0)
-                $data['bet_win'] = DB::raw('bet_win + '.$excBunko->sumBunko);
-            else
-                $data['bet_lose'] = DB::raw('bet_lose + '.abs($excBunko->sumBunko));
-            //\Log::info($gameId.'**'.$exceBase->excel_base_idx.'--'.$excBunko->sumBet_money.'=='.$excBunko->sumBunko);
-            DB::table('excel_base')->where('excel_base_idx', $exceBase->excel_base_idx)->update($data);
-        }
+        DB::table('excel_base')->where('excel_base_idx', $exceBase->excel_base_idx)->update($data);
+    }
+    private function countAllLoseWin($gameId,$where=''){
+        $sql = DB::select("SELECT sum(bet_money) as sumBet_money,sum(case when bunko >0 then bunko-bet_money else 0 end) as sumBunkoWin,sum(case when bunko < 0 then bunko else 0 end) as sumBunkoLose FROM bet WHERE game_id = '{$gameId}' and testFlag = 0 ".$where);
+        return $sql;
     }
     //计算是否开杀
     public function kill_count($table,$issue,$gameId,$opencode){
