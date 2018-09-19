@@ -81,4 +81,77 @@ class Bets extends Model
         return empty($data['sumMoney']) ? 0 : $data['sumMoney'];
     }
 
+    function randColor(){
+        $rand = rand(1,20);
+        switch($rand){
+            case 1:
+                $color = 'ca2727';
+                break;
+            case 2:
+                $color = '779888';
+                break;
+            case 3:
+                $color = 'bbbbbb';
+                break;
+            case 4:
+                $color = 'f59bca';
+                break;
+            case 5:
+                $color = 'ef429d';
+                break;
+            case 6:
+                $color = 'ca00be';
+                break;
+            case 7:
+                $color = 'f351ea';
+                break;
+            case 8:
+                $color = 'dba1f1';
+                break;
+            case 9:
+                $color = 'bb00ff';
+                break;
+            case 10:
+                $color = '5100ff';
+                break;
+            case 11:
+                $color = '926ae8';
+                break;
+            case 12:
+                $color = '1d3fd0';
+                break;
+            case 13:
+                $color = '43c3fb';
+                break;
+            case 14:
+                $color = '6edccb';
+                break;
+            case 15:
+                $color = '18bfa5';
+                break;
+            case 16:
+                $color = '81d47a';
+                break;
+            case 17:
+                $color = '23dc13';
+                break;
+            case 18:
+                $color = '99bf18';
+                break;
+            case 19:
+                $color = 'dac54c';
+                break;
+            case 20:
+                $color = 'ff9938';
+                break;
+        }
+        return $color;
+    }
+
+    public static function getDailyStatistics($dayTime){
+        return self::select(DB::raw("'user_id','COUNT(bet_id) AS betCount','SUM(bet_money) AS betMoney','SUM(case WHEN game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) AS sumBunko'"))
+            ->whereBetween('created_at',[$dayTime,$dayTime.' 23:59:59'])
+            ->groupBy('user_id')->get();
+    }
+
 }
