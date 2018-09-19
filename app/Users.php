@@ -50,8 +50,12 @@ WHERE `users`.`testFlag` = 0 ";
             $aArray['username'] = $aParam['username'];
         }
         if(isset($aParam['money']) && array_key_exists('money',$aParam)){
-            $aSql .= " AND `re`.`sumAmount` >= :money ";
+            $aSql .= " AND `re`.`sumReAmount` >= :money ";
             $aArray['money'] = $aParam['money'];
+        }
+        if(isset($aParam['amount']) && array_key_exists('amount',$aParam)){
+            $aSql .= " AND `re`.`sumReAmount` = :amount ";
+            $aArray['amount'] = $aParam['amount'];
         }
         $aSql .= " ORDER BY `users`.`lastLoginTime` DESC";
         return DB::select($aSql,$aArray);

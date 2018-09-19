@@ -120,6 +120,7 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
         $allAgent = DB::select($aSql);
         $cSql = $cSql.$where;
         $countAgent = DB::select($cSql);
+        $adminRole = DB::table('sub_account')->where('sa_id',Session::get('account_id'))->value('role');
         return DataTables::of($allAgent)
             ->editColumn('online', function ($allAgent){
                 return '<span id="agent_'.$allAgent->a_id.'"><span class="tag-offline">离线</span></span>';
@@ -174,10 +175,14 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                     return "<span class=\"edit-link\" onclick='seeContent(\"".$allAgent->a_id."\")'>查看</span>";
                 }
             })
-            ->editColumn('control', function ($allAgent){
+            ->editColumn('control', function ($allAgent) use ($adminRole){
                 if($allAgent->usertype == 8888)
                 {
-                    return "系统默认-无法操作";
+                    if($adminRole ==  1)
+                        return '<span class="edit-link" onclick="exportMemberSuper(\''.$allAgent->a_id.'\',\''.$allAgent->account.'\')"><i class="iconfont">&#xe818;</i> 导出会员</span> | 
+                                <span class="edit-link" onclick="visitMemberSuper(\''.$allAgent->a_id.'\',\''.$allAgent->account.'\')"><i class="iconfont">&#xe818;</i> 回访会员</span>';
+                    else
+                        return "系统默认-无法操作";
                 } else {
                     return '<span class="edit-link" onclick="edit(\''.$allAgent->a_id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> | 
                             <span class="edit-link" onclick="viewInfo(\''.$allAgent->a_id.'\')"><i class="iconfont">&#xe818;</i> 详情</span> | 

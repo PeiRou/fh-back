@@ -378,7 +378,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::any('/action/admin/member/returnVisit','Back\MemberController@returnVisit')->middleware('check-permission')->name('member.returnVisit'); //会员-回访用户
     Route::any('/action/admin/member/exportUser','Back\MemberController@exportUser')->middleware('check-permission')->name('member.exportUser'); //会员-导出用户数据
     Route::any('/action/admin/member/exportMember/{id}/{name}', 'Back\MemberController@exportMember')->middleware('check-permission')->name('member.exportMember');;//代理-导出会员
+    Route::any('/action/admin/member/exportMemberSuper/{id}/{name}', 'Back\MemberController@exportMemberSuper')->middleware('check-permission')->name('member.exportMemberSuper');;//总代代理-导出会员
     Route::any('/action/admin/member/visitMember/{id}/{name}', 'Back\MemberController@visitMember')->middleware('check-permission')->name('member.visitMember');;//代理-导出会员
+    Route::any('/action/admin/member/visitMemberSuper/{id}/{name}', 'Back\MemberController@visitMemberSuper')->middleware('check-permission')->name('member.visitMemberSuper');;//总代代理-导出会员
 
     Route::get('/action/admin/exportExcel/userRecharges','Back\ExportExcelController@exportExcelForRecharges'); //导出充值数据为Excel文件
 
