@@ -13,7 +13,7 @@ $(function () {
             url:'/back/datatables/openHistory/xylhc',
             data:function (d) {
                 d.issue = $('#issue').val();
-                d.time = $('#time').val();
+                d.issuedate = $('#issuedate').val();
             }
         },
         columns: [

@@ -17,15 +17,13 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
-                    <div class="one wide field">
+                    <div class="two wide field">
                         <input type="text" id="issue" placeholder="期号">
                     </div>
-                    <div class="one wide field">
-                        <div class="ui calendar" id="rangeend" style="width: 108px;">
-                            <div class="ui input left icon">
-                                <i class="calendar icon"></i>
-                                <input type="text" id="time" placeholder="开奖时间" value="{{ date('Y-m-d') }}">
-                            </div>
+                    <div class="ui calendar" id="rangeend" style="width: 108px;">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" id="issuedate" placeholder="开奖时间" value="{{ date('Y-m-d') }}">
                         </div>
                     </div>
                     <div class="field">
