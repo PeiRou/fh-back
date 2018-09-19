@@ -634,9 +634,11 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
     }
     
     //子账号 - 表格数据
-    public function subAccounts()
+    public function subAccounts(Request $request)
     {
-        $subAccounts = SubAccount::all();
+        $start = $request->start;
+        $length = $request->length;
+        $subAccounts = SubAccount::skip($start)->take($length)->get();
         $subAccountsCount = SubAccount::count();
         return DataTables::of($subAccounts)
             ->editColumn('online', function ($subAccounts){
