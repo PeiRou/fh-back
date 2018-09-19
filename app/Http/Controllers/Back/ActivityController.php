@@ -420,4 +420,13 @@ class ActivityController extends Controller
             'msg'=>'统计成功'
         ]);
     }
+
+    //每日数据统计-每日统计
+    public function dataStatistics(){
+        Artisan::call('StatisticsData:Daily');
+        return response()->json([
+            'status'=>true,
+            'msg'=>'统计成功'
+        ]);
+    }
 }

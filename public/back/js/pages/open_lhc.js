@@ -13,7 +13,7 @@ $(function () {
             url:'/back/datatables/openHistory/lhc',
             data:function (d) {
                 d.issue = $('#issue').val();
-                d.time = $('#time').val();
+                d.issuedate = $('#issuedate').val();              //开奖时间
             }
         },
         columns: [

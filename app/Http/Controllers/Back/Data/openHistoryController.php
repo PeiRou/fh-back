@@ -192,10 +192,10 @@ class openHistoryController extends Controller
     {
         $param = $request->post();
         $lhcSql = DB::table('game_lhc')->where(function ($aSql) use($param){
-            if(isset($param['issue']) && array_key_exists('issue',$param))
+            if(isset($param['issuedate']) && array_key_exists('issue',$param))
                 $aSql->where('issue',$param['issue']);
-            if(isset($param['time']) && array_key_exists('time',$param))
-                $aSql->whereBetween('opentime',[$param['time'],$param['time'].' 23:59:59']);
+            if(isset($param['issuedate']) && array_key_exists('time',$param))
+                $aSql->whereBetween('opentime',[$param['issuedate'],$param['issuedate'].' 23:59:59']);
         });
         $lhcCount = $lhcSql->count();
         $lhc = $lhcSql->orderBy('id','DESC')->skip($param['start'])->take($param['length'])->get();

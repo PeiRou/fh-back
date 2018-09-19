@@ -17,11 +17,14 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
-                    <div class="one wide field">
+                    <div class="two wide field">
                         <input type="text" id="issue" placeholder="期号">
                     </div>
-                    <div class="one wide field">
-                        <input type="text" id="time" value="{{ date('Y-m-d') }}" placeholder="开奖时间">
+                    <div class="ui calendar" id="rangeend" style="width: 108px;">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" id="issuedate" placeholder="开奖时间" value="">
+                        </div>
                     </div>
                     <div class="field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询</button>
