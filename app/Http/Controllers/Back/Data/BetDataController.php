@@ -92,6 +92,9 @@ class BetDataController extends Controller
             ->where('bet.testFlag',0);
         $betCount = $betSQl->count();
         $bet = $betSQl->orderBy('bet.created_at','desc')->skip($start)->take($length)->get();
+        $currentIssue = '';
+        $currentColor = '';
+        $betModel = new Bets();
         return DataTables::of($bet)
             ->editColumn('order_id',function ($bet){
                 return $bet->bet_order_id;
@@ -109,8 +112,12 @@ class BetDataController extends Controller
             ->editColumn('game',function ($bet){
                 return $bet->game_game_name;
             })
-            ->editColumn('issue',function ($bet){
-                return '<span style="color: #'.$bet->bet_color.'">'.$bet->bet_issue.'</span> 期';
+            ->editColumn('issue',function ($bet) use(&$currentIssue,&$currentColor,$betModel){
+                if($currentIssue != $bet->bet_issue){
+                    $currentIssue = $bet->bet_issue;
+                    $currentColor = $this->getRandColor($currentColor,$bet->bet_color,$betModel);
+                }
+                return '<span style="color: #'.$currentColor.'">'.$bet->bet_issue.'</span> 期';
             })
             ->editColumn('play',function ($bet){
                 return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span> <span>$bet->bet_bet_info</span>";
@@ -221,6 +228,9 @@ class BetDataController extends Controller
             $betCount = Bets::where('order_id',888888)->count();
             $bet = Bets::where('order_id',888888)->skip($start)->take($length)->get();
         }
+        $currentIssue = '';
+        $currentColor = '';
+        $betModel = new Bets();
         return DataTables::of($bet)
             ->editColumn('order_id',function ($bet){
                 return $bet->bet_order_id;
@@ -238,8 +248,12 @@ class BetDataController extends Controller
             ->editColumn('game',function ($bet){
                 return $bet->game_game_name;
             })
-            ->editColumn('issue',function ($bet){
-                return '<span style="color: #'.$bet->bet_color.'">'.$bet->bet_issue.'</span> 期';
+            ->editColumn('issue',function ($bet) use(&$currentIssue,&$currentColor,$betModel){
+                if($currentIssue != $bet->bet_issue){
+                    $currentIssue = $bet->bet_issue;
+                    $currentColor = $this->getRandColor($currentColor,$bet->bet_color,$betModel);
+                }
+                return '<span style="color: #'.$currentColor.'">'.$bet->bet_issue.'</span> 期';
             })
             ->editColumn('bet_money',function ($bet){
                 return "<span class='bet-text'>$bet->bet_bet_money</span>";
