@@ -472,6 +472,8 @@ class BetDataController extends Controller
                     return '0';
                 })
                 ->rawColumns(['order_id','user','game','issue','play','bunko','bet_money','platform'])
+                ->setTotalRecords($betCount)
+                ->skipPaging()
                 ->make(true);
         } else {
             return response()->json([
