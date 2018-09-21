@@ -67,7 +67,7 @@ class OpenHistoryController extends Controller
             return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
         }
         $id = $this->notTen($request->get('id'));
-        $info = DB::table('game_bjpk10')->select('opentime')->where('id',$id)->first();
+        $info = DB::table('game_bjpk10')->select('opentime','issue')->where('id',$id)->first();
         if(strtotime($info->opentime) > time())
             return response()->json(['status' => false,'msg' => '请勿提早开奖']);
         $n1 = $this->notTen($request->get('n1'));
@@ -86,9 +86,24 @@ class OpenHistoryController extends Controller
 
         $update = DB::table('game_bjpk10')->where('id',$id)->update([
             'opennum' => $openNum,
+            'year'=> date('Y',strtotime($info->opentime)),
+            'month'=> date('m',strtotime($info->opentime)),
+            'day'=>  date('d',strtotime($info->opentime)),
             'is_open' => 1
         ]);
-        if($update == 1){
+        //处理牛牛
+        $niuniu = $this->exePK10nn($openNum);
+        $openniuniu =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
+
+        $updateNN = DB::table('game_pknn')->where('issue',$info->issue)->update([
+            'opennum' => $openNum,
+            'year'=> date('Y',strtotime($info->opentime)),
+            'month'=> date('m',strtotime($info->opentime)),
+            'day'=>  date('d',strtotime($info->opentime)),
+            'niuniu' => $openniuniu,
+            'is_open' => 1
+        ]);
+        if($update == 1&&$updateNN==1){
             return response()->json([
                 'status' => true
             ]);
@@ -123,9 +138,16 @@ class OpenHistoryController extends Controller
         $msg = $this->notTen($request->get('msg'));
 
         $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7.','.$n8.','.$n9.','.$n10;
+        //处理牛牛
+        $niuniu = $this->exePK10nn($openNum);
+        $openniuniu =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
 
         $update = DB::table('game_mssc')->where('id',$id)->update([
             'opennum' => $openNum,
+            'niuniu'=>  $openniuniu,
+            'year'=> date('Y',strtotime($info->opentime)),
+            'month'=> date('m',strtotime($info->opentime)),
+            'day'=>  date('d',strtotime($info->opentime)),
             'is_open' => 1
         ]);
         if($update == 1){
@@ -167,6 +189,9 @@ class OpenHistoryController extends Controller
 
         $update = DB::table('game_msft')->where('id',$id)->update([
             'opennum' => $openNum,
+            'year'=> date('Y',strtotime($info->opentime)),
+            'month'=> date('m',strtotime($info->opentime)),
+            'day'=>  date('d',strtotime($info->opentime)),
             'is_open' => 1
         ]);
         if($update == 1){
@@ -208,6 +233,9 @@ class OpenHistoryController extends Controller
 
         $update = DB::table('game_paoma')->where('id',$id)->update([
             'opennum' => $openNum,
+            'year'=> date('Y',strtotime($info->opentime)),
+            'month'=> date('m',strtotime($info->opentime)),
+            'day'=>  date('d',strtotime($info->opentime)),
             'is_open' => 1
         ]);
         if($update == 1){
@@ -255,6 +283,9 @@ class OpenHistoryController extends Controller
 
         $update = DB::table('game_bjkl8')->where('id',$id)->update([
             'opennum' => $openNum,
+            'year'=> date('Y',strtotime($info->opentime)),
+            'month'=> date('m',strtotime($info->opentime)),
+            'day'=>  date('d',strtotime($info->opentime)),
             'is_open' => 1
         ]);
         if($update == 1){
@@ -291,6 +322,9 @@ class OpenHistoryController extends Controller
 
         $update = DB::table('game_cqssc')->where('id',$id)->update([
             'opennum' => $openNum,
+            'year'=> date('Y',strtotime($info->opentime)),
+            'month'=> date('m',strtotime($info->opentime)),
+            'day'=>  date('d',strtotime($info->opentime)),
             'is_open' => 1
         ]);
         if($update == 1){
@@ -327,6 +361,9 @@ class OpenHistoryController extends Controller
 
         $update = DB::table('game_msssc')->where('id',$id)->update([
             'opennum' => $openNum,
+            'year'=> date('Y',strtotime($info->opentime)),
+            'month'=> date('m',strtotime($info->opentime)),
+            'day'=>  date('d',strtotime($info->opentime)),
             'is_open' => 1
         ]);
         if($update == 1){
@@ -384,6 +421,9 @@ class OpenHistoryController extends Controller
 
         $update = DB::table($table)->where('id',$id)->update([
             'opennum' => $openNum,
+            'year'=> date('Y',strtotime($info->opentime)),
+            'month'=> date('m',strtotime($info->opentime)),
+            'day'=>  date('d',strtotime($info->opentime)),
             'is_open' => 1
         ]);
         if($update == 1){
@@ -540,6 +580,7 @@ class OpenHistoryController extends Controller
         $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7;
         $totalNum = (int)$n1+(int)$n2+(int)$n3+(int)$n4+(int)$n5+(int)$n6+(int)$n7;
 
+        $info = DB::table('game_xylhc')->where('id',$id)->first();
         $update = DB::table('game_xylhc')->where('id',$id)->update([
             'n1' => $n1,
             'n2' => $n2,
@@ -562,18 +603,19 @@ class OpenHistoryController extends Controller
             'n5_sx' => $this->LHC->shengxiao($n5),
             'n6_sx' => $this->LHC->shengxiao($n6),
             'n7_sx' => $this->LHC->shengxiao($n7),
+            'year'=> date('Y',strtotime($info->opentime)),
+            'month'=> date('m',strtotime($info->opentime)),
+            'day'=>  date('d',strtotime($info->opentime)),
             'msg' => $msg,
             'open_num' => $openNum,
             'total_num' => $totalNum,
             'is_open' => 1
         ]);
         if($update == 1){
-            $getIssue = DB::table('game_xylhc')->where('id',$id)->first();
             $update = DB::table('game_xylhc')->where('id', $id)->update([
                 'bunko' => 2
             ]);
             if ($update == 1){
-                event(new RunXYLHC($openNum,$getIssue->issue,85,$id)); //触发六合彩结算事件
                 return response()->json([
                     'status' => true
                 ]);
@@ -761,5 +803,62 @@ class OpenHistoryController extends Controller
                 break;
         }
         return $color;
+    }
+
+    //处理秒速牛牛
+    private function exePK10nn($opencode){
+        if(empty($opencode))
+            return false;
+        $replace = str_replace('10','0',$opencode);
+        $explodeNum = explode(',',$replace);
+        $banker = (int)$explodeNum[0].(int)$explodeNum[1].(int)$explodeNum[2].(int)$explodeNum[3].(int)$explodeNum[4];
+        $player1 = (int)$explodeNum[1].(int)$explodeNum[2].(int)$explodeNum[3].(int)$explodeNum[4].(int)$explodeNum[5];
+        $player2 = (int)$explodeNum[2].(int)$explodeNum[3].(int)$explodeNum[4].(int)$explodeNum[5].(int)$explodeNum[6];
+        $player3 = (int)$explodeNum[3].(int)$explodeNum[4].(int)$explodeNum[5].(int)$explodeNum[6].(int)$explodeNum[7];
+        $player4 = (int)$explodeNum[4].(int)$explodeNum[5].(int)$explodeNum[6].(int)$explodeNum[7].(int)$explodeNum[8];
+        $player5 = (int)$explodeNum[5].(int)$explodeNum[6].(int)$explodeNum[7].(int)$explodeNum[8].(int)$explodeNum[9];
+        return [$banker,$player1,$player2,$player3,$player4,$player5];
+    }
+
+    function nn($num){
+        $aNumber = str_split($num);
+        $nSame = array();
+        $stop = false;
+        $nSp = 0;
+        for ($yy = 0;$yy<5;$yy++){
+            for ($ii = 0;$ii<5;$ii++){
+                for ($xx = 0;$xx<5;$xx++){
+                    if($xx==$yy ||$xx==$ii ||$ii==$yy )
+                        continue;
+                    $nn = str_split($yy.$ii.$xx);
+                    sort($nn);
+                    $nn = implode("",$nn);
+                    if( in_array($nn,$nSame))
+                        continue;
+                    $nSum = $aNumber[$yy]+$aNumber[$ii]+$aNumber[$xx];
+                    if($nSum%10==0){
+                        unset($aNumber[$yy]);
+                        unset($aNumber[$ii]);
+                        unset($aNumber[$xx]);
+                        $stop = true;
+                        break;
+                    }
+                    $nSame[] = $nn;
+                }
+                if($stop)
+                    break;
+            }
+            if($stop)
+                break;
+        }
+        if(!$stop){
+            $total = -1; //无牛
+        } else {
+            foreach ($aNumber as $val)
+                $nSp+=$val;  //牛1～牛9&牛牛
+            $nSp = $nSp%10==0?10:$nSp%10;
+            $total = $nSp;
+        }
+        return $total;
     }
 }
