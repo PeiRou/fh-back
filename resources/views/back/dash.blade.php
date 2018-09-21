@@ -37,7 +37,7 @@
             <div class="six wide column">
                 <div class="outline">
                     <div class="title">系统更新日志</div>
-                    <div class="content">
+                    <div class="content" id="systemUpdateMessageBox">
 
                     </div>
                 </div>

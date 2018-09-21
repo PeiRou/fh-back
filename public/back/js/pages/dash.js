@@ -7,9 +7,11 @@ $(function () {
         jsonpCallback:"success_jsonpCallback",
         success:function(data){
             var updateInfo = data.items;
+            var updateInfoText = "";
             updateInfo.forEach(function (value) {
-                console.log(value.title);
+                updateInfoText += "<a>"+value.title+"</a>"
             })
+            $('#systemUpdateMessageBox').html(updateInfoText);
         }
     });
 });
