@@ -22,7 +22,9 @@ body{
     url('//at.alicdn.com/t/font_540627_15coqbkv9jn.svg#iconfont') format('svg');
 }
 .dash_link{
-
+    display: block;
+    padding: 1px 10px;
+    color: #a2a2a2;
 }
 .copyInput{
     width: 1px;
