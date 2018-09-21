@@ -37,9 +37,7 @@
             <div class="six wide column">
                 <div class="outline">
                     <div class="title">系统更新日志</div>
-                    <div class="content" id="systemUpdateMessageBox">
-
-                    </div>
+                    <div class="content" id="systemUpdateMessageBox" style="padding: 10px 0px;"></div>
                 </div>
             </div>
             <div class="four wide column">

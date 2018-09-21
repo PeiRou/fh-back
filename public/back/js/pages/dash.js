@@ -9,7 +9,12 @@ $(function () {
             var updateInfo = data.items;
             var updateInfoText = "";
             updateInfo.forEach(function (value) {
-                updateInfoText += "<a href='"+value.url+"' class='dash_link'>"+value.title+"</a>"
+                if(value.url != ""){
+                    var target = "target='_blank'";
+                } else {
+                    var target = "";
+                }
+                updateInfoText += "<a href='"+value.url+"' "+target+" class='dash_link'>"+value.time+" "+value.title+"</a>"
             })
             $('#systemUpdateMessageBox').html(updateInfoText);
         }
