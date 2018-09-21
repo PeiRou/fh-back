@@ -9,7 +9,7 @@ $(function () {
             var updateInfo = data.items;
             var updateInfoText = "";
             updateInfo.forEach(function (value) {
-                if(value.url != ""){
+                if(value.url != "#"){
                     var target = "target='_blank'";
                 } else {
                     var target = "";
