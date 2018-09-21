@@ -6,7 +6,10 @@ $(function () {
         jsonp:"callback",
         jsonpCallback:"success_jsonpCallback",
         success:function(data){
-            console.log(data);
+            var updateInfo = data.items;
+            updateInfo.forEach(function (value) {
+                console.log(value.title);
+            })
         }
     });
 });
