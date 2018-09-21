@@ -27,27 +27,19 @@
             <div class="six wide column">
                 <div class="outline">
                     <div class="title">最新公告</div>
-                    <div class="content">
-                        {{--<div class="ui active inverted dimmer" id="loader">--}}
-                            {{--<div class="ui text loader">加载</div>--}}
-                        {{--</div>--}}
-                    </div>
+                    <div class="content" id="noticeMessageBox" style="padding: 10px 0px;"></div>
                 </div>
             </div>
             <div class="six wide column">
                 <div class="outline">
                     <div class="title">系统更新日志</div>
-                    <div class="content">
-
-                    </div>
+                    <div class="content" id="systemUpdateMessageBox" style="padding: 10px 0px;"></div>
                 </div>
             </div>
             <div class="four wide column">
                 <div class="outline">
                     <div class="title">相关下载</div>
-                    <div class="content">
-
-                    </div>
+                    <div class="content" id="downloadMessageBox" style="padding: 10px 0px;"></div>
                 </div>
             </div>
         </div>
