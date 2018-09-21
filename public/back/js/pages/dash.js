@@ -3,6 +3,8 @@ $(function () {
     $.ajax({
         url:url,
         dataType:"JSONP",
+        jsonp:"callback",
+        jsonpCallback:"success_jsonpCallback",
         success:function(data){
             console.log(data);
         }
