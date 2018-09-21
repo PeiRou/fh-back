@@ -14,7 +14,7 @@ $(function () {
                 } else {
                     var target = "";
                 }
-                updateInfoText += "<a href='"+value.url+"' "+target+" class='dash_link'>"+value.time+" "+value.title+"</a>"
+                updateInfoText += "<a href='"+value.url+"' "+target+" class='dash_link'>【"+value.time+"】 "+value.title+"</a>"
             })
             $('#systemUpdateMessageBox').html(updateInfoText);
         }
