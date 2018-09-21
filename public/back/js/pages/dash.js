@@ -9,7 +9,7 @@ $(function () {
             var updateInfo = data.items;
             var updateInfoText = "";
             updateInfo.forEach(function (value) {
-                updateInfoText += "<a class='dash_link'>"+value.title+"</a>"
+                updateInfoText += "<a href='"+value.url+"' class='dash_link'>"+value.title+"</a>"
             })
             $('#systemUpdateMessageBox').html(updateInfoText);
         }
