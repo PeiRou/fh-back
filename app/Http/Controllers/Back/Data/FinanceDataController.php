@@ -39,7 +39,7 @@ class FinanceDataController extends Controller
         }
 
         $sql = ' from recharges 
-              JOIN users on recharges.userId = users.id JOIN level on level.value = users.rechLevel WHERE 1 ';
+              JOIN users on recharges.userId = users.id LEFT JOIN level on level.value = recharges.levels WHERE 1 ';
         $where = '';
         if(isset($killTestUser) && $killTestUser){
             $where .= ' and users.testFlag = 0 ';
@@ -110,7 +110,7 @@ class FinanceDataController extends Controller
                 return $recharge->re_orderNum;
             })
             ->editColumn('user',function ($recharge){
-                return '<span>'.$recharge->re_username.'</span><span> (<b>'.$recharge->level_name.'</b> <i style="cursor:pointer;" onclick="editLevels(\''.$recharge->uid.'\',\''.$recharge->re_levels.'\')" class="iconfont">&#xe602;</i>)</span>';
+                return '<span>'.$recharge->re_username.'</span><span> (<b>'.$recharge->level_name.'</b> <i style="cursor:pointer;" onclick="editLevels(\''.$recharge->uid.'\',\''.$recharge->re_levels.'\',\''.$recharge->rid.'\')" class="iconfont">&#xe602;</i>)</span>';
             })
             ->editColumn('trueName',function ($recharge){
                 return $recharge->user_fullName;
@@ -204,8 +204,8 @@ class FinanceDataController extends Controller
 
         $drawingSQL = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
-            ->leftJoin('level','users.rechLevel','=','level.value')
-            ->select('drawing.created_at as dr_created_at','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.fullName as draw_fullName','drawing.bank_name as draw_bank_name','drawing.bank_num as draw_bank_num','drawing.bank_addr as draw_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id','users.username as user_username','drawing.balance as dr_balance','drawing.order_id as dr_order_id','drawing.operation_account as dr_operation_account','level.name as level_name','users.DrawTimes as user_DrawTimes','drawing.total_bet as dr_total_bet')
+            ->leftJoin('level','drawing.levels','=','level.value')
+            ->select('drawing.created_at as dr_created_at','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.fullName as draw_fullName','drawing.bank_name as draw_bank_name','drawing.bank_num as draw_bank_num','drawing.bank_addr as draw_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id','users.username as user_username','drawing.balance as dr_balance','drawing.order_id as dr_order_id','drawing.operation_account as dr_operation_account','level.name as level_name','level.id as level_id','users.DrawTimes as user_DrawTimes','drawing.total_bet as dr_total_bet')
             ->where(function ($q) use ($killTestUser){
                 if(isset($killTestUser) && $killTestUser){
                     $q->where('users.agent','!=',2);
@@ -281,12 +281,7 @@ class FinanceDataController extends Controller
                 }
             })
             ->editColumn('rechLevel',function ($drawing){
-                  if($drawing->level_name){
-                      return  $drawing->level_name;
-                  } else {
-                      return '用户已被删除';
-                  }
-
+                return '<b>'.$drawing->level_name.'</b> <i style="cursor:pointer;" onclick="editLevels(\''.$drawing->dr_uid.'\',\''.$drawing->level_id.'\',\''.$drawing->dr_id.'\')" class="iconfont">&#xe602;</i></span>';
             })
             ->editColumn('amount',function ($drawing){
                 return '<span class="red-text" style="font-size: 12pt;">'.$drawing->dr_amount.'</span>';

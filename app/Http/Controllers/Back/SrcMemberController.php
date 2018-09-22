@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back;
 
 use App\Agent;
 use App\Capital;
+use App\Drawing;
 use App\GeneralAgent;
 use App\Recharges;
 use App\SubAccount;
@@ -721,16 +722,38 @@ class SrcMemberController extends Controller
             }
         }
     }
-    
+
     //修改会员层级
     public function editUserLevels(Request $request)
     {
-        $userid = $request->get('userid');
+        $rid = $request->get('rid');
         $levels = $request->get('levels');
 
-        $update = User::where('id',$userid)
+        $update = Recharges::where('id',$rid)
             ->update([
-                'rechLevel'=>$levels
+                'levels'=>$levels
+            ]);
+        if($update == 1){
+            return response()->json([
+                'status'=>true
+            ]);
+        } else {
+            return response()->json([
+                'status'=>false,
+                'msg' => '更新失败！'
+            ]);
+        }
+    }
+
+    //修改会员层级
+    public function editDrawingLevels(Request $request)
+    {
+        $rid = $request->get('rid');
+        $levels = $request->get('levels');
+
+        $update = Drawing::where('id',$rid)
+            ->update([
+                'levels'=>$levels
             ]);
         if($update == 1){
             return response()->json([

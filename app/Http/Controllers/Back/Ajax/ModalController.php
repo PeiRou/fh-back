@@ -311,15 +311,24 @@ class ModalController extends Controller
     {
         $levels = Levels::all();
         return view('back.modal.notice.addSendMessage')->with('levels',$levels);
-    }   
-    
+    }
+
     //修改用户层级
-    public function editUserLevels($uid,$nowLevels)
+    public function editUserLevels($uid,$nowLevels,$rid)
     {
         $user = User::where('id',$uid)->first();
         $levels = Levels::where('value',$nowLevels)->first();
         $levelsData = Levels::all();
-        return view('back.modal.member.editUserLevels',compact('user','levels','levelsData'));
+        return view('back.modal.member.editUserLevels',compact('user','levels','levelsData','rid'));
+    }
+
+    //修改用户层级
+    public function editDrawingLevels($uid,$nowLevels,$rid)
+    {
+        $user = User::where('id',$uid)->first();
+        $levels = Levels::where('value',$nowLevels)->first();
+        $levelsData = Levels::all();
+        return view('back.modal.member.editDrawingLevels',compact('user','levels','levelsData','rid'));
     }
     
     //添加银行

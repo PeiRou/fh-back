@@ -345,7 +345,7 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
             left Join (SELECT a_id,account as ag_account,gagent_id FROM agent) ag on u_fileds.agent = ag.a_id  where 1 and testFlag in(0,2) ';
 
         if(isset($status) && $status){
-            $sql .=' and users.status = ' .$status;
+            $sql .=' and u_fileds.user_status = ' .$status;
         }
         if(isset($gaid) && $gaid>0){
             $sql .= ' and ag.gagent_id = '.$gaid;
