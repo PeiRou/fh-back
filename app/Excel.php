@@ -74,6 +74,9 @@ class Excel
             $tmp = $this->countAllLoseWin($gameId,$where);
             foreach ($tmp as&$todayBet){
                 $data = array();
+                $todayBet->sumBet_money = !isset($todayBet->sumBet_money)||empty($todayBet->sumBet_money)?0:$todayBet->sumBet_money;
+                $todayBet->sumBunkoWin = !isset($todayBet->sumBunkoWin)||empty($todayBet->sumBunkoWin)?0:$todayBet->sumBunkoWin;
+                $todayBet->sumBunkoLose = !isset($todayBet->sumBunkoLose)||empty($todayBet->sumBunkoLose)?0:$todayBet->sumBunkoLose;
                 $data['count_date'] = date("Y-m-d");
                 $data['bet_money'] = $todayBet->sumBet_money;
                 $data['bet_win'] = $todayBet->sumBunkoWin;
@@ -95,7 +98,8 @@ class Excel
         DB::table('excel_base')->where('excel_base_idx', $exceBase->excel_base_idx)->update($data);
     }
     private function countAllLoseWin($gameId,$where=''){
-        $sql = DB::select("SELECT sum(bet_money) as sumBet_money,sum(case when bunko >0 then bunko-bet_money else 0 end) as sumBunkoWin,sum(case when bunko < 0 then bunko else 0 end) as sumBunkoLose FROM bet WHERE game_id = '{$gameId}' and testFlag = 0 ".$where);
+        $strSql = "SELECT sum(bet_money) as sumBet_money,sum(case when bunko >0 then bunko-bet_money else 0 end) as sumBunkoWin,sum(case when bunko < 0 then bunko else 0 end) as sumBunkoLose FROM bet WHERE game_id = '{$gameId}' and testFlag = 0 ".$where;
+        $sql = DB::connection('mysql::write')->select($strSql);
         return $sql;
     }
     //计算是否开杀
@@ -265,5 +269,61 @@ class Excel
         shuffle($arr);   //打乱数组
         $newarr = array_splice($arr,0,7);
         return implode(",",$newarr);
+    }
+    //处理秒速牛牛
+    public function exePK10nn($opencode){
+        if(empty($opencode))
+            return false;
+        $replace = str_replace('10','0',$opencode);
+        $explodeNum = explode(',',$replace);
+        $banker = (int)$explodeNum[0].(int)$explodeNum[1].(int)$explodeNum[2].(int)$explodeNum[3].(int)$explodeNum[4];
+        $player1 = (int)$explodeNum[1].(int)$explodeNum[2].(int)$explodeNum[3].(int)$explodeNum[4].(int)$explodeNum[5];
+        $player2 = (int)$explodeNum[2].(int)$explodeNum[3].(int)$explodeNum[4].(int)$explodeNum[5].(int)$explodeNum[6];
+        $player3 = (int)$explodeNum[3].(int)$explodeNum[4].(int)$explodeNum[5].(int)$explodeNum[6].(int)$explodeNum[7];
+        $player4 = (int)$explodeNum[4].(int)$explodeNum[5].(int)$explodeNum[6].(int)$explodeNum[7].(int)$explodeNum[8];
+        $player5 = (int)$explodeNum[5].(int)$explodeNum[6].(int)$explodeNum[7].(int)$explodeNum[8].(int)$explodeNum[9];
+        return [$banker,$player1,$player2,$player3,$player4,$player5];
+    }
+
+    public function nn($num){
+        $aNumber = str_split($num);
+        $nSame = array();
+        $stop = false;
+        $nSp = 0;
+        for ($yy = 0;$yy<5;$yy++){
+            for ($ii = 0;$ii<5;$ii++){
+                for ($xx = 0;$xx<5;$xx++){
+                    if($xx==$yy ||$xx==$ii ||$ii==$yy )
+                        continue;
+                    $nn = str_split($yy.$ii.$xx);
+                    sort($nn);
+                    $nn = implode("",$nn);
+                    if( in_array($nn,$nSame))
+                        continue;
+                    $nSum = $aNumber[$yy]+$aNumber[$ii]+$aNumber[$xx];
+                    if($nSum%10==0){
+                        unset($aNumber[$yy]);
+                        unset($aNumber[$ii]);
+                        unset($aNumber[$xx]);
+                        $stop = true;
+                        break;
+                    }
+                    $nSame[] = $nn;
+                }
+                if($stop)
+                    break;
+            }
+            if($stop)
+                break;
+        }
+        if(!$stop){
+            $total = -1; //无牛
+        } else {
+            foreach ($aNumber as $val)
+                $nSp+=$val;  //牛1～牛9&牛牛
+            $nSp = $nSp%10==0?10:$nSp%10;
+            $total = $nSp;
+        }
+        return $total;
     }
 }
