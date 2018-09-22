@@ -92,6 +92,54 @@ class BetDataController extends Controller
             ->where('bet.testFlag',0);
         $betCount = $betSQl->count();
         $bet = $betSQl->orderBy('bet.created_at','desc')->skip($start)->take($length)->get();
+        $betMoney = DB::table('bet')
+            ->leftJoin('users','bet.user_id','=','users.id')
+            ->where(function ($query) use ($searchType){
+                if(isset($searchType) && $searchType){
+                    if($searchType == 'yestoday'){
+                        $yesterday = Carbon::now()->addDays(-1)->toDateString();
+                        $query->whereDate('bet.created_at',$yesterday);
+                    }
+                } else {
+                    $now = date('Y-m-d');
+                    $query->whereDate('bet.created_at',$now);
+                }
+            })
+            ->where(function ($query) use ($markSix){
+                if(isset($markSix) && $markSix){
+                    if($markSix == 2)
+                        $query->where("bet.game_id",'!=',70);
+                }
+            })
+            ->where(function ($query) use($status){
+                $query->where("bet.bunko",'=',0);
+            })
+            ->where(function ($query) use ($game){
+                if(isset($game) && $game){
+                    $query->where("bet.game_id",$game);
+                }
+            })
+            ->where(function ($query) use ($playCate){
+                if(isset($playCate) && $playCate){
+                    $query->where("bet.playcate_id",$playCate);
+                }
+            })
+            ->where(function ($query) use ($issue){
+                if(isset($issue) && $issue){
+                    $query->where("bet.issue",$issue);
+                }
+            })
+            ->where(function ($query) use ($order){
+                if(isset($order) && $order){
+                    $query->where("bet.order_id",$order);
+                }
+            })
+            ->where(function ($query) use ($username){
+                if(isset($username) && $username){
+                    $query->where("users.username",$username);
+                }
+            })
+            ->where('bet.testFlag',0)->sum('bet.bet_money');
         $currentIssue = '';
         $currentColor = '';
         $betModel = new Bets();
@@ -151,6 +199,7 @@ class BetDataController extends Controller
             ->rawColumns(['user','play','issue','bunko','bet_money','platform'])
             ->setTotalRecords($betCount)
             ->skipPaging()
+            ->with('betMoney',$betMoney)
             ->make(true);
     }
     

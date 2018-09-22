@@ -8,16 +8,19 @@
             <b>位置：</b>会员
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
+        @inject('hasPermission','App\Http\Proxy\CheckPermission')
+        @if($hasPermission->hasPermission('m.user.userTotal') == "has")
         <div class="pay-total-crumb">
-            <div><span>今日新增：</span><span>{{ $todayRegUsers }}</span></div>
-            <div><span>今日首充：</span><span>{{ $todayRechargesUser }}</span></div>
-            <div><span>昨日首充：</span><span>{{ $yesterdayRechargesUser }}</span></div>
-            <div><span>本月首充：</span><span>{{ $monthRechargesUser }}</span></div>
-            <div><span>昨日新增：</span><span>{{ $yesterdayRegUsers }}</span></div>
-            <div><span>本月新增：</span><span>{{ $monthRegUsers }}</span></div>
-            <div><span>上月新增：</span><span>{{ $lastMonthRegUsers }}</span></div>
-            <div><span>会员总数：</span><span>{{ $allUser }}</span></div>
+            <div><span>今日新增：</span><span id="todayRegUsers">0</span></div>
+            <div><span>今日首充：</span><span id="todayRechargesUser">0</span></div>
+            <div><span>昨日首充：</span><span id="yesterdayRechargesUser">0</span></div>
+            <div><span>本月首充：</span><span id="monthRechargesUser">0</span></div>
+            <div><span>昨日新增：</span><span id="yesterdayRegUsers">0</span></div>
+            <div><span>本月新增：</span><span id="monthRegUsers">0</span></div>
+            <div><span>上月新增：</span><span id="lastMonthRegUsers">0</span></div>
+            <div><span>会员总数：</span><span id="allUser">0</span></div>
         </div>
+        @endif
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('userTable')"><i class="iconfont">&#xe61d;</i></span>
             <span onclick="exportUser()">导出用户数据</span>
@@ -121,6 +124,24 @@
         @if(session('message'))
             var message = '{{ session('message') }}';
             alert(message);
+        @endif
+        @if($hasPermission->hasPermission('m.user.userTotal') == "has")
+            $.ajax({
+                url:'/back/datatables/userTotal',
+                type:'get',
+                dataType:'json',
+                data:{},
+                success:function (data) {
+                    $('#allUser').html(data.allUser);
+                    $('#todayRegUsers').html(data.todayRegUsers);
+                    $('#yesterdayRegUsers').html(data.yesterdayRegUsers);
+                    $('#monthRegUsers').html(data.monthRegUsers);
+                    $('#lastMonthRegUsers').html(data.lastMonthRegUsers);
+                    $('#todayRechargesUser').html(data.todayRechargesUser);
+                    $('#yesterdayRechargesUser').html(data.yesterdayRechargesUser);
+                    $('#monthRechargesUser').html(data.monthRechargesUser);
+                }
+            });
         @endif
     </script>
 @endsection

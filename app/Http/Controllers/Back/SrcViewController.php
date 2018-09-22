@@ -85,16 +85,16 @@ class SrcViewController extends Controller
         $levels = DB::table('level')->where('status',1)->get();
         $agent = DB::table('agent')->where('status',1)->get();
 
-        //统计会员数据
-        $allUser = DB::table('users')->where('testFlag',0)->count();
-        $todayRegUsers = DB::table('users')->where('testFlag',0)->whereDate('created_at',date('Y-m-d'))->count();
-        $yesterday = Carbon::now()->addDays(-1)->toDateString();
-        $yesterdayRegUsers = DB::table('users')->where('testFlag',0)->whereDate('created_at',$yesterday)->count();
-        $monthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
-        $lastMonthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('PERIOD_DIFF( date_format( now( ) , "%Y%m" ) , date_format( created_at, "%Y%m" ) ) =1')->count();
-        $todayRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereDate('created_at',date('Y-m-d'))->count();
-        $yesterdayRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereDate('created_at',Carbon::now()->addDays(-1)->toDateString())->count();
-        $monthRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
+//        //统计会员数据
+//        $allUser = DB::table('users')->where('testFlag',0)->count();
+//        $todayRegUsers = DB::table('users')->where('testFlag',0)->whereDate('created_at',date('Y-m-d'))->count();
+//        $yesterday = Carbon::now()->addDays(-1)->toDateString();
+//        $yesterdayRegUsers = DB::table('users')->where('testFlag',0)->whereDate('created_at',$yesterday)->count();
+//        $monthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
+//        $lastMonthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('PERIOD_DIFF( date_format( now( ) , "%Y%m" ) , date_format( created_at, "%Y%m" ) ) =1')->count();
+//        $todayRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereDate('created_at',date('Y-m-d'))->count();
+//        $yesterdayRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereDate('created_at',Carbon::now()->addDays(-1)->toDateString())->count();
+//        $monthRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
 
         return view('back.user',compact('aid','gaid','levels','agent','allUser','todayRegUsers','monthRegUsers','lastMonthRegUsers','todayRechargesUser','yesterdayRegUsers','yesterdayRechargesUser','monthRechargesUser'));
     }

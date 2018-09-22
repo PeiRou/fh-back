@@ -78,6 +78,13 @@ $(function () {
                 d.timeStart = $('#timeStart').val();
                 d.timeEnd = $('#timeEnd').val();
                 d.markSix = $('#markSix').val();
+            },
+            dataSrc:function (json) {
+                memberTotal(json.betMoney);
+                for ( var i=0, ien=json.data.length ; i<ien ; i++ ) {
+                    json.data[i][0] = '<a href="/message/'+json.data[i][0]+'>View message</a>';
+                }
+                return json.data;
             }
         },
         columns: [
@@ -216,3 +223,7 @@ $('#checkMark').on('change',function () {
     else
         $('#markSix').val(1);
 });
+
+function memberTotal(filterMoney) {
+    $('#unBunkoTotal').text(filterMoney);
+}

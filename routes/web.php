@@ -165,6 +165,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/agentCapital/{id}', 'Back\Data\MembersDataController@agentCapital');
     Route::get('/back/datatables/userCapital/{id}', 'Back\Data\MembersDataController@userCapital');
     Route::get('/back/datatables/user', 'Back\Data\MembersDataController@user');
+    Route::get('/back/datatables/userTotal', 'Back\Data\MembersDataController@userTotal')->middleware('check-permission')->name('m.user.userTotal');//会员统计查看;
     Route::get('/back/datatables/premissions', 'Back\Data\SystemDataController@permissions'); //权限-表格数据
     Route::get('/back/datatables/premissionsAuth', 'Back\Data\SystemDataController@permissionsAuth'); //权限控制-表格数据
     Route::get('/back/datatables/roles', 'Back\Data\SystemDataController@roles'); //角色-表格数据

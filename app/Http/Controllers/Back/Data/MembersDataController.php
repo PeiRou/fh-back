@@ -484,6 +484,30 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
             ->make(true);
     }
 
+    //会员统计查看
+    public function userTotal(){
+        //统计会员数据
+        $allUser = DB::table('users')->where('testFlag',0)->count();
+        $todayRegUsers = DB::table('users')->where('testFlag',0)->whereDate('created_at',date('Y-m-d'))->count();
+        $yesterday = Carbon::now()->addDays(-1)->toDateString();
+        $yesterdayRegUsers = DB::table('users')->where('testFlag',0)->whereDate('created_at',$yesterday)->count();
+        $monthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
+        $lastMonthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('PERIOD_DIFF( date_format( now( ) , "%Y%m" ) , date_format( created_at, "%Y%m" ) ) =1')->count();
+        $todayRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereDate('created_at',date('Y-m-d'))->count();
+        $yesterdayRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereDate('created_at',Carbon::now()->addDays(-1)->toDateString())->count();
+        $monthRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
+        return response()->json([
+            'allUser' => $allUser,
+            'todayRegUsers' => $todayRegUsers,
+            'yesterdayRegUsers' => $yesterdayRegUsers,
+            'monthRegUsers' => $monthRegUsers,
+            'lastMonthRegUsers' => $lastMonthRegUsers,
+            'todayRechargesUser' => $todayRechargesUser,
+            'yesterdayRechargesUser' => $yesterdayRechargesUser,
+            'monthRechargesUser' => $monthRechargesUser,
+        ]);
+    }
+
     //用户资金明细
     public function userCapital($id,Request $request)
     {
