@@ -269,7 +269,10 @@
                 <li id="menu-payManage-alipay"><a href="{{ route('pay.alipay') }}"><cite></cite><span>支付宝配置</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('pay.wechat') == "has")
-                <li id="menu-payManage-wechat"><a href="{{ route('pay.wechat') }}"><cite></cite><span>微信配置</span></a></li>
+                    <li id="menu-payManage-wechat"><a href="{{ route('pay.wechat') }}"><cite></cite><span>微信配置</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('pay.payYunShanPay') == "has")
+                    <li id="menu-payManage-payYunShanPay"><a href="{{ route('pay.payYunShanPay') }}"><cite></cite><span>云闪付配置</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('pay.cft') == "has")
                 <li id="menu-payManage-cft"><a href="{{ route('pay.cft') }}"><cite></cite><span>财付通配置</span></a></li>

@@ -593,6 +593,11 @@ class SrcViewController extends Controller
     {
         return view('back.pay.payWechat');
     }
+    //云闪付配置
+    public function payYunShanPay()
+    {
+        return view('back.pay.payYunShanPay');
+    }
     //微信支付配置
     public function payCft()
     {

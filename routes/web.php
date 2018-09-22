@@ -111,6 +111,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('payBank', 'Back\SrcViewController@payBank')->name('pay.bank'); //银行支付配置
         Route::get('payAlipay', 'Back\SrcViewController@payAlipay')->name('pay.alipay'); //支付宝支付配置
         Route::get('payWechat', 'Back\SrcViewController@payWechat')->name('pay.wechat'); //微信支付配置
+        Route::get('payYunShanPay', 'Back\SrcViewController@payYunShanPay')->name('pay.payYunShanPay'); //云闪付配置
         Route::get('payCft', 'Back\SrcViewController@payCft')->name('pay.cft'); //财付通支付配置
         Route::get('bindBank', 'Back\SrcViewController@bindBank')->name('pay.bindBank'); //绑定银行配置
         Route::get('payLayout', 'Back\SrcViewController@payLayout')->name('pay.payLayout'); //支付层级配置
