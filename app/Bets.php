@@ -148,10 +148,19 @@ class Bets extends Model
         return $color;
     }
 
+    public static function getBetAndUserByIssue($issue,$gameId){
+        return self::select('users.id','bet.bet_money','bet.order_id','bet.game_id','bet.issue','users.money')
+            ->where('bet.issue',$issue)->where('bet.game_id',$gameId)
+            ->join('users','users.id','=','bet.user_id')->get()->toArray();
+    }
+
     public static function getDailyStatistics($dayTime){
         return self::select(DB::raw("'user_id','COUNT(bet_id) AS betCount','SUM(bet_money) AS betMoney','SUM(case WHEN game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) AS sumBunko'"))
             ->whereBetween('created_at',[$dayTime,$dayTime.' 23:59:59'])
             ->groupBy('user_id')->get();
     }
 
+    public static function cancelBetting($issue,$gameId){
+        return self::where('issue',$issue)->where('game_id',$gameId)->delete();
+    }
 }
