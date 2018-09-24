@@ -22,4 +22,19 @@ class Recharges extends Model
             ->get();
     }
 
+    public static function betMemberReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT `userId`,SUM(`amount`) AS `reAmountSum`,LEFT(`created_at`,10) AS `date` FROM `recharges` WHERE `status` = 2 AND payType != 'adminAddMoney'";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `userId`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
 }

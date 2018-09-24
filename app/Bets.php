@@ -163,4 +163,22 @@ class Bets extends Model
     public static function cancelBetting($issue,$gameId){
         return self::where('issue',$issue)->where('game_id',$gameId)->delete();
     }
+
+    public static function betMemberReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT `game_id`,LEFT(`created_at`,10) AS `date`,`user_id`,COUNT(`bet_id`) AS `idCount`,SUM(`bet_money`) AS `betMoneySum`,
+                  SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bet_money` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bet_money` ELSE 0 END) END) AS `sumWinbet`,
+                  SUM(CASE WHEN `game_id` IN(90,91) THEN `nn_view_money` ELSE (CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE `bunko` END) END) AS `sumBunko`
+                  FROM `bet` WHERE 1 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `created_at` >= :startTime";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `created_at` <= :endTime";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `game_id`,`date`,`user_id` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
 }

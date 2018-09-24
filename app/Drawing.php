@@ -59,4 +59,19 @@ class Drawing extends Model
             ->where('status',2)->whereBetween('created_at',[$dayTime,$dayTime.' 23:59:59'])
             ->groupBy('user_id')->get();
     }
+
+    public static function betMemberReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT `user_id`,SUM(`amount`) AS `drAmountSum`,LEFT(`created_at`,10) AS `date` FROM `drawing` WHERE `status` = 2 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `user_id`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
 }
