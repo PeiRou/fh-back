@@ -48,7 +48,7 @@ $(function () {
             {data:'balance'},
             {data:'status'},
             {data:'created_at'},
-            {data:'updated_at'},
+            {data:'user_lastLoginTime'},
             {data:'saveOrDraw'},
             {data:'saveMoneyCount'},
             {data:'drawMoneyCount'},
