@@ -198,6 +198,7 @@ class FinanceDataController extends Controller
         $status = $request->get('status');
         $account_type = $request->get('account_type');
         $account_param = $request->get('account_param');
+        $draw_type = $request->get('draw_type');
         $rechLevel = $request->get('rechLevel');
         $start = $request->get('start');
         $length = $request->get('length');
@@ -218,6 +219,11 @@ class FinanceDataController extends Controller
                     } else {
                         $q->where('drawing.status',$status);
                     }
+                }
+            })
+            ->where(function ($q) use ($draw_type){
+                if(isset($draw_type) && $draw_type!=''){
+                    $q->where('drawing.draw_type',$draw_type);
                 }
             })
             ->where(function ($q) use ($rechLevel){

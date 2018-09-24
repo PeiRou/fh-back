@@ -46,10 +46,12 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 return $allGeneralAgent->account." <span class='gary-text'>(".$allGeneralAgent->name.")</span>";
             })
             ->editColumn('agent', function ($allGeneralAgent){
-                return "<a class='tag-green' href='/back/control/userManage/agent?id=".$allGeneralAgent->ga_id."'>".$allGeneralAgent->countAgent."</a>";
+                $agentCount = empty($allGeneralAgent->countAgent)?0:$allGeneralAgent->countAgent;
+                return "<a class='tag-green' href='/back/control/userManage/agent?id=".$allGeneralAgent->ga_id."'>".$agentCount."</a>";
             })
             ->editColumn('members', function ($allGeneralAgent){
-                return "<a class='tag-green' href='/back/control/userManage/user?ga_id=".$allGeneralAgent->ga_id."'>".$allGeneralAgent->countMember."</a>";
+                $memberCount = empty($allGeneralAgent->countMember)?0:$allGeneralAgent->countMember;
+                return "<a class='tag-green' href='/back/control/userManage/user?ga_id=".$allGeneralAgent->ga_id."'>".$memberCount."</a>";
             })
             ->editColumn('balance', function ($allGeneralAgent){
                 if($allGeneralAgent->balance == 0)

@@ -66,6 +66,7 @@ $(function () {
                 d.account_param = $('#account_param').val();
                 d.rechLevel = $('#rechLevel').val();
                 d.killTestUser = $('#killTestUser:checked').val();
+                d.draw_type = $('#draw_type').val();
             }
         },
         columns: [

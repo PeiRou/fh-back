@@ -34,9 +34,11 @@
                         </select>
                     </div>
                     <div class="one wide field">
-                        <select class="ui dropdown" id="" style='height:32px !important'>
+                        <select class="ui dropdown" id="draw_type" style='height:32px !important'>
                             <option value="">出款方式</option>
-                            <option value="">手动出款</option>
+                            <option value="1">手动出款</option>
+                            <option value="0">自动出款</option>
+                            <option value="2">后台扣钱</option>
                         </select>
                     </div>
                     <div class="one wide field">
