@@ -729,10 +729,12 @@ class SrcMemberController extends Controller
         $rid = $request->get('rid');
         $levels = $request->get('levels');
 
-        $update = Recharges::where('id',$rid)
-            ->update([
-                'levels'=>$levels
-            ]);
+        if($rid>0){
+            $update = Recharges::where('id',$rid)
+                ->update([
+                    'levels'=>$levels
+                ]);
+        }
         if($update == 1){
             return response()->json([
                 'status'=>true
