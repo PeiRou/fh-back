@@ -260,6 +260,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/changeUserMoney', 'Back\SrcMemberController@changeUserMoney');//修改会员余额
     Route::post('/action/admin/delUser/{id}', 'Back\SrcMemberController@delUser')->middleware('check-permission')->name('m.user.delUser');//删除会员账号
     Route::post('/action/admin/editUserLevels', 'Back\SrcMemberController@editUserLevels');//删除会员账号
+    Route::post('/action/admin/editDrawingLevels', 'Back\SrcMemberController@editDrawingLevels');//删除会员账号
     Route::post('/action/admin/getOutUser', 'Back\SrcMemberController@getOutUser');//会员踢下线
     Route::post('/action/userMoney/totalUserMoney', 'Back\SrcMemberController@totalUserMoney');//会员总余额统计
 
@@ -437,7 +438,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editPayCft/{id}', 'Back\Ajax\ModalController@editPayCft');
     Route::get('/back/modal/addArticle', 'Back\Ajax\ModalController@addArticle');
     Route::get('/back/modal/editArticle/{id}', 'Back\Ajax\ModalController@editArticle');
-    Route::get('/back/modal/editUserLevels/{uid}/{nowLevels}', 'Back\Ajax\ModalController@editUserLevels');
+    Route::get('/back/modal/editUserLevels/{uid}/{nowLevels}/{rid}', 'Back\Ajax\ModalController@editUserLevels');
+    Route::get('/back/modal/editDrawingLevels/{uid}/{nowLevels}/{rid}', 'Back\Ajax\ModalController@editDrawingLevels');
     Route::get('/back/modal/rechargeError/{id}', 'Back\Ajax\ModalController@rechargeError');
     Route::get('/back/modal/drawingError/{id}', 'Back\Ajax\ModalController@drawingError');
     Route::get('/back/modal/user48hoursInfo/{uid}', 'Back\Ajax\ModalController@user48hoursInfo');

@@ -184,14 +184,20 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                     else
                         return "系统默认-无法操作";
                 } else {
-                    return '<span class="edit-link" onclick="edit(\''.$allAgent->a_id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> | 
-                            <span class="edit-link" onclick="viewInfo(\''.$allAgent->a_id.'\')"><i class="iconfont">&#xe818;</i> 详情</span> | 
-                            <span class="edit-link" onclick="changeAgentMoney(\''.$allAgent->a_id.'\')"><i class="iconfont">&#xe60b;</i> 修改余额</span> | 
-                            <span class="edit-link" onclick="capital(\''.$allAgent->a_id.'\')"><i class="iconfont">&#xe67e;</i> 资金明细</span> | 
-                            <span class="edit-link" onclick="panSetting(\''.$allAgent->a_id.'\')"><i class="iconfont">&#xe6dd;</i> 盘口设定</span> | 
-                            <span class="edit-link" onclick="exportMember(\''.$allAgent->a_id.'\',\''.$allAgent->account.'\')"><i class="iconfont">&#xe818;</i> 导出会员</span> | 
-                            <span class="edit-link" onclick="visitMember(\''.$allAgent->a_id.'\',\''.$allAgent->account.'\')"><i class="iconfont">&#xe818;</i> 回访会员</span> | 
-                            <span class="edit-link" onclick="del(\''.$allAgent->a_id.'\',\''.$allAgent->account.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
+                    return "<ul class='control-menu'>
+                        <li onclick='edit(\"$allAgent->a_id\")'>修改</li>
+                        <li onclick='viewInfo(\"$allAgent->a_id\")'>详情</li>
+                        <li onclick='changeAgentMoney(\"$allAgent->a_id\")'>修改余额</li>
+                        <li onclick='capital(\"$allAgent->a_id\")'>资金明细</li>
+                        <li>更多操作
+                        <ul>
+                        <li onclick='panSetting(\"$allAgent->a_id\")'>盘口设定</li>
+                        <li onclick='exportMember(\"$allAgent->a_id\",\"$allAgent->account\")'>导出会员</li>
+                        <li onclick='visitMember(\"$allAgent->a_id\",\"$allAgent->account\")'>回访会员</li>
+                        <li class='red-hover' onclick='del(\"$allAgent->a_id\",\"$allAgent->account\")'>删除会员</li>
+                        </ul>
+                        </li>
+                        </ul>";
                 }
             })
             ->rawColumns(['online','agent','members','balance','status','editOdds','content','control'])
@@ -345,7 +351,7 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
             left Join (SELECT a_id,account as ag_account,gagent_id FROM agent) ag on u_fileds.agent = ag.a_id  where 1 and testFlag in(0,2) ';
 
         if(isset($status) && $status){
-            $sql .=' and users.status = ' .$status;
+            $sql .=' and u_fileds.user_status = ' .$status;
         }
         if(isset($gaid) && $gaid>0){
             $sql .= ' and ag.gagent_id = '.$gaid;

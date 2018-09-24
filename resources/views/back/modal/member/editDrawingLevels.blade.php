@@ -1,4 +1,4 @@
-<form id="editUserLevelsForm" class="ui mini form" action="{{ url('/action/admin/editUserLevels') }}">
+<form id="editUserLevelsForm" class="ui mini form" action="{{ url('/action/admin/editDrawingLevels') }}">
     <div class="field">
         <label>当前会员：{{ $user->username }}</label>
         <label>当前会员层级：{{ $levels->name }}</label>
