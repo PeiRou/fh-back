@@ -314,17 +314,7 @@ class ModalController extends Controller
     }
 
     //修改用户层级
-    public function editUserLevels($uid,$nowLevels)
-    {
-        $user = User::where('id',$uid)->first();
-        $levels = Levels::where('value',$nowLevels)->first();
-        $levelsData = Levels::all();
-        $rid = 0;
-        return view('back.modal.member.editUserLevels',compact('user','levels','levelsData','rid'));
-    }
-
-    //修改用户层级
-    public function editUserLevels($uid,$nowLevels,$rid)
+    public function editUserLevels($uid,$nowLevels,$rid=0)
     {
         $user = User::where('id',$uid)->first();
         $levels = Levels::where('value',$nowLevels)->first();

@@ -176,7 +176,7 @@ function editLevels(uid,nowLevel) {
         title: '修改会员层级',
         closeIcon:true,
         boxWidth:'20%',
-        content: 'url:/back/modal/editUserLevels/'+uid+'/'+nowLevel,
+        content: 'url:/back/modal/editUserLevels/'+uid+'/'+nowLevel+'/'+0,
         buttons: {
             formSubmit: {
                 text:'确定提交',
