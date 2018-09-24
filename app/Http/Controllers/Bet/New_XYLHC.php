@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Bet;
 
+use App\Bets;
 use App\Excel;
 use App\Helpers\LHC_SX;
 use Illuminate\Support\Facades\DB;
@@ -24,9 +25,7 @@ class New_XYLHC
     {
         $this->LHC_SX = $LHC_SX;
     }
-
-    public function all($openCode,$issue,$gameId,$id)
-    {
+    private function exc_play($openCode,$gameId){
         $win = collect([]);
         $this->TM($openCode,$gameId,$win);
         $this->LM($openCode,$gameId,$win);
@@ -39,34 +38,98 @@ class New_XYLHC
         $this->PTYXWS($openCode,$gameId,$win);
         $this->ZONGXIAO($openCode,$gameId,$win);
         $this->ZMT($openCode,$gameId,$win);
+        return $win;
+    }
+
+    public function all($openCode,$issue,$gameId,$id,$excel)
+    {
+        $table = 'game_xylhc';
         $gameName = '幸运六合彩';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+
         if($betCount > 0){
             $excelModel = new Excel();
-            $bunko = $this->BUNKO($openCode,$win,$gameId,$issue);
-            if($bunko == 1){
-                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
-                if($updateUserMoney == 1){
-                    $update = DB::table('game_xylhc')->where('id',$id)->update([
-                        'bunko' => 1
-                    ]);
-                    if($update == 1){
-                        echo $gameName.$issue.'已结算';
-                    } else {
-                        echo $gameName.$issue.'结算失败！';
+            $exeIssue = $excelModel->getNeedKillIssue($table,2);
+            $exeBase = $excelModel->getNeedKillBase($gameId);
+            if(isset($exeIssue->excel_num) && $exeBase->excel_num > 0 && $excel){
+                $update = DB::table($table)->where('id',$id)->where('excel_num',2)->update([
+                    'excel_num' => 3
+                ]);
+                \Log::info('excel_num:'.$update);
+                if($update == 1) {
+                    \Log::Info('xylhc killing...');
+                    $this->excel($openCode, $exeBase, $issue, $gameId, $table);
+                }
+            }
+            if(!$excel){
+                $win = $this->exc_play($openCode,$gameId);
+                $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,$excel);
+                $excelModel->bet_total($issue,$gameId);
+                if($bunko == 1){
+                    $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
+                    if($updateUserMoney == 1){
+                        \Log::info($gameName . $issue . "结算出错");
                     }
                 }
             }
-        } else {
-            $update = DB::table('game_xylhc')->where('id',$id)->update([
+        }
+        if($excel){
+            $update = DB::table($table)->where('id',$id)->whereIn('excel_num',[2,3])->update([
+                'excel_num' => 1
+            ]);
+            if ($update !== 1) {
+                \Log::info($gameName . $issue . "杀率not Finshed");
+            }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
                 'bunko' => 1
             ]);
-            if($update == 1){
-                echo $gameName.$issue.'已结算';
-            } else {
-                echo $gameName.$issue.'结算失败！';
+            if ($update !== 1) {
+                \Log::info($gameName . $issue . "结算not Finshed");
             }
         }
+    }
+
+    private function excel($openCode,$exeBase,$issue,$gameId,$table = ''){
+        if(empty($table))
+            return false;
+        for($i=0;$i< (int)$exeBase->excel_num;$i++){
+            if($i==0){
+                $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
+                if(empty($exeBet))
+                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}' and bet.testFlag in (0,2)");
+            }else{
+                $excel = new Excel();
+                $openCode = $excel->opennum($table);
+                DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
+            }
+            $win = $this->exc_play($openCode,$gameId);
+//            $bunko = $this->bunko($win,$gameId,$issue,true);
+            $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,true);
+            if($bunko == 1){
+                $tmp = DB::connection('mysql::write')->select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
+                foreach ($tmp as&$value)
+                    $excBunko = $value->sumBunko;
+                \Log::info('幸运六合彩 :'.$openCode.' => '.$excBunko);
+                $dataExcGame['game_id'] = $gameId;
+                $dataExcGame['issue'] = $issue;
+                $dataExcGame['opennum'] = $openCode;
+                $dataExcGame['bunko'] = $excBunko;
+                $dataExcGame['excel_num'] = $i;
+                $dataExcGame['excel_num']++;
+                $dataExcGame['created_at'] = date('Y-m-d H:i:s');
+                $dataExcGame['updated_at'] = date('Y-m-d H:i:s');
+                DB::table('excel_game')->insert([$dataExcGame]);
+            }
+        }
+        $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = ".$gameId." AND issue ='{$issue}') and game_id = ".$gameId." AND issue ='{$issue}' LIMIT 1";
+        $tmp = DB::select($aSql);
+        foreach ($tmp as&$value)
+            $openCode = $value->opennum;
+        \Log::Info($table.':'.$openCode);
+        DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
+        DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
+        DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->where('game_id',$gameId)->delete();
     }
 
     //特码A-B
@@ -1794,7 +1857,7 @@ class New_XYLHC
     }
 
     //投注结算
-    function BUNKO($openCode,$win,$gameId,$issue)
+    function BUNKO($openCode,$win,$gameId,$issue,$excel=false)
     {
         $bunko_index = 0;
 
@@ -1806,10 +1869,18 @@ class New_XYLHC
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+
+        if($excel) {
+            $table = 'excel_bet';
+            $getUserBets = DB::connection('mysql::write')->table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        }else{
+            $table = 'bet';
+            $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        }
+
         if($getUserBets){
-            $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
-            $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
+            $sql = "UPDATE ".$table." SET bunko = CASE "; //中奖的SQL语句
+            $sql_lose = "UPDATE ".$table." SET bunko = CASE "; //未中奖的SQL语句
 
             $ids = implode(',', $id);
             foreach ($getUserBets as $item){
@@ -1827,7 +1898,7 @@ class New_XYLHC
                 $zxbz_playCate = 175; //特码分类ID
                 $zxbz_ids = [];
                 $zxbz_lose_ids = [];
-                $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
+                $get = DB::table($table)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
                 foreach ($get as $item) {
                     $open = explode(',', $openCode);
                     $user = explode(',', $item->bet_info);
@@ -1840,7 +1911,7 @@ class New_XYLHC
                 }
                 $ids_zxbz = implode(',', $zxbz_ids);
                 if($ids_zxbz){
-                    $sql_zxb = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
+                    $sql_zxb = "UPDATE ".$table." SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
                 } else {
                     $sql_zxb = 0;
                 }
@@ -1848,7 +1919,7 @@ class New_XYLHC
                 //合肖-----开始
                 $hexiao_playCate = 166; //分类ID
                 $hexiao_ids = [];
-                $getHexiao = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
+                $getHexiao = DB::table($table)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
                 foreach ($getHexiao as $item) {
                     $hexiao_open = explode(',', $tema_SX);
                     $hexiao_user = explode(',', $item->bet_info);
@@ -1859,7 +1930,7 @@ class New_XYLHC
                 }
                 $ids_hexiao = implode(',', $hexiao_ids);
                 if($ids_hexiao){
-                    $sql_hexiao = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_hexiao)"; //中奖的SQL语句
+                    $sql_hexiao = "UPDATE ".$table." SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_hexiao)"; //中奖的SQL语句
                 } else {
                     $sql_hexiao = 0;
                 }
@@ -1877,7 +1948,7 @@ class New_XYLHC
                 $sx6 = $this->LHC_SX->shengxiao($arrOpenCode[5]);
                 $openSX = [$sx1,$sx2,$sx3,$sx4,$sx5,$sx6];
                 $countOpen = array_count_values($openSX);
-                $zx_sql = "UPDATE bet SET bunko = CASE play_id ";
+                $zx_sql = "UPDATE ".$table." SET bunko = CASE play_id ";
                 foreach ($countOpen as $kk => $vv){
                     foreach ($zx_plays as $k => $v){
                         if ($kk == $k){

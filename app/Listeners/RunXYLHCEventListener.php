@@ -28,6 +28,6 @@ class RunXYLHCEventListener
      */
     public function handle(RunXYLHC $event)
     {
-        $this->XYLHC->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
+        $this->XYLHC->all($event->openCode,$event->openIssue,$event->gameId,$event->id,$event->excel);
     }
 }

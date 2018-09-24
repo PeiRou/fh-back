@@ -81,8 +81,15 @@ class new_xylhc extends Command
             Redis::set('xylhc:nextIssue',(int)$nextIssue+1);
             Redis::set('xylhc:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('xylhc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+            \Log::info('xylhc_kill');
+            //---kill start
+            $table = 'game_xylhc';
+            $excel = new Excel();
+            $opennum = $excel->kill_count($table,$res->expect,$this->gameId,$res->opencode);
+            //---kill end
+            $opencode = empty($opennum)?$res->opencode:$opennum;
             try{
-                $openNum = explode(',',$res->opencode);
+                $openNum = explode(',',$opencode);
                 $n1 = $openNum[0];
                 $n2 = $openNum[1];
                 $n3 = $openNum[2];
@@ -97,7 +104,7 @@ class new_xylhc extends Command
                     'year'=> date('Y'),
                     'month'=> date('m'),
                     'day'=>  date('d'),
-                    'open_num'=> $res->opencode,
+                    'open_num'=> $opencode,
                     'n1' => $n1,
                     'n2' => $n2,
                     'n3' => $n3,
