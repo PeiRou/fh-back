@@ -1,7 +1,7 @@
 <form id="editUserLevelsForm" class="ui mini form" action="{{ url('/action/admin/editDrawingLevels') }}">
     <div class="field">
         <label>当前会员：{{ $user->username }}</label>
-        <label>当前会员层级：{{ $levels->name }}</label>
+        <label>当笔提款会员层级：{{ $levels->name }}</label>
     </div>
     <div class="field">
         <label>层级将要变更为</label>
@@ -37,7 +37,7 @@
                 success: function(result) {
                     if(result.status == true){
                         jc.close();
-                        $('#userTable').DataTable().ajax.reload(null,false);
+                        $('#drawingRecordTable').DataTable().ajax.reload(null,false);
                     }
                 }
             });

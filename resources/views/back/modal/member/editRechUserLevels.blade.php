@@ -1,7 +1,7 @@
-<form id="editUserLevelsForm" class="ui mini form" action="{{ url('/action/admin/editUserLevels') }}">
+<form id="editUserLevelsForm" class="ui mini form" action="{{ url('/action/admin/editRechUserLevels') }}">
     <div class="field">
         <label>当前会员：{{ $user->username }}</label>
-        <label>当前会员层级：{{ $levels->name }}</label>
+        <label>当笔存款会员层级：{{ $levels->name }}</label>
     </div>
     <div class="field">
         <label>层级将要变更为</label>
@@ -14,6 +14,7 @@
         </div>
     </div>
     <input type="hidden" name="userid" value="{{ $user->id }}">
+    <input type="hidden" name="rid" value="{{ $rid}}">
 </form>
 <script>
     $(function () {
@@ -36,7 +37,7 @@
                 success: function(result) {
                     if(result.status == true){
                         jc.close();
-                        $('#userTable').DataTable().ajax.reload(null,false);
+                        $('#rechargeRecordTable').DataTable().ajax.reload(null,false);
                     }
                 }
             });

@@ -266,7 +266,8 @@ class ModalController extends Controller
     {
         $user = User::find($id);
         $allBanks = Banks::where('status',1)->get();
-        return view('back.modal.member.userEditInfo',compact('user','allBanks'));
+        $levelsData = Levels::all();
+        return view('back.modal.member.userEditInfo',compact('user','allBanks','levelsData'));
     }
     //查看会员备注
     public function viewUserContent($id)
@@ -314,15 +315,24 @@ class ModalController extends Controller
     }
 
     //修改用户层级
-    public function editUserLevels($uid,$nowLevels,$rid=0)
+    public function editUserLevels($uid,$nowLevels)
     {
         $user = User::where('id',$uid)->first();
         $levels = Levels::where('value',$nowLevels)->first();
         $levelsData = Levels::all();
-        return view('back.modal.member.editUserLevels',compact('user','levels','levelsData','rid'));
+        return view('back.modal.member.editUserLevels',compact('user','levels','levelsData'));
     }
 
-    //修改用户层级
+    //修改充值用户层级
+    public function editRechUserLevels($uid,$nowLevels,$rid=0)
+    {
+        $user = User::where('id',$uid)->first();
+        $levels = Levels::where('value',$nowLevels)->first();
+        $levelsData = Levels::all();
+        return view('back.modal.member.editRechUserLevels',compact('user','levels','levelsData','rid'));
+    }
+
+    //修改提款用户层级
     public function editDrawingLevels($uid,$nowLevels,$rid)
     {
         $user = User::where('id',$uid)->first();

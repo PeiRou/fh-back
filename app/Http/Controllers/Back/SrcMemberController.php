@@ -426,6 +426,7 @@ class SrcMemberController extends Controller
             'wechat'=>$request->input('wechat'),
             'editodds'=>$request->input('editodds'),
             'content'=>$request->input('content'),
+            'rechLevel'=>$request->input('levels'),
         ]);
         if(!empty($password)){
             $data->put('password',Hash::make(md5($password)));
@@ -726,15 +727,14 @@ class SrcMemberController extends Controller
     //修改会员层级
     public function editUserLevels(Request $request)
     {
-        $rid = $request->get('rid');
+        $id = $request->get('userid');
         $levels = $request->get('levels');
 
-        if($rid>0){
-            $update = Recharges::where('id',$rid)
-                ->update([
-                    'levels'=>$levels
-                ]);
-        }
+
+        $update = User::where('id',$id)
+            ->update([
+                'rechLevel'=>$levels
+            ]);
         if($update == 1){
             return response()->json([
                 'status'=>true
@@ -747,7 +747,30 @@ class SrcMemberController extends Controller
         }
     }
 
-    //修改会员层级
+    //修改充值会员层级
+    public function editRechUserLevels(Request $request)
+    {
+        $rid = $request->get('rid');
+        $levels = $request->get('levels');
+
+
+        $update = Recharges::where('id',$rid)
+            ->update([
+                'levels'=>$levels
+            ]);
+        if($update == 1){
+            return response()->json([
+                'status'=>true
+            ]);
+        } else {
+            return response()->json([
+                'status'=>false,
+                'msg' => '更新失败！'
+            ]);
+        }
+    }
+
+    //修改提款会员层级
     public function editDrawingLevels(Request $request)
     {
         $rid = $request->get('rid');

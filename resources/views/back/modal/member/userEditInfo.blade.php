@@ -100,6 +100,19 @@
 
     <div class="two fields">
         <div class="field">
+            <label>充值层级</label>
+            <div class="ui input icon">
+                <select class="ui fluid dropdown" name="levels">
+                    @foreach($levelsData as $item)
+                        <option @if($item->value == $user->rechLevel) selected @endif value="{{ $item->value }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="two fields">
+        <div class="field">
             <label>开启赔率修改权限</label>
             <div class="ui input icon">
                 <select class="ui fluid dropdown" name="editodds" style="height: 32px !important;">
