@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Excel;
 use App\Helpers\LHC_SX;
 use App\Http\Controllers\Bet\Clong;
 use Illuminate\Console\Command;
