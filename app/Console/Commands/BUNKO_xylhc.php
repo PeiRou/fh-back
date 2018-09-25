@@ -49,7 +49,7 @@ class BUNKO_xylhc extends Command
                 'bunko' => 2
             ]);
             if($update)
-                event(new RunXYLHC($get->open_num,$get->issue,$this->gameId,$get->id)); //新--结算
+                event(new RunXYLHC($get->open_num,$get->issue,$this->gameId,$get->id, false)); //新--结算
         }
     }
 }
