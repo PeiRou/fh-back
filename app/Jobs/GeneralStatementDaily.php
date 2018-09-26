@@ -99,8 +99,6 @@ class GeneralStatementDaily implements ShouldQueue
                     $aArray[$kArray]['activity_agent_count'] = empty($iActivity->agentIdCount)?0:$iActivity->agentIdCount;
                 }
             }
-            if($aArray[$kArray]['bet_count'] == 0 && $aArray[$kArray]['recharges_money'] == 0 && $aArray[$kArray]['drawing_money'] == 0 && $aArray[$kArray]['activity_money'] == 0)
-                unset($aArray[$kArray]);
         }
         ReportGeneral::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
