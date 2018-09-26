@@ -439,7 +439,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editPayCft/{id}', 'Back\Ajax\ModalController@editPayCft');
     Route::get('/back/modal/addArticle', 'Back\Ajax\ModalController@addArticle');
     Route::get('/back/modal/editArticle/{id}', 'Back\Ajax\ModalController@editArticle');
-    Route::get('/back/modal/editUserLevels/{uid}/{nowLevels}/{rid}', 'Back\Ajax\ModalController@editUserLevels');
+    Route::get('/back/modal/editUserLevels/{uid}/{nowLevels}', 'Back\Ajax\ModalController@editUserLevels');
     Route::get('/back/modal/editRechUserLevels/{uid}/{nowLevels}/{rid}', 'Back\Ajax\ModalController@editRechUserLevels');
     Route::get('/back/modal/editDrawingLevels/{uid}/{nowLevels}/{rid}', 'Back\Ajax\ModalController@editDrawingLevels');
     Route::get('/back/modal/rechargeError/{id}', 'Back\Ajax\ModalController@rechargeError');
