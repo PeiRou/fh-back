@@ -18,14 +18,14 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
-                    <div class="one wide field">
-                        <select class="ui dropdown" id="game" style='height:32px !important'>
-                            <option value="">游戏选择</option>
-                            @foreach($games as $item)
-                                <option value="{{ $item->game_id }}">{{ $item->game_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    {{--<div class="one wide field">--}}
+                        {{--<select class="ui dropdown" id="game" style='height:32px !important'>--}}
+                            {{--<option value="">游戏选择</option>--}}
+                            {{--@foreach($games as $item)--}}
+                                {{--<option value="{{ $item->game_id }}">{{ $item->game_name }}</option>--}}
+                            {{--@endforeach--}}
+                        {{--</select>--}}
+                    {{--</div>--}}
                     <div class="two wide field">
                         <input type="text" id="account" placeholder="代理账号">
                     </div>
@@ -91,18 +91,18 @@
             <tr>
                 <th></th>
                 <th></th>
+                <th id="recharges_money"></th>
+                <th id="drawing_money"></th>
+                <th id="bet_count"></th>
+                <th id="bet_money"></th>
+                <th id="bet_amount"></th>
+                <th id="activity_money"></th>
+                <th id="handling_fee"></th>
                 <th></th>
                 <th></th>
+                <th id="bet_bunko"></th>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th id="fact_bet_bunko"></th>
             </tr>
             </tfoot>
         </table>

@@ -66,78 +66,31 @@ $(function () {
         ajax: {
             url:'/back/datatables/reportAgent',
             data:function (d) {
-                d.game = $('#game').val();
                 d.account = $('#account').val();
                 d.timeStart = $('#timeStart').val();
                 d.timeEnd = $('#timeEnd').val();
-                d.zd = $('#zd').val();
             }
         },
         columns: [
             {data:function(data){              //账号 agaccount
                 var timeStart = $('#timeStart').val();
                 var timeEnd = $('#timeEnd').val();
-                return '<a href="/back/control/reportManage/user?ag='+data.a_id+'&start='+timeStart+'&end='+timeEnd+'">'+data.agaccount + '(<font color="gray">'+data.agname+'</font>)</a>';
+                return '<a href="/back/control/reportManage/user?ag='+data.agent_id+'&start='+timeStart+'&end='+timeEnd+'">'+data.agent_account + '(<font color="gray">'+data.agent_name+'</font>)</a>';
             }},
-            {data:'countMember'},             //会员数
-            {data:'sumRecharges'},
-            {data:'sumDrawing'},
-            {data:'countBet'},              //笔数
-            {data:'sumMoney'},             //投注金额
-            {data:'sumWinbet'},             //赢利投注金额
-            {data:'sumActivity'},           //活动
-            {data:'sumRecharge_fee'},       //充值手续费
-            {data:function () {             //代理赔率金额
-                    return 0 ;
-                }},
-            {data:function () {             //代理退水金额
-                    return 0 ;
-                }},
-            {data:'sumBunko'},             //会员输赢（不包括退水）
-            {data:function () {             //实际退水
-                    return 0 ;
-                }},
-            {data:'sumBunko'},             //会员输赢（不包括退水）
+            {data:'memberCount'},             //会员数
+            {data:'recharges_money'},
+            {data:'drawing_money'},
+            {data:'bet_count'},              //笔数
+            {data:'bet_money'},             //投注金额
+            {data:'bet_amount'},             //赢利投注金额
+            {data:'activity_money'},           //活动
+            {data:'handling_fee'},       //充值手续费
+            {data:'odds_amount'},           //代理赔率金额
+            {data:'return_amount'},         //代理退水金额
+            {data:'bet_bunko'},             //会员输赢（不包括退水）
+            {data:'fact_return_amount'},    //实际退水
+            {data:'fact_bet_bunko'},             //会员输赢（不包括退水）
         ],
-        "footerCallback": function ( row, data, start, end, display ) {
-            var api = this.api(), data;
-
-            // converting to interger to find total
-            var intVal = function ( i ) {
-                return typeof i === 'string' ?
-                    i.replace(/[\$,]/g, '')*1 :
-                    typeof i === 'number' ?
-                        i : 0;
-            };
-
-            $.ajax({
-                url:'/back/datatables/reportTotal',
-                type:'get',
-                dataType:'json',
-                success:function (data) {
-                    $( api.column( 1 ).footer() ).html(data.result.countMember);
-                    $( api.column( 2 ).footer() ).html(data.result.sumRecharges);
-                    $( api.column( 3 ).footer() ).html(data.result.sumDrawing);
-                    $( api.column( 4 ).footer() ).html(data.result.countBet);
-                    $( api.column( 5 ).footer() ).html(data.result.sumMoney);
-                    $( api.column( 6 ).footer() ).html(data.result.sumWinbet);
-                    $( api.column( 7 ).footer() ).html(data.result.sumActivity);
-                    $( api.column( 8 ).footer() ).html(data.result.sumRecharge_fee);
-                    $( api.column( 11 ).footer() ).html(data.result.sumBunko);
-                    $( api.column( 13 ).footer() ).html(data.result.sumBunko);
-                }
-            })
-
-            // Update footer by showing the total with the reference of the column index
-            $( api.column( 0 ).footer() ).html('总计');
-            // $( api.column( 2 ).footer() ).html(tueTotal);
-            // $( api.column( 3 ).footer() ).html(wedTotal);
-            // $( api.column( 7 ).footer() ).html(Total7);
-            // $( api.column( 8 ).footer() ).html(Total8);
-            // $( api.column( 9 ).footer() ).html(Total9);
-            // $( api.column( 10 ).footer() ).html(Total10);
-            // $( api.column( 12 ).footer() ).html(Total12);
-        },
         language: {
             "zeroRecords": "暂无数据",
             "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",
@@ -162,7 +115,9 @@ $(function () {
 
     $('#btn_search').on('click',function () {
         dataTable.ajax.reload();
+        footerTotal();
     });
+
     $('#reset').on('click',function () {
         $('#game').val("");
         $('#rechLevel').val("");
@@ -174,5 +129,33 @@ $(function () {
         $('#promoter').val("");
         $('#noLoginDays').val("");
         dataTable.ajax.reload();
+        footerTotal();
     });
+
+    function footerTotal() {
+        $.ajax({
+            url:'/back/datatables/reportAgentTotal',
+            type:'get',
+            dataType:'json',
+            data:{
+                account : $('#account').val(),
+                timeStart : $('#timeStart').val(),
+                timeEnd : $('#timeEnd').val(),
+            },
+            success:function (data) {
+                $('#recharges_money').text(data.recharges_money);
+                $('#drawing_money').text(data.drawing_money);
+                $('#bet_count').text(data.bet_count);
+                $('#bet_money').text(data.bet_money);
+                $('#bet_amount').text(data.bet_amount);
+                $('#activity_money').text(data.activity_money);
+                $('#handling_fee').text(data.handling_fee);
+                $('#bet_amount').text(data.bet_amount);
+                $('#bet_bunko').text(data.bet_bunko);
+                $('#fact_bet_bunko').text(data.fact_bet_bunko);
+            }
+        });
+    }
+
+    footerTotal();
 });

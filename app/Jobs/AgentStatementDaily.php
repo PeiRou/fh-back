@@ -2,19 +2,19 @@
 
 namespace App\Jobs;
 
+use App\Agent;
 use App\Bets;
 use App\Capital;
 use App\Drawing;
 use App\Recharges;
-use App\ReportMember;
-use App\Users;
+use App\ReportAgent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class MemberStatementDaily implements ShouldQueue
+class AgentStatementDaily implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -37,31 +37,27 @@ class MemberStatementDaily implements ShouldQueue
     public function handle()
     {
         ini_set('memory_limit','2048M');
-        //获取用户,代理,总代
-        $aUser = Users::betMemberReportData();
+        //获取代理,总代
+        $aAgent = Agent::betAgentReportData();
         //获取投注
-        $aBet = Bets::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        $aBet = Bets::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取充值金额
-        $aRecharges = Recharges::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        $aRecharges = Recharges::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取提款金额
-        $aDrawing = Drawing::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        $aDrawing = Drawing::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取活动金额
-        $aActivity = Capital::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        $aActivity = Capital::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         $aArray = [];
         $dateTime = date('Y-m-d H:i:s');
         $time = strtotime($this->aDateTime);
-        foreach ($aUser as $kUser => $iUser) {
+        foreach ($aAgent as $kAgent => $iAgent){
             $aArray[] = [
-                'user_account' => $iUser->userAccount,
-                'user_name' => $iUser->userName,
-                'user_id' => $iUser->userId,
-                'user_test_flag' => $iUser->userTestFlag,
-                'agent_account' => $iUser->agentAccount,
-                'agent_name' => $iUser->agentName,
-                'agent_id' => $iUser->agentId,
-                'general_account' => $iUser->generalAccount,
-                'general_name' => $iUser->generalName,
-                'general_id' => $iUser->generalId,
+                'agent_account' => $iAgent->agentAccount,
+                'agent_name' => $iAgent->agentName,
+                'agent_id' => $iAgent->agentId,
+                'general_account' => $iAgent->generalAccount,
+                'general_id' => $iAgent->generalId,
+                'general_name' => $iAgent->generalName,
                 'date' => $this->aDateTime,
                 'dateTime' => $time,
                 'created_at' => $dateTime,
@@ -74,37 +70,42 @@ class MemberStatementDaily implements ShouldQueue
         }
         foreach ($aArray as $kArray => $iArray){
             foreach ($aBet as $kBet => $iBet){
-                if($iArray['user_id'] == $iBet->user_id && $iArray['date'] == $iBet->date){
+                if($iArray['agent_id'] == $iBet->agentId && $iArray['date'] == $iBet->date){
                     $aArray[$kArray]['bet_count'] = empty($iBet->idCount)?0:$iBet->idCount;
                     $aArray[$kArray]['bet_money'] = empty($iBet->betMoneySum)?0.00:$iBet->betMoneySum;
                     $aArray[$kArray]['bet_amount'] = empty($iBet->sumWinbet)?0.00:$iBet->sumWinbet;
                     $aArray[$kArray]['bet_bunko'] = empty($iBet->sumBunko)?0.00:$iBet->sumBunko;
                     $aArray[$kArray]['fact_bet_bunko'] = empty($iBet->sumBunko)?0.00:$iBet->sumBunko;
+                    $aArray[$kArray]['bet_member_count'] = empty($iBet->userIdCount)?0:$iBet->userIdCount;
                 }
             }
             foreach ($aRecharges as $kRecharges => $iRecharges){
-                if($iArray['user_id'] == $iRecharges->userId && $iArray['date'] == $iRecharges->date){
+                if($iArray['agent_id'] == $iRecharges->agentId && $iArray['date'] == $iRecharges->date){
                     $aArray[$kArray]['recharges_money'] = empty($iRecharges->reAmountSum)?0.00:$iRecharges->reAmountSum;
+                    $aArray[$kArray]['recharges_member_count'] = empty($iRecharges->userIdCount)?0:$iRecharges->userIdCount;
                 }
             }
             foreach ($aDrawing as $kDrawing => $iDrawing){
-                if($iArray['user_id'] == $iDrawing->user_id && $iArray['date'] == $iDrawing->date){
+                if($iArray['agent_id'] == $iDrawing->agentId && $iArray['date'] == $iDrawing->date){
                     $aArray[$kArray]['drawing_money'] = empty($iDrawing->drAmountSum)?0.00:$iDrawing->drAmountSum;
+                    $aArray[$kArray]['drawing_member_count'] = empty($iDrawing->userIdCount)?0:$iDrawing->userIdCount;
                 }
             }
             foreach ($aActivity as $kActivity => $iActivity){
-                if($iArray['user_id'] == $iActivity->to_user && $iArray['date'] == $iActivity->date){
+                if($iArray['agent_id'] == $iActivity->agentId && $iArray['date'] == $iActivity->date){
                     $aArray[$kArray]['activity_money'] = empty($iActivity->sumActivity)?0.00:$iActivity->sumActivity;
                     $aArray[$kArray]['handling_fee'] = empty($iActivity->sumRecharge_fee)?0.00:$iActivity->sumRecharge_fee;
+                    $aArray[$kArray]['activity_member_count'] = empty($iActivity->userIdCount)?0:$iActivity->userIdCount;
                 }
             }
         }
-        ReportMember::where('date','=',$this->aDateTime)->delete();
+        ReportAgent::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
             if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0)
-                MemberStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('memberStatementInsert'));
+                AgentStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('agentStatementInsert'));
         }
     }
+
 
     //队列真实名
     public function setQueueRealName($queue){

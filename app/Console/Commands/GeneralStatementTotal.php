@@ -2,17 +2,17 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\MemberStatementDaily;
+use App\Jobs\GeneralStatementDaily;
 use Illuminate\Console\Command;
 
-class MemberStatementTotal extends Command
+class GeneralStatementTotal extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'MemberReport:TotalSettlement {startTime} {endTime}';
+    protected $signature = 'GeneralReport:TotalSettlement {startTime} {endTime}';
 
     /**
      * The console command description.
@@ -43,7 +43,7 @@ class MemberStatementTotal extends Command
         $endTime = empty($this->argument('endTime'))?date('Y-m-d'):$this->argument('endTime');
         $aDate = $this->getSpanDays($startTime,$endTime);
         foreach ($aDate as $kDate => $iDate){
-            MemberStatementDaily::dispatch($iDate)->onQueue($this->setQueueRealName('memberStatementDaily'));
+            GeneralStatementDaily::dispatch($iDate)->onQueue($this->setQueueRealName('generalStatementDaily'));
         }
         $this->info('ok');
     }

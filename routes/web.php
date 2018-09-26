@@ -185,7 +185,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/reportAgent', 'Back\Data\ReportDataController@Agent');
     Route::get('/back/datatables/reportUser', 'Back\Data\ReportDataController@User');
     Route::get('/back/datatables/reportBet', 'Back\Data\ReportDataController@Bet');
-    Route::get('/back/datatables/reportTotal', 'Back\Data\ReportDataController@Total');
+    Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal');
+    Route::get('/back/datatables/reportAgentTotal', 'Back\Data\ReportDataController@AgentTotal');
+    Route::get('/back/datatables/reportUserTotal', 'Back\Data\ReportDataController@UserTotal');
     Route::get('/back/datatables/betToday', 'Back\Data\BetDataController@betToday');
     Route::get('/back/datatables/betHistory', 'Back\Data\BetDataController@betHistory');
     Route::get('/back/datatables/betRealTime', 'Back\Data\BetDataController@betRealTime');

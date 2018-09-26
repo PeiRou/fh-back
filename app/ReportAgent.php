@@ -5,9 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class ReportMember extends Model
+class ReportAgent extends Model
 {
-    protected $table = 'report_member';
+    protected $table = 'report_agent';
     protected $primaryKey = 'id';
 
     public static function reportQuery($aParam){
@@ -15,17 +15,26 @@ class ReportMember extends Model
                   SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
                   SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
                   SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
-                  `user_account`,`user_name`,`user_id`,`agent_account` 
-                  FROM `report_member` WHERE 1 ";
+                  `agent_account`,`agent_id`
+                  FROM `report_agent` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
-        $result['aSql'] .= " LIMIT ".$aParam['start'].",".$aParam['length'];
-        return DB::select($result['aSql'],$result['aArray']);
+        $aSql = $result['aSql']." LIMIT ".$aParam['start'].",".$aParam['length'];
+        $bSql = "SELECT COUNT(`agent_id`) AS `memberCount`,`agent_id` FROM `report_member` WHERE 1 ";
+        $bParam = [
+            'timeStart' => $aParam['timeStart'],
+            'timeEnd' => $aParam['timeEnd'],
+            'chkTest' => 1
+        ];
+        $resultB = ReportMember::conditionalConnection($bSql,$bParam,0);
+        $bSql = $resultB['aSql']." GROUP BY `agent_id`";
+        $aSql = "SELECT `sum`.*,`count`.`memberCount` FROM (".$aSql.") AS `sum` JOIN (".$bSql.") AS `count` ON `count`.`agent_id` = `sum`.`agent_id`";
+        return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']));
     }
 
     public static function reportQueryCount($aParam){
-        $aSql = "SELECT `user_id`,SUM(`fact_bet_bunko`) AS `fact_bet_bunko` FROM `report_member` WHERE 1 ";
+        $aSql = "SELECT `agent_id` FROM `report_agent` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
-        $aSql = "SELECT COUNT(`a`.`user_id`) AS `count` FROM ( ".$result['aSql']." ) AS `a`";
+        $aSql = "SELECT COUNT(`a`.`agent_id`) AS `count` FROM ( ".$result['aSql']." ) AS `a`";
         return DB::select($aSql,$result['aArray'])[0]->count;
     }
 
@@ -33,7 +42,7 @@ class ReportMember extends Model
         $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
                   SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
                   SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`
-                  FROM `report_member` WHERE 1 ";
+                  FROM `report_agent` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam,0);
         return DB::select($result['aSql'],$result['aArray'])[0];
     }
@@ -41,37 +50,19 @@ class ReportMember extends Model
     public static function conditionalConnection($aSql,$aParam,$group = 1){
         $aArray = [];
         if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam)){
-            $aSql .= " AND `dateTime` >= :startTimeM";
-            $aArray['startTimeM'] = strtotime($aParam['timeStart']);
+            $aSql .= " AND `dateTime` >= :startTimeA";
+            $aArray['startTimeA'] = strtotime($aParam['timeStart']);
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
-            $aSql .= " AND `dateTime` <= :endTimeM";
-            $aArray['endTimeM'] = strtotime($aParam['timeEnd'].' 23:59:59');
+            $aSql .= " AND `dateTime` <= :endTimeA";
+            $aArray['endTimeA'] = strtotime($aParam['timeEnd'].' 23:59:59');
         }
         if(isset($aParam['account']) && array_key_exists('account',$aParam)){
-            $aSql .= " AND `user_account` = :userAccount";
+            $aSql .= " AND `agent_account` = :userAccount";
             $aArray['userAccount'] = $aParam['account'];
         }
-        if(isset($aParam['chkTest']) && array_key_exists('chkTest',$aParam)){
-            if($aParam['chkTest'] == 1){
-                $aSql .= " AND `user_test_flag` = 0";
-            }
-
-        }
         if($group === 1){
-            $aSql .= " GROUP BY `user_id` HAVING 1";
-            if(isset($aParam['minBunko']) && array_key_exists('minBunko',$aParam) && isset($aParam['maxBunko']) && array_key_exists('maxBunko',$aParam)){
-                if(isset($aParam['minBunko']) && array_key_exists('minBunko',$aParam)){
-                    $aSql .= " AND `fact_bet_bunko` >= :minBunko";
-                    $aArray['minBunko'] = $aParam['minBunko'];
-                }
-                if(isset($aParam['maxBunko']) && array_key_exists('maxBunko',$aParam)){
-                    $aSql .= " AND `fact_bet_bunko` >= :maxBunko";
-                    $aArray['maxBunko'] = $aParam['maxBunko'];
-                }
-            }else{
-                $aSql .= " AND `fact_bet_bunko` > 0";
-            }
+            $aSql .= " GROUP BY `agent_id`";
         }
         return [
             'aSql' => $aSql,

@@ -37,4 +37,41 @@ class Recharges extends Model
         return DB::select($aSql,$aArray);
     }
 
+    public static function betAgentReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT LEFT(`recharges`.`created_at`,10) AS `date`,SUM(`recharges`.`amount`) AS `reAmountSum`,`users`.`agent` AS `agentId`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`
+                  FROM `recharges`
+                  JOIN `users` ON `users`.`id` = `recharges`.`userId`
+                  WHERE `recharges`.`status` = 2 AND `recharges`.`payType` != 'adminAddMoney' AND `users`.`testFlag` = 0 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `recharges`.`created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `recharges`.`created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `agentId`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
+    public static function betGeneralReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT LEFT(`recharges`.`created_at`,10) AS `date`,SUM(`recharges`.`amount`) AS `reAmountSum`,`agent`.`gagent_id` AS `generalId`,
+                  COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`
+                  FROM `recharges`
+                  JOIN `users` ON `users`.`id` = `recharges`.`userId`
+                  JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
+                  WHERE `recharges`.`status` = 2 AND `recharges`.`payType` != 'adminAddMoney' AND `users`.`testFlag` = 0 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `recharges`.`created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `recharges`.`created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `generalId`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
 }

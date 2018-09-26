@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Back\Data;
 
+use App\ReportAgent;
+use App\ReportGeneral;
+use App\ReportMember;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
@@ -14,223 +17,72 @@ class ReportDataController extends Controller
     //总代理报表
     public function Gagent(Request $request)
     {
-        $game = $request->get('game');                  //游戏
-        $account = $request->get('account');            //总代帐号
-        $starttime = $request->get('timeStart');
-        $endtime = $request->get('timeEnd');
-        $chkTest = $request->get('chkTest');            //是否过滤测试帐号
-        $start = $request->get('start');
-        $length = $request->get('length');
+        $aParam = $request->all();
 
-        $aSql1 = "SELECT zd.ga_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,zd.account as zdaccount, sum(b.bet_money) as sumMoney,
-sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko,
-cp.sumActivity,cp.sumRecharge_fee";
-        $where = "";
-        $whereB = "";
-        $whereU = "";
-        $whereCp = "";
-        if(isset($game) && $game){
-            $whereB .= " and game_id = ".$game;
-        }
-        if(isset($account) && $account){
-            $where .= " and zd.account = '".$account."'";
-        }
-        if(isset($starttime) && $starttime){
-            $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-        }
-        if(isset($endtime) && $endtime){
-            $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-        }
-        if(isset($chkTest) && $chkTest=='on'){
-            $whereB .= " and testFlag = 0";
-            $whereU .= " and u.testFlag = 0";
-        }else{
-            $whereB .= " and testFlag in(0,2)";
-            $whereU .= " and u.testFlag in(0,2)";
-        }
-        $aSql = "";
-        $aSql .= " FROM (select * from bet where 1 ".$whereB.") b ";
-        $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
-        $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
-        $aSql .= " LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id ";
-        $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
-        $aSql .= " WHERE 1 ";
-        $aSql .= $where;
-        $aSqlCount = "SELECT COUNT(DISTINCT(zd.ga_id)) AS count ".$aSql;
-        $aSql = $aSql1.$aSql;
-        Session::put('reportSql',$aSql);
-        $aSql .= " GROUP BY zd.ga_id ORDER BY sumBunko ASC LIMIT ".$start.','.$length;
-        $agent = DB::select($aSql);
-        $agentCount = DB::select($aSqlCount);
+        $aData = ReportGeneral::reportQuery($aParam);
+        $aDataCount = ReportGeneral::reportQueryCount($aParam);
 
-        return DataTables::of($agent)
-            ->setTotalRecords($agentCount[0]->count)
+        return DataTables::of($aData)
+            ->setTotalRecords($aDataCount)
             ->skipPaging()
             ->make(true);
+    }
+
+    //总代理报表-总计
+    public function GagentTotal(Request $request)
+    {
+        $aParam = $request->all();
+
+        $aData = ReportGeneral::reportQuerySum($aParam);
+
+        return response()->json($aData);
     }
 
     //代理报表
     public function Agent(Request $request)
     {
-        $game = $request->get('game');                  //游戏
-        $account = $request->get('account');            //代理帐号
-        $starttime = $request->get('timeStart');
-        $endtime = $request->get('timeEnd');
-        $zd = $request->get('zd');            //总代帐号
-        $start = $request->get('start');
-        $length = $request->get('length');
+        $aParam = $request->all();
 
-        $aSql1 = "SELECT ag.a_id,count(DISTINCT(u.id)) as countMember,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,ag.name as agname, 
-sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko, 
-cp.sumActivity,cp.sumRecharge_fee,dr.amount as sumDrawing,re.amount as sumRecharges ";
-        $where = "";
-        $whereB = "";
-        $whereU = "";
-        $whereCp = "";
-        $whereDr = "";
-        $whereRe = "";
-        if(isset($game) && $game){
-            $whereB .= " and game_id = ".$game;
-        }
-        if(isset($account) && $account){
-            $where .= " and ag.account = '".$account."'";
-        }
-        if(isset($starttime) && $starttime){
-            $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-        }
-        if(isset($endtime) && $endtime){
-            $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-        }
-        if(isset($zd) && $zd>0 ){
-            $where .= " and ag.gagent_id = ".$zd." and u.testFlag in(0,2)";
-        }else{
-            $whereB .= " and testFlag = 0 ";
-            $whereU .= " and u.testFlag = 0 ";
-        }
-        $aSql = "";
-        $aSql .= " FROM (select * from bet b where 1 ".$whereB.") b ";
-        $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
-        $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
-        $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` where status = 2 ".$whereDr." group by user_id) dr on dr.user_id = u.id ";
-        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2 AND payType != 'adminAddMoney' ".$whereRe." group by userId) re ON re.userId = u.id ";
-        $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
-        $aSql .= " WHERE 1 ";
-        $aSql .= $where;
-        $aSqlCount = "SELECT COUNT(DISTINCT(u.agent)) AS count ".$aSql;
-        $aSql = $aSql1.$aSql;
-        Session::put('reportSql',$aSql);
-        $aSql .= " GROUP BY u.agent ORDER BY sumBunko ASC LIMIT ".$start.','.$length;
-        $agent = DB::select($aSql);
-        $agentCount = DB::select($aSqlCount);
-        return DataTables::of($agent)
-            ->editColumn('sumRecharges',function ($agent){
-                return empty($agent->sumRecharges)?0:$agent->sumRecharges;
-            })
-            ->editColumn('sumDrawing',function ($agent){
-                return empty($agent->sumDrawing)?0:$agent->sumDrawing;
-            })
-            ->setTotalRecords($agentCount[0]->count)
+        $aData = ReportAgent::reportQuery($aParam);
+        $aDataCount = ReportAgent::reportQueryCount($aParam);
+
+        return DataTables::of($aData)
+            ->setTotalRecords($aDataCount)
             ->skipPaging()
             ->make(true);
+    }
+
+    //代理报表-总计
+    public function AgentTotal(Request $request)
+    {
+        $aParam = $request->all();
+
+        $aData = ReportAgent::reportQuerySum($aParam);
+
+        return response()->json($aData);
     }
 
     //会员报表
     public function User(Request $request)
     {
-        $game = $request->get('game');                  //游戏
-        $account = $request->get('account');            //会员帐号
-        $starttime = $request->get('timeStart');
-        $endtime = $request->get('timeEnd');
-        $minBunko = $request->get('minBunko');          //最小输赢
-        $maxBunko = $request->get('maxBunko');          //最大输赢
-        $chkTest = $request->get('chkTest');            //是否过滤测试帐号
-        $chkDouble = $request->get('chkDouble');        //显示重复姓名会员
-        $ag = $request->get('ag');            //代理帐号
-        $start = $request->get('start');
-        $length = $request->get('length');
+        $aParam = $request->all();
 
-        $aSql1 = "SELECT u.id,u.username,u.fullName,u.agent,count(b.bet_id) as countBet,sum(b.bet_money) as sumMoney,ag.account as agaccount,
-sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as sumWinbet,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko,
-cp.sumActivity,cp.sumRecharge_fee,dr.amount as sumDrawing,re.amount as sumRecharges ";
-        $where = "";
-        $whereB = "";
-        $whereU = "";
-        $whereCp = "";
-        $whereDr = "";
-        $whereRe = "";
-        if(isset($game) && $game){
-            $whereB .= " and game_id = ".$game;
-        }
-        if(isset($account) && $account){
-            $where .= " and u.username = '".$account."'";
-        }
-        if(isset($starttime) && $starttime){
-            $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-            $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-        }
-        if(isset($endtime) && $endtime){
-            $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-            $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-        }
-        if(isset($minBunko) && $minBunko){
-            $where .= " and sumBunko >= ".$minBunko;
-        }
-        if(isset($maxBunko) && $maxBunko){
-            $where .= " and sumBunko <= ".$maxBunko;
-        }
-        if(isset($ag) && $ag > 0 ){
-            $whereU .= " and u.agent = ".$ag;
-        }
-        if(isset($chkTest) && $chkTest=='1'){
-            $whereB .= " and testFlag = 0 ";
-            $whereU .= " and u.testFlag = 0 ";
-        }else {
-            $whereB .= " and testFlag in (0,2) ";
-            $whereU .= " and u.testFlag in (0,2) ";
-        }
+        $aData = ReportMember::reportQuery($aParam);
+        $aDataCount = ReportMember::reportQueryCount($aParam);
 
-        $aSql = "";
-        $aSql .= " FROM (select * from bet where 1 ".$whereB.") b ";
-
-        if(isset($chkDouble) && $chkDouble=="on"){      //显示重复姓名会员
-            $aUser = "(select * from users WHERE fullName in(select fullName from users group by fullName having count(fullName) >= 2) and ".$whereU.")";
-            $aSql .= " JOIN ".$aUser." u on b.user_id = u.id ";
-        }else{
-            $aUser = "(select * from `users` u where 1 ".$whereU.")";
-            $aSql .= " LEFT JOIN ".$aUser." u on b.user_id = u.id ";
-        }
-        $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
-        $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` where status = 2 ".$whereDr." group by user_id) dr on dr.user_id = u.id ";
-        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2 AND payType != 'adminAddMoney' ".$whereRe." group by userId) re ON re.userId = u.id ";
-        $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
-        $aSql .= " WHERE 1 ";
-        $aSql .= $where;
-        $aSqlCount = "SELECT COUNT(DISTINCT(u.id)) AS count ".$aSql;
-        $aSql = $aSql1.$aSql;
-        Session::put('reportSql',$aSql);
-        $aSql .= " GROUP BY u.id ORDER BY sumBunko ASC LIMIT ".$start.','.$length;
-        $user = DB::select($aSql);
-        $agentCount = DB::select($aSqlCount);
-
-        return DataTables::of($user)
-            ->setTotalRecords($agentCount[0]->count)
+        return DataTables::of($aData)
+            ->setTotalRecords($aDataCount)
             ->skipPaging()
             ->make(true);
+    }
+
+    //会员报表-总计
+    public function UserTotal(Request $request)
+    {
+        $aParam = $request->all();
+
+        $aData = ReportMember::reportQuerySum($aParam);
+        return response()->json($aData);
     }
 
     //投注报表
