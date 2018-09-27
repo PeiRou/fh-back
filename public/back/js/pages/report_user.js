@@ -66,7 +66,7 @@ $(function () {
         ajax: {
             url:'/back/datatables/reportUser',
             data:function (d) {
-                d.game = $('#game').val();
+                d.game_id = $('#game').val();
                 d.account = $('#account').val();
                 d.timeStart = $('#timeStart').val();
                 d.timeEnd = $('#timeEnd').val();
@@ -78,71 +78,24 @@ $(function () {
             }
         },
         columns: [
-            {data:'username'},              //账号
-            {data:'fullName'},              //全名
-            {data:'agaccount'},             //上级代理
-            {data:'sumRecharges'},
-            {data:'sumDrawing'},
+            {data:'user_account'},              //账号
+            {data:'user_name'},              //全名
+            {data:'agent_account'},             //上级代理
+            {data:'recharges_money'},
+            {data:'drawing_money'},
             {data:function (data) {         //笔数
-                    return '<a href="/back/control/userManage/userBetList/'+data.id+'">'+data.countBet+'</a>';
+                    return '<a href="/back/control/userManage/userBetList/'+data.user_id+'">'+data.bet_count+'</a>';
                 }},
-            {data:'sumMoney'},             //投注金额
-            {data:'sumWinbet'},             //赢利投注金额
-            {data:'sumActivity'},
-            {data:'sumRecharge_fee'},
-            {data:function () {             //代理赔率金额
-                    return 0 ;
-                }},
-            {data:function () {             //代理退水金额
-                    return 0 ;
-                }},
-            {data:'sumBunko'},             //会员输赢（不包括退水）
-            {data:function () {             //实际退水
-                    return 0 ;
-                }},
-            {data:'sumBunko'},             //会员输赢（不包括退水）
+            {data:'bet_money'},             //投注金额
+            {data:'bet_amount'},             //赢利投注金额
+            {data:'activity_money'},
+            {data:'handling_fee'},
+            {data:'odds_amount'},           //代理赔率金额
+            {data:'return_amount'},         //代理退水金额
+            {data:'bet_bunko'},             //会员输赢（不包括退水）
+            {data:'fact_return_amount'},   //实际退水
+            {data:'fact_bet_bunko'},             //会员输赢（不包括退水）
         ],
-        "footerCallback": function ( row, data, start, end, display ) {
-            var api = this.api();
-
-            // converting to interger to find total
-            var intVal = function ( i ) {
-                return typeof i === 'string' ?
-                    i.replace(/[\$,]/g, '')*1 :
-                    typeof i === 'number' ?
-                        i : 0;
-            };
-
-            // computing column Total of the complete result
-            var monTotal = api
-                .column( 1 )
-                .data()
-                .reduce( function (a, b, c) {
-                    return "当前页 "+parseFloat((intVal(c)+1).toPrecision(12))+" 笔";
-                }, 0 );
-            $.ajax({
-                url:'/back/datatables/reportTotal',
-                type:'get',
-                dataType:'json',
-                success:function (data) {
-                    $( api.column( 3 ).footer() ).html(data.result.sumRecharges);
-                    $( api.column( 4 ).footer() ).html(data.result.sumDrawing);
-                    $( api.column( 5 ).footer() ).html(data.result.countBet);
-                    $( api.column( 6 ).footer() ).html(data.result.sumMoney);
-                    $( api.column( 7 ).footer() ).html(data.result.sumWinbet);
-                    $( api.column( 8 ).footer() ).html(data.result.sumActivity);
-                    $( api.column( 9 ).footer() ).html(data.result.sumRecharge_fee);
-                    $( api.column( 12 ).footer() ).html(data.result.sumBunko);
-                    $( api.column( 14 ).footer() ).html(data.result.sumBunko);
-                }
-            })
-            // Update footer by showing the total with the reference of the column index
-            $( api.column( 0 ).footer() ).html('总计');
-            $( api.column( 1 ).footer() ).html(monTotal);
-            // $( api.column( 10 ).footer() ).html(Total10);
-            // $( api.column( 11 ).footer() ).html(Total11);
-            // $( api.column( 13 ).footer() ).html(Total13);
-        },
         "pagingType": "full_numbers",
         language: {
             "zeroRecords": "暂无数据",
@@ -168,7 +121,9 @@ $(function () {
 
     $('#btn_search').on('click',function () {
         dataTable.ajax.reload();
+        footerTotal();
     });
+
     $('#reset').on('click',function () {
         $('#game').val("");
         $('#rechLevel').val("");
@@ -180,5 +135,36 @@ $(function () {
         $('#promoter').val("");
         $('#noLoginDays').val("");
         dataTable.ajax.reload();
+        footerTotal();
     });
+
+    function footerTotal() {
+        $.ajax({
+            url:'/back/datatables/reportUserTotal',
+            type:'get',
+            dataType:'json',
+            data:{
+                game_id : $('#game').val(),
+                account : $('#account').val(),
+                timeStart : $('#timeStart').val(),
+                timeEnd : $('#timeEnd').val(),
+                minBunko : $('#minBunko').val(),
+                maxBunko : $('#maxBunko').val(),
+                chkTest : $('#chkTest').prop('checked')?$('#chkTest').val():''
+            },
+            success:function (data) {
+                $('#recharges_money').text(data.recharges_money);
+                $('#drawing_money').text(data.drawing_money);
+                $('#bet_count').text(data.bet_count);
+                $('#bet_money').text(data.bet_money);
+                $('#bet_amount').text(data.bet_amount);
+                $('#activity_money').text(data.activity_money);
+                $('#handling_fee').text(data.handling_fee);
+                $('#bet_amount').text(data.bet_amount);
+                $('#bet_bunko').text(data.bet_bunko);
+                $('#fact_bet_bunko').text(data.fact_bet_bunko);
+            }
+        });
+    }
+    footerTotal();
 });

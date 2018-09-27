@@ -60,4 +60,54 @@ WHERE `users`.`testFlag` = 0 ";
         $aSql .= " ORDER BY `users`.`lastLoginTime` DESC";
         return DB::select($aSql,$aArray);
     }
+
+    //修改余额
+    public static function editBatchUserMoneyData($aData){
+        $aArray = [];
+        foreach ($aData as $kData => $iData){
+            if(isset($aArray[$iData['id']]) && array_key_exists($iData['id'],$aArray)){
+                $aArray[$iData['id']]['money'] += $iData['bet_money'];
+            }else{
+                $aArray[$iData['id']] = [
+                    'id' => $iData['id'],
+                    'money' => $iData['bet_money'],
+                ];
+            }
+        }
+        return DB::update(self::updateBatchStitching('users',$aArray,['money'],'id'));
+    }
+
+    //多行修改拼接
+    public static function updateBatchStitching($table,$data,$fields,$primary){
+        $aSql = 'UPDATE '. $table . ' SET ';
+        foreach ($fields as $field){
+            $str1 = '`money` = `money` + CASE ' . $primary . ' ';
+            foreach ($data as $key => $value){
+                $str1 .= 'WHEN \'' . $value[$primary] . '\' THEN \'' . $value[$field] . '\' ';
+            }
+            $str1 .= 'END , ';
+            $aSql .= $str1;
+        }
+        $aSql = substr($aSql,0,strlen($aSql)-2);
+        $endStr = 'WHERE ' . $primary . ' IN (';
+        foreach ($data as $key => $value){
+            $endStr .= '\''.$value[$primary] . '\',';
+        }
+        $endStr = substr($endStr,0,strlen($endStr)-1);
+        $endStr .= ')';
+        $aSql .= $endStr;
+        return $aSql;
+    }
+
+    public static function betMemberReportData(){
+        $aSql = "SELECT `users`.`id` AS `userId`,`users`.`username` AS `userAccount`,`users`.`fullName` AS `userName`,
+                  `agent`.`account` AS `agentAccount`,`agent`.`a_id` AS `agentId`,`agent`.`name` AS `agentName`,
+                  `general_agent`.`account` AS `generalAccount`,`general_agent`.`ga_id` AS `generalId`,`general_agent`.`name` AS `generalName`,
+                  `users`.`testFlag` AS `userTestFlag`
+                  FROM `users` 
+                  LEFT JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
+                  LEFT JOIN `general_agent` ON `general_agent`.`ga_id` = `agent`.`gagent_id`
+                  WHERE `users`.`testFlag` IN(0,2) ";
+        return DB::select($aSql);
+    }
 }

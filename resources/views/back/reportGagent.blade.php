@@ -18,12 +18,12 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
-                    <div class="one wide field">
-                        <select class="ui dropdown" id="recharge_type" style='height:32px !important'>
-                            <option value="">交收报表</option>
-                            <option value="1">分类报表</option>
-                        </select>
-                    </div>
+                    {{--<div class="one wide field">--}}
+                        {{--<select class="ui dropdown" id="recharge_type" style='height:32px !important'>--}}
+                            {{--<option value="">交收报表</option>--}}
+                            {{--<option value="1">分类报表</option>--}}
+                        {{--</select>--}}
+                    {{--</div>--}}
                     <div class="one wide field">
                         <select class="ui dropdown" id="game" style='height:32px !important'>
                             <option value="">游戏选择</option>
@@ -67,10 +67,6 @@
                     <div class="one wide field" style="width: 4.2%!important;">
                         <a class="fluid ui mini blue button"  id="btnLastMonth">上月</a>
                     </div>
-                    <div class="ui checkbox">
-                        <input type="checkbox" id="chkTest" checked="checked">
-                        <label>过滤测试用户</label>
-                    </div>
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
                     </div>
@@ -96,18 +92,18 @@
             </thead>
             <tfoot>
                 <tr>
+                    <th>总计：</th>
+                    <th></th>
+                    <th id="bet_count"></th>
+                    <th id="bet_money"></th>
+                    <th id="bet_amount"></th>
+                    <th id="activity_money"></th>
+                    <th id="handling_fee"></th>
                     <th></th>
                     <th></th>
+                    <th id="bet_bunko"></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th id="fact_bet_bunko"></th>
                 </tr>
             </tfoot>
         </table>

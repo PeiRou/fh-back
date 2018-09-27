@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Activity extends Model
 {
@@ -28,4 +29,21 @@ class Activity extends Model
         'start_time' => 'required|date',
         'end_time' => 'required|date',
     ];
+
+    public static function betMemberReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT SUM(CASE WHEN `type` = 't08' THEN `money` ELSE 0 END ) AS `sumActivity`,SUM(CASE WHEN `type` = 't04' THEN `money` ELSE 0 END ) AS `sumRecharge_fee`,
+                  `to_user`,SUM(`money`) AS `moneySum`,LEFT(`created_at`,10) AS `date` FROM `capital` 
+                  WHERE `type` IN('t08','t04') ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `to_user`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
 }

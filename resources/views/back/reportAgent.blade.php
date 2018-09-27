@@ -91,18 +91,18 @@
             <tr>
                 <th></th>
                 <th></th>
+                <th id="recharges_money"></th>
+                <th id="drawing_money"></th>
+                <th id="bet_count"></th>
+                <th id="bet_money"></th>
+                <th id="bet_amount"></th>
+                <th id="activity_money"></th>
+                <th id="handling_fee"></th>
                 <th></th>
                 <th></th>
+                <th id="bet_bunko"></th>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th id="fact_bet_bunko"></th>
             </tr>
             </tfoot>
         </table>

@@ -161,4 +161,62 @@ class Capital extends Model
         $order_id = $order_id_main . str_pad((100 - $order_id_sum % 100) % 100,2,'0',STR_PAD_LEFT);
         return $fix.$order_id;
     }
+
+    public static function betMemberReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT SUM(CASE WHEN `type` = 't08' THEN `money` ELSE 0 END ) AS `sumActivity`,SUM(CASE WHEN `type` = 't04' THEN `money` ELSE 0 END ) AS `sumRecharge_fee`,
+                  `to_user`,SUM(`money`) AS `moneySum`,LEFT(`created_at`,10) AS `date` FROM `capital` 
+                  WHERE `type` IN('t08','t04') ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `to_user`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
+    public static function betAgentReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT LEFT(`capital`.`created_at`,10) AS `date`,`users`.`agent` AS `agentId`,SUM(`capital`.`money`) AS `moneySum`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,
+                   SUM(CASE WHEN `capital`.`type` = 't08' THEN `capital`.`money` ELSE 0 END ) AS `sumActivity`,SUM(CASE WHEN `capital`.`type` = 't04' THEN `capital`.`money` ELSE 0 END ) AS `sumRecharge_fee`
+                  FROM `capital`
+                  JOIN `users` ON `users`.`id` = `capital`.`to_user`
+                  WHERE `capital`.`type` IN('t08','t04') AND `users`.`testFlag` = 0 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `capital`.`created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `capital`.`created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `agentId`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
+    public static function betGeneralReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT LEFT(`capital`.`created_at`,10) AS `date`,`agent`.`gagent_id` AS `generalId`,SUM(`capital`.`money`) AS `moneySum`,
+                  COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`,
+                  SUM(CASE WHEN `capital`.`type` = 't08' THEN `capital`.`money` ELSE 0 END ) AS `sumActivity`,
+                  SUM(CASE WHEN `capital`.`type` = 't04' THEN `capital`.`money` ELSE 0 END ) AS `sumRecharge_fee`
+                  FROM `capital`
+                  JOIN `users` ON `users`.`id` = `capital`.`to_user`
+                  JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
+                  WHERE `capital`.`type` IN('t08','t04') AND `users`.`testFlag` = 0 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `capital`.`created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `capital`.`created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `generalId`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
 }

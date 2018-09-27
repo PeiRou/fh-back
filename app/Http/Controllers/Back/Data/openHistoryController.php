@@ -237,12 +237,12 @@ class openHistoryController extends Controller
                     return "<ul class='control-menu'>
                         <li onclick='edit(\"$lhc->id\")'>修改</li>
                         <li onclick='openLhc(\"$lhc->id\")'>手动开奖</li>
+                        <li onclick='cancel(\"$lhc->issue\",\"lhc\")'>撤单</li>
                         </ul>";
                 }
                 if($lhc->is_open == 1){
                     return "<ul class='control-menu'>
                         <li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>
-                        <li onclick='cancel(\"$lhc->id\")'>撤单</li>
                         </ul>";
                 }
             })
@@ -296,12 +296,12 @@ class openHistoryController extends Controller
                     return "<ul class='control-menu'>
                         <li onclick='edit(\"$lhc->id\")'>修改</li>
                         <li onclick='openLhc(\"$lhc->id\")'>手动开奖</li>
+                        <li onclick='cancel(\"$lhc->issue\",\"xylhc\")'>撤单</li>
                         </ul>";
                 }
                 if($lhc->is_open == 1){
                     return "<ul class='control-menu'>
                         <li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>
-                        <li onclick='cancel(\"$lhc->id\")'>撤单</li>
                         </ul>";
                 }
             })
@@ -310,4 +310,6 @@ class openHistoryController extends Controller
             ->skipPaging()
             ->make(true);
     }
+
+
 }
