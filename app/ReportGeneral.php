@@ -26,7 +26,7 @@ class ReportGeneral extends Model
             'chkTest' => 1
         ];
         $resultB = ReportMember::conditionalConnection($bSql,$bParam,0);
-        $bSql = $resultB['aSql']." GROUP BY `general_id`";
+        $bSql = $resultB['aSql']." AND `bet_count` > 0 GROUP BY `general_id`";
         $aSql = "SELECT `sum`.*,`count`.`memberCount` FROM (".$aSql.") AS `sum` JOIN (".$bSql.") AS `count` ON `count`.`general_id` = `sum`.`general_id`";
         return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']));
     }
