@@ -394,12 +394,19 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
         $usersCount = DB::select('select count(id) AS count '.$sql);
         return DataTables::of($users)
             ->editColumn('online',function ($users) {
-//                $key = 'user:'.md5($users->uid);
-//                if(Redis::exists($key)){
-//                    return "<span class='on-line-point'></span>";
-//                } else {
-//                    return "<span class='off-line-point'></span>";
-//                }
+                $redis = Redis::connection();
+                $redis->select(2);
+                $key = 'user:'.md5($users->uid);
+                if($redis->exists($key)) {
+                    $redisUser = $redis->get($key);
+                    $redisUser = (array)json_decode($redisUser,true);
+                    if(isset($redisUser['user_session_id'])){
+                        $redis->select(6);
+                        if($redis->exists('urtime:'.$redisUser['user_session_id'])){
+                            return "<span class='on-line-point'></span>";
+                        }
+                    }
+                }
                 return "<span class='off-line-point'></span>";
             })
             ->editColumn('promoter',function ($users){
