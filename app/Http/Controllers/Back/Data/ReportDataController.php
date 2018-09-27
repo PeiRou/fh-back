@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back\Data;
 
+use App\Bets;
 use App\ReportAgent;
 use App\ReportBetAgent;
 use App\ReportBetGeneral;
@@ -22,12 +23,18 @@ class ReportDataController extends Controller
     {
         $aParam = $request->all();
 
-        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
-            $aData = ReportBetGeneral::reportQuery($aParam);
-            $aDataCount = ReportBetGeneral::reportQueryCount($aParam);
+        if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
+            $result = Bets::GagentToday($aParam);
+            $aData = $result['aData'];
+            $aDataCount = $result['aDataCount'];
         }else{
-            $aData = ReportGeneral::reportQuery($aParam);
-            $aDataCount = ReportGeneral::reportQueryCount($aParam);
+            if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
+                $aData = ReportBetGeneral::reportQuery($aParam);
+                $aDataCount = ReportBetGeneral::reportQueryCount($aParam);
+            }else{
+                $aData = ReportGeneral::reportQuery($aParam);
+                $aDataCount = ReportGeneral::reportQueryCount($aParam);
+            }
         }
 
         return DataTables::of($aData)
@@ -41,10 +48,15 @@ class ReportDataController extends Controller
     {
         $aParam = $request->all();
 
-        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam))
-            $aData = ReportBetGeneral::reportQuerySum($aParam);
-        else
-            $aData = ReportGeneral::reportQuerySum($aParam);
+        if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
+            $user = DB::select(Session::get('reportSql'));
+            $aData = $user[0];
+        }else {
+            if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam))
+                $aData = ReportBetGeneral::reportQuerySum($aParam);
+            else
+                $aData = ReportGeneral::reportQuerySum($aParam);
+        }
 
         return response()->json($aData);
     }
@@ -53,13 +65,18 @@ class ReportDataController extends Controller
     public function Agent(Request $request)
     {
         $aParam = $request->all();
-
-        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
-            $aData = ReportBetAgent::reportQuery($aParam);
-            $aDataCount = ReportBetAgent::reportQueryCount($aParam);
-        }else{
-            $aData = ReportAgent::reportQuery($aParam);
-            $aDataCount = ReportAgent::reportQueryCount($aParam);
+        if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
+            $result = Bets::AgentToday($aParam);
+            $aData = $result['aData'];
+            $aDataCount = $result['aDataCount'];
+        }else {
+            if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam)) {
+                $aData = ReportBetAgent::reportQuery($aParam);
+                $aDataCount = ReportBetAgent::reportQueryCount($aParam);
+            } else {
+                $aData = ReportAgent::reportQuery($aParam);
+                $aDataCount = ReportAgent::reportQueryCount($aParam);
+            }
         }
 
         return DataTables::of($aData)
@@ -72,12 +89,15 @@ class ReportDataController extends Controller
     public function AgentTotal(Request $request)
     {
         $aParam = $request->all();
-
-        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam))
-            $aData = ReportBetAgent::reportQuerySum($aParam);
-        else
-            $aData = ReportAgent::reportQuerySum($aParam);
-
+        if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
+            $user = DB::select(Session::get('reportSql'));
+            $aData = $user[0];
+        }else {
+            if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam))
+                $aData = ReportBetAgent::reportQuerySum($aParam);
+            else
+                $aData = ReportAgent::reportQuerySum($aParam);
+        }
         return response()->json($aData);
     }
 
@@ -85,13 +105,18 @@ class ReportDataController extends Controller
     public function User(Request $request)
     {
         $aParam = $request->all();
-
-        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
-            $aData = ReportBetMember::reportQuery($aParam);
-            $aDataCount = ReportBetMember::reportQueryCount($aParam);
-        }else{
-            $aData = ReportMember::reportQuery($aParam);
-            $aDataCount = ReportMember::reportQueryCount($aParam);
+        if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
+            $result = Bets::UserToday($aParam);
+            $aData = $result['aData'];
+            $aDataCount = $result['aDataCount'];
+        }else {
+            if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam)) {
+                $aData = ReportBetMember::reportQuery($aParam);
+                $aDataCount = ReportBetMember::reportQueryCount($aParam);
+            } else {
+                $aData = ReportMember::reportQuery($aParam);
+                $aDataCount = ReportMember::reportQueryCount($aParam);
+            }
         }
 
         return DataTables::of($aData)
@@ -105,11 +130,15 @@ class ReportDataController extends Controller
     {
         $aParam = $request->all();
 
-        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam))
-            $aData = ReportBetMember::reportQuerySum($aParam);
-        else
-            $aData = ReportMember::reportQuerySum($aParam);
-
+        if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
+            $user = DB::select(Session::get('reportSql'));
+            $aData = $user[0];
+        }else {
+            if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam))
+                $aData = ReportBetMember::reportQuerySum($aParam);
+            else
+                $aData = ReportMember::reportQuerySum($aParam);
+        }
 
         return response()->json($aData);
     }
