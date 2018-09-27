@@ -15,7 +15,7 @@ class ReportAgent extends Model
                   SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
                   SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
                   SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
-                  `agent_account`,`agent_id`
+                  `agent_account`,`agent_name`,`agent_id`
                   FROM `report_agent` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
         $aSql = $result['aSql']." LIMIT ".$aParam['start'].",".$aParam['length'];
