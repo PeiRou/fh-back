@@ -176,7 +176,10 @@ class SaveGameOddsController extends Controller
                 $plays_txt = "var plays = ".collect($newCollect)->keyBy('id').";";
                 $animalsYear = "var animalsYear = ".json_encode(Config::get('website.animalsYear')).";";
                 $write = Storage::disk('static')->put('gamedatas.js',$game_txt.$next_row.$gameMap_txt.$next_row.$playCate_txt.$next_row.$plays_txt.$next_row.$animalsYear);
-                if($write == 1){
+                //生成ios的json格式
+                $plays_txt = collect($newCollect)->keyBy('id');
+                $writeIos = Storage::disk('static')->put('iosOddsOld.json',$plays_txt);
+                if($write == 1 && $writeIos==1){
                     return response()->json([
                         'status'=>true
                     ]);
