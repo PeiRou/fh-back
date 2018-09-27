@@ -19,13 +19,14 @@ class ReportBetAgent extends Model
                   FROM `report_bet_agent` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
         $aSql = $result['aSql']." LIMIT ".$aParam['start'].",".$aParam['length'];
-        $bSql = "SELECT COUNT(`agent_id`) AS `memberCount`,`agent_id` FROM `report_member` WHERE 1 ";
+        $bSql = "SELECT COUNT(`agent_id`) AS `memberCount`,`agent_id` FROM `report_bet_member` WHERE 1 ";
         $bParam = [
             'timeStart' => $aParam['timeStart'],
             'timeEnd' => $aParam['timeEnd'],
+            'game_id' => $aParam['game_id'],
             'chkTest' => 1
         ];
-        $resultB = ReportMember::conditionalConnection($bSql,$bParam,0);
+        $resultB = ReportBetMember::conditionalConnection($bSql,$bParam,0);
         $bSql = $resultB['aSql']." GROUP BY `agent_id`";
         $aSql = "SELECT `sum`.*,`count`.`memberCount` FROM (".$aSql.") AS `sum` JOIN (".$bSql.") AS `count` ON `count`.`agent_id` = `sum`.`agent_id`";
         return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']));
