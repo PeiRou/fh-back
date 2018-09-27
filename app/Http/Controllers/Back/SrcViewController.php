@@ -370,6 +370,10 @@ class SrcViewController extends Controller
         $games = Games::where('status',1)->get();
         return view('back.reportUser',compact('games','ag','start','end'));
     }
+    //报表统计
+    public function reportStatistics(Request $request){
+        return view('back.reportStatistics');
+    }
     //投注报表
     public function reportBet()
     {

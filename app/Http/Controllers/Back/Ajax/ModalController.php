@@ -745,4 +745,9 @@ class ModalController extends Controller
     public function exportUser(){
         return view('back.modal.member.exportUser');
     }
+
+    //操作报表添加-模板
+    public function addStatistics(){
+        return view('back.modal.report.addStatistics');
+    }
 }

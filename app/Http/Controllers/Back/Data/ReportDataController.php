@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Back\Data;
 
 use App\ReportAgent;
+use App\ReportBetAgent;
+use App\ReportBetGeneral;
+use App\ReportBetMember;
 use App\ReportGeneral;
 use App\ReportMember;
 use Illuminate\Http\Request;
@@ -19,8 +22,13 @@ class ReportDataController extends Controller
     {
         $aParam = $request->all();
 
-        $aData = ReportGeneral::reportQuery($aParam);
-        $aDataCount = ReportGeneral::reportQueryCount($aParam);
+        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
+            $aData = ReportBetGeneral::reportQuery($aParam);
+            $aDataCount = ReportBetGeneral::reportQueryCount($aParam);
+        }else{
+            $aData = ReportGeneral::reportQuery($aParam);
+            $aDataCount = ReportGeneral::reportQueryCount($aParam);
+        }
 
         return DataTables::of($aData)
             ->setTotalRecords($aDataCount)
@@ -33,7 +41,10 @@ class ReportDataController extends Controller
     {
         $aParam = $request->all();
 
-        $aData = ReportGeneral::reportQuerySum($aParam);
+        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam))
+            $aData = ReportBetGeneral::reportQuerySum($aParam);
+        else
+            $aData = ReportGeneral::reportQuerySum($aParam);
 
         return response()->json($aData);
     }
@@ -43,8 +54,13 @@ class ReportDataController extends Controller
     {
         $aParam = $request->all();
 
-        $aData = ReportAgent::reportQuery($aParam);
-        $aDataCount = ReportAgent::reportQueryCount($aParam);
+        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
+            $aData = ReportBetAgent::reportQuery($aParam);
+            $aDataCount = ReportBetAgent::reportQueryCount($aParam);
+        }else{
+            $aData = ReportAgent::reportQuery($aParam);
+            $aDataCount = ReportAgent::reportQueryCount($aParam);
+        }
 
         return DataTables::of($aData)
             ->setTotalRecords($aDataCount)
@@ -57,7 +73,10 @@ class ReportDataController extends Controller
     {
         $aParam = $request->all();
 
-        $aData = ReportAgent::reportQuerySum($aParam);
+        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam))
+            $aData = ReportBetAgent::reportQuerySum($aParam);
+        else
+            $aData = ReportAgent::reportQuerySum($aParam);
 
         return response()->json($aData);
     }
@@ -67,8 +86,13 @@ class ReportDataController extends Controller
     {
         $aParam = $request->all();
 
-        $aData = ReportMember::reportQuery($aParam);
-        $aDataCount = ReportMember::reportQueryCount($aParam);
+        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
+            $aData = ReportBetMember::reportQuery($aParam);
+            $aDataCount = ReportBetMember::reportQueryCount($aParam);
+        }else{
+            $aData = ReportMember::reportQuery($aParam);
+            $aDataCount = ReportMember::reportQueryCount($aParam);
+        }
 
         return DataTables::of($aData)
             ->setTotalRecords($aDataCount)
@@ -81,7 +105,12 @@ class ReportDataController extends Controller
     {
         $aParam = $request->all();
 
-        $aData = ReportMember::reportQuerySum($aParam);
+        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam))
+            $aData = ReportBetMember::reportQuerySum($aParam);
+        else
+            $aData = ReportMember::reportQuerySum($aParam);
+
+
         return response()->json($aData);
     }
 
@@ -130,5 +159,28 @@ class ReportDataController extends Controller
             'status'=>true,
             'result'=>$user[0]
         ]);
+    }
+
+    //
+    public function Statistics(Request $request){
+        $aParam = $request->post();
+
+        $aDataSql = DB::table('report_statistics_date')->where(function ($aSql) use($aParam){
+            if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam))
+                $aSql->where('date','>=',$aParam['startTime']);
+            if(isset($aParam['endTime']) && array_key_exists('endTime',$aParam))
+                $aSql->where('date','<=',$aParam['endTime']);
+        });
+
+        $aDataCount = $aDataSql->count();
+        $aData = $aDataSql->orderBy('date','desc')->skip($aParam['start'])->take($aParam['length'])->get();
+
+        return DataTables::of($aData)
+            ->setTotalRecords($aDataCount)
+            ->editColumn('status',function ($logHandle){
+                return '已操作';
+            })
+            ->skipPaging()
+            ->make(true);
     }
 }

@@ -182,6 +182,24 @@ class Bets extends Model
         return DB::select($aSql,$aArray);
     }
 
+    public static function memberReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT LEFT(`created_at`,10) AS `date`,`user_id`,`game_id`,COUNT(`bet_id`) AS `idCount`,SUM(`bet_money`) AS `betMoneySum`,
+                  SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bet_money` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bet_money` ELSE 0 END) END) AS `sumWinbet`,
+                  SUM(CASE WHEN `game_id` IN(90,91) THEN `nn_view_money` ELSE (CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE `bunko` END) END) AS `sumBunko`
+                  FROM `bet` WHERE 1 AND `testFlag` IN(0,2)";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `created_at` >= :startTime";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `created_at` <= :endTime";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `date`,`user_id`,`game_id` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
     public static function betAgentReportData($startTime = '',$endTime = ''){
         $aSql = "SELECT LEFT(`bet`.`created_at`,10) AS `date`,`users`.`agent` AS `agentId`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(`bet`.`bet_id`) AS `idCount`,SUM(`bet`.`bet_money`) AS `betMoneySum`, 
                   SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN (CASE WHEN `bet`.`nn_view_money` > 0 THEN `bet`.`bet_money` ELSE 0 END) ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bet_money` ELSE 0 END) END) AS `sumWinbet`,
@@ -199,6 +217,26 @@ class Bets extends Model
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `date`,`agentId` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
+    public static function agentReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT LEFT(`bet`.`created_at`,10) AS `date`,`users`.`agent` AS `agentId`,`bet`.`game_id` AS `game_id`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(`bet`.`bet_id`) AS `idCount`,SUM(`bet`.`bet_money`) AS `betMoneySum`, 
+                  SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN (CASE WHEN `bet`.`nn_view_money` > 0 THEN `bet`.`bet_money` ELSE 0 END) ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bet_money` ELSE 0 END) END) AS `sumWinbet`,
+                  SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END) END) AS `sumBunko`
+                  FROM `bet` 
+                  JOIN `users` ON `users`.`id` = `bet`.`user_id`
+                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `bet`.`created_at` >= :startTime";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `bet`.`created_at` <= :endTime";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `date`,`agentId`,`game_id` ORDER BY `date` ASC";
         return DB::select($aSql,$aArray);
     }
 
@@ -221,6 +259,28 @@ class Bets extends Model
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `date`,`generalId` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
+    public static function generalReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT LEFT(`bet`.`created_at`,10) AS `date`,`agent`.`gagent_id` AS `generalId`,`bet`.`game_id` AS `game_id`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,
+                  COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`,COUNT(`bet`.`bet_id`) AS `idCount`,SUM(`bet`.`bet_money`) AS `betMoneySum`, 
+                  SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN (CASE WHEN `bet`.`nn_view_money` > 0 THEN `bet`.`bet_money` ELSE 0 END) ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bet_money` ELSE 0 END) END) AS `sumWinbet`,
+                  SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END) END) AS `sumBunko`
+                  FROM `bet` 
+                  JOIN `users` ON `users`.`id` = `bet`.`user_id`
+                  JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
+                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `bet`.`created_at` >= :startTime";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `bet`.`created_at` <= :endTime";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `date`,`generalId`,`game_id` ORDER BY `date` ASC";
         return DB::select($aSql,$aArray);
     }
 }

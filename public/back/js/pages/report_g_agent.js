@@ -66,6 +66,7 @@ $(function () {
         ajax: {
             url:'/back/datatables/reportGagent',
             data:function (d) {
+                d.game_id = $('#game').val();
                 d.account = $('#account').val();
                 d.timeStart = $('#timeStart').val();
                 d.timeEnd = $('#timeEnd').val();
@@ -135,6 +136,7 @@ $(function () {
             type:'get',
             dataType:'json',
             data:{
+                game_id : $('#game').val(),
                 account : $('#account').val(),
                 timeStart : $('#timeStart').val(),
                 timeEnd : $('#timeEnd').val(),

@@ -33,6 +33,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('gagent', 'Back\SrcViewController@reportGagent')->name('report.gAgent'); // 总代理报表
         Route::get('agent', 'Back\SrcViewController@reportAgent')->name('report.agent'); // 代理报表
         Route::get('user', 'Back\SrcViewController@reportUser')->name('report.user'); // 会员报表
+        Route::get('statistics', 'Back\SrcViewController@reportStatistics')->name('report.statistics'); // 报表统计
         Route::get('bet', 'Back\SrcViewController@reportBet')->name('report.bet'); // 投注报表
         Route::get('online', 'Back\SrcViewController@reportOnline')->name('report.online'); // 在线报表
     });
@@ -181,13 +182,14 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/capitalDetails', 'Back\Data\FinanceDataController@capitalDetails'); //资金明细-表格数据
     Route::get('/back/datatables/memberReconciliation', 'Back\Data\FinanceDataController@memberReconciliation');
     Route::get('/back/datatables/agentReconciliation', 'Back\Data\FinanceDataController@agentReconciliation');
-    Route::get('/back/datatables/reportGagent', 'Back\Data\ReportDataController@Gagent');
-    Route::get('/back/datatables/reportAgent', 'Back\Data\ReportDataController@Agent');
-    Route::get('/back/datatables/reportUser', 'Back\Data\ReportDataController@User');
+    Route::get('/back/datatables/reportGagent', 'Back\Data\ReportDataController@Gagent');   //报表管理-总代
+    Route::get('/back/datatables/reportAgent', 'Back\Data\ReportDataController@Agent');     //报表管理-代理
+    Route::get('/back/datatables/reportUser', 'Back\Data\ReportDataController@User');       //报表管理-用户
+    Route::get('/back/datatables/reportStatistics', 'Back\Data\ReportDataController@Statistics');       //报表管理-操作报表
     Route::get('/back/datatables/reportBet', 'Back\Data\ReportDataController@Bet');
-    Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal');
-    Route::get('/back/datatables/reportAgentTotal', 'Back\Data\ReportDataController@AgentTotal');
-    Route::get('/back/datatables/reportUserTotal', 'Back\Data\ReportDataController@UserTotal');
+    Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal'); //报表管理-总代总计
+    Route::get('/back/datatables/reportAgentTotal', 'Back\Data\ReportDataController@AgentTotal');   //报表管理-代理总计
+    Route::get('/back/datatables/reportUserTotal', 'Back\Data\ReportDataController@UserTotal');     //报表管理-用户总计
     Route::get('/back/datatables/betToday', 'Back\Data\BetDataController@betToday');
     Route::get('/back/datatables/betHistory', 'Back\Data\BetDataController@betHistory');
     Route::get('/back/datatables/betRealTime', 'Back\Data\BetDataController@betRealTime');
@@ -314,6 +316,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/setNoticeOrder', 'Back\SrcNoticeController@setNoticeOrder'); //设置公告顺序
     Route::post('/action/admin/addSendMessage', 'Back\SrcNoticeController@addSendMessage'); //添加消息
     Route::post('/action/admin/delSendMessage', 'Back\SrcNoticeController@delSendMessage'); //删除消息
+
+    Route::post('/action/admin/report/addStatistics', 'Back\SrcReportController@addStatistics')->middleware('check-permission')->name('report.addStatistics'); //添加操作报表
 
     Route::post('/action/admin/addBank', 'Back\SrcPayController@addBank');//添加银行
     Route::post('/action/admin/addLevel', 'Back\SrcPayController@addLevel');//添加层级
@@ -481,6 +485,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editPromotionConfig/{id}','Back\Ajax\ModalController@editPromotionConfig'); //修改推广配置-模板
     Route::get('/back/modal/returnVisit','Back\Ajax\ModalController@returnVisit')->middleware('check-permission')->name('member.returnVisit.view'); //会员回访用户-模板
     Route::get('/back/modal/exportUser','Back\Ajax\ModalController@exportUser')->middleware('check-permission')->name('member.exportUser.view'); //导出用户数据-模板
+    Route::get('/back/modal/addStatistics','Back\Ajax\ModalController@addStatistics')->middleware('check-permission')->name('report.addStatistics.view'); //操作报表添加-模板
+
 //游戏MODAL
     Route::get('/back/modal/gameSetting/{id}', 'Back\Ajax\ModalController@gameSetting');
     Route::get('/back/modal/killSetting/{id}', 'Back\Ajax\ModalController@killSetting');     //杀率设置

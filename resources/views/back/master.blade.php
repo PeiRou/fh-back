@@ -127,6 +127,9 @@
                 @if($hasPermission->hasPermission('report.user') == "has")
                 <li id="menu-reportManage-user"><a href="{{ route('report.user') }}"><cite></cite><span>会员报表</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('report.statistics') == "has")
+                    <li id="menu-reportManage-statistics"><a href="{{ route('report.statistics') }}"><cite></cite><span>操作报表</span></a></li>
+                @endif
                 @if($hasPermission->hasPermission('report.bet') == "has")
                     <li id="menu-reportManage-bet"><a href="{{ route('report.bet') }}"><cite></cite><span>投注报表</span></a></li>
                 @endif

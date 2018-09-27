@@ -18,14 +18,14 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
-                    {{--<div class="one wide field">--}}
-                        {{--<select class="ui dropdown" id="game" style='height:32px !important'>--}}
-                            {{--<option value="">游戏选择</option>--}}
-                            {{--@foreach($games as $item)--}}
-                                {{--<option value="{{ $item->game_id }}">{{ $item->game_name }}</option>--}}
-                            {{--@endforeach--}}
-                        {{--</select>--}}
-                    {{--</div>--}}
+                    <div class="one wide field">
+                        <select class="ui dropdown" id="game" style='height:32px !important'>
+                            <option value="">游戏选择</option>
+                            @foreach($games as $item)
+                                <option value="{{ $item->game_id }}">{{ $item->game_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="two wide field">
                         <input type="text" id="account" placeholder="代理账号">
                     </div>

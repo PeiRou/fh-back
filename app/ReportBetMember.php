@@ -5,25 +5,25 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class ReportMember extends Model
+class ReportBetMember extends Model
 {
-    protected $table = 'report_member';
+    protected $table = 'report_bet_member';
     protected $primaryKey = 'id';
 
     public static function reportQuery($aParam){
         $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
-                  SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
-                  SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
+                  '' AS `recharges_money`,'' AS `drawing_money`,'' AS `activity_money`,'' AS `handling_fee`,
+                  SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
                   SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
                   `user_account`,`user_name`,`user_id`,`agent_account` 
-                  FROM `report_member` WHERE 1 ";
+                  FROM `report_bet_member` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
         $result['aSql'] .= " ORDER BY `fact_bet_bunko` ASC LIMIT ".$aParam['start'].",".$aParam['length'];
         return DB::select($result['aSql'],$result['aArray']);
     }
 
     public static function reportQueryCount($aParam){
-        $aSql = "SELECT `user_id`,SUM(`fact_bet_bunko`) AS `fact_bet_bunko` FROM `report_member` WHERE 1 ";
+        $aSql = "SELECT `user_id`,SUM(`fact_bet_bunko`) AS `fact_bet_bunko` FROM `report_bet_member` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
         $aSql = "SELECT COUNT(`a`.`user_id`) AS `count` FROM ( ".$result['aSql']." ) AS `a`";
         return DB::select($aSql,$result['aArray'])[0]->count;
@@ -31,9 +31,9 @@ class ReportMember extends Model
 
     public static function reportQuerySum($aParam){
         $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
-                  SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
-                  SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`
-                  FROM `report_member` WHERE 1 ";
+                  '' AS `recharges_money`,'' AS `drawing_money`,'' AS `activity_money`,'' AS `handling_fee`,
+                  SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`
+                  FROM `report_bet_member` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam,0);
         return DB::select($result['aSql'],$result['aArray'])[0];
     }
@@ -51,6 +51,10 @@ class ReportMember extends Model
         if(isset($aParam['account']) && array_key_exists('account',$aParam)){
             $aSql .= " AND `user_account` = :userAccount";
             $aArray['userAccount'] = $aParam['account'];
+        }
+        if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
+            $aSql .= " AND `game_id` = :gameIdM";
+            $aArray['gameIdM'] = $aParam['game_id'];
         }
         if(isset($aParam['chkTest']) && array_key_exists('chkTest',$aParam)){
             if($aParam['chkTest'] == 1){
