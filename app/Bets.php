@@ -446,13 +446,13 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
-            $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereRe .= " and `recharges`.created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
             $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
-            $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereRe .= " and `recharges`.created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
         }
         $whereB .= " and testFlag = 0 ";
         $whereU .= " and u.testFlag = 0 ";
@@ -465,7 +465,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $aSql = $aSql1.$aSql;
         $aBet = DB::select($aSql)[0];
         $aDrawing = DB::select("select sum(amount) as amount from `drawing` where status = 2 ".$whereDr)[0];
-        $aRecharges = DB::select("select sum(amount) as amount from `recharges` where status = 2 AND payType != 'adminAddMoney' ".$whereRe)[0];
+        $aRecharges = DB::select("select sum(`recharges`.amount) as amount from `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId` where `recharges`.status = 2 AND `recharges`.payType != 'adminAddMoney' AND `users`.`testFlag` = 0 ".$whereRe)[0];
         $aActivity = DB::select("select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp)[0];
         $aBet->recharges_money = $aRecharges->amount;
         $aBet->drawing_money = $aDrawing->amount;
@@ -568,13 +568,13 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
-            $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereRe .= " and `recharges`.created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
             $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
-            $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereRe .= " and `recharges`.created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
         }
         if(isset($aParam['minBunko']) && array_key_exists('minBunko',$aParam)){
             $where .= " and sumBunko >= ".$aParam['minBunko'];
@@ -585,9 +585,11 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         if(isset($aParam['chkTest']) && array_key_exists('chkTest',$aParam)){
             $whereB .= " and testFlag = 0 ";
             $whereU .= " and u.testFlag = 0 ";
+            $whereRe .= " and users.testFlag = 0 ";
         }else {
             $whereB .= " and testFlag in (0,2) ";
             $whereU .= " and u.testFlag in (0,2) ";
+            $whereRe .= " and users.testFlag  in (0,2) ";
         }
 
         $aSql = "";
@@ -601,15 +603,12 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $aSql .= " LEFT JOIN ".$aUser." u on b.user_id = u.id ";
         }
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
-        $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` where status = 2 ".$whereDr." group by user_id) dr on dr.user_id = u.id ";
-        $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2 AND payType != 'adminAddMoney' ".$whereRe." group by userId) re ON re.userId = u.id ";
-        $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
         $aSql .= " WHERE 1 ";
         $aSql .= $where;
         $aSql = $aSql1.$aSql;
         $aBet = DB::select($aSql)[0];
         $aDrawing = DB::select("select sum(amount) as amount from `drawing` where status = 2 ".$whereDr)[0];
-        $aRecharges = DB::select("select sum(amount) as amount from `recharges` where status = 2 AND payType != 'adminAddMoney' ".$whereRe)[0];
+        $aRecharges = DB::select("select sum(`recharges`.amount) as amount from `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId` where `recharges`.status = 2 AND `recharges`.payType != 'adminAddMoney'  ".$whereRe)[0];
         $aActivity = DB::select("select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp)[0];
         $aBet->recharges_money = $aRecharges->amount;
         $aBet->drawing_money = $aDrawing->amount;
