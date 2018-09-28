@@ -371,12 +371,10 @@ sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0
     }
 
     public static function AgentToday($aParam){
-        $aSql1 = "SELECT ag.a_id AS agent_id,count(DISTINCT(u.id)) as memberCount,count(b.bet_id) as bet_count,sum(b.bet_money) as bet_money,ag.account as agent_account,ag.name as agent_name, 
-sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as bet_amount,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as bet_bunko, 
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as fact_bet_bunko, 
-SUM(cp.sumActivity) AS activity_money,SUM(cp.sumRecharge_fee) AS handling_fee,dr.amount as drawing_money,re.amount as recharges_money, 
-'0.00' AS odds_amount,'0.00' AS return_amount,'0.00' AS fact_return_amount";
+        $aSql1 = "SELECT ag.a_id AS agent_id,count(DISTINCT(u.id)) as memberCount,sum(b.bet_count) as bet_count,sum(b.bet_money) as bet_money,ag.account as agent_account,ag.name as agent_name, 
+                    sum(b.bet_amount) AS bet_amount,sum(b.bet_bunko) AS bet_bunko,sum(b.fact_bet_bunko) AS fact_bet_bunko,
+                    SUM(cp.sumActivity) AS activity_money,SUM(cp.sumRecharge_fee) AS handling_fee,sum(dr.amount) as drawing_money,sum(re.amount) as recharges_money, 
+                    '0.00' AS odds_amount,'0.00' AS return_amount,'0.00' AS fact_return_amount";
         $where = "";
         $whereB = "";
         $whereU = "";
@@ -404,9 +402,13 @@ SUM(cp.sumActivity) AS activity_money,SUM(cp.sumRecharge_fee) AS handling_fee,dr
         $whereB .= " and testFlag = 0 ";
         $whereU .= " and u.testFlag = 0 ";
         $aSql = "";
-        $aSql .= " FROM (select * from bet b where 1 ".$whereB.") b ";
-        $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
-        $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
+        $aSql .= " FROM (select count(b.bet_id) as bet_count,sum(b.bet_money) as bet_money,user_id,
+                    sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as bet_amount,
+                    sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as bet_bunko, 
+                    sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as fact_bet_bunko  
+                    from bet b where 1 ".$whereB." GROUP BY `user_id`) b ";
+        $aSql .= " JOIN `users` u on b.user_id = u.id ".$whereU;
+        $aSql .= " JOIN `agent` ag on u.agent = ag.a_id ";
         $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` where status = 2 ".$whereDr." group by user_id) dr on dr.user_id = u.id ";
         $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2 AND payType != 'adminAddMoney' ".$whereRe." group by userId) re ON re.userId = u.id ";
         $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
@@ -445,13 +447,13 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam)){
             $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
-            $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereDr .= " and `drawing`.created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereRe .= " and `recharges`.created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
             $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
-            $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereDr .= " and `drawing`.created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereRe .= " and `recharges`.created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
         }
         $whereB .= " and testFlag = 0 ";
@@ -464,7 +466,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $aSql .= $where;
         $aSql = $aSql1.$aSql;
         $aBet = DB::select($aSql)[0];
-        $aDrawing = DB::select("select sum(amount) as amount from `drawing` where status = 2 ".$whereDr)[0];
+        $aDrawing = DB::select("select sum(`drawing`.amount) as amount from `drawing` JOIN `users` ON `users`.`id` = `drawing`.`user_id` where `drawing`.status = 2 AND `users`.`testFlag` = 0  ".$whereDr)[0];
         $aRecharges = DB::select("select sum(`recharges`.amount) as amount from `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId` where `recharges`.status = 2 AND `recharges`.payType != 'adminAddMoney' AND `users`.`testFlag` = 0 ".$whereRe)[0];
         $aActivity = DB::select("select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp)[0];
         $aBet->recharges_money = $aRecharges->amount;
@@ -567,13 +569,13 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam)){
             $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
-            $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereDr .= " and `drawing`.created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereRe .= " and `recharges`.created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
             $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
-            $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereDr .= " and `drawing`.created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereRe .= " and `recharges`.created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
         }
         if(isset($aParam['minBunko']) && array_key_exists('minBunko',$aParam)){
@@ -585,11 +587,13 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         if(isset($aParam['chkTest']) && array_key_exists('chkTest',$aParam)){
             $whereB .= " and testFlag = 0 ";
             $whereU .= " and u.testFlag = 0 ";
+            $whereDr .= " and users.testFlag = 0 ";
             $whereRe .= " and users.testFlag = 0 ";
         }else {
             $whereB .= " and testFlag in (0,2) ";
             $whereU .= " and u.testFlag in (0,2) ";
-            $whereRe .= " and users.testFlag  in (0,2) ";
+            $whereDr .= " and users.testFlag  in (0,2) ";
+            $whereRe .= " and users.testFlag = 0 ";
         }
 
         $aSql = "";
@@ -607,7 +611,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $aSql .= $where;
         $aSql = $aSql1.$aSql;
         $aBet = DB::select($aSql)[0];
-        $aDrawing = DB::select("select sum(amount) as amount from `drawing` where status = 2 ".$whereDr)[0];
+        $aDrawing = DB::select("select sum(`drawing`.amount) as amount from `drawing` JOIN `users` ON `users`.`id` = `drawing`.`user_id` where `drawing`.status = 2 ".$whereDr)[0];
         $aRecharges = DB::select("select sum(`recharges`.amount) as amount from `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId` where `recharges`.status = 2 AND `recharges`.payType != 'adminAddMoney'  ".$whereRe)[0];
         $aActivity = DB::select("select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp)[0];
         $aBet->recharges_money = $aRecharges->amount;
