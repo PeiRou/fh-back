@@ -264,7 +264,7 @@ class SrcMemberController extends Controller
     {
         $agent = $request->input('agent');
         $username = $request->input('username');
-        $password = Hash::make($request->input('password'));
+        $password = $request->input('password');
         $fullName = $request->input('fullName');
 
         if(empty($agent)){
@@ -285,7 +285,7 @@ class SrcMemberController extends Controller
         if($agent == 2){
             $testFlag = 2;
         } else if($agent == 3){
-            $testFlag = 3;
+            $testFlag = 1;
         } else {
             $testFlag = 0;
         }

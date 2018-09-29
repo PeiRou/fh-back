@@ -293,7 +293,7 @@ class FinanceDataController extends Controller
                 return '<span class="red-text" style="font-size: 12pt;">'.$drawing->dr_amount.'</span>';
             })
             ->editColumn('bank_info',function ($drawing){
-                if(empty($drawing->draw_fullName))
+                if(empty($drawing->user_bank_name))
                     return '<font color="red">无当下提款信息</font><br><div style="text-align: center">姓名：'.$drawing->user_fullName.'</br>银行：'.$drawing->user_bank_name.'<br>账号：'.$drawing->user_bank_num.'<br>地址：'.$drawing->user_bank_addr.'</div>';
                 else
                     return '<div style="text-align: center">姓名：'.$drawing->user_fullName.'</br>银行：'.$drawing->user_bank_name.'<br>账号：'.$drawing->user_bank_num.'<br>地址：'.$drawing->user_bank_addr.'</div>';
