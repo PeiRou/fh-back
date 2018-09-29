@@ -493,8 +493,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
 sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as bet_amount,
 sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as fact_bet_bunko,
 sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as bet_bunko,
-SUM(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,dr.amount as drawing_money,re.amount as recharges_money,
-'0.00' AS odds_amount,'0.00' AS return_amount,'0.00' AS fact_return_amount";
+'0.00' AS odds_amount,'0.00' AS return_amount,'0.00' AS fact_return_amount, ";
         $where = "";
         $whereB = "";
         $whereU = "";
@@ -503,6 +502,9 @@ SUM(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,dr
         $whereRe = "";
         if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
             $whereB .= " and game_id = ".$aParam['game_id'];
+            $aSql1 .= " '' AS activity_money,'' AS handling_fee,'' as drawing_money,'' as recharges_money ";
+        }else{
+            $aSql1 .= " SUM(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,dr.amount as drawing_money,re.amount as recharges_money ";
         }
         if(isset($aParam['account']) && array_key_exists('account',$aParam)){
             $where .= " and u.username = '".$aParam['account']."'";
@@ -631,13 +633,15 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $aSql .= $where;
         $aSql = $aSql1.$aSql;
         $aBet = DB::select($aSql)[0];
-        $aDrawing = DB::select("select sum(`drawing`.amount) as amount from `drawing` JOIN `users` ON `users`.`id` = `drawing`.`user_id` where `drawing`.status = 2 ".$whereDr)[0];
-        $aRecharges = DB::select("select sum(`recharges`.amount) as amount from `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId` where `recharges`.status = 2 AND `recharges`.payType != 'adminAddMoney'  ".$whereRe)[0];
-        $aActivity = DB::select("select sum(case WHEN `capital`.`type` = 't08' then `capital`.money else 0 end) as sumActivity,sum(case WHEN `capital`.`type` = 't04' then `capital`.money else 0 end) as sumRecharge_fee,sum(`capital`.money) as money from `capital` JOIN `users` ON `users`.`id` = `capital`.`to_user` where `capital`.`type` in ('t08','t04') ".$whereCp)[0];
-        $aBet->recharges_money = $aRecharges->amount;
-        $aBet->drawing_money = $aDrawing->amount;
-        $aBet->handling_fee = $aActivity->sumRecharge_fee;
-        $aBet->activity_money = $aActivity->sumActivity;
+        if(!isset($aParam['game_id']) || !array_key_exists('game_id',$aParam)) {
+            $aDrawing = DB::select("select sum(`drawing`.amount) as amount from `drawing` JOIN `users` ON `users`.`id` = `drawing`.`user_id` where `drawing`.status = 2 " . $whereDr)[0];
+            $aRecharges = DB::select("select sum(`recharges`.amount) as amount from `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId` where `recharges`.status = 2 AND `recharges`.payType != 'adminAddMoney'  " . $whereRe)[0];
+            $aActivity = DB::select("select sum(case WHEN `capital`.`type` = 't08' then `capital`.money else 0 end) as sumActivity,sum(case WHEN `capital`.`type` = 't04' then `capital`.money else 0 end) as sumRecharge_fee,sum(`capital`.money) as money from `capital` JOIN `users` ON `users`.`id` = `capital`.`to_user` where `capital`.`type` in ('t08','t04') " . $whereCp)[0];
+            $aBet->recharges_money = $aRecharges->amount;
+            $aBet->drawing_money = $aDrawing->amount;
+            $aBet->handling_fee = $aActivity->sumRecharge_fee;
+            $aBet->activity_money = $aActivity->sumActivity;
+        }
         return $aBet;
     }
 }
