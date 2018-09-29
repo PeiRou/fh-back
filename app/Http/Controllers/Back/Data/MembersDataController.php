@@ -688,8 +688,8 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
     {
         $start = $request->start;
         $length = $request->length;
-        $subAccounts = SubAccount::skip($start)->take($length)->get();
-        $subAccountsCount = SubAccount::count();
+        $subAccounts = SubAccount::where('account','!=','admin')->skip($start)->take($length)->get();
+        $subAccountsCount = SubAccount::where('account','!=','admin')->count();
         return DataTables::of($subAccounts)
             ->editColumn('online', function ($subAccounts){
                 Redis::select(4);

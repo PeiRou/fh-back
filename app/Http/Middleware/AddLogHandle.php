@@ -29,24 +29,27 @@ class AddLogHandle
         if(!$user_id = Session::get('account_id')){
             return redirect()->route('back.login');
         }
-        $routeData = LogHandle::getTypeAction(Route::currentRouteName());
-        $params = $request->all();
-        $ip = $request->ip();
-        $data = [
-            'user_id' => $user_id,
-            'username' => $username,
-            'name' => $name,
-            'ip' => $ip,
-            'type_id' => $routeData['type_id'],
-            'type_name' => $routeData['type_name'],
-            'route' => $routeData['route'],
-            'action' => $routeData['action'],
-            'param' => json_encode($params),
-        ];
-        if(DB::table('log_handle')->insert($data)){
-            return $next($request);
+        if($username !== 'admin') {
+            $routeData = LogHandle::getTypeAction(Route::currentRouteName());
+            $params = $request->all();
+            $ip = $request->ip();
+            $data = [
+                'user_id' => $user_id,
+                'username' => $username,
+                'name' => $name,
+                'ip' => $ip,
+                'type_id' => $routeData['type_id'],
+                'type_name' => $routeData['type_name'],
+                'route' => $routeData['route'],
+                'action' => $routeData['action'],
+                'param' => json_encode($params),
+            ];
+            if (DB::table('log_handle')->insert($data)) {
+                return $next($request);
+            }
+            return response()->json(['error' => 'Adding log failed']);
         }
-        return response()->json(['error'=>'Adding log failed']);
+        return $next($request);
     }
 
 

@@ -66,6 +66,7 @@ class AjaxStatusController extends Controller
 
             $redis->select(4);           //后台
             $onlineAdminCount = Redis::dbsize();
+            if(Redis::exists('sa:'.md5(1)))    $onlineAdminCount--;
 
             return response()->json([
                 'status' => true,
