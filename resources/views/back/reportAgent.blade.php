@@ -18,6 +18,7 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
+                    <input type="hidden" name="general_id" id="general_id" value="{{ $zd }}">
                     <div class="one wide field">
                         <select class="ui dropdown" id="game" style='height:32px !important'>
                             <option value="">游戏选择</option>
@@ -34,7 +35,7 @@
                     <div class="one wide field">
                         <div class="ui calendar" id="rangestart">
                             <div class="ui input left">
-                                <input type="text" id="timeStart" placeholder="起始日期" value="@if($start == "") {{ date('Y-m-d',time()) }} @else {{ $start }} @endif">
+                                <input type="text" id="timeStart" placeholder="起始日期" value="@if(empty($start)) {{ date('Y-m-d',time()) }} @else {{ $start }} @endif">
                             </div>
                         </div>
                     </div>
@@ -42,7 +43,7 @@
                     <div class="one wide field">
                         <div class="ui calendar" id="rangeend">
                             <div class="ui input left">
-                                <input type="text" id="timeEnd" placeholder="结束日期" value="@if($end == "") {{ date('Y-m-d',time()) }} @else {{ $end }} @endif">
+                                <input type="text" id="timeEnd" placeholder="结束日期" value="@if(empty($end)) {{ date('Y-m-d',time()) }} @else {{ $end }} @endif">
                             </div>
                         </div>
                     </div>
@@ -89,8 +90,8 @@
             </thead>
             <tfoot>
             <tr>
-                <th></th>
-                <th></th>
+                <th>总计：</th>
+                <th id="member_count"></th>
                 <th id="recharges_money"></th>
                 <th id="drawing_money"></th>
                 <th id="bet_count"></th>

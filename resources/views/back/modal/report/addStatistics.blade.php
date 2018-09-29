@@ -5,7 +5,7 @@
             <div class="ui calendar" id="rangestart1">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" id="startDay" name="startDay" placeholder="起始日期" value="{{ date('Y-m-d',time()) }}">
+                    <input type="text" id="startDay" name="startDay" placeholder="起始日期" value="{{ date('Y-m-d',strtotime('-1 day')) }}">
                 </div>
             </div>
     </div>
@@ -71,6 +71,6 @@
             pm: 'PM'
         },
         minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 99),
-        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate())
+        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1)
     });
 </script>

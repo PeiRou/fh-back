@@ -131,6 +131,7 @@ $(function () {
     });
 
     function footerTotal() {
+        footerTotalClear();
         $.ajax({
             url:'/back/datatables/reportGagentTotal',
             type:'get',
@@ -142,6 +143,7 @@ $(function () {
                 timeEnd : $('#timeEnd').val(),
             },
             success:function (data) {
+                $('#member_count').text(data.member_count);
                 $('#recharges_money').text(data.recharges_money);
                 $('#drawing_money').text(data.drawing_money);
                 $('#bet_count').text(data.bet_count);
@@ -149,7 +151,6 @@ $(function () {
                 $('#bet_amount').text(data.bet_amount);
                 $('#activity_money').text(data.activity_money);
                 $('#handling_fee').text(data.handling_fee);
-                $('#bet_amount').text(data.bet_amount);
                 $('#bet_bunko').text(data.bet_bunko);
                 $('#fact_bet_bunko').text(data.fact_bet_bunko);
             }
@@ -157,4 +158,17 @@ $(function () {
     }
 
     footerTotal();
+    
+    function footerTotalClear() {
+        $('#member_count').text('');
+        $('#recharges_money').text('');
+        $('#drawing_money').text('');
+        $('#bet_count').text('');
+        $('#bet_money').text('');
+        $('#bet_amount').text('');
+        $('#activity_money').text('');
+        $('#handling_fee').text('');
+        $('#bet_bunko').text('');
+        $('#fact_bet_bunko').text('');
+    }
 });

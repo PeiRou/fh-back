@@ -19,7 +19,7 @@ class ReportAgent extends Model
                   FROM `report_agent` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
         $aSql = $result['aSql']." LIMIT ".$aParam['start'].",".$aParam['length'];
-        $bSql = "SELECT COUNT(`agent_id`) AS `memberCount`,`agent_id` FROM `report_member` WHERE 1 ";
+        $bSql = "SELECT COUNT(DISTINCT(`user_id`)) AS `memberCount`,`agent_id` FROM `report_member` WHERE 1 ";
         $bParam = [
             'timeStart' => $aParam['timeStart'],
             'timeEnd' => $aParam['timeEnd'],
@@ -41,10 +41,21 @@ class ReportAgent extends Model
     public static function reportQuerySum($aParam){
         $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
                   SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
-                  SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`
+                  SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,1 AS `link`
                   FROM `report_agent` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam,0);
-        return DB::select($result['aSql'],$result['aArray'])[0];
+        $aSql = $result['aSql'];
+        $bSql = "SELECT COUNT(DISTINCT(`user_id`)) AS `member_count`,1 AS `link` FROM `report_member` WHERE 1 ";
+        $bParam = [
+            'timeStart' => $aParam['timeStart'],
+            'timeEnd' => $aParam['timeEnd'],
+            'general_id' => $aParam['general_id'],
+            'chkTest' => 1
+        ];
+        $resultB = ReportMember::conditionalConnection($bSql,$bParam,0);
+        $bSql = $resultB['aSql']." AND `bet_count` > 0";
+        $aSql = "SELECT `sum`.*,`count`.`member_count` FROM (".$aSql.") AS `sum` JOIN (".$bSql.") AS `count` ON `count`.`link` = `sum`.`link`";
+        return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']))[0];
     }
 
     public static function conditionalConnection($aSql,$aParam,$group = 1){
@@ -60,6 +71,10 @@ class ReportAgent extends Model
         if(isset($aParam['account']) && array_key_exists('account',$aParam)){
             $aSql .= " AND `agent_account` = :userAccount";
             $aArray['userAccount'] = $aParam['account'];
+        }
+        if(isset($aParam['general_id']) && array_key_exists('general_id',$aParam)){
+            $aSql .= " AND `general_id` = :generalIdA";
+            $aArray['generalIdA'] = $aParam['general_id'];
         }
         if($group === 1){
             $aSql .= " GROUP BY `agent_id`";

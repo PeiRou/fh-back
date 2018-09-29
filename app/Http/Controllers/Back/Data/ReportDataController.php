@@ -57,7 +57,18 @@ class ReportDataController extends Controller
                 $aData = ReportGeneral::reportQuerySum($aParam);
         }
 
-        return response()->json($aData);
+        return response()->json([
+            'member_count' => empty($aData->member_count)?'':$aData->member_count,
+            'recharges_money' => empty($aData->recharges_money)?'':$aData->recharges_money,
+            'drawing_money' => empty($aData->drawing_money)?'':$aData->drawing_money,
+            'bet_count' => empty($aData->bet_count)?'':$aData->bet_count,
+            'bet_money' => empty($aData->bet_money)?'':$aData->bet_money,
+            'bet_amount' => empty($aData->bet_amount)?'':$aData->bet_amount,
+            'activity_money' => empty($aData->activity_money)?'':$aData->activity_money,
+            'handling_fee' => empty($aData->handling_fee)?'':$aData->handling_fee,
+            'bet_bunko' => empty($aData->bet_bunko)?'':$aData->bet_bunko,
+            'fact_bet_bunko' => empty($aData->fact_bet_bunko)?'':$aData->fact_bet_bunko,
+        ]);
     }
 
     //代理报表
@@ -96,7 +107,18 @@ class ReportDataController extends Controller
             else
                 $aData = ReportAgent::reportQuerySum($aParam);
         }
-        return response()->json($aData);
+        return response()->json([
+            'member_count' => empty($aData->member_count)?'':$aData->member_count,
+            'recharges_money' => empty($aData->recharges_money)?'':$aData->recharges_money,
+            'drawing_money' => empty($aData->drawing_money)?'':$aData->drawing_money,
+            'bet_count' => empty($aData->bet_count)?'':$aData->bet_count,
+            'bet_money' => empty($aData->bet_money)?'':$aData->bet_money,
+            'bet_amount' => empty($aData->bet_amount)?'':$aData->bet_amount,
+            'activity_money' => empty($aData->activity_money)?'':$aData->activity_money,
+            'handling_fee' => empty($aData->handling_fee)?'':$aData->handling_fee,
+            'bet_bunko' => empty($aData->bet_bunko)?'':$aData->bet_bunko,
+            'fact_bet_bunko' => empty($aData->fact_bet_bunko)?'':$aData->fact_bet_bunko,
+        ]);
     }
 
     //会员报表
@@ -137,7 +159,17 @@ class ReportDataController extends Controller
                 $aData = ReportMember::reportQuerySum($aParam);
         }
 
-        return response()->json($aData);
+        return response()->json([
+            'recharges_money' => empty($aData->recharges_money)?'':$aData->recharges_money,
+            'drawing_money' => empty($aData->drawing_money)?'':$aData->drawing_money,
+            'bet_count' => empty($aData->bet_count)?'':$aData->bet_count,
+            'bet_money' => empty($aData->bet_money)?'':$aData->bet_money,
+            'bet_amount' => empty($aData->bet_amount)?'':$aData->bet_amount,
+            'activity_money' => empty($aData->activity_money)?'':$aData->activity_money,
+            'handling_fee' => empty($aData->handling_fee)?'':$aData->handling_fee,
+            'bet_bunko' => empty($aData->bet_bunko)?'':$aData->bet_bunko,
+            'fact_bet_bunko' => empty($aData->fact_bet_bunko)?'':$aData->fact_bet_bunko,
+        ]);
     }
 
     //投注报表

@@ -52,6 +52,14 @@ class ReportBetMember extends Model
             $aSql .= " AND `user_account` = :userAccount";
             $aArray['userAccount'] = $aParam['account'];
         }
+        if(isset($aParam['agent_id']) && array_key_exists('agent_id',$aParam)){
+            $aSql .= " AND `agent_id` = :agentIdM";
+            $aArray['agentIdM'] = $aParam['agent_id'];
+        }
+        if(isset($aParam['general_id']) && array_key_exists('general_id',$aParam)){
+            $aSql .= " AND `general_id` = :generalIdM";
+            $aArray['generalIdM'] = $aParam['general_id'];
+        }
         if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
             $aSql .= " AND `game_id` = :gameIdM";
             $aArray['gameIdM'] = $aParam['game_id'];

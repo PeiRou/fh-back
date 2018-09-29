@@ -48,6 +48,14 @@ class ReportMember extends Model
             $aSql .= " AND `dateTime` <= :endTimeM";
             $aArray['endTimeM'] = strtotime($aParam['timeEnd'].' 23:59:59');
         }
+        if(isset($aParam['agent_id']) && array_key_exists('agent_id',$aParam)){
+            $aSql .= " AND `agent_id` = :agentIdM";
+            $aArray['agentIdM'] = $aParam['agent_id'];
+        }
+        if(isset($aParam['general_id']) && array_key_exists('general_id',$aParam)){
+            $aSql .= " AND `general_id` = :generalIdM";
+            $aArray['generalIdM'] = $aParam['general_id'];
+        }
         if(isset($aParam['account']) && array_key_exists('account',$aParam)){
             $aSql .= " AND `user_account` = :userAccount";
             $aArray['userAccount'] = $aParam['account'];

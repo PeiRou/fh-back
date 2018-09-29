@@ -67,6 +67,7 @@ $(function () {
             url:'/back/datatables/reportAgent',
             data:function (d) {
                 d.game_id = $('#game').val();
+                d.general_id = $('#general_id').val();
                 d.account = $('#account').val();
                 d.timeStart = $('#timeStart').val();
                 d.timeEnd = $('#timeEnd').val();
@@ -134,17 +135,20 @@ $(function () {
     });
 
     function footerTotal() {
+        footerTotalClear();
         $.ajax({
             url:'/back/datatables/reportAgentTotal',
             type:'get',
             dataType:'json',
             data:{
                 game_id : $('#game').val(),
+                general_id : $('#general_id').val(),
                 account : $('#account').val(),
                 timeStart : $('#timeStart').val(),
                 timeEnd : $('#timeEnd').val(),
             },
             success:function (data) {
+                $('#member_count').text(data.member_count);
                 $('#recharges_money').text(data.recharges_money);
                 $('#drawing_money').text(data.drawing_money);
                 $('#bet_count').text(data.bet_count);
@@ -152,11 +156,23 @@ $(function () {
                 $('#bet_amount').text(data.bet_amount);
                 $('#activity_money').text(data.activity_money);
                 $('#handling_fee').text(data.handling_fee);
-                $('#bet_amount').text(data.bet_amount);
                 $('#bet_bunko').text(data.bet_bunko);
                 $('#fact_bet_bunko').text(data.fact_bet_bunko);
             }
         });
+    }
+
+    function footerTotalClear() {
+        $('#member_count').text('');
+        $('#recharges_money').text('');
+        $('#drawing_money').text('');
+        $('#bet_count').text('');
+        $('#bet_money').text('');
+        $('#bet_amount').text('');
+        $('#activity_money').text('');
+        $('#handling_fee').text('');
+        $('#bet_bunko').text('');
+        $('#fact_bet_bunko').text('');
     }
 
     footerTotal();

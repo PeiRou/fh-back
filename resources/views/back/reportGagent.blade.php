@@ -93,7 +93,7 @@
             <tfoot>
                 <tr>
                     <th>总计：</th>
-                    <th></th>
+                    <th id="member_count"></th>
                     <th id="bet_count"></th>
                     <th id="bet_money"></th>
                     <th id="bet_amount"></th>

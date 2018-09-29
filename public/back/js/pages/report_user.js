@@ -66,6 +66,7 @@ $(function () {
         ajax: {
             url:'/back/datatables/reportUser',
             data:function (d) {
+                d.agent_id = $('#agent_id').val();
                 d.game_id = $('#game').val();
                 d.account = $('#account').val();
                 d.timeStart = $('#timeStart').val();
@@ -144,6 +145,7 @@ $(function () {
             type:'get',
             dataType:'json',
             data:{
+                agent_id : $('#agent_id').val(),
                 game_id : $('#game').val(),
                 account : $('#account').val(),
                 timeStart : $('#timeStart').val(),
@@ -160,7 +162,6 @@ $(function () {
                 $('#bet_amount').text(data.bet_amount);
                 $('#activity_money').text(data.activity_money);
                 $('#handling_fee').text(data.handling_fee);
-                $('#bet_amount').text(data.bet_amount);
                 $('#bet_bunko').text(data.bet_bunko);
                 $('#fact_bet_bunko').text(data.fact_bet_bunko);
             }
