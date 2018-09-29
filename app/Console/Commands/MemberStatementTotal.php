@@ -39,8 +39,8 @@ class MemberStatementTotal extends Command
     public function handle()
     {
         ini_set('memory_limit','2048M');
-        $startTime = empty($this->argument('startTime'))?date('Y-m-d'):$this->argument('startTime');
-        $endTime = empty($this->argument('endTime'))?date('Y-m-d'):$this->argument('endTime');
+        $startTime = empty($this->argument('startTime'))?date('Y-m-d',strtotime('-1 day')):$this->argument('startTime');
+        $endTime = empty($this->argument('endTime'))?date('Y-m-d',strtotime('-1 day')):$this->argument('endTime');
         $aDate = $this->getSpanDays($startTime,$endTime);
         foreach ($aDate as $kDate => $iDate){
             MemberStatementDaily::dispatch($iDate)->onQueue($this->setQueueRealName('memberStatementDaily'));
