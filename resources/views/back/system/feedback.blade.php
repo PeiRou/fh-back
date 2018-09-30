@@ -54,7 +54,7 @@
                 </div>
             </div>
         </div>
-        <table id="example" class="ui small table" cellspacing="0" width="100%">
+        <table id="example" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>类型</th>

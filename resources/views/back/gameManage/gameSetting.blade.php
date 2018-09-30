@@ -11,7 +11,7 @@
         {{--<a href="{{ url('inner/playCate') }}" target="_blank">玩法分类录入（内部）</a> | <a href="{{ url('inner/play') }}" target="_blank">玩法录入（内部）</a>--}}
     </div>
     <div class="table-content">
-        <table id="gamesTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="gamesTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>游戏ID</th>

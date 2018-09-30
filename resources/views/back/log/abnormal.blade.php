@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <table id="abnormalLogTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="abnormalLogTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>操作用户id</th>

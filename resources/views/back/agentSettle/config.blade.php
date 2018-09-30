@@ -40,7 +40,7 @@
     </div>
     <div class="table-content">
         <form id="editArticleForm" action="{{ url('/action/admin/agentSettle/editConfig') }}">
-            <table id="capitalDetailsTable" class="ui small table" cellspacing="0" width="100%">
+            <table id="capitalDetailsTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th class="canshu">参数说明</th>
@@ -82,7 +82,7 @@
                     </tr>
                 </thead>
             </table>
-            <table id="capitalDetailsTable1" class="ui small table" cellspacing="0" width="100%">
+            <table id="capitalDetailsTable1" class="ui small selectable celled striped table" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>纯赢利开始</th>

@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="table-content">
-        <table id="capitalDetailsTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="capitalDetailsTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>层级</th>

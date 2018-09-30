@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="table-content">
-        <table id="onlineUserTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="onlineUserTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>在线</th>

@@ -73,7 +73,7 @@
                 </div>
             </div>
         </div>
-        <table id="reportGagentTable" class="ui right aligned small table" cellspacing="0" width="100%">
+        <table id="reportGagentTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th>账号</th>
