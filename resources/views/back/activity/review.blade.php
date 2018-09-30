@@ -46,7 +46,7 @@
                 审核通过的中奖金额：<span style="font-size: 13pt;" id="filterMoney">0</span>
             </div>
         </div>
-        <table id="capitalDetailsTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="capitalDetailsTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>会员</th>

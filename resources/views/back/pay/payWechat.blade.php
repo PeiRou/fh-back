@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="table-content">
-        <table id="payWeixinTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="payWeixinTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>微信名称</th>

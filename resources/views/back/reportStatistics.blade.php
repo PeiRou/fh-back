@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <table id="reportUserTable" class="ui right aligned small table" cellspacing="0" width="100%">
+        <table id="reportUserTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>编号</th>

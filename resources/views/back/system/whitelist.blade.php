@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="table-content">
-        <table id="articleTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="articleTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th width="80">IP</th>

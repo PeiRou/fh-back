@@ -536,7 +536,7 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
         $length = $request->get('length');
 
         $aSql = "SELECT SUM(CASE WHEN `payType` = 'onlinePayment' THEN `amount` ELSE 0 END) AS `payOnline`,
-                  SUM(CASE WHEN `payType` IN ('bankTransfer','alipay','wechat','cft') THEN `amount` ELSE 0 END) AS `payOffline`,
+                  SUM(CASE WHEN `payType` IN ('bankTransfer','alipay','weixin','cft') THEN `amount` ELSE 0 END) AS `payOffline`,
                   SUM(CASE WHEN `payType` = 'adminAddMoney' THEN `amount` ELSE 0 END) AS `payManual`,
                   SUM(`rebate_or_fee`) AS `payFormalities` FROM `recharges` WHERE `userId` = $id AND `status` = 2";
 
@@ -563,6 +563,7 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
             'payFormalities' => empty($payRecharges->payFormalities)?0:$payRecharges->payFormalities,
             'payBetting' => empty($payBet->payBetting)?0:$payBet->payBetting,
             'payDrawing' => empty($payDrawing->payDrawing)?0:$payDrawing->payDrawing,
+            'payBalance' => DB::table('users')->where('id',$id)->value('money'),
         ];
         if(isset($param['type']) && array_key_exists('type', $param)){
             if(in_array($param['type'],Capital::$includePlayTypeOption)){

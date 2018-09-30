@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <table id="loginLogTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="loginLogTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>会员ID</th>

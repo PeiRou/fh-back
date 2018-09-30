@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="table-content">
-        <table align="center" class="ui celled small table">
+        <table align="center" class="ui small selectable celled striped table">
             <tbody>
             <tr class="firstRow" style="background: #dbe8f0;text-align: center;font-size: 16px;font-weight: bold;">
                 <td width="320" valign="top" style="word-break: break-all;">参数说明</td>

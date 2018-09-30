@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="table-content">
-        <table id="levelTable" class="ui small table" cellspacing="0" width="100%">
+        <table id="levelTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>#</th>
