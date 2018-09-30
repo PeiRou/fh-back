@@ -12,7 +12,7 @@ class GeneralStatementTotal extends Command
      *
      * @var string
      */
-    protected $signature = 'GeneralReport:TotalSettlement {startTime=""} {endTime=""}';
+    protected $signature = 'GeneralReport:TotalSettlement {startTime?} {endTime?}';
 
     /**
      * The console command description.

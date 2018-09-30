@@ -12,7 +12,7 @@ class AgentStatementTotal extends Command
      *
      * @var string
      */
-    protected $signature = 'AgentReport:TotalSettlement {startTime=""} {endTime=""}';
+    protected $signature = 'AgentReport:TotalSettlement {startTime?} {endTime?}';
 
     /**
      * The console command description.

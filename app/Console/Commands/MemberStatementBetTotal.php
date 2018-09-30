@@ -12,7 +12,7 @@ class MemberStatementBetTotal extends Command
      *
      * @var string
      */
-    protected $signature = 'MemberReport:BetTotalSettlement {startTime=""} {endTime=""}';
+    protected $signature = 'MemberReport:BetTotalSettlement {startTime?} {endTime?}';
 
     /**
      * The console command description.
