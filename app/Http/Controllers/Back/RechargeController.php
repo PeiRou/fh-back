@@ -50,7 +50,7 @@ class RechargeController extends Controller
             //更新用户余额
             $updateMoney = User::where('id',$userId)
                 ->update([
-                    'money' => $nowMoney,
+                    'money' => DB::raw('money + '.($amout+$rebate_or_fee)),
                     'PayTimes' => $nowUserPayTimes,
                     'saveMoneyCount' => $nowUserSaveMoneyCount
                 ]);
@@ -61,6 +61,7 @@ class RechargeController extends Controller
                         'operation_account' => Session::get('account'),
                         'status' => 2,
                         'addMoney' => 1,
+                        'balance' => DB::raw('balance + '.$amout),
                         'process_date' => date('Y-m-d H:i:s')
                     ]);
                 if($updateRechargeStatus == 1){
