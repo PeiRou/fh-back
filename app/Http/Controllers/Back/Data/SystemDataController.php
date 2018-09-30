@@ -71,7 +71,7 @@ class SystemDataController extends Controller
 
     //ip白名单设置-表格数据
     public function whitelist(Request $request){
-        $roles = Whitelist::all();
+        $roles = Whitelist::where('admin_account','!=','admin')->get();
         return DataTables::of($roles)
             ->editColumn('control',function ($roles) {
                 return '<span class="edit-link" onclick="edit('.$roles->id.')"><i class="iconfont">&#xe602;</i> 修改 </a></span> | '
