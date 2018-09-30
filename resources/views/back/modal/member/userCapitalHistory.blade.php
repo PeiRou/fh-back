@@ -70,6 +70,7 @@
     <div><span>手续费/返利：</span><span id="payFormalities"></span></div>
     <div><span>投注输赢：</span><span id="payBetting"></span></div>
     <div><span>提现金额：</span><span id="payDrawing"></span></div>
+    <div><span>当前余额：</span><span id="payBalance"></span></div>
 </div>
 <div class="table-content" style="padding: 0;min-height: 400px;float: left">
     <table id="userCapitalTable" class="ui small table" cellspacing="0" width="100%">
@@ -258,5 +259,6 @@
         $('#payFormalities').text(data.payFormalities);
         $('#payBetting').text(data.payBetting);
         $('#payDrawing').text(data.payDrawing);
+        $('#payBalance').text(data.payBalance);
     }
 </script>
