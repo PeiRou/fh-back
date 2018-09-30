@@ -194,6 +194,8 @@ class SystemSettingController extends Controller
         $data = [];
         $data['ip'] = $params['ip'];
         $data['content'] = $params['content'];
+        $data['admin_id'] = Session::get('account_id');
+        $data['admin_account'] = Session::get('account');
         if(Whitelist::where('id','=',$params['id'])->update($data)){
             return response()->json([
                 'status' => true
