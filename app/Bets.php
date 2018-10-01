@@ -504,7 +504,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $whereB .= " and game_id = ".$aParam['game_id'];
             $aSql1 .= " '' AS activity_money,'' AS handling_fee,'' as drawing_money,'' as recharges_money ";
         }else{
-            $aSql1 .= " SUM(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,dr.amount as drawing_money,re.amount as recharges_money ";
+            $aSql1 .= " cp.sumActivity AS activity_money,cp.sumRecharge_fee AS handling_fee,dr.amount as drawing_money,re.amount as recharges_money ";
         }
         if(isset($aParam['account']) && array_key_exists('account',$aParam)){
             $where .= " and u.username = '".$aParam['account']."'";
