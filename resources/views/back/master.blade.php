@@ -194,7 +194,7 @@
         <li id="menu-openManage" class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>
                 历史开奖</a>
-            <ul style="display: block;height: 220px;overflow: auto;">
+            <ul style="height: 220px;overflow: auto;">
                 @if($hasPermission->hasPermission('historyLottery.cqssc') == "has")
                 <li id="menu-openManage-cqssc"><a href="{{ route('historyLottery.cqssc') }}"><cite></cite><span>重庆时时彩</span></a></li>
                 @endif
