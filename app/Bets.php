@@ -287,10 +287,10 @@ class Bets extends Model
     }
 
     public static function GagentToday($aParam){
-        $aSql1 = "SELECT zd.ga_id AS general_id,count(DISTINCT(u.id)) as memberCount,count(b.bet_id) as bet_count,zd.account as general_account, sum(b.bet_money) as bet_money,
-sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as bet_amount,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as bet_bunko,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as fact_bet_bunko,
+        $aSql1 = "SELECT zd.ga_id AS general_id,count(DISTINCT(u.id)) as memberCount,sum(b.bet_count) as bet_count,zd.account as general_account, sum(b.bet_money) as bet_money,
+sum(bet_amount) as bet_amount,
+sum(bet_bunko) as bet_bunko,
+sum(fact_bet_bunko) as fact_bet_bunko,
 sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0.00' AS odds_amount,'0.00' AS return_amount,'0.00' AS fact_return_amount";
         $where = "";
         $whereB = "";
@@ -313,7 +313,11 @@ sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0
         $whereB .= " and testFlag = 0";
         $whereU .= " and u.testFlag = 0";
         $aSql = "";
-        $aSql .= " FROM (select * from bet where 1 ".$whereB.") b ";
+        $aSql .= " FROM (select count(bet_id) AS bet_count,sum(bet_money) as bet_money,user_id,
+         sum(case WHEN game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as bet_amount,
+         sum(case WHEN game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as bet_bunko,
+         sum(case WHEN game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as fact_bet_bunko
+         from bet where 1 ".$whereB."  group by user_id) b ";
         $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
         $aSql .= " LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id ";
@@ -333,11 +337,11 @@ sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0
     }
 
     public static function GagentTodaySum($aParam){
-        $aSql1 = "SELECT count(DISTINCT(u.id)) as member_count,count(b.bet_id) as bet_count, sum(b.bet_money) as bet_money,
-sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as bet_amount,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as bet_bunko,
-sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as fact_bet_bunko,
-sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0.00' AS odds_amount,'0.00' AS return_amount,'0.00' AS fact_return_amount";
+        $aSql1 = "SELECT count(DISTINCT(u.id)) as member_count,sum(b.bet_count) as bet_count, sum(b.bet_money) as bet_money,
+            sum(bet_amount) as bet_amount,
+            sum(bet_bunko) as bet_bunko,
+            sum(fact_bet_bunko) as fact_bet_bunko,
+            sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0.00' AS odds_amount,'0.00' AS return_amount,'0.00' AS fact_return_amount";
         $where = "";
         $whereB = "";
         $whereU = "";
@@ -359,7 +363,10 @@ sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0
         $whereB .= " and testFlag = 0";
         $whereU .= " and u.testFlag = 0";
         $aSql = "";
-        $aSql .= " FROM (select * from bet where 1 ".$whereB.") b ";
+        $aSql .= " FROM (select count(bet_id) AS bet_count,sum(bet_money) as bet_money,user_id,
+         sum(case WHEN game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as bet_amount,
+         sum(case WHEN game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as bet_bunko,
+         sum(case WHEN game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as fact_bet_bunko from bet where 1 ".$whereB." group by user_id) b ";
         $aSql .= " LEFT JOIN `users` u on b.user_id = u.id ".$whereU;
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
         $aSql .= " LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id ";
