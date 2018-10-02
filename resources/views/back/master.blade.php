@@ -34,7 +34,7 @@
 </div>
 <div class="nav-top">
     <div class="nav-logo">
-        <a href="{{ url('/back/control/dash') }}"><img src="{{ env('BACK_LOGO') }}"></a>
+        <a href="{{ url('/back/control/dash') }}"><img width="{{ env('BACK_LOGO_WIDTH') }}" src="{{ env('BACK_LOGO') }}"></a>
     </div>
     <div class="nav-user-info">
         <ul style="margin-top: 20px;">
