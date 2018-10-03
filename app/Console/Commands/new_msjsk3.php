@@ -66,7 +66,7 @@ class new_msjsk3 extends Command
             $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(50)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($res->opentime)->addSeconds(60)->toDateTimeString();
             $New_nextIssue = $nextIssue+1;
-            if(substr($nextIssue,-4)==1441){
+            if(substr($nextIssue,-4)=='1441'){
                 $dateIssue = substr($nextIssue,strlen($nextIssue)-4);
                 $New_nextIssue = date("Ymd",strtotime($dateIssue)+3600).'0001';
             }
