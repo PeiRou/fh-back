@@ -619,7 +619,7 @@ class SrcMemberController extends Controller
         $password = $request->input('password');
         $role = $request->input('role');
 
-        if(strlen($account) <= 6){
+        if(strlen($account) < 6){
             return response()->json([
                 'status'=>false,
                 'msg'=>'帐号长度不能小于6位'
