@@ -13,7 +13,6 @@ $(function () {
         serverSide: true,
         ordering: false,
         destroy: true,
-        aLengthMenu: [[50]],
         ajax: {
             url:'/back/datatables/activity/daily',
             data:function (d) {
