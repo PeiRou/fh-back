@@ -39,7 +39,9 @@
             <div class="four wide column">
                 <div class="outline">
                     <div class="title">相关下载</div>
-                    <div class="content" id="downloadMessageBox" style="padding: 10px 0px;"></div>
+                    <div class="content" id="downloadMessageBox" style="padding: 10px 0px 10px 3px;">
+                        <a target="_blank" href="/doc/backAdmin.pdf">管理平台使用说明.pdf</a>
+                    </div>
                 </div>
             </div>
         </div>
