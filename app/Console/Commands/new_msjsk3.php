@@ -65,7 +65,13 @@ class new_msjsk3 extends Command
             $nextIssue = $res->expect;
             $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(50)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($res->opentime)->addSeconds(60)->toDateTimeString();
-            Redis::set('msjsk3:nextIssue',(int)$nextIssue+1);
+            $New_nextIssue = $nextIssue+1;
+            if(substr($nextIssue,-4)==1441){
+                $dateIssue = substr($nextIssue,strlen($nextIssue)-4);
+                $New_nextIssue = date("Ymd",strtotime($dateIssue)+3600).'0001';
+            }
+
+            Redis::set('msjsk3:nextIssue',(int)$New_nextIssue);
             Redis::set('msjsk3:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msjsk3:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             
