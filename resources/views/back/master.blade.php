@@ -34,7 +34,7 @@
 </div>
 <div class="nav-top">
     <div class="nav-logo">
-        <a href="{{ url('/back/control/dash') }}"><img src="{{ env('BACK_LOGO') }}"></a>
+        <a href="{{ url('/back/control/dash') }}"><img style="width: {{ env('BACK_LOGO_WIDTH') }}px;" src="{{ env('BACK_LOGO') }}"></a>
     </div>
     <div class="nav-user-info">
         <ul style="margin-top: 20px;">
@@ -194,7 +194,7 @@
         <li id="menu-openManage" class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>
                 历史开奖</a>
-            <ul>
+            <ul style="height: 220px;overflow: auto;">
                 @if($hasPermission->hasPermission('historyLottery.cqssc') == "has")
                 <li id="menu-openManage-cqssc"><a href="{{ route('historyLottery.cqssc') }}"><cite></cite><span>重庆时时彩</span></a></li>
                 @endif
