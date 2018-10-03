@@ -493,7 +493,7 @@ sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0
 //            $aBet->activity_money = $aActivity->sumActivity;
 //        }
 //        return $aBet;
-        $aSql1 = "SELECT count(DISTINCT(u.id)) as memberCount,sum(b.bet_count) as bet_count,sum(b.bet_money) as bet_money,
+        $aSql1 = "SELECT count(DISTINCT(u.id)) as member_count,sum(b.bet_count) as bet_count,sum(b.bet_money) as bet_money,
                     sum(b.bet_amount) AS bet_amount,sum(b.bet_bunko) AS bet_bunko,sum(b.fact_bet_bunko) AS fact_bet_bunko, 
                     '0.00' AS odds_amount,'0.00' AS return_amount,'0.00' AS fact_return_amount,";
         $where = "";
