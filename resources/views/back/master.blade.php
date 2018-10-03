@@ -265,6 +265,9 @@
                 @if($hasPermission->hasPermission('pay.online') == "has")
                 <li id="menu-payManage-payOnline"><a href="{{ route('pay.online') }}"><cite></cite><span>在线支付配置</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('pay.onlineNew') == "has")
+                    <li id="menu-payManage-payOnlineNew"><a href="{{ route('pay.onlineNew') }}"><cite></cite><span>在线支付配置新</span></a></li>
+                @endif
                 @if($hasPermission->hasPermission('pay.bank') == "has")
                 <li id="menu-payManage-payBank"><a href="{{ route('pay.bank') }}"><cite></cite><span>银行支付配置</span></a></li>
                 @endif
