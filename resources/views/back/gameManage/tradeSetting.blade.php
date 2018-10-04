@@ -19,8 +19,24 @@
                 <a class="item" data-tab="five" data-type="lhc">六合彩</a>
                 <a class="item" data-tab="six" data-type="nn">牛牛</a>
             </div>
-            <div class="ui tab segment active" data-tab="first" id="gaopin_content" style="margin-bottom: 70px;">
-                高频彩
+            <div class="ui tab segment active" data-tab="first" style="margin-bottom: 70px;">
+                <div class="sub-item">
+                    <ul>
+                        <li data-tag="first" data-id="50">北京赛车</li>
+                        <li data-tag="first" data-id="1">重庆时时彩</li>
+                        <li data-tag="first" data-id="4">新疆时时彩</li>
+                        <li data-tag="first" data-id="5">天津时时彩</li>
+                        <li data-tag="first" data-id="60">广东快乐十分</li>
+                        <li data-tag="first" data-id="10">江苏快3</li>
+                        <li data-tag="first" data-id="11">安徽快3</li>
+                        <li data-tag="first" data-id="12">广西快3</li>
+                        <li data-tag="first" data-id="13">湖北快3</li>
+                        <li data-tag="first" data-id="61">重庆幸运农场</li>
+                        <li data-tag="first" data-id="65">北京快乐8</li>
+                        <li data-tag="first" data-id="21">广东十一选五</li>
+                        <li data-tag="first" data-id="66">PC蛋蛋</li>
+                    </ul>
+                </div>
             </div>
             <div class="ui tab segment" data-tab="second" id="miaosu_content" style="margin-bottom: 70px;">
                 秒速彩
