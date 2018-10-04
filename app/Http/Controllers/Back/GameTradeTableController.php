@@ -12,7 +12,16 @@ class GameTradeTableController extends Controller
     public function gameTradeTable50()
     {
         $data = Play::where('gameId',50)->get();
-        return view('back.gameTradeTables.50');
+        $filter = ['GAME50_GYDXDS','GAME50_GYZH','GAME50_DXDS','GAME50_1D10'];
+        $fromDB = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->bet_tag == $i){
+                    $fromDB->put($item->bet_tag,$item->minMoney,$item->maxMoney,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.50')->with('money',$fromDB->all());
     }
 
     //重庆时时彩
