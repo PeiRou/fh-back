@@ -13,6 +13,7 @@
         background: #fdf1f1;
         font-weight: bold;
         color: red;
+        padding: 6px;
     }
     input{
         border: 1px solid #a2a2a2;
