@@ -23,7 +23,7 @@
         padding: 5px !important;
     }
 </style>
-<table align="center" class="ui celled small table">
+<table align="center" class="ui celled small table selectable">
     <tbody>
     <tr class="firstRow">
         <td width="190" align="center" class="table-small-title">玩法</td>
