@@ -608,6 +608,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/table/save/msjsk3', 'Back\GameTables\SaveGameOddsController@msjsk3');
     //保存交易设定的表格
     Route::post('/game/trade/table/save/bjpk10','Back\GameTradeTables\SaveGameTradeController@bjpk10'); //保存北京PK10
+    Route::post('/game/trade/table/save/cqssc','Back\GameTradeTables\SaveGameTradeController@cqssc'); //保存重庆时时彩
 
 //error
     Route::get('/error/403', function () {
