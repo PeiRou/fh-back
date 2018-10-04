@@ -90,7 +90,27 @@ class GameTradeTableController extends Controller
     //天津时时彩
     public function gameTradeTable5()
     {
-        return view('back.gameTradeTables.5');
+        $data = Play::where('gameId',5)->get();
+        $filter = ['GAME5_DXDSLHH_min','GAME5_DXDSLHH_max','GAME5_DXDSLHH_turnMax','GAME5_1D5_min','GAME5_1D5_max','GAME5_1D5_turnMax','GAME5_BAOZI_min','GAME5_BAOZI_max','GAME5_BAOZI_turnMax','GAME5_SHUNZI_min','GAME5_SHUNZI_max','GAME5_SHUNZI_turnMax','GAME5_DBZ_min','GAME5_DBZ_max','GAME5_DBZ_turnMax'];
+        $fromDB = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->min_tag == $i){
+                    $fromDB->put($item->min_tag,$item->minMoney);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->max_tag == $s){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }
+            }
+            foreach ($filter as $x){
+                if($item->turnMax_tag == $x){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.5')->with('mm',$fromDB->all());
     }
 
     //广东快乐十分

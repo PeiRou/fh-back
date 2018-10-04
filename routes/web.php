@@ -610,6 +610,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/trade/table/save/bjpk10','Back\GameTradeTables\SaveGameTradeController@bjpk10'); //保存北京PK10
     Route::post('/game/trade/table/save/cqssc','Back\GameTradeTables\SaveGameTradeController@cqssc'); //保存重庆时时彩
     Route::post('/game/trade/table/save/xjssc','Back\GameTradeTables\SaveGameTradeController@xjssc'); //保存新疆时时彩
+    Route::post('/game/trade/table/save/tjssc','Back\GameTradeTables\SaveGameTradeController@tjssc'); //保存天津时时彩
 
 //error
     Route::get('/error/403', function () {
