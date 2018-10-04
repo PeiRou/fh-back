@@ -23,7 +23,6 @@
         padding: 5px !important;
     }
 </style>
-{{ $money }}
 <table align="center" class="ui celled small table selectable">
     <tbody>
     <tr class="firstRow">

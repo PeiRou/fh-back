@@ -21,7 +21,8 @@ class GameTradeTableController extends Controller
                 }
             }
         }
-        return view('back.gameTradeTables.50')->with('money',$fromDB->all());
+        return $fromDB->all();
+        //return view('back.gameTradeTables.50')->with('money',$fromDB->all());
     }
 
     //重庆时时彩
