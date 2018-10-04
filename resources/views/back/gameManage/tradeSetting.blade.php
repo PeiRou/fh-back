@@ -17,6 +17,7 @@
                 <a class="item" data-tab="three">幸运彩</a>
                 <a class="item" data-tab="four">福彩3D</a>
                 <a class="item" data-tab="five">六合彩</a>
+                <a class="item" data-tab="six">牛牛</a>
             </div>
         </div>
     </div>
