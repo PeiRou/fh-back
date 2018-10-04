@@ -29,28 +29,28 @@
         </td>
     </tr>
     <tr>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
+        <td width="190" valign="top">大、小、单、双、龙、虎</td>
+        <td width="190" valign="top"><input type="text" value=""></td>
+        <td width="190" valign="top"><input type="text" value=""></td>
+        <td width="190" valign="top"><input type="text" value=""></td>
     </tr>
     <tr>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
+        <td width="190" valign="top">单号1～10</td>
+        <td width="190" valign="top"><input type="text" value=""></td>
+        <td width="190" valign="top"><input type="text" value=""></td>
+        <td width="190" valign="top"><input type="text" value=""></td>
     </tr>
     <tr>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
+        <td width="190" valign="top">冠亚组合</td>
+        <td width="190" valign="top"><input type="text" value=""></td>
+        <td width="190" valign="top"><input type="text" value=""></td>
+        <td width="190" valign="top"><input type="text" value=""></td>
     </tr>
     <tr>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
-        <td width="190" valign="top"></td>
+        <td width="190" valign="top">冠亚大、小、单、双</td>
+        <td width="190" valign="top"><input type="text" value=""></td>
+        <td width="190" valign="top"><input type="text" value=""></td>
+        <td width="190" valign="top"><input type="text" value=""></td>
     </tr>
     <tr>
         <td width="190" valign="top"></td>
