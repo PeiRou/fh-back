@@ -8,13 +8,6 @@ use App\Http\Controllers\Controller;
 
 class GameTableController extends Controller
 {
-    public function gameTradeTables($type)
-    {
-        if($type == 'gaopin'){
-            return view('back.gameTradeTables.gaopin');
-        }
-    }
-
     public function gameTable50()
     {
         $data = Play::where('gameId',50)->get();

@@ -520,7 +520,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/tables/86', 'Back\GameTableController@gameTable86'); //秒速江苏快三
 
     //交易设定表格
-    Route::get('/game/trade/tables/{type}','Back\GameTableController@gameTradeTables');
+    Route::get('/game/trade/tables/50','Back\GameTradeTableController@gameTradeTable50'); //北京赛车
 
     //保存游戏赔率表格数据
     Route::post('/game/table/save/bjpk10', 'Back\GameTables\SaveGameOddsController@bjpk10');

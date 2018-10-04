@@ -38,19 +38,41 @@
                     </ul>
                 </div>
             </div>
-            <div class="ui tab segment" data-tab="second" id="miaosu_content" style="margin-bottom: 70px;">
-                秒速彩
+            <div class="ui tab segment" data-tab="second" style="margin-bottom: 70px;">
+                <div class="sub-item">
+                    <ul>
+                        <li data-tag="second" data-id="80">秒速赛车</li>
+                        <li data-tag="second" data-id="82">秒速飞艇</li>
+                        <li data-tag="second" data-id="81">秒速时时彩</li>
+                        <li data-tag="second" data-id="99">跑马</li>
+                        <li data-tag="second" data-id="86">秒速快3</li>
+                    </ul>
+                </div>
             </div>
-            <div class="ui tab segment" data-tab="three" id="xingyun_content" style="margin-bottom: 70px;">
-                幸运彩
+            <div class="ui tab segment" data-tab="three" style="margin-bottom: 70px;">
+                <div class="sub-item">
+                    <ul>
+                        <li data-tag="three" data-id="85">幸运快乐8</li>
+                        <li data-tag="three" data-id="85">幸运蛋蛋</li>
+                        <li data-tag="three" data-id="85">幸运六合彩</li>
+                    </ul>
+                </div>
             </div>
-            <div class="ui tab segment" data-tab="four" id="fucai_content" style="margin-bottom: 70px;">
-                福彩3D
+            <div class="ui tab segment" data-tab="four" style="margin-bottom: 70px;">
+                <div class="sub-item">
+                    <ul>
+                        <li data-tag="four" data-id="30">福彩3D</li>
+                    </ul>
+                </div>
             </div>
-            <div class="ui tab segment" data-tab="five" id="lhc_content" style="margin-bottom: 70px;">
-                六合彩
+            <div class="ui tab segment" data-tab="five" style="margin-bottom: 70px;">
+                <div class="sub-item">
+                    <ul>
+                        <li data-tag="five" data-id="70">六合彩</li>
+                    </ul>
+                </div>
             </div>
-            <div class="ui tab segment" data-tab="six" id="nn_content" style="margin-bottom: 70px;">
+            <div class="ui tab segment" data-tab="six" style="margin-bottom: 70px;">
                 牛牛
             </div>
         </div>
