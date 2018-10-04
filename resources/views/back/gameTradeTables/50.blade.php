@@ -38,9 +38,9 @@
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">大、小、单、双、龙、虎</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_DXDS_min" value="{{ $mm['GAME50_DXDS_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_DXDS_max" value="{{ $mm['GAME50_DXDS_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_DXDS_turnMax" value="{{ $mm['GAME50_DXDS_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">单号1～10</td>
