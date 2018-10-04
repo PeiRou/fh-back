@@ -14,6 +14,10 @@
         font-weight: bold;
         color: red;
     }
+    input{
+        border: 1px solid #ddd;
+        height: 20px;
+    }
 </style>
 <table align="center" class="ui celled small table">
     <tbody>
