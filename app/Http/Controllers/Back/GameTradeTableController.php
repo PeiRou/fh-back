@@ -64,7 +64,27 @@ class GameTradeTableController extends Controller
     //新疆时时彩
     public function gameTradeTable4()
     {
-        return view('back.gameTradeTables.4');
+        $data = Play::where('gameId',4)->get();
+        $filter = ['GAME4_DXDSLHH_min','GAME4_DXDSLHH_max','GAME4_DXDSLHH_turnMax','GAME4_1D5_min','GAME4_1D5_max','GAME4_1D5_turnMax','GAME4_BAOZI_min','GAME4_BAOZI_max','GAME4_BAOZI_turnMax','GAME4_SHUNZI_min','GAME4_SHUNZI_max','GAME4_SHUNZI_turnMax','GAME4_DBZ_min','GAME4_DBZ_max','GAME4_DBZ_turnMax'];
+        $fromDB = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->min_tag == $i){
+                    $fromDB->put($item->min_tag,$item->minMoney);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->max_tag == $s){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }
+            }
+            foreach ($filter as $x){
+                if($item->turnMax_tag == $x){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.4')->with('mm',$fromDB->all());
     }
 
     //天津时时彩

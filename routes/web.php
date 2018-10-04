@@ -562,7 +562,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     //交易设定表格
     Route::get('/game/trade/tables/50','Back\GameTradeTableController@gameTradeTable50'); //北京赛车
     Route::get('/game/trade/tables/1','Back\GameTradeTableController@gameTradeTable1'); //重庆时时彩
-    Route::get('/game/trade/tables/4','Back\GameTradeTableController@gameTradeTable4'); //新建时时彩
+    Route::get('/game/trade/tables/4','Back\GameTradeTableController@gameTradeTable4'); //新疆时时彩
     Route::get('/game/trade/tables/5','Back\GameTradeTableController@gameTradeTable5'); //天津时时彩
     Route::get('/game/trade/tables/60','Back\GameTradeTableController@gameTradeTable60'); //广东快乐十分
     Route::get('/game/trade/tables/10','Back\GameTradeTableController@gameTradeTable10'); //江苏快3
@@ -609,6 +609,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     //保存交易设定的表格
     Route::post('/game/trade/table/save/bjpk10','Back\GameTradeTables\SaveGameTradeController@bjpk10'); //保存北京PK10
     Route::post('/game/trade/table/save/cqssc','Back\GameTradeTables\SaveGameTradeController@cqssc'); //保存重庆时时彩
+    Route::post('/game/trade/table/save/xjssc','Back\GameTradeTables\SaveGameTradeController@xjssc'); //保存新疆时时彩
 
 //error
     Route::get('/error/403', function () {
