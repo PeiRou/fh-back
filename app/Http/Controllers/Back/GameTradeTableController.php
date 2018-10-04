@@ -17,7 +17,7 @@ class GameTradeTableController extends Controller
         foreach ($data as $item){
             foreach ($filter as $i){
                 if($item->bet_tag == $i){
-                    $fromDB->put($item->bet_tag,$item->minMoney,$item->maxMoney,$item->maxTurnMoney);
+                    $fromDB->put('GAME50_GYDXDS',$item->minMoney);
                 }
             }
         }
