@@ -22,6 +22,21 @@
             <div class="ui tab segment active" data-tab="first" style="margin-bottom: 70px;">
                 高频彩
             </div>
+            <div class="ui tab segment" data-tab="second" style="margin-bottom: 70px;">
+                秒速彩
+            </div>
+            <div class="ui tab segment" data-tab="three" style="margin-bottom: 70px;">
+                幸运彩
+            </div>
+            <div class="ui tab segment" data-tab="four" style="margin-bottom: 70px;">
+                福彩3D
+            </div>
+            <div class="ui tab segment" data-tab="five" style="margin-bottom: 70px;">
+                六合彩
+            </div>
+            <div class="ui tab segment" data-tab="six" style="margin-bottom: 70px;">
+                牛牛
+            </div>
         </div>
     </div>
 @endsection
