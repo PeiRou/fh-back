@@ -44,21 +44,21 @@
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">单号1～10</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_1D10_min" value="{{ $mm['GAME50_1D10_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_1D10_max" value="{{ $mm['GAME50_1D10_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_1D10_turnMax" value="{{ $mm['GAME50_1D10_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">冠亚组合</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_GYZH_min" value="{{ $mm['GAME50_GYZH_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_GYZH_max" value="{{ $mm['GAME50_GYZH_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_GYZH_turnMax" value="{{ $mm['GAME50_GYZH_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">冠亚大、小、单、双</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_GYDXDS_min" value="{{ $mm['GAME50_GYDXDS_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_GYDXDS_max" value="{{ $mm['GAME50_GYDXDS_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME50_GYDXDS_turnMax" value="{{ $mm['GAME50_GYDXDS_turnMax'] }}"></td>
     </tr>
     </tbody>
 </table>
