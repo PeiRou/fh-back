@@ -1,4 +1,4 @@
-<table>
+<table align="center" class="ui celled small table">
     <tbody>
     <tr class="firstRow">
         <td width="190" valign="top" style="word-break: break-all;">
