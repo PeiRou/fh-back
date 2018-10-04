@@ -57,6 +57,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 //游戏管理
     Route::group(['prefix' => 'back/control/gameManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('gameSetting', 'Back\SrcViewController@gameSetting')->name('game.gameSetting'); //游戏设定
+        Route::get('tradeSetting', 'Back\SrcViewController@tradeSetting')->name('game.tradeSetting'); //交易设定
         Route::get('handicapSetting', 'Back\SrcViewController@handicapSetting')->name('game.handicapSetting'); //盘口设定
         Route::get('killSetting', 'Back\SrcViewController@killSetting')->name('game.killSetting'); //杀率设定
     });

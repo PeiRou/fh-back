@@ -473,6 +473,11 @@ class SrcViewController extends Controller
     {
         return view('back.gameManage.gameSetting');
     }
+    //交易设定
+    public function tradeSetting()
+    {
+        return view('back.gameManage.tradeSetting');
+    }
     //盘口设定
     public function handicapSetting()
     {
