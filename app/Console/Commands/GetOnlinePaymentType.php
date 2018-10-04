@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\PaymentPlatform;
 use App\Jobs\PayTypeNewInsert;
 use App\PayTypeNew;
+use App\SystemSetting;
 use Illuminate\Console\Command;
 
 class GetOnlinePaymentType extends Command
@@ -39,8 +41,8 @@ class GetOnlinePaymentType extends Command
      */
     public function handle()
     {
-        $result = json_decode($this->postCurl(),true);
-        if($result['code'] == 200){
+        $result = json_decode($this->getArraySign(),true);
+        if($result['errorCode'] == 200){
             PayTypeNew::truncate();
             foreach ($result['data'] as $kData => $iData){
                 $aArray = [
@@ -65,24 +67,17 @@ class GetOnlinePaymentType extends Command
         return config('prefix')['queue'] . $queue;
     }
 
-    public function postCurl(){
-        $url = "http://45.77.242.9:8666/api/v1/payways";
-        $curl = curl_init();  //初始化
-        curl_setopt($curl,CURLOPT_URL,$url);  //设置url
-        curl_setopt($curl,CURLOPT_HTTPAUTH,CURLAUTH_BASIC);  //设置http验证方法
-        curl_setopt($curl,CURLOPT_HEADER,0);  //设置头信息
-        curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);  //设置curl_exec获取的信息的返回方式
-        curl_setopt($curl,CURLOPT_POST,1);  //设置发送方式为post请求
-        curl_setopt($curl,CURLOPT_POSTFIELDS,[]);  //设置post的数据
-
-        $result = curl_exec($curl);
-        curl_close($curl);
-        if($result === false){
-            return [
-                'code' => 0,
-                'msg' => '接口访问失败'
-            ];
-        }
-        return $result;
+    public function getArraySign(){
+        $aArray = [
+            'platform_id' => SystemSetting::where('id',1)->value('payment_platform_id'),
+            'timestamp' => time()
+        ];
+        $PaymentPlatform = new PaymentPlatform();
+        $aArray['sign'] = $PaymentPlatform->getSign($aArray,SystemSetting::where('id',1)->value('payment_platform_key'));
+        return $PaymentPlatform->postCurl(SystemSetting::where('id',1)->value('payment_platform_interface'),[
+            'ciphertext' => base64_encode(json_encode($aArray)),
+        ]);
     }
+
+
 }

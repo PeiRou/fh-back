@@ -635,6 +635,37 @@ class SrcViewController extends Controller
         }
     }
 
+    //充值配置新
+    //在线支付配置新
+    public function payOnlineNew(){
+        return view('back.payNew.payOnline');
+    }
+    //银行支付配置
+    public function payBankNew()
+    {
+        return view('back.payNew.payBank');
+    }
+    //支付宝支付配置
+    public function payAlipayNew()
+    {
+        return view('back.payNew.payAlipay');
+    }
+    //微信支付配置
+    public function payWechatNew()
+    {
+        return view('back.payNew.payWechat');
+    }
+    //云闪付配置
+    public function payYunShanPayNew()
+    {
+        return view('back.payNew.payYunShanPay');
+    }
+    //微信支付配置
+    public function payCftNew()
+    {
+        return view('back.payNew.payCft');
+    }
+
     public function payOnlineDateChange($date = "")
     {
         $dt = Carbon::now();

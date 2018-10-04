@@ -422,6 +422,51 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="feidan_back_domain_api" data-c="飞单管理后台域名接口" class="edit-link">修改</td>
             </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">支付平台ID</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->payment_platform_id }}" data-id-input="payment_platform_id"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="payment_platform_id" data-c="支付平台ID" class="edit-link">修改</td>
+            </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">支付平台获取支付接口</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->payment_platform_interface }}" data-id-input="payment_platform_interface"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="payment_platform_interface" data-c="支付平台获取支付接口" class="edit-link">修改</td>
+            </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">支付平台接口</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->payment_platform_url }}" data-id-input="payment_platform_url"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="payment_platform_url" data-c="支付平台接口" class="edit-link">修改</td>
+            </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">支付平台密钥</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->payment_platform_key }}" data-id-input="payment_platform_key"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="payment_platform_key" data-c="支付平台密钥" class="edit-link">修改</td>
+            </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">支付平台查询订单</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->payment_platform_inquire }}" data-id-input="payment_platform_inquire"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="payment_platform_inquire" data-c="支付平台查询订单" class="edit-link">修改</td>
+            </tr>
             </tbody>
         </table>
     </div>

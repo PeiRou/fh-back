@@ -16,7 +16,9 @@ use App\GeneralAgent;
 use App\Levels;
 use App\Notices;
 use App\PayOnline;
+use App\PayOnlineNew;
 use App\PayType;
+use App\PayTypeNew;
 use App\Permissions;
 use App\PermissionsAuth;
 use App\PermissionsType;
@@ -548,6 +550,83 @@ class ModalController extends Controller
         } else {
             return '加载错误！';
         }
+    }
+
+    //充值配置新
+
+    //添加在线支付配置新
+    public function addPayOnlineNew()
+    {
+        $payType = PayTypeNew::where('status',1)->get();
+        $levels = Levels::all();
+        return view('back.modal.payNew.addPayOnline')->with('payType',$payType)->with('levels',$levels);
+    }
+    //修改在线支付配置新
+    public function editPayOnlineNew($id = "")
+    {
+        $payType = PayTypeNew::all();
+        $levels = Levels::all();
+        $getPayOnlineData = PayOnlineNew::where('id',$id)->first();
+        $getPayOnlineData->levels = explode(",",$getPayOnlineData->levels);
+        return view('back.modal.payNew.editPayOnline')->with('payType',$payType)->with('levels',$levels)->with('id',$id)->with('payOnline',$getPayOnlineData);
+    }
+    //添加银行支付配置
+    public function addPayBankNew()
+    {
+        $banks = Banks::where('status',1)->get();
+        $levels = Levels::all();
+        return view('back.modal.payNew.addPayBank',compact('banks','levels'));
+    }
+    //修改银行支付配置
+    public function editPayBankNew($id = "")
+    {
+        $banks = Banks::where('status',1)->get();
+        $levels = Levels::all();
+        $payBank = PayOnlineNew::where('id',$id)->first();
+        $payBank->levels = explode(",",$payBank->levels);
+        return view('back.modal.payNew.editPayBank',compact('banks','levels','payBank','id'));
+    }
+    //添加支付宝配置
+    public function addPayAlipayNew()
+    {
+        $levels = Levels::all();
+        return view('back.modal.payNew.addPayAlipay',compact('levels'));
+    }
+    //修改支付宝配置
+    public function editPayAlipayNew($id = '')
+    {
+        $levels = Levels::all();
+        $payAlipay = PayOnlineNew::where('id',$id)->first();
+        $payAlipay->levels = explode(",",$payAlipay->levels);
+        return view('back.modal.payNew.editPayAlipay',compact('levels','id','payAlipay'));
+    }
+    //添加微信配置
+    public function addPayWechatNew()
+    {
+        $levels = Levels::all();
+        return view('back.modal.payNew.addPayWechat',compact('levels'));
+    }
+    //修改微信配置
+    public function editPayWechatNew($id = '')
+    {
+        $levels = Levels::all();
+        $payWechat = PayOnlineNew::where('id',$id)->first();
+        $payWechat->levels = explode(",",$payWechat->levels);
+        return view('back.modal.payNew.editPayWechat',compact('levels','id','payWechat'));
+    }
+    //添加财付通配置
+    public function addPayCftNew()
+    {
+        $levels = Levels::all();
+        return view('back.modal.payNew.addPayCft',compact('levels'));
+    }
+    //修改财付通
+    public function editPayCftNew($id = '')
+    {
+        $levels = Levels::all();
+        $payCft = PayOnlineNew::where('id',$id)->first();
+        $payCft->levels = explode(",",$payCft->levels);
+        return view('back.modal.payNew.editPayCft',compact('levels','id','payCft'));
     }
 
     //历史开奖
