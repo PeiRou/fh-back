@@ -37,6 +37,7 @@
                         <li data-tag="first" data-id="66">PC蛋蛋</li>
                     </ul>
                 </div>
+                <div id="first_content"></div>
             </div>
             <div class="ui tab segment" data-tab="second" style="margin-bottom: 70px;">
                 <div class="sub-item">
@@ -48,6 +49,7 @@
                         <li data-tag="second" data-id="86">秒速快3</li>
                     </ul>
                 </div>
+                <div id="second_content"></div>
             </div>
             <div class="ui tab segment" data-tab="three" style="margin-bottom: 70px;">
                 <div class="sub-item">
@@ -57,6 +59,7 @@
                         <li data-tag="three" data-id="85">幸运六合彩</li>
                     </ul>
                 </div>
+                <div id="three_content"></div>
             </div>
             <div class="ui tab segment" data-tab="four" style="margin-bottom: 70px;">
                 <div class="sub-item">
@@ -64,6 +67,7 @@
                         <li data-tag="four" data-id="30">福彩3D</li>
                     </ul>
                 </div>
+                <div id="four_content"></div>
             </div>
             <div class="ui tab segment" data-tab="five" style="margin-bottom: 70px;">
                 <div class="sub-item">
@@ -71,6 +75,7 @@
                         <li data-tag="five" data-id="70">六合彩</li>
                     </ul>
                 </div>
+                <div id="five_content"></div>
             </div>
             <div class="ui tab segment" data-tab="six" style="margin-bottom: 70px;">
                 牛牛
