@@ -1,467 +1,116 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: ashen
+ * Date: 18-10-3
+ * Time: 下午1:04
+ */
 
 namespace App\Http\Controllers\Back;
 
-use App\Banks;
-use App\Levels;
-use App\Models\Chat\Users;
-use App\PayOnline;
 use App\PayOnlineNew;
-use App\RechargeWay;
-use App\RechType;
-use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class SrcPayController extends Controller
-{
-    //添加银行
-    public function addBank(Request $request)
-    {
-        $name = $request->input('name');
-        $engName = $request->input('eng_name');
-        $status = $request->input('status');
+class SrcPayNewController extends Controller{
 
-        $bank = new Banks();
-        $bank->name = $name;
-        $bank->eng_name = $engName;
-        $bank->status = $status;
-        $insert = $bank->save();
-        if($insert == 1){
-            return response()->json([
-                'status'=>true,
-                'msg'=>'添加成功'
-            ]);
-        } else {
-            return response()->json([
-                'status'=>false,
-                'msg'=>'暂时无法添加，请稍后重试'
-            ]);
-        }
-    }
-    
-    //添加层级
-    public function addLevel(Request $request)
-    {
-        $name = $request->input('name');
-        $value = (int)$request->input('value');
-        $oneRechMoney = $request->input('oneRechMoney');
-        $allRechMoney = $request->input('allRechMoney');
-        $oneDrawMoney = $request->input('oneDrawMoney');
-        $allDrawMoney = $request->input('allDrawMoney');
-        $status = $request->input('status');
-
-        //检查层级名称是否存在
-        $checkName = Levels::where('name',$name)->count();
-        if($checkName == 1){
-            return response()->json([
-                'status'=>false,
-                'msg'=>'层级名称已经存在，请更换'
-            ]);
-        }
-        //检查分层值是否存在
-        $checkLevelValue = Levels::where('value',$value)->count();
-        if($checkLevelValue == 1){
-            return response()->json([
-                'status'=>false,
-                'msg'=>'层级值已被使用，请更换'
-            ]);
-        }
-
-        $level = new Levels();
-        $level->name = $name;
-        $level->value = $value;
-        $level->oneRechMoney = $oneRechMoney;
-        $level->allRechMoney = $allRechMoney;
-        $level->oneDrawMoney = $oneDrawMoney;
-        $level->allDrawMoney = $allDrawMoney;
-        $level->status = $status;
-        $save = $level->save();
-        if($save == 1){
-            return response()->json([
-                'status'=>true,
-                'msg'=>'添加成功'
-            ]);
-        } else {
-            return response()->json([
-                'status'=>false,
-                'msg'=>'暂时无法添加，请稍后重试'
-            ]);
-        }
-    }
-    
-    //修改支付层级
-    public function editLevel(Request $request)
-    {
-        $id = $request->input('id');
-        $name = $request->input('name');
-        $oneRechMoney = $request->input('oneRechMoney');
-        $allRechMoney = $request->input('allRechMoney');
-        $oneDrawMoney = $request->input('oneDrawMoney');
-        $allDrawMoney = $request->input('allDrawMoney');
-        $status = $request->input('status');
-
-        $getinfo = Levels::where('id',$id)->first();
-        //检查层级名称是否存在
-        if($name !== $getinfo->name){
-            $checkName = Levels::where('name',$name)->count();
-            if($checkName == 1){
-                return response()->json([
-                    'status'=>false,
-                    'msg'=>'层级名称已经存在，请更换'
-                ]);
-            }
-        }
-
-        $update = Levels::where('id',$id)->update([
-            'name'=>$name,
-            'oneRechMoney'=>$oneRechMoney,
-            'allRechMoney'=>$allRechMoney,
-            'oneDrawMoney'=>$oneDrawMoney,
-            'allDrawMoney'=>$allDrawMoney,
-            'status'=>$status
-        ]);
-        if($update == 1){
-            return response()->json([
-                'status'=>true,
-                'msg'=>'修改成功'
-            ]);
-        } else {
-            return response()->json([
-                'status'=>false,
-                'msg'=>'暂时无法修改，请稍后重试'
-            ]);
-        }
-    }
-
-    //删除层级检查
-    public function delLevelCheck(Request $request)
-    {
-        $id = $request->get('id');
-        $info = Levels::where('id',$id)->first();
-
-        //统计该层级下有多少会员
-        $count = User::where('rechLevel',$info->value)->count();
-        if($count == 0){
-            $msg = "当前层级中没有用户，确定要删除吗？";
-        } else {
-            $msg = "当前层级有【 <span style='font-weight: bold;color:red;font-size: 18px;'>".$count."</span> 】个用户，删除后这些用户会转移到默认层级，确定要删除该层级吗？";
-        }
-
-        return response()->json([
-            'msg'=>$msg
-        ]);
-    }
-    
-    //删除层级
-    public function delLevel(Request $request)
-    {
-        $id = $request->get('id');
-        $info = Levels::where('id',$id)->first();
-
-        $update = User::where('rechLevel',$info->value)->update([
-            'rechLevel'=>0
-        ]);
-
-        $del = Levels::where('id',$id)->delete();
-
-        if($del == 1){
-            return response()->json([
-                'status'=>true,
-                'msg'=>$update
-            ]);
-        } else {
-            return response()->json([
-                'status'=>false,
-                'msg'=>'暂时无法删除，请稍后重试'
-            ]);
-        }
-    }
-
-    //层级全部转移
-    public function allExchangeLevel(Request $request)
-    {
-        $id = $request->get('id');
-        $ToLevel = $request->get('level');
-
-        //待迁移的
-        $info = Levels::where('id',$id)->first();
-        $ComeLevel = $info->value;
-
-        if($ComeLevel == $ToLevel){
-            return response()->json([
-                'status'=>false,
-                'msg'=>"当前层级下无法转移，您选择的转移层级就是当前层级"
-            ]);
-        }
-
-        //迁移操作
-        $update = User::where('rechLevel',$ComeLevel)->update([
-            'rechLevel'=> $ToLevel
-        ]);
-
-        if($update !== 0){
-            return response()->json([
-                'status'=>true,
-                'msg'=>"更新成功"
-            ]);
-        } else {
-            return response()->json([
-                'status'=>false,
-                'msg'=>'暂时无法更新，请稍后重试'
-            ]);
-        }
-    }
-
-    //部分全部转移
-    public function sectionExchangeLevel(Request $request){
-        $params = $request->post();
-        $validator = Validator::make($params,[
-            'to_id' => 'required|integer',
-            'form_id' => 'required|integer',
-            'user_id' => 'required|array',
-        ]);
-        if($validator->fails()){
-            return response()->json([
-                'status'=> false,
-                'msg'=> $validator->errors()->first()
-            ]);
-        }
-        //获取转移用户
-        if(Users::userConditionTransfer($params)){
-            return response()->json([
-                'status'=>true,
-                'msg'=>"更新成功"
-            ]);
-        }else {
-            return response()->json([
-                'status'=>false,
-                'msg'=>'暂时无法更新，请稍后重试'
-            ]);
-        }
-    }
-
-    //部分转移显示
-    public function sectionDisplayLevel(Request $request){
-        $params = $request->post();
-        $validator = Validator::make($params,[
-            'form_id' => 'required|integer',
-        ]);
-        $data = [];
-        $data['userId'] = Users::getTransferUserId($params);
-        $data['display'] = Users::userConditionDisplay($data['userId']);
-        return response()->json([
-            'status' => true,
-            'data' => $data
-        ]);
-    }
-
-    //添加充值方式
-    public function addRechargeWay(Request $request)
-    {
-        $type = $request->input('type');
-        $value = $request->input('value');
-        $content = $request->input('content');
-        $status = $request->input('status');
-
-        $data = new RechargeWay();
-        $data->type = $type;
-        $data->value = $value;
-        $data->content = $content;
-        $data->status = $status;
-        $save = $data->save();
-        if($save == 1){
-            return response()->json([
-                'status'=>true,
-                'msg'=>"添加成功！"
-            ]);
-        } else {
-            return response()->json([
-                'status'=>false,
-                'msg'=>'暂时无法添加，请稍后重试'
-            ]);
-        }
-    }
-
-    //修改充值方式
-    public function editRechargeWay(Request $request)
-    {
-        $id = $request->input('id');
-        $type = $request->input('type');
-        $value = $request->input('value');
-        $content = $request->input('content');
-        $status = $request->input('status');
-
-        $update = RechargeWay::where('id',$id)->update([
-            'type'=>$type,
-            'value'=>$value,
-            'content'=>$content,
-            'status'=>$status
-        ]);
-        if($update == 1){
-            return response()->json([
-                'status'=>true,
-                'msg'=>"更新成功！"
-            ]);
-        } else {
-            return response()->json([
-                'status'=>false,
-                'msg'=>'暂时无法更新，请稍后重试'
-            ]);
-        }
-    }
-
-    //删除充值方式
-    public function delRechargeWay(Request $request)
-    {
-        $id = $request->get('id');
-        $del = RechargeWay::where('id',$id)->delete();
-        if($del == 1){
-            return response()->json([
-                'status'=>true,
-                'msg'=>"删除成功！"
-            ]);
-        } else {
-            return response()->json([
-                'status'=>false,
-                'msg'=>'暂时无法删除，请稍后重试'
-            ]);
-        }
-    }
-    
     //添加在线支付配置
-    public function addPayOnline(Request $request)
-    {
-        $payType = $request->input('payType');
-        $getPayTypeCode = DB::table('pay_type')->where('id',$payType)->first();
-        $lockArea = $request->input('lockArea');
-        if($lockArea !== null){
-            $new_lockArea = implode(',',$lockArea);
+    public function addPayOnline(Request $request){
+        $aParam = $request->all();
+        $iPayTypeNew = DB::table('pay_type_new')->where('id',$aParam['payType'])->first();
+        if(!empty($aParam['lockArea'])){
+            $new_lockArea = implode(',',$aParam['lockArea']);
         } else {
             $new_lockArea = null;
         }
-        $payeeName = $request->input('payeeName');
-        $apiId = $request->input('apiId');
-        $apiKey = $request->input('apiKey');
-        $apiPublicKey= $request->input('apiPublicKey');
-        $domain = $request->input('domain');
-        $para1 = $request->input('para1');
-        $req_url = $request->input('req_url');
-        $res_url = $request->input('res_url');
-        $min_money = $request->input('min_money');
-        $max_money = $request->input('max_money');
-        $rebate_or_fee = $request->input('rebate_or_fee');
-        $status = $request->input('status');
-        $remark = $request->input('remark');
-        $remark2 = $request->input('remark2');
-        $levels = $request->input('levels');
-        if($levels !== null){
-            $new_levels = implode(',',$levels);
+        if(!empty($aParam['levels'])){
+            $new_levels = implode(',',$aParam['levels']);
         } else {
             $new_levels = null;
         }
-
-        $payOnline = new PayOnline();
-        $payOnline->payType = $payType;
-        $payOnline->code = $getPayTypeCode->code;
+        $payOnline = new PayOnlineNew();
+        $payOnline->payType = $iPayTypeNew->id;
+        $payOnline->rechName = $iPayTypeNew->rechName;
+        $payOnline->payCode = $iPayTypeNew->code;
         $payOnline->rechType = 'onlinePayment';
-        $payOnline->rechName = '在线支付';
+        $payOnline->payName = $iPayTypeNew->payName;
         $payOnline->lockArea = $new_lockArea;
-        $payOnline->payeeName = $payeeName;
-        $payOnline->apiId = $apiId;
-        $payOnline->apiKey = $apiKey;
-        $payOnline->apiPublicKey = $apiPublicKey;
-        $payOnline->domain = $domain;
-        $payOnline->para1 = $para1;
-        $payOnline->res_url = $res_url;
-        $payOnline->req_url = $req_url;
-        $payOnline->min_money = $min_money;
-        $payOnline->max_money = $max_money;
-        $payOnline->rebate_or_fee = $rebate_or_fee;
-        $payOnline->status = $status;
-        $payOnline->remark = $remark;
-        $payOnline->remark2 = $remark2;
+        $payOnline->payeeName = $aParam['payeeName'];
+        $payOnline->apiId = $aParam['apiId'];
+        $payOnline->apiKey = $aParam['apiKey'];
+        $payOnline->apiPublicKey = $aParam['apiPublicKey'];
+        $payOnline->apiPrivateKey = $aParam['apiPrivateKey'];
+        $payOnline->domain = $aParam['domain'];
+        $payOnline->para1 = $aParam['para1'];
+        $payOnline->req_url = $aParam['req_url'];
+        $payOnline->res_url = $aParam['res_url'];
+        $payOnline->min_money = $aParam['min_money'];
+        $payOnline->max_money = $aParam['max_money'];
+        $payOnline->rebate_or_fee = $aParam['rebate_or_fee'];
+        $payOnline->status = $aParam['status'];
+        $payOnline->remark = $aParam['remark'];
+        $payOnline->remark2 = $aParam['remark2'];
         $payOnline->levels = $new_levels;
-        $save = $payOnline->save();
-        if($save == 1){
-            return response()->json([
-               'status' => true
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'msg' => ''
-            ]);
-        }
+        $payOnline->pcMobile = $iPayTypeNew->pcMobile;
+        $payOnline->isBank = $iPayTypeNew->isBank;
+        $payOnline->bankInfo = $iPayTypeNew->bankInfo;
+        $payOnline->save();
+        return response()->json([
+            'status' => true
+        ]);
     }
-    
-    //修改在线支付
-    public function editPayOnline(Request $request)
-    {
-        $id = $request->input('id');
-        $payType = $request->input('payType');
-        $lockArea = $request->input('lockArea');
-        if($lockArea !== null){
-            $new_lockArea = implode(',',$lockArea);
+
+    //修改在线支付配置新
+    public function editPayOnline(Request $request){
+        $aParam = $request->all();
+        $iPayTypeNew = DB::table('pay_type_new')->where('id',$aParam['payType'])->first();
+        if(!empty($aParam['lockArea'])){
+            $new_lockArea = implode(',',$aParam['lockArea']);
         } else {
             $new_lockArea = null;
         }
-        $payeeName = $request->input('payeeName');
-        $apiId = $request->input('apiId');
-        $apiKey = $request->input('apiKey');
-        $apiPublicKey= $request->input('apiPublicKey');
-        $domain = $request->input('domain');
-        $para1 = $request->input('para1');
-        $req_url = $request->input('req_url');
-        $res_url = $request->input('res_url');
-        $min_money = $request->input('min_money');
-        $max_money = $request->input('max_money');
-        $rebate_or_fee = $request->input('rebate_or_fee');
-        $status = $request->input('status');
-        $remark = $request->input('remark');
-        $remark2 = $request->input('remark2');
-        $levels = $request->input('levels');
-        if($levels !== null){
-            $new_levels = implode(',',$levels);
+        if(!empty($aParam['levels'])){
+            $new_levels = implode(',',$aParam['levels']);
         } else {
-            $new_levels = '0';
+            $new_levels = null;
         }
-
-        $update = PayOnline::where('id',$id)
-            ->update([
-                'payType' => $payType,
-                'lockArea' => $new_lockArea,
-                'payeeName' => $payeeName,
-                'apiId' => $apiId,
-                'apiKey' => $apiKey,
-                'apiPublicKey' => $apiPublicKey,
-                'domain' => $domain,
-                'para1' => $para1,
-                'res_url' => $res_url,
-                'req_url' => $req_url,
-                'min_money' => $min_money,
-                'max_money' => $max_money,
-                'rebate_or_fee' => $rebate_or_fee,
-                'status' => $status,
-                'remark' => $remark,
-                'remark2' => $remark2,
-                'levels' => $new_levels
-            ]);
-        if($update == 1){
-            return response()->json([
-                'status' => true
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'msg' => ''
-            ]);
-        }
+        $payOnline = PayOnlineNew::find($aParam['id']);
+        $payOnline->payType = $iPayTypeNew->id;
+        $payOnline->rechName = $iPayTypeNew->rechName;
+        $payOnline->payCode = $iPayTypeNew->code;
+        $payOnline->rechType = 'onlinePayment';
+        $payOnline->payName = $iPayTypeNew->payName;
+        $payOnline->lockArea = $new_lockArea;
+        $payOnline->payeeName = $aParam['payeeName'];
+        $payOnline->apiId = $aParam['apiId'];
+        $payOnline->apiKey = $aParam['apiKey'];
+        $payOnline->apiPublicKey = $aParam['apiPublicKey'];
+        $payOnline->apiPrivateKey = $aParam['apiPrivateKey'];
+        $payOnline->domain = $aParam['domain'];
+        $payOnline->para1 = $aParam['para1'];
+        $payOnline->req_url = $aParam['req_url'];
+        $payOnline->res_url = $aParam['res_url'];
+        $payOnline->min_money = $aParam['min_money'];
+        $payOnline->max_money = $aParam['max_money'];
+        $payOnline->rebate_or_fee = $aParam['rebate_or_fee'];
+        $payOnline->status = $aParam['status'];
+        $payOnline->remark = $aParam['remark'];
+        $payOnline->remark2 = $aParam['remark2'];
+        $payOnline->levels = $new_levels;
+        $payOnline->pcMobile = $iPayTypeNew->pcMobile;
+        $payOnline->isBank = $iPayTypeNew->isBank;
+        $payOnline->bankInfo = $iPayTypeNew->bankInfo;
+        $payOnline->save();
+        return response()->json([
+            'status' => true
+        ]);
     }
 
-    //变更在线支付状态
+
+
+    //变更在线支付状态新
     public function changeOnlinePayStatus(Request $request)
     {
         $id = $request->get('id');
@@ -471,7 +120,7 @@ class SrcPayController extends Controller
         } else {
             $changeStatus = 1;
         }
-        $update = PayOnline::where('id',$id)
+        $update = PayOnlineNew::where('id',$id)
             ->update([
                 'status' => $changeStatus
             ]);
@@ -487,12 +136,12 @@ class SrcPayController extends Controller
         }
     }
 
-    //删除在线支付配置
+    //删除在线支付配置新
     public function delOnlinePay(Request $request)
     {
         $id = $request->get('id');
         if(isset($id) && $id){
-            $del = PayOnline::where('id',$id)->delete();
+            $del = PayOnlineNew::where('id',$id)->delete();
             if($del == 1){
                 return response()->json([
                     'status' => true
@@ -510,7 +159,7 @@ class SrcPayController extends Controller
             ]);
         }
     }
-    
+
     //添加银行支付配置
     public function addPayBank(Request $request)
     {
@@ -539,9 +188,9 @@ class SrcPayController extends Controller
 
         $getbank = DB::table('bank')->select('name')->where('bank_id',$paramId)->first();
 
-        $payOnline = new PayOnline();
+        $payOnline = new PayOnlineNew();
         $payOnline->rechName = $getbank->name;
-        $payOnline->code = 'bankTransfer';
+        $payOnline->payCode = 'bankTransfer';
         $payOnline->rechType = 'bankTransfer';
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payee = $payee;
@@ -567,7 +216,7 @@ class SrcPayController extends Controller
             ]);
         }
     }
-    
+
     //修改银行支付配置
     public function editPayBank(Request $request)
     {
@@ -595,7 +244,7 @@ class SrcPayController extends Controller
             $new_levels = '0';
         }
 
-        $update = PayOnline::where('id',$id)
+        $update = PayOnlineNew::where('id',$id)
             ->update([
                 'lockArea' => $new_lockArea,
                 'payee' => $payee,
@@ -621,7 +270,7 @@ class SrcPayController extends Controller
             ]);
         }
     }
-    
+
     //添加支付宝配置
     public function addPayAlipay(Request $request)
     {
@@ -649,10 +298,10 @@ class SrcPayController extends Controller
             $new_levels = null;
         }
 
-        $payOnline = new PayOnline();
+        $payOnline = new PayOnlineNew();
         $payOnline->rechName = '支付宝支付';
         $payOnline->rechType = 'alipay';
-        $payOnline->code = 'alipay';
+        $payOnline->payCode = 'alipay';
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payee = $payee;
         $payOnline->payeeName = $payeeName;
@@ -678,7 +327,7 @@ class SrcPayController extends Controller
             ]);
         }
     }
-    
+
     //修改支付宝配置
     public function editPayAlipay(Request $request)
     {
@@ -707,7 +356,7 @@ class SrcPayController extends Controller
             $new_levels = '0';
         }
 
-        $update = PayOnline::where('id',$id)
+        $update = PayOnlineNew::where('id',$id)
             ->update([
                 'lockArea' => $new_lockArea,
                 'payee' => $payee,
@@ -734,7 +383,7 @@ class SrcPayController extends Controller
             ]);
         }
     }
-    
+
     //添加微信配置
     public function addPayWechat(Request $request)
     {
@@ -762,10 +411,10 @@ class SrcPayController extends Controller
             $new_levels = null;
         }
 
-        $payOnline = new PayOnline();
+        $payOnline = new PayOnlineNew();
         $payOnline->rechName = '微信支付';
         $payOnline->rechType = 'weixin';
-        $payOnline->code = 'weixin';
+        $payOnline->payCode = 'weixin';
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payee = $payee;
         $payOnline->payeeName = $payeeName;
@@ -791,7 +440,7 @@ class SrcPayController extends Controller
             ]);
         }
     }
-    
+
     //修改微信配置
     public function editPayWechat(Request $request)
     {
@@ -820,7 +469,7 @@ class SrcPayController extends Controller
             $new_levels = '0';
         }
 
-        $update = PayOnline::where('id',$id)
+        $update = PayOnlineNew::where('id',$id)
             ->update([
                 'lockArea' => $new_lockArea,
                 'payee' => $payee,
@@ -846,9 +495,7 @@ class SrcPayController extends Controller
                 'msg' => ''
             ]);
         }
-    }
-    
-    //添加财付通
+    }//添加财付通
     public function addPayCft(Request $request)
     {
         $payeeName = $request->input('payeeName');
@@ -875,10 +522,10 @@ class SrcPayController extends Controller
             $new_levels = null;
         }
 
-        $payOnline = new PayOnline();
+        $payOnline = new PayOnlineNew();
         $payOnline->rechName = '财付通支付';
         $payOnline->rechType = 'cft';
-        $payOnline->code = 'cft';
+        $payOnline->payCode = 'cft';
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payee = $payee;
         $payOnline->payeeName = $payeeName;
@@ -933,7 +580,7 @@ class SrcPayController extends Controller
             $new_levels = '0';
         }
 
-        $update = PayOnline::where('id',$id)
+        $update = PayOnlineNew::where('id',$id)
             ->update([
                 'lockArea' => $new_lockArea,
                 'payee' => $payee,
@@ -961,7 +608,7 @@ class SrcPayController extends Controller
         }
     }
 
-    //设置排序
+    //设置排序新
     public function setSort(Request $request){
         $params = $request->all();
         $data = [];
@@ -969,26 +616,7 @@ class SrcPayController extends Controller
             $data[$key]['sort'] = empty($value) ? 0 : $value;
             $data[$key]['id'] = $params['id'][$key];
         }
-        if(PayOnline::editBatchPayOnlineData($data)){
-            return response()->json([
-                'status' => true
-            ]);
-        }else{
-            return response()->json([
-                'status' => false,
-                'msg' => '排序失败'
-            ]);
-        }
-    }
-    //支付前端显示排序
-    public function rechTypeSetSort(Request $request){
-        $params = $request->all();
-        $data = [];
-        foreach ($params['sort'] as $key => $value){
-            $data[$key]['sort'] = empty($value) ? 0 : $value;
-            $data[$key]['id'] = $params['id'][$key];
-        }
-        if(RechType::editBatchPayOnlineData($data)){
+        if(PayOnlineNew::editBatchPayOnlineData($data)){
             return response()->json([
                 'status' => true
             ]);

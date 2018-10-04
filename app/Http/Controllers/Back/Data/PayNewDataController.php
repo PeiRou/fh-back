@@ -14,20 +14,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
 
-class PayDataController extends Controller
+class PayNewDataController extends Controller
 {
-    //在线支付配置
+
+
+    //在线支付配置新
     public function payOnline()
     {
-        $payOnline = PayOnline::where('rechType','onlinePayment')->orderBy('status','desc')->orderBy('sort','asc')->get();
-        //获取支付类型
-        $aPayTypes = PayType::getPayTypeAllList();
+        $payOnline = PayOnlineNew::where('rechType','onlinePayment')->orderBy('status','desc')->orderBy('sort','asc')->get();
         return DataTables::of($payOnline)
-            ->editColumn('payType', function ($payOnline) use ($aPayTypes){
-                if(isset($aPayTypes[$payOnline->payType]) && array_key_exists($payOnline->payType,$aPayTypes)){
-                    return $aPayTypes[$payOnline->payType];
-                }
-                return '-';
+            ->editColumn('payType', function ($payOnline){
+                return $payOnline->rechName;
             })
             ->editColumn('status', function ($payOnline){
                 if($payOnline->status == 1){
@@ -67,7 +64,7 @@ class PayDataController extends Controller
     //银行支付配置
     public function payBank()
     {
-        $payBank = PayOnline::where('rechType','bankTransfer')->orderBy('sort','asc')->get();
+        $payBank = PayOnlineNew::where('rechType','bankTransfer')->orderBy('sort','asc')->get();
         return DataTables::of($payBank)
             ->editColumn('bank', function ($payBank){
                 $findBank = Banks::where('bank_id',$payBank->paramId)->first();
@@ -123,7 +120,7 @@ class PayDataController extends Controller
     //支付宝配置
     public function payAlipay()
     {
-        $payAlipay = PayOnline::where('rechType','alipay')->orderBy('sort','asc')->get();
+        $payAlipay = PayOnlineNew::where('rechType','alipay')->orderBy('sort','asc')->get();
         return DataTables::of($payAlipay)
             ->editColumn('payeeName', function ($payAlipay){
                 return $payAlipay->payeeName;
@@ -174,7 +171,7 @@ class PayDataController extends Controller
     //微信配置
     public function payWechat()
     {
-        $payWechat = PayOnline::where('rechType','weixin')->orderBy('sort','asc')->get();
+        $payWechat = PayOnlineNew::where('rechType','weixin')->orderBy('sort','asc')->get();
         return DataTables::of($payWechat)
             ->editColumn('payeeName', function ($payWechat){
                 return $payWechat->payeeName;
@@ -225,7 +222,7 @@ class PayDataController extends Controller
     //财付通
     public function payCft()
     {
-        $payCft = PayOnline::where('rechType','cft')->orderBy('sort','asc')->get();
+        $payCft = PayOnlineNew::where('rechType','cft')->orderBy('sort','asc')->get();
         return DataTables::of($payCft)
             ->editColumn('payeeName', function ($payCft){
                 return $payCft->payeeName;
@@ -270,150 +267,6 @@ class PayDataController extends Controller
                         <span class="edit-link" onclick="del(\''.$payBank->id.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
             })
             ->rawColumns(['control','status','levels','qrCode','sort'])
-            ->make(true);
-    }
-
-    //支付层级配置
-    public function level()
-    {
-        $level = Levels::all();
-        return DataTables::of($level)
-            ->editColumn('oneRechMoney', function ($level){
-                if($level->oneRechMoney == ""){
-                    return "--";
-                } else {
-                    return $level->oneRechMoney;
-                }
-            })
-            ->editColumn('allRechMoney', function ($level){
-                if($level->allRechMoney == ""){
-                    return "--";
-                } else {
-                    return $level->allRechMoney;
-                }
-            })
-            ->editColumn('oneDrawMoney', function ($level){
-                if($level->oneDrawMoney == ""){
-                    return "--";
-                } else {
-                    return $level->oneDrawMoney;
-                }
-            })
-            ->editColumn('allDrawMoney', function ($level){
-                if($level->allDrawMoney == ""){
-                    return "--";
-                } else {
-                    return $level->allDrawMoney;
-                }
-            })
-            ->editColumn('status', function ($level){
-                if($level->status == 1){
-                    return '<span class="status-1"><i class="iconfont">&#xe652;</i> 正常</span>';
-                }
-                if($level->status == 0){
-                    return '<span class="status-3"><i class="iconfont">&#xe672;</i> 停用</span>';
-                }
-            })
-            ->editColumn('control', function ($level){
-                if($level->value == 0){
-                    return '<span class="edit-link" onclick="edit(\''.$level->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> | 
-                        <span class="edit-link" onclick="allExchange(\''.$level->id.'\')"><i class="iconfont">&#xe687;</i> 全部转移</span> | 
-                        <span class="edit-link" onclick="searchExchange(\''.$level->id.'\')"><i class="iconfont">&#xe66d;</i> 条件转移</span>';
-                } else {
-                    return '<span class="edit-link" onclick="edit(\''.$level->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> | 
-                        <span class="edit-link" onclick="del(\''.$level->id.'\')"><i class="iconfont">&#xe600;</i> 删除</span> | 
-                        <span class="edit-link" onclick="allExchange(\''.$level->id.'\')"><i class="iconfont">&#xe687;</i> 全部转移</span> | 
-                        <span class="edit-link" onclick="searchExchange(\''.$level->id.'\')"><i class="iconfont">&#xe66d;</i> 条件转移</span>';
-                }
-
-            })
-            ->rawColumns(['control','status'])
-            ->make(true);
-    }
-
-    //绑定银行数据
-    public function bank()
-    {
-        $allBanks = Banks::all();
-        return DataTables::of($allBanks)
-            ->editColumn('bank_icon', function ($allBanks){
-                switch ($allBanks->eng_name){
-                    case "ABC";
-                        return "<i class='iconfont bank_icon'>&#xe616;</i>";
-                    case "CCB";
-                        return "<i class='iconfont bank_icon'>&#xe651;</i>";
-                    case "ICBC";
-                        return "<i class='iconfont bank_icon'>&#xe611;</i>";
-                    case "CMB";
-                        return "<i class='iconfont bank_icon'>&#xe60f;</i>";
-                    case "BOCO";
-                        return "<i class='iconfont bank_icon'>&#xe615;</i>";
-                    case "CMBC";
-                        return "<i class='iconfont bank_icon'>&#xe6c8;</i>";
-                    case "CIB";
-                        return "<i class='iconfont bank_icon'>&#xe6f5;</i>";
-                    case "BOC";
-                        return "<i class='iconfont bank_icon'>&#xe612;</i>";
-                    case "POST";
-                        return "<i class='iconfont bank_icon'>&#xe610;</i>";
-                    case "CEBBANK";
-                        return "<i class='iconfont bank_icon'>&#xe6c5;</i>";
-                    case "ECITIC";
-                        return "<i class='iconfont bank_icon'>&#xe6cf;</i>";
-                    case "CGB";
-                        return "<i class='iconfont bank_icon'>&#xe617;</i>";
-                    case "SPDB";
-                        return "<i class='iconfont bank_icon'>&#xe618;</i>";
-                    case "HXB";
-                        return "<i class='iconfont bank_icon'>&#xe614;</i>";
-                    case "PINGAN";
-                        return "<i class='iconfont bank_icon'>&#xe61a;</i>";
-                    case "BCCB";
-                        return "<i class='iconfont bank_icon'>&#xe619;</i>";
-                    case "BOS";
-                        return "<i class='iconfont bank_icon'>&#xe61b;</i>";
-                    case "BRCB";
-                        return "<i class='iconfont bank_icon'>&#xe61c;</i>";
-                }
-            })
-            ->editColumn('control', function ($allGeneralAgent){
-                return '222';
-            })
-            ->rawColumns(['online','bank_icon'])
-            ->make(true);
-    }
-
-    //充值方式配置
-    public function rechargeWay()
-    {
-        $rechargeWay = RechargeWay::all();
-        return DataTables::of($rechargeWay)
-            ->editColumn('status', function ($rechargeWay){
-                if($rechargeWay->status == 1){
-                    return '<span class="status-1"><i class="iconfont">&#xe652;</i> 正常</span>';
-                }
-                if($rechargeWay->status == 0){
-                    return '<span class="status-3"><i class="iconfont">&#xe672;</i> 停用</span>';
-                }
-            })
-            ->editColumn('control', function ($rechargeWay){
-                return '<span class="edit-link" onclick="edit(\''.$rechargeWay->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> | 
-                        <span class="edit-link" onclick="del(\''.$rechargeWay->id.'\',\''.$rechargeWay->type.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
-            })
-            ->rawColumns(['status','control'])
-            ->make(true);
-    }
-    //支付前端显示
-    public function rechType(){
-        $rechType = RechType::orderBy('sort','asc')->get();
-        return DataTables::of($rechType)
-            ->editColumn('control', function ($rechType){
-                return '';
-            })
-            ->editColumn('sort', function ($rechType){
-                return "<input type='text' value='".$rechType->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$rechType->id."' name='sortId[]'>";
-            })
-            ->rawColumns(['sort','control'])
             ->make(true);
     }
 }

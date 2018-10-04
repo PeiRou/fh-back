@@ -121,6 +121,16 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('rechType', 'Back\SrcViewController@rechType')->name('pay.rechType'); //支付前端显示
     });
 
+//充值配置新
+    Route::group(['prefix' => 'back/control/payNewManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
+        Route::get('payOnlineNew', 'Back\SrcViewController@payOnlineNew')->name('payNew.online'); //在线支付配置新
+        Route::get('payBankNew', 'Back\SrcViewController@payBankNew')->name('payNew.bank'); //银行支付配置
+        Route::get('payAlipayNew', 'Back\SrcViewController@payAlipayNew')->name('payNew.alipay'); //支付宝支付配置
+        Route::get('payWechatNew', 'Back\SrcViewController@payWechatNew')->name('payNew.wechat'); //微信支付配置
+        Route::get('payYunShanPayNew', 'Back\SrcViewController@payYunShanPayNew')->name('payNew.payYunShanPay'); //云闪付配置
+        Route::get('payCftNew', 'Back\SrcViewController@payCftNew')->name('payNew.cft'); //财付通支付配置
+    });
+
 //代理结算
     Route::group(['prefix' => 'back/control/agentManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('agentSettleReport', 'Back\SrcViewController@agentSettleReport')->name('agentSettle.report'); //代理结算报表
@@ -204,6 +214,11 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/payAlipay', 'Back\Data\PayDataController@payAlipay');
     Route::get('/back/datatables/payWechat', 'Back\Data\PayDataController@payWechat');
     Route::get('/back/datatables/payCft', 'Back\Data\PayDataController@payCft');
+    Route::get('/back/datatables/payOnlineNew', 'Back\Data\PayNewDataController@payOnline'); //充值配置新-在线支付
+    Route::get('/back/datatables/payBankNew', 'Back\Data\PayNewDataController@payBank');    //充值配置新-银行支付
+    Route::get('/back/datatables/payAlipayNew', 'Back\Data\PayNewDataController@payAlipay');  //充值配置新-支付宝
+    Route::get('/back/datatables/payWechatNew', 'Back\Data\PayNewDataController@payWechat'); //充值配置新-微信
+    Route::get('/back/datatables/payCftNew', 'Back\Data\PayNewDataController@payCft');  //充值配置新-财付通
     Route::get('/back/datatables/article', 'Back\Data\ArticleController@article');
     Route::get('/back/datatables/suggest', 'Back\Data\SuggestController@index');
     Route::get('/back/datatables/userBetSearch', 'Back\Data\BetDataController@userBetSearch');
@@ -347,6 +362,21 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/setSort', 'Back\SrcPayController@setSort');//设置排序
     Route::post('/action/admin/rechType/setSort', 'Back\SrcPayController@rechTypeSetSort');//设置排序
 
+    //充值配置新
+    Route::post('/action/admin/new/addPayOnline', 'Back\SrcPayNewController@addPayOnline');//添加在线支付配置
+    Route::post('/action/admin/new/editPayOnline', 'Back\SrcPayNewController@editPayOnline');//修改在线支付配置
+    Route::post('/action/admin/new/changeOnlinePayStatus', 'Back\SrcPayNewController@changeOnlinePayStatus');//改变充值方式状态新
+    Route::post('/action/admin/new/delOnlinePay', 'Back\SrcPayNewController@delOnlinePay');//删除充值方式新
+    Route::post('/action/admin/new/setSort', 'Back\SrcPayNewController@setSort');//设置排序新
+    Route::post('/action/admin/new/addPayBank', 'Back\SrcPayNewController@addPayBank');//添加银行支付配置
+    Route::post('/action/admin/new/editPayBank', 'Back\SrcPayNewController@editPayBank');//修改银行支付配置
+    Route::post('/action/admin/new/addPayAlipay', 'Back\SrcPayNewController@addPayAlipay');//添加支付宝配置
+    Route::post('/action/admin/new/editPayAlipay', 'Back\SrcPayNewController@editPayAlipay');//修改支付宝配置
+    Route::post('/action/admin/new/addPayWechat', 'Back\SrcPayNewController@addPayWechat');//添加微信配置
+    Route::post('/action/admin/new/editPayWechat', 'Back\SrcPayNewController@editPayWechat');//修改微信配置
+    Route::post('/action/admin/new/addPayCft', 'Back\SrcPayNewController@addPayCft');//添加财付通配置
+    Route::post('/action/admin/new/editPayCft', 'Back\SrcPayNewController@editPayCft');//修改财付通配置
+
     Route::post('/action/admin/editGameSetting', 'Back\SrcGameController@editGameSetting');//修改游戏设定
     Route::post('/action/admin/changeGameFengPan', 'Back\SrcGameController@changeGameFengPan');//修改游戏开封盘状态
     Route::post('/action/admin/changeGameStatus', 'Back\SrcGameController@changeGameStatus');//修改游戏开启和停用状态
@@ -453,6 +483,16 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editDrawingLevels/{uid}/{nowLevels}/{rid}', 'Back\Ajax\ModalController@editDrawingLevels');
     Route::get('/back/modal/rechargeError/{id}', 'Back\Ajax\ModalController@rechargeError');
     Route::get('/back/modal/drawingError/{id}', 'Back\Ajax\ModalController@drawingError');
+    Route::get('/back/modal/addPayOnlineNew', 'Back\Ajax\ModalController@addPayOnlineNew'); //充值配置新-在线支付-添加
+    Route::get('/back/modal/editPayOnlineNew/{id}', 'Back\Ajax\ModalController@editPayOnlineNew'); //充值配置新-在线支付-修改
+    Route::get('/back/modal/addPayBankNew', 'Back\Ajax\ModalController@addPayBankNew');  //充值配置新-银行支付-添加
+    Route::get('/back/modal/editPayBankNew/{id}', 'Back\Ajax\ModalController@editPayBankNew'); //充值配置新-银行支付-修改
+    Route::get('/back/modal/addPayAlipayNew', 'Back\Ajax\ModalController@addPayAlipayNew');  //充值配置新-支付宝-添加
+    Route::get('/back/modal/editPayAlipayNew/{id}', 'Back\Ajax\ModalController@editPayAlipayNew');  //充值配置新-支付宝-修改
+    Route::get('/back/modal/addPayWechatNew', 'Back\Ajax\ModalController@addPayWechatNew');  //充值配置新-微信-添加
+    Route::get('/back/modal/editPayWechatNew/{id}', 'Back\Ajax\ModalController@editPayWechatNew');  //充值配置新-微信-修改
+    Route::get('/back/modal/addPayCftNew', 'Back\Ajax\ModalController@addPayCftNew');  //充值配置新-财付通-添加
+    Route::get('/back/modal/editPayCftNew/{id}', 'Back\Ajax\ModalController@editPayCftNew');  //充值配置新-财付通-修改
     Route::get('/back/modal/user48hoursInfo/{uid}', 'Back\Ajax\ModalController@user48hoursInfo');
     Route::get('/back/modal/addLhcNewIssue', 'Back\Ajax\ModalController@addLhcNewIssue');
     Route::get('/back/modal/addXylhcNewIssue', 'Back\Ajax\ModalController@addXylhcNewIssue');
