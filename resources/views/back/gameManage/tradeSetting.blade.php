@@ -12,12 +12,12 @@
     <div class="table-content">
         <div id="context1">
             <div class="ui pointing secondary menu" id="gameTabs">
-                <a class="item active" data-tab="first">高频彩</a>
-                <a class="item" data-tab="second">秒速彩</a>
-                <a class="item" data-tab="three">幸运彩</a>
-                <a class="item" data-tab="four">福彩3D</a>
-                <a class="item" data-tab="five">六合彩</a>
-                <a class="item" data-tab="six">牛牛</a>
+                <a class="item active" data-tab="first" data-type="gaopin">高频彩</a>
+                <a class="item" data-tab="second" data-type="miaosu">秒速彩</a>
+                <a class="item" data-tab="three" data-type="xingyun">幸运彩</a>
+                <a class="item" data-tab="four" data-type="fucai">福彩3D</a>
+                <a class="item" data-tab="five" data-type="lhc">六合彩</a>
+                <a class="item" data-tab="six" data-type="nn">牛牛</a>
             </div>
             <div class="ui tab segment active" data-tab="first" style="margin-bottom: 70px;">
                 高频彩
