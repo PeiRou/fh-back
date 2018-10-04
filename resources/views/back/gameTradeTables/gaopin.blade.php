@@ -15,7 +15,7 @@
         color: red;
     }
     input{
-        border: 1px solid #ddd;
+        border: 1px solid #a2a2a2;
         height: 20px;
     }
 </style>
