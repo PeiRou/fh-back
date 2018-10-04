@@ -518,7 +518,11 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/tables/12', 'Back\GameTableController@gameTable12'); //广西快三
     Route::get('/game/tables/13', 'Back\GameTableController@gameTable13'); //湖北快三
     Route::get('/game/tables/86', 'Back\GameTableController@gameTable86'); //秒速江苏快三
-//保存游戏赔率表格数据
+
+    //交易设定表格
+    Route::get('/game/trade/tables/{type}','Back\GameTableController@gameTradeTables');
+
+    //保存游戏赔率表格数据
     Route::post('/game/table/save/bjpk10', 'Back\GameTables\SaveGameOddsController@bjpk10');
     Route::post('/game/table/save/cqssc', 'Back\GameTables\SaveGameOddsController@cqssc');
     Route::post('/game/table/save/xjssc', 'Back\GameTables\SaveGameOddsController@xjssc');
