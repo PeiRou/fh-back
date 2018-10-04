@@ -179,7 +179,7 @@
                 <li id="menu-gameManage-gameSetting"><a href="{{ route('game.gameSetting') }}"><cite></cite><span>游戏设定</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('game.tradeSetting') == "has")
-                <li><a href="javascript:void(0)"><cite></cite><span>交易设定</span></a></li>
+                <li id="menu-gameManage-tradeSetting"><a href="{{ route('game.tradeSetting') }}"><cite></cite><span>交易设定</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('game.handicapSetting') == "has")
                 <li id="menu-gameManage-handicapSetting"><a href="{{ route('game.handicapSetting') }}"><cite></cite><span>盘口设定</span></a></li>

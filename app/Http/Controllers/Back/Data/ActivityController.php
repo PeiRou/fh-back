@@ -7,6 +7,7 @@ use App\ActivityCondition;
 use App\ActivityPrize;
 use App\ActivitySend;
 use App\ActivityStatistics;
+use App\StatisticsData;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
@@ -151,8 +152,24 @@ class ActivityController extends Controller
 
     //每日数据统计-表格数据
     public function daily(Request $request){
-        $params = $request->all();
-
+        $aParam = $request->all();
+        $aDataSql = StatisticsData::where(function ($aSql) use($aParam){
+            if(isset($aParam['user_account']) && array_key_exists('user_account',$aParam))
+                $aSql->where('user_account',$aParam['user_account']);
+            if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam))
+                $aSql->where('date','>=',$aParam['startTime']);
+            if(isset($aParam['endTime']) && array_key_exists('endTime',$aParam))
+                $aSql->where('date','<=',$aParam['endTime']);
+        });
+        $aDataCount = $aDataSql->count();
+        $aData = $aDataSql->orderBy('date','desc')->skip($aParam['start'])->take($aParam['length'])->get();
+        return DataTables::of($aData)
+            ->editColumn('user_account',function ($aData) {
+                return  $aData->user_account.'('.$aData->user_name.')';
+            })
+            ->setTotalRecords($aDataCount)
+            ->skipPaging()
+            ->make(true);
     }
 
     //每日活动统计-表格数据

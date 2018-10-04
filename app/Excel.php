@@ -35,24 +35,28 @@ class Excel
             }
             $capData = [];
             $capUsers = [];
+            $ii = 0;
             foreach ($getAfterUser as&$val){
                 $capUsers[$val->id] = $val->money;
             }
             //新增有返奖的用户的资金明细
             foreach ($getDt as $i){
+                $capUsers[$i->user_id] += $i->bunko; //累加馀额
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
                 $tmpCap['order_id'] = $i->order_id;
                 $tmpCap['type'] = 't09';
                 $tmpCap['money'] = $i->bunko;
-                $tmpCap['balance'] = round($capUsers[$i->user_id]+$i->bunko,3);
+                $tmpCap['balance'] = round($capUsers[$i->user_id],3);
                 $tmpCap['operation_id'] = 0;
                 $tmpCap['content'] = $gameName.' 第'.$i->issue.'期 返奖';
                 $tmpCap['created_at'] = date('Y-m-d H:i:s');
                 $tmpCap['updated_at'] = date('Y-m-d H:i:s');
-                $capData[] = $tmpCap;
+                $capData[$ii] = $tmpCap;
+                $ii ++;
             }
+            krsort($capData);
             $capIns = DB::table('capital')->insert($capData);
             if($capIns != 1){
                 return 1;

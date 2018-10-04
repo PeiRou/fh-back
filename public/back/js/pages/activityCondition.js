@@ -6,6 +6,7 @@ $(function () {
     $('#menu-activityManage-condition').addClass('active');
 
     dataTable = $('#capitalDetailsTable').DataTable({
+        aLengthMenu: [[50]],
         searching: false,
         bLengthChange: false,
         processing: true,
