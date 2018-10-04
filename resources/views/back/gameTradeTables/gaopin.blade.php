@@ -1,14 +1,14 @@
 <style>
     .table-small-title{
         word-break: break-all;
-        text-align: center;
+        text-align: center !important;
         color: #2d2d2d;
         background: #f9f9f9;
         font-weight: bold;
     }
     .table-title{
         word-break: break-all;
-        text-align: center;
+        text-align: center !important;
         font-size: 16px;
         background: #fdf1f1;
         font-weight: bold;
