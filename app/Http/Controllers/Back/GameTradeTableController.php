@@ -16,10 +16,18 @@ class GameTradeTableController extends Controller
         $fromDB = collect([]);
         foreach ($data as $item){
             foreach ($filter as $i){
-                if($item->bet_tag == $i){
-                    $fromDB->put($item->bet_tag.'_min',$item->minMoney);
-                    $fromDB->put($item->bet_tag.'_max',$item->maxMoney);
-                    $fromDB->put($item->bet_tag.'_turnMax',$item->maxTurnMoney);
+                if($item->min_tag == $i){
+                    $fromDB->put($item->min_tag,$item->minMoney);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->max_tag == $s){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }
+            }
+            foreach ($filter as $x){
+                if($item->turnMax_tag == $x){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
                 }
             }
         }
