@@ -521,6 +521,18 @@ Route::group(['middleware'=>['check-ip']],function () {
 
     //交易设定表格
     Route::get('/game/trade/tables/50','Back\GameTradeTableController@gameTradeTable50'); //北京赛车
+    Route::get('/game/trade/tables/1','Back\GameTradeTableController@gameTradeTable1'); //重庆时时彩
+    Route::get('/game/trade/tables/4','Back\GameTradeTableController@gameTradeTable4'); //新建时时彩
+    Route::get('/game/trade/tables/5','Back\GameTradeTableController@gameTradeTable5'); //天津时时彩
+    Route::get('/game/trade/tables/60','Back\GameTradeTableController@gameTradeTable60'); //广东快乐十分
+    Route::get('/game/trade/tables/10','Back\GameTradeTableController@gameTradeTable10'); //江苏快3
+    Route::get('/game/trade/tables/11','Back\GameTradeTableController@gameTradeTable11'); //安徽快3
+    Route::get('/game/trade/tables/12','Back\GameTradeTableController@gameTradeTable12'); //广西快3
+    Route::get('/game/trade/tables/13','Back\GameTradeTableController@gameTradeTable13'); //湖北快3
+    Route::get('/game/trade/tables/61','Back\GameTradeTableController@gameTradeTable61'); //重庆幸运农场
+    Route::get('/game/trade/tables/65','Back\GameTradeTableController@gameTradeTable65'); //北京快乐8
+    Route::get('/game/trade/tables/21','Back\GameTradeTableController@gameTradeTable21'); //广东十一选五
+    Route::get('/game/trade/tables/66','Back\GameTradeTableController@gameTradeTable66'); //PC蛋蛋
 
     //保存游戏赔率表格数据
     Route::post('/game/table/save/bjpk10', 'Back\GameTables\SaveGameOddsController@bjpk10');
