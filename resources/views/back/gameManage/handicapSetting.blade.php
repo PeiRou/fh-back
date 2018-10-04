@@ -52,7 +52,7 @@
                         <li data-tag="second" data-id="82">秒速飞艇</li>
                         <li data-tag="second" data-id="81">秒速时时彩</li>
                         <li data-tag="second" data-id="99">跑马</li>
-                        <li data-tag="second" data-id="86">秒速江苏快3</li>
+                        <li data-tag="second" data-id="86">秒速快3</li>
                     </ul>
                 </div>
                 <div id="second_content"></div>

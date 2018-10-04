@@ -86,4 +86,64 @@ class GameTradeTableController extends Controller
     {
         return view('back.gameTradeTables.66');
     }
+
+    //秒速赛车
+    public function gameTradeTable80()
+    {
+        return view('back.gameTradeTables.80');
+    }
+
+    //秒速飞艇
+    public function gameTradeTable82()
+    {
+        return view('back.gameTradeTables.82');
+    }
+
+    //秒速时时彩
+    public function gameTradeTable81()
+    {
+        return view('back.gameTradeTables.81');
+    }
+
+    //跑马
+    public function gameTradeTable99()
+    {
+        return view('back.gameTradeTables.99');
+    }
+
+    //秒速快3
+    public function gameTradeTable86()
+    {
+        return view('back.gameTradeTables.86');
+    }
+
+    //幸运快乐8
+    public function gameTradeTable83()
+    {
+        return view('back.gameTradeTables.83');
+    }
+
+    //幸运蛋蛋
+    public function gameTradeTable84()
+    {
+        return view('back.gameTradeTables.84');
+    }
+
+    //幸运六合彩
+    public function gameTradeTable85()
+    {
+        return view('back.gameTradeTables.85');
+    }
+
+    //福彩3D
+    public function gameTradeTable30()
+    {
+        return view('back.gameTradeTables.30');
+    }
+
+    //六合彩
+    public function gameTradeTable70()
+    {
+        return view('back.gameTradeTables.70');
+    }
 }

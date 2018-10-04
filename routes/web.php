@@ -533,6 +533,16 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/trade/tables/65','Back\GameTradeTableController@gameTradeTable65'); //北京快乐8
     Route::get('/game/trade/tables/21','Back\GameTradeTableController@gameTradeTable21'); //广东十一选五
     Route::get('/game/trade/tables/66','Back\GameTradeTableController@gameTradeTable66'); //PC蛋蛋
+    Route::get('/game/trade/tables/80','Back\GameTradeTableController@gameTradeTable80'); //秒速赛车
+    Route::get('/game/trade/tables/82','Back\GameTradeTableController@gameTradeTable82'); //秒速飞艇
+    Route::get('/game/trade/tables/81','Back\GameTradeTableController@gameTradeTable81'); //秒速时时彩
+    Route::get('/game/trade/tables/99','Back\GameTradeTableController@gameTradeTable99'); //跑马
+    Route::get('/game/trade/tables/86','Back\GameTradeTableController@gameTradeTable86'); //秒速快3
+    Route::get('/game/trade/tables/83','Back\GameTradeTableController@gameTradeTable83'); //幸运快乐8
+    Route::get('/game/trade/tables/84','Back\GameTradeTableController@gameTradeTable84'); //幸运蛋蛋
+    Route::get('/game/trade/tables/85','Back\GameTradeTableController@gameTradeTable85'); //幸运六合彩
+    Route::get('/game/trade/tables/30','Back\GameTradeTableController@gameTradeTable30'); //福彩3d
+    Route::get('/game/trade/tables/70','Back\GameTradeTableController@gameTradeTable70'); //六合彩
 
     //保存游戏赔率表格数据
     Route::post('/game/table/save/bjpk10', 'Back\GameTables\SaveGameOddsController@bjpk10');
