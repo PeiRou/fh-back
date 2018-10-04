@@ -12,7 +12,7 @@ class GameTradeTableController extends Controller
     public function gameTradeTable50()
     {
         $data = Play::where('gameId',50)->get();
-        $filter = ['GAME50_GYDXDS','GAME50_GYZH','GAME50_DXDS','GAME50_1D10'];
+        $filter = ['GAME50_GYDXDS_min','GAME50_GYZH_min','GAME50_DXDS_min','GAME50_1D10_min','GAME50_GYDXDS_max','GAME50_GYZH_max','GAME50_DXDS_max','GAME50_1D10_max','GAME50_GYDXDS_turnMax','GAME50_GYZH_turnMax','GAME50_DXDS_turnMax','GAME50_1D10_turnMax'];
         $fromDB = collect([]);
         foreach ($data as $item){
             foreach ($filter as $i){
