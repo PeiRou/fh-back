@@ -9,6 +9,17 @@
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
     </div>
+    <div class="table-content">
+        <div id="context1">
+            <div class="ui pointing secondary menu" id="gameTabs">
+                <a class="item active" data-tab="first">高频彩</a>
+                <a class="item" data-tab="second">秒速彩</a>
+                <a class="item" data-tab="three">幸运彩</a>
+                <a class="item" data-tab="four">福彩3D</a>
+                <a class="item" data-tab="five">六合彩</a>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('page-js')
