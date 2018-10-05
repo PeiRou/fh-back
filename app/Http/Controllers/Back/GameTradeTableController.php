@@ -247,7 +247,7 @@ class GameTradeTableController extends Controller
     public function gameTradeTable61()
     {
         $data = Play::where('gameId',61)->get();
-        $filter = ['GAME61_DH1D8_min','GAME61_DH1D8_max','GAME61_DH1D8_turnMax','GAME61_DNXBZFB_min','GAME61_DNXBZFB_max','GAME61_DNXBZFB_turnMax','GAME61_ZM_turnMax','GAME61_ZM_min','GAME61_ZM_max','GAME61_RXE_min','GAME61_RXE_max','GAME61_RXE_turnMax','GAME61_XELZ_min','GAME61_XELZ_max','GAME61_XELZ_turnMax','GAME61_RXS_min','GAME61_RXS_max','GAME61_RXS_turnMax','GAME61_XSQZ_min','GAME61_XSQZ_max','GAME61_XSQZ_turnMax','GAME61_RXSI_min','GAME61_RXSI_max','GAME61_RXSI_turnMax','GAME61_RXW_max','GAME61_RXW_min','GAME61_RXW_turnMax'];
+        $filter = ['GAME61_DH1D8_min','GAME61_DH1D8_max','GAME61_DH1D8_turnMax','GAME61_DNXBZFB_min','GAME61_DNXBZFB_max','GAME61_DNXBZFB_turnMax','GAME61_ZM_turnMax','GAME61_ZM_min','GAME61_ZM_max','GAME61_RXE_min','GAME61_RXE_max','GAME61_RXE_turnMax','GAME61_XELZ_min','GAME61_XELZ_max','GAME61_XELZ_turnMax','GAME61_RXS_min','GAME61_RXS_max','GAME61_RXS_turnMax','GAME61_XSQZ_min','GAME61_XSQZ_max','GAME61_XSQZ_turnMax','GAME61_RXSI_min','GAME61_RXSI_max','GAME61_RXSI_turnMax','GAME61_RXW_max','GAME61_RXW_min','GAME61_RXW_turnMax','GAME61_DXDS_min','GAME61_DXDS_max','GAME61_DXDS_turnMax'];
         $fromDB = collect([]);
         foreach ($data as $item){
             foreach ($filter as $i){
