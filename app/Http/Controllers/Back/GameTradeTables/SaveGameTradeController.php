@@ -32,6 +32,120 @@ class SaveGameTradeController extends Controller
         return $this->updateBatch($data,5);
     }
 
+    public function gdklsf(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,60);
+    }
+
+    public function jsk3(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,10);
+    }
+
+    public function ahk3(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,11);
+    }
+
+    public function gxk3(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,12);
+    }
+
+    public function hbk3(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,13);
+    }
+
+    public function cqxync(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,61);
+    }
+
+    public function bjkl8(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,65);
+    }
+
+    public function gd11x5(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,21);
+    }
+
+    public function pcdd(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,66);
+    }
+
+    public function mssc(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,80);
+    }
+
+    public function msft(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,82);
+    }
+
+    public function msssc(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,81);
+    }
+
+    public function paoma(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,99);
+    }
+
+    public function msk3(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,86);
+    }
+
+    public function xykl8(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,83);
+    }
+
+    public function xydd(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,84);
+    }
+
+    public function xylhc(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,85);
+    }
+
+    public function lhc(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,70);
+    }
+
+    public function fc3d(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,30);
+    }
+
 
     function updateBatch($data,$id){
         $sqlMinMoney = "UPDATE play SET minMoney = CASE ";

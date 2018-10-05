@@ -23,6 +23,7 @@
         padding: 5px !important;
     }
 </style>
+<form id="game83Form" action="{{ url('/game/trade/table/save/xykl8') }}">
 <table align="center" class="ui celled small table selectable">
     <tbody>
     <tr class="firstRow">
@@ -38,30 +39,57 @@
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">正码</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_ZM_min" value="{{ $mm['GAME83_ZM_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_ZM_max" value="{{ $mm['GAME83_ZM_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_ZM_turnMax" value="{{ $mm['GAME83_ZM_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">两面</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_LM_min" value="{{ $mm['GAME83_LM_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_LM_max" value="{{ $mm['GAME83_LM_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_LM_turnMax" value="{{ $mm['GAME83_LM_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">总和810</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_ZH810_min" value="{{ $mm['GAME83_ZH810_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_ZH810_max" value="{{ $mm['GAME83_ZH810_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_ZH810_turnMax" value="{{ $mm['GAME83_ZH810_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">五行</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_WX_min" value="{{ $mm['GAME83_WX_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_WX_max" value="{{ $mm['GAME83_WX_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME83_WX_turnMax" value="{{ $mm['GAME83_WX_turnMax'] }}"></td>
     </tr>
     </tbody>
 </table>
 <div class="foot-submit">
     <button class="ui primary button">保 存</button>
 </div>
+</form>
+<script>
+    $('#game83Form').formValidation({
+        framework: 'semantic',
+        icon: {
+            valid: 'checkmark icon',
+            invalid: 'remove icon',
+            validating: 'refresh icon'
+        },
+        fields: {}
+    }).on('success.form.fv', function(e) {
+        loader(true);
+        e.preventDefault();
+        var $form = $(e.target),
+            fv    = $form.data('formValidation');
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: $form.serialize(),
+            success: function(result) {
+                if(result.status == true){
+                    loader(false);
+                }
+            }
+        });
+    });
+</script>

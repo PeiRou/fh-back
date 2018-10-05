@@ -611,6 +611,25 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/trade/table/save/cqssc','Back\GameTradeTables\SaveGameTradeController@cqssc'); //保存重庆时时彩
     Route::post('/game/trade/table/save/xjssc','Back\GameTradeTables\SaveGameTradeController@xjssc'); //保存新疆时时彩
     Route::post('/game/trade/table/save/tjssc','Back\GameTradeTables\SaveGameTradeController@tjssc'); //保存天津时时彩
+    Route::post('/game/trade/table/save/gdklsf','Back\GameTradeTables\SaveGameTradeController@gdklsf'); //保存广东快乐十分
+    Route::post('/game/trade/table/save/jsk3','Back\GameTradeTables\SaveGameTradeController@jsk3'); //保存江苏快3
+    Route::post('/game/trade/table/save/ahk3','Back\GameTradeTables\SaveGameTradeController@ahk3'); //保存安徽快3
+    Route::post('/game/trade/table/save/gxk3','Back\GameTradeTables\SaveGameTradeController@gxk3'); //保存广西快3
+    Route::post('/game/trade/table/save/hbk3','Back\GameTradeTables\SaveGameTradeController@hbk3'); //保存湖北快3
+    Route::post('/game/trade/table/save/cqxync','Back\GameTradeTables\SaveGameTradeController@cqxync'); //保存重庆幸运农场
+    Route::post('/game/trade/table/save/bjkl8','Back\GameTradeTables\SaveGameTradeController@bjkl8'); //保存北京快乐8
+    Route::post('/game/trade/table/save/gd11x5','Back\GameTradeTables\SaveGameTradeController@gd11x5'); //保存广东十一选五
+    Route::post('/game/trade/table/save/pcdd','Back\GameTradeTables\SaveGameTradeController@pcdd'); //保存PC蛋蛋
+    Route::post('/game/trade/table/save/mssc','Back\GameTradeTables\SaveGameTradeController@mssc'); //保存秒速赛车
+    Route::post('/game/trade/table/save/msft','Back\GameTradeTables\SaveGameTradeController@msft'); //保存秒速飞艇
+    Route::post('/game/trade/table/save/msssc','Back\GameTradeTables\SaveGameTradeController@msssc'); //保存秒速时时彩
+    Route::post('/game/trade/table/save/paoma','Back\GameTradeTables\SaveGameTradeController@paoma'); //保存跑马
+    Route::post('/game/trade/table/save/msk3','Back\GameTradeTables\SaveGameTradeController@msk3'); //保存秒速快3
+    Route::post('/game/trade/table/save/xykl8','Back\GameTradeTables\SaveGameTradeController@xykl8'); //保存幸运快乐8
+    Route::post('/game/trade/table/save/xydd','Back\GameTradeTables\SaveGameTradeController@xydd'); //保存幸运蛋蛋
+    Route::post('/game/trade/table/save/xylhc','Back\GameTradeTables\SaveGameTradeController@xylhc'); //保存幸运六合彩
+    Route::post('/game/trade/table/save/fc3d','Back\GameTradeTables\SaveGameTradeController@fc3d'); //保存福彩3d
+    Route::post('/game/trade/table/save/lhc','Back\GameTradeTables\SaveGameTradeController@lhc'); //保存六合彩
 
 //error
     Route::get('/error/403', function () {

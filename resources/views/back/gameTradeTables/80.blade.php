@@ -23,6 +23,7 @@
         padding: 5px !important;
     }
 </style>
+<form id="game80Form" action="{{ url('/game/trade/table/save/mssc') }}">
 <table align="center" class="ui celled small table selectable">
     <tbody>
     <tr class="firstRow">
@@ -38,30 +39,57 @@
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">大、小、单、双、龙、虎</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_DXDSLH_min" value="{{ $mm['GAME80_DXDSLH_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_DXDSLH_max" value="{{ $mm['GAME80_DXDSLH_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_DXDSLH_turnMax" value="{{ $mm['GAME80_DXDSLH_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">单号1～10</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_1D10_min" value="{{ $mm['GAME80_1D10_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_1D10_max" value="{{ $mm['GAME80_1D10_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_1D10_turnMax" value="{{ $mm['GAME80_1D10_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">冠亚组合</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_GYZH_min" value="{{ $mm['GAME80_GYZH_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_GYZH_max" value="{{ $mm['GAME80_GYZH_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_GYZH_turnMax" value="{{ $mm['GAME80_GYZH_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">冠亚大、小、单、双</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_GYDXDS_min" value="{{ $mm['GAME80_GYDXDS_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_GYDXDS_max" value="{{ $mm['GAME80_GYDXDS_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME80_GYDXDS_turnMax" value="{{ $mm['GAME80_GYDXDS_turnMax'] }}"></td>
     </tr>
     </tbody>
 </table>
 <div class="foot-submit">
     <button class="ui primary button">保 存</button>
 </div>
+</form>
+<script>
+    $('#game80Form').formValidation({
+        framework: 'semantic',
+        icon: {
+            valid: 'checkmark icon',
+            invalid: 'remove icon',
+            validating: 'refresh icon'
+        },
+        fields: {}
+    }).on('success.form.fv', function(e) {
+        loader(true);
+        e.preventDefault();
+        var $form = $(e.target),
+            fv    = $form.data('formValidation');
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: $form.serialize(),
+            success: function(result) {
+                if(result.status == true){
+                    loader(false);
+                }
+            }
+        });
+    });
+</script>

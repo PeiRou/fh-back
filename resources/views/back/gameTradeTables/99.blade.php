@@ -23,45 +23,73 @@
         padding: 5px !important;
     }
 </style>
-<table align="center" class="ui celled small table selectable">
-    <tbody>
-    <tr class="firstRow">
-        <td width="190" align="center" class="table-small-title">玩法</td>
-        <td width="190" align="center" class="table-small-title">单注下注最低金额</td>
-        <td width="190" align="center" class="table-small-title">单注下注最高金额</td>
-        <td width="190" align="center" class="table-small-title">当期下注最大</td>
-    </tr>
-    <tr>
-        <td align="center" rowspan="1" colspan="4" class="table-title">
-            跑马
-        </td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">大、小、单、双、龙、虎</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">单号1～10</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">冠亚组合</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">冠亚大、小、单、双</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    </tbody>
-</table>
-<div class="foot-submit">
-    <button class="ui primary button">保 存</button>
-</div>
+<form id="game99Form" action="{{ url('/game/trade/table/save/paoma') }}">
+    <table align="center" class="ui celled small table selectable">
+        <tbody>
+        <tr class="firstRow">
+            <td width="190" align="center" class="table-small-title">玩法</td>
+            <td width="190" align="center" class="table-small-title">单注下注最低金额</td>
+            <td width="190" align="center" class="table-small-title">单注下注最高金额</td>
+            <td width="190" align="center" class="table-small-title">当期下注最大</td>
+        </tr>
+        <tr>
+            <td align="center" rowspan="1" colspan="4" class="table-title">
+                跑马
+            </td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">大、小、单、双、龙、虎</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_DXDSLH_min" value="{{ $mm['GAME99_DXDSLH_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_DXDSLH_max" value="{{ $mm['GAME99_DXDSLH_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_DXDSLH_turnMax" value="{{ $mm['GAME99_DXDSLH_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">单号1～10</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_1D10_min" value="{{ $mm['GAME99_1D10_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_1D10_max" value="{{ $mm['GAME99_1D10_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_1D10_turnMax" value="{{ $mm['GAME99_1D10_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">冠亚组合</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_GYZH_min" value="{{ $mm['GAME99_GYZH_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_GYZH_max" value="{{ $mm['GAME99_GYZH_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_GYZH_turnMax" value="{{ $mm['GAME99_GYZH_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">冠亚大、小、单、双</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_GYDXDS_min" value="{{ $mm['GAME99_GYDXDS_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_GYDXDS_max" value="{{ $mm['GAME99_GYDXDS_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME99_GYDXDS_turnMax" value="{{ $mm['GAME99_GYDXDS_turnMax'] }}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="foot-submit">
+        <button class="ui primary button">保 存</button>
+    </div>
+</form>
+<script>
+    $('#game99Form').formValidation({
+        framework: 'semantic',
+        icon: {
+            valid: 'checkmark icon',
+            invalid: 'remove icon',
+            validating: 'refresh icon'
+        },
+        fields: {}
+    }).on('success.form.fv', function(e) {
+        loader(true);
+        e.preventDefault();
+        var $form = $(e.target),
+            fv    = $form.data('formValidation');
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: $form.serialize(),
+            success: function(result) {
+                if(result.status == true){
+                    loader(false);
+                }
+            }
+        });
+    });
+</script>

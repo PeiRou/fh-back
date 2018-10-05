@@ -23,99 +23,139 @@
         padding: 5px !important;
     }
 </style>
-<table align="center" class="ui celled small table selectable">
-    <tbody>
-    <tr class="firstRow">
-        <td width="190" align="center" class="table-small-title">玩法</td>
-        <td width="190" align="center" class="table-small-title">单注下注最低金额</td>
-        <td width="190" align="center" class="table-small-title">单注下注最高金额</td>
-        <td width="190" align="center" class="table-small-title">当期下注最大</td>
-    </tr>
-    <tr>
-        <td align="center" rowspan="1" colspan="4" class="table-title">
-            广西快3
-        </td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">和值、大、小、单、双</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">和值-3、18</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">和值-4、5、16、17</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">和值-6、7、8、9、10、11、12、13、14、15</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">三连号-123、234、345、456</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">三连号-三同通选</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">二同号-11、22、33、44、55、66</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">跨度-0</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">跨度-其他</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">跨度-大小单双</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">牌点-大小单双</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">牌点-其他</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    <tr>
-        <td width="190" valign="top" class="small-padding">不出号码、必出号码</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-    </tr>
-    </tbody>
-</table>
-<div class="foot-submit">
-    <button class="ui primary button">保 存</button>
-</div>
+<form id="game12Form" action="{{ url('/game/trade/table/save/gxk3') }}">
+    <table align="center" class="ui celled small table selectable">
+        <tbody>
+        <tr class="firstRow">
+            <td width="190" align="center" class="table-small-title">玩法</td>
+            <td width="190" align="center" class="table-small-title">单注下注最低金额</td>
+            <td width="190" align="center" class="table-small-title">单注下注最高金额</td>
+            <td width="190" align="center" class="table-small-title">当期下注最大</td>
+        </tr>
+        <tr>
+            <td align="center" rowspan="1" colspan="4" class="table-title">
+                广西快3
+            </td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">和值、大、小、单、双</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_DXDS_min" value="{{ $mm['GAME12_DXDS_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_DXDS_max" value="{{ $mm['GAME12_DXDS_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_DXDS_turnMax" value="{{ $mm['GAME12_DXDS_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">和值-3、18</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_318_min" value="{{ $mm['GAME12_318_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_318_max" value="{{ $mm['GAME12_318_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_318_turnMax" value="{{ $mm['GAME12_318_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">和值-4、5、16、17</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_451617_min" value="{{ $mm['GAME12_451617_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_451617_max" value="{{ $mm['GAME12_451617_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_451617_turnMax" value="{{ $mm['GAME12_451617_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">和值-6、7、8、9、10、11、12、13、14、15</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_6D15_min" value="{{ $mm['GAME12_6D15_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_6D15_max" value="{{ $mm['GAME12_6D15_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_6D15_turnMax" value="{{ $mm['GAME12_6D15_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">三连号-123、234、345、456</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_SLH_min" value="{{ $mm['GAME12_SLH_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_SLH_max" value="{{ $mm['GAME12_SLH_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_SLH_turnMax" value="{{ $mm['GAME12_SLH_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">三连号-三同通选</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_SLTX_min" value="{{ $mm['GAME12_SLTX_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_SLTX_max" value="{{ $mm['GAME12_SLTX_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_SLTX_turnMax" value="{{ $mm['GAME12_SLTX_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">三同号-111、222、333、444、555、666</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_STH_min" value="{{ $mm['GAME12_STH_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_STH_max" value="{{ $mm['GAME12_STH_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_STH_turnMax" value="{{ $mm['GAME12_STH_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">三同号-三同通选</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_STTX_min" value="{{ $mm['GAME12_STTX_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_STTX_max" value="{{ $mm['GAME12_STTX_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_STTX_turnMax" value="{{ $mm['GAME12_STTX_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">二同号-11、22、33、44、55、66</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_ETH_min" value="{{ $mm['GAME12_ETH_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_ETH_max" value="{{ $mm['GAME12_ETH_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_ETH_turnMax" value="{{ $mm['GAME12_ETH_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">跨度-0</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_KD0_min" value="{{ $mm['GAME12_KD0_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_KD0_max" value="{{ $mm['GAME12_KD0_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_KD0_turnMax" value="{{ $mm['GAME12_KD0_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">跨度-其他</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_KDQT_min" value="{{ $mm['GAME12_KDQT_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_KDQT_max" value="{{ $mm['GAME12_KDQT_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_KDQT_turnMax" value="{{ $mm['GAME12_KDQT_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">跨度-大小单双</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_KDDXDS_min" value="{{ $mm['GAME12_KDDXDS_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_KDDXDS_max" value="{{ $mm['GAME12_KDDXDS_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_KDDXDS_turnMax" value="{{ $mm['GAME12_KDDXDS_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">牌点-大小单双</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_PDDXDS_min" value="{{ $mm['GAME12_PDDXDS_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_PDDXDS_max" value="{{ $mm['GAME12_PDDXDS_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_PDDXDS_turnMax" value="{{ $mm['GAME12_PDDXDS_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">牌点-其他</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_PDQT_min" value="{{ $mm['GAME12_PDQT_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_PDQT_max" value="{{ $mm['GAME12_PDQT_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_PDQT_turnMax" value="{{ $mm['GAME12_PDQT_turnMax'] }}"></td>
+        </tr>
+        <tr>
+            <td width="190" valign="top" class="small-padding">不出号码、必出号码</td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_BUCUBICHU_min" value="{{ $mm['GAME12_BUCUBICHU_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_BUCUBICHU_max" value="{{ $mm['GAME12_BUCUBICHU_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME12_BUCUBICHU_turnMax" value="{{ $mm['GAME12_BUCUBICHU_turnMax'] }}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="foot-submit">
+        <button class="ui primary button">保 存</button>
+    </div>
+</form>
+<script>
+    $('#game12Form').formValidation({
+        framework: 'semantic',
+        icon: {
+            valid: 'checkmark icon',
+            invalid: 'remove icon',
+            validating: 'refresh icon'
+        },
+        fields: {}
+    }).on('success.form.fv', function(e) {
+        loader(true);
+        e.preventDefault();
+        var $form = $(e.target),
+            fv    = $form.data('formValidation');
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: $form.serialize(),
+            success: function(result) {
+                if(result.status == true){
+                    loader(false);
+                }
+            }
+        });
+    });
+</script>

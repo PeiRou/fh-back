@@ -23,6 +23,7 @@
         padding: 5px !important;
     }
 </style>
+<form id="game65Form" action="{{ url('/game/trade/table/save/bjkl8') }}">
 <table align="center" class="ui celled small table selectable">
     <tbody>
     <tr class="firstRow">
@@ -38,66 +39,93 @@
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">大、小、单、双</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_DXDS_min" value="{{ $mm['GAME65_DXDS_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_DXDS_max" value="{{ $mm['GAME65_DXDS_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_DXDS_turnMax" value="{{ $mm['GAME65_DXDS_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">总和810</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZH810_min" value="{{ $mm['GAME65_ZH810_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZH810_max" value="{{ $mm['GAME65_ZH810_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZH810_turnMax" value="{{ $mm['GAME65_ZH810_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">总和大、小、单、双</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZHDXDS_min" value="{{ $mm['GAME65_ZHDXDS_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZHDXDS_max" value="{{ $mm['GAME65_ZHDXDS_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZHDXDS_turnMax" value="{{ $mm['GAME65_ZHDXDS_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">前后和、单双和</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_QHHDSH_min" value="{{ $mm['GAME65_QHHDSH_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_QHHDSH_max" value="{{ $mm['GAME65_QHHDSH_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_QHHDSH_turnMax" value="{{ $mm['GAME65_QHHDSH_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">金</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_JIN_min" value="{{ $mm['GAME65_JIN_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_JIN_max" value="{{ $mm['GAME65_JIN_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_JIN_turnMax" value="{{ $mm['GAME65_JIN_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">木</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_MU_min" value="{{ $mm['GAME65_MU_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_MU_max" value="{{ $mm['GAME65_MU_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_MU_turnMax" value="{{ $mm['GAME65_MU_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">水</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_SHUI_min" value="{{ $mm['GAME65_SHUI_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_SHUI_max" value="{{ $mm['GAME65_SHUI_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_SHUI_turnMax" value="{{ $mm['GAME65_SHUI_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">火</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_HUO_min" value="{{ $mm['GAME65_HUO_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_HUO_max" value="{{ $mm['GAME65_HUO_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_HUO_turnMax" value="{{ $mm['GAME65_HUO_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">土</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_TU_min" value="{{ $mm['GAME65_TU_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_TU_max" value="{{ $mm['GAME65_TU_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_TU_turnMax" value="{{ $mm['GAME65_TU_turnMax'] }}"></td>
     </tr>
     <tr>
         <td width="190" valign="top" class="small-padding">正码</td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
-        <td width="190" valign="top" class="small-padding"><input type="text" value=""></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZM_min" value="{{ $mm['GAME65_ZM_min'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZM_max" value="{{ $mm['GAME65_ZM_max'] }}"></td>
+        <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZM_turnMax" value="{{ $mm['GAME65_ZM_turnMax'] }}"></td>
     </tr>
     </tbody>
 </table>
 <div class="foot-submit">
     <button class="ui primary button">保 存</button>
 </div>
+</form>
+<script>
+    $('#game65Form').formValidation({
+        framework: 'semantic',
+        icon: {
+            valid: 'checkmark icon',
+            invalid: 'remove icon',
+            validating: 'refresh icon'
+        },
+        fields: {}
+    }).on('success.form.fv', function(e) {
+        loader(true);
+        e.preventDefault();
+        var $form = $(e.target),
+            fv    = $form.data('formValidation');
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: $form.serialize(),
+            success: function(result) {
+                if(result.status == true){
+                    loader(false);
+                }
+            }
+        });
+    });
+</script>
