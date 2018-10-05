@@ -17,7 +17,7 @@
                 <a class="item" data-tab="three" data-type="xingyun">幸运彩</a>
                 <a class="item" data-tab="four" data-type="fucai">福彩3D</a>
                 <a class="item" data-tab="five" data-type="lhc">六合彩</a>
-                <a class="item" data-tab="six" data-type="nn">牛牛</a>
+                {{--<a class="item" data-tab="six" data-type="nn">牛牛</a>--}}
             </div>
             <div class="ui tab segment active" data-tab="first" style="margin-bottom: 70px;">
                 <div class="sub-item">
@@ -77,9 +77,9 @@
                 </div>
                 <div id="five_content"></div>
             </div>
-            <div class="ui tab segment" data-tab="six" style="margin-bottom: 70px;">
-                牛牛
-            </div>
+            {{--<div class="ui tab segment" data-tab="six" style="margin-bottom: 70px;">--}}
+                {{--牛牛--}}
+            {{--</div>--}}
         </div>
     </div>
 @endsection
