@@ -65,7 +65,7 @@ class SrcPayNewController extends Controller{
     //修改在线支付配置新
     public function editPayOnline(Request $request){
         $aParam = $request->all();
-        $iPayTypeNew = DB::table('pay_type_new')->where('id',$aParam['payType'])->first();
+        $iPayTypeNew = DB::table('pay_type_new')->where('payName',$aParam['payType'])->first();
         if(!empty($aParam['lockArea'])){
             $new_lockArea = implode(',',$aParam['lockArea']);
         } else {

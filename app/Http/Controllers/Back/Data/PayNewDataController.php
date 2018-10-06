@@ -12,6 +12,7 @@ use App\RechargeWay;
 use App\RechType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class PayNewDataController extends Controller
@@ -21,10 +22,10 @@ class PayNewDataController extends Controller
     //在线支付配置新
     public function payOnline()
     {
-        $payOnline = PayOnlineNew::where('rechType','onlinePayment')->orderBy('status','desc')->orderBy('sort','asc')->get();
+        $payOnline = PayOnlineNew::select('pay_online_new.*','pay_type_new.rechName as rechName1')->join('pay_type_new','pay_type_new.payName','=','pay_online_new.payName')->where('pay_online_new.rechType','onlinePayment')->orderBy('pay_online_new.status','desc')->orderBy('pay_online_new.sort','asc')->get();
         return DataTables::of($payOnline)
             ->editColumn('payType', function ($payOnline){
-                return $payOnline->rechName;
+                return $payOnline->rechName1;
             })
             ->editColumn('status', function ($payOnline){
                 if($payOnline->status == 1){
