@@ -195,9 +195,9 @@ class SrcPayNewController extends Controller{
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payee = $payee;
         $payOnline->payeeName = $payeeName;
-        $payOnline->remark = $remark;
+        $payOnline->remark = $pageDesc;
         $payOnline->remark2 = $remark2;
-        $payOnline->pageDesc = $pageDesc;
+        $payOnline->pageDesc = $remark;
         $payOnline->min_money = $min_money;
         $payOnline->max_money = $max_money;
         $payOnline->rebate_or_fee = $rebate_or_fee;
