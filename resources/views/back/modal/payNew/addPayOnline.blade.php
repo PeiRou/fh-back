@@ -187,8 +187,8 @@
         $('.ui.checkbox').checkbox();
         $('#noArea').select2();
 
-        $('select[name="payType"]').on('change',function () {
-            var url = $('select[name="payType"]').find("option:selected").data("url");
+        $('.searchable-select-item').on('click',function () {
+            var url = $(this).data("url");
             $('input[name="req_url"]').attr('value',url)
         });
 

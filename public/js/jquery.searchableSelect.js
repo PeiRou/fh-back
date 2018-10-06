@@ -163,7 +163,7 @@
     buildItems: function(){
       var _this = this;
       this.element.find('option').each(function(){
-        var item = $('<div class="searchable-select-item" data-value="'+$(this).attr('value')+'">'+$(this).text()+'</div>');
+        var item = $('<div class="searchable-select-item" data-url="'+$(this).attr('data-url')+'" data-value="'+$(this).attr('value')+'">'+$(this).text()+'</div>');
 
         if(this.selected){
           _this.selectItem(item);
