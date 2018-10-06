@@ -318,17 +318,17 @@
                     @if($hasPermission->hasPermission('payNew.cft') == "has")
                         <li id="menu-payNewManage-cft"><a href="{{ route('payNew.cft') }}"><cite></cite><span>财付通配置</span></a></li>
                     @endif
-                    @if($hasPermission->hasPermission('pay.payLayout') == "has")
-                        <li id="menu-payManage-payLayout"><a href="{{ route('pay.payLayout') }}"><cite></cite><span>支付层级配置</span></a></li>
+                    @if($hasPermission->hasPermission('payNew.payLayout') == "has")
+                        <li id="menu-payNewManage-payLayout"><a href="{{ route('payNew.payLayout') }}"><cite></cite><span>支付层级配置</span></a></li>
                     @endif
-                    @if($hasPermission->hasPermission('pay.bindBank') == "has")
-                        <li id="menu-payManage-bindBank"><a href="{{ route('pay.bindBank') }}"><cite></cite><span>绑定银行配置</span></a></li>
+                    @if($hasPermission->hasPermission('payNew.bindBank') == "has")
+                        <li id="menu-payNewManage-bindBank"><a href="{{ route('payNew.bindBank') }}"><cite></cite><span>绑定银行配置</span></a></li>
                     @endif
-                    @if($hasPermission->hasPermission('pay.rechargeWay') == "has")
-                        <li id="menu-payManage-rechargeWay"><a href="{{ route('pay.rechargeWay') }}"><cite></cite><span>充值方式配置</span></a></li>
+                    @if($hasPermission->hasPermission('payNew.rechargeWay') == "has")
+                        <li id="menu-payNewManage-rechargeWay"><a href="{{ route('payNew.rechargeWay') }}"><cite></cite><span>充值方式配置</span></a></li>
                     @endif
-                    @if($hasPermission->hasPermission('pay.rechType') == "has")
-                        <li id="menu-payManage-rechType"><a href="{{ route('pay.rechType') }}"><cite></cite><span>支付前端显示</span></a></li>
+                    @if($hasPermission->hasPermission('payNew.rechType') == "has")
+                        <li id="menu-payNewManage-rechType"><a href="{{ route('payNew.rechType') }}"><cite></cite><span>支付前端显示</span></a></li>
                     @endif
                 </ul>
             </li>

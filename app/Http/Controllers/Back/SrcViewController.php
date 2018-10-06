@@ -670,6 +670,25 @@ class SrcViewController extends Controller
     {
         return view('back.payNew.payCft');
     }
+    //绑定银行配置
+    public function bindBankNew()
+    {
+        return view('back.payNew.bindBank');
+    }
+    //支付层级配置
+    public function payLayoutNew()
+    {
+        return view('back.payNew.payLayout');
+    }
+    //cho
+    public function rechargeWayNew()
+    {
+        return view('back.payNew.rechargeWay');
+    }
+    //支付前端显示
+    public function rechTypeNew(){
+        return view('back.payNew.rechType');
+    }
 
     public function payOnlineDateChange($date = "")
     {

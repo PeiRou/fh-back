@@ -20,6 +20,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('sub_account', 'Back\SrcViewController@subAccount')->name('m.subAccount'); // 子账号
         Route::get('userBetList/{userId}', 'Back\SrcViewController@userBetList')->name('m.user.viewDetails'); //用户注单明细
     });
+
 //财务管理
     Route::group(['prefix' => 'back/control/financeManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('rechargeRecord', 'Back\SrcViewController@rechargeRecord')->name('finance.rechargeRecord'); // 充值记录
@@ -129,6 +130,10 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('payWechatNew', 'Back\SrcViewController@payWechatNew')->name('payNew.wechat'); //微信支付配置
         Route::get('payYunShanPayNew', 'Back\SrcViewController@payYunShanPayNew')->name('payNew.payYunShanPay'); //云闪付配置
         Route::get('payCftNew', 'Back\SrcViewController@payCftNew')->name('payNew.cft'); //财付通支付配置
+        Route::get('bindBank', 'Back\SrcViewController@bindBankNew')->name('payNew.bindBank'); //绑定银行配置
+        Route::get('payLayout', 'Back\SrcViewController@payLayoutNew')->name('payNew.payLayout'); //支付层级配置
+        Route::get('rechargeWay', 'Back\SrcViewController@rechargeWayNew')->name('payNew.rechargeWay'); //支付层级配置
+        Route::get('rechType', 'Back\SrcViewController@rechTypeNew')->name('payNew.rechType'); //支付前端显示
     });
 
 //代理结算
