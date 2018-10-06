@@ -313,6 +313,23 @@ class SrcPayController extends Controller
         }
     }
 
+    //修改前端显示
+    public function editRechType(Request $request){
+        $aParam = $request->post();
+        if(RechType::where('id',$aParam['id'])->update([
+            'remark' => $aParam['remark'],
+        ]))
+            return response()->json([
+                'status'=>true,
+                'msg'=>"更新成功！"
+            ]);
+        else
+            return response()->json([
+                'status'=>false,
+                'msg'=>'暂时无法更新，请稍后重试'
+            ]);
+    }
+
     //删除充值方式
     public function delRechargeWay(Request $request)
     {
@@ -980,6 +997,7 @@ class SrcPayController extends Controller
             ]);
         }
     }
+
     //支付前端显示排序
     public function rechTypeSetSort(Request $request){
         $params = $request->all();
@@ -989,6 +1007,26 @@ class SrcPayController extends Controller
             $data[$key]['id'] = $params['id'][$key];
         }
         if(RechType::editBatchPayOnlineData($data)){
+            return response()->json([
+                'status' => true
+            ]);
+        }else{
+            return response()->json([
+                'status' => false,
+                'msg' => '排序失败'
+            ]);
+        }
+    }
+
+    //充值方式配置排序
+    public function rechWaySetSort(Request $request){
+        $params = $request->all();
+        $data = [];
+        foreach ($params['sort'] as $key => $value){
+            $data[$key]['sort'] = empty($value) ? 0 : $value;
+            $data[$key]['id'] = $params['id'][$key];
+        }
+        if(RechargeWay::editBatchPayOnlineData($data)){
             return response()->json([
                 'status' => true
             ]);

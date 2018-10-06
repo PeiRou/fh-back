@@ -53,6 +53,7 @@ class GetOnlinePaymentType extends Command
                     'sort' => $kData,
                     'isBank' => empty($iData['bank_info'])?0:1,
                     'bankInfo' => empty($iData['bank_info'])?json_encode([]):json_encode($iData['bank_info']),
+                    'gatewayAddress' => empty($iData['gateway_address'])?'':$iData['gateway_address'],
                 ];
                 PayTypeNewInsert::dispatch($aArray)->onQueue($this->setQueueRealName('payTypeNewInsert'));
             }

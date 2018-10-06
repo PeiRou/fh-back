@@ -1,17 +1,18 @@
+<link href="/js/jquery.searchableSelect.css" rel="stylesheet" type="text/css">
 <form id="addPayOnlineForm" class="ui mini form" action="{{ url('/action/admin/new/addPayOnline') }}">
     <div class="field">
         <label>支付类型</label>
         <div class="ui input icon">
-            <select class="ui fluid dropdown" name="payType">
+            <select class="ui fluid dropdown" name="payType" id="select">
                 <option value="">请选择支付类型</option>
                 @foreach($payType as $item)
-                    <option data-url="{{ $item->url }}" value="{{ $item->id }}">{{ $item->rechName }}</option>
+                    <option data-url="{{ $item->gatewayAddress }}" value="{{ $item->id }}">{{ $item->rechName }}</option>
                 @endforeach
             </select>
         </div>
     </div>
 
-    <div class="field">
+    <div class="field" style="position: relative;z-index: 1">
         <label>不可见地区</label>
         <div class="ui input icon">
             <select id="noArea" name="lockArea[]" multiple="multiple">
@@ -176,10 +177,13 @@
 <style>
     .select2-search__field{border: none !important;}
     .select2-container{z-index: 9999999999 !important;}
+    .searchable-select-dropdown {z-index: 111 !important;}
 </style>
+<script src="/js/jquery.searchableSelect.js"></script>
 
 <script>
     $(function () {
+        $('#select').searchableSelect();
         $('.ui.checkbox').checkbox();
         $('#noArea').select2();
 

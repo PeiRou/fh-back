@@ -117,6 +117,12 @@ class SrcMemberController extends Controller
                 'status'=>false,
                 'msg'=>'此代理帐号已存在！'
             ]);
+        $has = Agent::where('name',$name)->first();
+        if(!empty($has))
+            return response()->json([
+                'status'=>false,
+                'msg'=>'此代理名字已存在！'
+            ]);
         try {
             $agent = new Agent();
             $agent->gagent_id = $gagent;

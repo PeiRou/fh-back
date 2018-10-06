@@ -400,7 +400,7 @@ class PayDataController extends Controller
                 return '<span class="edit-link" onclick="edit(\''.$rechargeWay->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> | 
                         <span class="edit-link" onclick="del(\''.$rechargeWay->id.'\',\''.$rechargeWay->type.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
             })
-            ->rawColumns(['status','control'])
+            ->rawColumns(['status','control','sort'])
             ->make(true);
     }
     //支付前端显示
@@ -412,6 +412,9 @@ class PayDataController extends Controller
             })
             ->editColumn('sort', function ($rechType){
                 return "<input type='text' value='".$rechType->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$rechType->id."' name='sortId[]'>";
+            })
+            ->editColumn('control', function ($rechType){
+                return '<span class="edit-link" onclick="edit(\''.$rechType->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span>';
             })
             ->rawColumns(['sort','control'])
             ->make(true);

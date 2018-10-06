@@ -49,10 +49,12 @@ class openHistoryController extends Controller
     {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
         $table = 'game_bjpk10';
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
-        $HIS = $HISModel->orderBy('id','desc')->get();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
         return DataTables::of($HIS)
             ->setTotalRecords($HISCount)
             ->skipPaging()
@@ -64,10 +66,12 @@ class openHistoryController extends Controller
     {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
         $table = 'game_mssc';
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
-        $HIS = $HISModel->orderBy('id','desc')->get();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
         return DataTables::of($HIS)
             ->setTotalRecords($HISCount)
             ->skipPaging()
@@ -79,10 +83,12 @@ class openHistoryController extends Controller
     {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
         $table = 'game_msft';
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
-        $HIS = $HISModel->orderBy('id','desc')->get();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
         return DataTables::of($HIS)
             ->setTotalRecords($HISCount)
             ->skipPaging()
@@ -94,10 +100,12 @@ class openHistoryController extends Controller
     {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
         $table = 'game_paoma';
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
-        $HIS = $HISModel->orderBy('id','desc')->get();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
         return DataTables::of($HIS)
             ->setTotalRecords($HISCount)
             ->skipPaging()
@@ -109,10 +117,12 @@ class openHistoryController extends Controller
     {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
         $table = 'game_cqssc';
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
-        $HIS = $HISModel->orderBy('id','desc')->get();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
         return DataTables::of($HIS)
             ->setTotalRecords($HISCount)
             ->skipPaging()
@@ -124,10 +134,12 @@ class openHistoryController extends Controller
     {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
         $table = 'game_msssc';
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
-        $HIS = $HISModel->orderBy('id','desc')->get();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
         return DataTables::of($HIS)
             ->setTotalRecords($HISCount)
             ->skipPaging()
@@ -139,10 +151,12 @@ class openHistoryController extends Controller
     {
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
         $table = 'game_bjkl8';
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
-        $HIS = $HISModel->orderBy('id','desc')->get();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
         return DataTables::of($HIS)
             ->setTotalRecords($HISCount)
             ->skipPaging()
@@ -179,9 +193,11 @@ class openHistoryController extends Controller
         }
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
-        $HIS = $HISModel->orderBy('id','desc')->get();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
         return DataTables::of($HIS)
             ->setTotalRecords($HISCount)
             ->skipPaging()
@@ -257,7 +273,7 @@ class openHistoryController extends Controller
 
         $HISModel = $this->getPostData('game_xylhc',$param['issue'],$param['issuedate']);
         $lhcCount = $HISModel->count();
-        $lhc = $HISModel->orderBy('id','desc')->get();
+        $lhc = $HISModel->orderBy('id','desc')->skip($param['start'])->take($param['length'])->get();
         return DataTables::of($lhc)
             ->editColumn('issue',function ($lhc){
                 return "<b style='color: #".$lhc->color.";'>$lhc->issue</b>";

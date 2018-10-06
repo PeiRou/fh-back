@@ -14,6 +14,7 @@ $(function () {
             {data:'id'},
             {data:'name'},
             {data:'rechType'},
+            {data:'remark'},
             {data:'sort'},
             {data:'control'}
         ],
@@ -33,6 +34,10 @@ $(function () {
     });
 });
 
+function edit(id) {
+    var url = '/back/modal/editRechType/'+id;
+    Cmodal('修改充值方式','20%',url,true,'editRechargeWayForm');
+}
 
 function setSort() {
     var sort = new Array();

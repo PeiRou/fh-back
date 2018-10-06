@@ -105,3 +105,33 @@ function del(id,name) {
         }
     });
 }
+
+function setSort() {
+    var sort = new Array();
+    var sortId = new Array();
+    $("input[name='sort[]']").each(function (i,e) {
+        sort.push(e.value);
+    });
+    $("input[name='sortId[]']").each(function (i,e) {
+        sortId.push(e.value);
+    });
+    $.ajax({
+        url:'/action/admin/rechWay/setSort',
+        type:'post',
+        dataType:'json',
+        data:{sort:sort,id:sortId},
+        success:function (data) {
+            if(data.status == true){
+                $('#rechargeWayTable').DataTable().ajax.reload(null,false);
+            }else{
+                Calert(data.msg,'red')
+            }
+        },
+        error:function (e) {
+            if(e.status == 403)
+            {
+                Calert('您没有此项权限！无法继续！','red')
+            }
+        }
+    });
+}

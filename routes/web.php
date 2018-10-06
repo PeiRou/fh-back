@@ -346,6 +346,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/sectionDisplayLevel','Back\SrcPayController@sectionDisplayLevel');//部分转移显示
     Route::post('/action/admin/addRechargeWay', 'Back\SrcPayController@addRechargeWay');//添加充值方式
     Route::post('/action/admin/editRechargeWay', 'Back\SrcPayController@editRechargeWay');//添加充值方式
+    Route::post('/action/admin/editRechType', 'Back\SrcPayController@editRechType');//修改前端显示
     Route::post('/action/admin/changeOnlinePayStatus', 'Back\SrcPayController@changeOnlinePayStatus');//改变充值方式状态
     Route::post('/action/admin/delOnlinePay', 'Back\SrcPayController@delOnlinePay');//删除充值方式
     Route::post('/action/admin/delRechargeWay', 'Back\SrcPayController@delRechargeWay');//删除充值方式
@@ -361,6 +362,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/editPayCft', 'Back\SrcPayController@editPayCft');//修改财付通配置
     Route::post('/action/admin/setSort', 'Back\SrcPayController@setSort');//设置排序
     Route::post('/action/admin/rechType/setSort', 'Back\SrcPayController@rechTypeSetSort');//设置排序
+    Route::post('/action/admin/rechWay/setSort', 'Back\SrcPayController@rechWaySetSort');//充值方式配置排序
 
     //充值配置新
     Route::post('/action/admin/new/addPayOnline', 'Back\SrcPayNewController@addPayOnline');//添加在线支付配置
@@ -465,6 +467,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/allExchangeLevel/{id}', 'Back\Ajax\ModalController@allExchangeLevel');
     Route::get('/back/modal/addRechargeWay', 'Back\Ajax\ModalController@addRechargeWay');
     Route::get('/back/modal/rechargeConditionalTransfer/{id}','Back\Ajax\ModalController@rechargeConditionalTransfer'); //条件转移-模板
+    Route::get('/back/modal/editRechType/{id}', 'Back\Ajax\ModalController@editRechType');  // 支付前端修改-模板
     Route::get('/back/modal/editRechargeWay/{id}', 'Back\Ajax\ModalController@editRechargeWay');
     Route::get('/back/modal/addPayOnline', 'Back\Ajax\ModalController@addPayOnline');
     Route::get('/back/modal/editPayOnline/{id}', 'Back\Ajax\ModalController@editPayOnline');

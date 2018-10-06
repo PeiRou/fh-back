@@ -26,6 +26,7 @@ use App\PromotionConfig;
 use App\PromotionReport;
 use App\Recharges;
 use App\RechargeWay;
+use App\RechType;
 use App\Roles;
 use App\SubAccount;
 use App\User;
@@ -409,6 +410,11 @@ class ModalController extends Controller
     {
         $info = RechargeWay::where('id',$id)->first();
         return view('back.modal.pay.editRechargeWay')->with('id',$id)->with('info',$info);
+    }
+    // 支付前端修改
+    public function editRechType($id){
+        $remark = RechType::where('id',$id)->value('remark');
+        return view('back.modal.pay.editRechType')->with('id',$id)->with('remark',$remark);
     }
     //添加银行支付配置
     public function addPayBank()

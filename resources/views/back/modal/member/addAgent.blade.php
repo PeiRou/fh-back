@@ -88,6 +88,8 @@
                 if(result.status == true){
                     jc.close();
                     $('#agentTable').DataTable().ajax.reload(null,false);
+                }else{
+                    alert(result.msg);
                 }
             }
         });
