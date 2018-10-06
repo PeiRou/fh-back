@@ -370,6 +370,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/rechWay/setSort', 'Back\SrcPayController@rechWaySetSort');//充值方式配置排序
 
     //充值配置新
+
+    Route::post('/action/admin/new/copyPayOnline', 'Back\SrcPayNewController@copyPayOnline');//复制在线支付配置
     Route::post('/action/admin/new/addPayOnline', 'Back\SrcPayNewController@addPayOnline');//添加在线支付配置
     Route::post('/action/admin/new/editPayOnline', 'Back\SrcPayNewController@editPayOnline');//修改在线支付配置
     Route::post('/action/admin/new/changeOnlinePayStatus', 'Back\SrcPayNewController@changeOnlinePayStatus');//改变充值方式状态新
@@ -492,6 +494,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/rechargeError/{id}', 'Back\Ajax\ModalController@rechargeError');
     Route::get('/back/modal/drawingError/{id}', 'Back\Ajax\ModalController@drawingError');
     Route::get('/back/modal/addPayOnlineNew', 'Back\Ajax\ModalController@addPayOnlineNew'); //充值配置新-在线支付-添加
+    Route::get('/back/modal/copyPayOnlineNew/{id}', 'Back\Ajax\ModalController@copyPayOnlineNew'); //充值配置新-在线支付-复制
     Route::get('/back/modal/editPayOnlineNew/{id}', 'Back\Ajax\ModalController@editPayOnlineNew'); //充值配置新-在线支付-修改
     Route::get('/back/modal/addPayBankNew', 'Back\Ajax\ModalController@addPayBankNew');  //充值配置新-银行支付-添加
     Route::get('/back/modal/editPayBankNew/{id}', 'Back\Ajax\ModalController@editPayBankNew'); //充值配置新-银行支付-修改

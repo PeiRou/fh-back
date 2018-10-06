@@ -567,6 +567,22 @@ class ModalController extends Controller
         $levels = Levels::all();
         return view('back.modal.payNew.addPayOnline')->with('payType',$payType)->with('levels',$levels);
     }
+
+    /**
+     * 复制在线支付配置新
+     * @param string $id
+     * @return mixed
+     */
+    public function copyPayOnlineNew($id = '')
+    {
+        $payType = PayTypeNew::where('status',1)->get();
+        $levels = Levels::all();
+        $getPayOnlineData = PayOnlineNew::where('id',$id)->first();
+        $getPayOnlineData->levels = explode(",",$getPayOnlineData->levels);
+        return view('back.modal.payNew.copyPayOnline')->with('payType',$payType)->with('levels',$levels)->with('id',$id)->with('payOnline',$getPayOnlineData);
+    }
+
+
     //修改在线支付配置新
     public function editPayOnlineNew($id = "")
     {

@@ -62,6 +62,51 @@ class SrcPayNewController extends Controller{
         ]);
     }
 
+    //复制在线支付配置
+    public function copyPayOnline(Request $request){
+        $aParam = $request->all();
+        $iPayTypeNew = DB::table('pay_type_new')->where('id',$aParam['payType'])->first();
+        if(!empty($aParam['lockArea'])){
+            $new_lockArea = implode(',',$aParam['lockArea']);
+        } else {
+            $new_lockArea = null;
+        }
+        if(!empty($aParam['levels'])){
+            $new_levels = implode(',',$aParam['levels']);
+        } else {
+            $new_levels = null;
+        }
+        $payOnline = new PayOnlineNew();
+        $payOnline->payType = $iPayTypeNew->id;
+        $payOnline->rechName = $iPayTypeNew->rechName;
+        $payOnline->payCode = $iPayTypeNew->code;
+        $payOnline->rechType = 'onlinePayment';
+        $payOnline->payName = $iPayTypeNew->payName;
+        $payOnline->lockArea = $new_lockArea;
+        $payOnline->payeeName = $aParam['payeeName'];
+        $payOnline->apiId = $aParam['apiId'];
+        $payOnline->apiKey = $aParam['apiKey'];
+        $payOnline->apiPublicKey = $aParam['apiPublicKey'];
+        $payOnline->apiPrivateKey = $aParam['apiPrivateKey'];
+        $payOnline->domain = $aParam['domain'];
+        $payOnline->para1 = $aParam['para1'];
+        $payOnline->req_url = $aParam['req_url'];
+        $payOnline->res_url = $aParam['res_url'];
+        $payOnline->min_money = $aParam['min_money'];
+        $payOnline->max_money = $aParam['max_money'];
+        $payOnline->rebate_or_fee = $aParam['rebate_or_fee'];
+        $payOnline->status = $aParam['status'];
+        $payOnline->remark = $aParam['remark'];
+        $payOnline->remark2 = $aParam['remark2'];
+        $payOnline->levels = $new_levels;
+        $payOnline->pcMobile = $iPayTypeNew->pcMobile;
+        $payOnline->isBank = $iPayTypeNew->isBank;
+        $payOnline->bankInfo = $iPayTypeNew->bankInfo;
+        $payOnline->save();
+        return response()->json([
+            'status' => true
+        ]);
+    }
     //修改在线支付配置新
     public function editPayOnline(Request $request){
         $aParam = $request->all();
