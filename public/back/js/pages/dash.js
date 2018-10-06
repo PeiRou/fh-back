@@ -34,7 +34,7 @@ $(function () {
                 } else {
                     var target = "";
                 }
-                noticeText = "<a href='"+value.url+"' "+target+" class='dash_link'>【"+value.time+"】 "+value.title+"</a>"
+                noticeText += "<a href='"+value.url+"' "+target+" class='dash_link'>【"+value.time+"】 "+value.title+"</a>"
             });
             $('#systemUpdateMessageBox').html(updateInfoText);
             $('#downloadMessageBox').html(downLoadText);
