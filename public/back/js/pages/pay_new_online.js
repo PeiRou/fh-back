@@ -68,6 +68,39 @@ function addPayOnline() {
     });
 }
 
+
+function copy(id) {
+    jc = $.confirm({
+        theme: 'material',
+        title: '复制在线支付配置',
+        closeIcon:true,
+        boxWidth:'26%',
+        content: 'url:/back/modal/copyPayOnlineNew' + '/' + id,
+        buttons: {
+            formSubmit: {
+                text:'确定提交',
+                btnClass: 'btn-blue',
+                action: function () {
+                    var form = this.$content.find('#addPayOnlineForm').data('formValidation').validate().isValid();
+                    if(!form){
+                        return false;
+                    }
+                    return false;
+                }
+            }
+        },
+        contentLoaded: function(data, status, xhr){
+            $('.jconfirm-content').css('overflow','hidden');
+            if(data.status == 403)
+            {
+                this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
+                $('.jconfirm-buttons').hide();
+            }
+        }
+    });
+}
+
+
 function edit(id) {
     jc = $.confirm({
         theme: 'material',
