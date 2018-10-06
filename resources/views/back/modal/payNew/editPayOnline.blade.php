@@ -5,7 +5,7 @@
             <select class="ui fluid dropdown" name="payType">
                 <option value="">请选择支付类型</option>
                 @foreach($payType as $item)
-                    <option @if($payOnline->payType == $item->id) selected @endif value="{{ $item->id }}">{{ $item->rechName }}</option>
+                    <option @if($payOnline->payName == $item->payName) selected @endif value="{{ $item->payName }}">{{ $item->rechName }}</option>
                 @endforeach
             </select>
         </div>
