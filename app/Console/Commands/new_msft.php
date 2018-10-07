@@ -59,16 +59,10 @@ class new_msft extends Command
             if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3 || $timeDiff == 4 || $timeDiff == 5){
                 return $value;
             }
-//            if(strtotime($value['time']) == strtotime($nowTime) || strtotime($value['time']) == strtotime($nowTimeAdd1) || strtotime($value['time']) == strtotime($nowTimeAdd2) || strtotime($value['time']) == strtotime($nowTimeAdd3)){
-//                return $value;
-//            }
         });
-//        \Log::info('当前文件时间：'.$nowTime);
-//        \Log::info('开奖时间'.$filtered['time']);
-//        \Log::info('误差时间'.$nowTimeAdd1.'=='.$nowTimeAdd2.'=='.$nowTimeAdd3);
         if($filtered!=null){
 //            \Log::info('秒速飞艇'.$filtered['issue']);
-            if($filtered['issue'] >= 793 && $filtered['issue'] <= 985){
+            if($filtered['issue'] >= 793 && $filtered['issue'] <= 1105){
                 $date = Carbon::parse(date('Y-m-d'))->addDays(-1);
                 $params =  [
                     'issue' => date('ymd',strtotime($date)).$filtered['issue'],

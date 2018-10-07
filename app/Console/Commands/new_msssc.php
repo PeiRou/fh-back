@@ -58,16 +58,13 @@ class new_msssc extends Command
         $data       = json_decode($getFile,true);
         $nowTime    = date('H:i:s');
         $filtered = collect($data)->first(function ($value, $key) use ($nowTime) {
-//            if(strtotime($value['time']) === strtotime($nowTime)){
-//                return $value;
-//            }
             $timeDiff = Carbon::now()->diffInSeconds(Carbon::parse($value['time']));
             if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3 || $timeDiff == 4 || $timeDiff == 5){
                 return $value;
             }
         });
         if($filtered!=null){
-            if($filtered['issue'] >= 792 && $filtered['issue'] <= 985){
+            if($filtered['issue'] >= 792 && $filtered['issue'] <= 1105){
                 $date = Carbon::parse(date('Y-m-d'))->addDays(-1);
                 $params =  [
                     'issue' => date('ymd',strtotime($date)).$filtered['issue'],

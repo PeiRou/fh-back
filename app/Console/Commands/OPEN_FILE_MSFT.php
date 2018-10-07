@@ -41,12 +41,15 @@ class OPEN_FILE_MSFT extends Command
     {
         $timeUp = date('07:29:45');
         $str = "";
-        for($i=1;$i<=985;$i++){
+        for($i=1;$i<=1105;$i++){
             $timeUp = Carbon::parse($timeUp)->addSeconds(75);
             if(strlen($i) == 1){
-                $i = '00'.$i;
+                $i = '000'.$i;
             }
             if(strlen($i) == 2){
+                $i = '00'.$i;
+            }
+            if(strlen($i) == 3){
                 $i = '0'.$i;
             }
             $str .= '"'.(string)$i.'":{"time":"'.$timeUp->toTimeString().'","issue":"'.(string)$i.'"},';
