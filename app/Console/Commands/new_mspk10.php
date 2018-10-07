@@ -61,7 +61,7 @@ class new_mspk10 extends Command
 //            }
         });
         if($filtered!=null){
-            if($filtered['issue'] >= 793 && $filtered['issue'] <= 985){
+            if($filtered['issue'] >= 793 && $filtered['issue'] <= 1105){
                 $date = Carbon::parse(date('Y-m-d'))->addDays(-1);
                 $params =  [
                     'issue' => date('ymd',strtotime($date)).$filtered['issue'],
