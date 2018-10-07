@@ -16,6 +16,7 @@ use App\Levels;
 use App\LogHandle;
 use App\MessagePush;
 use App\PayOnline;
+use App\PayOnlineNew;
 use App\PermissionsAuth;
 use App\PlatformDeposit;
 use App\PlatformSettlement;
@@ -635,7 +636,7 @@ class SrcViewController extends Controller
     public function payOnlineSelectData($rechargeType = "")
     {
         if($rechargeType){
-            $get = PayOnline::select('payeeName','id','status')->where('rechType',$rechargeType)->orderBy('status','desc')->get();
+            $get = PayOnlineNew::select('payeeName','id','status')->where('rechType',$rechargeType)->orderBy('status','desc')->get();
             return response()->json($get);
         }
     }
