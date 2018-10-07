@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_MSSC extends Command
 {
     protected $signature = 'ISSUE_SEED_MSSC';
-    protected $description = '秒速赛车期数生成-985';
+    protected $description = '秒速赛车期数生成-1105';
 
     public function __construct()
     {
@@ -22,12 +22,15 @@ class ISSUE_SEED_MSSC extends Command
         $timeUp = date('Y-m-d 07:29:15');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_mssc (issue,opentime) VALUES ";
-        for($i=1;$i<=985;$i++){
+        for($i=1;$i<=1105;$i++){
             $timeUp = Carbon::parse($timeUp)->addSeconds(75);
             if(strlen($i) == 1){
-                $i = '00'.$i;
+                $i = '000'.$i;
             }
             if(strlen($i) == 2){
+                $i = '00'.$i;
+            }
+            if(strlen($i) == 3){
                 $i = '0'.$i;
             }
             $issue = $curDate.$i;
