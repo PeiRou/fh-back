@@ -70,7 +70,7 @@
     <div class="field">
         <label>支行地址</label>
         <div class="ui input icon">
-            <input type="text" name="remark"  placeholder="" value="{{ $payBank->remark }}"/>
+            <input type="text" name="pageDesc"  placeholder="" value="{{ $payBank->pageDesc }}"/>
         </div>
     </div>
 
@@ -126,7 +126,7 @@
     <div class="field">
         <label>账号提示语</label>
         <div class="ui input icon">
-            <input type="text" name="pageDesc" value="{{ $payBank->pageDesc }}"/>
+            <input type="text" name="remark" value="{{ $payBank->remark }}"/>
         </div>
     </div>
 
