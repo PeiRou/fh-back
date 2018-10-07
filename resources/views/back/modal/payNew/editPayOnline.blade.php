@@ -1,11 +1,12 @@
+<link href="/js/jquery.searchableSelect.css" rel="stylesheet" type="text/css">
 <form id="editPayOnlineForm" class="ui mini form" action="{{ url('/action/admin/new/editPayOnline') }}">
     <div class="field">
         <label>支付类型</label>
         <div class="ui input icon">
-            <select class="ui fluid dropdown" name="payType">
+            <select class="ui fluid dropdown" name="payType" id="select">
                 <option value="">请选择支付类型</option>
                 @foreach($payType as $item)
-                    <option @if($payOnline->payName == $item->payName) selected @endif value="{{ $item->payName }}">{{ $item->rechName }}</option>
+                    <option @if($payOnline->payName == $item->payName) selected @endif data-url="{{ $item->gatewayAddress }}" value="{{ $item->payName }}">{{ $item->rechName }}</option>
                 @endforeach
             </select>
         </div>
@@ -178,12 +179,19 @@
 <style>
     .select2-search__field{border: none !important;}
     .select2-container{z-index: 9999999999 !important;}
+    .searchable-select-dropdown {z-index: 111 !important;}
 </style>
-
+<script src="/js/jquery.searchableSelect.js"></script>
 <script>
     $(function () {
+        $('#select').searchableSelect();
         $('.ui.checkbox').checkbox();
         $('#noArea').select2();
+
+        $('.searchable-select-item').on('click',function () {
+            var url = $(this).data("url");
+            $('input[name="req_url"]').attr('value',url)
+        });
 
         $('#editPayOnlineForm')
             .formValidation({
