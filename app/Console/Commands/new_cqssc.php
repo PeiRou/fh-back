@@ -58,10 +58,6 @@ class new_cqssc extends Command
             $nextIssue = $getIssue->issue;
             $filtered['issue'] = substr($nextIssue,-3);
 
-            if(strtotime(date('H:i:s')) >= strtotime('00:00:00') && strtotime(date('H:i:s')) <= strtotime('01:55:00')){
-                $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addSeconds(255)->toDateTimeString();
-                $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(5)->toDateTimeString();
-            }
             if(strtotime(date('H:i:s')) >= strtotime('10:00:00') && strtotime(date('H:i:s')) <= strtotime('22:00:00')){
                 $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addSeconds(555)->toDateTimeString();
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
@@ -72,7 +68,7 @@ class new_cqssc extends Command
                 $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addSeconds(255)->toDateTimeString();
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(5)->toDateTimeString();
             }
-
+            \Log::info('cqssc '.$nextIssueEndTime);
             if($filtered['issue'] == '023'){
                 $nextIssueTime = date('Ymd').'024';
                 Redis::set('cqssc:nextIssue',(int)$nextIssueTime);
