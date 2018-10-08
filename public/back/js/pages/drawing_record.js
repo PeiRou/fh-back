@@ -188,7 +188,8 @@ function pass(id) {
                         success:function (data) {
                             if(data.status == true){
                                 Calert('提款申请状态已更新','green');
-                                $('#drawingRecordTable').DataTable().ajax.reload(null,false)
+                                $('#drawingRecordTable').DataTable().ajax.reload(null,false);
+                                getTotalDrawing()
                             } else {
                                 Calert(data.msg,'red')
                             }
