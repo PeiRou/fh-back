@@ -53,20 +53,18 @@ class new_cqssc extends Command
         $excel = new Excel();
         $res = $excel->getNowIssue($table);
         if($res){
-            $nowIssueTime = date('Y-m-d H:i:s');
-            $getIssue = DB::table('game_cqssc')->where('opentime','=',$nowIssueTime)->first();
-            $nextIssue = $getIssue->issue;
+            $nextIssue = $res->issue;
             $filtered['issue'] = substr($nextIssue,-3);
 
             if(strtotime(date('H:i:s')) >= strtotime('10:00:00') && strtotime(date('H:i:s')) <= strtotime('22:00:00')){
-                $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addSeconds(555)->toDateTimeString();
-                $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
+                $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(555)->toDateTimeString();
+                $nextIssueLotteryTime = Carbon::parse($res->opentime)->addMinutes(10)->toDateTimeString();
             } else if(strtotime(date('H:i:s')) >= strtotime('02:00:00') && strtotime(date('H:i:s')) <= strtotime('10:00:00')){
-                $nextIssueEndTime = date('Y-m-d',strtotime($getIssue->opentime))." 10:00:00";
-                $nextIssueLotteryTime = date('Y-m-d',strtotime($getIssue->opentime))." 09:59:15";
+                $nextIssueEndTime = date('Y-m-d',strtotime($res->opentime))." 10:00:00";
+                $nextIssueLotteryTime = date('Y-m-d',strtotime($res->opentime))." 09:59:15";
             }else{
-                $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addSeconds(255)->toDateTimeString();
-                $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(5)->toDateTimeString();
+                $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(255)->toDateTimeString();
+                $nextIssueLotteryTime = Carbon::parse($res->opentime)->addMinutes(5)->toDateTimeString();
             }
             \Log::info('cqssc '.$nextIssueEndTime);
             if($filtered['issue'] == '023'){
