@@ -72,7 +72,10 @@ class new_cqssc extends Command
             if(strtotime(date('H:i:s')) >= strtotime('10:00:00') && strtotime(date('H:i:s')) <= strtotime('22:00:00')){
                 $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addSeconds(555)->toDateTimeString();
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
-            } else {
+            } else if(strtotime(date('H:i:s')) >= strtotime('02:00:00') && strtotime(date('H:i:s')) <= strtotime('10:00:00')){
+                $nextIssueEndTime = date('Y-m-d',strtotime($getIssue->opentime))." 10:00:00";
+                $nextIssueLotteryTime = date('Y-m-d',strtotime($getIssue->opentime))." 09:59:15";
+            }else{
                 $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addSeconds(255)->toDateTimeString();
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(5)->toDateTimeString();
             }
