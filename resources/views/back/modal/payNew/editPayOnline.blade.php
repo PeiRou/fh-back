@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="field">
+    <div class="field" style="position: relative;z-index: 1">
         <label>不可见地区</label>
         <div class="ui input icon">
             <select id="noArea" name="lockArea[]" multiple="multiple">

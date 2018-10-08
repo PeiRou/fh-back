@@ -74,7 +74,7 @@
 
       this.scrollPart = $('<div class="searchable-scroll"></div>');
       this.hasPrivious = $('<div class="searchable-has-privious">...</div>');
-      this.hasNext = $('<div class="searchable-has-next">...</div>');
+      this.hasNext = $('<div class="searchable-has-next" style="display: none">...</div>');
 
       this.hasNext.on('mouseenter', function(){
         _this.hasNextTimer = null;
