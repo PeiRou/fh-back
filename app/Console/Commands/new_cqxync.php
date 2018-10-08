@@ -36,7 +36,7 @@ class new_cqxync extends Command
             }
         });
         if($filtered!=null){
-            \Log::info($filtered['time']);
+            \Log::info('重庆幸运农场===>'.$filtered['time']);
 //            $nowIssueTime = date('Y-m-d').' '.$filtered['time'];
 //            $getIssue = DB::table('game_cqxync')->where('opentime','=',$nowIssueTime)->first();
 //            $nextIssue = $getIssue->issue;
@@ -62,7 +62,6 @@ class new_cqxync extends Command
         $url = Config::get('website.guanServerUrl').'cqxync';
         $html = json_decode(file_get_contents($url),true);
         \Log::info($html);
-        \Log::info(Redis::get('cqxync:issue'));
         $redis_issue = Redis::get('cqxync:issue');
 //        if($redis_issue !== $html[0]['issue']){
 //            try{
