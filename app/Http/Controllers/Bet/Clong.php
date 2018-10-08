@@ -22,9 +22,9 @@
             'paoma' => array('id'=>99,'type'=>'car'),  //跑马
             'pcdd' => array('id'=>66,'type'=>'pcdd'),    //PC蛋蛋
             'bjkl8' => array('id'=>65,'type'=>'bjkl8'),    //北京快乐8
-            'xync' => array('id'=>61,'type'=>'xync'),    //重庆幸运农场
+            'cqxync' => array('id'=>61,'type'=>'xync'),    //重庆幸运农场
             'gd11x5' => array('id'=>21,'type'=>'SEX5'),    //广东11选5
-            'gdkl10' => array('id'=>60,'type'=>'xync'),    //广东快乐十分
+            'gdklsf' => array('id'=>60,'type'=>'xync'),    //广东快乐十分
         );
         //开奖第一行
         private $clong_kaijian1 = array(

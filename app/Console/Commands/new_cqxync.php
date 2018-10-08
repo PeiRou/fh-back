@@ -74,6 +74,8 @@ class new_cqxync extends Command
                 if($up == 1){
                     $key = 'cqxync:issue';
                     Redis::set($key,$html[0]['issue']);
+                    $this->clong->setKaijian('cqxync',1,$html[0]['nums']);
+                    $this->clong->setKaijian('cqxync',2,$html[0]['nums']);
                 }
             } catch (\Exception $exception){
                 \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());

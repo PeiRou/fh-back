@@ -64,6 +64,8 @@ class new_gd11x5 extends Command
                 if($up == 1){
                     $key = 'gd11x5:issue';
                     Redis::set($key,$html[0]['issue']);
+                    $this->clong->setKaijian('gd11x5',1,$html[0]['nums']);
+                    $this->clong->setKaijian('gd11x5',2,$html[0]['nums']);
                 }
             } catch (\Exception $exception){
                 \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
