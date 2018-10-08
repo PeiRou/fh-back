@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Excel;
 use App\Events\RunCqssc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
@@ -48,22 +49,14 @@ class new_cqssc extends Command
      */
     public function handle()
     {
-        $getFile    = Storage::disk('gameTime')->get('cqssc.json');
-        $data       = json_decode($getFile,true);
-        $nowTime    = date('H:i:s');
-        $filtered = collect($data)->first(function ($value, $key) use ($nowTime) {
-//            if(strtotime(date('H:i:s',strtotime($value['time']))) === strtotime($nowTime)){
-//                return $value;
-//            }
-            $timeDiff = Carbon::now()->diffInSeconds(Carbon::parse($value['time']));
-            if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3){
-                return $value;
-            }
-        });
-        if($filtered!=null){
-            $nowIssueTime = date('Y-m-d').' '.$filtered['time'];
+        $table = 'game_cqssc';
+        $excel = new Excel();
+        $res = $excel->getNowIssue($table);
+        if($res){
+            $nowIssueTime = date('Y-m-d H:i:s');
             $getIssue = DB::table('game_cqssc')->where('opentime','=',$nowIssueTime)->first();
             $nextIssue = $getIssue->issue;
+            $filtered['issue'] = substr($nextIssue,-3);
 
             if(strtotime(date('H:i:s')) >= strtotime('00:00:00') && strtotime(date('H:i:s')) <= strtotime('01:55:00')){
                 $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addSeconds(255)->toDateTimeString();
@@ -89,8 +82,19 @@ class new_cqssc extends Command
 
             Redis::set('cqssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             Redis::set('cqssc:nextIssueEndTime',strtotime($nextIssueEndTime));
-            //\Log::info('符合重庆时时彩时间：'.$filtered['time']);
         }
+        $res = $excel->getNeedtIssue($table);
+        if(!$res)
+            return false;
+        $getFile    = Storage::disk('gameTime')->get('cqssc.json');
+        $data       = json_decode($getFile,true);
+        $nowTime    = date('H:i:s');
+        $filtered = collect($data)->first(function ($value, $key) use ($nowTime) {
+            $timeDiff = Carbon::now()->diffInSeconds(Carbon::parse($value['time']));
+            if($timeDiff == 0 || $timeDiff == 1 || $timeDiff == 2 || $timeDiff == 3){
+                return $value;
+            }
+        });
         $url = Config::get('website.guanServerUrl').'cqssc';
         $html = json_decode(file_get_contents($url),true);
         $redis_issue = Redis::get('cqssc:issue');
