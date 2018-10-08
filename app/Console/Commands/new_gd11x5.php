@@ -40,7 +40,7 @@ class new_gd11x5 extends Command
                 $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:08:00';
                 $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:10:00';
             } else {
-                $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addMinute(8)->toDateTimeString();
+                $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addMinutes(8)->toDateTimeString();
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
             }
 

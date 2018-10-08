@@ -58,14 +58,9 @@ class new_cqxync extends Command
             Redis::set('cqxync:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             Redis::set('cqxync:nextIssueEndTime',strtotime($nextIssueEndTime));
         }
-        \Log::info('cqxync-nextIssue'.Redis::get('cqxync:nextIssue'));
-        \Log::info('cqxync-nextIssueLotteryTime'.Redis::get('cqxync:nextIssueLotteryTime'));
-        \Log::info('cqxync-nextIssueEndTime'.Redis::get('cqxync:nextIssueEndTime'));
         $url = Config::get('website.guanServerUrl').'cqxync';
         $html = json_decode(file_get_contents($url),true);
         $redis_issue = Redis::get('cqxync:issue');
-        \Log::info('重庆幸运农场期数==》'.$redis_issue);
-        \Log::info('重庆幸运农场期数--接口==》'.$html[0]['issue']);
         if($redis_issue !== $html[0]['issue']){
             try{
                 $up = DB::table('game_cqxync')->where('issue',$html[0]['issue'])
@@ -78,7 +73,6 @@ class new_cqxync extends Command
                     ]);
                 if($up == 1){
                     $key = 'cqxync:issue';
-                    \Log::info('重庆幸运农场已插入');
                     Redis::set($key,$html[0]['issue']);
                 }
             } catch (\Exception $exception){
