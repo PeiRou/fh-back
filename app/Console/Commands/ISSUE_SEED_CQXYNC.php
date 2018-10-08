@@ -31,7 +31,7 @@ class ISSUE_SEED_CQXYNC extends Command
             if(strlen($i) == 2){
                 $i = '0'.$i;
             }
-            $issue = date('Ymd').$i;
+            $issue = date('ymd').$i;
             $sql .= "('$issue','$timeUp'),";
         }
         for($i=1;$i<=84;$i++){
@@ -40,7 +40,7 @@ class ISSUE_SEED_CQXYNC extends Command
             if(strlen($num) == 2){
                 $num = '0'.$num;
             }
-            $issue = date('Ymd').$num;
+            $issue = date('ymd').$num;
             $sql .= "('$issue','$timeUp2'),";
         }
 
