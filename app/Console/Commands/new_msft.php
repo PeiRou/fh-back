@@ -82,7 +82,13 @@ class new_msft extends Command
             $nextIssue = $res->expect;
             $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(60)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($res->opentime)->addSeconds(75)->toDateTimeString();
-            Redis::set('msft:nextIssue',(int)$nextIssue+1);
+            $New_nextIssue = $nextIssue+1;
+            if(substr($nextIssue,-4)=='1106'){
+                $dateIssue = substr($nextIssue,strlen($nextIssue)-4);
+                $New_nextIssue = date("ymd",strtotime($dateIssue)+3600).'0001';
+            }
+
+            Redis::set('msft:nextIssue',(int)$New_nextIssue);
             Redis::set('msft:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msft:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             //---kill start
