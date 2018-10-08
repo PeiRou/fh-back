@@ -6,9 +6,9 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
-class OPEN_FILE_GXK3 extends Command
+class OPEN_FILE_GD11X5 extends Command
 {
-    protected $signature = 'OPEN_FILE_GXK3';
+    protected $signature = 'OPEN_FILE_GD11X5';
     protected $description = 'Command description';
 
     public function __construct()
@@ -18,18 +18,15 @@ class OPEN_FILE_GXK3 extends Command
 
     public function handle()
     {
-        $timeUp = date('09:27:00');
+        $timeUp = date('09:00:00');
         $str = "";
-        for($i=1;$i<=78;$i++){
+        for($i=1;$i<=84;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(10);
             if(strlen($i) == 1){
-                $i = '00'.$i;
-            }
-            if(strlen($i) == 2){
                 $i = '0'.$i;
             }
             $str .= '"'.(string)$i.'":{"time":"'.$timeUp->toTimeString().'","issue":"'.(string)$i.'"},';
         }
-        Storage::disk('gameTime')->put('gxk3.json',"{".rtrim($str,',')."}");
+        Storage::disk('gameTime')->put('gd11x5.json',"{".rtrim($str,',')."}");
     }
 }
