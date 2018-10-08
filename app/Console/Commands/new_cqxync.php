@@ -36,48 +36,50 @@ class new_cqxync extends Command
             }
         });
         if($filtered!=null){
-            $nowIssueTime = date('Y-m-d').' '.$filtered['time'];
-            $getIssue = DB::table('game_cqxync')->where('opentime','=',$nowIssueTime)->first();
-            $nextIssue = $getIssue->issue;
-
-            if(strtotime($filtered['time']) == strtotime('23:52:20')){
-                $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
-                $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 10:00:20';
-                $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 10:02:20';
-            } else {
-                $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addMinutes(8)->toDateTimeString();
-                $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
-            }
-
-            if($filtered['issue'] == '013'){
-                $nextIssueTime = date('ymd').'014';
-                Redis::set('cqxync:nextIssue',(int)$nextIssueTime);
-            } else {
-                Redis::set('cqxync:nextIssue',(int)$nextIssue+1);
-            }
-            Redis::set('cqxync:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-            Redis::set('cqxync:nextIssueEndTime',strtotime($nextIssueEndTime));
+            \Log::info($filtered['time']);
+//            $nowIssueTime = date('Y-m-d').' '.$filtered['time'];
+//            $getIssue = DB::table('game_cqxync')->where('opentime','=',$nowIssueTime)->first();
+//            $nextIssue = $getIssue->issue;
+//
+//            if(strtotime($filtered['time']) == strtotime('23:52:20')){
+//                $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
+//                $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 10:00:20';
+//                $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 10:02:20';
+//            } else {
+//                $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addMinutes(8)->toDateTimeString();
+//                $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
+//            }
+//
+//            if($filtered['issue'] == '013'){
+//                $nextIssueTime = date('ymd').'014';
+//                Redis::set('cqxync:nextIssue',(int)$nextIssueTime);
+//            } else {
+//                Redis::set('cqxync:nextIssue',(int)$nextIssue+1);
+//            }
+//            Redis::set('cqxync:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+//            Redis::set('cqxync:nextIssueEndTime',strtotime($nextIssueEndTime));
         }
         $url = Config::get('website.guanServerUrl').'cqxync';
         $html = json_decode(file_get_contents($url),true);
+        \Log::info($html);
         $redis_issue = Redis::get('cqxync:issue');
-        if($redis_issue !== $html[0]['issue']){
-            try{
-                $up = DB::table('game_cqxync')->where('issue',$html[0]['issue'])
-                    ->update([
-                        'is_open' => 1,
-                        'year'=> date('Y'),
-                        'month'=> date('m'),
-                        'day'=>  date('d'),
-                        'opennum' => $html[0]['nums']
-                    ]);
-                if($up == 1){
-                    $key = 'cqxync:issue';
-                    Redis::set($key,$html[0]['issue']);
-                }
-            } catch (\Exception $exception){
-                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-            }
-        }
+//        if($redis_issue !== $html[0]['issue']){
+//            try{
+//                $up = DB::table('game_cqxync')->where('issue',$html[0]['issue'])
+//                    ->update([
+//                        'is_open' => 1,
+//                        'year'=> date('Y'),
+//                        'month'=> date('m'),
+//                        'day'=>  date('d'),
+//                        'opennum' => $html[0]['nums']
+//                    ]);
+//                if($up == 1){
+//                    $key = 'cqxync:issue';
+//                    Redis::set($key,$html[0]['issue']);
+//                }
+//            } catch (\Exception $exception){
+//                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+//            }
+//        }
     }
 }
