@@ -64,6 +64,8 @@ class new_cqxync extends Command
         $url = Config::get('website.guanServerUrl').'cqxync';
         $html = json_decode(file_get_contents($url),true);
         $redis_issue = Redis::get('cqxync:issue');
+        \Log::info('重庆幸运农场期数==》'.$redis_issue);
+        \Log::info('重庆幸运农场期数--接口==》'.$html[0]['issue']);
         if($redis_issue !== $html[0]['issue']){
             try{
                 $up = DB::table('game_cqxync')->where('issue',$html[0]['issue'])
