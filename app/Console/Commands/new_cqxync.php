@@ -62,6 +62,7 @@ class new_cqxync extends Command
         $url = Config::get('website.guanServerUrl').'cqxync';
         $html = json_decode(file_get_contents($url),true);
         \Log::info($html);
+        \Log::info(Redis::get('cqxync:issue'));
         $redis_issue = Redis::get('cqxync:issue');
 //        if($redis_issue !== $html[0]['issue']){
 //            try{
