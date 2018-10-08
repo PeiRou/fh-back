@@ -128,7 +128,7 @@ class SrcMemberController extends Controller
             $agent->gagent_id = $gagent;
             $agent->account = $account;
             $agent->name = $name;
-            $agent->password = Hash::make(md5($password));
+            $agent->password = Hash::make($password);
             $agent->editodds = $editOdds;
             $insert = $agent->save();
         }catch (\exception $e){
