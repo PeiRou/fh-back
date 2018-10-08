@@ -84,7 +84,12 @@ class new_msssc extends Command
             $nextIssue = $res->expect;
             $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(60)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($res->opentime)->addSeconds(75)->toDateTimeString();
-            Redis::set('msssc:nextIssue',(int)$nextIssue+1);
+            $New_nextIssue = $nextIssue+1;
+            if(substr($nextIssue,-4)=='1106'){
+                $dateIssue = substr($nextIssue,strlen($nextIssue)-4);
+                $New_nextIssue = date("ymd",strtotime($dateIssue)+3600).'0001';
+            }
+            Redis::set('msssc:nextIssue',(int)$New_nextIssue);
             Redis::set('msssc:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             //---kill start
