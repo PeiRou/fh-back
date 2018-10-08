@@ -25,6 +25,9 @@ class ISSUE_SEED_GDKLSF extends Command
         for($i=1;$i<=84;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(10);
             if(strlen($i) == 1){
+                $i = '00'.$i;
+            }
+            if(strlen($i) == 2){
                 $i = '0'.$i;
             }
             $issue = $curDate.$i;
