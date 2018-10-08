@@ -17,7 +17,6 @@ class BetDataController extends Controller
 {
     public function betToday(Request $request)
     {
-        $searchType = $request->get('searchType');
         $game = $request->get('game');
         $playCate = $request->get('playCate');
         $issue = $request->get('issue');
@@ -26,26 +25,20 @@ class BetDataController extends Controller
         $order = $request->get('order');
         $minMoney = $request->get('minMoney');
         $maxMoney = $request->get('maxMoney');
-        $timeStart = strtotime($request->get('timeStart')." 00:00:00");
-        $timeEnd = strtotime($request->get('timeEnd')." 23:59:59");
+        $timeStart = $request->get('timeStart')." 00:00:00";
+        $timeEnd = $request->get('timeEnd')." 23:59:59";
         $markSix = $request->get('markSix');
         $start = $request->get('start');
         $length = $request->get('length');
-
         $betSQl = DB::table('bet')
             ->leftJoin('game','bet.game_id','=','game.game_id')
             ->leftJoin('users','bet.user_id','=','users.id')
             ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at','bet.platform as bet_platform','bet.bet_info as bet_bet_info')
-            ->where(function ($query) use ($searchType){
-                if(isset($searchType) && $searchType){
-                    if($searchType == 'yestoday'){
-                        $yesterday = Carbon::now()->addDays(-1)->toDateString();
-                        $query->whereDate('bet.created_at',$yesterday);
-                    }
-                } else {
-                    $now = date('Y-m-d');
-                    $query->whereDate('bet.created_at',$now);
-                }
+            ->where(function ($query) use ($timeStart){
+                $query->where('bet.created_at','>=',$timeStart);
+            })
+            ->where(function ($query) use ($timeEnd){
+                $query->where('bet.created_at','<=',$timeEnd);
             })
             ->where(function ($query) use ($markSix){
                 if(isset($markSix) && $markSix){
@@ -94,16 +87,11 @@ class BetDataController extends Controller
         $bet = $betSQl->orderBy('bet.created_at','desc')->skip($start)->take($length)->get();
         $betMoney = DB::table('bet')
             ->leftJoin('users','bet.user_id','=','users.id')
-            ->where(function ($query) use ($searchType){
-                if(isset($searchType) && $searchType){
-                    if($searchType == 'yestoday'){
-                        $yesterday = Carbon::now()->addDays(-1)->toDateString();
-                        $query->whereDate('bet.created_at',$yesterday);
-                    }
-                } else {
-                    $now = date('Y-m-d');
-                    $query->whereDate('bet.created_at',$now);
-                }
+            ->where(function ($query) use ($timeStart){
+                $query->where('bet.created_at','>=',$timeStart);
+            })
+            ->where(function ($query) use ($timeEnd){
+                $query->where('bet.created_at','<=',$timeEnd);
             })
             ->where(function ($query) use ($markSix){
                 if(isset($markSix) && $markSix){

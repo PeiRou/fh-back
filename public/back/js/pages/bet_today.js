@@ -66,7 +66,6 @@ $(function () {
         ajax: {
             url:'/back/datatables/betToday',
             data:function (d) {
-                d.searchType = $('#searchType').val();
                 d.game = $('#game').val();
                 d.playCate = $('#playCate').val();
                 d.issue = $('#issue').val();
@@ -159,6 +158,32 @@ $(function () {
             }
         }
     });
+});
+
+
+$('#searchType').on('change',function () {
+    var time = $(this).val();
+    if(time = 'today'){
+        $.ajax({
+            url:'/recharge/selectData/dateChange/today',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                $('#timeStart').val(data.start);
+                $('#timeEnd').val(data.end);
+            }
+        })
+    }else if(time = 'yesterday'){
+        $.ajax({
+            url:'/recharge/selectData/dateChange/yesterday',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                $('#timeStart').val(data.start);
+                $('#timeEnd').val(data.end);
+            }
+        })
+    }
 });
 
 function getTotalBet() {

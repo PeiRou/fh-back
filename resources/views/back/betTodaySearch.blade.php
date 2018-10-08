@@ -23,8 +23,8 @@
                     <input type="hidden" id="markSix" name="markSix" value="1">
                     <div class="one wide field">
                         <select class="ui dropdown" id="searchType" style='height:32px !important'>
-                            <option value="">今日注单</option>
-                            <option value="yestoday">昨日注单</option>
+                            <option value="today">今日注单</option>
+                            <option value="yesterday">昨日注单</option>
                         </select>
                     </div>
                     <div class="one wide field">
@@ -67,7 +67,7 @@
                     <div class="one wide field">
                         <div class="ui calendar" id="rangestart">
                             <div class="ui input left">
-                                <input type="text" id="timeStart" placeholder="起始日期">
+                                <input type="text" id="timeStart" value="{{ date('Y-m-d') }}" placeholder="起始日期">
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                     <div class="one wide field">
                         <div class="ui calendar" id="rangeend">
                             <div class="ui input left">
-                                <input type="text" id="timeEnd" placeholder="结束日期">
+                                <input type="text" id="timeEnd" value="{{ date('Y-m-d') }}" placeholder="结束日期">
                             </div>
                         </div>
                     </div>
