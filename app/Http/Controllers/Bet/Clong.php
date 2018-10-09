@@ -21,20 +21,29 @@
             'cqssc' => array('id'=>1,'type'=>'ssc'),    //重庆时时彩
             'paoma' => array('id'=>99,'type'=>'car'),  //跑马
             'pcdd' => array('id'=>66,'type'=>'pcdd'),    //PC蛋蛋
-            'bjkl8' => array('id'=>65,'type'=>'bjkl8')    //北京快乐8
+            'bjkl8' => array('id'=>65,'type'=>'bjkl8'),    //北京快乐8
+            'cqxync' => array('id'=>61,'type'=>'xync'),    //重庆幸运农场
+            'gd11x5' => array('id'=>21,'type'=>'SEX5'),    //广东11选5
+            'gdklsf' => array('id'=>60,'type'=>'xync'),    //广东快乐十分
         );
         //开奖第一行
         private $clong_kaijian1 = array(
             'car'=> array(
-                'methodid' => array('1','2','3','4','5','6','7','8','9','10'),					//玩法的id
                 'code' => array('GJ','YJ','TSM','TSIM','TWM','DLM','DQM','DBM','DJM','DSHIM'),	//位数的code
                 'chname' => array('冠军','亚军','第三名','第四名','第五名','第六名','第七名','第八名','第九名','第十名'),	//类型的中文显示
                 'value' => array('1','2','3','4','5','6','7','8','9','10')),					//开奖的数字范围
             'ssc'=> array(
-                'methodid' => array('11','12','13','14','15'),					                //玩法的id
                 'code' => array('QIU1','QIU2','QIU3','QIU4','QIU5'),	                        //位数的code
                 'chname' => array('第一球','第二球','第三球','第四球','第五球'),                   	//类型的中文显示
-                'value' => array('0','1','2','3','4','5','6','7','8','9'))						//开奖的数字范围
+                'value' => array('0','1','2','3','4','5','6','7','8','9')),						//开奖的数字范围
+            'xync'=> array(
+                'code' => array('QIU1','QIU2','QIU3','QIU4','QIU5','QIU6','QIU7','QIU8'),	                                        //位数的code
+                'chname' => array('第一球','第二球','第三球','第四球','第五球','第六球','第七球','第八球'),                   	            //类型的中文显示
+                'value' => array('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20')),		//开奖的数字范围
+            'SEX5'=> array(
+                'code' => array('QIU1','QIU2','QIU3','QIU4','QIU5'),	                        //位数的code
+                'chname' => array('第一球','第二球','第三球','第四球','第五球'),                   	//类型的中文显示
+                'value' => array('0','1','2','3','4','5','6','7','8','9')),						//开奖的数字范围
         );
         //开奖第二行
         private $clong_kaijian2 = array(
@@ -48,13 +57,27 @@
                 'code' => array('QIU1','QIU2','QIU3','QIU4','QIU5',                     //定位数字长龙
                     'QIU1DX','QIU2DX','QIU3DX','QIU4DX','QIU5DX',                       //定位大小
                     'QIU1DS','QIU2DS','QIU3DS','QIU4DS','QIU5DS',                       //定位单双
-                    'ZH','ZHDX','ZHDS','ZHLHH')),                                        //总和
+                    'ZHDX','ZHDS','ZHLHH')),                                        //总和
             'pcdd'=> array(
                 'code' => array(
                     'PCDDZHDX','PCDDZHDS','PCDDZHJDX','PCDDBZ','PCDDZHPS')),                             //PC蛋蛋总和混合波色
             'bjkl8'=> array(
                 'code' => array(
-                    'bjkl8ZH','bjkl8ZHDX','bjkl8ZHDS','bjkl8ZHDXDS','bjkl8QHH','bjkl8DSH','bjkl8WH'))                             //PC蛋蛋总和混合波色
+                    'bjkl8ZH','bjkl8ZHDX','bjkl8ZHDS','bjkl8ZHDXDS','bjkl8QHH','bjkl8DSH','bjkl8WH')),      //北京快乐八总和长龙
+            'xync'=> array(
+                'code' => array(
+                    'QIU1','QIU2','QIU3','QIU4','QIU5','QIU6','QIU7','QIU8',                                                        //定位数字长龙
+                    'NCQIU1DX','NCQIU2DX','NCQIU3DX','NCQIU4DX','NCQIU5DX','NCQIU6DX','NCQIU7DX','NCQIU8DX',                        //大小
+                    'NCQIU1DS','NCQIU2DS','NCQIU3DS','NCQIU4DS','NCQIU5DS','NCQIU6DS','NCQIU7DS','NCQIU8DS',                        //单双
+                    'NCQIU18LH','NCQIU27LH','NCQIU36LH','NCQIU45LH',                                                                //龙虎
+                    'NCQIU1WSDX','NCQIU2WSDX','NCQIU3WSDX','NCQIU4WSDX','NCQIU5WSDX','NCQIU6WSDX','NCQIU7WSDX','NCQIU8WSDX',        //尾数大小
+                    'NCQIU1WSDS','NCQIU2WSDS','NCQIU3WSDS','NCQIU4WSDS','NCQIU5WSDS','NCQIU6WSDS','NCQIU7WSDS','NCQIU8WSDS',        //合数单双
+                    'NCZHDX','NCZHDS','NCZHWSDX')),                                                                                 //总和
+            'SEX5'=> array(
+                'code' => array('QIU1','QIU2','QIU3','QIU4','QIU5',                     //定位数字长龙
+                    'QIU1DX','QIU2DX','QIU3DX','QIU4DX','QIU5DX',                       //定位大小
+                    'QIU1DS','QIU2DS','QIU3DS','QIU4DS','QIU5DS',                       //定位单双
+                    'ZHDX','ZHDS','SEX5ZHWSDX','ZHLHH')),                                            //总和
         );
 
         private $clong_kaijian2_type = array(
@@ -107,6 +130,9 @@
             'QIU3'=>array('type'=>'DW','seq'=>'2','chname'=>'第三球'),		    //第三球
             'QIU4'=>array('type'=>'DW','seq'=>'3','chname'=>'第四球'),		    //第四球
             'QIU5'=>array('type'=>'DW','seq'=>'4','chname'=>'第五球'),		    //第五球
+            'QIU6'=>array('type'=>'DW','seq'=>'5','chname'=>'第六球'),		    //第六球
+            'QIU7'=>array('type'=>'DW','seq'=>'6','chname'=>'第七球'),		    //第七球
+            'QIU8'=>array('type'=>'DW','seq'=>'7','chname'=>'第八球'),		    //第八球
             //===== 时时彩的定位大小
             'QIU1DX'=>array('type'=>'SSCDWDX','seq'=>'0','chname'=>'第一球'),		//第一球-大小
             'QIU2DX'=>array('type'=>'SSCDWDX','seq'=>'1','chname'=>'第二球'),		//第二球-大小
@@ -114,11 +140,11 @@
             'QIU4DX'=>array('type'=>'SSCDWDX','seq'=>'3','chname'=>'第四球'),	    //第四球-大小
             'QIU5DX'=>array('type'=>'SSCDWDX','seq'=>'4','chname'=>'第五球'),	    //第五球-大小
             //===== 时时彩的定位单双
-            'QIU1DS'=>array('type'=>'DWDS','seq'=>'0','chname'=>'第一球'),		//第一球-大小
-            'QIU2DS'=>array('type'=>'DWDS','seq'=>'1','chname'=>'第二球'),		//第二球-大小
-            'QIU3DS'=>array('type'=>'DWDS','seq'=>'2','chname'=>'第三球'),	    //第三球-大小
-            'QIU4DS'=>array('type'=>'DWDS','seq'=>'3','chname'=>'第四球'),	    //第四球-大小
-            'QIU5DS'=>array('type'=>'DWDS','seq'=>'4','chname'=>'第五球'),	    //第五球-大小
+            'QIU1DS'=>array('type'=>'DWDS','seq'=>'0','chname'=>'第一球'),		//第一球-单双
+            'QIU2DS'=>array('type'=>'DWDS','seq'=>'1','chname'=>'第二球'),		//第二球-单双
+            'QIU3DS'=>array('type'=>'DWDS','seq'=>'2','chname'=>'第三球'),	    //第三球-单双
+            'QIU4DS'=>array('type'=>'DWDS','seq'=>'3','chname'=>'第四球'),	    //第四球-单双
+            'QIU5DS'=>array('type'=>'DWDS','seq'=>'4','chname'=>'第五球'),	    //第五球-单双
             //===== 时时彩的总和
             'ZH'=>array('type'=>'ZH','seq'=>'','nseq'=>'0,1,2,3,4','ishe'=>'1','chname'=>'总和'),		    //总和
             'ZHDX'=>array('type'=>'ZHDX','seq'=>'','nseq'=>'0,1,2,3,4','ishe'=>'1','chname'=>'总和'),		//总和-大小
@@ -138,6 +164,53 @@
             'bjkl8QHH'=>array('type'=>'bjkl8QHH','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'0','chname'=>'前后和'),		    //前后和
             'bjkl8DSH'=>array('type'=>'bjkl8DSH','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'0','chname'=>'单双和'),		    //单双和
             'bjkl8WH'=>array('type'=>'bjkl8WH','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19','ishe'=>'1','chname'=>'总和'),		        //总和-五行
+            //===== 重庆幸运农场 定位大小
+            'NCQIU1DX'=>array('type'=>'NCDWDX','seq'=>'0','chname'=>'第一球'),		//第一球-大小
+            'NCQIU2DX'=>array('type'=>'NCDWDX','seq'=>'1','chname'=>'第二球'),		//第二球-大小
+            'NCQIU3DX'=>array('type'=>'NCDWDX','seq'=>'2','chname'=>'第三球'),	    //第三球-大小
+            'NCQIU4DX'=>array('type'=>'NCDWDX','seq'=>'3','chname'=>'第四球'),	    //第四球-大小
+            'NCQIU5DX'=>array('type'=>'NCDWDX','seq'=>'4','chname'=>'第五球'),	    //第五球-大小
+            'NCQIU6DX'=>array('type'=>'NCDWDX','seq'=>'5','chname'=>'第六球'),	    //第六球-大小
+            'NCQIU7DX'=>array('type'=>'NCDWDX','seq'=>'6','chname'=>'第七球'),	    //第七球-大小
+            'NCQIU8DX'=>array('type'=>'NCDWDX','seq'=>'7','chname'=>'第八球'),	    //第八球-大小
+            //===== 重庆幸运农场 定位单双
+            'NCQIU1DS'=>array('type'=>'DWDS','seq'=>'0','chname'=>'第一球'),		//第一球-单双
+            'NCQIU2DS'=>array('type'=>'DWDS','seq'=>'1','chname'=>'第二球'),		//第二球-单双
+            'NCQIU3DS'=>array('type'=>'DWDS','seq'=>'2','chname'=>'第三球'),	    //第三球-单双
+            'NCQIU4DS'=>array('type'=>'DWDS','seq'=>'3','chname'=>'第四球'),	    //第四球-单双
+            'NCQIU5DS'=>array('type'=>'DWDS','seq'=>'4','chname'=>'第五球'),	    //第五球-单双
+            'NCQIU6DS'=>array('type'=>'DWDS','seq'=>'5','chname'=>'第六球'),	    //第六球-单双
+            'NCQIU7DS'=>array('type'=>'DWDS','seq'=>'6','chname'=>'第七球'),	    //第七球-单双
+            'NCQIU8DS'=>array('type'=>'DWDS','seq'=>'7','chname'=>'第八球'),	    //第八球-单双
+            //===== 重庆幸运农场 定位龙虎
+            'NCQIU18LH'=>array('type'=>'LHH','seq'=>'','nseq'=>'0,7','ishe'=>'0','chname'=>'第一球'),		//第一球-龙虎
+            'NCQIU27LH'=>array('type'=>'LHH','seq'=>'','nseq'=>'1,6','ishe'=>'0','chname'=>'第二球'),		//第二球-龙虎
+            'NCQIU36LH'=>array('type'=>'LHH','seq'=>'','nseq'=>'2,5','ishe'=>'0','chname'=>'第三球'),	    //第三球-龙虎
+            'NCQIU45LH'=>array('type'=>'LHH','seq'=>'','nseq'=>'3,4','ishe'=>'0','chname'=>'第四球'),	    //第四球-龙虎
+            //===== 重庆幸运农场 定位尾数大小
+            'NCQIU1WSDX'=>array('type'=>'WSDX','seq'=>'0','chname'=>'第一球尾数'),		//第一球-单双
+            'NCQIU2WSDX'=>array('type'=>'WSDX','seq'=>'1','chname'=>'第二球尾数'),		//第二球-单双
+            'NCQIU3WSDX'=>array('type'=>'WSDX','seq'=>'2','chname'=>'第三球尾数'),	    //第三球-单双
+            'NCQIU4WSDX'=>array('type'=>'WSDX','seq'=>'3','chname'=>'第四球尾数'),	    //第四球-单双
+            'NCQIU5WSDX'=>array('type'=>'WSDX','seq'=>'4','chname'=>'第五球尾数'),	    //第五球-单双
+            'NCQIU6WSDX'=>array('type'=>'WSDX','seq'=>'5','chname'=>'第六球尾数'),	    //第六球-单双
+            'NCQIU7WSDX'=>array('type'=>'WSDX','seq'=>'6','chname'=>'第七球尾数'),	    //第七球-单双
+            'NCQIU8WSDX'=>array('type'=>'WSDX','seq'=>'7','chname'=>'第八球尾数'),	    //第八球-单双
+            //===== 重庆幸运农场 定位合数大小
+            'NCQIU1HSDS'=>array('type'=>'HSDS','seq'=>'0','chname'=>'第一球'),		//第一球-单双
+            'NCQIU2HSDS'=>array('type'=>'HSDS','seq'=>'1','chname'=>'第二球'),		//第二球-单双
+            'NCQIU3HSDS'=>array('type'=>'HSDS','seq'=>'2','chname'=>'第三球'),	    //第三球-单双
+            'NCQIU4HSDS'=>array('type'=>'HSDS','seq'=>'3','chname'=>'第四球'),	    //第四球-单双
+            'NCQIU5HSDS'=>array('type'=>'HSDS','seq'=>'4','chname'=>'第五球'),	    //第五球-单双
+            'NCQIU6HSDS'=>array('type'=>'HSDS','seq'=>'5','chname'=>'第六球'),	    //第六球-单双
+            'NCQIU7HSDS'=>array('type'=>'HSDS','seq'=>'6','chname'=>'第七球'),	    //第七球-单双
+            'NCQIU8HSDS'=>array('type'=>'HSDS','seq'=>'7','chname'=>'第八球'),	    //第八球-单双
+            //===== 重庆幸运农场 总和
+            'NCZHDX'=>array('type'=>'NCZHDX','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7','ishe'=>'1','chname'=>'总和'),		            //总和-大小
+            'NCZHDS'=>array('type'=>'ZHDS','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7','ishe'=>'1','chname'=>'总和'),		            //总和-单双
+            'NCZHWSDX'=>array('type'=>'WSDX','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7','ishe'=>'1','chname'=>'总和尾数'),		            //总和-尾数大小
+            //===== 11选5 总和尾数大小
+            'SEX5ZHWSDX'=>array('type'=>'WSDX','seq'=>'','nseq'=>'0,1,2,3,4','ishe'=>'1','chname'=>'总和尾数'),		            //总和-尾数大小
         );
         /**
          * 长龙榜特殊处理
@@ -158,6 +231,7 @@
                 switch($lotteryType){
                     case 'car':		//赛车
                     case 'ssc':		//时时彩
+                    case 'xync':    //重庆幸运农场
                         foreach($numberArray as $key => $val){
                             $code = $clong_kaijian1['code'][$key];
                             $chname = $clong_kaijian1['chname'][$key];
@@ -207,9 +281,8 @@
                         case 'SSCDWDX':                 //---指定单一位-时时彩类型的大小
                             $num_val = $num_val >= 5?"大":"小";
                             break;
-                        case 'DWDS':                    //---指定单一位-单双
-                        case 'GYHDS':                   //---指定多位的和值-前二-冠亚军和值单双
-                            $num_val = $num_val%2==1 ?"单":"双";
+                        case 'NCDWDX':                   //---指定单一位-重庆幸运农场类型的大小
+                            $num_val = $num_val >= 11?"大":"小";
                             break;
                         case 'GYHDX':                   //---指定多位的和值-前二-冠亚军和值大小
                             $num_val = $num_val >= 12?"大":"小";
@@ -217,8 +290,20 @@
                         case 'ZHDX':                    //---指定多位的和值-总和大小
                             $num_val = $num_val >= 23?"大":"小";
                             break;
+                        case 'DWDS':                    //---指定单一位-单双
+                        case 'GYHDS':                   //---指定多位的和值-前二-冠亚军和值单双
                         case 'ZHDS':                    //---指定多位的和值-总和单双
                             $num_val = $num_val%2==1 ?"单":"双";
+                            break;
+                        case 'WSDX':                    //---指定单一位-尾数大小
+                            $num_val = $num_val%10>=5 ?"大":"小";
+                            break;
+                        case 'HSDS':                    //---指定单一位-合数单双
+                            $num_val = (string)$num_val;
+                            if(strlen($num_val)==1)
+                                $num_val = '0'.$num_val;
+                            $splNum = str_split($num_val);
+                            $num_val = ($splNum[0] + $splNum[1])%10 == 1 ?"单":"双";
                             break;
                         case 'LHH':                     //---指定多位-龙虎和
                             if( $num_array[0]>$num_array[1]){
