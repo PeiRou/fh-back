@@ -130,9 +130,12 @@ class SrcPayNewController extends Controller{
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payeeName = $aParam['payeeName'];
         $payOnline->apiId = $aParam['apiId'];
-        $payOnline->apiKey = $aParam['apiKey'];
-        $payOnline->apiPublicKey = $aParam['apiPublicKey'];
-        $payOnline->apiPrivateKey = $aParam['apiPrivateKey'];
+        if(!strpos($aParam['apiKey'],'*'))
+            $payOnline->apiKey = $aParam['apiKey'];
+        if(!strpos($aParam['apiPublicKey'],'*'))
+            $payOnline->apiPublicKey = $aParam['apiPublicKey'];
+        if(!strpos($aParam['apiPrivateKey'],'*'))
+            $payOnline->apiPrivateKey = $aParam['apiPrivateKey'];
         $payOnline->domain = $aParam['domain'];
         $payOnline->para1 = $aParam['para1'];
         $payOnline->req_url = $aParam['req_url'];

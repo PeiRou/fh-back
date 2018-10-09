@@ -316,7 +316,14 @@ class DrawingController extends Controller
                 'status' => false,
                 'msg' => '该订单已操作或不存在'
             ]);
-        $result = Drawing::where('id',$aParam['id'])->where('status',0)->where('locked',0)->update(['status'=>1,'locked'=>1,'draw_type'=>0]);
+        $result = Drawing::where('id',$aParam['id'])->where('status',0)->where('locked',0)->update([
+            'status' => 1,
+            'locked' => 1,
+            'draw_type' => 0,'operation_id' => Session::get('account_id'),
+            'operation_account' => Session::get('account_name'),
+            'process_date' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+            ]);
         if(!$result)    return response()->json([
                 'status' => false,
                 'msg' => '该订单已操作'
