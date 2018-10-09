@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Banks;
 use App\Drawing;
 use App\Events\BackPusherEvent;
+use App\Helpers\PaymentPlatform;
+use App\PayOnlineNew;
+use App\SystemSetting;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -179,6 +183,51 @@ class DrawingController extends Controller
             ->whereBetween('drawing.created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('drawing.amount');
         return response()->json([
             'total' => number_format($drawingTotal,2)
+        ]);
+    }
+
+    public function dispensingDrawing(Request $request){
+        $aParam = $request->all();
+        $iDrawing = Drawing::where('id',$aParam['id'])->where('status',0)->where('locked',0)->first();
+        if(empty($iDrawing))    return response()->json([
+                'status' => false,
+                'msg' => '该订单已操作或不存在'
+            ]);
+        $result = Drawing::where('id',$aParam['id'])->where('status',0)->where('locked',0)->update(['status'=>1,'locked'=>1,'draw_type'=>0]);
+        if($result)    return response()->json([
+                'status' => false,
+                'msg' => '该订单已操作'
+            ]);
+        $iPayOnlineNew = PayOnlineNew::where('id',$aParam['payId'])->first();
+        $iBank = Banks::where('bank_id',$iDrawing->bank_id)->first();
+        json_decode($this->getArraySign($iDrawing,$iPayOnlineNew,$iBank),true);
+        return response()->json([
+            'status' => true
+        ]);
+    }
+
+    public function getArraySign($iDrawing,$iPayOnlineNew,$iBank = []){
+        $aArray = [
+            'pay_uname' => $iPayOnlineNew->payName,
+            'merchant_code' => $iPayOnlineNew->apiId,
+            'merchant_secret' => $iPayOnlineNew->apiKey,
+            'public_key' => $iPayOnlineNew->apiPublicKey,
+            'private_key' => $iPayOnlineNew->apiPrivateKey,
+            'order_no' => $iDrawing->order_id,
+            'money' => $iDrawing->amount,
+            'callback_url' => $iPayOnlineNew->res_url,
+            'bank' => $iBank->eng_name,
+            'gateway_address' => $iPayOnlineNew->req_url,
+            'platform_id' => SystemSetting::where('id',1)->value('payment_platform_id'),
+            'third_url' => $iPayOnlineNew->domain,
+            'timestamp' => time(),
+            'member_name' => $iDrawing->fullName,
+            'member_card' => $iDrawing->bank_num,
+        ];
+        $PaymentPlatform = new PaymentPlatform();
+        $aArray['sign'] = $PaymentPlatform->getSign($aArray,SystemSetting::where('id',1)->value('payment_platform_key'));
+        return $PaymentPlatform->postCurl(SystemSetting::where('id',1)->value('payment_platform_dispensing'),[
+            'ciphertext' => base64_encode(json_encode($aArray)),
         ]);
     }
 }

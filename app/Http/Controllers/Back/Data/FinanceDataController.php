@@ -7,6 +7,7 @@ use App\Bets;
 use App\Capital;
 use App\Drawing;
 use App\Levels;
+use App\PayOnlineNew;
 use App\Recharges;
 use App\User;
 use App\UserRecon;
@@ -205,8 +206,8 @@ class FinanceDataController extends Controller
 
         $drawingSQL = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
-            ->leftJoin('level','drawing.levels','=','level.value')
-            ->select('drawing.created_at as dr_created_at','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.fullName as draw_fullName','drawing.bank_name as draw_bank_name','drawing.bank_num as draw_bank_num','drawing.bank_addr as draw_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id','users.username as user_username','drawing.balance as dr_balance','drawing.order_id as dr_order_id','drawing.operation_account as dr_operation_account','level.name as level_name','users.DrawTimes as user_DrawTimes','drawing.total_bet as dr_total_bet')
+            ->leftJoin('level','drawing.levels', '=', 'level.value')
+            ->select('drawing.created_at as dr_created_at','drawing.created_at as dr_created_at','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.fullName as draw_fullName','drawing.levels as levels','drawing.bank_name as draw_bank_name','drawing.bank_num as draw_bank_num','drawing.bank_addr as draw_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id','users.username as user_username','drawing.balance as dr_balance','drawing.order_id as dr_order_id','drawing.operation_account as dr_operation_account','level.name as level_name','users.DrawTimes as user_DrawTimes','drawing.total_bet as dr_total_bet')
             ->where(function ($q) use ($killTestUser){
                 if(isset($killTestUser) && $killTestUser){
                     $q->where('users.agent','!=',2);
@@ -257,6 +258,7 @@ class FinanceDataController extends Controller
             ->orderBy('drawing.created_at','desc');
         $drawingCount = $drawingSQL->count();
         $drawing = $drawingSQL->skip($start)->take($length)->get();
+        $aPayOnlineNew = PayOnlineNew::select('levels','rechName','id')->where('payCode','DF')->get()->toArray();
         return DataTables::of($drawing)
             ->editColumn('created_at',function ($drawing){
                 return date('m/d H:i',strtotime($drawing->dr_created_at));
@@ -343,11 +345,15 @@ class FinanceDataController extends Controller
                     return '手机端';
                 }
             })
-            ->editColumn('control',function ($drawing){
+            ->editColumn('control',function ($drawing) use ($aPayOnlineNew){
                 if($drawing->dr_status == 2 || $drawing->dr_status == 3){
                     return "<span class='light-gary-text'>通过 | 驳回</span>";
                 } else {
-                    return '<span class="hover-black" onclick="pass(\''.$drawing->dr_id.'\')">通过</span> | <span class="hover-black" onclick="error(\''.$drawing->dr_id.'\')">驳回</span>';
+                    $iHtml = '';
+                    foreach ($aPayOnlineNew as $iPayOnlineNew)
+                        if(in_array($drawing->levels,explode(',',$iPayOnlineNew['levels'])))
+                            $iHtml .= ' <span class="hover-black" onclick="dispensing(\''.$drawing->dr_id.'\',\''.$iPayOnlineNew['id'].'\',\''.$iPayOnlineNew['rechName'].'\')">'.$iPayOnlineNew['rechName'].'</span> |';
+                    return '<span class="hover-black" onclick="pass(\''.$drawing->dr_id.'\')">通过</span> | <span class="hover-black" onclick="error(\''.$drawing->dr_id.'\')">驳回</span><br/>'.rtrim($iHtml,'|');
                 }
             })
             ->rawColumns(['rechLevel','amount','username','bank_info','status','control','ip_info','total_bet'])

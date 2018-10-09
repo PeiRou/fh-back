@@ -467,6 +467,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="payment_platform_inquire" data-c="支付平台查询订单" class="edit-link">修改</td>
             </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">支付平台代付接口</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->payment_platform_dispensing }}" data-id-input="payment_platform_dispensing"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="payment_platform_dispensing" data-c="支付平台代付接口" class="edit-link">修改</td>
+            </tr>
             </tbody>
         </table>
     </div>
