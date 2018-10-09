@@ -331,7 +331,7 @@ class DrawingController extends Controller
             ]);
         $iPayOnlineNew = PayOnlineNew::where('id',$aParam['payId'])->first();
         $iBank = Banks::where('bank_id',$iDrawing->bank_id)->first();
-        $iUser = Users::where('id',$iPayOnlineNew->user_id)->first();
+        $iUser = Users::where('id',$iDrawing->user_id)->first();
         if(empty($iUser->fullName)){
             return response()->json([
                 'status' => false,
