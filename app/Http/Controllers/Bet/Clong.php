@@ -232,6 +232,7 @@
                     case 'car':		//赛车
                     case 'ssc':		//时时彩
                     case 'xync':    //重庆幸运农场
+                    case 'SEX5':    //广东11选5
                         foreach($numberArray as $key => $val){
                             $code = $clong_kaijian1['code'][$key];
                             $chname = $clong_kaijian1['chname'][$key];
