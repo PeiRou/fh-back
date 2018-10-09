@@ -28,8 +28,6 @@ class BUNKO_cqxync extends Command
             $update = DB::table($table)->where('id', $get->id)->update([
                 'bunko' => 2
             ]);
-            \Log::info($table);
-            \Log::info($get->id);
             if($update)
                 event(new RunCqxync($get->opennum,$get->issue,$this->gameId,$get->id)); //结算
         }

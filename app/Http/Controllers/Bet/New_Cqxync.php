@@ -13,7 +13,7 @@ class New_Cqxync
         $win = collect([]);
         $this->LM($openCode,$gameId,$win);
         $this->ZM($openCode,$gameId,$win);
-        $table = 'game_cqssc';
+        $table = 'game_cqxyssc';
         $gameName = '重庆幸运农场';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
@@ -26,8 +26,6 @@ class New_Cqxync
                 }
             }
         }
-        \Log::info($table);
-        \Log::info($id);
         $update = DB::table($table)->where('id',$id)->update([
             'bunko' => 1
         ]);
