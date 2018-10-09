@@ -312,11 +312,15 @@ class DrawingController extends Controller
 
     public function dispensingDrawing(Request $request){
         $aParam = $request->all();
+        DB::beginTransaction();
         $iDrawing = Drawing::where('id',$aParam['id'])->where('status',0)->where('locked',0)->first();
-        if(empty($iDrawing))    return response()->json([
+        if(empty($iDrawing)) {
+            DB::rollback();
+            return response()->json([
                 'status' => false,
                 'msg' => '该订单已操作或不存在'
             ]);
+        }
         $result = Drawing::where('id',$aParam['id'])->where('status',0)->where('locked',0)->update([
             'status' => 1,
             'locked' => 1,
@@ -325,19 +329,24 @@ class DrawingController extends Controller
             'process_date' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
             ]);
-        if(!$result)    return response()->json([
+        if(!$result) {
+            DB::rollback();
+            return response()->json([
                 'status' => false,
                 'msg' => '该订单已操作'
             ]);
+        }
         $iPayOnlineNew = PayOnlineNew::where('id',$aParam['payId'])->first();
         $iBank = Banks::where('bank_id',$iDrawing->bank_id)->first();
         $iUser = Users::where('id',$iDrawing->user_id)->first();
         if(empty($iUser->fullName)){
+            DB::rollback();
             return response()->json([
                 'status' => false,
                 'msg' => '不存在真实姓名'
             ]);
         }
+        DB::commit();
         json_decode($this->getArraySign($iDrawing,$iPayOnlineNew,$iBank,$iUser),true);
         return response()->json([
             'status' => true
