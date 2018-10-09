@@ -82,7 +82,6 @@ class new_xylhc extends Command
             Redis::set('xylhc:nextIssue',(int)$nextIssue+1);
             Redis::set('xylhc:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('xylhc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-            \Log::info('xylhc_kill');
             //---kill start
             $table = 'game_xylhc';
             $excel = new Excel();

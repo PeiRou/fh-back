@@ -49,7 +49,7 @@ class KILL_paoma extends Command
             //开奖号码
             $opennum = $excel->opennum($table);
             if(isset($get->excel_num) && $get->excel_num == 0){
-                \Log::Info('跑马 杀率:'.$get->issue.'=='.$get->id);
+//                \Log::Info('跑马 杀率:'.$get->issue.'=='.$get->id);
                 $update = DB::table($table)->where('id',$get->id)->update([
                     'excel_num' => 2
                 ]);
