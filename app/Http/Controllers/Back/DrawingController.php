@@ -9,6 +9,7 @@ use App\Helpers\PaymentPlatform;
 use App\PayOnlineNew;
 use App\SystemSetting;
 use App\User;
+use App\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -330,13 +331,14 @@ class DrawingController extends Controller
             ]);
         $iPayOnlineNew = PayOnlineNew::where('id',$aParam['payId'])->first();
         $iBank = Banks::where('bank_id',$iDrawing->bank_id)->first();
-        json_decode($this->getArraySign($iDrawing,$iPayOnlineNew,$iBank),true);
+        $iUser = Users::where('id',$iPayOnlineNew->user_id)->first();
+        json_decode($this->getArraySign($iDrawing,$iPayOnlineNew,$iBank,$iUser),true);
         return response()->json([
             'status' => true
         ]);
     }
 
-    public function getArraySign($iDrawing,$iPayOnlineNew,$iBank = []){
+    public function getArraySign($iDrawing,$iPayOnlineNew,$iBank = [],$iUser = []){
         $aArray = [
             'pay_uname' => $iPayOnlineNew->payName,
             'merchant_code' => $iPayOnlineNew->apiId,
@@ -351,7 +353,7 @@ class DrawingController extends Controller
             'platform_id' => SystemSetting::where('id',1)->value('payment_platform_id'),
             'third_url' => $iPayOnlineNew->domain,
             'timestamp' => time(),
-            'member_name' => $iDrawing->fullName,
+            'member_name' => empty($iUser)?$iDrawing->fullName:$iUser->fullName,
             'member_card' => $iDrawing->bank_num,
         ];
         $PaymentPlatform = new PaymentPlatform();
