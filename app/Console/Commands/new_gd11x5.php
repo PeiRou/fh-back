@@ -8,14 +8,16 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Bet\Clong;
 
 class new_gd11x5 extends Command
 {
     protected $signature = 'new_gd11x5';
     protected $description = '广东11选5';
 
-    public function __construct()
+    public function __construct(Clong $clong)
     {
+        $this->clong = $clong;
         parent::__construct();
     }
 

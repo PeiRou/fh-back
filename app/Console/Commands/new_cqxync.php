@@ -19,8 +19,9 @@ class new_cqxync extends Command
     protected $signature = 'new_cqxync';
     protected $description = '新-重庆幸运农场';
 
-    public function __construct()
+    public function __construct(Clong $clong)
     {
+        $this->clong = $clong;
         parent::__construct();
     }
 

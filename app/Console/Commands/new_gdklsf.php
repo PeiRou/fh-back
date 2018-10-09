@@ -8,14 +8,16 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Bet\Clong;
 
 class new_gdklsf extends Command
 {
     protected $signature = 'new_gdklsf';
     protected $description = '广东快乐十分';
 
-    public function __construct()
+    public function __construct(Clong $clong)
     {
+        $this->clong = $clong;
         parent::__construct();
     }
 
