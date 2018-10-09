@@ -348,6 +348,8 @@ class FinanceDataController extends Controller
             ->editColumn('control',function ($drawing) use ($aPayOnlineNew){
                 if($drawing->dr_status == 2 || $drawing->dr_status == 3){
                     return "<span class='light-gary-text'>通过 | 驳回</span>";
+                }elseif($drawing->dr_status == 1){
+                    return '<span class="hover-black" onclick="passAuto(\''.$drawing->dr_id.'\')">通过</span> | <span class="hover-black" onclick="errorAuto(\''.$drawing->dr_id.'\')">驳回</span><br/>';
                 } else {
                     $iHtml = '';
                     foreach ($aPayOnlineNew as $iPayOnlineNew)

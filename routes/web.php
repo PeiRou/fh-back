@@ -398,7 +398,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/addRechargeError', 'Back\RechargeController@addRechargeError'); //驳回充值申请
 
     Route::post('/action/admin/passDrawing', 'Back\DrawingController@passDrawing'); //通过提款申请
+    Route::post('/action/admin/passDrawingAuto', 'Back\DrawingController@passDrawingAuto'); //自动提款后的提款申请
     Route::post('/action/admin/addDrawingError', 'Back\DrawingController@addDrawingError'); //驳回提款申请
+    Route::post('/action/admin/addDrawingErrorAuto', 'Back\DrawingController@addDrawingErrorAuto'); //自动驳回提款申请
     Route::post('/action/admin/dispensingDrawing', 'Back\DrawingController@dispensingDrawing'); //自动出款
 
     Route::post('/action/recharge/totalRecharge', 'Back\RechargeController@totalRecharge'); //充值记录的总额统计
@@ -494,6 +496,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editDrawingLevels/{uid}/{nowLevels}/{rid}', 'Back\Ajax\ModalController@editDrawingLevels');
     Route::get('/back/modal/rechargeError/{id}', 'Back\Ajax\ModalController@rechargeError');
     Route::get('/back/modal/drawingError/{id}', 'Back\Ajax\ModalController@drawingError');
+    Route::get('/back/modal/drawingErrorAuto/{id}', 'Back\Ajax\ModalController@drawingErrorAuto'); //自动提款后的驳回
     Route::get('/back/modal/addPayOnlineNew', 'Back\Ajax\ModalController@addPayOnlineNew'); //充值配置新-在线支付-添加
     Route::get('/back/modal/copyPayOnlineNew/{id}', 'Back\Ajax\ModalController@copyPayOnlineNew'); //充值配置新-在线支付-复制
     Route::get('/back/modal/editPayOnlineNew/{id}', 'Back\Ajax\ModalController@editPayOnlineNew'); //充值配置新-在线支付-修改

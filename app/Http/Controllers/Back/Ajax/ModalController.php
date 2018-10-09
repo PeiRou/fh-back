@@ -475,6 +475,11 @@ class ModalController extends Controller
     {
         return view('back.modal.pay.drawingError',compact('id'));
     }
+    //自动提款驳回
+    public function drawingErrorAuto($id = '')
+    {
+        return view('back.modal.pay.drawingErrorAuto',compact('id'));
+    }
     //提款记录 会员48小时详情
     public function user48hoursInfo($uid = '')
     {
