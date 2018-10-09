@@ -26,6 +26,8 @@ class New_Cqxync
                 }
             }
         }
+        \Log::info($table);
+        \Log::info($id);
         $update = DB::table($table)->where('id',$id)->update([
             'bunko' => 1
         ]);
