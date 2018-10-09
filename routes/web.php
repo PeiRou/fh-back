@@ -399,6 +399,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 
     Route::post('/action/admin/passDrawing', 'Back\DrawingController@passDrawing'); //通过提款申请
     Route::post('/action/admin/addDrawingError', 'Back\DrawingController@addDrawingError'); //驳回提款申请
+    Route::post('/action/admin/dispensingDrawing', 'Back\DrawingController@dispensingDrawing'); //自动出款
 
     Route::post('/action/recharge/totalRecharge', 'Back\RechargeController@totalRecharge'); //充值记录的总额统计
     Route::post('/action/drawing/totalDrawing', 'Back\DrawingController@totalDrawing'); //提款记录的总额统计
@@ -671,4 +672,6 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/openData/bjpk10/{date}/{issue}', 'Back\OpenData\OpenApiGetController@bjpk10');
 //注单明细获取开奖历史
     Route::get('/ajax/openHistory/{gameId}/{issue}', 'Back\SrcViewController@BetListOpenHistory');
+//自动提款异步回调地址
+    Route::post('/pay/withdrawal/callback', 'Back\CallbackController@withdrawal');
 });
