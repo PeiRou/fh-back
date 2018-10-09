@@ -73,6 +73,15 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\OpenMssscEvent' => [
             'App\Listeners\OpenMssscEventListener',
         ],
+        'App\Events\RunCqxync' => [
+            'App\Listeners\RunCqxyncEventListener',
+        ],
+        'App\Events\RunGd11x5' => [
+            'App\Listeners\RunGd11x5EventListener',
+        ],
+        'App\Events\RunGdklsf' => [
+            'App\Listeners\RunGdklsfEventListener',
+        ],
         'App\Events\BackPusherEvent' => [
             'App\Listeners\BackPusherEventListener',
         ]
