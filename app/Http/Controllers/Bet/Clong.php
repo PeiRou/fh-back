@@ -71,7 +71,7 @@
                     'NCQIU1DS','NCQIU2DS','NCQIU3DS','NCQIU4DS','NCQIU5DS','NCQIU6DS','NCQIU7DS','NCQIU8DS',                        //单双
                     'NCQIU18LH','NCQIU27LH','NCQIU36LH','NCQIU45LH',                                                                //龙虎
                     'NCQIU1WSDX','NCQIU2WSDX','NCQIU3WSDX','NCQIU4WSDX','NCQIU5WSDX','NCQIU6WSDX','NCQIU7WSDX','NCQIU8WSDX',        //尾数大小
-                    'NCQIU1WSDS','NCQIU2WSDS','NCQIU3WSDS','NCQIU4WSDS','NCQIU5WSDS','NCQIU6WSDS','NCQIU7WSDS','NCQIU8WSDS',        //合数单双
+                    'NCQIU1HSDS','NCQIU2HSDS','NCQIU3HSDS','NCQIU4HSDS','NCQIU5HSDS','NCQIU6HSDS','NCQIU7HSDS','NCQIU8HSDS',        //合数单双
                     'NCZHDX','NCZHDS','NCZHWSDX')),                                                                                 //总和
             'SEX5'=> array(
                 'code' => array('QIU1','QIU2','QIU3','QIU4','QIU5',                     //定位数字长龙
@@ -289,6 +289,9 @@
                             break;
                         case 'ZHDX':                    //---指定多位的和值-总和大小
                             $num_val = $num_val >= 23?"大":"小";
+                            break;
+                        case 'NCZHDX':                    //---指定多位的和值-总和大小
+                            $num_val = $num_val >= 30?"大":"小";
                             break;
                         case 'DWDS':                    //---指定单一位-单双
                         case 'GYHDS':                   //---指定多位的和值-前二-冠亚军和值单双
