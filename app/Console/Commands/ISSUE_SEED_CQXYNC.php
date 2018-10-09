@@ -24,7 +24,8 @@ class ISSUE_SEED_CQXYNC extends Command
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_cqxync (issue,opentime) VALUES ";
         for($i=1;$i<=13;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
+            $jian = Carbon::parse($timeUp)->addDay(-1);
+            $time = Carbon::parse($jian)->addMinutes(10);
             if(strlen($i) == 1){
                 $i = '00'.$i;
             }
@@ -32,7 +33,7 @@ class ISSUE_SEED_CQXYNC extends Command
                 $i = '0'.$i;
             }
             $issue = date('ymd').$i;
-            $sql .= "('$issue','$timeUp'),";
+            $sql .= "('$issue','$time'),";
         }
         for($i=1;$i<=84;$i++){
             $timeUp2 = Carbon::parse($timeUp2)->addMinutes(10);
