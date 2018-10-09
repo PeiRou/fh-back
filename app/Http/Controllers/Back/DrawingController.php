@@ -332,6 +332,12 @@ class DrawingController extends Controller
         $iPayOnlineNew = PayOnlineNew::where('id',$aParam['payId'])->first();
         $iBank = Banks::where('bank_id',$iDrawing->bank_id)->first();
         $iUser = Users::where('id',$iPayOnlineNew->user_id)->first();
+        if(empty($iUser->fullName) && empty($iDrawing->fullName)){
+            return response()->json([
+                'status' => false,
+                'msg' => '不存在真实姓名'
+            ]);
+        }
         json_decode($this->getArraySign($iDrawing,$iPayOnlineNew,$iBank,$iUser),true);
         return response()->json([
             'status' => true
@@ -353,7 +359,7 @@ class DrawingController extends Controller
             'platform_id' => SystemSetting::where('id',1)->value('payment_platform_id'),
             'third_url' => $iPayOnlineNew->domain,
             'timestamp' => time(),
-            'member_name' => empty($iUser)?$iDrawing->fullName:$iUser->fullName,
+            'member_name' => empty($iUser->fullName)?$iDrawing->fullName:$iUser->fullName,
             'member_card' => $iDrawing->bank_num,
         ];
         $PaymentPlatform = new PaymentPlatform();
