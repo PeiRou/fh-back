@@ -418,3 +418,39 @@ function dispensing(id,payId,name) {
         }
     });
 }
+
+function addSubAccount() {
+    var status = $('#status').val();
+    var statusName = $("#status").find("option:selected").text();
+    var draw_type = $('#draw_type').val();
+    var account_type = $('#account_type').val();
+    var account_param = $('#account_param').val();
+    var rechLevel = $('#rechLevel').val();
+    var bao_time = $('#bao_time').val();
+    var startTime = $('#startTime').val();
+    var endTime = $('#endTime').val();
+    var killTestUser = $('#killTestUser').val();
+    if(status == ''){
+        Calert('请先选择提款状态，再尝试导出数据','red','error');
+        return false;
+    }
+    jc = $.confirm({
+        title: '导出充值记录',
+        theme: 'material',
+        type: 'orange',
+        boxWidth:'25%',
+        content: '您选择了导出【'+startTime+' - '+endTime+'】范围内的【'+statusName+'】数据，确定导出吗？',
+        buttons: {
+            confirm: {
+                text:'确定',
+                btnClass: 'btn-orange',
+                action: function(){
+                    window.location.href = '/action/admin/exportExcel/userDrawing?status='+status+'&draw_type='+draw_type+'&account_type='+account_type+'&account_param='+account_param+'&rechLevel='+rechLevel+'&bao_time='+bao_time+'&startTime='+startTime+'&endTime='+endTime+'&killTestUser='+killTestUser;
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}

@@ -207,7 +207,7 @@ class FinanceDataController extends Controller
         $drawingSQL = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
             ->leftJoin('level','drawing.levels', '=', 'level.value')
-            ->select('drawing.created_at as dr_created_at','drawing.created_at as dr_created_at','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.fullName as draw_fullName','drawing.levels as levels','drawing.bank_name as draw_bank_name','drawing.bank_num as draw_bank_num','drawing.bank_addr as draw_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id','users.username as user_username','drawing.balance as dr_balance','drawing.order_id as dr_order_id','drawing.operation_account as dr_operation_account','level.name as level_name','users.DrawTimes as user_DrawTimes','drawing.total_bet as dr_total_bet')
+            ->select('drawing.created_at as dr_created_at','drawing.bank_name as dr_bank_name','drawing.fullName as dr_fullName','drawing.bank_num as dr_bank_num','drawing.bank_addr as dr_bank_addr','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.fullName as draw_fullName','drawing.levels as levels','drawing.bank_name as draw_bank_name','drawing.bank_num as draw_bank_num','drawing.bank_addr as draw_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id','users.username as user_username','drawing.balance as dr_balance','drawing.order_id as dr_order_id','drawing.operation_account as dr_operation_account','level.name as level_name','users.DrawTimes as user_DrawTimes','drawing.total_bet as dr_total_bet')
             ->where(function ($q) use ($killTestUser){
                 if(isset($killTestUser) && $killTestUser){
                     $q->where('users.agent','!=',2);
@@ -296,9 +296,9 @@ class FinanceDataController extends Controller
             })
             ->editColumn('bank_info',function ($drawing){
                 if(empty($drawing->user_bank_name))
-                    return '<font color="red">无当下提款信息</font><br><div style="text-align: center">姓名：'.$drawing->user_fullName.'</br>银行：'.$drawing->user_bank_name.'<br>账号：'.$drawing->user_bank_num.'<br>地址：'.$drawing->user_bank_addr.'</div>';
+                    return '<font color="red">无当下提款信息</font><br><div style="text-align: center">姓名：'.(empty($drawing->dr_fullName)?$drawing->user_fullName:$drawing->dr_fullName).'</br>银行：'.(empty($drawing->dr_bank_name)?$drawing->user_bank_name:$drawing->dr_bank_name).'<br>账号：'.(empty($drawing->dr_bank_num)?$drawing->user_bank_num:$drawing->dr_bank_num).'<br>地址：'.(empty($drawing->dr_bank_addr)?$drawing->user_bank_addr:$drawing->dr_bank_addr).'</div>';
                 else
-                    return '<div style="text-align: center">姓名：'.$drawing->user_fullName.'</br>银行：'.$drawing->user_bank_name.'<br>账号：'.$drawing->user_bank_num.'<br>地址：'.$drawing->user_bank_addr.'</div>';
+                    return '<div style="text-align: center">姓名：'.(empty($drawing->dr_fullName)?$drawing->user_fullName:$drawing->dr_fullName).'</br>银行：'.(empty($drawing->dr_bank_name)?$drawing->user_bank_name:$drawing->dr_bank_name).'<br>账号：'.(empty($drawing->dr_bank_num)?$drawing->user_bank_num:$drawing->dr_bank_num).'<br>地址：'.(empty($drawing->dr_bank_addr)?$drawing->user_bank_addr:$drawing->dr_bank_addr).'</div>';
             })
             ->editColumn('liushui',function ($drawing){
                 return '-';

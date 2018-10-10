@@ -438,6 +438,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::any('/action/admin/member/visitMemberSuper/{id}/{name}', 'Back\MemberController@visitMemberSuper')->middleware('check-permission')->name('member.visitMemberSuper');;//总代代理-导出会员
 
     Route::get('/action/admin/exportExcel/userRecharges','Back\ExportExcelController@exportExcelForRecharges'); //导出充值数据为Excel文件
+    Route::get('/action/admin/exportExcel/userDrawing','Back\ExportExcelController@exportExcelForDrawing'); //导出充值数据为Excel文件
 
 //Modal
     Route::get('/back/modal/addPermission', 'Back\Ajax\ModalController@addPermission'); //添加权限
