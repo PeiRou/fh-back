@@ -25,7 +25,7 @@ class ISSUE_SEED_CQXYNC extends Command
         $sql = "INSERT INTO game_cqxync (issue,opentime) VALUES ";
 
         $date = date('Y-m-d');
-        $sql .= "('181010001','$date 00:02:20'),";
+        $sql .= "($curDate.'0001','$date 00:02:20'),";
         for($i=1;$i<=12;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(10);
             $num = 1 + $i;
