@@ -552,6 +552,8 @@ class New_Gd11x5
 
         $bunko_index = 0;
         $openCodeArr = explode(',',$openCode);
+        $OPEN_QIAN_2 = $openCodeArr[0].','.$openCodeArr[1];
+        $OPEN_QIAN_3 = $openCodeArr[0].','.$openCodeArr[1].','.$openCodeArr[2];
 
         $id = [];
         foreach ($win as $k=>$v){
@@ -576,10 +578,8 @@ class New_Gd11x5
             $zhixuan_ids = [];
             $zhixuan_lose_ids = [];
             $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zhixuan_playCate)->where('bunko','=',0.00)->get();
-            $open_qian2 = $openCodeArr[0].','.$openCodeArr[1];
-            $open_qian3 = $openCodeArr[0].','.$openCodeArr[1].','.$openCodeArr[2];
-            $open2 = explode(',', $open_qian2);
-            $open3 = explode(',', $open_qian3);
+            $open2 = explode(',', $OPEN_QIAN_2);
+            $open3 = explode(',', $OPEN_QIAN_3);
             foreach ($get as $item) {
                 $user = explode(',', $item->bet_info);
                 if($item->play_id == '2134246'){ //前二直选
@@ -611,8 +611,8 @@ class New_Gd11x5
             $lm_lose_ids = [];
             $get_lm = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
             $lm_open = explode(',', $openCode);
-            $lm_open_qian2 = explode(',',$openCodeArr[0].','.$openCodeArr[1]);
-            $lm_open_qian3 = explode(',',$openCodeArr[0].','.$openCodeArr[1].','.$openCodeArr[2]);
+            $lm_open_qian2 = explode(',',$OPEN_QIAN_2);
+            $lm_open_qian3 = explode(',',$OPEN_QIAN_3);
             foreach ($get_lm as $item) {
                 $explodeBetInfo = explode(',',$item->bet_info);
                 if(count($explodeBetInfo) == 2){

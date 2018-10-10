@@ -29,7 +29,8 @@ class BUNKO_gd11x5 extends Command
                 'bunko' => 2
             ]);
             if($update)
-                event(new RunGd11x5($get->opennum,$get->issue,$this->gameId,$get->id)); //结算
+//                event(new RunGd11x5($get->opennum,$get->issue,$this->gameId,$get->id)); //结算
+                event(new RunGd11x5('3,5,10,11,1','18101085',$this->gameId,$get->id)); //结算
         }
     }
 }
