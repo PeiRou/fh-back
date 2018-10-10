@@ -16,7 +16,7 @@ class CheckIP
      */
     public function handle($request, Closure $next)
     {
-        $ip = $request->ip();
+        $ip = realIp();
         $ipList = Whitelist::getWhiteIpList();
         if(!in_array($ip,$ipList)){
             return abort('503');

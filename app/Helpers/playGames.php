@@ -288,4 +288,18 @@ if(!function_exists('userBatchUpdate')){
         return $sql;
     }
 }
+/**
+ * 获取cdn下的真实ip
+*/
+if(!function_exists('realIp')){
+    function realIp(){
+        if(!env('cdn',false)){
+            $getIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            $arrIp = explode(',',$getIp);
+            return $arrIp[0];
+        }else{
+            return $_SERVER['REMOTE_ADDR'];
+        }
+    }
+}
 
