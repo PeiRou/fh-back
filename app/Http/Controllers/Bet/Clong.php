@@ -292,7 +292,7 @@
                             $num_val = $num_val >= 23?"大":"小";
                             break;
                         case 'NCZHDX':                    //---指定多位的和值-总和大小
-                            $num_val = $num_val >= 30?"大":"小";
+                            $num_val = $num_val >= 85?"大":($num_val <= 83?"小":"和");
                             break;
                         case 'DWDS':                    //---指定单一位-单双
                         case 'GYHDS':                   //---指定多位的和值-前二-冠亚军和值单双
