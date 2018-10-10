@@ -594,27 +594,25 @@ class New_Gd11x5
             }
             //直选 - End
 
-            //连码
+            //连码 - Start
             $lm_playCate = 33;
             $lm_ids = [];
             $lm_lose_ids = [];
             $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
             $lm_open = explode(',', $openCode);
+            $lm_open_qian2 = explode(',',$openCodeArr[0].','.$openCodeArr[1]);
+            $lm_open_qian3 = explode(',',$openCodeArr[0].','.$openCodeArr[1].','.$openCodeArr[2]);
             foreach ($get as $item) {
                 $explodeBetInfo = explode(',',$item->bet_info);
                 if(count($explodeBetInfo) == 2){
                     $diff2 = array_intersect($lm_open, $explodeBetInfo);
-                    \Log::info('二中二总：'.count($diff2));
                     if(count($diff2) == 2){
                         $lm_ids[] = $item->bet_id;
-                        \Log::info('二中二-中奖：'.$item->bet_id);
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
-                        \Log::info('二中二-输了：'.$item->bet_id);
                     }
                 } else if (count($explodeBetInfo) == 3){
                     $diff3 = array_intersect($lm_open, $explodeBetInfo);
-                    \Log::info('三中三总：'.count($diff3));
                     if(count($diff3) == 3){
                         $lm_ids[] = $item->bet_id;
                     } else {
@@ -622,7 +620,6 @@ class New_Gd11x5
                     }
                 } else if (count($explodeBetInfo) == 4){
                     $diff4 = array_intersect($lm_open, $explodeBetInfo);
-                    \Log::info('四中四总：'.count($diff4));
                     if(count($diff4) == 4){
                         $lm_ids[] = $item->bet_id;
                     } else {
@@ -630,7 +627,6 @@ class New_Gd11x5
                     }
                 } else if (count($explodeBetInfo) == 5){
                     $diff5 = array_intersect($lm_open, $explodeBetInfo);
-                    \Log::info('五中五总：'.count($diff5));
                     if(count($diff5) == 5){
                         $lm_ids[] = $item->bet_id;
                     } else {
@@ -638,7 +634,6 @@ class New_Gd11x5
                     }
                 } else if (count($explodeBetInfo) == 6){
                     $diff6 = array_intersect($lm_open, $explodeBetInfo);
-                    \Log::info('六中五总：'.count($diff6));
                     if(count($diff6) == 5){
                         $lm_ids[] = $item->bet_id;
                     } else {
@@ -646,7 +641,6 @@ class New_Gd11x5
                     }
                 } else if (count($explodeBetInfo) == 7){
                     $diff7 = array_intersect($lm_open, $explodeBetInfo);
-                    \Log::info('七中五总：'.count($diff7));
                     if(count($diff7) == 5){
                         $lm_ids[] = $item->bet_id;
                     } else {
@@ -654,8 +648,21 @@ class New_Gd11x5
                     }
                 } else if (count($explodeBetInfo) == 8){
                     $diff8 = array_intersect($lm_open, $explodeBetInfo);
-                    \Log::info('八中五总：'.count($diff8));
                     if(count($diff8) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
+                if($item->play_id == 2133244){ //前二组选
+                    if($explodeBetInfo[0] == $lm_open_qian2[0] && $explodeBetInfo[1] == $lm_open_qian2[1]){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
+                if($item->play_id == 2133245){ //前三组选
+                    if($explodeBetInfo[0] == $lm_open_qian3[0] && $explodeBetInfo[1] == $lm_open_qian3[1] && $explodeBetInfo[2] == $lm_open_qian3[2]){
                         $lm_ids[] = $item->bet_id;
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
@@ -668,9 +675,7 @@ class New_Gd11x5
             } else {
                 $sql_lm = 0;
             }
-            //连码 - 任选二中二 - Start
-
-            //连码 - 任选二中二 - End
+            //连码 - End
 
             $run2 = DB::connection('mysql::write')->statement($sql_lose);
             if($run2 == 1){
