@@ -17,7 +17,7 @@ class New_Gd11x5
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
-            $bunko = $this->bunko($win,$gameId,$issue);
+            $bunko = $this->bunko($win,$gameId,$issue,$openCode);
             if($bunko == 1){
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
@@ -514,6 +514,38 @@ class New_Gd11x5
             $win->push($winCode);
         }
         //单号5两面-End
+
+        //一中一 - Start
+        $YZYPlayCate = 32;
+        $YZYNums = ['1'=>'226','2'=>'227','3'=>'228','4'=>'229','5'=>'230','6'=>'231','7'=>'232','8'=>'233','9'=>'234','10'=>'235','11'=>'236'];
+        foreach ($YZYNums as $k => $v){
+            if($num1 == $k){
+                $playId = $v;
+                $winCode = $gameId.$YZYPlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num2 == $k){
+                $playId = $v;
+                $winCode = $gameId.$YZYPlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num3 == $k){
+                $playId = $v;
+                $winCode = $gameId.$YZYPlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num4 == $k){
+                $playId = $v;
+                $winCode = $gameId.$YZYPlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num5 == $k){
+                $playId = $v;
+                $winCode = $gameId.$YZYPlayCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        //一中一 - End
     }
 
     private function bunko($win,$gameId,$issue,$openCode){
@@ -560,7 +592,85 @@ class New_Gd11x5
             } else {
                 $sql_zhixuan = 0;
             }
-            //直选- End
+            //直选 - End
+
+            //连码
+            $lm_playCate = 33;
+            $lm_ids = [];
+            $lm_lose_ids = [];
+            $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
+            $lm_open = explode(',', $openCode);
+            foreach ($get as $item) {
+                $explodeBetInfo = explode(',',$item->bet_info);
+                if(count($explodeBetInfo) == 2){
+                    $diff2 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('二中二总：'.count($diff2));
+                    if(count($diff2) == 2){
+                        $lm_ids[] = $item->bet_id;
+                        \Log::info('二中二-中奖：'.$item->bet_id);
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                        \Log::info('二中二-输了：'.$item->bet_id);
+                    }
+                } else if (count($explodeBetInfo) == 3){
+                    $diff3 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('三中三总：'.count($diff3));
+                    if(count($diff3) == 3){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 4){
+                    $diff4 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('四中四总：'.count($diff4));
+                    if(count($diff4) == 4){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 5){
+                    $diff5 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('五中五总：'.count($diff5));
+                    if(count($diff5) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 6){
+                    $diff6 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('六中五总：'.count($diff6));
+                    if(count($diff6) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 7){
+                    $diff7 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('七中五总：'.count($diff7));
+                    if(count($diff7) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 8){
+                    $diff8 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('八中五总：'.count($diff8));
+                    if(count($diff8) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
+            }
+            $ids_lm = implode(',', $lm_ids);
+            if($ids_lm){
+                $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
+            } else {
+                $sql_lm = 0;
+            }
+            //连码 - 任选二中二 - Start
+
+            //连码 - 任选二中二 - End
 
             $run2 = DB::connection('mysql::write')->statement($sql_lose);
             if($run2 == 1){
@@ -568,6 +678,15 @@ class New_Gd11x5
                 if($sql_zhixuan !== 0){
                     $run3 = DB::connection('mysql::write')->statement($sql_zhixuan);
                     if($run3 == 1){
+                        $bunko_index++;
+                    }
+                } else {
+                    $bunko_index++;
+                }
+
+                if($sql_lm !== 0){
+                    $run4 = DB::connection('mysql::write')->statement($sql_lm);
+                    if($run4 == 1){
                         $bunko_index++;
                     }
                 } else {
