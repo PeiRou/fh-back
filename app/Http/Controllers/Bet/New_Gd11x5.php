@@ -514,6 +514,38 @@ class New_Gd11x5
             $win->push($winCode);
         }
         //单号5两面-End
+
+        //一中一 - Start
+        $YZYPlayCate = 32;
+        $YZYNums = ['1'=>'226','2'=>'227','3'=>'228','4'=>'229','5'=>'230','6'=>'231','7'=>'232','8'=>'233','9'=>'234','10'=>'235','11'=>'236'];
+        foreach ($YZYNums as $k => $v){
+            if($num1 == $k){
+                $playId = $v;
+                $winCode = $gameId.$YZYPlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num2 == $k){
+                $playId = $v;
+                $winCode = $gameId.$YZYPlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num3 == $k){
+                $playId = $v;
+                $winCode = $gameId.$YZYPlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num4 == $k){
+                $playId = $v;
+                $winCode = $gameId.$YZYPlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num5 == $k){
+                $playId = $v;
+                $winCode = $gameId.$YZYPlayCate.$playId;
+                $win->push($winCode);
+            }
+        }
+        //一中一 - End
     }
 
     private function bunko($win,$gameId,$issue,$openCode){
@@ -539,29 +571,6 @@ class New_Gd11x5
         $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $run = DB::statement($sql);
         if($run == 1){
-            //一中一- Start
-            $yzy_playCate = 32;
-            $yzy_ids = [];
-            $yzy_lose_ids = [];
-            $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$yzy_playCate)->where('bunko','=',0.00)->get();
-            foreach ($get as $item) {
-                $open = explode(',', $openCode);
-                $user = explode(',', $item->bet_info);
-                $bi = array_intersect($open, $user);
-                if (empty($bi)) {
-                    $yzy_lose_ids[] = $item->bet_id;
-                } else {
-                    $yzy_ids[] = $item->bet_id;
-                }
-            }
-            $ids_yzy = implode(',', $yzy_ids);
-            if($ids_yzy){
-                $sql_yzy = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_yzy)"; //中奖的SQL语句
-            } else {
-                $sql_yzy = 0;
-            }
-            //一中一- End
-
             //直选- Start
             $zhixuan_playCate = 34; //直选分类ID
             $zhixuan_ids = [];
@@ -591,15 +600,6 @@ class New_Gd11x5
                 if($sql_zhixuan !== 0){
                     $run3 = DB::connection('mysql::write')->statement($sql_zhixuan);
                     if($run3 == 1){
-                        $bunko_index++;
-                    }
-                } else {
-                    $bunko_index++;
-                }
-
-                if($sql_yzy !== 0){
-                    $run4 = DB::connection('mysql::write')->statement($sql_yzy);
-                    if($run4 == 1){
                         $bunko_index++;
                     }
                 } else {
