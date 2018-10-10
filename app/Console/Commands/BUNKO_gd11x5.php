@@ -21,16 +21,16 @@ class BUNKO_gd11x5 extends Command
 
     public function handle()
     {
-//        $table = 'game_gd11x5';
-//        $excel = new Excel();
-//        $get = $excel->getNeedBunkoIssue($table);
-//        if($get){
-//            $update = DB::table($table)->where('id', $get->id)->update([
-//                'bunko' => 2
-//            ]);
-//            if($update)
-//                event(new RunGd11x5($get->opennum,$get->issue,$this->gameId,$get->id)); //结算
-                event(new RunGd11x5('3,5,10,11,1','18101085',$this->gameId,1)); //结算
-//        }
+        $table = 'game_gd11x5';
+        $excel = new Excel();
+        $get = $excel->getNeedBunkoIssue($table);
+        if($get){
+            $update = DB::table($table)->where('id', $get->id)->update([
+                'bunko' => 2
+            ]);
+            if($update)
+                event(new RunGd11x5($get->opennum,$get->issue,$this->gameId,$get->id)); //结算
+//                event(new RunGd11x5('3,5,10,11,1','18101085',$this->gameId,1)); //结算
+        }
     }
 }
