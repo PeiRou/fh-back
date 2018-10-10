@@ -196,15 +196,15 @@
             'NCQIU6WSDX'=>array('type'=>'WSDX','seq'=>'5','chname'=>'第六球尾数'),	    //第六球-单双
             'NCQIU7WSDX'=>array('type'=>'WSDX','seq'=>'6','chname'=>'第七球尾数'),	    //第七球-单双
             'NCQIU8WSDX'=>array('type'=>'WSDX','seq'=>'7','chname'=>'第八球尾数'),	    //第八球-单双
-            //===== 重庆幸运农场 定位合数大小
-            'NCQIU1HSDS'=>array('type'=>'HSDS','seq'=>'0','chname'=>'第一球'),		//第一球-单双
-            'NCQIU2HSDS'=>array('type'=>'HSDS','seq'=>'1','chname'=>'第二球'),		//第二球-单双
-            'NCQIU3HSDS'=>array('type'=>'HSDS','seq'=>'2','chname'=>'第三球'),	    //第三球-单双
-            'NCQIU4HSDS'=>array('type'=>'HSDS','seq'=>'3','chname'=>'第四球'),	    //第四球-单双
-            'NCQIU5HSDS'=>array('type'=>'HSDS','seq'=>'4','chname'=>'第五球'),	    //第五球-单双
-            'NCQIU6HSDS'=>array('type'=>'HSDS','seq'=>'5','chname'=>'第六球'),	    //第六球-单双
-            'NCQIU7HSDS'=>array('type'=>'HSDS','seq'=>'6','chname'=>'第七球'),	    //第七球-单双
-            'NCQIU8HSDS'=>array('type'=>'HSDS','seq'=>'7','chname'=>'第八球'),	    //第八球-单双
+            //===== 重庆幸运农场 定位合数单双
+            'NCQIU1HSDS'=>array('type'=>'HSDS','seq'=>'0','chname'=>'第一球合数'),		//第一球-单双
+            'NCQIU2HSDS'=>array('type'=>'HSDS','seq'=>'1','chname'=>'第二球合数'),		//第二球-单双
+            'NCQIU3HSDS'=>array('type'=>'HSDS','seq'=>'2','chname'=>'第三球合数'),	    //第三球-单双
+            'NCQIU4HSDS'=>array('type'=>'HSDS','seq'=>'3','chname'=>'第四球合数'),	    //第四球-单双
+            'NCQIU5HSDS'=>array('type'=>'HSDS','seq'=>'4','chname'=>'第五球合数'),	    //第五球-单双
+            'NCQIU6HSDS'=>array('type'=>'HSDS','seq'=>'5','chname'=>'第六球合数'),	    //第六球-单双
+            'NCQIU7HSDS'=>array('type'=>'HSDS','seq'=>'6','chname'=>'第七球合数'),	    //第七球-单双
+            'NCQIU8HSDS'=>array('type'=>'HSDS','seq'=>'7','chname'=>'第八球合数'),	    //第八球-单双
             //===== 重庆幸运农场 总和
             'NCZHDX'=>array('type'=>'NCZHDX','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7','ishe'=>'1','chname'=>'总和'),		            //总和-大小
             'NCZHDS'=>array('type'=>'ZHDS','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7','ishe'=>'1','chname'=>'总和'),		            //总和-单双
@@ -255,7 +255,7 @@
                     $ishe = isset($clong_kaijian2_type[$val]['ishe'])?$clong_kaijian2_type[$val]['ishe']:'0';	//kaijian2的是否有和值
 
                     if($seq!='')									//如果kaijian2有指定顺序
-                        $num_val = $numberArray[$seq];
+                        $num_val = (int)$numberArray[$seq];
                     else if(!empty($nseq)){			                //不连续
                         $seq_array = explode(',',$nseq);
                         $num_val = 0;
@@ -307,7 +307,7 @@
                             if(strlen($num_val)==1)
                                 $num_val = '0'.$num_val;
                             $splNum = str_split($num_val);
-                            $num_val = ($splNum[0] + $splNum[1])%10 == 1 ?"单":"双";
+                            $num_val = ($splNum[0] + $splNum[1])%2 == 1 ?"单":"双";
                             break;
                         case 'LHH':                     //---指定多位-龙虎和
                             if( $num_array[0]>$num_array[1]){
