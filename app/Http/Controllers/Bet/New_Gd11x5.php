@@ -613,6 +613,7 @@ class New_Gd11x5
             $lm_open = explode(',', $openCode);
             foreach ($get_lm as $item) {
                 $explodeBetInfo = explode(',',$item->bet_info);
+                $getLM_QIAN = $item->play_name;
                 if(count($explodeBetInfo) == 2){
                     $diff2 = array_intersect($lm_open, $explodeBetInfo);
                     if(count($diff2) == 2){
@@ -662,6 +663,12 @@ class New_Gd11x5
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
                     }
+                }
+                if($getLM_QIAN == "前二组选"){
+                    \Log::info('前二组选:'.$item->bet_info);
+                }
+                if($getLM_QIAN == "前三组选"){
+                    \Log::info('前三组选:'.$item->bet_info);
                 }
             }
             $ids_lm = implode(',', $lm_ids);
