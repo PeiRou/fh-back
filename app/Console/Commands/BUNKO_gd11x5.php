@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Events\RunCqxync;
 use App\Events\RunGd11x5;
 use App\Excel;
 use Illuminate\Console\Command;

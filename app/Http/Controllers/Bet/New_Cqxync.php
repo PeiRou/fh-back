@@ -57,7 +57,7 @@ class New_Cqxync
 
         //总和大小-Start
         if($numsTotal == 84){ //总和等于84视为和局
-            echo "和，";
+
         }
         if($numsTotal >= 85 && $numsTotal <= 132){ //总和大
             $playId = 931;
