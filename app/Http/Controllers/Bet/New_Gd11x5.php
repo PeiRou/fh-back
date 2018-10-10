@@ -611,52 +611,53 @@ class New_Gd11x5
             $lm_lose_ids = [];
             $get_lm = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
             $lm_open = explode(',', $openCode);
+            $lm_open_qian2 = explode(',',$OPEN_QIAN_2);
+            $lm_open_qian3 = explode(',',$OPEN_QIAN_3);
             foreach ($get_lm as $item) {
                 $explodeBetInfo = explode(',',$item->bet_info);
-                $getLM_QIAN = $item->play_name;
-                if(count($explodeBetInfo) == 2){
+                if(count($explodeBetInfo) == 2 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
                     $diff2 = array_intersect($lm_open, $explodeBetInfo);
                     if(count($diff2) == 2){
                         $lm_ids[] = $item->bet_id;
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
                     }
-                } else if (count($explodeBetInfo) == 3){
+                } else if (count($explodeBetInfo) == 3 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
                     $diff3 = array_intersect($lm_open, $explodeBetInfo);
                     if(count($diff3) == 3){
                         $lm_ids[] = $item->bet_id;
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
                     }
-                } else if (count($explodeBetInfo) == 4){
+                } else if (count($explodeBetInfo) == 4 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
                     $diff4 = array_intersect($lm_open, $explodeBetInfo);
                     if(count($diff4) == 4){
                         $lm_ids[] = $item->bet_id;
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
                     }
-                } else if (count($explodeBetInfo) == 5){
+                } else if (count($explodeBetInfo) == 5 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
                     $diff5 = array_intersect($lm_open, $explodeBetInfo);
                     if(count($diff5) == 5){
                         $lm_ids[] = $item->bet_id;
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
                     }
-                } else if (count($explodeBetInfo) == 6){
+                } else if (count($explodeBetInfo) == 6 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
                     $diff6 = array_intersect($lm_open, $explodeBetInfo);
                     if(count($diff6) == 5){
                         $lm_ids[] = $item->bet_id;
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
                     }
-                } else if (count($explodeBetInfo) == 7){
+                } else if (count($explodeBetInfo) == 7 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
                     $diff7 = array_intersect($lm_open, $explodeBetInfo);
                     if(count($diff7) == 5){
                         $lm_ids[] = $item->bet_id;
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
                     }
-                } else if (count($explodeBetInfo) == 8){
+                } else if (count($explodeBetInfo) == 8 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
                     $diff8 = array_intersect($lm_open, $explodeBetInfo);
                     if(count($diff8) == 5){
                         $lm_ids[] = $item->bet_id;
@@ -664,11 +665,22 @@ class New_Gd11x5
                         $lm_lose_ids[] = $item->bet_id;
                     }
                 }
-                if($getLM_QIAN == "前二组选"){
-                    \Log::info('前二组选:'.$item->bet_info);
+            }
+            foreach ($get_lm as $x) {
+                $explodeBetInfo = explode(',',$x->bet_info);
+                if($x->play_id == '2133244'){ //前二组选
+                    if($explodeBetInfo[0] == $lm_open_qian2[0] && $explodeBetInfo[1] == $lm_open_qian2[1]){
+                        $lm_ids[] = $x->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $x->bet_id;
+                    }
                 }
-                if($getLM_QIAN == "前三组选"){
-                    \Log::info('前三组选:'.$item->bet_info);
+                if($x->play_id == '2133245'){ //前三组选
+                    if($explodeBetInfo[0] == $lm_open_qian3[0] && $explodeBetInfo[1] == $lm_open_qian3[1] && $explodeBetInfo[2] == $lm_open_qian3[2]){
+                        $lm_ids[] = $x->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $x->bet_id;
+                    }
                 }
             }
             $ids_lm = implode(',', $lm_ids);
