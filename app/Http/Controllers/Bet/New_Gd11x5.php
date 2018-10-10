@@ -598,11 +598,11 @@ class New_Gd11x5
             $lm_playCate = 33;
             $lm_ids = [];
             $lm_lose_ids = [];
-            $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
+            $get_lm = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
             $lm_open = explode(',', $openCode);
             $lm_open_qian2 = explode(',',$openCodeArr[0].','.$openCodeArr[1]);
             $lm_open_qian3 = explode(',',$openCodeArr[0].','.$openCodeArr[1].','.$openCodeArr[2]);
-            foreach ($get as $item) {
+            foreach ($get_lm as $item) {
                 $explodeBetInfo = explode(',',$item->bet_info);
                 if(count($explodeBetInfo) == 2){
                     $diff2 = array_intersect($lm_open, $explodeBetInfo);
@@ -655,7 +655,7 @@ class New_Gd11x5
                     }
                 }
             }
-            foreach ($get as $x) {
+            foreach ($get_lm as $x) {
                 $explodeBetInfo = explode(',',$x->bet_info);
                 if($x->play_id == '2133244'){ //前二组选
                     if($explodeBetInfo[0] == $lm_open_qian2[0] && $explodeBetInfo[1] == $lm_open_qian2[1]){
