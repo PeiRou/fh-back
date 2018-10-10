@@ -576,14 +576,25 @@ class New_Gd11x5
             $zhixuan_ids = [];
             $zhixuan_lose_ids = [];
             $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zhixuan_playCate)->where('bunko','=',0.00)->get();
+            $open_qian2 = $openCodeArr[0].','.$openCodeArr[1];
+            $open_qian3 = $openCodeArr[0].','.$openCodeArr[1].','.$openCodeArr[2];
+            $open2 = explode(',', $open_qian2);
+            $open3 = explode(',', $open_qian3);
             foreach ($get as $item) {
-                $open_qian2 = $openCodeArr[0].','.$openCodeArr[1];
-                $open = explode(',', $open_qian2);
                 $user = explode(',', $item->bet_info);
-                if($open[0] == $user[0] && $open[1] == $user[1]){
-                    $zhixuan_ids[] = $item->bet_id;
-                } else {
-                    $zhixuan_lose_ids[] = $item->bet_id;
+                if($item->play_id == '2134246'){ //前二直选
+                    if($open2[0] == $user[0] && $open2[1] == $user[1]){
+                        $zhixuan_ids[] = $item->bet_id;
+                    } else {
+                        $zhixuan_lose_ids[] = $item->bet_id;
+                    }
+                }
+                if($item->play_id == '2134247'){ //前三直选
+                    if($open3[0] == $user[0] && $open3[1] == $user[1]){
+                        $zhixuan_ids[] = $item->bet_id;
+                    } else {
+                        $zhixuan_lose_ids[] = $item->bet_id;
+                    }
                 }
             }
             $ids_zhixuan = implode(',', $zhixuan_ids);
