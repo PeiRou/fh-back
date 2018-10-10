@@ -9,6 +9,14 @@ class Drawing extends Model
 {
     protected $table = 'drawing';
 
+    public static $statusDrawing = [
+        0 => '未受理',
+        1 => '处理中',
+        2 => '通过',
+        3 => '不通过',
+        4 => '锁定',
+    ];
+
     public static function AssemblyFundDetails($param,$status = ''){
         $aSql = self::select('drawing.username','drawing.user_id','drawing.order_id','drawing.created_at',DB::raw("(CASE WHEN drawing.status = 3 THEN 't17' ELSE 't15' END) AS type"),'drawing.amount as money','drawing.balance',DB::raw("'' as issue,'' as game_id,'' as game_name,'' as play_type"),'drawing.operation_id','drawing.operation_account','drawing.msg',DB::raw("'' as content2,'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,drawing.amount as c_money,'' as bet_id,'' as rechargesType"))
             ->where(function ($aSql) use($param,$status){
@@ -111,5 +119,59 @@ class Drawing extends Model
         }
         $aSql .= " GROUP BY `generalId`,`date` ORDER BY `date` ASC";
         return DB::select($aSql,$aArray);
+    }
+
+    public static function drawingRecord($aParam){
+        return self::select('drawing.created_at as dr_created_at','drawing.bank_name as dr_bank_name','drawing.fullName as dr_fullName','drawing.bank_num as dr_bank_num','drawing.bank_addr as dr_bank_addr','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.fullName as draw_fullName','drawing.levels as levels','drawing.bank_name as draw_bank_name','drawing.bank_num as draw_bank_num','drawing.bank_addr as draw_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id','users.username as user_username','drawing.balance as dr_balance','drawing.order_id as dr_order_id','drawing.operation_account as dr_operation_account','level.name as level_name','users.DrawTimes as user_DrawTimes','drawing.total_bet as dr_total_bet')
+            ->leftJoin('users','drawing.user_id', '=', 'users.id')
+            ->leftJoin('level','drawing.levels', '=', 'level.value')
+            ->where(function ($q) use ($aParam){
+                if(isset($aParam['killTestUser']) && array_key_exists('killTestUser',$aParam)){
+                    $q->where('users.agent','!=',2);
+                }
+            })
+            ->where(function ($q) use ($aParam){
+                if(isset($aParam['status']) && array_key_exists('status',$aParam)){
+                    if($aParam['status'] == 'no'){
+                        $q->where('drawing.status',0);
+                    } else {
+                        $q->where('drawing.status',$aParam['status']);
+                    }
+                }
+            })
+            ->where(function ($q) use ($aParam){
+                if(isset($aParam['draw_type']) && array_key_exists('draw_type',$aParam)){
+                    $q->where('drawing.draw_type',$aParam['draw_type']);
+                }
+            })
+            ->where(function ($q) use ($aParam){
+                if(isset($aParam['rechLevel']) && array_key_exists('rechLevel',$aParam)){
+                    $q->where('users.rechLevel',$aParam['rechLevel']);
+                }
+            })
+            ->where(function ($q) use ($aParam){
+                if(isset($aParam['account_param']) && array_key_exists('account_param',$aParam)){
+                    if($aParam['account_type'] == 'account'){
+                        $q->where('drawing.username',$aParam['account_param']);
+                    }
+                    if($aParam['account_type'] == 'orderNum'){
+                        $q->where('drawing.order_id',$aParam['account_param']);
+                    }
+                    if($aParam['account_type'] == 'operation_account'){
+                        $q->where('drawing.operation_account',$aParam['account_param']);
+                    }
+                    if($aParam['account_type'] == 'amount'){
+                        $q->where('drawing.amount',$aParam['account_param']);
+                    }
+                }
+            })
+            ->where(function ($q) use ($aParam) {
+                if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam) || isset($aParam['endTime']) && array_key_exists('endTime',$aParam)){
+                    $q->whereBetween('drawing.created_at',[$aParam['startTime'].' 00:00:00', $aParam['endTime'].' 23:59:59']);
+                } else {
+                    $q->whereDate('drawing.created_at',date('Y-m-d'));
+                }
+            })
+            ->orderBy('drawing.created_at','desc')->get();
     }
 }

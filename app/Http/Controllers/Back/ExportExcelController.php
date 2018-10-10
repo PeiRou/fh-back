@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Drawing;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -73,5 +74,78 @@ class ExportExcelController extends Controller
                 $sheet->rows($cellData);
             });
         })->export('xls');
+    }
+
+    public function exportExcelForDrawing(Request $request){
+        $aParam = $request->post();
+        $aData = Drawing::drawingRecord($aParam);
+        $aStatus = Drawing::$statusDrawing;
+        if(empty($aData->toArray()))
+            return redirect('/back/control/financeManage/drawingRecord')->with('message', '该条件下没有提款记录');
+        Excel::create('【'.$aParam['startTime'].'-'.$aParam['endTime'].'】回访用户',function ($excel) use ($aData,$aParam,$aStatus){
+            $excel->sheet('【'.$aParam['startTime'].'-'.$aParam['endTime'].'】回访用户', function($sheet) use ($aData,$aParam,$aStatus){
+                $sheet->appendRow(['订单时间','处理时间','会员','层级','余额','有效投注','提款总次数','订单号','流水','交易金额','银行信息','IP信息','终端','出款方式','状态','操作人']);
+                $sheetHeight = [
+                    1 => 20,
+                ];
+                foreach ($aData as $kData => $iData){
+                    if($iData->dr_draw_type)
+                        $ipInfo = '-';
+                    else
+                        $ipInfo = $iData->dr_ip;
+                    if($iData->dr_platform == 1)
+                        $platform = '电脑端';
+                    elseif($iData->dr_platform == 2)
+                        $platform = '手机端';
+                    else
+                        $platform = '';
+                    if($iData->dr_draw_type == 1)
+                        $draw_type = '手动出款';
+                    elseif($iData->dr_draw_type == 2)
+                        $draw_type = '后台扣钱';
+                    else
+                        $draw_type = '自动出款';
+                    $sheet->appendRow([
+                        date('m/d H:i',strtotime($iData->dr_created_at)),
+                        empty($iData->dr_process_date)?'--':date('m/d H:i',strtotime($iData->dr_process_date)),
+                        $iData->user_username,
+                        $iData->level_name,
+                        $iData->dr_balance,
+                        $iData->dr_total_bet,
+                        $iData->user_DrawTimes,
+                        $iData->dr_order_id,
+                        '-',
+                        $iData->dr_amount,
+                        '姓名：'.(empty($iData->dr_fullName)?$iData->user_fullName:$iData->dr_fullName)."\r\n".'银行：'.(empty($iData->dr_bank_name)?$iData->user_bank_name:$iData->dr_bank_name)."\r\n".'账号：'.(empty($iData->dr_bank_num)?$iData->user_bank_num:$iData->dr_bank_num)."\r\n".'地址：'.(empty($iData->dr_bank_addr)?$iData->user_bank_addr:$iData->dr_bank_addr),
+                        $ipInfo,
+                        $platform,
+                        $draw_type,
+                        $aStatus[$iData->dr_status],
+                        $iData->dr_operation_account
+                    ]);
+                    $sheetHeight[$kData + 2] = 20;
+                }
+                $sheet->setHeight($sheetHeight);
+                $sheet->setWidth(array(
+                    'A'    =>  15,
+                    'B'    =>  15,
+                    'C'    =>  10,
+                    'D'    =>  10,
+                    'E'    =>  10,
+                    'F'    =>  12,
+                    'G'    =>  12,
+                    'H'    =>  25,
+                    'I'    =>  5,
+                    'J'    =>  10,
+                    'K'    =>  30,
+                    'L'    =>  10,
+                    'M'    =>  10,
+                    'N'    =>  10,
+                    'O'    =>  10,
+                    'P'    =>  10,
+                ));
+            });
+        })->export('xls');
+
     }
 }

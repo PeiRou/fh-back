@@ -131,6 +131,12 @@
 @endsection
 
 @section('page-js')
+    <script>
+        @if(session('message'))
+            var message = '{{ session('message') }}';
+            alert(message);
+        @endif
+    </script>
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <script src="/back/js/pages/drawing_record.js"></script>
