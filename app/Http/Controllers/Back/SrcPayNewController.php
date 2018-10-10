@@ -292,8 +292,10 @@ class SrcPayNewController extends Controller{
             $new_levels = '0';
         }
 
+        $getbank = DB::table('bank')->select('name')->where('bank_id',$paramId)->first();
         $update = PayOnlineNew::where('id',$id)
             ->update([
+                'rechName' => $getbank->name,
                 'lockArea' => $new_lockArea,
                 'payee' => $payee,
                 'payeeName' => $payeeName,
