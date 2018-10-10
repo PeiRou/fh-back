@@ -17,7 +17,7 @@ class New_Gd11x5
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
-            $bunko = $this->bunko($win,$gameId,$issue);
+            $bunko = $this->bunko($win,$gameId,$issue,$openCode);
             if($bunko == 1){
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
