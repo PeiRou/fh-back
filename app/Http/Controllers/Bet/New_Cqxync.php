@@ -1748,6 +1748,22 @@ class New_Cqxync
                         $lm_lose_ids[] = $item->bet_id;
                     }
                 }
+                if(count($explodeBetInfo) == 2 && $item->play_name == '选二连组'){
+                    $pattern = '/('.$item->bet_info.')/u';
+                    $matches = preg_match($pattern, $openCode);
+                    if($matches){
+                        $lm_ids[] = $item->bet_id;
+                    }else{
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
+                if(count($explodeBetInfo) == 3 && $item->play_name == '选三前组'){
+                    if($explodeBetInfo[0] == $openCodeArr[0] && $explodeBetInfo[1] == $openCodeArr[1] && $explodeBetInfo[2] == $openCodeArr[2]){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
             }
             $ids_lm = implode(',', $lm_ids);
             if($ids_lm){
