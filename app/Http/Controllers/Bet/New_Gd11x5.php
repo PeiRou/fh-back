@@ -604,10 +604,13 @@ class New_Gd11x5
                 $explodeBetInfo = explode(',',$item->bet_info);
                 if(count($explodeBetInfo) == 2){
                     $diff2 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('二中二总：'.count($diff2));
                     if(count($diff2) == 2){
                         $lm_ids[] = $item->bet_id;
+                        \Log::info('二中二-中奖：'.$item->bet_id);
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
+                        \Log::info('二中二-输了：'.$item->bet_id);
                     }
                 } else if (count($explodeBetInfo) == 3){
                     $diff3 = array_intersect($lm_open, $explodeBetInfo);
