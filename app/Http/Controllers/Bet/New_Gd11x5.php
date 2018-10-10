@@ -685,7 +685,7 @@ class New_Gd11x5
                 }
 
                 if($sql_lm !== 0){
-                    $run4 = DB::connection('mysql::write')->statement($sql_zhixuan);
+                    $run4 = DB::connection('mysql::write')->statement($sql_lm);
                     if($run4 == 1){
                         $bunko_index++;
                     }
