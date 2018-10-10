@@ -21,16 +21,15 @@ class BUNKO_cqxync extends Command
 
     public function handle()
     {
-//        $table = 'game_cqxync';
-//        $excel = new Excel();
-//        $get = $excel->getNeedBunkoIssue($table);
-//        if($get){
-//            $update = DB::table($table)->where('id', $get->id)->update([
-//                'bunko' => 2
-//            ]);
-//            if($update)
-//                event(new RunCqxync($get->opennum,$get->issue,$this->gameId,$get->id)); //结算
-                event(new RunCqxync('6,19,18,2,15,17,13,5','',$this->gameId,1)); //结算
-//        }
+        $table = 'game_cqxync';
+        $excel = new Excel();
+        $get = $excel->getNeedBunkoIssue($table);
+        if($get){
+            $update = DB::table($table)->where('id', $get->id)->update([
+                'bunko' => 2
+            ]);
+            if($update)
+                event(new RunCqxync($get->opennum,$get->issue,$this->gameId,$get->id)); //结算
+        }
     }
 }
