@@ -20,16 +20,16 @@ class BUNKO_gdklsf extends Command
 
     public function handle()
     {
-//        $table = 'game_gdklsf';
-//        $excel = new Excel();
-//        $get = $excel->getNeedBunkoIssue($table);
-//        if($get) {
-//            $update = DB::table($table)->where('id', $get->id)->update([
-//                'bunko' => 2
-//            ]);
-//            if ($update)
-//                event(new RunGdklsf($get->opennum, $get->issue, $this->gameId, $get->id)); //结算
-                event(new RunGdklsf('6,2,7,15,19,4,9,16', '20181010085', $this->gameId, 1)); //结算
-//        }
+        $table = 'game_gdklsf';
+        $excel = new Excel();
+        $get = $excel->getNeedBunkoIssue($table);
+        if($get) {
+            $update = DB::table($table)->where('id', $get->id)->update([
+                'bunko' => 2
+            ]);
+            if ($update)
+                event(new RunGdklsf($get->opennum, $get->issue, $this->gameId, $get->id)); //结算
+                //event(new RunGdklsf('6,2,7,15,19,4,9,16', '20181010085', $this->gameId, 1)); //结算
+        }
     }
 }
