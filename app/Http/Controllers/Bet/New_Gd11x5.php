@@ -592,7 +592,76 @@ class New_Gd11x5
             } else {
                 $sql_zhixuan = 0;
             }
-            //直选- End
+            //直选 - End
+
+            //连码
+            $lm_playCate = 33;
+            $lm_ids = [];
+            $lm_lose_ids = [];
+            $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
+            $lm_open = explode(',', $openCode);
+            foreach ($get as $item) {
+                $explodeBetInfo = explode(',',$item->bet_info);
+                if(count($explodeBetInfo) == 2){
+                    $diff2 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff2) == 2){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 3){
+                    $diff3 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff3) == 3){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 4){
+                    $diff4 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff4) == 4){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 5){
+                    $diff5 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff5) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 6){
+                    $diff6 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff6) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 7){
+                    $diff6 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff6) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 8){
+                    $diff6 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff6) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
+            }
+            $ids_lm = implode(',', $lm_ids);
+            if($ids_lm){
+                $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
+            } else {
+                $sql_lm = 0;
+            }
+            //连码 - 任选二中二 - Start
+
+            //连码 - 任选二中二 - End
 
             $run2 = DB::connection('mysql::write')->statement($sql_lose);
             if($run2 == 1){
@@ -600,6 +669,15 @@ class New_Gd11x5
                 if($sql_zhixuan !== 0){
                     $run3 = DB::connection('mysql::write')->statement($sql_zhixuan);
                     if($run3 == 1){
+                        $bunko_index++;
+                    }
+                } else {
+                    $bunko_index++;
+                }
+
+                if($sql_lm !== 0){
+                    $run4 = DB::connection('mysql::write')->statement($sql_zhixuan);
+                    if($run4 == 1){
                         $bunko_index++;
                     }
                 } else {
