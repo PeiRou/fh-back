@@ -293,13 +293,13 @@ if(!function_exists('userBatchUpdate')){
 */
 if(!function_exists('realIp')){
     function realIp(){
-        if(env('cdn',false)){
-            $getIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            $arrIp = explode(',',$getIp);
-            return $arrIp[0];
-        }else{
+//        if(env('cdn',false)){
+//            $getIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
+//            $arrIp = explode(',',$getIp);
+//            return $arrIp[0];
+//        }else{
             return $_SERVER['REMOTE_ADDR'];
-        }
+//        }
     }
 }
 
