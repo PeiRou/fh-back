@@ -293,6 +293,7 @@ if(!function_exists('userBatchUpdate')){
 */
 if(!function_exists('realIp')){
     function realIp(){
+        return isset($_SERVER['HTTP_X_FORWARDED_FOR'])?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'];
         if(env('cdn',false)){
             $getIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
             $arrIp = explode(',',$getIp);
