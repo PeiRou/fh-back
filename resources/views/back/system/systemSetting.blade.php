@@ -351,6 +351,15 @@
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_reg_mobile_input" data-c="用户注册页显示手机字段：0-关，1-开" class="edit-link">修改</td>
             </tr>
             <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">IOS注册送彩金</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->user_reg_send_lottery }}" data-id-input="user_reg_send_lottery"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_reg_send_lottery" data-c="IOS注册送彩金" class="edit-link">修改</td>
+            </tr>
+            <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">代理专属域名</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
                     <div class="ui input">
