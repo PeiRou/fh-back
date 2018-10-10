@@ -422,6 +422,7 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="feidan_back_domain_api" data-c="飞单管理后台域名接口" class="edit-link">修改</td>
             </tr>
+            @if(Session::get('account') === 'admin')
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">支付平台ID</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
@@ -476,6 +477,7 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="payment_platform_dispensing" data-c="支付平台代付接口" class="edit-link">修改</td>
             </tr>
+            @endif
             </tbody>
         </table>
     </div>
