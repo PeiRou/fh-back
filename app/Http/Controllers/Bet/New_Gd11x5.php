@@ -614,6 +614,7 @@ class New_Gd11x5
                     }
                 } else if (count($explodeBetInfo) == 3){
                     $diff3 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('三中三总：'.count($diff3));
                     if(count($diff3) == 3){
                         $lm_ids[] = $item->bet_id;
                     } else {
@@ -621,6 +622,7 @@ class New_Gd11x5
                     }
                 } else if (count($explodeBetInfo) == 4){
                     $diff4 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('四中四总：'.count($diff4));
                     if(count($diff4) == 4){
                         $lm_ids[] = $item->bet_id;
                     } else {
@@ -628,6 +630,7 @@ class New_Gd11x5
                     }
                 } else if (count($explodeBetInfo) == 5){
                     $diff5 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('五中五总：'.count($diff5));
                     if(count($diff5) == 5){
                         $lm_ids[] = $item->bet_id;
                     } else {
@@ -635,21 +638,24 @@ class New_Gd11x5
                     }
                 } else if (count($explodeBetInfo) == 6){
                     $diff6 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('六中五总：'.count($diff6));
                     if(count($diff6) == 5){
                         $lm_ids[] = $item->bet_id;
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
                     }
                 } else if (count($explodeBetInfo) == 7){
-                    $diff6 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff6) == 5){
+                    $diff7 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('七中五总：'.count($diff7));
+                    if(count($diff7) == 5){
                         $lm_ids[] = $item->bet_id;
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
                     }
                 } else if (count($explodeBetInfo) == 8){
-                    $diff6 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff6) == 5){
+                    $diff8 = array_intersect($lm_open, $explodeBetInfo);
+                    \Log::info('八中五总：'.count($diff8));
+                    if(count($diff8) == 5){
                         $lm_ids[] = $item->bet_id;
                     } else {
                         $lm_lose_ids[] = $item->bet_id;
