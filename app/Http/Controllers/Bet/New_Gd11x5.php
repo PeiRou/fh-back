@@ -590,7 +590,7 @@ class New_Gd11x5
                     }
                 }
                 if($item->play_id == '2134247'){ //前三直选
-                    if($open3[0] == $user[0] && $open3[1] == $user[1]){
+                    if($open3[0] == $user[0] && $open3[1] == $user[1] && $open3[2] == $user[2]){
                         $zhixuan_ids[] = $item->bet_id;
                     } else {
                         $zhixuan_lose_ids[] = $item->bet_id;
