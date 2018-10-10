@@ -293,7 +293,7 @@ if(!function_exists('userBatchUpdate')){
 */
 if(!function_exists('realIp')){
     function realIp(){
-        if(env('cdn',true)){
+        if(env('cdn',false)){
             $getIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
             $arrIp = explode(',',$getIp);
             return $arrIp[0];
