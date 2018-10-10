@@ -18,7 +18,7 @@ class New_Cqxync
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
-            $bunko = $this->bunko($win,$gameId,$issue);
+            $bunko = $this->bunko($win,$gameId,$issue,$openCode);
             if($bunko == 1){
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
@@ -1687,7 +1687,9 @@ class New_Cqxync
         }
     }
 
-    private function bunko($win,$gameId,$issue){
+    private function bunko($win,$gameId,$issue,$openCode){
+        $bunko_index = 0;
+        $openCodeArr = explode(',',$openCode);
         $id = [];
         foreach ($win as $k=>$v){
             $id[] = $v;
@@ -1706,8 +1708,70 @@ class New_Cqxync
         $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $run = DB::statement($sql);
         if($run == 1){
-            $run2 = DB::statement($sql_lose);
+            //连码- Start
+            $lm_playCate = 52; //连码分类ID
+            $lm_ids = [];
+            $lm_lose_ids = [];
+            $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
+            $lm_open = explode(',', $openCode);
+            foreach ($get as $item) {
+                $explodeBetInfo = explode(',',$item->bet_info);
+                if(count($explodeBetInfo) == 2 && $item->play_name == '任选二'){
+                    $diff2 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff2) == 2){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
+                if(count($explodeBetInfo) == 3 && $item->play_name == '任选三'){
+                    $diff3 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff3) == 3){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
+                if(count($explodeBetInfo) == 4 && $item->play_name == '任选四'){
+                    $diff4 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff4) == 4){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
+                if(count($explodeBetInfo) == 5 && $item->play_name == '任选五'){
+                    $diff5 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff5) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
+            }
+            $ids_lm = implode(',', $lm_ids);
+            if($ids_lm){
+                $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
+            } else {
+                $sql_lm = 0;
+            }
+            //连码- End
+
+
+            $run2 = DB::connection('mysql::write')->statement($sql_lose);
             if($run2 == 1){
+                $bunko_index++;
+                if($sql_lm !== 0){
+                    $run3 = DB::connection('mysql::write')->statement($sql_lm);
+                    if($run3 == 1){
+                        $bunko_index++;
+                    }
+                } else {
+                    $bunko_index++;
+                }
+            }
+
+            if($bunko_index !== 0){
                 return 1;
             }
         }
