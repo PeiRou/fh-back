@@ -80,7 +80,7 @@ class RechargeController extends Controller
                             $capital->content = '充值手续费';
                         $insert = $capital->save();
                     }
-                    event(new BackPusherEvent('success','充值成功提醒','您的充值订单【'.$getInfo->orderNum.'】已到账，充值金额：'.$amout.'元',array('fnotice-'.$userId)));
+                    event(new BackPusherEvent('success','充值成功提醒','您的充值订单</br>【'.$getInfo->orderNum.'】已到账，充值金额：'.$amout.'元',array('fnotice-'.$userId)));
                     return response()->json([
                         'status' => true
                     ]);
@@ -153,7 +153,7 @@ class RechargeController extends Controller
                     'msg' => $msg
                 ]);
             if($update == 1){
-                event(new BackPusherEvent('error','充值失败提醒','您的充值订单【'.$getInfo->orderNum.'】未到账，充值失败，请重新提交或联系在线客服',array('fnotice-'.$getInfo->userId)));
+                event(new BackPusherEvent('error','充值失败提醒','您的充值订单</br>【'.$getInfo->orderNum.'】未到账，充值失败，请重新提交或联系在线客服',array('fnotice-'.$getInfo->userId)));
                 return response()->json([
                     'status' => true
                 ]);
