@@ -279,7 +279,7 @@
                 {data:'play'},
                 {data:'rebate'},
                 {data: function (data) {
-                        return "<span class='bet-text'>"+(parseFloat(data.bet_bet_money)).toFixed(2)+"</span>";
+                        return "<span class='bet-text'>"+(parseFloat(data.bet_bet_money)).toFixed(3)+"</span>";
                     }},
                 {data:'platform'},
                 {data:'none1'},
@@ -324,14 +324,14 @@
                     .column( 7 )
                     .data()
                     .reduce( function (a, b,c) {
-                        return parseFloat((intVal(a) + intVal(data[c].bet_bet_money)).toFixed(2));
+                        return parseFloat((intVal(a) + intVal(data[c].bet_bet_money)).toFixed(3));
                     }, 0 );
                 var Total11 = api
                     .column( 11 )
                     .data()
                     .reduce( function (a, b,c) {
                         if(data[c].bet_game_id == 91 || data[c].bet_game_id == 90){
-                            return parseFloat((intVal(a) + intVal(data[c].bet_nn_view_money)).toFixed(2));
+                            return parseFloat((intVal(a) + intVal(data[c].bet_nn_view_money)).toFixed(3));
                         }else{
                             var tmpBet_bet_money = intVal(data[c].bet_bunko)>0?intVal(data[c].bet_bet_money):0;
                             return parseFloat((intVal(a) + intVal(data[c].bet_bunko) - tmpBet_bet_money).toFixed(3));
