@@ -419,21 +419,23 @@ class FinanceDataController extends Controller
                 }
             })
             ->editColumn('money', function($capital){
-                if($capital->game_id>0){
-                    if($capital->game_id ==90 || $capital->game_id ==91){
-                        if($capital->nn_view_money < 0)
-                            return '<span class="green-text">下注:'.$capital->nn_view_money.'</span>'.'<span class="gary-text">(冻结:'.$capital->freeze_money.')</span>'.'<span class="gary-text">(解冻:'.$capital->freeze_money.')</span>';
-                        else
-                            return '<span class="red-text">下注:'.$capital->nn_view_money.'</span>'.'<span class="gary-text">(冻结:'.$capital->freeze_money.')</span>'.'<span class="gary-text">(解冻:'.$capital->freeze_money.')</span>';
+                if($capital->type=='t05'){
+                    if($capital->game_id>0){
+                        if($capital->game_id ==90 || $capital->game_id ==91){
+                            if($capital->nn_view_money < 0)
+                                return '<span class="green-text">下注:'.$capital->nn_view_money.'</span>'.'<span class="gary-text">(冻结:'.$capital->freeze_money.')</span>'.'<span class="gary-text">(解冻:'.$capital->freeze_money.')</span>';
+                            else
+                                return '<span class="red-text">下注:'.$capital->nn_view_money.'</span>'.'<span class="gary-text">(冻结:'.$capital->freeze_money.')</span>'.'<span class="gary-text">(解冻:'.$capital->freeze_money.')</span>';
+                        }else{
+                            return '<span class="green-text">-'.$capital->money.'</span>';
+                        }
                     }else{
-                        return '<span class="green-text">-'.$capital->money.'</span>';
-                    }
-                }else{
-                    if($capital->money < 0)
-                    {
-                        return '<span class="green-text">'.$capital->money.'</span>';
-                    } else {
-                        return '<span class="red-text">'.$capital->money.'</span>';
+                        if($capital->money < 0)
+                        {
+                            return '<span class="green-text">'.$capital->money.'</span>';
+                        } else {
+                            return '<span class="red-text">'.$capital->money.'</span>';
+                        }
                     }
                 }
             })
