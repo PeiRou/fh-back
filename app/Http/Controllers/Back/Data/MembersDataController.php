@@ -655,11 +655,11 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                 }
             })
             ->editColumn('play_type', function ($capital){
-                if(empty($capital->play_type))
+                if(empty($capital->playcate_name))
                 {
                     return "-";
                 } else {
-                    return $capital->play_type;
+                    return $capital->playcate_name;
                 }
             })
             ->editColumn('operation', function ($capital){
