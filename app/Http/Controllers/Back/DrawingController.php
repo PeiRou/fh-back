@@ -75,7 +75,7 @@ class DrawingController extends Controller
                             'drawMoneyCount' => $nowUserDrawMoneyCount
                         ]);
                     if($updateUserInfo == 1){
-                        //event(new BackPusherEvent('success','提现成功提醒','您的提现申请已通过，提现金额：'.$getUserId->amount.'元，请注意查收，流水订单号：【'.$getUserId->order_id.'】',array('fnotice-'.$userId)));
+                        event(new BackPusherEvent('success','提现成功提醒','您的提现申请已通过，提现金额：'.$getUserId->amount.'元，请注意查收，流水订单号：【'.$getUserId->order_id.'】',array('fnotice-'.$userId)));
                         return response()->json([
                             'status' => true
                         ]);
@@ -146,7 +146,7 @@ class DrawingController extends Controller
                             'drawMoneyCount' => $nowUserDrawMoneyCount
                         ]);
                     if($updateUserInfo == 1){
-                        //event(new BackPusherEvent('success','提现成功提醒','您的提现申请已通过，提现金额：'.$getUserId->amount.'元，请注意查收，流水订单号：【'.$getUserId->order_id.'】',array('fnotice-'.$userId)));
+                        event(new BackPusherEvent('success','提现成功提醒','您的提现申请已通过，提现金额：'.$getUserId->amount.'元，请注意查收，流水订单号：【'.$getUserId->order_id.'】',array('fnotice-'.$userId)));
                         return response()->json([
                             'status' => true
                         ]);
