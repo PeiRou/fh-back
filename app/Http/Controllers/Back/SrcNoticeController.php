@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Events\BackPusherEvent;
 use App\MessagePush;
 use App\Notices;
 use App\Swoole;
@@ -183,7 +184,7 @@ class SrcNoticeController extends Controller
                 //消息推送
                 switch ($message_type){
                     case 2:             //2 右下角弹出提示
-                        \Log::info($user->id);
+                        event(new BackPusherEvent('info','实时消息通知','$content',array('fnotice-'.$user->id)));
                         //$redis->HSET($rsKeyH,'sendR='.$user->id,$content);
                         break;
                     case 3:             //3 页面中央弹出提示
