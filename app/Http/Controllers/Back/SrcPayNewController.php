@@ -52,8 +52,8 @@ class SrcPayNewController extends Controller{
         $payOnline->status = $aParam['status'];
         $payOnline->remark = $aParam['remark'];
         $payOnline->remark2 = $aParam['remark2'];
+        $payOnline->pcMobile = $aParam['pcMobile'];
         $payOnline->levels = $new_levels;
-        $payOnline->pcMobile = $iPayTypeNew->pcMobile;
         $payOnline->isBank = $iPayTypeNew->isBank;
         $payOnline->bankInfo = $iPayTypeNew->bankInfo;
         $payOnline->save();
@@ -146,8 +146,8 @@ class SrcPayNewController extends Controller{
         $payOnline->status = $aParam['status'];
         $payOnline->remark = $aParam['remark'];
         $payOnline->remark2 = $aParam['remark2'];
+        $payOnline->pcMobile = $aParam['pcMobile'];
         $payOnline->levels = $new_levels;
-        $payOnline->pcMobile = $iPayTypeNew->pcMobile;
         $payOnline->isBank = $iPayTypeNew->isBank;
         $payOnline->bankInfo = $iPayTypeNew->bankInfo;
         $payOnline->save();
