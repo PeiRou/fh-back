@@ -75,9 +75,9 @@
                     'NCZHDX','NCZHDS','NCZHWSDX')),                                                                                 //总和
             'SEX5'=> array(
                 'code' => array('QIU1','QIU2','QIU3','QIU4','QIU5',                     //定位数字长龙
-                    'QIU1DX','QIU2DX','QIU3DX','QIU4DX','QIU5DX',                       //定位大小
+                    'SEX5-QIU1DX','SEX5-QIU2DX','SEX5-QIU3DX','SEX5-QIU4DX','SEX5-QIU5DX',                       //定位大小
                     'QIU1DS','QIU2DS','QIU3DS','QIU4DS','QIU5DS',                       //定位单双
-                    'ZHDX','ZHDS','SEX5ZHWSDX','ZHLHH')),                                            //总和
+                    'SEX5-ZHDX','ZHDS','SEX5ZHWSDX','ZHLHH')),                                            //总和
         );
 
         private $clong_kaijian2_type = array(
@@ -209,6 +209,14 @@
             'NCZHDX'=>array('type'=>'NCZHDX','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7','ishe'=>'1','chname'=>'总和'),		            //总和-大小
             'NCZHDS'=>array('type'=>'ZHDS','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7','ishe'=>'1','chname'=>'总和'),		            //总和-单双
             'NCZHWSDX'=>array('type'=>'WSDX','seq'=>'','nseq'=>'0,1,2,3,4,5,6,7','ishe'=>'1','chname'=>'总和尾数'),		            //总和-尾数大小
+            //===== 11选5 定位大小
+            'SEX5-QIU1DX'=>array('type'=>'NDWDX','seq'=>'0','bech'=>'6','chname'=>'第一球'),		//第一球-大小
+            'SEX5-QIU2DX'=>array('type'=>'NDWDX','seq'=>'1','bech'=>'6','chname'=>'第二球'),		//第二球-大小
+            'SEX5-QIU3DX'=>array('type'=>'NDWDX','seq'=>'2','bech'=>'6','chname'=>'第三球'),	    //第三球-大小
+            'SEX5-QIU4DX'=>array('type'=>'NDWDX','seq'=>'3','bech'=>'6','chname'=>'第四球'),	    //第四球-大小
+            'SEX5-QIU5DX'=>array('type'=>'NDWDX','seq'=>'4','bech'=>'6','chname'=>'第五球'),	    //第五球-大小
+            //===== 11选5 总和大小
+            'SEX5-ZHDX'=>array('type'=>'NZHDXH','seq'=>'','nseq'=>'0,1,2,3,4','bech'=>'31','bechH'=>'30','ishe'=>'1','chname'=>'总和'),		//总和-大小和
             //===== 11选5 总和尾数大小
             'SEX5ZHWSDX'=>array('type'=>'WSDX','seq'=>'','nseq'=>'0,1,2,3,4','ishe'=>'1','chname'=>'总和尾数'),		            //总和-尾数大小
         );
@@ -250,7 +258,9 @@
                 foreach($clong_kaijian2['code'] as $key => $val){
                     $type = $clong_kaijian2_type[$val]['type'];													//kaijian2的型别
                     $seq = $clong_kaijian2_type[$val]['seq'];													//kaijian2的连续
-                    $chname = $clong_kaijian2_type[$val]['chname'];													//kaijian2的中文显示
+                    $bech = isset($clong_kaijian2_type[$val]['bech'])?$clong_kaijian2_type[$val]['bech']:'';    //kaijian2的比数的基准值-大
+                    $bechH = isset($clong_kaijian2_type[$val]['bechH'])?$clong_kaijian2_type[$val]['bechH']:''; //kaijian2的比数的基准值-和
+                    $chname = $clong_kaijian2_type[$val]['chname'];												//kaijian2的中文显示
                     $nseq = isset($clong_kaijian2_type[$val]['nseq'])?$clong_kaijian2_type[$val]['nseq']:'';	//kaijian2的不连续
                     $ishe = isset($clong_kaijian2_type[$val]['ishe'])?$clong_kaijian2_type[$val]['ishe']:'0';	//kaijian2的是否有和值
 
@@ -279,6 +289,11 @@
                         case 'CARDWDX':                 //---指定单一位-赛车类型的大小
                             $num_val = $num_val >= 6?"大":"小";
                             break;
+                        case 'NDWDX':                 //---指定单一位-时时彩类型的大小  (新的带基准值)
+                            $tmp = explode('-',$val);
+                            $val = $tmp[1];
+                            $num_val = $num_val >= $bech?"大":"小";
+                            break;
                         case 'SSCDWDX':                 //---指定单一位-时时彩类型的大小
                             $num_val = $num_val >= 5?"大":"小";
                             break;
@@ -293,6 +308,11 @@
                             break;
                         case 'NCZHDX':                    //---指定多位的和值-总和大小
                             $num_val = $num_val >= 85?"大":($num_val <= 83?"小":"和");
+                            break;
+                        case 'NZHDXH':                    //---指定多位的和值-总和大小和  (新的带基准值)
+                            $tmp = explode('-',$val);
+                            $val = $tmp[1];
+                            $num_val = $num_val >= $bech?"大":($num_val == $bechH?"和":"小");
                             break;
                         case 'DWDS':                    //---指定单一位-单双
                         case 'GYHDS':                   //---指定多位的和值-前二-冠亚军和值单双
