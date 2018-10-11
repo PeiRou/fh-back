@@ -164,6 +164,17 @@
     </div>
 
     <div class="field">
+        <label>支持设备</label>
+        <div class="ui input icon">
+            <select class="ui fluid dropdown" name="pcMobile">
+                <option value="0">全部</option>
+                <option value="1">电脑端</option>
+                <option value="2">手机</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="field">
         <label>层设置</label>
         @foreach($levels as $item)
             <div class="ui checkbox">

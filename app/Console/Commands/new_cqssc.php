@@ -91,6 +91,11 @@ class new_cqssc extends Command
         $url = Config::get('website.guanServerUrl').'cqssc';
         $html = json_decode(file_get_contents($url),true);
         $redis_issue = Redis::get('cqssc:issue');
+        //清除昨天长龙，在录第一期的时候清掉
+        if($filtered['issue']=='001'){
+            DB::table('clong_kaijian1')->where('lotteryid',1)->delete();
+            DB::table('clong_kaijian2')->where('lotteryid',1)->delete();
+        }
         if($redis_issue !== $html[0]['issue']){
             try{
                 $up = DB::table('game_cqssc')->where('issue',$html[0]['issue'])

@@ -53,6 +53,11 @@ class new_gdklsf extends Command
         $url = Config::get('website.guanServerUrl').'gdklsf';
         $html = json_decode(file_get_contents($url),true);
         $redis_issue = Redis::get('gdklsf:issue');
+        //清除昨天长龙，在录第一期的时候清掉
+        if($filtered['issue']=='001'){
+            DB::table('clong_kaijian1')->where('lotteryid',60)->delete();
+            DB::table('clong_kaijian2')->where('lotteryid',60)->delete();
+        }
         if($redis_issue !== $html[0]['issue']){
             try{
                 $up = DB::table('game_gdklsf')->where('issue',$html[0]['issue'])
