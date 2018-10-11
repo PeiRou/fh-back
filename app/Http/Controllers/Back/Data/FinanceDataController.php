@@ -437,6 +437,8 @@ class FinanceDataController extends Controller
                             return '<span class="red-text">'.$capital->money.'</span>';
                         }
                     }
+                }else{
+                    return '<span class="red-text">'.$capital->money.'</span>';
                 }
             })
             ->editColumn('balance',function ($capital){
@@ -471,10 +473,10 @@ class FinanceDataController extends Controller
                 }
             })
             ->editColumn('play_type',function ($capital){
-                if(empty($capital->play_type)){
+                if(empty($capital->playcate_name)){
                     return '-';
                 }else{
-                    return $capital->play_type;
+                    return $capital->playcate_name;
                 }
             })
             ->rawColumns(['money','balance','content','issue'])
