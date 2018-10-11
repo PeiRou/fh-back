@@ -15,7 +15,7 @@ class Excel
      */
     public function updateUserMoney($gameId,$issue,$gameName=''){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','game_name','play_id','play_name','order_id','issue','playcate_name','play_name','play_odds')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->get();
+        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','play_id','play_name','order_id','issue','playcate_name','play_name','play_odds')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->get();
         if($get){
             //更新返奖的用户馀额
             $sql = "UPDATE users SET money = money+ CASE id ";
