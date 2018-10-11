@@ -54,8 +54,8 @@ class Excel
                 $tmpCap['game_id'] = $i->game_id;
                 $tmpCap['game_name'] = $gameName;
                 $tmpCap['play_id'] = $i->play_id;
-                $tmpCap['play_name'] = $i->play_name;
-                $tmpCap['content'] = $gameName.'-'.$i->playcate_name.'-'.$i->play_odds;
+                $tmpCap['play_name'] = $i->playcate_name;
+                $tmpCap['content'] = $gameName.'-'.$i->play_name.'-'.$i->play_odds;
                 $tmpCap['created_at'] = date('Y-m-d H:i:s');
                 $tmpCap['updated_at'] = date('Y-m-d H:i:s');
                 $capData[$ii] = $tmpCap;
