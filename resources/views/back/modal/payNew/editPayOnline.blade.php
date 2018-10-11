@@ -83,7 +83,7 @@
     </div>
 
     <div class="field">
-        <label>第三方私钥</label>
+        <label>第三方私钥(或其他第三方域名)</label>
         <div class="ui input icon">
             <input type="text" name="apiPrivateKey" placeholder="非必填" value="{{ $payOnline->apiPrivateKey }}"/>
         </div>
@@ -160,6 +160,17 @@
         <label>后台备注说明</label>
         <div class="ui input icon">
             <input type="text" name="remark2" value="{{ $payOnline->remark2 }}"/>
+        </div>
+    </div>
+
+    <div class="field">
+        <label>支持设备</label>
+        <div class="ui input icon">
+            <select class="ui fluid dropdown" name="pcMobile">
+                <option @if($payOnline->pcMobile == 0) selected @endif value="0">全部</option>
+                <option @if($payOnline->pcMobile == 1) selected @endif value="1">电脑端</option>
+                <option @if($payOnline->pcMobile == 2) selected @endif value="2">手机端</option>
+            </select>
         </div>
     </div>
 
