@@ -53,6 +53,11 @@ class new_gd11x5 extends Command
         $url = Config::get('website.guanServerUrl').'gd11x5';
         $html = json_decode(file_get_contents($url),true);
         $redis_issue = Redis::get('gd11x5:issue');
+        //清除昨天长龙，在录第一期的时候清掉
+        if($filtered['issue']=='01'){
+            DB::table('clong_kaijian1')->where('lotteryid',21)->delete();
+            DB::table('clong_kaijian2')->where('lotteryid',21)->delete();
+        }
         if($redis_issue !== $html[0]['issue']){
             try{
                 $up = DB::table('game_gd11x5')->where('issue',$html[0]['issue'])
