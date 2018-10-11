@@ -82,7 +82,7 @@ class new_pk10 extends Command
         $html = json_decode(file_get_contents($url),true);
         $redis_issue = Redis::get('pk10:issue');
         //清除昨天长龙，在录第一期的时候清掉
-        if($filtered['issue']=='001'){
+        if($filtered['time']=='09:07:30'){
             DB::table('clong_kaijian1')->where('lotteryid',80)->delete();
             DB::table('clong_kaijian2')->where('lotteryid',80)->delete();
         }
