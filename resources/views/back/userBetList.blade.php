@@ -297,7 +297,7 @@
                             } else {
                                 if(data.bet_bunko > 0){
                                     var tmpBet_bet_money = intVal(data.bet_bunko)>0?intVal(data.bet_bet_money):0;
-                                    lastMoney = (parseFloat(intVal(data.bet_bunko) - tmpBet_bet_money)).toFixed(2);
+                                    lastMoney = (parseFloat(intVal(data.bet_bunko) - tmpBet_bet_money)).toFixed(3);
                                     txt = "<span class='blue-text'><b>"+lastMoney+"</b></span>";
                                 }
                                 if(data.bet_bunko < 0){
@@ -334,7 +334,7 @@
                             return parseFloat((intVal(a) + intVal(data[c].bet_nn_view_money)).toFixed(2));
                         }else{
                             var tmpBet_bet_money = intVal(data[c].bet_bunko)>0?intVal(data[c].bet_bet_money):0;
-                            return parseFloat((intVal(a) + intVal(data[c].bet_bunko) - tmpBet_bet_money).toFixed(2));
+                            return parseFloat((intVal(a) + intVal(data[c].bet_bunko) - tmpBet_bet_money).toFixed(3));
                         }
                     }, 0 );
                 // Update footer by showing the total with the reference of the column index
