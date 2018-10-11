@@ -42,13 +42,7 @@ class ISSUE_SEED_BJKL8 extends Command
                     'bjkl8' => $curDate
                 ]);
                 if($update == 1){
-                    $delClong1 = DB::table('clong_kaijian1')->where('lotteryid',65)->delete();
-                    if($delClong1 == 1){
-                        $delClong2 = DB::table('clong_kaijian2')->where('lotteryid',65)->delete();
-                        if($delClong2 == 1){
-                            \Log::info(date('Y-m-d').'已更新');
-                        }
-                    }
+                    \Log::info(date('Y-m-d').'已更新');
                 }
             } else {
                 \Log::info('error');

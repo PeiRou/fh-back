@@ -46,13 +46,7 @@ class ISSUE_SEED_MSFT extends Command
                     'msft' => $curDate
                 ]);
                 if($update == 1){
-                    $delClong1 = DB::table('clong_kaijian1')->where('lotteryid',82)->delete();
-                    if($delClong1 == 1){
-                        $delClong2 = DB::table('clong_kaijian2')->where('lotteryid',82)->delete();
-                        if($delClong2 == 1){
-                            \Log::info(date('Y-m-d').'已更新');
-                        }
-                    }
+                    \Log::info(date('Y-m-d').'已更新');
                 }
             } else {
                 \Log::info('error');

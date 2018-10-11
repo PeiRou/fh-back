@@ -105,6 +105,11 @@ class new_mspk10 extends Command
             //处理秒速牛牛
             $niuniu = $this->exePK10nn($opencode);
             $openniuniu =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
+            //清除昨天长龙，在录第一期的时候清掉
+            if($filtered['time']=='09:07:30'){
+                DB::table('clong_kaijian1')->where('lotteryid',50)->delete();
+                DB::table('clong_kaijian2')->where('lotteryid',50)->delete();
+            }
             try{
                 DB::table('game_mssc')->where('issue',$res->expect)->update([
                     'is_open' => 1,

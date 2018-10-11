@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Events\BackPusherEvent;
 use App\MessagePush;
 use App\Notices;
 use App\Swoole;
@@ -170,9 +171,6 @@ class SrcNoticeController extends Controller
                         ->get();
                     break;
             }
-            $rsKeyH = 'chatList';         //切换到聊天平台
-            $redis->select(1);
-            $redis->multi();
             foreach ($usersArray as $key => $user){
                 $tmp = [];
                 $tmp['user_id'] = $user->id;
@@ -186,22 +184,13 @@ class SrcNoticeController extends Controller
                 //消息推送
                 switch ($message_type){
                     case 2:             //2 右下角弹出提示
-                        $redis->HSET($rsKeyH,'sendR='.$user->id,$content);
+                        event(new BackPusherEvent('info','实时消息通知',$content,array('fnotice-'.$user->id)));
+                        //$redis->HSET($rsKeyH,'sendR='.$user->id,$content);
                         break;
                     case 3:             //3 页面中央弹出提示
-                        $redis->HSET($rsKeyH,'sendC='.$user->id,$content);
+                        //$redis->HSET($rsKeyH,'sendC='.$user->id,$content);
                         break;
                 }
-            }
-            $redis->exec();
-            $swoole = new Swoole();
-            switch ($message_type){
-                case 2:             //2 右下角弹出提示
-                    $swoole->swooletest('msgSendR',1);
-                    break;
-                case 3:             //3 页面中央弹出提示
-                    $swoole->swooletest('msgSendC',1);
-                    break;
             }
             if(isset($msgdata) && count($msgdata)>0)
                 DB::table('user_messages')->insert($msgdata);

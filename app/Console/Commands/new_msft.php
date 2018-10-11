@@ -97,6 +97,11 @@ class new_msft extends Command
             $opennum = $excel->kill_count($table,$res->expect,$this->gameId,$res->opencode);
             //---kill end
             $opencode = empty($opennum)?$res->opencode:$opennum;
+            //清除昨天长龙，在录第一期的时候清掉
+            if($filtered['issue']=='0001'){
+                DB::table('clong_kaijian1')->where('lotteryid',82)->delete();
+                DB::table('clong_kaijian2')->where('lotteryid',82)->delete();
+            }
             try{
                 DB::table('game_msft')->where('issue',$res->expect)->update([
                     'is_open' => 1,
