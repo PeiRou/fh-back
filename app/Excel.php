@@ -15,7 +15,7 @@ class Excel
      */
     public function updateUserMoney($gameId,$issue,$gameName=''){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','play_id','play_name','order_id','issue','playcate_name','play_name','play_odds')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->get();
+        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->get();
         if($get){
             //更新返奖的用户馀额
             $sql = "UPDATE users SET money = money+ CASE id ";
@@ -53,8 +53,8 @@ class Excel
                 $tmpCap['issue'] = $i->issue;
                 $tmpCap['game_id'] = $i->game_id;
                 $tmpCap['game_name'] = $gameName;
-                $tmpCap['play_id'] = $i->play_id;
-                $tmpCap['play_name'] = $i->playcate_name;
+                $tmpCap['playcate_id'] = $i->playcate_id;
+                $tmpCap['playcate_name'] = $i->playcate_name;
                 $tmpCap['content'] = $gameName.'-'.$i->play_name.'-'.$i->play_odds;
                 $tmpCap['created_at'] = date('Y-m-d H:i:s');
                 $tmpCap['updated_at'] = date('Y-m-d H:i:s');
