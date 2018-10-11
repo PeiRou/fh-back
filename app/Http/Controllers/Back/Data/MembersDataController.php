@@ -626,6 +626,8 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                             return '<span class="red-text">' . $capital->money . '</span>';
                         }
                     }
+                }else{
+                    return '<span class="red-text">' . $capital->money . '</span>';
                 }
             })
             ->editColumn('balance', function($capital){
