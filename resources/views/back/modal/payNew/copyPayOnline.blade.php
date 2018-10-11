@@ -82,7 +82,7 @@
     </div>
 
     <div class="field">
-        <label>第三方私钥(或其他第三方域名)</label>
+        <label>第三方私钥</label>
         <div class="ui input icon">
             <input type="text" name="apiPrivateKey" placeholder="非必填" value="{{$payOnline->apiPrivateKey?:''}}"/>
         </div>
