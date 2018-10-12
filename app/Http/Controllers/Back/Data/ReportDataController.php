@@ -197,7 +197,7 @@ class ReportDataController extends Controller
             $whereBet .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
         }
         $sql = "LEFT JOIN (select * from bet where 1 AND testFlag = 0 ".$whereBet.") as b ON g.game_id = b.game_id";
-        $aSqlCount = "SELECT COUNT(DISTINCT(g.game_id)) AS count FROM `game` AS g ".$sql." WHERE 1 ".$where;
+        $aSqlCount = "SELECT COUNT(`c`.`game_id`) AS `count` FROM (SELECT g.game_id FROM `game` AS g ".$sql." WHERE 1 ".$where." GROUP BY g.game_id) AS `c`";
         $sql .= " WHERE 1 ".$where." GROUP BY g.game_id order BY sumBunko asc LIMIT ".$start.','.$length;
         $sql = $sql1.$sql;
         $bet = DB::select($sql);
