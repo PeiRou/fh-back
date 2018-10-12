@@ -632,6 +632,13 @@ class SrcMemberController extends Controller
             ]);
         }
 
+        if(SubAccount::where('account',$account)->count() > 0){
+            return response()->json([
+                'status'=>false,
+                'msg'=>'该帐号已存在'
+            ]);
+        }
+
         //add google OTP Auth Code
         $ga = new \PHPGangsta_GoogleAuthenticator();
         $googleCode = $ga->createSecret();

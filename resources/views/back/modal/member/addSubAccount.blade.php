@@ -90,6 +90,8 @@
                     if(result.status == true){
                         jc.close();
                         $('#subAccountTable').DataTable().ajax.reload(null,false);
+                    }else{
+                        alert(result.msg);
                     }
                 }
             });
