@@ -466,7 +466,7 @@ class BetDataController extends Controller
                 })
                 ->where('bet.user_id',$user->id);
             $betCount = $betSql->count();
-            $bet = $betSql->orderBy('bet.created_at','desc')->skip($startPage)->take($lengthPage)->get();
+            $bet = $betSql->orderBy('bet.created_at','desc')->orderBy('bet.bet_id','desc')->skip($startPage)->take($lengthPage)->get();
             $currentIssue = '';
             $currentColor = '';
             $betModel = new Bets();
