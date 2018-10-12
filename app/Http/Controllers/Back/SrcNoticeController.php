@@ -6,6 +6,7 @@ use App\Events\BackPusherEvent;
 use App\MessagePush;
 use App\Notices;
 use App\Swoole;
+use App\UserMessages;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -180,6 +181,7 @@ class SrcNoticeController extends Controller
                 $tmp['send_sa_id'] = Session::get('account_id');
                 $tmp['send_sa_account'] = Session::get('account');
                 $tmp['created_at'] = date("Y-m-d H:i:s",time());
+                $tmp['message_id'] = $MessagePush->id;
                 $msgdata [] = $tmp;
                 //消息推送
                 switch ($message_type){
@@ -214,6 +216,7 @@ class SrcNoticeController extends Controller
         $id = $request->get('id');
         $del = MessagePush::where('id', $id)->delete();
         if ($del == 1) {
+            UserMessages::where('message_id',$id)->delete();
             return response()->json([
                 'status' => true,
             ]);
