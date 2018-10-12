@@ -258,7 +258,7 @@ class FinanceDataController extends Controller
             ->orderBy('drawing.created_at','desc');
         $drawingCount = $drawingSQL->count();
         $drawing = $drawingSQL->skip($start)->take($length)->get();
-        $aPayOnlineNew = PayOnlineNew::select('levels','rechName','id')->where('payCode','DF')->get()->toArray();
+        $aPayOnlineNew = PayOnlineNew::select('levels','rechName','id')->where('payCode','DF')->where('status',1)->get()->toArray();
         return DataTables::of($drawing)
             ->editColumn('created_at',function ($drawing){
                 return date('m/d H:i',strtotime($drawing->dr_created_at));
