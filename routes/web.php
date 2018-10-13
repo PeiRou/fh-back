@@ -65,6 +65,11 @@ Route::group(['middleware'=>['check-ip']],function () {
 
 //开奖管理
     Route::group(['prefix' => 'back/control/openManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
+
+        Route::get('cqxync', 'Back\SrcViewController@openManage_cqxync')->name('historyLottery.cqxync'); //重庆幸运农场
+        Route::get('gdklsf', 'Back\SrcViewController@openManage_gdklsf')->name('historyLottery.gdklsf'); //广东快乐十分
+        Route::get('gd11x5', 'Back\SrcViewController@openManage_gd11x5')->name('historyLottery.gd11x5'); //广东11选5
+
         Route::get('cqssc', 'Back\SrcViewController@openManage_cqssc')->name('historyLottery.cqssc'); //重庆时时彩
         Route::get('msssc', 'Back\SrcViewController@openManage_msssc')->name('historyLottery.msssc'); //秒速时时彩
         Route::get('bjpk10', 'Back\SrcViewController@openManage_bjpk10')->name('historyLottery.bjpk10'); //北京pk10
@@ -230,6 +235,11 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/log/login', 'Back\Data\LogDataController@login'); //登录日志
     Route::get('/back/datatables/logHandle', 'Back\Data\LogDataController@logHandle'); //操作日志
     Route::get('/back/datatables/logAbnormal', 'Back\Data\LogDataController@logAbnormal'); //异常日志
+
+    Route::get('/back/datatables/openHistory/gdklsf', 'Back\Data\openHistoryController@gdklsf'); //历史开奖 - 广东快乐十分
+    Route::get('/back/datatables/openHistory/cqxync', 'Back\Data\openHistoryController@cqxync'); //历史开奖 - 重庆幸运农场
+    Route::get('/back/datatables/openHistory/gd11x5', 'Back\Data\openHistoryController@gd11x5'); //历史开奖 - 广东11选5
+
     Route::get('/back/datatables/openHistory/cqssc', 'Back\Data\openHistoryController@cqssc'); //历史开奖 - 重庆时时彩
     Route::get('/back/datatables/openHistory/msssc', 'Back\Data\openHistoryController@msssc'); //历史开奖 - 秒速时时彩
     Route::get('/back/datatables/openHistory/bjpk10', 'Back\Data\openHistoryController@bjpk10'); //历史开奖 - 北京PK10

@@ -111,7 +111,52 @@ class openHistoryController extends Controller
             ->skipPaging()
             ->make(true);
     }
+    //广东快乐十分-表格数据
+    public function gdklsf(Request $request){
+        $issue = $request->get('issue');
+        $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $table = 'game_gdklsf';
+        $HISModel = $this->getPostData($table,$issue,$issuedate);
+        $HISCount = $HISModel->count();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
+        return DataTables::of($HIS)
+            ->setTotalRecords($HISCount)
+            ->skipPaging()
+            ->make(true);
+    }
+    //重庆幸运农场-表格数据
+    public function cqxync(Request $request){
+        $issue = $request->get('issue');
+        $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $table = 'game_cqxync';
+        $HISModel = $this->getPostData($table,$issue,$issuedate);
+        $HISCount = $HISModel->count();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
+        return DataTables::of($HIS)
+            ->setTotalRecords($HISCount)
+            ->skipPaging()
+            ->make(true);
+    }
+    //广东11选5-表格数据
+    public function gd11x5(Request $request){
+        $issue = $request->get('issue');
+        $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $table = 'game_gd11x5';
+        $HISModel = $this->getPostData($table,$issue,$issuedate);
+        $HISCount = $HISModel->count();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
 
+        return DataTables::of($HIS)
+            ->setTotalRecords($HISCount)
+            ->skipPaging()
+            ->make(true);
+    }
     //重庆时时彩-表格数据
     public function cqssc(Request $request)
     {

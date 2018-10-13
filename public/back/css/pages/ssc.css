@@ -44,3 +44,145 @@
 .T_SSC .b9 {
     background-position: 0 -243px;
 }
+.T_KLSF{
+    display: flex;
+}
+.T_KLSF b {
+     width: 26px !important;
+     height: 24px !important;
+     display: block;
+     margin-left:8px;
+    background:url(/back/img/ball_1.png) no-repeat;
+ }
+  .T_KLSF .b1 {
+    background-position:0 0
+}
+  .T_KLSF .b2 {
+    background-position:0 -27px
+}
+ .T_KLSF .b3 {
+    background-position:0 -54px
+}
+ .T_KLSF .b4 {
+    background-position:0 -81px
+}
+ .T_KLSF .b5 {
+    background-position:0 -108px
+}
+ .T_KLSF .b6 {
+    background-position:0 -135px
+}
+ .T_KLSF .b7 {
+    background-position:0 -162px
+}
+ .T_KLSF .b8 {
+    background-position:0 -189px
+}
+ .T_KLSF .b9 {
+    background-position:0 -216px
+}
+ .T_KLSF .b10 {
+    background-position:0 -243px
+}
+ .T_KLSF .b11 {
+    background-position:0 -270px
+}
+ .T_KLSF .b12 {
+    background-position:0 -297px
+}
+ .T_KLSF .b13 {
+    background-position:0 -324px
+}
+ .T_KLSF .b14 {
+    background-position:0 -351px
+}
+ .T_KLSF .b15 {
+    background-position:0 -378px
+}
+ .T_KLSF .b16 {
+    background-position:0 -405px
+}
+ .T_KLSF .b17 {
+    background-position:0 -432px
+}
+ .T_KLSF .b18 {
+    background-position:0 -459px
+}
+ .T_KLSF .b19 {
+    background-position:0 -486px
+}
+ .T_KLSF .b20 {
+    background-position:0 -513px
+}
+
+
+
+
+ .L_XYNC b {
+     width: 32px;
+
+     height: 32px;
+    display: inline-block;
+     margin-left: 5px;
+    background:url(/back/img/ball_nc_top.png) no-repeat
+}
+.L_XYNC .b1 {
+    background-position:0 0
+}
+.L_XYNC .b2 {
+    background-position:0 -33px
+}
+.L_XYNC .b3 {
+    background-position:0 -66px
+}
+.L_XYNC .b4 {
+    background-position:0 -99px
+}
+.L_XYNC .b5 {
+    background-position:0 -132px
+}
+.L_XYNC .b6 {
+    background-position:0 -165px
+}
+.L_XYNC .b7 {
+    background-position:0 -198px
+}
+.L_XYNC .b8 {
+    background-position:0 -231px
+}
+.L_XYNC .b9 {
+    background-position:0 -264px
+}
+.L_XYNC .b10 {
+    background-position:0 -297px
+}
+.L_XYNC .b11 {
+    background-position:0 -330px
+}
+.L_XYNC .b12 {
+    background-position:0 -363px
+}
+.L_XYNC .b13 {
+    background-position:0 -396px
+}
+.L_XYNC .b14 {
+    background-position:0 -429px
+}
+.L_XYNC .b15 {
+    background-position:0 -462px
+}
+.L_XYNC .b16 {
+    background-position:0 -495px
+}
+.L_XYNC .b17 {
+    background-position:0 -528px
+}
+.L_XYNC .b18 {
+    background-position:0 -561px
+}
+.L_XYNC .b19 {
+    background-position:0 -594px
+}
+.L_XYNC .b20 {
+    background-position:0 -627px
+}

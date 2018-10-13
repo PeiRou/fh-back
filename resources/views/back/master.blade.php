@@ -195,6 +195,15 @@
                 <span><img src="/back/old/images/leftico01.png"></span>
                 历史开奖</a>
             <ul style="height: 220px;overflow: auto;">
+                @if($hasPermission->hasPermission('historyLottery.cqxync') == "has")
+                    <li id="menu-openManage-cqxync"><a href="{{ route('historyLottery.cqxync') }}"><cite></cite><span>重庆幸运农场</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.gdklsf') == "has")
+                    <li id="menu-openManage-gdklsf"><a href="{{ route('historyLottery.gdklsf') }}"><cite></cite><span>广东快乐十分</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.gd11x5') == "has")
+                    <li id="menu-openManage-gd11x5"><a href="{{ route('historyLottery.gd11x5') }}"><cite></cite><span>广东11选5</span></a></li>
+                @endif
                 @if($hasPermission->hasPermission('historyLottery.cqssc') == "has")
                 <li id="menu-openManage-cqssc"><a href="{{ route('historyLottery.cqssc') }}"><cite></cite><span>重庆时时彩</span></a></li>
                 @endif
