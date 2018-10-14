@@ -171,6 +171,7 @@
             </ul>
         </li>
         @endif
+        @if($hasPermission->hasPermission('cardGame') == "has")
         <li id="menu-cardGameManage" class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>
                 棋牌管理</a>
@@ -179,6 +180,7 @@
                 <li id="menu-cardGameManage-cardBetInfo"><a href=""><cite></cite><span>棋牌下注查询</span></a></li>
             </ul>
         </li>
+        @endif
         @if($hasPermission->hasPermission('game') == "has")
         <li id="menu-gameManage" class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>
