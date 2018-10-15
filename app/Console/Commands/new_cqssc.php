@@ -66,12 +66,14 @@ class new_cqssc extends Command
                 $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(255)->toDateTimeString();
                 $nextIssueLotteryTime = Carbon::parse($res->opentime)->addMinutes(5)->toDateTimeString();
             }
-            if($filtered['issue'] == '023'){
+            if($filtered['issue'] == '120'){
+                $nextIssueTime = date('Ymd').'001';
+            }else if($filtered['issue'] == '023'){
                 $nextIssueTime = date('Ymd').'024';
-                Redis::set('cqssc:nextIssue',(int)$nextIssueTime);
             } else {
-                Redis::set('cqssc:nextIssue',(int)$nextIssue+1);
+                $nextIssueTime = (int)$nextIssue+1;
             }
+            Redis::set('cqssc:nextIssue',$nextIssueTime);
 
             Redis::set('cqssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             Redis::set('cqssc:nextIssueEndTime',strtotime($nextIssueEndTime));

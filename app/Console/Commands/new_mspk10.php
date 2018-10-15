@@ -83,7 +83,7 @@ class new_mspk10 extends Command
             $nextIssueLotteryTime = Carbon::parse($res->opentime)->addSeconds(75)->toDateTimeString();
 
             $New_nextIssue = $nextIssue+1;
-            if(substr($nextIssue,-4)=='1106'){
+            if(substr($New_nextIssue,-4)=='1106'){
                 $dateIssue = substr($nextIssue,strlen($nextIssue)-4);
                 $New_nextIssue = date("ymd",strtotime($dateIssue)+3600).'0001';
             }
