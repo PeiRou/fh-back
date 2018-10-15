@@ -177,10 +177,10 @@
                 棋牌管理</a>
             <ul>
                 @if($hasPermission->hasPermission('cardGame.upDownSearch') == "has")
-                <li id="menu-cardGameManage-upDownSearch"><a href=""><cite></cite><span>上下分记录查询</span></a></li>
+                <li id="menu-cardGameManage-upDownSearch"><a href="{{ route('cardGame.upDownSearch') }}"><cite></cite><span>上下分记录查询</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('cardGame.cardBetInfo') == "has")
-                <li id="menu-cardGameManage-cardBetInfo"><a href=""><cite></cite><span>棋牌下注查询</span></a></li>
+                <li id="menu-cardGameManage-cardBetInfo"><a href="{{ route('cardGame.cardBetInfo') }}"><cite></cite><span>棋牌下注查询</span></a></li>
                 @endif
             </ul>
         </li>
