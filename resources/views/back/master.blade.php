@@ -8,6 +8,7 @@
     <meta name="_token" content="{{ csrf_token() }}"/>
     <title>@yield('title') - 管理后台</title>
 
+    <link rel="shortcut icon" type="image/png" href="{{ env('ICON') }}"/>
     <link rel="stylesheet" href="/vendor/Semantic/semantic.min.css">
     <link rel="stylesheet" href="/vendor/formvalidation/dist/css/formValidation.min.css">
     <link rel="stylesheet" href="/vendor/confirm/dist/jquery-confirm.min.css">
@@ -166,6 +167,20 @@
                 @endif
                 @if($hasPermission->hasPermission('bet.betRealTime') == "has")
                 <li id="menu-betManage-betRealTime"><a href="{{ route('bet.betRealTime') }}"><cite></cite><span>实时滚单</span></a></li>
+                @endif
+            </ul>
+        </li>
+        @endif
+        @if($hasPermission->hasPermission('cardGame') == "has")
+        <li id="menu-cardGameManage" class="nav-item"><a href="javascript:void(0)">
+                <span><img src="/back/old/images/leftico01.png"></span>
+                棋牌管理</a>
+            <ul>
+                @if($hasPermission->hasPermission('cardGame.upDownSearch') == "has")
+                <li id="menu-cardGameManage-upDownSearch"><a href="{{ route('cardGame.upDownSearch') }}"><cite></cite><span>上下分记录查询</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('cardGame.cardBetInfo') == "has")
+                <li id="menu-cardGameManage-cardBetInfo"><a href="{{ route('cardGame.cardBetInfo') }}"><cite></cite><span>棋牌下注查询</span></a></li>
                 @endif
             </ul>
         </li>

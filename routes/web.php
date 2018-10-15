@@ -21,6 +21,12 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('userBetList/{userId}', 'Back\SrcViewController@userBetList')->name('m.user.viewDetails'); //用户注单明细
     });
 
+//棋牌管理
+    Route::group(['prefix' => 'back/control/cardGameManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
+        Route::get('up_down', 'Back\SrcViewController@upDownSearch')->name('cardGame.upDownSearch'); // 上下分记录查询
+        Route::get('card_bet', 'Back\SrcViewController@cardBetInfo')->name('cardGame.cardBetInfo'); // 棋牌下注查询
+    });
+
 //财务管理
     Route::group(['prefix' => 'back/control/financeManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('rechargeRecord', 'Back\SrcViewController@rechargeRecord')->name('finance.rechargeRecord'); // 充值记录
