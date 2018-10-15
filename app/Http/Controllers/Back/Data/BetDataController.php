@@ -353,7 +353,7 @@ class BetDataController extends Controller
             $foreach = explode(',',implode(',',$games));
             $q = '';
             foreach($foreach as $item){
-                $q .= 'game_id = "'.$item.'" and ';
+                $q .= '`bet`.`game_id` = "'.$item.'" and ';
             }
         } else {
             $q = '';
