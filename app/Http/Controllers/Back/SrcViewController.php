@@ -268,6 +268,19 @@ class SrcViewController extends Controller
     {
         return view('back.agentReconciliation');
     }
+    
+    //棋牌管理
+    //上分下分查询
+    public function upDownSearch()
+    {
+        return view('back.cardGame.upDownSearch');
+    }
+
+    //棋牌投注查询
+    public function cardBetInfo()
+    {
+        return view('back.cardGame.cardBetInfo');
+    }
 
     //开奖记录
     //重庆幸运农场
