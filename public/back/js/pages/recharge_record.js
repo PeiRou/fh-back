@@ -85,7 +85,7 @@ $(function () {
                 d.isSearch = $('#isSearch').val();
                 d.status = $('#status').val();
                 d.pay_online_id = $('#pay_online_id').val();
-                d.recharge_type = $('#rechargeType').val();
+                d.recharge_type = $('#recharge_type').val();
                 d.account_type = $('#account_type').val();
                 d.account_param = $('#account_param').val();
                 d.amount = $('#amount').val();
