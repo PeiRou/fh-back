@@ -75,39 +75,32 @@ class FinanceDataController extends Controller
         }
         if(empty($startTime) && empty($endTime))
             $where .= " and recharges.created_at = now() ";
-        $whereStaus = '';
+//        $whereStaus = '';
         if(isset($status) && $status){
             $whereStaus = ' and recharges.status = '.$status;
             Session::put('recharge_report_status',$status);
         }else{
+            $whereStaus = ' and recharges.status in (1,2,3,4)';
             Session::put('recharge_report_status',2);
         }
-        if(isset($payType) && $payType){
-            if($payType == 1){
-                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
-            }elseif($payType == 2){
-                $where .= " and recharges.payType = 'onlinePayment'";
-            }
-
-        }
-//        if(empty($findUserId) && empty($account_param)){
+        if(empty($findUserId) && empty($account_param)){
 //            if(isset($status) && $status){
 //                $whereStaus = ' and recharges.status = '.$status;
 //                Session::put('recharge_report_status',$status);
 //            }else{
-//                $whereStaus = ' and recharges.status in (1,2,3)';
+//                $whereStaus = ' and recharges.status in (1,2,3,4)';
 //                Session::put('recharge_report_status',2);
 //            }
-//            if(isset($payType) && $payType){
-//                if($payType == 1){
-//                    $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
-//                }elseif($payType == 2){
-//                    $where .= " and recharges.payType = 'onlinePayment'";
-//                }
-//
-//            }
-//        }
-
+            if(isset($payType) && $payType){
+                if($payType == 1){
+                    $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft','adminAddMoney')";
+                }else{
+                    $where .= " and recharges.payType = 'onlinePayment'";
+                }
+            }else{
+                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft','adminAddMoney')";
+            }
+        }
         $sql1 = 'SELECT users.id as uid,recharges.id as rid,recharges.created_at as re_created_at,recharges.levels as re_levels,recharges.process_date as re_process_date,recharges.username as re_username,recharges.userId as userId,users.fullName as user_fullName,users.money as user_money,recharges.payType as re_payType,recharges.amount as re_amount,rebate_or_fee,recharges.operation_account as re_operation_account,recharges.shou_info as re_shou_info,recharges.ru_info as re_ru_info,recharges.status as re_status,recharges.msg as re_msg,recharges.orderNum as re_orderNum,recharges.sysPayOrder as re_sysPayOrder,recharges.balance as re_balance,users.rechLevel as user_rechLevel,level.name as level_name '.$sql.$where .$whereStaus. ' order by recharges.created_at desc ';
         $aSqlCount = 'select count(recharges.id) AS count '.$sql.$where .$whereStaus;
         Session::put('recharge_report',$where);
