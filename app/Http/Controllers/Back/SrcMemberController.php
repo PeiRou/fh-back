@@ -280,15 +280,6 @@ class SrcMemberController extends Controller
             ]);
         }
 
-        //帐号匹配
-        $pattern = '/^[\w]+$/u';
-        $matches = preg_match($pattern, $username);
-        if(!$matches)
-            return response()->json([
-                'status'=>false,
-                'msg'=>'用户名不能为汉字！'
-            ]);
-
         $check = User::where('username',$username)->count();
         if($check !== 0){
             return response()->json([

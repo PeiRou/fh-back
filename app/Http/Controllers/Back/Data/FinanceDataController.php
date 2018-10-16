@@ -79,6 +79,8 @@ class FinanceDataController extends Controller
         if(isset($status) && $status){
             $whereStaus = ' and recharges.status = '.$status;
             Session::put('recharge_report_status',$status);
+        }else{
+            Session::put('recharge_report_status',2);
         }
         if(isset($payType) && $payType){
             if($payType == 1){
