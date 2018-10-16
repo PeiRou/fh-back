@@ -55,6 +55,9 @@ class new_msjsk3 extends Command
             }
         });
         if($filtered!=null){
+            if($filtered['time'] == '0001'){
+                \Log::info('秒速快三第一期:'.date('Y-m-d ').$filtered['time']);
+            }
             $params =  [
                 'issue' => date('Ymd').$filtered['issue'],
                 'openTime' => date('Y-m-d ').$filtered['time'],
