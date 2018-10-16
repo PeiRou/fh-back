@@ -92,11 +92,7 @@ class FinanceDataController extends Controller
 //                Session::put('recharge_report_status',2);
 //            }
             if(isset($payType) && $payType){
-                if($payType == 1){
-                    $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft','adminAddMoney')";
-                }else{
-                    $where .= " and recharges.payType = 'onlinePayment'";
-                }
+                $where .= " and recharges.payType = '".$payType."'";
             }else{
                 $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft','adminAddMoney')";
             }
