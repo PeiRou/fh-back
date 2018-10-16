@@ -76,7 +76,6 @@ class FinanceDataController extends Controller
         if(empty($startTime) && empty($endTime))
             $where .= " and recharges.created_at = now() ";
         $whereStaus = '';
-        if(empty($findUserId) && empty($account_param)){
             if(isset($status) && $status){
                 $whereStaus = ' and recharges.status = '.$status;
                 Session::put('recharge_report_status',$status);
@@ -84,6 +83,14 @@ class FinanceDataController extends Controller
                 $whereStaus = ' and recharges.status in (1,2,3)';
                 Session::put('recharge_report_status',2);
             }
+        if(empty($findUserId) && empty($account_param)){
+//            if(isset($status) && $status){
+//                $whereStaus = ' and recharges.status = '.$status;
+//                Session::put('recharge_report_status',$status);
+//            }else{
+//                $whereStaus = ' and recharges.status in (1,2,3)';
+//                Session::put('recharge_report_status',2);
+//            }
             if(isset($payType) && $payType){
                 $where .= " and recharges.payType = '".$payType."'";
             }else{
