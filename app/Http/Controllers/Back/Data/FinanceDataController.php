@@ -80,7 +80,7 @@ class FinanceDataController extends Controller
             $whereStaus = ' and recharges.status = '.$status;
             Session::put('recharge_report_status',$status);
         }else{
-            $whereStaus = ' and recharges.status in (1,2,3,4)';
+            $whereStaus = ' and recharges.status in (1,2,3)';
             Session::put('recharge_report_status',2);
         }
         if(empty($findUserId) && empty($account_param)){
@@ -94,7 +94,7 @@ class FinanceDataController extends Controller
             if(isset($payType) && $payType){
                 $where .= " and recharges.payType = '".$payType."'";
             }else{
-                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft','adminAddMoney')";
+                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
             }
         }
         $sql1 = 'SELECT users.id as uid,recharges.id as rid,recharges.created_at as re_created_at,recharges.levels as re_levels,recharges.process_date as re_process_date,recharges.username as re_username,recharges.userId as userId,users.fullName as user_fullName,users.money as user_money,recharges.payType as re_payType,recharges.amount as re_amount,rebate_or_fee,recharges.operation_account as re_operation_account,recharges.shou_info as re_shou_info,recharges.ru_info as re_ru_info,recharges.status as re_status,recharges.msg as re_msg,recharges.orderNum as re_orderNum,recharges.sysPayOrder as re_sysPayOrder,recharges.balance as re_balance,users.rechLevel as user_rechLevel,level.name as level_name '.$sql.$where .$whereStaus. ' order by recharges.created_at desc ';
