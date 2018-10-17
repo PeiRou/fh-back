@@ -194,16 +194,21 @@ class RechargeController extends Controller
             })
             ->where('recharges.payType','!=','onlinePayment')->where('recharges.status',2)->whereDate('recharges.created_at',date('Y-m-d'))->sum('recharges.amount');
 
+        $onlineMemberToday = Recharges::getOnlineMemberToday(date('Y-m-d'));
+        $offlineMemberToday = Recharges::getOfflineMemberToday(date('Y-m-d'));
+
         $where = Session::get('recharge_report');
         $whereStatus = Session::get('recharge_report_status');
 //        \Log::info('select sum(amount) as total  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 and recharges.status = '.$whereStatus." ".$where);
-        $total = DB::select('select sum(amount) as total  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 and recharges.status = '.$whereStatus." ".$where);
-        foreach ($total as&$val)
-            $total = $val;
+        $aRecharge = DB::select('select sum(amount) as total,SUM(rebate_or_fee) as give  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 and recharges.status = '.$whereStatus." ".$where);
+
         return response()->json([
-            'total' => number_format($total->total,2),
+            'total' => number_format($aRecharge[0]->total,2),
+            'rechargeGiveTotal' => number_format($aRecharge[0]->give,2),
             'onlinePayToday' => number_format($onlinePayToday,2),
-            'offlinePayToday' => number_format($offlinePayToday,2)
+            'offlinePayToday' => number_format($offlinePayToday,2),
+            'onlineMemberToday' => $onlineMemberToday,
+            'offlineMemberToday' => $offlineMemberToday,
         ]);
     }
 }
