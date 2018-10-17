@@ -186,6 +186,45 @@ $('#searchType').on('change',function () {
     }
 });
 
+function cancel(orderId) {
+    jc = $.confirm({
+        title: '确定要取消未结算注单【'+ orderId +'】吗？',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '您确定要执行取消操作吗？注单取消后，无法恢复，请谨慎操作！',
+        buttons: {
+            confirm: {
+                text:'确定删除',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/action/admin/bet/cancel/'+orderId,
+                        type:'post',
+                        dataType:'json',
+                        success:function (data) {
+                            if(data.status == true){
+                                $('#betTodayTable').DataTable().ajax.reload(null,false)
+                            }else{
+                                alert(data.msg);
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
+
 function getTotalBet() {
     var searchType = $('#searchType').val();
     var game = $('#game').val();

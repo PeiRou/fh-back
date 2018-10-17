@@ -904,4 +904,40 @@ class OpenHistoryController extends Controller
         Capital::insert($aCapital);
         return response()->json(['status' => true]);
     }
+
+    //取消注单
+    public function cancelBetOrder($orderId){
+        $iBet = Bets::where('order_id',$orderId)->first();
+        if(empty($iBet))
+            return response()->json(['status' => false,'msg' => '注单不存在']);
+        $adminId = Session::get('account_id');
+        $dateTime = date('Y-m-d H:i:s');
+        $iUser = Users::where('id',$iBet->user_id)->first();
+        if(empty($iUser))
+            return response()->json(['status' => false,'msg' => '用户不存在']);
+        $iCapital = [
+            'to_user' => $iBet->user_id,
+            'user_type' => 'user',
+            'order_id' => $iBet->order_id,
+            'type' => 't16',
+            'rechargesType' => 0,
+            'game_id' => $iBet->game_id,
+            'issue' => $iBet->issue,
+            'money' => $iBet->bet_money,
+            'balance' => $iUser->money,
+            'operation_id' => $adminId,
+            'created_at' => $dateTime,
+            'updated_at' => $dateTime,
+        ];
+        DB::beginTransaction();
+        $result1 = Capital::insert($iCapital);
+        $result2 = Users::where('id',$iBet->user_id)->increment('money',$iBet->bet_money);
+        $result3 = Bets::where('order_id',$orderId)->delete();
+        if($result1 && $result2 && $result3){
+            DB::commit();
+            return response()->json(['status' => true,'msg' => '']);
+        }
+        DB::rollback();
+        return response()->json(['status' => false,'msg' => '注单失败']);
+    }
 }

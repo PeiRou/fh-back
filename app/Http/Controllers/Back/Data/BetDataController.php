@@ -182,9 +182,9 @@ class BetDataController extends Controller
                 }
             })
             ->editColumn('control',function ($bet){
-                return "取消注单";
+                return '<a href="javascript:;" onclick="cancel(\''.$bet->bet_order_id.'\')">取消注单</a>';
             })
-            ->rawColumns(['user','play','issue','bunko','bet_money','platform'])
+            ->rawColumns(['user','play','issue','bunko','bet_money','platform','control'])
             ->setTotalRecords($betCount)
             ->skipPaging()
             ->with('betMoney',$betMoney)
