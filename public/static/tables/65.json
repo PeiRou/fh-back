@@ -1,0 +1,107 @@
+<div>
+    <table width="100%" class="info-table">
+        <thead>
+        <tr>
+            <th colspan="2">玩法</th>
+            <th>赔率</th>
+            <th>退水</th>
+            <th>单注最低</th>
+            <th>单注最高</th>
+            <th>单期最高</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="2">正码</td>
+            <td>3.81</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td colspan="2">两面</td>
+            <td>1.996</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td colspan="2">总和和局</td>
+            <td>108</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td colspan="2">总和过关</td>
+            <td>3.75</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td rowspan="2">前后和</td>
+            <td>前（多）后（多）</td>
+            <td>1.996</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td>和</td>
+            <td>3.82</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td rowspan="2">单双和</td>
+            <td>单（多）双（多）</td>
+            <td>1.99</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td>和</td>
+            <td>3.82</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td rowspan="3">五行</td>
+            <td>金,土</td>
+            <td>9.21</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td>木,火</td>
+            <td>4.61</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td>水</td>
+            <td>2.41</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

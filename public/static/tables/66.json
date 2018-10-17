@@ -1,0 +1,186 @@
+<div>
+    <table width="100%" class="info-table">
+        <thead>
+        <tr>
+            <th colspan="2">玩法</th>
+            <th>赔率</th>
+            <th>退水</th>
+            <th>单注最低</th>
+            <th>单注最高</th>
+            <th>单期最高</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td rowspan="4">混合</td>
+            <td >大,小,单,双</td>
+            <td>1.981</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td>大单,大双，小单，小双</td>
+            <td>3.8</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td>极大,极小</td>
+            <td>10</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td>豹子</td>
+            <td>90</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td colspan="2">波色</td>
+            <td>2.96</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>100000</td>
+            <td>100000</td>
+        </tr>
+        <tr>
+            <td rowspan="16">特码</td>
+            <td>0</td>
+            <td>941</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr>
+            <td>1，26</td>
+            <td>313</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr>
+            <td>2，25</td>
+            <td>156</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611403">
+            <td>3</td>
+            <td>64</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611404">
+            <td>4，23</td>
+            <td>62</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611405">
+            <td>5，22</td>
+            <td>44</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611406">
+            <td>6，21</td>
+            <td>33</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611407">
+            <td>7，20</td>
+            <td>26</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611408">
+            <td>8，19</td>
+            <td>20.9</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611409">
+            <td>9，18</td>
+            <td>17.1</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611410">
+            <td>10，17</td>
+            <td>14.9</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611411">
+            <td>11，16</td>
+            <td>13.5</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611412">
+            <td>12，15</td>
+            <td>12.8</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611413">
+            <td>13，14</td>
+            <td>12.5</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611424">
+            <td>24</td>
+            <td>65</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        <tr play_id="6611427">
+            <td>27</td>
+            <td>941</td>
+            <td>0%</td>
+            <td>50</td>
+            <td>20000</td>
+            <td>20000</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

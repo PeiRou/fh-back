@@ -1,0 +1,88 @@
+<div>
+    <table width="100%" class="info-table">
+        <thead>
+        <tr>
+            <th colspan="2">玩法</th>
+            <th>赔率</th>
+            <th>退水</th>
+            <th>单注最低</th>
+            <th>单注最高</th>
+            <th>单期最高</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="2">牛6及以下</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100000</td>
+            <td>200000</td>
+        </tr>
+        <tr>
+            <td colspan="2">牛7/牛8</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100000</td>
+            <td>200000</td>
+        </tr>
+        <tr>
+            <td colspan="2">牛9</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100000</td>
+            <td>200000</td>
+        </tr>
+        <tr>
+            <td colspan="2">牛牛</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100000</td>
+            <td>200000</td>
+        </tr>
+        <tr>
+            <td colspan="2">闲一</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100000</td>
+            <td>200000</td>
+        </tr>
+        <tr>
+            <td colspan="2">闲二</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100000</td>
+            <td>200000</td>
+        </tr>
+        <tr>
+            <td colspan="2">闲三</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100000</td>
+            <td>200000</td>
+        </tr>
+        <tr>
+            <td colspan="2">闲四</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100000</td>
+            <td>200000</td>
+        </tr>
+        <tr>
+            <td colspan="2">闲五</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100000</td>
+            <td>200000</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

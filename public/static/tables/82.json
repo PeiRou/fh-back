@@ -1,0 +1,107 @@
+<div>
+    <table width="100%" class="info-table">
+        <thead>
+        <tr>
+            <th colspan="2">玩法</th>
+            <th>赔率</th>
+            <th>退水</th>
+            <th>单注最低</th>
+            <th>单注最高</th>
+            <th>单期最高</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="2">1-10车号</td>
+            <td>9.96</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td colspan="2">两面</td>
+            <td>1.996</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td rowspan="2">冠亚军和大小</td>
+            <td>大</td>
+            <td>2.19</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td>小</td>
+            <td>1.78</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td rowspan="2">冠亚军和单双</td>
+            <td>单</td>
+            <td>1.78</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td>双</td>
+            <td>2.2</td>
+            <td>0%</td>
+            <td>1</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td rowspan="5">冠亚军和</td>
+            <td>3,4,18,19</td>
+            <td>42.5</td>
+            <td>0%</td>
+            <td>5</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td>5,6,16,17</td>
+            <td>21.5</td>
+            <td>0%</td>
+            <td>5</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td>7,8,14,15</td>
+            <td>14.5</td>
+            <td>0%</td>
+            <td>5</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td>9,10,12,13</td>
+            <td>10.5</td>
+            <td>0%</td>
+            <td>5</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>8.5</td>
+            <td>0%</td>
+            <td>5</td>
+            <td>500000</td>
+            <td>500000</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
