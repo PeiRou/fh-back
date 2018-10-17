@@ -182,7 +182,7 @@ class SaveGameOddsController extends Controller
             $sqlRebate .= "END WHERE `gameId` = $id";
             $run = DB::statement($sqlOdds . $sqlRebate);
             if ($run == 1) {
-                $this->updateBatch1($id); //pc端生成table
+//                $this->updateBatch1($id); //pc端生成table
                 $write = Storage::disk('static')->put('gamedatas.js', '');
                 $game = Games::select('game_id as id', 'game_name as name', 'mode', 'code', 'order as sort', 'cate', 'maxReward', 'status as open', 'iconUrl', 'pageUrl', 'holiday_start as restStartDate', 'holiday_end as restEndDate', 'amount', 'isBan')->orderBy('order', 'ASC')->get();
                 $playCate = PlayCates::all();
