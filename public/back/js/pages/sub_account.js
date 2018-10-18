@@ -9,6 +9,7 @@ $(function () {
     var accountId = $('#accountIdInput').val();
 
     $('#subAccountTable').DataTable({
+        aLengthMenu: [[50]],
         searching: false,
         bLengthChange: false,
         processing: true,
