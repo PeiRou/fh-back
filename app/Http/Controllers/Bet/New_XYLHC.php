@@ -1188,7 +1188,7 @@ class New_XYLHC
         $w4 = [4,14,24,34,44];
         $w5 = [5,15,25,35,45];
         $w6 = [6,16,26,36,46];
-        $w7 = [7,17,27,36,47];
+        $w7 = [7,17,27,37,47];
         $w8 = [8,18,28,38,48];
         $w9 = [9,19,29,39,49];
         if(in_array($m1,$shu) || in_array($m2,$shu) || in_array($m3,$shu) || in_array($m4,$shu) || in_array($m5,$shu) || in_array($m6,$shu) || in_array($m7,$shu)){
