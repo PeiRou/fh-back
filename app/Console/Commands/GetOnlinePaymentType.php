@@ -42,6 +42,7 @@ class GetOnlinePaymentType extends Command
     public function handle()
     {
         $result = json_decode($this->getArraySign(),true);
+        $this->info($result['errorCode']);
         if($result['errorCode'] == 200){
             PayTypeNew::truncate();
             $this->info('begin');
