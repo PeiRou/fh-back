@@ -12,7 +12,7 @@
     </style>
     <div class="content-top">
         <div class="breadcrumb">
-            <b>位置：</b>盘口设定eeeee
+            <b>位置：</b>盘口设定
         </div>
     </div>
     <div class="table-content">
