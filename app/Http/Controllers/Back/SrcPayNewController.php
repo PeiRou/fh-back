@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Validator;
 
 class SrcPayNewController extends Controller{
 
+    public $str = "/\s|　/";
+
     //添加在线支付配置
     public function addPayOnline(Request $request){
         $aParam = $request->all();
@@ -39,9 +41,9 @@ class SrcPayNewController extends Controller{
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payeeName = $aParam['payeeName'];
         $payOnline->apiId = $aParam['apiId'];
-        $payOnline->apiKey = $aParam['apiKey'];
-        $payOnline->apiPublicKey = $aParam['apiPublicKey'];
-        $payOnline->apiPrivateKey = $aParam['apiPrivateKey'];
+        $payOnline->apiKey = preg_replace($this->str,"",$aParam['apiKey']);
+        $payOnline->apiPublicKey = preg_replace($this->str,"",$aParam['apiPublicKey']);
+        $payOnline->apiPrivateKey = preg_replace($this->str,"",$aParam['apiPrivateKey']);
         $payOnline->domain = $aParam['domain'];
         $payOnline->para1 = $aParam['para1'];
         $payOnline->req_url = $aParam['req_url'];
@@ -85,9 +87,9 @@ class SrcPayNewController extends Controller{
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payeeName = $aParam['payeeName'];
         $payOnline->apiId = $aParam['apiId'];
-        $payOnline->apiKey = $aParam['apiKey'];
-        $payOnline->apiPublicKey = $aParam['apiPublicKey'];
-        $payOnline->apiPrivateKey = $aParam['apiPrivateKey'];
+        $payOnline->apiKey = preg_replace($this->str,"",$aParam['apiKey']);
+        $payOnline->apiPublicKey = preg_replace($this->str,"",$aParam['apiPublicKey']);
+        $payOnline->apiPrivateKey = preg_replace($this->str,"",$aParam['apiPrivateKey']);
         $payOnline->domain = $aParam['domain'];
         $payOnline->para1 = $aParam['para1'];
         $payOnline->req_url = $aParam['req_url'];
@@ -131,11 +133,11 @@ class SrcPayNewController extends Controller{
         $payOnline->payeeName = $aParam['payeeName'];
         $payOnline->apiId = $aParam['apiId'];
         if(!strpos($aParam['apiKey'],'*'))
-            $payOnline->apiKey = $aParam['apiKey'];
+            $payOnline->apiKey = preg_replace($this->str,"",$aParam['apiKey']);
         if(!strpos($aParam['apiPublicKey'],'*'))
-            $payOnline->apiPublicKey = $aParam['apiPublicKey'];
+            $payOnline->apiPublicKey = preg_replace($this->str,"",$aParam['apiPublicKey']);
         if(!strpos($aParam['apiPrivateKey'],'*'))
-            $payOnline->apiPrivateKey = $aParam['apiPrivateKey'];
+            $payOnline->apiPrivateKey = preg_replace($this->str,"",$aParam['apiPrivateKey']);
         $payOnline->domain = $aParam['domain'];
         $payOnline->para1 = $aParam['para1'];
         $payOnline->req_url = $aParam['req_url'];
