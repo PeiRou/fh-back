@@ -44,6 +44,7 @@ class GetOnlinePaymentType extends Command
         $result = json_decode($this->getArraySign(),true);
         if($result['errorCode'] == 200){
             PayTypeNew::truncate();
+            $this->info('begin');
             foreach ($result['data'] as $kData => $iData){
                 $aArray = [
                     'rechName' => $iData['pay_name'],
