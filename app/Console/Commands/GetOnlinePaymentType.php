@@ -75,10 +75,9 @@ class GetOnlinePaymentType extends Command
             'platform_id' => SystemSetting::where('id',1)->value('payment_platform_id'),
             'timestamp' => time()
         ];
-        $this->info(base64_encode(json_encode($aArray)));
         $PaymentPlatform = new PaymentPlatform();
         $aArray['sign'] = $PaymentPlatform->getSign($aArray,SystemSetting::where('id',1)->value('payment_platform_key'));
-        $this->info($aArray['sign']);
+        $this->info(base64_encode(json_encode($aArray)));
         return $PaymentPlatform->postCurl(SystemSetting::where('id',1)->value('payment_platform_interface'),[
             'ciphertext' => base64_encode(json_encode($aArray)),
         ]);
