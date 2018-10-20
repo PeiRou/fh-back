@@ -79,6 +79,11 @@ class new_pcdd extends Command
         $url = Config::get('website.guanServerUrl').'pcdd';
         $html = json_decode(file_get_contents($url),true);
         $redis_issue = Redis::get('pcdd:issue');
+        //清除昨天长龙，在录第一期的时候清掉
+        if($filtered['time']=='09:05:00'){
+            DB::table('clong_kaijian1')->where('lotteryid',66)->delete();
+            DB::table('clong_kaijian2')->where('lotteryid',66)->delete();
+        }
         if($redis_issue !== $html[0]['issue']){
             try{
                 $up = DB::table('game_pcdd')->where('issue',$html[0]['issue'])
