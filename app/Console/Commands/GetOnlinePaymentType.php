@@ -42,8 +42,10 @@ class GetOnlinePaymentType extends Command
     public function handle()
     {
         $result = json_decode($this->getArraySign(),true);
+        $this->info($result['errorCode']);
         if($result['errorCode'] == 200){
             PayTypeNew::truncate();
+            $this->info('begin');
             foreach ($result['data'] as $kData => $iData){
                 $aArray = [
                     'rechName' => $iData['pay_name'],
@@ -75,6 +77,7 @@ class GetOnlinePaymentType extends Command
         ];
         $PaymentPlatform = new PaymentPlatform();
         $aArray['sign'] = $PaymentPlatform->getSign($aArray,SystemSetting::where('id',1)->value('payment_platform_key'));
+//        $this->info(base64_encode(json_encode($aArray)));
         return $PaymentPlatform->postCurl(SystemSetting::where('id',1)->value('payment_platform_interface'),[
             'ciphertext' => base64_encode(json_encode($aArray)),
         ]);
