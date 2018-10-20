@@ -444,6 +444,9 @@
                 @if($hasPermission->hasPermission('agentSettle.setting') == "has")
                 <li id="menu-agentManage-setting"><a href="{{ route('agentSettle.setting') }}"><cite></cite><span>代理结算配置</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('agentSettle.domain') == "has")
+                    <li id="menu-agentManage-domain"><a href="{{ route('agentSettle.domain') }}"><cite></cite><span>代理专属域名</span></a></li>
+                @endif
             </ul>
         </li>
         @endif

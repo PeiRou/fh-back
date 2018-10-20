@@ -232,4 +232,75 @@ class AgentSettleController extends Controller
             ]);
         }
     }
+    //添加代理专属域名
+    public function addAgentSettleDomain(Request $request){
+        if(!($url = $request->get('url')) || !($name = $request->get('name'))){
+            return response()->json([
+                'status'=>0,
+                'msg'=>'参数错误'
+            ]);
+        }
+        $AgentDomain = new \App\AgentDomain();
+        if($AgentDomain->where('url',$url)->first()){
+            return response()->json([
+                'status'=>0,
+                'msg'=>'域名重复'
+            ]);
+        }
+        $res = $AgentDomain->insert([
+            'url' => $url,
+            'name' => $name,
+            'updated_at' => date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+        if($res){
+            return response()->json([
+                'status'=>1,
+                'msg'=>''
+            ]);
+        }
+        return response()->json([
+            'status'=>0,
+            'msg'=>''
+        ]);
+    }
+    //修改代理专属域名
+    public function editAgentSettleDomain(Request $request){
+        if(!($url = $request->get('url')) || !($name = $request->get('name')) || !($id = $request->get('agent_domain_id'))){
+            return response()->json([
+                'status'=>0,
+                'msg'=>'参数错误'
+            ]);
+        }
+        $AgentDomain = new \App\AgentDomain();
+        $data = [
+            'name' => $name,
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+        $AgentDomain->where('id',$id)->update($data);
+        return response()->json([
+            'status'=>1,
+            'msg'=>''
+        ]);
+    }
+    //删除代理域名
+    public function delAgentSettleDomain(Request $request){
+        if(!($id = $request->get('agent_domain_id'))){
+            return response()->json([
+                'status'=>0,
+                'msg'=>'参数错误'
+            ]);
+        }
+        $AgentDomain = new \App\AgentDomain();
+        if($AgentDomain->where('id',$id)->delete()){
+            return response()->json([
+                'status'=>1,
+                'msg'=>''
+            ]);
+        }
+        return response()->json([
+            'status'=>0,
+            'msg'=>'删除失败'
+        ]);
+    }
 }

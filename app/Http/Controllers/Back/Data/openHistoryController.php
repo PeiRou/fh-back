@@ -166,6 +166,7 @@ class openHistoryController extends Controller
         $length = $request->get('length');
         $table = 'game_cqssc';
         $HISModel = $this->getPostData($table,$issue,$issuedate);
+
         $HISCount = $HISModel->count();
         $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
         return DataTables::of($HIS)

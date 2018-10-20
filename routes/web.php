@@ -153,6 +153,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('agentSettleReview', 'Back\SrcViewController@agentSettleReview')->name('agentSettle.review'); //代理结算审核
         Route::get('agentSettleWithdraw', 'Back\SrcViewController@agentSettleWithdraw')->name('agentSettle.draw'); //代理提现
         Route::get('agentSettleConfig', 'Back\SrcViewController@agentSettleConfig')->name('agentSettle.setting'); //代理结配置
+        Route::get('agentSettleDomain', 'Back\SrcViewController@agentSettleDomain')->name('agentSettle.domain'); //代理专属域名
     });
 
 //活动管理
@@ -233,6 +234,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/payOnlineNew', 'Back\Data\PayNewDataController@payOnline'); //充值配置新-在线支付
     Route::get('/back/datatables/payBankNew', 'Back\Data\PayNewDataController@payBank');    //充值配置新-银行支付
     Route::get('/back/datatables/payAlipayNew', 'Back\Data\PayNewDataController@payAlipay');  //充值配置新-支付宝
+    Route::get('/back/datatables/payYsfNew', 'Back\Data\PayNewDataController@payYsf');  //充值配置新-云闪付
     Route::get('/back/datatables/payWechatNew', 'Back\Data\PayNewDataController@payWechat'); //充值配置新-微信
     Route::get('/back/datatables/payCftNew', 'Back\Data\PayNewDataController@payCft');  //充值配置新-财付通
     Route::get('/back/datatables/article', 'Back\Data\ArticleController@article');
@@ -259,6 +261,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/agentSettle/report', 'Back\Data\AgentSettleController@report'); //代理结算报表-表格数据
     Route::get('/back/datatables/agentSettle/review', 'Back\Data\AgentSettleController@review'); //代理结算审核-表格数据
     Route::get('/back/datatables/agentSettle/withdraw', 'Back\Data\AgentSettleController@withdraw'); //代理提现-表格数据
+    Route::get('/back/datatables/agentSettle/domain', 'Back\Data\AgentSettleController@domain'); //代理专属域名
     Route::get('/back/datatables/activity/lists', 'Back\Data\ActivityController@lists'); //活动列表-表格数据
     Route::get('/back/datatables/activity/condition', 'Back\Data\ActivityController@condition'); //活动条件-表格数据
     Route::get('/back/datatables/activity/prize', 'Back\Data\ActivityController@prize'); //奖品配置-表格数据
@@ -328,6 +331,10 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/agentSettle/editReport', 'Back\AgentSettleController@editReport'); //代理结算报表-修改报表
     Route::post('/action/admin/agentSettle/editReview', 'Back\AgentSettleController@editReview'); //代理结算审核-修改审核
     Route::post('/action/admin/agentSettle/editConfig', 'Back\AgentSettleController@editConfig'); //代理结算配置-修改配置
+    Route::post('/action/admin/agentSettle/addAgentSettleDomain', 'Back\AgentSettleController@addAgentSettleDomain'); //代理专属域名-添加
+    Route::post('/action/admin/agentSettle/editAgentSettleDomain', 'Back\AgentSettleController@editAgentSettleDomain'); //代理专属域名-修改
+    Route::post('/action/admin/agentSettle/delAgentSettleDomain', 'Back\AgentSettleController@delAgentSettleDomain'); //代理专属域名-修改
+
 
     Route::post('/action/admin/activity/addActivity', 'Back\ActivityController@addActivity'); //活动列表-新增活动
     Route::post('/action/admin/activity/editActivity', 'Back\ActivityController@editActivity'); //活动列表-修改活动
@@ -397,6 +404,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/new/editPayBank', 'Back\SrcPayNewController@editPayBank');//修改银行支付配置
     Route::post('/action/admin/new/addPayAlipay', 'Back\SrcPayNewController@addPayAlipay');//添加支付宝配置
     Route::post('/action/admin/new/editPayAlipay', 'Back\SrcPayNewController@editPayAlipay');//修改支付宝配置
+    Route::post('/action/admin/new/addPayYsf', 'Back\SrcPayNewController@addPayYsf');//添加云闪付配置
+    Route::post('/action/admin/new/editPayYsf', 'Back\SrcPayNewController@editPayYsf');//修改云闪付配置
+
     Route::post('/action/admin/new/addPayWechat', 'Back\SrcPayNewController@addPayWechat');//添加微信配置
     Route::post('/action/admin/new/editPayWechat', 'Back\SrcPayNewController@editPayWechat');//修改微信配置
     Route::post('/action/admin/new/addPayCft', 'Back\SrcPayNewController@addPayCft');//添加财付通配置
@@ -445,6 +455,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/reOpenXylhc', 'Back\OpenHistoryController@reOpenXylhcData');
 
     Route::post('/action/admin/cancelBetting/{issue}/{type}', 'Back\OpenHistoryController@cancelBetting'); // 撤单
+    Route::post('/action/admin/Bet/canceled/{issue}/{type}', 'Back\OpenHistoryController@canceledBetIssue'); // 撤单2
     Route::post('/action/admin/bet/cancel/{orderId}', 'Back\OpenHistoryController@cancelBetOrder'); // 取消注单
 
     Route::any('/action/admin/member/returnVisit','Back\MemberController@returnVisit')->middleware('check-permission')->name('member.returnVisit'); //会员-回访用户
@@ -522,6 +533,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editPayBankNew/{id}', 'Back\Ajax\ModalController@editPayBankNew'); //充值配置新-银行支付-修改
     Route::get('/back/modal/addPayAlipayNew', 'Back\Ajax\ModalController@addPayAlipayNew');  //充值配置新-支付宝-添加
     Route::get('/back/modal/editPayAlipayNew/{id}', 'Back\Ajax\ModalController@editPayAlipayNew');  //充值配置新-支付宝-修改
+    Route::get('/back/modal/addPayYsfNew', 'Back\Ajax\ModalController@addPayYsfNew');  //充值配置新-云闪付-添加
+    Route::get('/back/modal/editPayYsfNew/{id}', 'Back\Ajax\ModalController@editPayYsfNew');  //充值配置新-云闪付-修改
     Route::get('/back/modal/addPayWechatNew', 'Back\Ajax\ModalController@addPayWechatNew');  //充值配置新-微信-添加
     Route::get('/back/modal/editPayWechatNew/{id}', 'Back\Ajax\ModalController@editPayWechatNew');  //充值配置新-微信-修改
     Route::get('/back/modal/addPayCftNew', 'Back\Ajax\ModalController@addPayCftNew');  //充值配置新-财付通-添加
@@ -562,6 +575,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/returnVisit','Back\Ajax\ModalController@returnVisit')->middleware('check-permission')->name('member.returnVisit.view'); //会员回访用户-模板
     Route::get('/back/modal/exportUser','Back\Ajax\ModalController@exportUser')->middleware('check-permission')->name('member.exportUser.view'); //导出用户数据-模板
     Route::get('/back/modal/addStatistics','Back\Ajax\ModalController@addStatistics')->middleware('check-permission')->name('report.addStatistics.view'); //操作报表添加-模板
+    Route::get('/back/modal/addAgentSettleDomain', 'Back\Ajax\ModalController@addAgentSettleDomain'); //添加代理专属域名
+    Route::get('/back/modal/editAgentSettleDomain/{id}', 'Back\Ajax\ModalController@editAgentSettleDomain'); //修改代理专属域名
+
 
 //游戏MODAL
     Route::get('/back/modal/gameSetting/{id}', 'Back\Ajax\ModalController@gameSetting');

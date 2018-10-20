@@ -603,6 +603,10 @@ class SrcViewController extends Controller
         $aConfigInfo = AgentReportBase::getAgentBaseInfo();
         return view('back.agentSettle.config',compact('aConfigInfo'));
     }
+    //代理专属域名
+    public function agentSettleDomain(){
+        return view('back.agentSettle.domain');
+    }
     //代理提现
     public function agentSettleWithdraw(){
         //获取状态

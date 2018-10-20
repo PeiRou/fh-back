@@ -250,3 +250,42 @@ function cancel(issue,type) {
         }
     });
 }
+
+function canceled(issue,type) {
+    jc = $.confirm({
+        title: '确定要导撤单',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '这是一个需要注意的操作，撤销该期数下所有注单',
+        buttons: {
+            confirm: {
+                text:'确定撤单',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/action/admin/Bet/canceled/'+issue+'/'+type,
+                        type:'post',
+                        dataType:'json',
+                        success:function (data) {
+                            if(data.status == true){
+                                alert('撤单成功');
+                            }else{
+                                Calert(data.msg,'red')
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}

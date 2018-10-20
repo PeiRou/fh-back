@@ -9,7 +9,7 @@ use App\Http\Proxy\GetDate;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
-
+use App\AgentDomain;
 class AgentSettleController extends Controller
 {
     //代理结算报表-表格数据
@@ -124,6 +124,27 @@ class AgentSettleController extends Controller
                 return '<span class="edit-link" onclick="edit('.$permissions->agent_report_idx.')"><i class="iconfont">&#xe602;</i> 修改</span>';
             })
             ->rawColumns(['control'])
+            ->make(true);
+    }
+    //代理专属域名
+    public function domain(Request $request){
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $AgentDomain = new AgentDomain;
+        $res = $AgentDomain
+            ->select('id','url','name');
+        $Count = $res->count();
+        $res = $res->skip($start)->take($length)
+            ->orderby('id','desc')
+            ->get();
+        return DataTables::of($res)
+            ->editColumn('control',function ($res) {
+                return '<span class="edit-link" onclick="edit(\''.$res->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> 
+                        <span class="edit-link" onclick="del(\''.$res->id.'\',\''.$res->name.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
+            })
+            ->setTotalRecords($Count)
+            ->rawColumns(['control'])
+            ->skipPaging()
             ->make(true);
     }
 }

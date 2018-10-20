@@ -435,7 +435,118 @@ class SrcPayNewController extends Controller{
             ]);
         }
     }
+    //添加云闪付配置
+    public function addPayYsf(Request $request)
+    {
+        $payeeName = $request->input('payeeName');
+        $lockArea = $request->input('lockArea');
+        if($lockArea !== null){
+            $new_lockArea = implode(',',$lockArea);
+        } else {
+            $new_lockArea = null;
+        }
+        $payee = $request->input('payee');
+        $qrCode = $request->input('qrCode');
+        $min_money = $request->input('min_money');
+        $max_money = $request->input('max_money');
+        $rebate_or_fee = $request->input('rebate_or_fee');
+        $status = $request->input('status');
+        $checkType = $request->input('checkType');
+        $remark = $request->input('remark');
+        $remark2 = $request->input('remark2');
+        $pageDesc = $request->input('pageDesc');
+        $levels = $request->input('levels');
+        if($levels !== null){
+            $new_levels = implode(',',$levels);
+        } else {
+            $new_levels = null;
+        }
 
+        $payOnline = new PayOnlineNew();
+        $payOnline->rechName = '云闪付支付';
+        $payOnline->rechType = 'ysf';
+        $payOnline->payCode = 'ysf';
+        $payOnline->lockArea = $new_lockArea;
+        $payOnline->payee = $payee;
+        $payOnline->payeeName = $payeeName;
+        $payOnline->qrCode = $qrCode;
+        $payOnline->pageDesc = $pageDesc;
+        $payOnline->min_money = $min_money;
+        $payOnline->max_money = $max_money;
+        $payOnline->rebate_or_fee = $rebate_or_fee;
+        $payOnline->status = $status;
+        $payOnline->levels = $new_levels;
+        $payOnline->remark = $remark;
+        $payOnline->remark2 = $remark2;
+        $payOnline->checkType = $checkType;
+        $save = $payOnline->save();
+        if($save == 1){
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => ''
+            ]);
+        }
+    }
+
+    //修改云闪付配置
+    public function editPayYsf(Request $request)
+    {
+        $id = $request->input('id');
+        $payeeName = $request->input('payeeName');
+        $lockArea = $request->input('lockArea');
+        if($lockArea !== null){
+            $new_lockArea = implode(',',$lockArea);
+        } else {
+            $new_lockArea = null;
+        }
+        $payee = $request->input('payee');
+        $qrCode = $request->input('qrCode');
+        $min_money = $request->input('min_money');
+        $max_money = $request->input('max_money');
+        $rebate_or_fee = $request->input('rebate_or_fee');
+        $status = $request->input('status');
+        $checkType = $request->input('checkType');
+        $remark = $request->input('remark');
+        $remark2 = $request->input('remark2');
+        $pageDesc = $request->input('pageDesc');
+        $levels = $request->input('levels');
+        if($levels !== null){
+            $new_levels = implode(',',$levels);
+        } else {
+            $new_levels = '0';
+        }
+
+        $update = PayOnlineNew::where('id',$id)
+            ->update([
+                'lockArea' => $new_lockArea,
+                'payee' => $payee,
+                'payeeName' => $payeeName,
+                'checkType' => $checkType,
+                'qrCode' => $qrCode,
+                'remark' => $remark,
+                'remark2' => $remark2,
+                'pageDesc' => $pageDesc,
+                'min_money' => $min_money,
+                'max_money' => $max_money,
+                'rebate_or_fee' => $rebate_or_fee,
+                'status' => $status,
+                'levels' => $new_levels
+            ]);
+        if($update == 1){
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => ''
+            ]);
+        }
+    }
     //添加微信配置
     public function addPayWechat(Request $request)
     {

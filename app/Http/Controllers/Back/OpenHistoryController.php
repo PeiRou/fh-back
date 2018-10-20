@@ -923,7 +923,7 @@ class OpenHistoryController extends Controller
             'rechargesType' => 0,
             'game_id' => $iBet->game_id,
             'issue' => $iBet->issue,
-            'money' => $iBet->bet_money,
+            'money' => $iBet->bet_bunko,
             'balance' => $iUser->money,
             'operation_id' => $adminId,
             'created_at' => $dateTime,
@@ -939,5 +939,35 @@ class OpenHistoryController extends Controller
         }
         DB::rollback();
         return response()->json(['status' => false,'msg' => '注单失败']);
+    }
+
+    //撤单2
+    public function canceledBetIssue($issue,$type){
+        $gameInfo = Games::where('code',$type)->first();
+        $aBet = Bets::getBetAndUserByIssue($issue,$gameInfo->game_id);
+        if(empty($aBet))    return response()->json(['status' => true]);
+        $aCapital = [];
+        $adminId = Session::get('account_id');
+        $dateTime = date('Y-m-d H:i:s');
+        foreach ($aBet as $kBet => $iBet){
+            $aCapital[] = [
+                'to_user' => $iBet['id'],
+                'user_type' => 'user',
+                'order_id' => $iBet['order_id'],
+                'type' => 't16',
+                'rechargesType' => 0,
+                'game_id' => $gameInfo->game_id,
+                'issue' => $iBet['issue'],
+                'money' => -$iBet['bet_money'],
+                'balance' => $iBet['money'],
+                'operation_id' => $adminId,
+                'created_at' => $dateTime,
+                'updated_at' => $dateTime,
+            ];
+        }
+        Bets::updateBetStatus($issue,$gameInfo->game_id);
+        Users::editBatchUserMoneyData1($aBet);
+        Capital::insert($aCapital);
+        return response()->json(['status' => true]);
     }
 }

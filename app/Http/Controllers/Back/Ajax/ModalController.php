@@ -622,6 +622,7 @@ class ModalController extends Controller
         $levels = Levels::all();
         return view('back.modal.payNew.addPayAlipay',compact('levels'));
     }
+
     //修改支付宝配置
     public function editPayAlipayNew($id = '')
     {
@@ -629,6 +630,20 @@ class ModalController extends Controller
         $payAlipay = PayOnlineNew::where('id',$id)->first();
         $payAlipay->levels = explode(",",$payAlipay->levels);
         return view('back.modal.payNew.editPayAlipay',compact('levels','id','payAlipay'));
+    }
+    //添加云闪付配置
+    public function addPayYsfNew()
+    {
+        $levels = Levels::all();
+        return view('back.modal.payNew.addPayYsf',compact('levels'));
+    }
+    //修改云闪付配置
+    public function editPayYsfNew($id = '')
+    {
+        $levels = Levels::all();
+        $payYsf = PayOnlineNew::where('id',$id)->first();
+        $payYsf->levels = explode(",",$payYsf->levels);
+        return view('back.modal.payNew.editPayYsf',compact('levels','id','payYsf'));
     }
     //添加微信配置
     public function addPayWechatNew()
@@ -795,6 +810,15 @@ class ModalController extends Controller
     public function editAgentSettleReview($id){
         $settleInfo = DB::table('agent_report_review')->where('agent_report_idx','=',$id)->first();
         return view('back.modal.agentSettle.editAgentSettleReview',compact('settleInfo'));
+    }
+    //添加代理专属域名
+    public function addAgentSettleDomain(){
+        return view('back.modal.agentSettle.addAgentSettleDomain');
+    }
+    //修改代理专属域名
+    public function editAgentSettleDomain($id){
+        $data = \App\AgentDomain::where('id', $id)->first();
+        return view('back.modal.agentSettle.editAgentSettleDomain',compact('data'));
     }
 
     //新增活动-模板

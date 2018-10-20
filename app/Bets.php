@@ -151,8 +151,8 @@ class Bets extends Model
     }
 
     public static function getBetAndUserByIssue($issue,$gameId){
-        return self::select('users.id','bet.bet_money','bet.order_id','bet.game_id','bet.issue','users.money')
-            ->where('bet.issue',$issue)->where('bet.game_id',$gameId)
+        return self::select('users.id','bet.bet_money','bet.bet_bunko','bet.order_id','bet.game_id','bet.issue','users.money')
+            ->where('bet.issue',$issue)->where('bet.game_id',$gameId)->where('status',0)
             ->join('users','users.id','=','bet.user_id')->get()->toArray();
     }
 
@@ -164,6 +164,10 @@ class Bets extends Model
 
     public static function cancelBetting($issue,$gameId){
         return self::where('issue',$issue)->where('game_id',$gameId)->delete();
+    }
+
+    public static function updateBetStatus($issue,$gameId){
+        return self::where('issue',$issue)->where('game_id',$gameId)->where('status',0)->update(['status' => 2]);
     }
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
