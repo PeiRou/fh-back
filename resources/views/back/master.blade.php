@@ -281,44 +281,6 @@
             </ul>
         </li>
         @endif
-        @if($hasPermission->hasPermission('pay') == "has")
-        <li id="menu-payManage" class="nav-item"><a href="javascript:void(0)">
-                <span><img src="/back/old/images/leftico01.png"></span>
-                充值配置</a>
-            <ul>
-                @if($hasPermission->hasPermission('pay.online') == "has")
-                <li id="menu-payManage-payOnline"><a href="{{ route('pay.online') }}"><cite></cite><span>在线支付配置</span></a></li>
-                @endif
-                @if($hasPermission->hasPermission('pay.bank') == "has")
-                <li id="menu-payManage-payBank"><a href="{{ route('pay.bank') }}"><cite></cite><span>银行支付配置</span></a></li>
-                @endif
-                @if($hasPermission->hasPermission('pay.alipay') == "has")
-                <li id="menu-payManage-alipay"><a href="{{ route('pay.alipay') }}"><cite></cite><span>支付宝配置</span></a></li>
-                @endif
-                @if($hasPermission->hasPermission('pay.wechat') == "has")
-                    <li id="menu-payManage-wechat"><a href="{{ route('pay.wechat') }}"><cite></cite><span>微信配置</span></a></li>
-                @endif
-                @if($hasPermission->hasPermission('pay.payYunShanPay') == "has")
-                    <li id="menu-payManage-payYunShanPay"><a href="{{ route('pay.payYunShanPay') }}"><cite></cite><span>云闪付配置</span></a></li>
-                @endif
-                @if($hasPermission->hasPermission('pay.cft') == "has")
-                <li id="menu-payManage-cft"><a href="{{ route('pay.cft') }}"><cite></cite><span>财付通配置</span></a></li>
-                @endif
-                @if($hasPermission->hasPermission('pay.payLayout') == "has")
-                <li id="menu-payManage-payLayout"><a href="{{ route('pay.payLayout') }}"><cite></cite><span>支付层级配置</span></a></li>
-                @endif
-                @if($hasPermission->hasPermission('pay.bindBank') == "has")
-                <li id="menu-payManage-bindBank"><a href="{{ route('pay.bindBank') }}"><cite></cite><span>绑定银行配置</span></a></li>
-                @endif
-                @if($hasPermission->hasPermission('pay.rechargeWay') == "has")
-                <li id="menu-payManage-rechargeWay"><a href="{{ route('pay.rechargeWay') }}"><cite></cite><span>充值方式配置</span></a></li>
-                @endif
-                @if($hasPermission->hasPermission('pay.rechType') == "has")
-                <li id="menu-payManage-rechType"><a href="{{ route('pay.rechType') }}"><cite></cite><span>支付前端显示</span></a></li>
-                @endif
-            </ul>
-        </li>
-        @endif
         @if($hasPermission->hasPermission('payNew') == "has")
             <li id="menu-payNewManage" class="nav-item"><a href="javascript:void(0)">
                     <span><img src="/back/old/images/leftico01.png"></span>
