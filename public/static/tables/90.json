@@ -13,76 +13,76 @@
         <tbody>
         <tr>
             <td colspan="2">牛6及以下</td>
+            <td>2</td>
+            <td>0</td>
+            <td>1</td>
             <td>-</td>
             <td>-</td>
-            <td>-</td>
-            <td>100000</td>
-            <td>200000</td>
         </tr>
         <tr>
             <td colspan="2">牛7/牛8</td>
+            <td>3</td>
+            <td>0</td>
+            <td>1</td>
             <td>-</td>
             <td>-</td>
-            <td>-</td>
-            <td>100000</td>
-            <td>200000</td>
         </tr>
         <tr>
             <td colspan="2">牛9</td>
+            <td>4</td>
+            <td>0</td>
+            <td>1</td>
             <td>-</td>
             <td>-</td>
-            <td>-</td>
-            <td>100000</td>
-            <td>200000</td>
         </tr>
         <tr>
             <td colspan="2">牛牛</td>
+            <td>6</td>
+            <td>0</td>
+            <td>1</td>
             <td>-</td>
             <td>-</td>
-            <td>-</td>
-            <td>100000</td>
-            <td>200000</td>
         </tr>
-        <tr>
-            <td colspan="2">闲一</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>100000</td>
-            <td>200000</td>
-        </tr>
-        <tr>
-            <td colspan="2">闲二</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>100000</td>
-            <td>200000</td>
-        </tr>
-        <tr>
-            <td colspan="2">闲三</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>100000</td>
-            <td>200000</td>
-        </tr>
-        <tr>
-            <td colspan="2">闲四</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>100000</td>
-            <td>200000</td>
-        </tr>
-        <tr>
-            <td colspan="2">闲五</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>100000</td>
-            <td>200000</td>
-        </tr>
-        </tbody>
+                    <tr>
+                <td colspan="2">闲一</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>100000</td>
+                <td>100000</td>
+            </tr>
+                    <tr>
+                <td colspan="2">闲二</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>100000</td>
+                <td>100000</td>
+            </tr>
+                    <tr>
+                <td colspan="2">闲三</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>100000</td>
+                <td>100000</td>
+            </tr>
+                    <tr>
+                <td colspan="2">闲四</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>100000</td>
+                <td>100000</td>
+            </tr>
+                    <tr>
+                <td colspan="2">闲五</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>100000</td>
+                <td>100000</td>
+            </tr>
+                </tbody>
     </table>
 </div>
