@@ -284,7 +284,7 @@
         @if($hasPermission->hasPermission('payNew') == "has")
             <li id="menu-payNewManage" class="nav-item"><a href="javascript:void(0)">
                     <span><img src="/back/old/images/leftico01.png"></span>
-                    充值配置新</a>
+                    充值配置</a>
                 <ul>
                     @if($hasPermission->hasPermission('payNew.online') == "has")
                         <li id="menu-payNewManage-payOnline"><a href="{{ route('payNew.online') }}"><cite></cite><span>在线支付配置</span></a></li>
