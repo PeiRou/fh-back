@@ -83,8 +83,8 @@ class new_pk10 extends Command
         $redis_issue = Redis::get('pk10:issue');
         //清除昨天长龙，在录第一期的时候清掉
         if($filtered['time']=='09:07:30'){
-            DB::table('clong_kaijian1')->where('lotteryid',80)->delete();
-            DB::table('clong_kaijian2')->where('lotteryid',80)->delete();
+            DB::table('clong_kaijian1')->where('lotteryid',50)->delete();
+            DB::table('clong_kaijian2')->where('lotteryid',50)->delete();
         }
         if($redis_issue !== $html[0]['issue']) {
             try {
