@@ -12,7 +12,7 @@ class NoticeDataController extends Controller
 {
     public function notice()
     {
-        $notice = Notices::orderBy('sort','asc')->get();
+        $notice = Notices::orderBy('sort','asc')->orderBy('created_at','desc')->get();
         return DataTables::of($notice)
             ->editColumn('type',function ($notice){
                 switch ($notice->type){
