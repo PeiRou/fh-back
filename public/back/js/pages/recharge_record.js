@@ -2,13 +2,13 @@ $(function () {
     $('#menu-financeManage').addClass('nav-show');
     $('#menu-financeManage-rechargeRecord').addClass('active');
 
-    var clipboard = new ClipboardJS('.copyUsername');
-    clipboard.on('success', function(e) {
-        console.log(e)
-    });
-    clipboard.on('error', function(e) {
-        alert('复制失败')
-    });
+    // var clipboard = new ClipboardJS('.copyUsername');
+    // clipboard.on('success', function(e) {
+    //     console.log(e)
+    // });
+    // clipboard.on('error', function(e) {
+    //     alert('复制失败')
+    // });
     // context.init({preventDoubleContext: false});
     // context.settings({compress: true});
     // context.attach('#rechargeRecordTable', [
@@ -276,6 +276,7 @@ function pass(id) {
             confirm: {
                 text:'确定通过',
                 btnClass: 'btn-red',
+                keys: ['enter', 'space'],
                 action: function(){
                     $.ajax({
                         url:'/action/admin/passRecharge',
@@ -284,7 +285,6 @@ function pass(id) {
                         data:{id:id},
                         success:function (data) {
                             if(data.status == true){
-                                Calert('充值状态已更新','green');
                                 $('#rechargeRecordTable').DataTable().ajax.reload(null,false)
                             } else {
                                 Calert(data.msg,'red')
@@ -317,6 +317,7 @@ function error(id) {
             formSubmit: {
                 text:'确定提交',
                 btnClass: 'btn-blue',
+                keys: ['enter', 'space'],
                 action: function () {
                     var form = this.$content.find('#addRechargeErrorForm').data('formValidation').validate().isValid();
                     if(!form){
@@ -348,6 +349,7 @@ function errorOnlinePay(id){
             confirm: {
                 text:'确定',
                 btnClass: 'btn-red',
+                keys: ['enter', 'space'],
                 action: function(){
                     $.ajax({
                         url:'/action/admin/addRechargeError',
@@ -356,7 +358,6 @@ function errorOnlinePay(id){
                         data:{id:id},
                         success:function (data) {
                             if(data.status == true){
-                                Calert('充值状态已更新','green');
                                 $('#rechargeRecordTable').DataTable().ajax.reload(null,false)
                             } else {
                                 Calert(data.msg,'red')
@@ -536,4 +537,59 @@ function editLevels(uid,nowLevel,rid) {
             }
         }
     });
+}
+
+function copyText(e) {
+    $(e).addClass('red');
+    copyToClipboard(e);
+}
+
+function copyToClipboard(elem) {
+    // create hidden text element, if it doesn't already exist
+    var targetId = "_hiddenCopyText_";
+    var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+    var origSelectionStart, origSelectionEnd;
+    if (isInput) {
+        // can just use the original source element for the selection and copy
+        target = elem;
+        origSelectionStart = elem.selectionStart;
+        origSelectionEnd = elem.selectionEnd;
+    } else {
+        // must use a temporary form element for the selection and copy
+        target = document.getElementById(targetId);
+        if (!target) {
+            var target = document.createElement("textarea");
+            target.style.position = "absolute";
+            target.style.left = "-9999px";
+            target.style.top = "0";
+            target.id = targetId;
+            document.body.appendChild(target);
+        }
+        target.textContent = elem.textContent;
+    }
+    // select the content
+    var currentFocus = document.activeElement;
+    target.focus();
+    target.setSelectionRange(0, target.value.length);
+
+    // copy the selection
+    var succeed;
+    try {
+        succeed = document.execCommand("copy");
+    } catch(e) {
+        succeed = false;
+    }
+    // restore original focus
+    if (currentFocus && typeof currentFocus.focus === "function") {
+        currentFocus.focus();
+    }
+
+    if (isInput) {
+        // restore prior selection
+        elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+    } else {
+        // clear temporary content
+        target.textContent = "";
+    }
+    return succeed;
 }

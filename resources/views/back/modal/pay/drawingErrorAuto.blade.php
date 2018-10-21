@@ -35,7 +35,6 @@
             success: function(result) {
                 if(result.status == true){
                     jc.close();
-                    Calert('提款状态已更新','green');
                     $('#drawingRecordTable').DataTable().ajax.reload(null,false);
                 } else {
                     Calert(result.msg,'red')

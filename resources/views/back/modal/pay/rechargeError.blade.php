@@ -35,7 +35,6 @@
             success: function(result) {
                 if(result.status == true){
                     jc.close();
-                    Calert('充值状态已更新','green');
                     $('#rechargeRecordTable').DataTable().ajax.reload(null,false);
                 } else {
                     Calert(data.msg,'red')

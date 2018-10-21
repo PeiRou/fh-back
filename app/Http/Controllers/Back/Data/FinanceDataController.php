@@ -120,7 +120,7 @@ class FinanceDataController extends Controller
                 return $recharge->re_orderNum;
             })
             ->editColumn('user',function ($recharge){
-                return '<span>'.$recharge->re_username.'</span><span> (<b>'.$recharge->level_name.'</b> <i style="cursor:pointer;" onclick="editLevels(\''.$recharge->uid.'\',\''.$recharge->re_levels.'\',\''.$recharge->rid.'\')" class="iconfont">&#xe602;</i>)</span>';
+                return '<span onclick="copyText(this)">'.$recharge->re_username.'</span><span> (<b>'.$recharge->level_name.'</b> <i style="cursor:pointer;" onclick="editLevels(\''.$recharge->uid.'\',\''.$recharge->re_levels.'\',\''.$recharge->rid.'\')" class="iconfont">&#xe602;</i>)</span>';
             })
             ->editColumn('trueName',function ($recharge){
                 return $recharge->user_fullName;
@@ -273,7 +273,7 @@ class FinanceDataController extends Controller
                 return date('m/d H:i',strtotime($drawing->dr_created_at));
             })
             ->editColumn('username',function ($drawing){
-                return $drawing->user_username.'</br><span class="blue-text" style="font-weight: normal;cursor: pointer;" onclick="showUserInfo(\''.$drawing->dr_uid.'\')">资金详情</span>';
+                return '<span onclick="copyText(this)">'.$drawing->user_username.'</span></br><span class="blue-text" style="font-weight: normal;cursor: pointer;" onclick="showUserInfo(\''.$drawing->dr_uid.'\')">资金详情</span>';
             })
             ->editColumn('balance',function ($drawing){
                 return $drawing->dr_balance;
@@ -305,9 +305,9 @@ class FinanceDataController extends Controller
             })
             ->editColumn('bank_info',function ($drawing){
                 if(empty($drawing->user_bank_name))
-                    return '<font color="red">无当下提款信息</font><br><div style="text-align: center">姓名：'.(empty($drawing->dr_fullName)?$drawing->user_fullName:$drawing->dr_fullName).'</br>银行：'.(empty($drawing->dr_bank_name)?$drawing->user_bank_name:$drawing->dr_bank_name).'<br>账号：'.(empty($drawing->dr_bank_num)?$drawing->user_bank_num:$drawing->dr_bank_num).'<br>地址：'.(empty($drawing->dr_bank_addr)?$drawing->user_bank_addr:$drawing->dr_bank_addr).'</div>';
+                    return '<font color="red">无当下提款信息</font><br><div style="text-align: center">姓名：<span onclick="copyText(this)">'.(empty($drawing->dr_fullName)?$drawing->user_fullName:$drawing->dr_fullName).'</span>></br>银行：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_name)?$drawing->user_bank_name:$drawing->dr_bank_name).'</span><br>账号：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_num)?$drawing->user_bank_num:$drawing->dr_bank_num).'</span><br>地址：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_addr)?$drawing->user_bank_addr:$drawing->dr_bank_addr).'</span></div>';
                 else
-                    return '<div style="text-align: center">姓名：'.(empty($drawing->dr_fullName)?$drawing->user_fullName:$drawing->dr_fullName).'</br>银行：'.(empty($drawing->dr_bank_name)?$drawing->user_bank_name:$drawing->dr_bank_name).'<br>账号：'.(empty($drawing->dr_bank_num)?$drawing->user_bank_num:$drawing->dr_bank_num).'<br>地址：'.(empty($drawing->dr_bank_addr)?$drawing->user_bank_addr:$drawing->dr_bank_addr).'</div>';
+                    return '<div style="text-align: center">姓名：<span onclick="copyText(this)">'.(empty($drawing->dr_fullName)?$drawing->user_fullName:$drawing->dr_fullName).'</span></br>银行：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_name)?$drawing->user_bank_name:$drawing->dr_bank_name).'</span><br>账号：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_num)?$drawing->user_bank_num:$drawing->dr_bank_num).'</span><br>地址：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_addr)?$drawing->user_bank_addr:$drawing->dr_bank_addr).'</span></div>';
             })
             ->editColumn('liushui',function ($drawing){
                 return '-';
