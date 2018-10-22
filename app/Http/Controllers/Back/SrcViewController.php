@@ -177,6 +177,10 @@ class SrcViewController extends Controller
             $gameTable = 'game_xylhc';
             $game_name = '幸运六合彩';
         }
+        if($gameId == 86){
+            $gameTable = 'game_msjsk3';
+            $game_name = '秒速快3';
+        }
         if(!isset($gameTable))
             return response()->json([
                 'status' => false

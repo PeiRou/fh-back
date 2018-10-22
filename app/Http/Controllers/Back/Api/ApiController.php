@@ -16,7 +16,7 @@ class ApiController extends Controller
             ->where(function ($query) use($q){
                 if(isset($q))
                 {
-                    $query->where('account','=',$q)->orWhere('name','like',"%$q%");
+                    $query->where('account','like',"%$q%")->orWhere('name','like',"%$q%");
                 }
             })
             ->get();
