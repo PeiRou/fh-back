@@ -53,6 +53,28 @@ class GameTableController extends Controller
         return view('back.gameTables.1')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
     }
 
+    public function gameTable112()
+    {
+        $data = Play::where('gameId',112)->get();
+        $filter = ['1_5_odds','1_5_rebate','2face_odds','2face_rebate','longhu_odds','longhu_rebate','he_odds','he_rebate','q3z3h3_baozi_odds','q3z3h3_baozi_rebate','q3z3h3_shunzi_odds','q3z3h3_shunzi_rebate','q3z3h3_duizi_odds','q3z3h3_duizi_rebate','q3z3h3_banshun_odds','q3z3h3_banshun_rebate','q3z3h3_zaliu_odds','q3z3h3_zaliu_rebate'];
+        $fromDBOdds = collect([]);
+        $fromDBRebate = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->odds_tag == $i)
+                {
+                    $fromDBOdds->put($item->odds_tag,$item->odds);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->rebate_tag == $s){
+                    $fromDBRebate->put($item->rebate_tag,$item->rebate);
+                }
+            }
+        }
+        return view('back.gameTables.112')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
+    }
+
     public function gameTable4()
     {
         $data = Play::where('gameId',4)->get();
