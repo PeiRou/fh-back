@@ -42,7 +42,7 @@
                         <li data-tag="first" data-id="21">广东十一选五</li>
                         <li data-tag="first" data-id="66">PC蛋蛋</li>
                         <li data-tag="first" data-id="15">河北快3</li>
-                        <li data-tag="first" data-id="16">甘肃快3</li>
+                        <li data-tag="first" data-id="16">甘肃快3</li>w
                         <li data-tag="first" data-id="18">贵州快3</li>
                         <li data-tag="first" data-id="112">腾讯分分彩</li>
                     </ul>

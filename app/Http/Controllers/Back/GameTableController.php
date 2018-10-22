@@ -205,6 +205,69 @@ class GameTableController extends Controller
         return view('back.gameTables.12')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
     }
 
+    public function gameTable15(){
+        $data = Play::where('gameId',15)->get();
+        $filter = ['HZ_DXDS_rebate','HZ_DXDS_odds','HZ_318_rebate','HZ_318_odds','HZ_417_odds','HZ_417_rebate','HZ_516_rebate','HZ_516_odds','HZ_615_rebate','HZ_615_odds','HZ_714_odds','HZ_714_rebate','HZ_813_rebate','HZ_813_odds','HZ_1011_rebate','HZ_1011_odds','HZ_912_odds','HZ_912_rebate','SLH_SLTX_odds','SLH_SLTX_rebate','SLH_odds','SLH_rebate','STH_odds','STH_rebate','STH_STTX_odds','STH_STTX_rebate','ETH_odds','ETH_rebate','KD_0_odds','KD_0_rebate','KD_15_odds','KD_15_rebate','KD_24_odds','KD_24_rebate','KD_3_odds','KD_3_rebate','KD_DA_odds','KD_DA_rebate','KD_XIAO_odds','KD_XIAO_rebate','KD_DAN_odds','KD_DAN_rebate','KD_SHUANG_odds','KD_SHUANG_rebate','PD_110_odds','PD_29_odds','PD_3_odds','PD_47_odds','PD_56_odds','PD_8_odds','PD_DXDS_odds','PD_DXDS_rebate','PD_110_rebate','PD_29_rebate','PD_8_rebate','PD_47_rebate','PD_56_rebate','PD_3_rebate','BICHU_odds','BICHU_rebate','BUCHU_odds','BUCHU_rebate'];
+        $fromDBOdds = collect([]);
+        $fromDBRebate = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->odds_tag == $i)
+                {
+                    $fromDBOdds->put($item->odds_tag,$item->odds);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->rebate_tag == $s){
+                    $fromDBRebate->put($item->rebate_tag,$item->rebate);
+                }
+            }
+        }
+        return view('back.gameTables.15')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
+    }
+
+    public function gameTable16(){
+        $data = Play::where('gameId',16)->get();
+        $filter = ['HZ_DXDS_rebate','HZ_DXDS_odds','HZ_318_rebate','HZ_318_odds','HZ_417_odds','HZ_417_rebate','HZ_516_rebate','HZ_516_odds','HZ_615_rebate','HZ_615_odds','HZ_714_odds','HZ_714_rebate','HZ_813_rebate','HZ_813_odds','HZ_1011_rebate','HZ_1011_odds','HZ_912_odds','HZ_912_rebate','SLH_SLTX_odds','SLH_SLTX_rebate','SLH_odds','SLH_rebate','STH_odds','STH_rebate','STH_STTX_odds','STH_STTX_rebate','ETH_odds','ETH_rebate','KD_0_odds','KD_0_rebate','KD_15_odds','KD_15_rebate','KD_24_odds','KD_24_rebate','KD_3_odds','KD_3_rebate','KD_DA_odds','KD_DA_rebate','KD_XIAO_odds','KD_XIAO_rebate','KD_DAN_odds','KD_DAN_rebate','KD_SHUANG_odds','KD_SHUANG_rebate','PD_110_odds','PD_29_odds','PD_3_odds','PD_47_odds','PD_56_odds','PD_8_odds','PD_DXDS_odds','PD_DXDS_rebate','PD_110_rebate','PD_29_rebate','PD_8_rebate','PD_47_rebate','PD_56_rebate','PD_3_rebate','BICHU_odds','BICHU_rebate','BUCHU_odds','BUCHU_rebate'];
+        $fromDBOdds = collect([]);
+        $fromDBRebate = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->odds_tag == $i)
+                {
+                    $fromDBOdds->put($item->odds_tag,$item->odds);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->rebate_tag == $s){
+                    $fromDBRebate->put($item->rebate_tag,$item->rebate);
+                }
+            }
+        }
+        return view('back.gameTables.16')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
+    }
+
+    public function gameTable18(){
+        $data = Play::where('gameId',18)->get();
+        $filter = ['HZ_DXDS_rebate','HZ_DXDS_odds','HZ_318_rebate','HZ_318_odds','HZ_417_odds','HZ_417_rebate','HZ_516_rebate','HZ_516_odds','HZ_615_rebate','HZ_615_odds','HZ_714_odds','HZ_714_rebate','HZ_813_rebate','HZ_813_odds','HZ_1011_rebate','HZ_1011_odds','HZ_912_odds','HZ_912_rebate','SLH_SLTX_odds','SLH_SLTX_rebate','SLH_odds','SLH_rebate','STH_odds','STH_rebate','STH_STTX_odds','STH_STTX_rebate','ETH_odds','ETH_rebate','KD_0_odds','KD_0_rebate','KD_15_odds','KD_15_rebate','KD_24_odds','KD_24_rebate','KD_3_odds','KD_3_rebate','KD_DA_odds','KD_DA_rebate','KD_XIAO_odds','KD_XIAO_rebate','KD_DAN_odds','KD_DAN_rebate','KD_SHUANG_odds','KD_SHUANG_rebate','PD_110_odds','PD_29_odds','PD_3_odds','PD_47_odds','PD_56_odds','PD_8_odds','PD_DXDS_odds','PD_DXDS_rebate','PD_110_rebate','PD_29_rebate','PD_8_rebate','PD_47_rebate','PD_56_rebate','PD_3_rebate','BICHU_odds','BICHU_rebate','BUCHU_odds','BUCHU_rebate'];
+        $fromDBOdds = collect([]);
+        $fromDBRebate = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->odds_tag == $i)
+                {
+                    $fromDBOdds->put($item->odds_tag,$item->odds);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->rebate_tag == $s){
+                    $fromDBRebate->put($item->rebate_tag,$item->rebate);
+                }
+            }
+        }
+        return view('back.gameTables.18')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
+    }
+
     public function gameTable13(){
         $data = Play::where('gameId',13)->get();
         $filter = ['HZ_DXDS_rebate','HZ_DXDS_odds','HZ_318_rebate','HZ_318_odds','HZ_417_odds','HZ_417_rebate','HZ_516_rebate','HZ_516_odds','HZ_615_rebate','HZ_615_odds','HZ_714_odds','HZ_714_rebate','HZ_813_rebate','HZ_813_odds','HZ_1011_rebate','HZ_1011_odds','HZ_912_odds','HZ_912_rebate','SLH_SLTX_odds','SLH_SLTX_rebate','SLH_odds','SLH_rebate','STH_odds','STH_rebate','STH_STTX_odds','STH_STTX_rebate','ETH_odds','ETH_rebate','KD_0_odds','KD_0_rebate','KD_15_odds','KD_15_rebate','KD_24_odds','KD_24_rebate','KD_3_odds','KD_3_rebate','KD_DA_odds','KD_DA_rebate','KD_XIAO_odds','KD_XIAO_rebate','KD_DAN_odds','KD_DAN_rebate','KD_SHUANG_odds','KD_SHUANG_rebate','PD_110_odds','PD_29_odds','PD_3_odds','PD_47_odds','PD_56_odds','PD_8_odds','PD_DXDS_odds','PD_DXDS_rebate','PD_110_rebate','PD_29_rebate','PD_8_rebate','PD_47_rebate','PD_56_rebate','PD_3_rebate','BICHU_odds','BICHU_rebate','BUCHU_odds','BUCHU_rebate'];
