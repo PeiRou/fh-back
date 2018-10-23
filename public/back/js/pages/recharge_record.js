@@ -218,8 +218,12 @@ $('#btn_search').on('click',function () {
 function getTotalRecharge() {
     $('#onlinePayToday').html(" ");
     $('#offlinePayToday').html(" ");
+    $('#rechargeTotal').html(" ");
+    $('#rechargeGiveTotal').html(" ");
     $('#onlinePayToday').addClass('loading-gif');
     $('#offlinePayToday').addClass('loading-gif');
+    $('#rechargeTotal').addClass('loading-gif');
+    $('#rechargeGiveTotal').addClass('loading-gif');
     var rechType = $('#recharge_type').val();
     var payOnlineId = $('#pay_online_id').val();
     var startDate = $('#startTime').val();
