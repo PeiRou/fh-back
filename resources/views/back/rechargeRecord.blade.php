@@ -3,6 +3,11 @@
 @section('title','充值记录')
 
 @section('content')
+    <style>
+        #rechargeRecordTable{
+            white-space: nowrap;
+        }
+    </style>
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>充值记录
@@ -19,8 +24,8 @@
             <div><span>今日线上人数： </span><span id="onlineMemberToday" class="loading-gif"></span></div>
             <div><span>今日线下总额：¥ </span><span id="offlinePayToday" class="loading-gif"></span></div>
             <div><span>今日线下人数： </span><span id="offlineMemberToday" class="loading-gif"></span></div>
-            <div><span>赠送金额： ¥</span><span id="rechargeGiveTotal" class="loading-gif"></span></div>
-            <div><span>充值总计： ¥</span><span id="rechargeTotal" class="loading-gif"></span></div>
+            {{--<div><span>赠送金额： ¥</span><span id="rechargeGiveTotal" class="loading-gif"></span></div>--}}
+            {{--<div><span>充值总计： ¥</span><span id="rechargeTotal" class="loading-gif"></span></div>--}}
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('rechargeRecordTable')"><i class="iconfont">&#xe61d;</i></span>
@@ -117,7 +122,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one wide field">
+                    <div class="one wide field" style="width:5%!important;">
                         <select class="ui dropdown" id="date_param" style='height:32px !important'>
                             <option value="today">今天</option>
                             <option value="yesterday">昨天</option>
@@ -126,8 +131,8 @@
                             <option value="lastMonth">上月</option>
                         </select>
                     </div>
-                    <div class="one wide field">
-                        <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
+                    <div class="one wide field" style="width:5%!important;">
+                        <button id="btn_search" class="fluid ui mini  icon teal button" > 查询 </button>
                     </div>
                     {{--<div class="one wide field">--}}
                         {{--<button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>--}}
@@ -135,9 +140,9 @@
                     <input type="hidden" id="isSearch" value="">
                 </div>
             </div>
-            {{--<div class="total-nums">--}}
-                    {{--赠送金额：<span id="rechargeGiveTotal" style="font-size: 13pt;">0</span> 充值总计：<span id="rechargeTotal" style="font-size: 13pt;">0</span>--}}
-            {{--</div>--}}
+            <div class="total-nums">
+                    赠送金额：<span id="rechargeGiveTotal" style="font-size: 13pt;">0</span> 充值总计：<span id="rechargeTotal" style="font-size: 13pt;">0</span>
+            </div>
 
         </div>
         <table id="rechargeRecordTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
@@ -148,7 +153,7 @@
                 <th>会员</th>
                 <th>真实姓名</th>
                 <th>余额</th>
-                <th width="180">订单号</th>
+                <th>订单号</th>
                 <th>付款方式</th>
                 <th>交易金额</th>
                 <th>反利/手续费</th>
