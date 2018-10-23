@@ -133,9 +133,19 @@
                     <input type="hidden" id="isSearch" value="">
                 </div>
             </div>
-            <div class="total-nums">
-                赠送金额：<span id="rechargeGiveTotal" style="font-size: 13pt;">0</span> 充值总计：<span id="rechargeTotal" style="font-size: 13pt;">0</span>
+            <div class="total-nums" style="right: 10px;top: 10px;width: 400px;height: 30px">
+                <div style="float: right;">
+                    <span style="margin: 0;color: #111111" >充值总计：</span><br/>
+                    <span id="rechargeTotal" style="font-size: 13pt;">0</span>
+
+                </div>
+                <div  style="float: right">
+                    <span style="margin: 0;color: #111111" >赠送金额：</span><br/>
+                    <span id="rechargeGiveTotal" style="font-size: 13pt;">0</span>
+
+                </div>
             </div>
+
         </div>
         <table id="rechargeRecordTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
