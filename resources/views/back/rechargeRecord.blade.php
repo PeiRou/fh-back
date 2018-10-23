@@ -90,7 +90,7 @@
                     {{--<div class="one wide field">--}}
                         {{--<input type="text" id="" placeholder="昵称">--}}
                     {{--</div>--}}
-                    <div class="one wide field">
+                    <div class="one wide field"  style="width:5.5%!important;">
                         <input type="text" id="amount" placeholder="交易金额">
                     </div>
                     <div class="one wide field">
@@ -99,8 +99,8 @@
                     {{--<div class="one wide field">--}}
                         {{--<input type="text" id="maxMoney" placeholder="备注码">--}}
                     {{--</div>--}}
-                    <div class="one wide field">
-                        <select class="ui dropdown" id="dateType" style='height:32px !important'>
+                    <div class="one wide field"  style="width:6%!important;">
+                        <select class="ui dropdown" id="dateType" style='height:32px !important' >
                             <option value="">时间类型</option>
                             <option value="1">报表时间</option>
                             <option value="2">添加时间</option>
@@ -122,7 +122,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one wide field" style="width:5%!important;">
+                    <div class="one wide field" style="width:4.5%!important;">
                         <select class="ui dropdown" id="date_param" style='height:32px !important'>
                             <option value="today">今天</option>
                             <option value="yesterday">昨天</option>
@@ -131,7 +131,7 @@
                             <option value="lastMonth">上月</option>
                         </select>
                     </div>
-                    <div class="one wide field" style="width:5%!important;">
+                    <div class="one wide field" style="width:4.2%!important;">
                         <button id="btn_search" class="fluid ui mini  icon teal button" > 查询 </button>
                     </div>
                     {{--<div class="one wide field">--}}
