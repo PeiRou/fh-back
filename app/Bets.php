@@ -151,9 +151,23 @@ class Bets extends Model
     }
 
     public static function getBetAndUserByIssue($issue,$gameId){
-        return self::select('users.id','bet.bet_money','bet.bet_bunko','bet.order_id','bet.game_id','bet.issue','users.money')
-            ->where('bet.issue',$issue)->where('bet.game_id',$gameId)->where('status',0)
+        return self::select('users.id','bet.bet_money','bet.bunko','bet.order_id','bet.game_id','bet.issue','users.money')
+            ->where('bet.issue',$issue)->where('bet.game_id',$gameId)->where('bet.status',0)
             ->join('users','users.id','=','bet.user_id')->get()->toArray();
+    }
+
+    public static function getBetUserDrawingByIssue($issue,$gameId){
+        $aSql = "SELECT `users`.`id`,SUM(`bet`.`bunko`) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`,`dr`.`amount`
+                    FROM `bet` 
+                    JOIN `users` ON `users`.`id` = `bet`.`user_id`
+                    LEFT JOIN (SELECT `user_id`,SUM(`amount`) AS `amount` FROM `drawing` WHERE `status` = 0 GROUP BY `user_id`) AS `dr` ON `dr`.`user_id` = `bet`.`user_id`
+                    WHERE `bet`.`issue` = :issue AND `bet`.`game_id` = :game_id 
+                    GROUP BY `bet`.`user_id` HAVING `bet_bunko` > 0";
+        $aArray = [
+            'issue' => $issue,
+            'game_id' => $gameId
+        ];
+        return DB::select($aSql,$aArray);
     }
 
     public static function getDailyStatistics($dayTime){

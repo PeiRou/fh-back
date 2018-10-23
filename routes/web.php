@@ -454,6 +454,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/reOpenLhc', 'Back\OpenHistoryController@reOpenLhcData');
     Route::post('/action/admin/reOpenXylhc', 'Back\OpenHistoryController@reOpenXylhcData');
 
+    Route::post('/action/admin/freeze/{issue}/{type}', 'Back\OpenHistoryController@freeze');     //冻结彩种
     Route::post('/action/admin/cancelBetting/{issue}/{type}', 'Back\OpenHistoryController@cancelBetting'); // 撤单
     Route::post('/action/admin/Bet/canceled/{issue}/{type}', 'Back\OpenHistoryController@canceledBetIssue'); // 撤单2
     Route::post('/action/admin/bet/cancel/{orderId}', 'Back\OpenHistoryController@cancelBetOrder'); // 取消注单

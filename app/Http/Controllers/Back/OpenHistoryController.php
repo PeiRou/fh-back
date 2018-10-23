@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Back;
 
 use App\Bets;
 use App\Capital;
+use App\Drawing;
 use App\Events\RunLHC;
 use App\Events\RunXYLHC;
 use App\Games;
 use App\Helpers\LHC_SX;
+use App\UserFreezeMoney;
 use App\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -958,7 +960,7 @@ class OpenHistoryController extends Controller
                 'rechargesType' => 0,
                 'game_id' => $gameInfo->game_id,
                 'issue' => $iBet['issue'],
-                'money' => -$iBet['bet_money'],
+                'money' => -$iBet['bunko'],
                 'balance' => $iBet['money'],
                 'operation_id' => $adminId,
                 'created_at' => $dateTime,
@@ -970,4 +972,60 @@ class OpenHistoryController extends Controller
         Capital::insert($aCapital);
         return response()->json(['status' => true]);
     }
+
+    //冻结
+    public function freeze($issue,$type){
+        $gameInfo = Games::where('code',$type)->first();
+        $aBet = Bets::getBetUserDrawingByIssue($issue,$gameInfo->game_id);
+        if(empty($aBet))    return response()->json(['status' => false,'msg' => '没有投注用户']);
+        $aCapital = [];
+        $aUserFreezeMoney = [];
+        $adminId = Session::get('account_id');
+        $dateTime = date('Y-m-d H:i:s');
+        foreach ($aBet as $kBet => $iBet){
+            $aCapital[] = [
+                'to_user' => $iBet['id'],
+                'user_type' => 'user',
+                'order_id' => null,
+                'type' => 't25',
+                'rechargesType' => 0,
+                'game_id' => $iBet['game_id'],
+                'issue' => $iBet['issue'],
+                'money' => $iBet['amount']-$iBet['bet_bunko'],
+                'balance' => $iBet['money'],
+                'operation_id' => $adminId,
+                'created_at' => $dateTime,
+                'updated_at' => $dateTime,
+            ];
+            $aUserFreezeMoney[] = [
+                'user_id' => $iBet['id'],
+                'game_id' => $iBet['game_id'],
+                'issue' => $iBet['issue'],
+                'money' => -$iBet['bet_bunko'],
+                'status' => 0,
+                'created_at' => $dateTime,
+                'updated_at' => $dateTime,
+            ];
+        }
+
+        DB::beginTransaction();
+        $result1 = Users::editBatchUserMoneyData2($aBet);
+        $result2 = Capital::insert($aCapital);
+        $result3 = UserFreezeMoney::insert($aUserFreezeMoney);
+        if(!empty(Games::$aCodeGameName[$type])) {
+            $table = 'game_' . Games::$aCodeGameName[$type];
+            $result4 = DB::table($table)->where('issue',$issue)->update([
+                'is_open' => 5
+            ]);
+        }else{
+            $result4 = true;
+        }
+        if($result1 && $result2 && $result3 && $result4){
+            DB::commit();
+            return response()->json(['status' => true]);
+        }
+        DB::rollback();
+        return response()->json(['status' => false,'msg' => '冻结失败']);
+    }
+
 }
