@@ -486,6 +486,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="payment_platform_dispensing" data-c="支付平台代付接口" class="edit-link">修改</td>
             </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">聊天室开关 0关 1开</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->chat_open }}" data-id-input="chat_open"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="chat_open" data-c="聊天室开关" class="edit-link">修改</td>
+            </tr>
             @endif
             </tbody>
         </table>

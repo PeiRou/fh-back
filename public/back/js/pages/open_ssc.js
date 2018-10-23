@@ -87,7 +87,7 @@ $(function () {
                 }},
             {data: function (data) {
                     if(data.is_open=="1"){        //已开奖
-                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>";
+                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
                     }else if(data.is_open=="0"){                      //未开奖
                         txt = "<li onclick='cancelAll("+data.id+")'>修改</li>" +
                             "<li onclick='cancel("+data.issue+")'>撤单</li>" +
@@ -273,6 +273,45 @@ function canceled(issue,type) {
                         success:function (data) {
                             if(data.status == true){
                                 alert('撤单成功');
+                            }else{
+                                Calert(data.msg,'red')
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
+
+function freeze(issue,type) {
+    jc = $.confirm({
+        title: '确定要冻结',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '这是一个需要注意的操作，冻结该期数下所有注单',
+        buttons: {
+            confirm: {
+                text:'确定冻结',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/action/admin/freezeCqssc/'+issue+'/'+type,
+                        type:'post',
+                        dataType:'json',
+                        success:function (data) {
+                            if(data.status == true){
+                                alert('冻结成功');
                             }else{
                                 Calert(data.msg,'red')
                             }

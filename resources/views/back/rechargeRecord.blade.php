@@ -19,6 +19,8 @@
             <div><span>今日线上人数： </span><span id="onlineMemberToday" class="loading-gif"></span></div>
             <div><span>今日线下总额：¥ </span><span id="offlinePayToday" class="loading-gif"></span></div>
             <div><span>今日线下人数： </span><span id="offlineMemberToday" class="loading-gif"></span></div>
+            <div><span>赠送金额： ¥</span><span id="rechargeGiveTotal" class="loading-gif"></span></div>
+            <div><span>充值总计： ¥</span><span id="rechargeTotal" class="loading-gif"></span></div>
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('rechargeRecordTable')"><i class="iconfont">&#xe61d;</i></span>
@@ -133,9 +135,10 @@
                     <input type="hidden" id="isSearch" value="">
                 </div>
             </div>
-            <div class="total-nums">
-                赠送金额：<span id="rechargeGiveTotal" style="font-size: 13pt;">0</span> 充值总计：<span id="rechargeTotal" style="font-size: 13pt;">0</span>
-            </div>
+            {{--<div class="total-nums">--}}
+                    {{--赠送金额：<span id="rechargeGiveTotal" style="font-size: 13pt;">0</span> 充值总计：<span id="rechargeTotal" style="font-size: 13pt;">0</span>--}}
+            {{--</div>--}}
+
         </div>
         <table id="rechargeRecordTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>

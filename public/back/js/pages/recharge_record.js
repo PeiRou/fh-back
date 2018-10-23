@@ -232,17 +232,19 @@ function getTotalRecharge() {
         dataType:'json',
         data:{rechType:rechType,payOnlineId:payOnlineId,startDate:startDate,endDate:endDate,killTest:killTest,account:account},
         success:function (data) {
-            $('#rechargeTotal').html(data.total);
-            $('#rechargeGiveTotal').html(data.rechargeGiveTotal);
             setTimeout(function () {
                 $('#onlinePayToday').removeClass('loading-gif');
                 $('#offlinePayToday').removeClass('loading-gif');
                 $('#onlineMemberToday').removeClass('loading-gif');
                 $('#offlineMemberToday').removeClass('loading-gif');
+                $('#rechargeTotal').removeClass('loading-gif');
+                $('#rechargeGiveTotal').removeClass('loading-gif');
                 $('#onlinePayToday').html(data.onlinePayToday);
                 $('#offlinePayToday').html(data.offlinePayToday);
                 $('#onlineMemberToday').html(data.onlineMemberToday);
                 $('#offlineMemberToday').html(data.offlineMemberToday);
+                $('#rechargeTotal').html(data.total);
+                $('#rechargeGiveTotal').html(data.rechargeGiveTotal);
             },600);
         }
     });
