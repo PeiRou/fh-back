@@ -264,7 +264,7 @@ class FinanceDataController extends Controller
                     $q->whereDate('drawing.created_at',date('Y-m-d'));
                 }
             })
-            ->orderBy('drawing.created_at','desc');
+            ->orderBy('drawing.created_at','desc')->orderBy('drawing.id','desc');
         $drawingCount = $drawingSQL->count();
         $drawing = $drawingSQL->skip($start)->take($length)->get();
         $aPayOnlineNew = PayOnlineNew::select('levels','rechName','id')->where('payCode','DF')->where('status',1)->get()->toArray();
