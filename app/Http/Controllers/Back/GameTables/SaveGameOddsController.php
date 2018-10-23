@@ -132,6 +132,30 @@ class SaveGameOddsController extends Controller
         return $this->updateBatch($data,99);
     }
 
+    public function hebeik3(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,15);
+    }
+
+    public function gsk3(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,16);
+    }
+
+    public function gzk3(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,18);
+    }
+
+    public function txffc(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,112);
+    }
+
     public function msjsk3(Request $request)
     {
         $this->view_name = 'jsk3';

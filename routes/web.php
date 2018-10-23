@@ -589,7 +589,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 
     Route::get('/game/tables/50', 'Back\GameTableController@gameTable50');
     Route::get('/game/tables/1', 'Back\GameTableController@gameTable1');
-    Route::get('/game/tables/4', 'Back\GameTableController@gameTable4');
+    Route::get('/game/tables/4', 'Back\GameTableController@gameTable4'); //新疆时时彩
     Route::get('/game/tables/5', 'Back\GameTableController@gameTable5');
     Route::get('/game/tables/60', 'Back\GameTableController@gameTable60');
     Route::get('/game/tables/10', 'Back\GameTableController@gameTable10');
@@ -608,6 +608,10 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/tables/12', 'Back\GameTableController@gameTable12'); //广西快三
     Route::get('/game/tables/13', 'Back\GameTableController@gameTable13'); //湖北快三
     Route::get('/game/tables/86', 'Back\GameTableController@gameTable86'); //秒速江苏快三
+    Route::get('/game/tables/15', 'Back\GameTableController@gameTable15'); //河北快3
+    Route::get('/game/tables/16', 'Back\GameTableController@gameTable16'); //甘肃快3
+    Route::get('/game/tables/18', 'Back\GameTableController@gameTable18'); //贵州快3
+    Route::get('/game/tables/112', 'Back\GameTableController@gameTable112'); //腾讯分分彩
 
     //交易设定表格
     Route::get('/game/trade/tables/50','Back\GameTradeTableController@gameTradeTable50'); //北京赛车
@@ -656,6 +660,10 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/table/save/lhc', 'Back\GameTables\SaveGameOddsController@lhc');
     Route::post('/game/table/save/xylhc', 'Back\GameTables\SaveGameOddsController@xylhc');
     Route::post('/game/table/save/msjsk3', 'Back\GameTables\SaveGameOddsController@msjsk3');
+    Route::post('/game/table/save/hebeik3', 'Back\GameTables\SaveGameOddsController@hebeik3'); //河北快3
+    Route::post('/game/table/save/gsk3', 'Back\GameTables\SaveGameOddsController@gsk3'); // 甘肃快3
+    Route::post('/game/table/save/gzk3', 'Back\GameTables\SaveGameOddsController@gzk3'); // 贵州快3
+    Route::post('/game/table/save/txffc', 'Back\GameTables\SaveGameOddsController@txffc'); // 腾讯分分彩
     //保存交易设定的表格
     Route::post('/game/trade/table/save/bjpk10','Back\GameTradeTables\SaveGameTradeController@bjpk10'); //保存北京PK10
     Route::post('/game/trade/table/save/cqssc','Back\GameTradeTables\SaveGameTradeController@cqssc'); //保存重庆时时彩
