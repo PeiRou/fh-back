@@ -40,6 +40,11 @@ use Spatie\Permission\Models\Role;
 
 class SrcViewController extends Controller
 {
+    private $viewArr = [
+        'k3' => 'back.open.k3', //快3类
+        'ssc' => 'back.open.ssc', //时时彩
+        'sc' => 'back.open.sc', //秒速赛车
+    ];
 
     //代理登录页面
     /**
@@ -301,16 +306,27 @@ class SrcViewController extends Controller
     {
         return view('back.open.gd11x5');
     }
-
     //重庆时时彩
     public function openManage_cqssc()
     {
-        return view('back.open.cqssc');
+        $data = [
+            'title' => '重庆时时彩',
+            'activeName' => 'menu-openManage-cqssc',
+            'type' => 'cqssc', //
+            'cat' => 'ssc' //游戏类别 时时彩
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //北京pk10
     public function openManage_bjpk10()
     {
-        return view('back.open.bjpk10');
+        $data = [
+            'title' => '北京pk10',
+            'activeName' => 'menu-openManage-bjpk10',
+            'type' => 'bjpk10', //
+            'cat' => 'sc' //游戏类别 赛车
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //北京快乐8
     public function openManage_bjkl8()
@@ -320,52 +336,112 @@ class SrcViewController extends Controller
     //秒速赛车
     public function openManage_mssc()
     {
-        return view('back.open.mssc');
+        $data = [
+            'title' => '秒速赛车',
+            'activeName' => 'menu-openManage-mssc',
+            'type' => 'mssc', //
+            'cat' => 'sc' //游戏类别 赛车
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //秒速飞艇
     public function openManage_msft()
     {
-        return view('back.open.msft');
+        $data = [
+            'title' => '秒速飞艇',
+            'activeName' => 'menu-openManage-msft',
+            'type' => 'msft', //
+            'cat' => 'sc' //游戏类别 赛车
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //跑马
     public function openManage_paoma()
     {
-        return view('back.open.paoma');
+        $data = [
+            'title' => '香港跑马',
+            'activeName' => 'menu-openManage-paoma',
+            'type' => 'paoma', //
+            'cat' => 'sc' //游戏类别 赛车
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //秒速时时彩
     public function openManage_msssc()
     {
-        return view('back.open.msssc');
+        $data = [
+            'title' => '秒速时时彩',
+            'activeName' => 'menu-openManage-msssc',
+            'type' => 'msssc',
+            'cat' => 'ssc' //游戏类别 时时彩
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //秒速快3
     public function openManage_msjsk3()
     {
-        return view('back.open.msjsk3');
+        $data = [
+            'title' => '秒速快3',
+            'activeName' => 'menu-openManage-msjsk3',
+            'type' => 'msjsk3',
+            'cat' => 'k3' //游戏类别 快3
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //江苏快3
     public function openManage_jsk3()
     {
-        return view('back.open.jsk3');
+        $data = [
+            'title' => '江苏快3',
+            'activeName' => 'menu-openManage-jsk3',
+            'type' => 'jsk3',
+            'cat' => 'k3' //游戏类别 快3
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //安徽快3
     public function openManage_ahk3()
     {
-        return view('back.open.ahk3');
+        $data = [
+            'title' => '安徽快3',
+            'activeName' => 'menu-openManage-ahk3',
+            'type' => 'ahk3',
+            'cat' => 'k3' //游戏类别 快3
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //吉林快3
     public function openManage_jlk3()
     {
-        return view('back.open.jlk3');
+        $data = [
+            'title' => '吉林快3',
+            'activeName' => 'menu-openManage-jlk3',
+            'type' => 'jlk3',
+            'cat' => 'k3' //游戏类别 快3
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //湖北快3
     public function openManage_hbk3()
     {
-        return view('back.open.hbk3');
+        $data = [
+            'title' => '湖北快3',
+            'activeName' => 'menu-openManage-hbk3',
+            'type' => 'hbk3',
+            'cat' => 'k3' //游戏类别 快3
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //广西快3
     public function openManage_gxk3()
     {
-        return view('back.open.gxk3');
+        $data = [
+            'title' => '广西快3',
+            'activeName' => 'menu-openManage-gxk3',
+            'type' => 'gxk3',
+            'cat' => 'k3' //游戏类别 快3
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //六合彩
     public function openManage_xglhc()

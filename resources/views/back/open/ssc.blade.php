@@ -1,6 +1,6 @@
 @extends('back.master')
 
-@section('title','历史开奖-秒速时时彩')
+@section('title','历史开奖-'.$data['title'])
 
 @section('page-css')
     <link rel="stylesheet" href="{{ asset('back/css/pages/ssc.css') }}">
@@ -9,7 +9,7 @@
 @section('content')
     <div class="content-top">
         <div class="breadcrumb">
-            <b>位置：</b>秒速时时彩历史记录
+            <b>位置：</b>{{ $data['title'] }}历史记录
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
     </div>
@@ -54,7 +54,14 @@
 @endsection
 
 @section('page-js')
+    <script>
+        var gameType = "{{ $data['type'] }}";
+        var title = "{{ $data['title'] }}";
+        var cat = "{{ $data['cat'] }}";
+        $('#menu-openManage').addClass('nav-show');
+        $("#{{ $data['activeName'] }}").addClass('active');
+    </script>
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
-    <script src="/back/js/pages/open_msssc.js"></script>
+    <script src="/back/js/pages/open_ssc.js"></script>
 @endsection

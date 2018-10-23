@@ -88,6 +88,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('ahk3', 'Back\SrcViewController@openManage_ahk3')->name('historyLottery.ahk3'); //安徽快3
         Route::get('jlk3', 'Back\SrcViewController@openManage_ljk3')->name('historyLottery.jlk3'); //吉林快3
         Route::get('hbk3', 'Back\SrcViewController@openManage_hbk3')->name('historyLottery.hbk3'); //湖北快3
+        Route::get('jlk3', 'Back\SrcViewController@openManage_jlk3')->name('historyLottery.jlk3'); //吉林快3
         Route::get('gxk3', 'Back\SrcViewController@openManage_gxk3')->name('historyLottery.gxk3'); //广西快3
         Route::get('lhc', 'Back\SrcViewController@openManage_xglhc')->name('historyLottery.xglhc'); //六合彩
         Route::get('xylhc', 'Back\SrcViewController@openManage_xylhc')->name('historyLottery.xylhc'); //幸运六合彩
@@ -247,17 +248,13 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/openHistory/gdklsf', 'Back\Data\openHistoryController@gdklsf'); //历史开奖 - 广东快乐十分
     Route::get('/back/datatables/openHistory/cqxync', 'Back\Data\openHistoryController@cqxync'); //历史开奖 - 重庆幸运农场
     Route::get('/back/datatables/openHistory/gd11x5', 'Back\Data\openHistoryController@gd11x5'); //历史开奖 - 广东11选5
-
-    Route::get('/back/datatables/openHistory/cqssc', 'Back\Data\openHistoryController@cqssc'); //历史开奖 - 重庆时时彩
-    Route::get('/back/datatables/openHistory/msssc', 'Back\Data\openHistoryController@msssc'); //历史开奖 - 秒速时时彩
-    Route::get('/back/datatables/openHistory/bjpk10', 'Back\Data\openHistoryController@bjpk10'); //历史开奖 - 北京PK10
     Route::get('/back/datatables/openHistory/bjkl8', 'Back\Data\openHistoryController@bjkl8'); //历史开奖 - 北京快乐8
-    Route::get('/back/datatables/openHistory/mssc', 'Back\Data\openHistoryController@mssc'); //历史开奖 - 秒速赛车
-    Route::get('/back/datatables/openHistory/msft', 'Back\Data\openHistoryController@msft'); //历史开奖 - 秒速飞艇
-    Route::get('/back/datatables/openHistory/paoma', 'Back\Data\openHistoryController@paoma'); //历史开奖 - 跑马
     Route::get('/back/datatables/openHistory/lhc', 'Back\Data\openHistoryController@lhc'); //历史开奖 - 六合彩
     Route::get('/back/datatables/openHistory/xylhc', 'Back\Data\openHistoryController@xylhc'); //历史开奖 - 幸运六合彩
+    Route::get('/back/datatables/openHistory/sc', 'Back\Data\openHistoryController@sc'); //历史开奖 - 赛车
     Route::get('/back/datatables/openHistory/k3', 'Back\Data\openHistoryController@k3'); //历史开奖 - 秒速快三
+    Route::get('/back/datatables/openHistory/ssc', 'Back\Data\openHistoryController@ssc'); //历史开奖 - 时时彩
+
     Route::get('/back/datatables/agentSettle/report', 'Back\Data\AgentSettleController@report'); //代理结算报表-表格数据
     Route::get('/back/datatables/agentSettle/review', 'Back\Data\AgentSettleController@review'); //代理结算审核-表格数据
     Route::get('/back/datatables/agentSettle/withdraw', 'Back\Data\AgentSettleController@withdraw'); //代理提现-表格数据
@@ -441,14 +438,11 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/editLhcNewIssue', 'Back\OpenHistoryController@editLhcNewIssue');
     Route::post('/action/admin/editXylhcNewIssue', 'Back\OpenHistoryController@editXylhcNewIssue');
 
-    Route::post('/action/admin/openCqssc', 'Back\OpenHistoryController@addCqsscData');     //添加重庆时时彩开奖数据
-    Route::post('/action/admin/openMsssc', 'Back\OpenHistoryController@addMssscData');     //添加秒速时时彩开奖数据
-    Route::post('/action/admin/openBjpk10', 'Back\OpenHistoryController@addBjpk10Data');     //添加北京PK10开奖数据
-    Route::post('/action/admin/openBjkl8', 'Back\OpenHistoryController@addBjkl8Data');     //添加北京快乐8开奖数据
-    Route::post('/action/admin/openMssc', 'Back\OpenHistoryController@addMsscData');     //添加秒速赛车开奖数据
-    Route::post('/action/admin/openMsft', 'Back\OpenHistoryController@addMsftData');     //添加秒速飞艇开奖数据
-    Route::post('/action/admin/openPaoma', 'Back\OpenHistoryController@addPaomaData');     //添加跑马开奖数据
+    Route::post('/action/admin/openssc', 'Back\OpenHistoryController@addsscData');     //添加时时彩开奖数据
+    Route::post('/action/admin/opensc', 'Back\OpenHistoryController@addscData');     //添加赛车开奖数据
     Route::post('/action/admin/openK3', 'Back\OpenHistoryController@addK3Data');     //添加快三开奖数据
+    Route::post('/action/admin/openBjkl8', 'Back\OpenHistoryController@addBjkl8Data');     //添加北京快乐8开奖数据
+
     Route::post('/action/admin/openLhc', 'Back\OpenHistoryController@addLhcData');
     Route::post('/action/admin/openXylhc', 'Back\OpenHistoryController@addXylhcData');
     Route::post('/action/admin/reOpenLhc', 'Back\OpenHistoryController@reOpenLhcData');
@@ -544,19 +538,11 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/addXylhcNewIssue', 'Back\Ajax\ModalController@addXylhcNewIssue');
     Route::get('/back/modal/editLhcNewIssue/{id}', 'Back\Ajax\ModalController@editLhcNewIssue');
     Route::get('/back/modal/editXylhcNewIssue/{id}', 'Back\Ajax\ModalController@editXylhcNewIssue');
-    Route::get('/back/modal/openCqssc/{id}', 'Back\Ajax\ModalController@openCqssc');             //重庆时时彩 - 手动开奖
-    Route::get('/back/modal/openMsssc/{id}', 'Back\Ajax\ModalController@openMsssc');             //秒速时时彩 - 手动开奖
+
     Route::get('/back/modal/openBjpk10/{id}', 'Back\Ajax\ModalController@openBjpk10');           //北京PK10 - 手动开奖
     Route::get('/back/modal/openBjkl8/{id}', 'Back\Ajax\ModalController@openBjkl8');             //北京快乐8 - 手动开奖
-    Route::get('/back/modal/openMssc/{id}', 'Back\Ajax\ModalController@openMssc');             //秒速赛车 - 手动开奖
-    Route::get('/back/modal/openMsft/{id}', 'Back\Ajax\ModalController@openMsft');             //秒速飞艇 - 手动开奖
-    Route::get('/back/modal/openPaoma/{id}', 'Back\Ajax\ModalController@openPaoma');             //跑马 - 手动开奖
-    Route::get('/back/modal/openMsjsk3/{id}', 'Back\Ajax\ModalController@openMsjsk3');             //秒速快三 - 手动开奖
-    Route::get('/back/modal/openJsk3/{id}', 'Back\Ajax\ModalController@openJsk3');             //江苏快三 - 手动开奖
-    Route::get('/back/modal/openAhk3/{id}', 'Back\Ajax\ModalController@openAhk3');             //安徽快三 - 手动开奖
-    Route::get('/back/modal/openJlk3/{id}', 'Back\Ajax\ModalController@openJlk3');             //吉林快三 - 手动开奖
-    Route::get('/back/modal/openHbk3/{id}', 'Back\Ajax\ModalController@openHbk3');             //湖北快三 - 手动开奖
-    Route::get('/back/modal/openGxk3/{id}', 'Back\Ajax\ModalController@openGxk3');             //广西快三 - 手动开奖
+    Route::get('/back/modal/open/{id}/{gameType}/{cat}', 'Back\Ajax\ModalController@open');       //手动开奖 id/游戏名/类型
+
     Route::get('/back/modal/openLhc/{id}', 'Back\Ajax\ModalController@openLhc');
     Route::get('/back/modal/openXylhc/{id}', 'Back\Ajax\ModalController@openXylhc');
     Route::get('/back/modal/reOpenLhc/{id}', 'Back\Ajax\ModalController@reOpenLhc');

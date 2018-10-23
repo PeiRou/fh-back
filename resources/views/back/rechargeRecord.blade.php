@@ -40,7 +40,7 @@
                             <option value="adminAddMoney">后台加钱</option>
                         </select>
                     </div>
-                    <div class="one wide field" id="onlineTypeDiv" style="display: none">
+                    <div class="one wide field" id="onlineTypeDiv" style="display: none;width: inherit!important;">
                         <select class="ui dropdown" id="pay_online_id" style='height:32px !important'>
 
                         </select>

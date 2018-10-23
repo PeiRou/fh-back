@@ -1,7 +1,4 @@
 $(function () {
-    $('#menu-openManage').addClass('nav-show');
-    $('#menu-openManage-hbk3').addClass('active');
-
     dataTable = $('#datTable').DataTable({
         searching: false,
         bLengthChange: false,
@@ -10,9 +7,9 @@ $(function () {
         serverSide: true,
         aLengthMenu: [[50]],
         ajax: {
-            url:'/back/datatables/openHistory/k3',
+            url:'/back/datatables/openHistory/ssc',
             data:function (d) {
-                d.type = 'hbk3';                                //类型
+                d.type = gameType;                                //类型
                 d.issue = $('#issue').val();                      //奖期
                 d.issuedate = $('#issuedate').val();              //开奖时间
             }
@@ -29,18 +26,58 @@ $(function () {
                         var num = parseInt(after[i])+0;
                         txt = txt + "<span><b class='b"+num+"'></b></span>";
                     }
-                    return "<div class='T_K3' style='width: 111px'>" + txt + "</div>";
+                    return "<div class='T_SSC' style='width: 100%'>" + txt + "</div>";
                 }},
             {data: function (data) {        //总和
                     if(data.opennum == null || data.opennum == '')
                         return "";
                     after = data.opennum.split(",");
-                    zh = parseInt(after[0]) + parseInt(after[1]) + parseInt(after[2]);      //总和
-                    var txt = san(after);
-                    if(txt=='No')
-                        txt = zh >= 11?"<font color='red'>大</font>":"小";
+                    zh = parseInt(after[0]) + parseInt(after[1]) + parseInt(after[2]) + parseInt(after[3]) + parseInt(after[4]);      //总和
+                    gyhdx = zh >= 23?"<font color='red'>大</font>":"小";
+                    gyhds = zh%2==1 ?"单":"<font color='red'>双</font>";
+                    txt = "<td>" + zh + "</td>"+"<td>" + gyhdx + "</td>"+"<td>" + gyhds + "</td>";
                     return "<table height='100%' width='100%' style='table-layout:fixed'><tr>"+ txt +"</tr></table>";
             }},
+            {data: function (data) {        //龙虎
+                    if(data.opennum == null || data.opennum == '')
+                        return "";
+                    after = data.opennum.split(",");
+                    txt = lhh(parseInt(after[0]) , parseInt(after[4]));      //龙虎
+                    return "<span>" + txt + "</span>";
+            }},
+            {data: function(data){      //前三
+                    if(data.opennum == null || data.opennum == '')
+                        return "";
+                    after = data.opennum.split(",");
+                    tmp = [];
+                    tmp.push(parseInt(after[0]));
+                    tmp.push(parseInt(after[1]));
+                    tmp.push(parseInt(after[2]));
+                    txt = san(tmp);
+                    return "<span>" + txt + "</span>";
+                }},
+            {data: function(data){      //中三
+                    if(data.opennum == null || data.opennum == '')
+                        return "";
+                    after = data.opennum.split(",");
+                    tmp = [];
+                    tmp.push(parseInt(after[1]));
+                    tmp.push(parseInt(after[2]));
+                    tmp.push(parseInt(after[3]));
+                    txt = san(tmp);
+                    return "<span>" + txt + "</span>";
+                }},
+            {data: function(data){      //后三
+                    if(data.opennum == null || data.opennum == '')
+                        return "";
+                    after = data.opennum.split(",");
+                    tmp = [];
+                    tmp.push(parseInt(after[2]));
+                    tmp.push(parseInt(after[3]));
+                    tmp.push(parseInt(after[4]));
+                    txt = san(tmp);
+                    return "<span>" + txt + "</span>";
+                }},
             {data: function (data) {
                     if(data.is_open==1)
                         txt = "已开奖";
@@ -50,11 +87,11 @@ $(function () {
                 }},
             {data: function (data) {
                     if(data.is_open=="1"){        //已开奖
-                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
-                    }else{                      //未开奖
+                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>";
+                    }else if(data.is_open=="0"){                      //未开奖
                         txt = "<li onclick='cancelAll("+data.id+")'>修改</li>" +
-                            "<li onclick='cancel("+data.issue+",\"hbk3\")'>撤单</li>" +
-                            "<li onclick='openk3("+data.id+")'>手动开奖</li>" ;
+                            "<li onclick='cancel("+data.issue+")'>撤单</li>" +
+                            "<li onclick='openssc("+data.id+")'>手动开奖</li>" ;
                     }
                     return "<ul class='control-menu'>" + txt + "</ul>";
                 }}
@@ -115,12 +152,24 @@ $(function () {
         }
     });
 });
-//豹子
+//豹子 顺子 对子 半顺 杂六
 function san(arrayNum){
     arrayNum.sort();
-    txt = 'No';
-    if(arrayNum[0] == arrayNum[1] && arrayNum[1] == arrayNum[2])
+    if(arrayNum[0] == arrayNum[1] && arrayNum[1] == arrayNum[2]){
         txt = '豹子';
+    }
+    else if(((arrayNum[2] - arrayNum[0] == 2)&&(arrayNum[2] - arrayNum[1] == 1)) || ''+arrayNum[0]+arrayNum[1]+arrayNum[2] == '019' || ''+arrayNum[0]+arrayNum[1]+arrayNum[2] == '089'){
+        txt = '顺子';
+    }
+    else if (arrayNum[0]==arrayNum[1] || arrayNum[1]==arrayNum[2] || arrayNum[0]==arrayNum[2]){
+        txt = '对子';
+    }
+    else if ( (arrayNum[0]+1 == arrayNum[1] || arrayNum[1]+1 == arrayNum[2]) || ''+arrayNum[0]+arrayNum[2] == '09'){
+        txt = '半顺';
+    }
+    else{
+        txt = '杂六';
+    }
     return txt;
 }
 
@@ -135,20 +184,20 @@ function lhh(a,b){
     return txt;
 }
 
-function openk3(id) {
+function openssc(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '湖北快3-手动开奖',
+        title: title+'-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content: 'url:/back/modal/openHbk3/'+id,
+        content: 'url:/back/modal/open/'+id+'/'+gameType+'/'+cat,
         buttons: {
             formSubmit: {
                 text:'确定',
                 btnClass: 'btn-blue',
                 action: function () {
                     $('.daterangepicker').hide();
-                    var form = this.$content.find('#openK3').data('formValidation').validate().isValid();
+                    var form = this.$content.find('#openssc').data('formValidation').validate().isValid();
                     if(!form){
                         return false;
                     }
@@ -166,7 +215,7 @@ function openk3(id) {
     });
 }
 
-function cancel(issue,type) {
+function cancel(issue) {
     jc = $.confirm({
         title: '确定要导撤单',
         theme: 'material',
@@ -179,7 +228,7 @@ function cancel(issue,type) {
                 btnClass: 'btn-red',
                 action: function(){
                     $.ajax({
-                        url:'/action/admin/cancelBetting/'+issue+'/'+type,
+                        url:'/action/admin/cancelBetting/'+issue+'/'+gameType,
                         type:'post',
                         dataType:'json',
                         success:function (data) {

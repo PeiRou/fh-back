@@ -675,18 +675,7 @@ class ModalController extends Controller
     }
 
     //历史开奖
-    //重庆时时彩 - 手动开奖
-    public function openCqssc($id = '')
-    {
-        $cqssc = DB::table('game_cqssc')->where('id',$id)->first();
-        return view('back.modal.open.openCQSSC',compact('cqssc'));
-    }
-    //秒速时时彩 - 手动开奖
-    public function openMsssc($id = '')
-    {
-        $cqssc = DB::table('game_msssc')->where('id',$id)->first();
-        return view('back.modal.open.openMSSSC',compact('cqssc'));
-    }
+
     //北京赛车 - 手动开奖
     public function openBjpk10($id = '')
     {
@@ -699,57 +688,32 @@ class ModalController extends Controller
         $bjkl8 = DB::table('game_bjkl8')->where('id',$id)->first();
         return view('back.modal.open.openBJKL8',compact('bjkl8'));
     }
-    //秒速赛车 - 手动开奖
-    public function openMssc($id = ''){
-        $mssc = DB::table('game_mssc')->where('id',$id)->first();
-        return view('back.modal.open.openMSSC',compact('mssc'));
+
+    //手动开奖
+    public function open($id = '',$gameType = '', $cat = ''){
+        $table = 'game_'.$gameType;
+        $type = $gameType;
+        $data = DB::table($table)->where('id',$id)->first();
+        switch ($cat){
+            case 'k3':  //快3类
+                $view = 'back.modal.open.openK3';
+                break;
+            case 'ssc': //时时彩
+                $view = 'back.modal.open.openSSC';
+                break;
+            case 'sc':  //赛车
+                $view = 'back.modal.open.openSC';
+                break;
+            default:
+                return false;
+                break;
+        }
+        if(!isset($view)){
+            return false;
+        }
+        return view($view,compact('data','type'));
     }
-    //秒速飞艇 - 手动开奖
-    public function openMsft($id = ''){
-        $mssc = DB::table('game_msft')->where('id',$id)->first();
-        return view('back.modal.open.openMSFT',compact('mssc'));
-    }
-    //跑马 - 手动开奖
-    public function openPaoma($id = ''){
-        $mssc = DB::table('game_paoma')->where('id',$id)->first();
-        return view('back.modal.open.openPAOMA',compact('mssc'));
-    }
-    //秒速快三 - 手动开奖
-    public function openMsjsk3($id = ''){
-        $k3 = DB::table('game_msjsk3')->where('id',$id)->first();
-        $type = 'msjsk3';
-        return view('back.modal.open.openK3',compact('k3','type'));
-    }
-    //江苏快三 - 手动开奖
-    public function openJsk3($id = ''){
-        $k3 = DB::table('game_jsk3')->where('id',$id)->first();
-        $type = 'jsk3';
-        return view('back.modal.open.openK3',compact('k3','type'));
-    }
-    //安徽快三 - 手动开奖
-    public function openAhk3($id = ''){
-        $k3 = DB::table('game_ahk3')->where('id',$id)->first();
-        $type = 'ahk3';
-        return view('back.modal.open.openK3',compact('k3','type'));
-    }
-    //吉林快三 - 手动开奖
-    public function openJlk3($id = ''){
-        $k3 = DB::table('game_jlk3')->where('id',$id)->first();
-        $type = 'jlk3';
-        return view('back.modal.open.openK3',compact('k3','type'));
-    }
-    //湖北快三 - 手动开奖
-    public function openHbk3($id = ''){
-        $k3 = DB::table('game_hbk3')->where('id',$id)->first();
-        $type = 'hbk3';
-        return view('back.modal.open.openK3',compact('k3','type'));
-    }
-    //广西快三 - 手动开奖
-    public function openGxk3($id = ''){
-        $k3 = DB::table('game_gxk3')->where('id',$id)->first();
-        $type = 'gxk3';
-        return view('back.modal.open.openK3',compact('k3','type'));
-    }
+
     //添加六合彩
     public function addLhcNewIssue()
     {

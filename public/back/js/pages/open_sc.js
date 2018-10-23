@@ -1,7 +1,4 @@
 $(function () {
-    $('#menu-openManage').addClass('nav-show');
-    $('#menu-openManage-msjsk3').addClass('active');
-
     dataTable = $('#datTable').DataTable({
         searching: false,
         bLengthChange: false,
@@ -10,9 +7,9 @@ $(function () {
         serverSide: true,
         aLengthMenu: [[50]],
         ajax: {
-            url:'/back/datatables/openHistory/k3',
+            url:'/back/datatables/openHistory/sc',
             data:function (d) {
-                d.type = 'msjsk3';                                //类型
+                d.type = gameType;                                //类型
                 d.issue = $('#issue').val();                      //奖期
                 d.issuedate = $('#issuedate').val();              //开奖时间
             }
@@ -29,18 +26,30 @@ $(function () {
                         var num = parseInt(after[i])+0;
                         txt = txt + "<span><b class='b"+num+"'></b></span>";
                     }
-                    return "<div class='T_K3' style='width: 111px'>" + txt + "</div>";
+                    return "<div class='T_PK10' style='width: 100%'>" + txt + "</div>";
                 }},
-            {data: function (data) {        //总和
+            {data: function (data) {        //冠亚军和
                     if(data.opennum == null || data.opennum == '')
                         return "";
                     after = data.opennum.split(",");
-                    zh = parseInt(after[0]) + parseInt(after[1]) + parseInt(after[2]);      //总和
-                    var txt = san(after);
-                    if(txt=='No')
-                        txt = zh >= 11?"<font color='red'>大</font>":"小";
+                    gyh = parseInt(after[0]) + parseInt(after[1]);
+                    gyhds = gyh%2==1 ?"单":"<font color='red'>双</font>";
+                    gyhdx = gyh >= 12?"<font color='red'>大</font>":"小";
+                    txt = "<td>" + gyh + "</td>"+"<td>" + gyhds + "</td>"+"<td>" + gyhdx + "</td>";
                     return "<table height='100%' width='100%' style='table-layout:fixed'><tr>"+ txt +"</tr></table>";
-            }},
+                }},
+            {data: function (data) {        //1~5龙虎
+                    if(data.opennum == null || data.opennum == '')
+                        return "";
+                    after = data.opennum.split(",");
+                    lhh1 = lhh(parseInt(after[0]) , parseInt(after[9]));      //龙虎1
+                    lhh2 = lhh(parseInt(after[1]) , parseInt(after[8]));      //龙虎2
+                    lhh3 = lhh(parseInt(after[2]) , parseInt(after[7]));      //龙虎3
+                    lhh4 = lhh(parseInt(after[3]) , parseInt(after[6]));      //龙虎4
+                    lhh5 = lhh(parseInt(after[4]) , parseInt(after[5]));      //龙虎5
+                    txt = "<td>" + lhh1 + "</td>"+"<td>" + lhh2 + "</td>"+"<td>" + lhh3 + "</td>"+"<td>" + lhh4 + "</td>"+"<td>" + lhh5 + "</td>";
+                    return "<table height='100%' width='100%' style='table-layout:fixed'><tr>"+ txt +"</tr></table>";
+                }},
             {data: function (data) {
                     if(data.is_open==1)
                         txt = "已开奖";
@@ -53,8 +62,8 @@ $(function () {
                         txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
                     }else{                      //未开奖
                         txt = "<li onclick='cancelAll("+data.id+")'>修改</li>" +
-                            "<li onclick='cancel("+data.issue+",\"msjsk3\")'>撤单</li>" +
-                            "<li onclick='openk3("+data.id+")'>手动开奖</li>" ;
+                            "<li onclick='cancel("+data.issue+",\"jspk10\")'>撤单</li>" +
+                            "<li onclick='openbjpk10("+data.id+")'>手动开奖</li>" ;
                     }
                     return "<ul class='control-menu'>" + txt + "</ul>";
                 }}
@@ -115,14 +124,6 @@ $(function () {
         }
     });
 });
-//豹子
-function san(arrayNum){
-    arrayNum.sort();
-    txt = 'No';
-    if(arrayNum[0] == arrayNum[1] && arrayNum[1] == arrayNum[2])
-        txt = '豹子';
-    return txt;
-}
 
 function lhh(a,b){
     if( a>b){
@@ -135,20 +136,20 @@ function lhh(a,b){
     return txt;
 }
 
-function openk3(id) {
+function openbjpk10(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '秒速快3-手动开奖',
+        title: title + '-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content: 'url:/back/modal/openMsjsk3/'+id,
+        content: 'url:/back/modal/open/'+id+'/'+gameType+'/'+cat,
         buttons: {
             formSubmit: {
                 text:'确定',
                 btnClass: 'btn-blue',
                 action: function () {
                     $('.daterangepicker').hide();
-                    var form = this.$content.find('#openK3').data('formValidation').validate().isValid();
+                    var form = this.$content.find('#openBjpk10').data('formValidation').validate().isValid();
                     if(!form){
                         return false;
                     }

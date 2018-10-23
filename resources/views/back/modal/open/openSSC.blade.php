@@ -1,11 +1,11 @@
 <div class="modal-mask">
     <div>获取开奖数据中...请稍后</div>
 </div>
-<form id="openBjpk10" class="ui mini form" action="{{ url('/action/admin/openPaoma') }}">
+<form id="openssc" class="ui mini form" action="{{ url('/action/admin/openssc') }}">
     <div class="field" style="width: 120px;">
         <label>期号</label>
         <div class="ui input icon">
-            <input type="text" name="issue" value="{{ $mssc->issue }}" readonly/>
+            <input type="text" name="issue" value="{{ $data->issue }}" readonly/>
         </div>
     </div>
     <div class="field openSelect">
@@ -35,35 +35,10 @@
                 <option value=""></option>
             </select>
         </div>
-        <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n6">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n7">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n8">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n9">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n10">
-                <option value=""></option>
-            </select>
-        </div>
     </div>
     <div class="field" style="margin-top: 15px;">
         <label>自动获取</label>
-        <span onclick="getBJPK10Data('{{ date('Ymd',strtotime($mssc->opentime)) }}','{{ $mssc->issue }}')" class="getBtn">点击获取开奖号码</span>
+        <span onclick="getSSCData('{{ date('Ymd',strtotime($data->opentime)) }}','{{ $data->issue }}')" class="getBtn">点击获取开奖号码</span>
     </div>
     <div class="field" style="width: 120px;">
         <label>开奖理由</label>
@@ -75,19 +50,20 @@
             <option value="5">未接受注单</option>
         </select>
     </div>
-    <input type="hidden" name="id" id="id" value="{{ $mssc->id }}">
+    <input type="hidden" name="id" id="id" value="{{ $data->id }}">
+    <input type="hidden" id="type" value="{{ $type }}">
 </form>
 
 <script>
     $(function () {
-        var selectNum = ['',1,2,3,4,5,6,7,8,9,10];
-        var str = '';
+        var selectNum = ['',0,1,2,3,4,5,6,7,8,9];
+        var str;
         for(var i = 0;i<selectNum.length;i++){
             str += '<option value="'+selectNum[i]+'">'+selectNum[i]+'</option>'
         }
         $('select[name="nums"]').html(str);
     });
-    $('#openBjpk10').formValidation({
+    $('#openssc').formValidation({
         framework: 'semantic',
         icon: {
             valid: 'checkmark icon',
@@ -104,7 +80,16 @@
         $.ajax({
             url: $form.attr('action'),
             type: 'POST',
-            data: {id:$('#id').val(),n1:$('#n1').val(),n2:$('#n2').val(),n3:$('#n3').val(),n4:$('#n4').val(),n5:$('#n5').val(),n6:$('#n6').val(),n7:$('#n7').val(),n8:$('#n8').val(),n9:$('#n9').val(),n10:$('#n10').val(),msg:$('#msg').val()},
+            data: {
+                id:$('#id').val(),
+                n1:$('#n1').val(),
+                n2:$('#n2').val(),
+                n3:$('#n3').val(),
+                n4:$('#n4').val(),
+                n5:$('#n5').val(),
+                msg:$('#msg').val(),
+                type:$('#type').val()
+            },
             success: function(result) {
                 if(result.status == true){
                     jc.close();
@@ -118,11 +103,11 @@
         });
     });
     
-    function getBJPK10Data(date,issue) {
+    function getSSCData(date,issue) {
         $('.modal-mask').fadeIn();
         $('.getBtn').html('获取中...');
         $.ajax({
-            url:'/back/openData/bjpk10/'+date+'/'+issue.slice(2),
+            url:'/back/openData/cqssc/'+date+'/'+issue.slice(2),
             type:'get',
             dataType:'json',
             success:function (result) {
@@ -132,11 +117,6 @@
                     $('#n3').val(result.n3);
                     $('#n4').val(result.n4);
                     $('#n5').val(result.n5);
-                    $('#n6').val(result.n6);
-                    $('#n7').val(result.n7);
-                    $('#n8').val(result.n8);
-                    $('#n9').val(result.n9);
-                    $('#n10').val(result.n10);
                     $('.getBtn').html('获取成功（点击可重新获取）');
                     $('.modal-mask').fadeOut();
                 }

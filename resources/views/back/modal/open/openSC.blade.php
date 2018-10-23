@@ -1,11 +1,11 @@
 <div class="modal-mask">
     <div>获取开奖数据中...请稍后</div>
 </div>
-<form id="openBjpk10" class="ui mini form" action="{{ url('/action/admin/openMsft') }}">
+<form id="openBjpk10" class="ui mini form" action="{{ url('/action/admin/opensc') }}">
     <div class="field" style="width: 120px;">
         <label>期号</label>
         <div class="ui input icon">
-            <input type="text" name="issue" value="{{ $mssc->issue }}" readonly/>
+            <input type="text" name="issue" value="{{ $data->issue }}" readonly/>
         </div>
     </div>
     <div class="field openSelect">
@@ -63,7 +63,7 @@
     </div>
     <div class="field" style="margin-top: 15px;">
         <label>自动获取</label>
-        <span onclick="getBJPK10Data('{{ date('Ymd',strtotime($mssc->opentime)) }}','{{ $mssc->issue }}')" class="getBtn">点击获取开奖号码</span>
+        <span onclick="getBJPK10Data('{{ date('Ymd',strtotime($data->opentime)) }}','{{ $data->issue }}')" class="getBtn">点击获取开奖号码</span>
     </div>
     <div class="field" style="width: 120px;">
         <label>开奖理由</label>
@@ -75,7 +75,8 @@
             <option value="5">未接受注单</option>
         </select>
     </div>
-    <input type="hidden" name="id" id="id" value="{{ $mssc->id }}">
+    <input type="hidden" name="id" id="id" value="{{ $data->id }}">
+    <input type="hidden" id="type" value="{{ $type }}">
 </form>
 
 <script>
@@ -104,7 +105,7 @@
         $.ajax({
             url: $form.attr('action'),
             type: 'POST',
-            data: {id:$('#id').val(),n1:$('#n1').val(),n2:$('#n2').val(),n3:$('#n3').val(),n4:$('#n4').val(),n5:$('#n5').val(),n6:$('#n6').val(),n7:$('#n7').val(),n8:$('#n8').val(),n9:$('#n9').val(),n10:$('#n10').val(),msg:$('#msg').val()},
+            data: {id:$('#id').val(),n1:$('#n1').val(),n2:$('#n2').val(),n3:$('#n3').val(),n4:$('#n4').val(),n5:$('#n5').val(),n6:$('#n6').val(),n7:$('#n7').val(),n8:$('#n8').val(),n9:$('#n9').val(),n10:$('#n10').val(),msg:$('#msg').val(),type:$('#type').val()},
             success: function(result) {
                 if(result.status == true){
                     jc.close();

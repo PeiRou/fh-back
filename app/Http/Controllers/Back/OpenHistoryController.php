@@ -63,16 +63,19 @@ class OpenHistoryController extends Controller
         $validator =  Validator::make($data,$this->$role);
         return ['stauts'=>$validator->fails(),'msg'=> $validator->errors()->first()];
     }
-
-    //添加北京PK10开奖数据
-    public function addBjpk10Data(Request $request)
-    {
+    //添加赛车开奖数据
+    public function addscData(Request $request){
+        if(!$gameType = $request->get('type')){
+            return response()->json(['status' => false,'msg' => '参数不为空！']);
+        }
+        $table = 'game_'.$gameType;
         $verifyData = $this->verifyData($request->all());
         if($verifyData['stauts']){
             return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
         }
         $id = $this->notTen($request->get('id'));
-        $info = DB::table('game_bjpk10')->select('opentime','issue')->where('id',$id)->first();
+        $info = DB::table($table)->select('opentime','issue')->where('id',$id)->first();
+        if(strtotime($info->opentime) > time())
         if(strtotime($info->opentime) > time())
             return response()->json(['status' => false,'msg' => '请勿提早开奖']);
         $n1 = $this->notTen($request->get('n1'));
@@ -88,73 +91,30 @@ class OpenHistoryController extends Controller
         $msg = $this->notTen($request->get('msg'));
 
         $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7.','.$n8.','.$n9.','.$n10;
-
-        $update = DB::table('game_bjpk10')->where('id',$id)->update([
+        $data = [
             'opennum' => $openNum,
             'year'=> date('Y',strtotime($info->opentime)),
             'month'=> date('m',strtotime($info->opentime)),
             'day'=>  date('d',strtotime($info->opentime)),
             'is_open' => 1
-        ]);
+        ];
         //处理牛牛
-        $niuniu = $this->exePK10nn($openNum);
-        $openniuniu =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
-
-        $updateNN = DB::table('game_pknn')->where('issue',$info->issue)->update([
-            'opennum' => $openNum,
-            'year'=> date('Y',strtotime($info->opentime)),
-            'month'=> date('m',strtotime($info->opentime)),
-            'day'=>  date('d',strtotime($info->opentime)),
-            'niuniu' => $openniuniu,
-            'is_open' => 1
-        ]);
-        if($update == 1&&$updateNN==1){
-            return response()->json([
-                'status' => true
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'msg' => '开奖数据添加失败！'
-            ]);
+        if($gameType == 'mssc'){//秒速赛车
+            $niuniu = $this->exePK10nn($openNum);
+            $data['niuniu'] =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
         }
-    }
-
-    //添加秒速赛车开奖数据
-    public function addMsscData(Request $request){
-        $verifyData = $this->verifyData($request->all());
-        if($verifyData['stauts']){
-            return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
+        $update = DB::table($table)->where('id',$id)->update($data);
+        if($gameType == 'bjpk10'){//北京pk10
+            $niuniu = $this->exePK10nn($openNum);
+            $data['niuniu'] =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
+            $updateNN = DB::table('game_pknn')->where('issue',$info->issue)->update($data);
+            if(!$updateNN){
+                return response()->json([
+                    'status' => false,
+                    'msg' => '开奖数据添加失败！'
+                ]);
+            }
         }
-        $id = $this->notTen($request->get('id'));
-        $info = DB::table('game_mssc')->select('opentime')->where('id',$id)->first();
-        if(strtotime($info->opentime) > time())
-            return response()->json(['status' => false,'msg' => '请勿提早开奖']);
-        $n1 = $this->notTen($request->get('n1'));
-        $n2 = $this->notTen($request->get('n2'));
-        $n3 = $this->notTen($request->get('n3'));
-        $n4 = $this->notTen($request->get('n4'));
-        $n5 = $this->notTen($request->get('n5'));
-        $n6 = $this->notTen($request->get('n6'));
-        $n7 = $this->notTen($request->get('n7'));
-        $n8 = $this->notTen($request->get('n8'));
-        $n9 = $this->notTen($request->get('n9'));
-        $n10 = $this->notTen($request->get('n10'));
-        $msg = $this->notTen($request->get('msg'));
-
-        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7.','.$n8.','.$n9.','.$n10;
-        //处理牛牛
-        $niuniu = $this->exePK10nn($openNum);
-        $openniuniu =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
-
-        $update = DB::table('game_mssc')->where('id',$id)->update([
-            'opennum' => $openNum,
-            'niuniu'=>  $openniuniu,
-            'year'=> date('Y',strtotime($info->opentime)),
-            'month'=> date('m',strtotime($info->opentime)),
-            'day'=>  date('d',strtotime($info->opentime)),
-            'is_open' => 1
-        ]);
         if($update == 1){
             return response()->json([
                 'status' => true
@@ -166,95 +126,6 @@ class OpenHistoryController extends Controller
             ]);
         }
     }
-
-    //添加秒速飞艇开奖数据
-    public function addMsftData(Request $request)
-    {
-        $verifyData = $this->verifyData($request->all());
-        if($verifyData['stauts']){
-            return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
-        }
-        $id = $this->notTen($request->get('id'));
-        $info = DB::table('game_msft')->select('opentime')->where('id',$id)->first();
-        if(strtotime($info->opentime) > time())
-            return response()->json(['status' => false,'msg' => '请勿提早开奖']);
-        $n1 = $this->notTen($request->get('n1'));
-        $n2 = $this->notTen($request->get('n2'));
-        $n3 = $this->notTen($request->get('n3'));
-        $n4 = $this->notTen($request->get('n4'));
-        $n5 = $this->notTen($request->get('n5'));
-        $n6 = $this->notTen($request->get('n6'));
-        $n7 = $this->notTen($request->get('n7'));
-        $n8 = $this->notTen($request->get('n8'));
-        $n9 = $this->notTen($request->get('n9'));
-        $n10 = $this->notTen($request->get('n10'));
-        $msg = $this->notTen($request->get('msg'));
-
-        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7.','.$n8.','.$n9.','.$n10;
-
-        $update = DB::table('game_msft')->where('id',$id)->update([
-            'opennum' => $openNum,
-            'year'=> date('Y',strtotime($info->opentime)),
-            'month'=> date('m',strtotime($info->opentime)),
-            'day'=>  date('d',strtotime($info->opentime)),
-            'is_open' => 1
-        ]);
-        if($update == 1){
-            return response()->json([
-                'status' => true
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'msg' => '开奖数据添加失败！'
-            ]);
-        }
-    }
-
-    //添加跑马开奖数据
-    public function addPaomaData(Request $request)
-    {
-        $verifyData = $this->verifyData($request->all());
-        if($verifyData['stauts']){
-            return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
-        }
-        $id = $this->notTen($request->get('id'));
-        $info = DB::table('game_paoma')->select('opentime')->where('id',$id)->first();
-        if(strtotime($info->opentime) > time())
-            return response()->json(['status' => false,'msg' => '请勿提早开奖']);
-        $n1 = $this->notTen($request->get('n1'));
-        $n2 = $this->notTen($request->get('n2'));
-        $n3 = $this->notTen($request->get('n3'));
-        $n4 = $this->notTen($request->get('n4'));
-        $n5 = $this->notTen($request->get('n5'));
-        $n6 = $this->notTen($request->get('n6'));
-        $n7 = $this->notTen($request->get('n7'));
-        $n8 = $this->notTen($request->get('n8'));
-        $n9 = $this->notTen($request->get('n9'));
-        $n10 = $this->notTen($request->get('n10'));
-        $msg = $this->notTen($request->get('msg'));
-
-        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7.','.$n8.','.$n9.','.$n10;
-
-        $update = DB::table('game_paoma')->where('id',$id)->update([
-            'opennum' => $openNum,
-            'year'=> date('Y',strtotime($info->opentime)),
-            'month'=> date('m',strtotime($info->opentime)),
-            'day'=>  date('d',strtotime($info->opentime)),
-            'is_open' => 1
-        ]);
-        if($update == 1){
-            return response()->json([
-                'status' => true
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'msg' => '开奖数据添加失败！'
-            ]);
-        }
-    }
-
     //添加北京快乐8开奖数据
     public function addBjkl8Data(Request $request)
     {
@@ -304,16 +175,19 @@ class OpenHistoryController extends Controller
             ]);
         }
     }
-
-    //添加重庆时时彩开奖数据
-    public function addCqsscData(Request $request)
+    //添加时时彩开奖数据
+    public function addsscData(Request $request)
     {
+        if(!$gameType = $request->get('type')){
+            return response()->json(['status' => false,'msg' => '参数不为空！']);
+        }
+        $table = 'game_'.$gameType;
         $verifyData = $this->verifyData($request->all(),2);
         if($verifyData['stauts']){
             return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
         }
         $id = $this->notTen($request->get('id'));
-        $info = DB::table('game_cqssc')->select('opentime')->where('id',$id)->first();
+        $info = DB::table($table)->select('opentime')->where('id',$id)->first();
         if(strtotime($info->opentime) > time())
             return response()->json(['status' => false,'msg' => '请勿提早开奖']);
         $n1 = $request->get('n1');
@@ -325,46 +199,7 @@ class OpenHistoryController extends Controller
 
         $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5;
 
-        $update = DB::table('game_cqssc')->where('id',$id)->update([
-            'opennum' => $openNum,
-            'year'=> date('Y',strtotime($info->opentime)),
-            'month'=> date('m',strtotime($info->opentime)),
-            'day'=>  date('d',strtotime($info->opentime)),
-            'is_open' => 1
-        ]);
-        if($update == 1){
-            return response()->json([
-                'status' => true
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'msg' => '开奖数据添加失败！'
-            ]);
-        }
-    }
-
-    //添加秒速时时彩开奖数据
-    public function addMssscData(Request $request)
-    {
-        $verifyData = $this->verifyData($request->all(),2);
-        if($verifyData['stauts']){
-            return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
-        }
-        $id = $this->notTen($request->get('id'));
-        $info = DB::table('game_msssc')->select('opentime')->where('id',$id)->first();
-        if(strtotime($info->opentime) > time())
-            return response()->json(['status' => false,'msg' => '请勿提早开奖']);
-        $n1 = $request->get('n1');
-        $n2 = $request->get('n2');
-        $n3 = $request->get('n3');
-        $n4 = $request->get('n4');
-        $n5 = $request->get('n5');
-        $msg = $this->notTen($request->get('msg'));
-
-        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5;
-
-        $update = DB::table('game_msssc')->where('id',$id)->update([
+        $update = DB::table($table)->where('id',$id)->update([
             'opennum' => $openNum,
             'year'=> date('Y',strtotime($info->opentime)),
             'month'=> date('m',strtotime($info->opentime)),

@@ -61,6 +61,25 @@ class openHistoryController extends Controller
             ->make(true);
     }
 
+    //历史开奖 - 赛车
+    public function sc(Request $request){
+        if(!($gameType = $request->get('type'))){
+            return false;
+        }
+        $table = 'game_'.$gameType;
+        $issue = $request->get('issue');
+        $issuedate = $request->get('issuedate');
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $HISModel = $this->getPostData($table,$issue,$issuedate);
+        $HISCount = $HISModel->count();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
+        return DataTables::of($HIS)
+            ->setTotalRecords($HISCount)
+            ->skipPaging()
+            ->make(true);
+    }
+
     //历史开奖 - 秒速赛车
     public function mssc(Request $request)
     {
@@ -157,32 +176,16 @@ class openHistoryController extends Controller
             ->skipPaging()
             ->make(true);
     }
-    //重庆时时彩-表格数据
-    public function cqssc(Request $request)
-    {
+    //时时彩-表格数据
+    public function ssc(Request $request){
+        if(!($gameType = $request->get('type'))){
+            return false;
+        }
+        $table = 'game_'.$gameType;
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
         $start = $request->get('start');
         $length = $request->get('length');
-        $table = 'game_cqssc';
-        $HISModel = $this->getPostData($table,$issue,$issuedate);
-
-        $HISCount = $HISModel->count();
-        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
-        return DataTables::of($HIS)
-            ->setTotalRecords($HISCount)
-            ->skipPaging()
-            ->make(true);
-    }
-
-    //秒速时时彩-表格数据
-    public function msssc(Request $request)
-    {
-        $issue = $request->get('issue');
-        $issuedate = $request->get('issuedate');
-        $start = $request->get('start');
-        $length = $request->get('length');
-        $table = 'game_msssc';
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
         $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
@@ -191,6 +194,40 @@ class openHistoryController extends Controller
             ->skipPaging()
             ->make(true);
     }
+//    //重庆时时彩-表格数据
+//    public function cqssc(Request $request)
+//    {
+//        $issue = $request->get('issue');
+//        $issuedate = $request->get('issuedate');
+//        $start = $request->get('start');
+//        $length = $request->get('length');
+//        $table = 'game_cqssc';
+//        $HISModel = $this->getPostData($table,$issue,$issuedate);
+//
+//        $HISCount = $HISModel->count();
+//        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
+//        return DataTables::of($HIS)
+//            ->setTotalRecords($HISCount)
+//            ->skipPaging()
+//            ->make(true);
+//    }
+//
+//    //秒速时时彩-表格数据
+//    public function msssc(Request $request)
+//    {
+//        $issue = $request->get('issue');
+//        $issuedate = $request->get('issuedate');
+//        $start = $request->get('start');
+//        $length = $request->get('length');
+//        $table = 'game_msssc';
+//        $HISModel = $this->getPostData($table,$issue,$issuedate);
+//        $HISCount = $HISModel->count();
+//        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
+//        return DataTables::of($HIS)
+//            ->setTotalRecords($HISCount)
+//            ->skipPaging()
+//            ->make(true);
+//    }
 
     //北京快乐8-表格数据
     public function bjkl8(Request $request)

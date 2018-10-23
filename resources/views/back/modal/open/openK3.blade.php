@@ -5,7 +5,7 @@
     <div class="field" style="width: 120px;">
         <label>期号</label>
         <div class="ui input icon">
-            <input type="text" name="issue" value="{{ $k3->issue }}" readonly/>
+            <input type="text" name="issue" value="{{ $data->issue }}" readonly/>
         </div>
     </div>
     <div class="field openSelect">
@@ -28,7 +28,7 @@
     </div>
     <div class="field" style="margin-top: 15px;">
         <label>自动获取</label>
-        <span onclick="getk3Data('{{ date('Ymd',strtotime($k3->opentime)) }}','{{ $k3->issue }}')" class="getBtn">点击获取开奖号码</span>
+        <span onclick="getk3Data('{{ date('Ymd',strtotime($data->opentime)) }}','{{ $data->issue }}')" class="getBtn">点击获取开奖号码</span>
     </div>
     <div class="field" style="width: 120px;">
         <label>开奖理由</label>
@@ -41,7 +41,7 @@
         </select>
     </div>
     <input type="hidden" id="type" value="{{ $type }}">
-    <input type="hidden" name="id" id="id" value="{{ $k3->id }}">
+    <input type="hidden" name="id" id="id" value="{{ $data->id }}">
 </form>
 
 <script>

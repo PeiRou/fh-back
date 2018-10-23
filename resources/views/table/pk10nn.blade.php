@@ -15,7 +15,7 @@
             <td colspan="2">牛6及以下</td>
             <td>2</td>
             <td>0</td>
-            <td>1</td>
+            <td>-</td>
             <td>-</td>
             <td>-</td>
         </tr>
@@ -23,7 +23,7 @@
             <td colspan="2">牛7/牛8</td>
             <td>3</td>
             <td>0</td>
-            <td>1</td>
+            <td>-</td>
             <td>-</td>
             <td>-</td>
         </tr>
@@ -31,7 +31,7 @@
             <td colspan="2">牛9</td>
             <td>4</td>
             <td>0</td>
-            <td>1</td>
+            <td>-</td>
             <td>-</td>
             <td>-</td>
         </tr>
@@ -39,7 +39,7 @@
             <td colspan="2">牛牛</td>
             <td>6</td>
             <td>0</td>
-            <td>1</td>
+            <td>-</td>
             <td>-</td>
             <td>-</td>
         </tr>
@@ -48,7 +48,7 @@
                 <td colspan="2">{{ $k }}</td>
                 <td>-</td>
                 <td>-</td>
-                <td>-</td>
+                <td>{{ $odds[$k]['minMoney'] }}</td>
                 <td>{{ $odds[$k]['maxMoney'] }}</td>
                 <td>{{ $odds[$k]['maxTurnMoney'] }}</td>
             </tr>
