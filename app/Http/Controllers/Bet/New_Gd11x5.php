@@ -554,6 +554,7 @@ class New_Gd11x5
         $openCodeArr = explode(',',$openCode);
         $OPEN_QIAN_2 = $openCodeArr[0].','.$openCodeArr[1];
         $OPEN_QIAN_3 = $openCodeArr[0].','.$openCodeArr[1].','.$openCodeArr[2];
+        $open_total = (int)$openCodeArr[0]+(int)$openCodeArr[1]+(int)$openCodeArr[2]+(int)$openCodeArr[3]+(int)$openCodeArr[4];
 
         $id = [];
         foreach ($win as $k=>$v){
@@ -692,8 +693,8 @@ class New_Gd11x5
             //连码 - End
 
             //特殊处理单号为和
-            if($openCodeArr[0] == 11 || $openCodeArr[1] == 11 || $openCodeArr[2] == 11 || $openCodeArr[3] == 11 || $openCodeArr[4] == 11){
-                $heArray = [2127162,2127163,2127164,2127165,2128177,2128178,2128179,2128180,2129192,2129193,2129194,2129195,2130207,2130208,2130209,2130210,2131222,2131223,2131224,2131225];
+            if($openCodeArr[0] == 11 || $openCodeArr[1] == 11 || $openCodeArr[2] == 11 || $openCodeArr[3] == 11 || $openCodeArr[4] == 11 || $open_total == 30){
+                $heArray = [2127162,2127163,2127164,2127165,2128177,2128178,2128179,2128180,2129192,2129193,2129194,2129195,2130207,2130208,2130209,2130210,2131222,2131223,2131224,2131225,2126143,2126147];
                 $getUserHeBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArray)->get();
                 if($getUserHeBets){
                     $updateHeId = [];
