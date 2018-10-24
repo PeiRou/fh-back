@@ -162,7 +162,7 @@ class New_Gd11x5
         if($num1 == 11){ //和
 
         }
-        if($num1 >= 6){ //大
+        if($num1 >= 6 && $num1 !== 11){ //大
             $playId = 162;
             $winCode = $gameId.$Q1PlayCate.$playId;
             $win->push($winCode);
@@ -691,6 +691,27 @@ class New_Gd11x5
             }
             //连码 - End
 
+            //特殊处理单号为和
+            if($openCodeArr[0] == 11 || $openCodeArr[1] == 11 || $openCodeArr[2] == 11 || $openCodeArr[3] == 11 || $openCodeArr[4] == 11){
+                $heArray = [2127162,2127163,2127164,2127165,2128177,2128178,2128179,2128180,2129192,2129193,2129194,2129195,2130207,2130208,2130209,2130210,2131222,2131223,2131224,2131225];
+                $getUserHeBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArray)->get();
+                if($getUserHeBets){
+                    $updateHeId = [];
+                    $sql_he = "UPDATE bet SET bunko = CASE ";
+                    foreach ($getUserHeBets as $item){
+                        $updateHeId[] = $item->bet_id;
+                        $bunko_he = $item->bet_money * 1;
+                        $sql_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
+                    }
+                    $ids_he = implode(',', $updateHeId);
+                    $sql_he .= "END WHERE `bet_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
+                } else {
+                    $sql_he = 0;
+                }
+            } else {
+                $sql_he = 0;
+            }
+
             $run2 = DB::connection('mysql::write')->statement($sql_lose);
             if($run2 == 1){
                 $bunko_index++;
@@ -706,6 +727,15 @@ class New_Gd11x5
                 if($sql_lm !== 0){
                     $run4 = DB::connection('mysql::write')->statement($sql_lm);
                     if($run4 == 1){
+                        $bunko_index++;
+                    }
+                } else {
+                    $bunko_index++;
+                }
+
+                if($sql_he !== 0){
+                    $run5 = DB::connection('mysql::write')->statement($sql_he);
+                    if($run5 == 1){
                         $bunko_index++;
                     }
                 } else {
