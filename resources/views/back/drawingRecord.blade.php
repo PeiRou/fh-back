@@ -3,6 +3,11 @@
 @section('title','提款记录')
 
 @section('content')
+    <style>
+        .red {
+            color: #ff6470 !important;
+        }
+    </style>
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>提款记录
