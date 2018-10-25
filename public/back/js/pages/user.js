@@ -31,6 +31,7 @@ $(function () {
                 d.account = $('#account').val();
                 d.mobile = $('#mobile').val();
                 d.qq = $('#qq').val();
+                d.bank = $('#bank').val();
                 d.minMoney = $('#minMoney').val();
                 d.maxMoney = $('#maxMoney').val();
                 d.promoter = $('#promoter').val();

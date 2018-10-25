@@ -580,14 +580,32 @@ class ModalController extends Controller
      */
     public function copyPayOnlineNew($id = '')
     {
-        $payType = PayTypeNew::where('status',1)->get();
-        $levels = Levels::all();
-        $getPayOnlineData = PayOnlineNew::where('id',$id)->first();
-        $getPayOnlineData->levels = explode(",",$getPayOnlineData->levels);
-        return view('back.modal.payNew.copyPayOnline')->with('payType',$payType)->with('levels',$levels)->with('id',$id)->with('payOnline',$getPayOnlineData);
+        if(empty($id)){
+            return response()->json([
+                'status' => 0,
+                'msg' => '参数错误'
+            ]);
+        }
+        if(!$data = PayOnlineNew::where('id',$id)->first()->toArray()){
+            return response()->json([
+                'status' => 0,
+                'msg' => ''
+            ]);
+        }
+        $data['payeeName'] = $data['payeeName'] . ' - 复制';
+        $data['remark2'] = $data['remark2'] . ' - 复制';
+        unset($data['id']);
+        if(PayOnlineNew::insert($data)){
+            return response()->json([
+                'status' => 1,
+                'msg' => ''
+            ]);
+        }
+        return response()->json([
+            'status' => 0,
+            'msg' => ''
+        ]);
     }
-
-
     //修改在线支付配置新
     public function editPayOnlineNew($id = "")
     {

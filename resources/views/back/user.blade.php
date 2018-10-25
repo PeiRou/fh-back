@@ -67,6 +67,9 @@
                     <div class="one wide field">
                         <input type="text" id="qq" placeholder="QQ">
                     </div>
+                    <div class="one wide field" style="width:9%!important;">
+                        <input type="text" id="bank" placeholder="银行卡">
+                    </div>
                     <div style="line-height: 32px;">用户余额</div>
                     <div class="one wide field">
                         <input type="text" id="minMoney" placeholder="最小金额">
