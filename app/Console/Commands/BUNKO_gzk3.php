@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class BUNKO_gzk3 extends Command
 {
+    protected $gameId = 18;
     /**
      * The name and signature of the console command.
      *
