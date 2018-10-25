@@ -8,9 +8,13 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Bet\Clong;
 
 class new_xjssc extends Command
 {
+    protected  $code = 'xjssc';
+    protected  $gameId = 4;
+    protected  $clong;
     /**
      * The name and signature of the console command.
      *
@@ -30,8 +34,9 @@ class new_xjssc extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Clong $clong)
     {
+        $this->clong = $clong;
         parent::__construct();
     }
 
@@ -72,6 +77,11 @@ class new_xjssc extends Command
         $url = Config::get('website.guanServerUrl').'xjssc';
         $html = json_decode(file_get_contents($url),true);
         $redis_issue = Redis::get('xjssc:issue');
+        //清除昨天长龙，在录第一期的时候清掉
+        if($filtered['issue']=='01'){
+            DB::table('clong_kaijian1')->where('lotteryid',4)->delete();
+            DB::table('clong_kaijian2')->where('lotteryid',4)->delete();
+        }
         if($redis_issue !== $html[0]['issue']){
             try{
                 $up = DB::table('game_xjssc')->where('issue',$html[0]['issue'])
@@ -85,6 +95,8 @@ class new_xjssc extends Command
                 if($up == 1){
                     $key = 'xjssc:issue';
                     Redis::set($key,$html[0]['issue']);
+                    $this->clong->setKaijian('xjssc',1,$html[0]['nums']);
+                    $this->clong->setKaijian('xjssc',2,$html[0]['nums']);
                 }
             } catch (\Exception $exception){
                 \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
