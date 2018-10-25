@@ -162,7 +162,7 @@ class New_Gd11x5
         if($num1 == 11){ //和
 
         }
-        if($num1 >= 6){ //大
+        if($num1 >= 6 && $num1 !== 11){ //大
             $playId = 162;
             $winCode = $gameId.$Q1PlayCate.$playId;
             $win->push($winCode);
@@ -554,6 +554,7 @@ class New_Gd11x5
         $openCodeArr = explode(',',$openCode);
         $OPEN_QIAN_2 = $openCodeArr[0].','.$openCodeArr[1];
         $OPEN_QIAN_3 = $openCodeArr[0].','.$openCodeArr[1].','.$openCodeArr[2];
+        $open_total = (int)$openCodeArr[0]+(int)$openCodeArr[1]+(int)$openCodeArr[2]+(int)$openCodeArr[3]+(int)$openCodeArr[4];
 
         $id = [];
         foreach ($win as $k=>$v){
@@ -691,6 +692,61 @@ class New_Gd11x5
             }
             //连码 - End
 
+            //特殊处理单号为和
+            $heArrayPush = [];
+            if($openCodeArr[0] == 11){
+                $heArrayPush[] = 2127162;
+                $heArrayPush[] = 2127163;
+                $heArrayPush[] = 2127164;
+                $heArrayPush[] = 2127165;
+            }
+            if($openCodeArr[1] == 11){
+                $heArrayPush[] = 2128177;
+                $heArrayPush[] = 2128178;
+                $heArrayPush[] = 2128179;
+                $heArrayPush[] = 2128180;
+            }
+            if($openCodeArr[2] == 11){
+                $heArrayPush[] = 2129192;
+                $heArrayPush[] = 2129193;
+                $heArrayPush[] = 2129194;
+                $heArrayPush[] = 2129195;
+            }
+            if($openCodeArr[3] == 11){
+                $heArrayPush[] = 2130207;
+                $heArrayPush[] = 2130208;
+                $heArrayPush[] = 2130209;
+                $heArrayPush[] = 2130210;
+            }
+            if($openCodeArr[4] == 11){
+                $heArrayPush[] = 2131222;
+                $heArrayPush[] = 2131223;
+                $heArrayPush[] = 2131224;
+                $heArrayPush[] = 2131225;
+            }
+            if($open_total == 30){
+                $heArrayPush[] = 2126143;
+                $heArrayPush[] = 2126147;
+            }
+            if($heArrayPush){
+                $getUserHeBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArrayPush)->get();
+                if($getUserHeBets){
+                    $updateHeId = [];
+                    $sql_he = "UPDATE bet SET bunko = CASE ";
+                    foreach ($getUserHeBets as $item){
+                        $updateHeId[] = $item->bet_id;
+                        $bunko_he = $item->bet_money * 1;
+                        $sql_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
+                    }
+                    $ids_he = implode(',', $updateHeId);
+                    $sql_he .= "END WHERE `bet_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
+                } else {
+                    $sql_he = 0;
+                }
+            } else {
+                $sql_he = 0;
+            }
+
             $run2 = DB::connection('mysql::write')->statement($sql_lose);
             if($run2 == 1){
                 $bunko_index++;
@@ -706,6 +762,15 @@ class New_Gd11x5
                 if($sql_lm !== 0){
                     $run4 = DB::connection('mysql::write')->statement($sql_lm);
                     if($run4 == 1){
+                        $bunko_index++;
+                    }
+                } else {
+                    $bunko_index++;
+                }
+
+                if($sql_he !== 0){
+                    $run5 = DB::connection('mysql::write')->statement($sql_he);
+                    if($run5 == 1){
                         $bunko_index++;
                     }
                 } else {

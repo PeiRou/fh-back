@@ -7,6 +7,13 @@
         #rechargeRecordTable{
             white-space: nowrap;
         }
+        .ui.form .fields .wide.field {
+            padding-left: .1em;
+            padding-right: .1em;
+        }
+        .ui.form .one.wide.field {
+            width: 5.25%!important;
+        }
     </style>
     <div class="content-top">
         <div class="breadcrumb">
@@ -36,7 +43,7 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
-                    <div class="one wide field">
+                    <div class="one wide field"  style="width: 6%!important;">
                         <select class="ui dropdown" id="recharge_type" style='height:32px !important'>
                             <option value="">充值类型</option>
                             <option value="onlinePayment">在线支付</option>
@@ -76,7 +83,7 @@
                             <option value="4">充值中</option>
                         </select>
                     </div>
-                    <div class="one wide field">
+                    <div class="one wide field"  style="width: 6%!important;">
                         <select class="ui dropdown" id="account_type" style='height:32px !important'>
                             <option value="account">用户账号</option>
                             <option value="orderNum">订单号</option>
@@ -90,7 +97,7 @@
                     {{--<div class="one wide field">--}}
                         {{--<input type="text" id="" placeholder="昵称">--}}
                     {{--</div>--}}
-                    <div class="one wide field">
+                    <div class="one wide field"  style="width:5.5%!important;">
                         <input type="text" id="amount" placeholder="交易金额">
                     </div>
                     <div class="one wide field">
@@ -99,14 +106,14 @@
                     {{--<div class="one wide field">--}}
                         {{--<input type="text" id="maxMoney" placeholder="备注码">--}}
                     {{--</div>--}}
-                    <div class="one wide field">
-                        <select class="ui dropdown" id="dateType" style='height:32px !important'>
+                    <div class="one wide field"  style="width:6%!important;">
+                        <select class="ui dropdown" id="dateType" style='height:32px !important' >
                             <option value="">时间类型</option>
                             <option value="1">报表时间</option>
                             <option value="2">添加时间</option>
                         </select>
                     </div>
-                    <div class="one wide field">
+                    <div class="one wide field" style="width: 6.25%!important;">
                         <div class="ui calendar" id="rangestart" style="width: 108px;">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
@@ -114,7 +121,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one wide field">
+                    <div class="one wide field" style="width: 6.25%!important;">
                         <div class="ui calendar" id="rangeend" style="width: 108px;">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
@@ -122,7 +129,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="one wide field" style="width:5%!important;">
+                    <div class="one wide field" style="width:4.5%!important;">
                         <select class="ui dropdown" id="date_param" style='height:32px !important'>
                             <option value="today">今天</option>
                             <option value="yesterday">昨天</option>
@@ -131,7 +138,7 @@
                             <option value="lastMonth">上月</option>
                         </select>
                     </div>
-                    <div class="one wide field" style="width:5%!important;">
+                    <div class="one wide field" style="width:4.2%!important;">
                         <button id="btn_search" class="fluid ui mini  icon teal button" > 查询 </button>
                     </div>
                     {{--<div class="one wide field">--}}

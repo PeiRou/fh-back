@@ -203,10 +203,14 @@ class RechargeController extends Controller
         $aRecharge = DB::select('select sum(amount) as total,SUM(rebate_or_fee) as give  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 and recharges.status = '.$whereStatus." ".$where);
 
         return response()->json([
-            'total' => number_format($aRecharge[0]->total,2),
-            'rechargeGiveTotal' => number_format($aRecharge[0]->give,2),
-            'onlinePayToday' => number_format($onlinePayToday,2),
-            'offlinePayToday' => number_format($offlinePayToday,2),
+//            'total' => number_format($aRecharge[0]->total,2,'.',''),
+//            'rechargeGiveTotal' => number_format($aRecharge[0]->give,2,'.',''),
+//            'onlinePayToday' => number_format($onlinePayToday,2,'.',''),
+//            'offlinePayToday' => number_format($offlinePayToday,2,'.',''),
+            'total' => $aRecharge[0]->total * 1,
+            'rechargeGiveTotal' => $aRecharge[0]->give * 1,
+            'onlinePayToday' => $onlinePayToday * 1,
+            'offlinePayToday' => $offlinePayToday * 1,
             'onlineMemberToday' => $onlineMemberToday,
             'offlineMemberToday' => $offlineMemberToday,
         ]);

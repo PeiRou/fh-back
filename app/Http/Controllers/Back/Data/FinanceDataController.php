@@ -301,7 +301,7 @@ class FinanceDataController extends Controller
                 return '<b>'.$drawing->level_name.'</b> <i style="cursor:pointer;" onclick="editLevels(\''.$drawing->dr_uid.'\',\''.$drawing->user_rechLevel.'\',\''.$drawing->dr_id.'\')" class="iconfont">&#xe602;</i></span>';
             })
             ->editColumn('amount',function ($drawing){
-                return '<span class="red-text" style="font-size: 12pt;">'.$drawing->dr_amount.'</span>';
+                return '<span class="red-text" onclick="copyText(this)" style="font-size: 12pt;">'.$drawing->dr_amount.'</span>';
             })
             ->editColumn('bank_info',function ($drawing){
                 if(empty($drawing->user_bank_name))
