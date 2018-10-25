@@ -6,8 +6,6 @@ var columns = [
     {data:'ip',title:'IP'},
     {data:'create_at',title:'时间'},
     {data:'action',title:'事件'},
-    {data:'route',title:'路由别名'},
-    {data:'param',title:'使用参数'},
 ];
 
 var text = {

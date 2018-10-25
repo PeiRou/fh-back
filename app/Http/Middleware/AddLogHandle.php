@@ -43,6 +43,7 @@ class AddLogHandle
                 'route' => $routeData['route'],
                 'action' => $routeData['action'],
                 'param' => json_encode($params),
+                'create_at' => date('Y-m-d H:i:s'),
             ];
             if (DB::table('log_handle')->insert($data)) {
                 return $next($request);

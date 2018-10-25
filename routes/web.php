@@ -279,189 +279,188 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/login', 'Back\SrcAccountController@login');
     Route::post('/action/admin/logout', 'Back\SrcAccountController@logout');
 
-    Route::post('/action/admin/addPlatformSettlement', 'Back\PlatformController@addPlatformSettlement');//平台费用结算-手动结算
+    Route::post('/action/admin/addPlatformSettlement', 'Back\PlatformController@addPlatformSettlement')->middleware('add-log-handle')->name('ac.ad.addPlatformSettlement');//平台费用结算-手动结算
 
-    Route::post('/action/admin/addGeneralAgent', 'Back\SrcMemberController@addGeneralAgent');//添加总代理
-    Route::post('/action/admin/editGeneralAgent', 'Back\SrcMemberController@editGeneralAgent');//修改总代理
+    Route::post('/action/admin/addGeneralAgent', 'Back\SrcMemberController@addGeneralAgent')->middleware('add-log-handle')->name('ac.ad.addGeneralAgent');//添加总代理
+    Route::post('/action/admin/editGeneralAgent', 'Back\SrcMemberController@editGeneralAgent')->middleware('add-log-handle')->name('ac.ad.editGeneralAgent');//修改总代理
 
-    Route::post('/action/admin/addSubAccount', 'Back\SrcMemberController@addSubAccount');//添加子账号
-    Route::post('/action/admin/editSubAccount', 'Back\SrcMemberController@editSubAccount');//修改子账号
-    Route::post('/action/admin/delSubAccount', 'Back\SrcMemberController@delSubAccount');//删除子账号
-    Route::post('/action/admin/changeGoogleCode', 'Back\SrcMemberController@changeGoogleCode');//更换子账号的google验证码
+    Route::post('/action/admin/addSubAccount', 'Back\SrcMemberController@addSubAccount')->middleware('add-log-handle')->name('ac.ad.addSubAccount');//添加子账号
+    Route::post('/action/admin/editSubAccount', 'Back\SrcMemberController@editSubAccount')->middleware('add-log-handle')->name('ac.ad.editSubAccount');//修改子账号
+    Route::post('/action/admin/delSubAccount', 'Back\SrcMemberController@delSubAccount')->middleware('add-log-handle')->name('ac.ad.delSubAccount');//删除子账号
+    Route::post('/action/admin/changeGoogleCode', 'Back\SrcMemberController@changeGoogleCode')->middleware('add-log-handle')->name('ac.ad.changeGoogleCode');//更换子账号的google验证码
 
-    Route::post('/action/admin/addAgent', 'Back\SrcMemberController@addAgent');//添加代理账号
-    Route::post('/action/admin/editAgent', 'Back\SrcMemberController@editAgent');//修改代理账号
-    Route::post('/action/admin/delAgent/{id}', 'Back\SrcMemberController@delAgent')->middleware('check-permission')->name('m.agent.del');//删除代理账号
-    Route::post('/action/admin/changeAgentMoney', 'Back\SrcMemberController@changeAgentMoney');//修改代理金额
+    Route::post('/action/admin/addAgent', 'Back\SrcMemberController@addAgent')->middleware('add-log-handle')->name('ac.ad.addAgent');//添加代理账号
+    Route::post('/action/admin/editAgent', 'Back\SrcMemberController@editAgent')->middleware('add-log-handle')->name('ac.ad.editAgent');//修改代理账号
+    Route::post('/action/admin/delAgent/{id}', 'Back\SrcMemberController@delAgent')->middleware(['check-permission','add-log-handle'])->name('m.agent.del');//删除代理账号
+    Route::post('/action/admin/changeAgentMoney', 'Back\SrcMemberController@changeAgentMoney')->middleware('add-log-handle')->name('ac.ad.changeAgentMoney');//修改代理金额
 
-    Route::post('/action/admin/addUser', 'Back\SrcMemberController@addUser');//添加会员
-    Route::post('/action/admin/userChangeAgent', 'Back\SrcMemberController@userChangeAgent');//会员更换代理
-    Route::post('/action/admin/userChangeFullName', 'Back\SrcMemberController@userChangeFullName');//会员更换真实姓名
-    Route::post('/action/admin/editUser', 'Back\SrcMemberController@editUser');//修改会员资料
-    Route::post('/action/admin/changeUserMoney', 'Back\SrcMemberController@changeUserMoney');//修改会员余额
-    Route::post('/action/admin/delUser/{id}', 'Back\SrcMemberController@delUser')->middleware('check-permission')->name('m.user.delUser');//删除会员账号
-    Route::post('/action/admin/editUserLevels', 'Back\SrcMemberController@editUserLevels');//删除会员层级
-    Route::post('/action/admin/editRechUserLevels', 'Back\SrcMemberController@editRechUserLevels');//修改存款会员层级
-    Route::post('/action/admin/editDrawingLevels', 'Back\SrcMemberController@editDrawingLevels');//修改提款会员层级
-    Route::post('/action/admin/getOutUser', 'Back\SrcMemberController@getOutUser');//会员踢下线
-    Route::post('/action/userMoney/totalUserMoney', 'Back\SrcMemberController@totalUserMoney');//会员总余额统计
+    Route::post('/action/admin/addUser', 'Back\SrcMemberController@addUser')->middleware('add-log-handle')->name('ac.ad.addUser');//添加会员
+    Route::post('/action/admin/userChangeAgent', 'Back\SrcMemberController@userChangeAgent')->middleware('add-log-handle')->name('ac.ad.userChangeAgent');//会员更换代理
+    Route::post('/action/admin/userChangeFullName', 'Back\SrcMemberController@userChangeFullName')->middleware('add-log-handle')->name('ac.ad.userChangeFullName');//会员更换真实姓名
+    Route::post('/action/admin/editUser', 'Back\SrcMemberController@editUser')->middleware('add-log-handle')->name('ac.ad.editUser');//修改会员资料
+    Route::post('/action/admin/changeUserMoney', 'Back\SrcMemberController@changeUserMoney')->middleware('add-log-handle')->name('ac.ad.changeUserMoney');//修改会员余额
+    Route::post('/action/admin/delUser/{id}', 'Back\SrcMemberController@delUser')->middleware(['check-permission','add-log-handle'])->name('m.user.delUser');//删除会员账号
+    Route::post('/action/admin/editUserLevels', 'Back\SrcMemberController@editUserLevels')->middleware('add-log-handle')->name('ac.ad.editUserLevels');//删除会员层级
+    Route::post('/action/admin/editRechUserLevels', 'Back\SrcMemberController@editRechUserLevels')->middleware('add-log-handle')->name('ac.ad.editRechUserLevels');//修改存款会员层级
+    Route::post('/action/admin/editDrawingLevels', 'Back\SrcMemberController@editDrawingLevels')->middleware('add-log-handle')->name('ac.ad.editDrawingLevels');//修改提款会员层级
+    Route::post('/action/admin/getOutUser', 'Back\SrcMemberController@getOutUser')->middleware('add-log-handle')->name('ac.ad.getOutUser');//会员踢下线
+    Route::post('/action/userMoney/totalUserMoney', 'Back\SrcMemberController@totalUserMoney')->middleware('add-log-handle')->name('ac.ad.totalUserMoney');//会员总余额统计
 
-    Route::post('/action/admin/addPermission', 'Back\PermissionController@addPermission')->name('addPermission'); //添加权限
-    Route::post('/action/admin/editPermission', 'Back\PermissionController@editPermission')->name('system.editPermission'); //修改权限
-    Route::post('/action/admin/addPermissionAuth', 'Back\PermissionController@addPermissionAuth')->name('system.addPermissionAuth'); //添加权限控制
-    Route::post('/action/admin/editPermissionAuth', 'Back\PermissionController@editPermissionAuth')->name('system.editPermissionAuth'); //修改权限控制
-    Route::post('/action/admin/addNewRole', 'Back\RoleController@addNewRole')->name('system.addNewRole'); //添加角色
-    Route::post('/action/admin/editNewRole', 'Back\RoleController@editNewRole')->name('system.editNewRole'); //修改角色
-    Route::post('/action/admin/systemSetting/edit', 'Back\SystemSettingController@editSystemSetting');//编辑系统设置
-    Route::post('/action/admin/addArticle', 'Back\SystemSettingController@addArticle');//添加文章
-    Route::post('/action/admin/delArticle', 'Back\SystemSettingController@delArticle');//删除文章
-    Route::post('/action/admin/editArticle', 'Back\SystemSettingController@editArticle');//修改文章
-    Route::post('/action/admin/addWhitelist', 'Back\SystemSettingController@addWhitelist');//添加ip白名单
-    Route::post('/action/admin/delWhitelist', 'Back\SystemSettingController@delWhitelist');//删除ip白名单
-    Route::post('/action/admin/editWhitelist', 'Back\SystemSettingController@editWhitelist');//修改ip白名单
-    Route::post('/action/admin/replyFeedback', 'Back\SystemSettingController@replyFeedback');//问题回复
+    Route::post('/action/admin/addPermission', 'Back\PermissionController@addPermission')->middleware('add-log-handle')->name('system.addPermission'); //添加权限
+    Route::post('/action/admin/editPermission', 'Back\PermissionController@editPermission')->middleware('add-log-handle')->name('system.editPermission'); //修改权限
+    Route::post('/action/admin/addPermissionAuth', 'Back\PermissionController@addPermissionAuth')->middleware('add-log-handle')->name('system.addPermissionAuth'); //添加权限控制
+    Route::post('/action/admin/editPermissionAuth', 'Back\PermissionController@editPermissionAuth')->middleware('add-log-handle')->name('system.editPermissionAuth'); //修改权限控制
+    Route::post('/action/admin/addNewRole', 'Back\RoleController@addNewRole')->middleware('add-log-handle')->name('system.addNewRole'); //添加角色
+    Route::post('/action/admin/editNewRole', 'Back\RoleController@editNewRole')->middleware('add-log-handle')->name('system.editNewRole'); //修改角色
+    Route::post('/action/admin/systemSetting/edit', 'Back\SystemSettingController@editSystemSetting')->middleware('add-log-handle')->name('system.systemSetting.edit');//编辑系统设置
+    Route::post('/action/admin/addArticle', 'Back\SystemSettingController@addArticle')->middleware('add-log-handle')->name('ac.ad.addArticle');//添加文章
+    Route::post('/action/admin/delArticle', 'Back\SystemSettingController@delArticle')->middleware('add-log-handle')->name('ac.ad.delArticle');//删除文章
+    Route::post('/action/admin/editArticle', 'Back\SystemSettingController@editArticle')->middleware('add-log-handle')->name('ac.ad.editArticle');//修改文章
+    Route::post('/action/admin/addWhitelist', 'Back\SystemSettingController@addWhitelist')->middleware('add-log-handle')->name('ac.ad.addWhitelist');//添加ip白名单
+    Route::post('/action/admin/delWhitelist', 'Back\SystemSettingController@delWhitelist')->middleware('add-log-handle')->name('ac.ad.delWhitelist');//删除ip白名单
+    Route::post('/action/admin/editWhitelist', 'Back\SystemSettingController@editWhitelist')->middleware('add-log-handle')->name('ac.ad.editWhitelist');//修改ip白名单
+    Route::post('/action/admin/replyFeedback', 'Back\SystemSettingController@replyFeedback')->middleware('add-log-handle')->name('ac.ad.replyFeedback');//问题回复
 
-    Route::post('/action/admin/agentSettle/settlement', 'Back\AgentSettleController@settlement'); //代理结算报表-手动结算
-    Route::post('/action/admin/agentSettle/submitReview', 'Back\AgentSettleController@submitReview'); //代理结算报表-提交审核
-    Route::post('/action/admin/agentSettle/submitSettle', 'Back\AgentSettleController@submitSettle'); //代理结算报表-提交结算
-    Route::post('/action/admin/agentSettle/submitTurnDown', 'Back\AgentSettleController@submitTurnDown'); //代理结算报表-提交驳回
-    Route::post('/action/admin/agentSettle/editReport', 'Back\AgentSettleController@editReport'); //代理结算报表-修改报表
-    Route::post('/action/admin/agentSettle/editReview', 'Back\AgentSettleController@editReview'); //代理结算审核-修改审核
-    Route::post('/action/admin/agentSettle/editConfig', 'Back\AgentSettleController@editConfig'); //代理结算配置-修改配置
-    Route::post('/action/admin/agentSettle/addAgentSettleDomain', 'Back\AgentSettleController@addAgentSettleDomain'); //代理专属域名-添加
-    Route::post('/action/admin/agentSettle/editAgentSettleDomain', 'Back\AgentSettleController@editAgentSettleDomain'); //代理专属域名-修改
-    Route::post('/action/admin/agentSettle/delAgentSettleDomain', 'Back\AgentSettleController@delAgentSettleDomain'); //代理专属域名-修改
+    Route::post('/action/admin/agentSettle/settlement', 'Back\AgentSettleController@settlement')->middleware('add-log-handle')->name('ac.ad.agentSettle.settlement'); //代理结算报表-手动结算
+    Route::post('/action/admin/agentSettle/submitReview', 'Back\AgentSettleController@submitReview')->middleware('add-log-handle')->name('ac.ad.agentSettle.submitReview'); //代理结算报表-提交审核
+    Route::post('/action/admin/agentSettle/submitSettle', 'Back\AgentSettleController@submitSettle')->middleware('add-log-handle')->name('ac.ad.agentSettle.submitSettle'); //代理结算报表-提交结算
+    Route::post('/action/admin/agentSettle/submitTurnDown', 'Back\AgentSettleController@submitTurnDown')->middleware('add-log-handle')->name('ac.ad.agentSettle.submitTurnDown'); //代理结算报表-提交驳回
+    Route::post('/action/admin/agentSettle/editReport', 'Back\AgentSettleController@editReport')->middleware('add-log-handle')->name('ac.ad.agentSettle.editReport'); //代理结算报表-修改报表
+    Route::post('/action/admin/agentSettle/editReview', 'Back\AgentSettleController@editReview')->middleware('add-log-handle')->name('ac.ad.agentSettle.editReview'); //代理结算审核-修改审核
+    Route::post('/action/admin/agentSettle/editConfig', 'Back\AgentSettleController@editConfig')->middleware('add-log-handle')->name('ac.ad.agentSettle.editConfig'); //代理结算配置-修改配置
+    Route::post('/action/admin/agentSettle/addAgentSettleDomain', 'Back\AgentSettleController@addAgentSettleDomain')->middleware('add-log-handle')->name('ac.ad.agentSettle.addAgentSettleDomain'); //代理专属域名-添加
+    Route::post('/action/admin/agentSettle/editAgentSettleDomain', 'Back\AgentSettleController@editAgentSettleDomain')->middleware('add-log-handle')->name('ac.ad.agentSettle.editAgentSettleDomain'); //代理专属域名-修改
+    Route::post('/action/admin/agentSettle/delAgentSettleDomain', 'Back\AgentSettleController@delAgentSettleDomain')->middleware('add-log-handle')->name('ac.ad.agentSettle.delAgentSettleDomain'); //代理专属域名-修改
 
 
-    Route::post('/action/admin/activity/addActivity', 'Back\ActivityController@addActivity'); //活动列表-新增活动
-    Route::post('/action/admin/activity/editActivity', 'Back\ActivityController@editActivity'); //活动列表-修改活动
-    Route::post('/action/admin/activity/onOffActivity', 'Back\ActivityController@onOffActivity'); //活动列表-开启关闭
-    Route::post('/action/admin/activity/addCondition', 'Back\ActivityController@addCondition'); //活动条件-新增条件
-    Route::post('/action/admin/activity/editCondition', 'Back\ActivityController@editCondition'); //活动条件-修改条件
-    Route::post('/action/admin/activity/delCondition', 'Back\ActivityController@delCondition'); //活动条件-删除条件
-    Route::post('/action/admin/activity/addPrize', 'Back\ActivityController@addPrize'); //奖品配置-新增奖品
-    Route::post('/action/admin/activity/editPrize', 'Back\ActivityController@editPrize'); //奖品配置-修改奖品
-    Route::post('/action/admin/activity/delPrize', 'Back\ActivityController@delPrize'); //奖品配置-删除奖品
-    Route::post('/action/admin/activity/reviewAward', 'Back\ActivityController@reviewAward'); //派奖审核-审核奖品
-    Route::post('/action/admin/activity/dailyStatistics', 'Back\ActivityController@dailyStatistics'); //活动数据统计-每日统计
-    Route::post('/action/admin/activity/dataStatistics', 'Back\ActivityController@dataStatistics'); //每日数据统计-每日统计
+    Route::post('/action/admin/activity/addActivity', 'Back\ActivityController@addActivity')->middleware('add-log-handle')->name('ac.ad.activity.addActivity'); //活动列表-新增活动
+    Route::post('/action/admin/activity/editActivity', 'Back\ActivityController@editActivity')->middleware('add-log-handle')->name('ac.ad.activity.editActivity'); //活动列表-修改活动
+    Route::post('/action/admin/activity/onOffActivity', 'Back\ActivityController@onOffActivity')->middleware('add-log-handle')->name('ac.ad.activity.onOffActivity'); //活动列表-开启关闭
+    Route::post('/action/admin/activity/addCondition', 'Back\ActivityController@addCondition')->middleware('add-log-handle')->name('ac.ad.activity.addCondition'); //活动条件-新增条件
+    Route::post('/action/admin/activity/editCondition', 'Back\ActivityController@editCondition')->middleware('add-log-handle')->name('ac.ad.activity.editCondition'); //活动条件-修改条件
+    Route::post('/action/admin/activity/delCondition', 'Back\ActivityController@delCondition')->middleware('add-log-handle')->name('ac.ad.activity.delCondition'); //活动条件-删除条件
+    Route::post('/action/admin/activity/addPrize', 'Back\ActivityController@addPrize')->middleware('add-log-handle')->name('ac.ad.activity.addPrize'); //奖品配置-新增奖品
+    Route::post('/action/admin/activity/editPrize', 'Back\ActivityController@editPrize')->middleware('add-log-handle')->name('ac.ad.activity.editPrize'); //奖品配置-修改奖品
+    Route::post('/action/admin/activity/delPrize', 'Back\ActivityController@delPrize')->middleware('add-log-handle')->name('ac.ad.activity.delPrize'); //奖品配置-删除奖品
+    Route::post('/action/admin/activity/reviewAward', 'Back\ActivityController@reviewAward')->middleware('add-log-handle')->name('ac.ad.activity.reviewAward'); //派奖审核-审核奖品
+    Route::post('/action/admin/activity/dailyStatistics', 'Back\ActivityController@dailyStatistics')->middleware('add-log-handle')->name('ac.ad.activity.dailyStatistics'); //活动数据统计-每日统计
+    Route::post('/action/admin/activity/dataStatistics', 'Back\ActivityController@dataStatistics')->middleware('add-log-handle')->name('ac.ad.activity.dataStatistics'); //每日数据统计-每日统计
 
-    Route::post('/action/admin/promotion/settlement','Back\PromotionController@settlement'); //推广结算报表-手动结算
-    Route::post('/action/admin/promotion/editReport','Back\PromotionController@editReport'); //推广结算报表-修改结算
-    Route::post('/action/admin/promotion/commitReport','Back\PromotionController@commitReport'); //推广结算报表-提交审核
-    Route::post('/action/admin/promotion/submitTurnDown','Back\PromotionController@submitTurnDown'); //推广结算审核-提交驳回
-    Route::post('/action/admin/promotion/addConfig','Back\PromotionController@addConfig'); //推广配置-新增配置
-    Route::post('/action/admin/promotion/editConfig','Back\PromotionController@editConfig'); //推广配置-修改配置
-    Route::post('/action/admin/addNotice', 'Back\SrcNoticeController@addNotice'); //添加公告
-    Route::post('/action/admin/editNotice', 'Back\SrcNoticeController@editNotice'); //修改公告
-    Route::post('/action/admin/delNoticeSetting', 'Back\SrcNoticeController@delNoticeSetting'); //删除公告
-    Route::post('/action/admin/setNoticeOrder', 'Back\SrcNoticeController@setNoticeOrder'); //设置公告顺序
-    Route::post('/action/admin/addSendMessage', 'Back\SrcNoticeController@addSendMessage'); //添加消息
-    Route::post('/action/admin/delSendMessage', 'Back\SrcNoticeController@delSendMessage'); //删除消息
+    Route::post('/action/admin/promotion/settlement','Back\PromotionController@settlement')->middleware('add-log-handle')->name('ac.ad.promotion.settlement'); //推广结算报表-手动结算
+    Route::post('/action/admin/promotion/editReport','Back\PromotionController@editReport')->middleware('add-log-handle')->name('ac.ad.promotion.editReport'); //推广结算报表-修改结算
+    Route::post('/action/admin/promotion/commitReport','Back\PromotionController@commitReport')->middleware('add-log-handle')->name('ac.ad.promotion.commitReport'); //推广结算报表-提交审核
+    Route::post('/action/admin/promotion/submitTurnDown','Back\PromotionController@submitTurnDown')->middleware('add-log-handle')->name('ac.ad.promotion.submitTurnDown'); //推广结算审核-提交驳回
+    Route::post('/action/admin/promotion/addConfig','Back\PromotionController@addConfig')->middleware('add-log-handle')->name('ac.ad.promotion.addConfig'); //推广配置-新增配置
+    Route::post('/action/admin/promotion/editConfig','Back\PromotionController@editConfig')->middleware('add-log-handle')->name('ac.ad.promotion.editConfig'); //推广配置-修改配置
+    Route::post('/action/admin/addNotice', 'Back\SrcNoticeController@addNotice')->middleware('add-log-handle')->name('ac.ad.addNotice'); //添加公告
+    Route::post('/action/admin/editNotice', 'Back\SrcNoticeController@editNotice')->middleware('add-log-handle')->name('ac.ad.editNotice'); //修改公告
+    Route::post('/action/admin/delNoticeSetting', 'Back\SrcNoticeController@delNoticeSetting')->middleware('add-log-handle')->name('ac.ad.delNoticeSetting'); //删除公告
+    Route::post('/action/admin/setNoticeOrder', 'Back\SrcNoticeController@setNoticeOrder')->middleware('add-log-handle')->name('ac.ad.setNoticeOrder'); //设置公告顺序
+    Route::post('/action/admin/addSendMessage', 'Back\SrcNoticeController@addSendMessage')->middleware('add-log-handle')->name('ac.ad.addSendMessage'); //添加消息
+    Route::post('/action/admin/delSendMessage', 'Back\SrcNoticeController@delSendMessage')->middleware('add-log-handle')->name('ac.ad.delSendMessage'); //删除消息
 
-    Route::post('/action/admin/report/addStatistics', 'Back\SrcReportController@addStatistics')->middleware('check-permission')->name('report.addStatistics'); //添加操作报表
+    Route::post('/action/admin/report/addStatistics', 'Back\SrcReportController@addStatistics')->middleware(['check-permission','add-log-handle'])->name('report.addStatistics'); //添加操作报表
 
-    Route::post('/action/admin/addBank', 'Back\SrcPayController@addBank');//添加银行
-    Route::post('/action/admin/addLevel', 'Back\SrcPayController@addLevel');//添加层级
-    Route::post('/action/admin/editLevel', 'Back\SrcPayController@editLevel');//修改层级
-    Route::post('/action/admin/delLevelCheck', 'Back\SrcPayController@delLevelCheck');//删除层级检查
-    Route::post('/action/admin/delLevel', 'Back\SrcPayController@delLevel');//删除层级
-    Route::post('/action/admin/allExchangeLevel', 'Back\SrcPayController@allExchangeLevel');//层级全部转移
-    Route::post('/action/admin/sectionExchangeLevel','Back\SrcPayController@sectionExchangeLevel');//部分全部转移
-    Route::post('/action/admin/sectionDisplayLevel','Back\SrcPayController@sectionDisplayLevel');//部分转移显示
-    Route::post('/action/admin/addRechargeWay', 'Back\SrcPayController@addRechargeWay');//添加充值方式
-    Route::post('/action/admin/editRechargeWay', 'Back\SrcPayController@editRechargeWay');//添加充值方式
-    Route::post('/action/admin/editRechType', 'Back\SrcPayController@editRechType');//修改前端显示
-    Route::post('/action/admin/changeOnlinePayStatus', 'Back\SrcPayController@changeOnlinePayStatus');//改变充值方式状态
-    Route::post('/action/admin/delOnlinePay', 'Back\SrcPayController@delOnlinePay');//删除充值方式
-    Route::post('/action/admin/delRechargeWay', 'Back\SrcPayController@delRechargeWay');//删除充值方式
-    Route::post('/action/admin/addPayOnline', 'Back\SrcPayController@addPayOnline');//添加在线支付配置
-    Route::post('/action/admin/editPayOnline', 'Back\SrcPayController@editPayOnline');//修改在线支付配置
-    Route::post('/action/admin/addPayBank', 'Back\SrcPayController@addPayBank');//添加银行支付配置
-    Route::post('/action/admin/editPayBank', 'Back\SrcPayController@editPayBank');//修改银行支付配置
-    Route::post('/action/admin/addPayAlipay', 'Back\SrcPayController@addPayAlipay');//添加支付宝配置
-    Route::post('/action/admin/editPayAlipay', 'Back\SrcPayController@editPayAlipay');//修改支付宝配置
-    Route::post('/action/admin/addPayWechat', 'Back\SrcPayController@addPayWechat');//添加微信配置
-    Route::post('/action/admin/editPayWechat', 'Back\SrcPayController@editPayWechat');//修改微信配置
-    Route::post('/action/admin/addPayCft', 'Back\SrcPayController@addPayCft');//添加财付通配置
-    Route::post('/action/admin/editPayCft', 'Back\SrcPayController@editPayCft');//修改财付通配置
-    Route::post('/action/admin/setSort', 'Back\SrcPayController@setSort');//设置排序
-    Route::post('/action/admin/rechType/setSort', 'Back\SrcPayController@rechTypeSetSort');//设置排序
-    Route::post('/action/admin/rechWay/setSort', 'Back\SrcPayController@rechWaySetSort');//充值方式配置排序
+    Route::post('/action/admin/addBank', 'Back\SrcPayController@addBank')->middleware('add-log-handle')->name('ac.ad.addBank');//添加银行
+    Route::post('/action/admin/addLevel', 'Back\SrcPayController@addLevel')->middleware('add-log-handle')->name('ac.ad.addLevel');//添加层级
+    Route::post('/action/admin/editLevel', 'Back\SrcPayController@editLevel')->middleware('add-log-handle')->name('ac.ad.editLevel');//修改层级
+    Route::post('/action/admin/delLevelCheck', 'Back\SrcPayController@delLevelCheck')->middleware('add-log-handle')->name('ac.ad.delLevelCheck');//删除层级检查
+    Route::post('/action/admin/delLevel', 'Back\SrcPayController@delLevel')->middleware('add-log-handle')->name('ac.ad.delLevel');//删除层级
+    Route::post('/action/admin/allExchangeLevel', 'Back\SrcPayController@allExchangeLevel')->middleware('add-log-handle')->name('ac.ad.allExchangeLevel');//层级全部转移
+    Route::post('/action/admin/sectionExchangeLevel','Back\SrcPayController@sectionExchangeLevel')->middleware('add-log-handle')->name('ac.ad.sectionExchangeLevel');//部分全部转移
+    Route::post('/action/admin/sectionDisplayLevel','Back\SrcPayController@sectionDisplayLevel')->middleware('add-log-handle')->name('ac.ad.sectionDisplayLevel');//部分转移显示
+    Route::post('/action/admin/addRechargeWay', 'Back\SrcPayController@addRechargeWay')->middleware('add-log-handle')->name('ac.ad.addRechargeWay');//添加充值方式
+    Route::post('/action/admin/editRechargeWay', 'Back\SrcPayController@editRechargeWay')->middleware('add-log-handle')->name('ac.ad.editRechargeWay');//添加充值方式
+    Route::post('/action/admin/editRechType', 'Back\SrcPayController@editRechType')->middleware('add-log-handle')->name('ac.ad.editRechType');//修改前端显示
+    Route::post('/action/admin/changeOnlinePayStatus', 'Back\SrcPayController@changeOnlinePayStatus')->middleware('add-log-handle')->name('ac.ad.changeOnlinePayStatus');//改变充值方式状态
+    Route::post('/action/admin/delOnlinePay', 'Back\SrcPayController@delOnlinePay')->middleware('add-log-handle')->name('ac.ad.delOnlinePay');//删除充值方式
+    Route::post('/action/admin/delRechargeWay', 'Back\SrcPayController@delRechargeWay')->middleware('add-log-handle')->name('ac.ad.delRechargeWay');//删除充值方式
+    Route::post('/action/admin/addPayOnline', 'Back\SrcPayController@addPayOnline')->middleware('add-log-handle')->name('ac.ad.addPayOnline');//添加在线支付配置
+    Route::post('/action/admin/editPayOnline', 'Back\SrcPayController@editPayOnline')->middleware('add-log-handle')->name('ac.ad.editPayOnline');//修改在线支付配置
+    Route::post('/action/admin/addPayBank', 'Back\SrcPayController@addPayBank')->middleware('add-log-handle')->name('ac.ad.addPayBank');//添加银行支付配置
+    Route::post('/action/admin/editPayBank', 'Back\SrcPayController@editPayBank')->middleware('add-log-handle')->name('ac.ad.editPayBank');//修改银行支付配置
+    Route::post('/action/admin/addPayAlipay', 'Back\SrcPayController@addPayAlipay')->middleware('add-log-handle')->name('ac.ad.addPayAlipay');//添加支付宝配置
+    Route::post('/action/admin/editPayAlipay', 'Back\SrcPayController@editPayAlipay')->middleware('add-log-handle')->name('ac.ad.editPayAlipay');//修改支付宝配置
+    Route::post('/action/admin/addPayWechat', 'Back\SrcPayController@addPayWechat')->middleware('add-log-handle')->name('ac.ad.addPayWechat');//添加微信配置
+    Route::post('/action/admin/editPayWechat', 'Back\SrcPayController@editPayWechat')->middleware('add-log-handle')->name('ac.ad.editPayWechat');//修改微信配置
+    Route::post('/action/admin/addPayCft', 'Back\SrcPayController@addPayCft')->middleware('add-log-handle')->name('ac.ad.addPayCft');//添加财付通配置
+    Route::post('/action/admin/editPayCft', 'Back\SrcPayController@editPayCft')->middleware('add-log-handle')->name('ac.ad.editPayCft');//修改财付通配置
+    Route::post('/action/admin/setSort', 'Back\SrcPayController@setSort')->middleware('add-log-handle')->name('ac.ad.setSort');//设置排序
+    Route::post('/action/admin/rechType/setSort', 'Back\SrcPayController@rechTypeSetSort')->middleware('add-log-handle')->name('ac.ad.rechType.setSort');//设置排序
+    Route::post('/action/admin/rechWay/setSort', 'Back\SrcPayController@rechWaySetSort')->middleware('add-log-handle')->name('ac.ad.rechWay.setSort');//充值方式配置排序
 
     //充值配置新
 
-    Route::post('/action/admin/new/copyPayOnline', 'Back\SrcPayNewController@copyPayOnline');//复制在线支付配置
-    Route::post('/action/admin/new/addPayOnline', 'Back\SrcPayNewController@addPayOnline');//添加在线支付配置
-    Route::post('/action/admin/new/editPayOnline', 'Back\SrcPayNewController@editPayOnline');//修改在线支付配置
-    Route::post('/action/admin/new/changeOnlinePayStatus', 'Back\SrcPayNewController@changeOnlinePayStatus');//改变充值方式状态新
-    Route::post('/action/admin/new/delOnlinePay', 'Back\SrcPayNewController@delOnlinePay');//删除充值方式新
-    Route::post('/action/admin/new/setSort', 'Back\SrcPayNewController@setSort');//设置排序新
-    Route::post('/action/admin/new/addPayBank', 'Back\SrcPayNewController@addPayBank');//添加银行支付配置
-    Route::post('/action/admin/new/editPayBank', 'Back\SrcPayNewController@editPayBank');//修改银行支付配置
-    Route::post('/action/admin/new/addPayAlipay', 'Back\SrcPayNewController@addPayAlipay');//添加支付宝配置
-    Route::post('/action/admin/new/editPayAlipay', 'Back\SrcPayNewController@editPayAlipay');//修改支付宝配置
-    Route::post('/action/admin/new/addPayYsf', 'Back\SrcPayNewController@addPayYsf');//添加云闪付配置
-    Route::post('/action/admin/new/editPayYsf', 'Back\SrcPayNewController@editPayYsf');//修改云闪付配置
+    Route::post('/action/admin/new/copyPayOnline', 'Back\SrcPayNewController@copyPayOnline')->middleware('add-log-handle')->name('ac.ad.new.copyPayOnline');//复制在线支付配置
+    Route::post('/action/admin/new/addPayOnline', 'Back\SrcPayNewController@addPayOnline')->middleware('add-log-handle')->name('ac.ad.new.addPayOnline');//添加在线支付配置
+    Route::post('/action/admin/new/editPayOnline', 'Back\SrcPayNewController@editPayOnline')->middleware('add-log-handle')->name('ac.ad.new.editPayOnline');//修改在线支付配置
+    Route::post('/action/admin/new/changeOnlinePayStatus', 'Back\SrcPayNewController@changeOnlinePayStatus')->middleware('add-log-handle')->name('ac.ad.new.changeOnlinePayStatus');//改变充值方式状态新
+    Route::post('/action/admin/new/delOnlinePay', 'Back\SrcPayNewController@delOnlinePay')->middleware('add-log-handle')->name('ac.ad.new.delOnlinePay');//删除充值方式新
+    Route::post('/action/admin/new/setSort', 'Back\SrcPayNewController@setSort')->middleware('add-log-handle')->name('ac.ad.new.setSort');//设置排序新
+    Route::post('/action/admin/new/addPayBank', 'Back\SrcPayNewController@addPayBank')->middleware('add-log-handle')->name('ac.ad.new.addPayBank');//添加银行支付配置
+    Route::post('/action/admin/new/editPayBank', 'Back\SrcPayNewController@editPayBank')->middleware('add-log-handle')->name('ac.ad.new.editPayBank');//修改银行支付配置
+    Route::post('/action/admin/new/addPayAlipay', 'Back\SrcPayNewController@addPayAlipay')->middleware('add-log-handle')->name('ac.ad.new.addPayAlipay');//添加支付宝配置
+    Route::post('/action/admin/new/editPayAlipay', 'Back\SrcPayNewController@editPayAlipay')->middleware('add-log-handle')->name('ac.ad.new.editPayAlipay');//修改支付宝配置
+    Route::post('/action/admin/new/addPayYsf', 'Back\SrcPayNewController@addPayYsf')->middleware('add-log-handle')->name('ac.ad.new.addPayYsf');//添加云闪付配置
+    Route::post('/action/admin/new/editPayYsf', 'Back\SrcPayNewController@editPayYsf')->middleware('add-log-handle')->name('ac.ad.new.editPayYsf');//修改云闪付配置
+    Route::post('/action/admin/new/addPayWechat', 'Back\SrcPayNewController@addPayWechat')->middleware('add-log-handle')->name('ac.ad.new.addPayWechat');//添加微信配置
+    Route::post('/action/admin/new/editPayWechat', 'Back\SrcPayNewController@editPayWechat')->middleware('add-log-handle')->name('ac.ad.new.editPayWechat');//修改微信配置
+    Route::post('/action/admin/new/addPayCft', 'Back\SrcPayNewController@addPayCft')->middleware('add-log-handle')->name('ac.ad.new.addPayCft');//添加财付通配置
+    Route::post('/action/admin/new/editPayCft', 'Back\SrcPayNewController@editPayCft')->middleware('add-log-handle')->name('ac.ad.new.editPayCft');//修改财付通配置
 
-    Route::post('/action/admin/new/addPayWechat', 'Back\SrcPayNewController@addPayWechat');//添加微信配置
-    Route::post('/action/admin/new/editPayWechat', 'Back\SrcPayNewController@editPayWechat');//修改微信配置
-    Route::post('/action/admin/new/addPayCft', 'Back\SrcPayNewController@addPayCft');//添加财付通配置
-    Route::post('/action/admin/new/editPayCft', 'Back\SrcPayNewController@editPayCft');//修改财付通配置
+    Route::post('/action/admin/editGameSetting', 'Back\SrcGameController@editGameSetting')->middleware('add-log-handle')->name('ac.ad.editGameSetting');//修改游戏设定
+    Route::post('/action/admin/changeGameFengPan', 'Back\SrcGameController@changeGameFengPan')->middleware('add-log-handle')->name('ac.ad.changeGameFengPan');//修改游戏开封盘状态
+    Route::post('/action/admin/changeGameStatus', 'Back\SrcGameController@changeGameStatus')->middleware('add-log-handle')->name('ac.ad.changeGameStatus');//修改游戏开启和停用状态
+    Route::post('/action/admin/saveOddsRebate', 'Back\SrcGameController@saveOddsRebate')->middleware('add-log-handle')->name('ac.ad.saveOddsRebate');//修改游戏开启和停用状态
+    Route::post('/action/admin/killStatus', 'Back\SrcGameController@killStatus')->middleware(['check-permission','add-log-handle'])->name('game.killStatus'); //杀率开关
+    Route::post('/action/admin/editKillSetting', 'Back\SrcGameController@editKillSetting')->middleware(['check-permission','add-log-handle'])->name('game.editKillSetting'); //修改杀率保留营利比
 
-    Route::post('/action/admin/editGameSetting', 'Back\SrcGameController@editGameSetting');//修改游戏设定
-    Route::post('/action/admin/changeGameFengPan', 'Back\SrcGameController@changeGameFengPan');//修改游戏开封盘状态
-    Route::post('/action/admin/changeGameStatus', 'Back\SrcGameController@changeGameStatus');//修改游戏开启和停用状态
-    Route::post('/action/admin/saveOddsRebate', 'Back\SrcGameController@saveOddsRebate');//修改游戏开启和停用状态
-    Route::post('/action/admin/killStatus', 'Back\SrcGameController@killStatus')->middleware('check-permission')->name('game.killStatus'); //杀率开关
-    Route::post('/action/admin/editKillSetting', 'Back\SrcGameController@editKillSetting')->middleware('check-permission')->name('game.editKillSetting'); //修改杀率保留营利比
+    Route::post('/action/admin/passRecharge', 'Back\RechargeController@passRecharge')->middleware('add-log-handle')->name('ac.ad.passRecharge'); //通过充值申请
+    Route::post('/action/admin/passOnlineRecharge', 'Back\RechargeController@passOnlineRecharge')->middleware('add-log-handle')->name('ac.ad.passOnlineRecharge'); //通过在线充值申请
+    Route::post('/action/admin/addRechargeError', 'Back\RechargeController@addRechargeError')->middleware('add-log-handle')->name('ac.ad.addRechargeError'); //驳回充值申请
 
-    Route::post('/action/admin/passRecharge', 'Back\RechargeController@passRecharge'); //通过充值申请
-    Route::post('/action/admin/passOnlineRecharge', 'Back\RechargeController@passOnlineRecharge'); //通过在线充值申请
-    Route::post('/action/admin/addRechargeError', 'Back\RechargeController@addRechargeError'); //驳回充值申请
+    Route::post('/action/admin/passDrawing', 'Back\DrawingController@passDrawing')->middleware('add-log-handle')->name('ac.ad.passDrawing'); //通过提款申请
+    Route::post('/action/admin/passDrawingAuto', 'Back\DrawingController@passDrawingAuto')->middleware('add-log-handle')->name('ac.ad.passDrawingAuto'); //自动提款后的提款申请
+    Route::post('/action/admin/addDrawingError', 'Back\DrawingController@addDrawingError')->middleware('add-log-handle')->name('ac.ad.addDrawingError'); //驳回提款申请
+    Route::post('/action/admin/addDrawingErrorAuto', 'Back\DrawingController@addDrawingErrorAuto')->middleware('add-log-handle')->name('ac.ad.addDrawingErrorAuto'); //自动驳回提款申请
+    Route::post('/action/admin/dispensingDrawing', 'Back\DrawingController@dispensingDrawing')->middleware('add-log-handle')->name('ac.ad.dispensingDrawing'); //自动出款
 
-    Route::post('/action/admin/passDrawing', 'Back\DrawingController@passDrawing'); //通过提款申请
-    Route::post('/action/admin/passDrawingAuto', 'Back\DrawingController@passDrawingAuto'); //自动提款后的提款申请
-    Route::post('/action/admin/addDrawingError', 'Back\DrawingController@addDrawingError'); //驳回提款申请
-    Route::post('/action/admin/addDrawingErrorAuto', 'Back\DrawingController@addDrawingErrorAuto'); //自动驳回提款申请
-    Route::post('/action/admin/dispensingDrawing', 'Back\DrawingController@dispensingDrawing'); //自动出款
+    Route::post('/action/recharge/totalRecharge', 'Back\RechargeController@totalRecharge')->middleware('add-log-handle')->name('ac.ad.recharge.totalRecharge'); //充值记录的总额统计
+    Route::post('/action/drawing/totalDrawing', 'Back\DrawingController@totalDrawing')->middleware('add-log-handle')->name('ac.ad.drawing.totalDrawing'); //提款记录的总额统计
 
-    Route::post('/action/recharge/totalRecharge', 'Back\RechargeController@totalRecharge'); //充值记录的总额统计
-    Route::post('/action/drawing/totalDrawing', 'Back\DrawingController@totalDrawing'); //提款记录的总额统计
+    Route::post('/action/betTodat/total','Back\Data\BetDataController@betNumTotal')->middleware('add-log-handle')->name('ac.ad.betTodat.total');
 
-    Route::post('/action/betTodat/total','Back\Data\BetDataController@betNumTotal');
+    Route::post('/action/userBetList/total', 'Back\SrcViewController@userBetListTotal')->middleware('add-log-handle')->name('ac.ad.userBetList.total'); //用户注单页面下注统计
 
-    Route::post('/action/userBetList/total', 'Back\SrcViewController@userBetListTotal'); //用户注单页面下注统计
+    Route::post('/action/admin/addLhcNewIssue', 'Back\OpenHistoryController@addLhcNewIssue')->middleware('add-log-handle')->name('ac.ad.addLhcNewIssue');
+    Route::post('/action/admin/addXylhcNewIssue', 'Back\OpenHistoryController@addXylhcNewIssue')->middleware('add-log-handle')->name('ac.ad.addXylhcNewIssue');
+    Route::post('/action/admin/editLhcNewIssue', 'Back\OpenHistoryController@editLhcNewIssue')->middleware('add-log-handle')->name('ac.ad.editLhcNewIssue');
+    Route::post('/action/admin/editXylhcNewIssue', 'Back\OpenHistoryController@editXylhcNewIssue')->middleware('add-log-handle')->name('ac.ad.editXylhcNewIssue');
 
-    Route::post('/action/admin/addLhcNewIssue', 'Back\OpenHistoryController@addLhcNewIssue');
-    Route::post('/action/admin/addXylhcNewIssue', 'Back\OpenHistoryController@addXylhcNewIssue');
-    Route::post('/action/admin/editLhcNewIssue', 'Back\OpenHistoryController@editLhcNewIssue');
-    Route::post('/action/admin/editXylhcNewIssue', 'Back\OpenHistoryController@editXylhcNewIssue');
+    Route::post('/action/admin/openssc', 'Back\OpenHistoryController@addsscData')->middleware('add-log-handle')->name('ac.ad.openssc');     //添加时时彩开奖数据
+    Route::post('/action/admin/opensc', 'Back\OpenHistoryController@addscData')->middleware('add-log-handle')->name('ac.ad.opensc');     //添加赛车开奖数据
+    Route::post('/action/admin/openK3', 'Back\OpenHistoryController@addK3Data')->middleware('add-log-handle')->name('ac.ad.openK3');     //添加快三开奖数据
+    Route::post('/action/admin/openBjkl8', 'Back\OpenHistoryController@addBjkl8Data')->middleware('add-log-handle')->name('ac.ad.openBjkl8');     //添加北京快乐8开奖数据
 
-    Route::post('/action/admin/openssc', 'Back\OpenHistoryController@addsscData');     //添加时时彩开奖数据
-    Route::post('/action/admin/opensc', 'Back\OpenHistoryController@addscData');     //添加赛车开奖数据
-    Route::post('/action/admin/openK3', 'Back\OpenHistoryController@addK3Data');     //添加快三开奖数据
-    Route::post('/action/admin/openBjkl8', 'Back\OpenHistoryController@addBjkl8Data');     //添加北京快乐8开奖数据
+    Route::post('/action/admin/openLhc', 'Back\OpenHistoryController@addLhcData')->middleware('add-log-handle')->name('ac.ad.openLhc');
+    Route::post('/action/admin/openXylhc', 'Back\OpenHistoryController@addXylhcData')->middleware('add-log-handle')->name('ac.ad.openXylhc');
+    Route::post('/action/admin/reOpenLhc', 'Back\OpenHistoryController@reOpenLhcData')->middleware('add-log-handle')->name('ac.ad.reOpenLhc');
+    Route::post('/action/admin/reOpenXylhc', 'Back\OpenHistoryController@reOpenXylhcData')->middleware('add-log-handle')->name('ac.ad.reOpenXylhc');
 
-    Route::post('/action/admin/openLhc', 'Back\OpenHistoryController@addLhcData');
-    Route::post('/action/admin/openXylhc', 'Back\OpenHistoryController@addXylhcData');
-    Route::post('/action/admin/reOpenLhc', 'Back\OpenHistoryController@reOpenLhcData');
-    Route::post('/action/admin/reOpenXylhc', 'Back\OpenHistoryController@reOpenXylhcData');
+    Route::post('/action/admin/freeze/{issue}/{type}', 'Back\OpenHistoryController@freeze')->middleware('add-log-handle')->name('ac.ad.freeze');     //冻结彩种
+    Route::post('/action/admin/cancelBetting/{issue}/{type}', 'Back\OpenHistoryController@cancelBetting')->middleware('add-log-handle')->name('ac.ad.cancelBetting'); // 撤单
+    Route::post('/action/admin/Bet/canceled/{issue}/{type}', 'Back\OpenHistoryController@canceledBetIssue')->middleware('add-log-handle')->name('ac.ad.bet.canceled'); // 撤单2
+    Route::post('/action/admin/bet/cancel/{orderId}', 'Back\OpenHistoryController@cancelBetOrder')->middleware('add-log-handle')->name('ac.ad.bet.cancel'); // 取消注单
 
-    Route::post('/action/admin/freeze/{issue}/{type}', 'Back\OpenHistoryController@freeze');     //冻结彩种
-    Route::post('/action/admin/cancelBetting/{issue}/{type}', 'Back\OpenHistoryController@cancelBetting'); // 撤单
-    Route::post('/action/admin/Bet/canceled/{issue}/{type}', 'Back\OpenHistoryController@canceledBetIssue'); // 撤单2
-    Route::post('/action/admin/bet/cancel/{orderId}', 'Back\OpenHistoryController@cancelBetOrder'); // 取消注单
+    Route::any('/action/admin/member/returnVisit','Back\MemberController@returnVisit')->middleware(['check-permission','add-log-handle'])->name('member.returnVisit'); //会员-回访用户
+    Route::any('/action/admin/member/exportUser','Back\MemberController@exportUser')->middleware(['check-permission','add-log-handle'])->name('member.exportUser'); //会员-导出用户数据
+    Route::any('/action/admin/member/exportMember/{id}/{name}', 'Back\MemberController@exportMember')->middleware(['check-permission','add-log-handle'])->name('member.exportMember');;//代理-导出会员
+    Route::any('/action/admin/member/exportMemberSuper/{id}/{name}', 'Back\MemberController@exportMemberSuper')->middleware(['check-permission','add-log-handle'])->name('member.exportMemberSuper');;//总代代理-导出会员
+    Route::any('/action/admin/member/visitMember/{id}/{name}', 'Back\MemberController@visitMember')->middleware(['check-permission','add-log-handle'])->name('member.visitMember');;//代理-导出会员
+    Route::any('/action/admin/member/visitMemberSuper/{id}/{name}', 'Back\MemberController@visitMemberSuper')->middleware(['check-permission','add-log-handle'])->name('member.visitMemberSuper');;//总代代理-导出会员
 
-    Route::any('/action/admin/member/returnVisit','Back\MemberController@returnVisit')->middleware('check-permission')->name('member.returnVisit'); //会员-回访用户
-    Route::any('/action/admin/member/exportUser','Back\MemberController@exportUser')->middleware('check-permission')->name('member.exportUser'); //会员-导出用户数据
-    Route::any('/action/admin/member/exportMember/{id}/{name}', 'Back\MemberController@exportMember')->middleware('check-permission')->name('member.exportMember');;//代理-导出会员
-    Route::any('/action/admin/member/exportMemberSuper/{id}/{name}', 'Back\MemberController@exportMemberSuper')->middleware('check-permission')->name('member.exportMemberSuper');;//总代代理-导出会员
-    Route::any('/action/admin/member/visitMember/{id}/{name}', 'Back\MemberController@visitMember')->middleware('check-permission')->name('member.visitMember');;//代理-导出会员
-    Route::any('/action/admin/member/visitMemberSuper/{id}/{name}', 'Back\MemberController@visitMemberSuper')->middleware('check-permission')->name('member.visitMemberSuper');;//总代代理-导出会员
-
-    Route::get('/action/admin/exportExcel/userRecharges','Back\ExportExcelController@exportExcelForRecharges'); //导出充值数据为Excel文件
-    Route::get('/action/admin/exportExcel/userDrawing','Back\ExportExcelController@exportExcelForDrawing'); //导出充值数据为Excel文件
+    Route::get('/action/admin/exportExcel/userRecharges','Back\ExportExcelController@exportExcelForRecharges')->middleware('add-log-handle')->name('ac.ad.exportExcel.userRecharges'); //导出充值数据为Excel文件
+    Route::get('/action/admin/exportExcel/userDrawing','Back\ExportExcelController@exportExcelForDrawing')->middleware('add-log-handle')->name('ac.ad.exportExcel.userDrawing'); //导出充值数据为Excel文件
 
 //Modal
     Route::get('/back/modal/addPermission', 'Back\Ajax\ModalController@addPermission'); //添加权限

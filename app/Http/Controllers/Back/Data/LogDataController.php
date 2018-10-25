@@ -83,12 +83,13 @@ class LogDataController extends Controller
         $logHandleCount =  $logHandleSql->count();
         $logHandle = $logHandleSql->orderBy('create_at','desc')->skip($param['start'])->take($param['length'])->get();
         return DataTables::of($logHandle)
-            ->editColumn('param',function ($logHandle){
-                if(empty(json_decode($logHandle->param))){
-                    return '-';
-                }else{
-                    return $logHandle->param;
+            ->editColumn('action',function ($logHandle){
+                $str = $logHandle->action;
+                if(!empty(json_decode($logHandle->param))){
+                    $str .= " 使用参数： ".$logHandle->param;
                 }
+                return $str;
+
             })
             ->setTotalRecords($logHandleCount)
             ->skipPaging()
