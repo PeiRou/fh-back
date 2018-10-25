@@ -693,9 +693,43 @@ class New_Gd11x5
             //连码 - End
 
             //特殊处理单号为和
-            if($openCodeArr[0] == 11 || $openCodeArr[1] == 11 || $openCodeArr[2] == 11 || $openCodeArr[3] == 11 || $openCodeArr[4] == 11 || $open_total == 30){
-                $heArray = [2127162,2127163,2127164,2127165,2128177,2128178,2128179,2128180,2129192,2129193,2129194,2129195,2130207,2130208,2130209,2130210,2131222,2131223,2131224,2131225,2126143,2126147];
-                $getUserHeBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArray)->get();
+            $heArrayPush = [];
+            if($openCodeArr[0] == 11){
+                $heArrayPush[] = 2127162;
+                $heArrayPush[] = 2127163;
+                $heArrayPush[] = 2127164;
+                $heArrayPush[] = 2127165;
+            }
+            if($openCodeArr[1] == 11){
+                $heArrayPush[] = 2128177;
+                $heArrayPush[] = 2128178;
+                $heArrayPush[] = 2128179;
+                $heArrayPush[] = 2128180;
+            }
+            if($openCodeArr[2] == 11){
+                $heArrayPush[] = 2129192;
+                $heArrayPush[] = 2129193;
+                $heArrayPush[] = 2129194;
+                $heArrayPush[] = 2129195;
+            }
+            if($openCodeArr[3] == 11){
+                $heArrayPush[] = 2130207;
+                $heArrayPush[] = 2130208;
+                $heArrayPush[] = 2130209;
+                $heArrayPush[] = 2130210;
+            }
+            if($openCodeArr[4] == 11){
+                $heArrayPush[] = 2131222;
+                $heArrayPush[] = 2131223;
+                $heArrayPush[] = 2131224;
+                $heArrayPush[] = 2131225;
+            }
+            if($open_total == 30){
+                $heArrayPush[] = 2126143;
+                $heArrayPush[] = 2126147;
+            }
+            if($heArrayPush){
+                $getUserHeBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArrayPush)->get();
                 if($getUserHeBets){
                     $updateHeId = [];
                     $sql_he = "UPDATE bet SET bunko = CASE ";
