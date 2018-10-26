@@ -722,8 +722,11 @@ class ModalController extends Controller
             case 'sc':  //赛车
                 $view = 'back.modal.open.openSC';
                 break;
-            case 'xync':  //幸运农场
+            case 'xync':  //幸运农场 快乐十分
                 $view = 'back.modal.open.openXync';
+                break;
+            case 'gd11x5':  //广东11选5
+                $view = 'back.modal.open.openGd11x5';
                 break;
             default:
                 return false;
