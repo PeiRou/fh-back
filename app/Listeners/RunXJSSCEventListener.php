@@ -28,7 +28,7 @@ class RunXJSSCEventListener
      */
     public function handle(RunXJSSC $event)
     {
-        $up = $this->XJSSC->all($event->openCode,$event->nn,$event->openIssue,$event->gameId,$event->id);
+        $up = $this->XJSSC->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
         return $up;
     }
 }
