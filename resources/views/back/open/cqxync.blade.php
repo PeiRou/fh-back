@@ -1,6 +1,6 @@
 @extends('back.master')
 
-@section('title','历史开奖-重庆幸运农场')
+@section('title','历史开奖-'.$data['title'])
 
 @section('page-css')
     <link rel="stylesheet" href="{{ asset('back/css/pages/ssc.css') }}">

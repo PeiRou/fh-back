@@ -219,7 +219,56 @@ class OpenHistoryController extends Controller
             ]);
         }
     }
+    //添加幸运农场 快乐十分 开奖数据
+    public function addXyncData(Request $request){
+        $type = $request->get('type');
+        switch ($type){
+            case 'cqxync':
+                $table = 'game_cqxync';
+                break;
+            case 'gdklsf':
+                $table = 'game_gdklsf';
+                break;
+            default:
+                return response()->json(['status' => false,'msg' => '参数不为空！']);
+        }
+        $verifyData = $this->verifyData($request->all(),3);
+        if($verifyData['stauts']){
+            return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
+        }
+        $id = $this->notTen($request->get('id'));
+        $info = DB::table($table)->select('opentime')->where('id',$id)->first();
+        if(strtotime($info->opentime) > time())
+            return response()->json(['status' => false,'msg' => '请勿提早开奖']);
+        $n1 = $request->get('n1');
+        $n2 = $request->get('n2');
+        $n3 = $request->get('n3');
+        $n4 = $request->get('n4');
+        $n5 = $request->get('n5');
+        $n6 = $request->get('n6');
+        $n7 = $request->get('n7');
+        $n8 = $request->get('n8');
+        $msg = $this->notTen($request->get('msg'));
 
+        $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7.','.$n8;
+        $update = DB::table($table)->where('id',$id)->update([
+            'opennum' => $openNum,
+            'year'=> date('Y',strtotime($info->opentime)),
+            'month'=> date('m',strtotime($info->opentime)),
+            'day'=>  date('d',strtotime($info->opentime)),
+            'is_open' => 1
+        ]);
+        if($update == 1){
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => '开奖数据添加失败！'
+            ]);
+        }
+    }
     //添加秒速快三开奖数据
     public function addK3Data(Request $request)
     {

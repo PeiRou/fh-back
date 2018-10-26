@@ -295,7 +295,13 @@ class SrcViewController extends Controller
     //重庆幸运农场
     public function openManage_cqxync()
     {
-        return view('back.open.cqxync');
+        $data = [
+            'title' => '重庆幸运农场',
+            'activeName' => 'menu-openManage-cqxync',
+            'type' => 'cqxync', //
+        ];
+        return view('back.open.cqxync',compact('data'));
+//        return view('back.open.cqxync');
     }
     //广东快乐十分
     public function openManage_gdklsf()

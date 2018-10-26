@@ -164,10 +164,10 @@ function lhh(a,b){
 function opencqssc(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '重庆时时彩-手动开奖',
+        title: '广东快乐十分-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content: 'url:/back/modal/openCqssc/'+id,
+        content: 'url:/back/modal/open/'+id+'/gdklsf/xync',
         buttons: {
             formSubmit: {
                 text:'确定',

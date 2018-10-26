@@ -722,6 +722,9 @@ class ModalController extends Controller
             case 'sc':  //赛车
                 $view = 'back.modal.open.openSC';
                 break;
+            case 'xync':  //幸运农场
+                $view = 'back.modal.open.openXync';
+                break;
             default:
                 return false;
                 break;
@@ -731,7 +734,12 @@ class ModalController extends Controller
         }
         return view($view,compact('data','type'));
     }
-
+    //重庆幸运农场开奖 1-20
+    public function openCqxync($id = '')
+    {
+        $lhc = DB::table('game_cqxync')->where('id',$id)->first();
+        return view('back.modal.open.o',compact('lhc'));
+    }
     //添加六合彩
     public function addLhcNewIssue()
     {
@@ -769,6 +777,8 @@ class ModalController extends Controller
         $lhc = DB::table('game_xylhc')->where('id',$id)->first();
         return view('back.modal.open.openXYLHC',compact('lhc'));
     }
+
+
     //六合彩重新开奖
     public function reOpenLhc($id = '')
     {

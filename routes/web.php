@@ -442,6 +442,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/opensc', 'Back\OpenHistoryController@addscData');     //添加赛车开奖数据
     Route::post('/action/admin/openK3', 'Back\OpenHistoryController@addK3Data');     //添加快三开奖数据
     Route::post('/action/admin/openBjkl8', 'Back\OpenHistoryController@addBjkl8Data');     //添加北京快乐8开奖数据
+    Route::post('/action/admin/openxync', 'Back\OpenHistoryController@addXyncData');     //添加幸运农场开奖数据
 
     Route::post('/action/admin/openLhc', 'Back\OpenHistoryController@addLhcData');
     Route::post('/action/admin/openXylhc', 'Back\OpenHistoryController@addXylhcData');
