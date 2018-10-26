@@ -73,6 +73,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunGZK3' => [
             'App\Listeners\RunGZK3EventListener',
         ],
+        'App\Events\RunXJSSC' => [
+            'App\Listeners\RunXJSSCEventListener',
+        ],
         'App\Events\RunMSJSK3' => [
             'App\Listeners\RunMSJSK3EventListener',
         ],
