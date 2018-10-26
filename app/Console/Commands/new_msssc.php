@@ -100,8 +100,8 @@ class new_msssc extends Command
             $opencode = empty($opennum)?$res->opencode:$opennum;
             //清除昨天长龙，在录第一期的时候清掉
             if($filtered['issue']=='0001'){
-                DB::table('clong_kaijian1')->where('lotteryid',81)->delete();
-                DB::table('clong_kaijian2')->where('lotteryid',81)->delete();
+                DB::table('clong_kaijian1')->where('lotteryid',$this->gameId)->delete();
+                DB::table('clong_kaijian2')->where('lotteryid',$this->gameId)->delete();
             }
             try{
                 DB::table('game_msssc')->where('issue',$res->expect)->update([
