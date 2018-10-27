@@ -893,8 +893,17 @@ class OpenHistoryController extends Controller
     //撤单2
     public function canceledBetIssue($issue,$type){
         $gameInfo = Games::where('code',$type)->first();
+        $result = $this->freezeOperating($issue,$type,$gameInfo);
+        if(!$result['status']){
+            response()->json($result);
+        }
+        return response()->json($this->canceledBetIssueOperating($issue,$type,$gameInfo));
+    }
+
+    //撤单2操作
+    public function canceledBetIssueOperating($issue,$type,$gameInfo){
         $aBet = Bets::getBetAndUserByIssue($issue,$gameInfo->game_id);
-        if(empty($aBet))    return response()->json(['status' => true]);
+        if(empty($aBet))    return ['status' => false,'msg' => '没有投注用户'];
         $aCapital = [];
         $adminId = Session::get('account_id');
         $dateTime = date('Y-m-d H:i:s');
@@ -914,17 +923,31 @@ class OpenHistoryController extends Controller
                 'updated_at' => $dateTime,
             ];
         }
-        Bets::updateBetStatus($issue,$gameInfo->game_id);
-        Users::editBatchUserMoneyData1($aBet);
-        Capital::insert($aCapital);
-        return response()->json(['status' => true]);
+
+        DB::beginTransaction();
+
+        try {
+            Bets::updateBetStatus($issue, $gameInfo->game_id);
+            Users::editBatchUserMoneyData1($aBet);
+            Capital::insert($aCapital);
+            DB::commit();
+            return ['status' => true];
+        }catch(\Exception $e){
+            DB::rollback();
+            return ['status' => false,'msg' => '撤单失败'];
+        }
     }
 
     //冻结
     public function freeze($issue,$type){
         $gameInfo = Games::where('code',$type)->first();
+        return response()->json($this->freezeOperating($issue,$type,$gameInfo));
+    }
+
+    //冻结操作
+    public function freezeOperating($issue,$type,$gameInfo){
         $aBet = Bets::getBetUserDrawingByIssue($issue,$gameInfo->game_id);
-        if(empty($aBet))    return response()->json(['status' => false,'msg' => '没有投注用户']);
+        if(empty($aBet))    return ['status' => false,'msg' => '没有投注用户'];
         $aCapital = [];
         $aUserFreezeMoney = [];
         $adminId = Session::get('account_id');
@@ -956,23 +979,23 @@ class OpenHistoryController extends Controller
         }
 
         DB::beginTransaction();
-        $result1 = Users::editBatchUserMoneyData2($aBet);
-        $result2 = Capital::insert($aCapital);
-        $result3 = UserFreezeMoney::insert($aUserFreezeMoney);
-        if(!empty(Games::$aCodeGameName[$type])) {
-            $table = 'game_' . Games::$aCodeGameName[$type];
-            $result4 = DB::table($table)->where('issue',$issue)->update([
-                'is_open' => 5
-            ]);
-        }else{
-            $result4 = true;
-        }
-        if($result1 && $result2 && $result3 && $result4){
+
+        try {
+            Users::editBatchUserMoneyData2($aBet);
+            Capital::insert($aCapital);
+            UserFreezeMoney::insert($aUserFreezeMoney);
+            if(!empty(Games::$aCodeGameName[$type])) {
+                $table = 'game_' . Games::$aCodeGameName[$type];
+                DB::table($table)->where('issue',$issue)->update([
+                    'is_open' => 5
+                ]);
+            }
             DB::commit();
-            return response()->json(['status' => true]);
+            return ['status' => true];
+        }catch(\Exception $e){
+            DB::rollback();
+            return ['status' => false,'msg' => '冻结失败'];
         }
-        DB::rollback();
-        return response()->json(['status' => false,'msg' => '冻结失败']);
     }
 
 }
