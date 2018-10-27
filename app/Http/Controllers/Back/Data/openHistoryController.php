@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back\Data;
 
+use App\Games;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -66,7 +67,7 @@ class openHistoryController extends Controller
         if(!($gameType = $request->get('type'))){
             return false;
         }
-        $table = 'game_'.$gameType;
+        $table = 'game_'.Games::$aCodeGameName[$gameType];
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
         $start = $request->get('start');

@@ -167,7 +167,7 @@ function opencqssc(id) {
         title: '广东快乐十分-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content: 'url:/back/modal/open/'+id+'/gdklsf/xync',
+        content: 'url:/back/modal/open/'+id+'/gdkl10/xync',
         buttons: {
             formSubmit: {
                 text:'确定',

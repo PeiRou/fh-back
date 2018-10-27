@@ -89,7 +89,7 @@ class OpenHistoryController extends Controller
         if(!$gameType = $request->get('type')){
             return response()->json(['status' => false,'msg' => '参数不为空！']);
         }
-        $table = 'game_'.$gameType;
+        $table = 'game_'.Games::$aCodeGameName[$gameType];
         $verifyData = $this->verifyData($request->all());
         if($verifyData['stauts']){
             return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
@@ -289,7 +289,7 @@ class OpenHistoryController extends Controller
             case 'cqxync':
                 $table = 'game_cqxync';
                 break;
-            case 'gdklsf':
+            case 'gdkl10':
                 $table = 'game_gdklsf';
                 break;
             default:

@@ -329,7 +329,7 @@ class SrcViewController extends Controller
         $data = [
             'title' => '北京pk10',
             'activeName' => 'menu-openManage-bjpk10',
-            'type' => 'bjpk10', //
+            'type' => 'pk10', //
             'cat' => 'sc' //游戏类别 赛车
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
@@ -345,7 +345,7 @@ class SrcViewController extends Controller
         $data = [
             'title' => '秒速赛车',
             'activeName' => 'menu-openManage-mssc',
-            'type' => 'mssc', //
+            'type' => 'jspk10', //
             'cat' => 'sc' //游戏类别 赛车
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
@@ -356,7 +356,7 @@ class SrcViewController extends Controller
         $data = [
             'title' => '秒速飞艇',
             'activeName' => 'menu-openManage-msft',
-            'type' => 'msft', //
+            'type' => 'jsft', //
             'cat' => 'sc' //游戏类别 赛车
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
