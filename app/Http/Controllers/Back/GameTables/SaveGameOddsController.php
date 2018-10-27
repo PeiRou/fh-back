@@ -186,6 +186,7 @@ class SaveGameOddsController extends Controller
             $run = DB::statement($sqlOdds . $sqlRebate);
             if ($run == 1) {
                 $write = Storage::disk('static')->put('gamedatas.js', '');
+                $write1 = Storage::disk('static')->put('gamedatas.json', '');
                 $game = Games::select('game_id as id', 'game_name as name', 'mode', 'code', 'order as sort', 'cate', 'maxReward', 'status as open', 'iconUrl', 'pageUrl', 'holiday_start as restStartDate', 'holiday_end as restEndDate', 'amount', 'isBan')->orderBy('order', 'ASC')->get();
                 $playCate = PlayCates::all();
                 $plays = Play::select('odds_tag','rebate_tag','name', 'id', 'gameId', 'playCateId', 'alias', 'code', 'odds', 'rebate', 'minMoney', 'maxMoney', 'maxTurnMoney')->get();
@@ -238,10 +239,17 @@ class SaveGameOddsController extends Controller
                 $plays_txt = "var plays = " . collect($newCollect)->keyBy('id') . ";";
                 $animalsYear = "var animalsYear = " . json_encode(Config::get('website.animalsYear')) . ";";
                 $write = Storage::disk('static')->put('gamedatas.js', $game_txt . $next_row . $gameMap_txt . $next_row . $playCate_txt . $next_row . $plays_txt . $next_row . $animalsYear);
+
+                $gameMap_txt = '{ "gameMap" : ' . $game->keyBy('id') . ",";
+                $game_txt = ' "games" : [' . $game->pluck('id')->implode(',') . "],";
+                $playCate_txt = ' "playCates" : ' . $playCate->keyBy('id') . ",";
+                $plays_txt = ' "plays" : ' . collect($newCollect)->keyBy('id') . ",";
+                $animalsYear = ' "animalsYear" : ' . json_encode(Config::get('website.animalsYear')) . "}";
+                $write1 = Storage::disk('static')->put('gamedatas.json', $game_txt . $next_row . $gameMap_txt . $next_row . $playCate_txt . $next_row . $plays_txt . $next_row . $animalsYear);
                 //生成ios的json格式
                 $plays_txt = collect($newCollect)->keyBy('id');
                 $writeIos = Storage::disk('static')->put('iosOdds.json', $plays_txt);
-                if ($write == 1 && $writeIos == 1) {
+                if ($write == 1 && $write1 == 1 && $writeIos == 1) {
                     return response()->json([
                         'status' => true
                     ]);
