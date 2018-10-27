@@ -264,6 +264,18 @@
                 @if($hasPermission->hasPermission('historyLottery.gd11x5') == "has")
                     <li id="menu-openManage-gd11x5"><a href="{{ route('historyLottery.gd11x5') }}"><cite></cite><span>广东11选5</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('historyLottery.xjssc') == "has")
+                    <li id="menu-openManage-xjssc"><a href="{{ route('historyLottery.xjssc') }}"><cite></cite><span>新疆时时彩</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.hebk3') == "has")
+                    <li id="menu-openManage-hebk3"><a href="{{ route('historyLottery.hebk3') }}"><cite></cite><span>河北快3</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.gzk3') == "has")
+                    <li id="menu-openManage-gzk3"><a href="{{ route('historyLottery.gzk3') }}"><cite></cite><span>贵州快3</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.gsk3') == "has")
+                    <li id="menu-openManage-gsk3"><a href="{{ route('historyLottery.gsk3') }}"><cite></cite><span>甘肃快3</span></a></li>
+                @endif
             </ul>
         </li>
         @endif

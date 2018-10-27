@@ -78,6 +78,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 
         Route::get('cqssc', 'Back\SrcViewController@openManage_cqssc')->name('historyLottery.cqssc'); //重庆时时彩
         Route::get('msssc', 'Back\SrcViewController@openManage_msssc')->name('historyLottery.msssc'); //秒速时时彩
+        Route::get('xjssc', 'Back\SrcViewController@openManage_xjssc')->name('historyLottery.xjssc'); //新疆时时彩
         Route::get('bjpk10', 'Back\SrcViewController@openManage_bjpk10')->name('historyLottery.bjpk10'); //北京pk10
         Route::get('bjkl8', 'Back\SrcViewController@openManage_bjkl8')->name('historyLottery.bjkl8'); //北京快乐8
         Route::get('mssc', 'Back\SrcViewController@openManage_mssc')->name('historyLottery.mssc'); //秒速赛车
@@ -90,6 +91,9 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('hbk3', 'Back\SrcViewController@openManage_hbk3')->name('historyLottery.hbk3'); //湖北快3
         Route::get('jlk3', 'Back\SrcViewController@openManage_jlk3')->name('historyLottery.jlk3'); //吉林快3
         Route::get('gxk3', 'Back\SrcViewController@openManage_gxk3')->name('historyLottery.gxk3'); //广西快3
+        Route::get('hbek3', 'Back\SrcViewController@openManage_hebk3')->name('historyLottery.hebk3'); //河北快3
+        Route::get('gzk3', 'Back\SrcViewController@openManage_gzk3')->name('historyLottery.gzk3'); //贵州快3
+        Route::get('gsk3', 'Back\SrcViewController@openManage_gsk3')->name('historyLottery.gsk3'); //甘肃快3
         Route::get('lhc', 'Back\SrcViewController@openManage_xglhc')->name('historyLottery.xglhc'); //六合彩
         Route::get('xylhc', 'Back\SrcViewController@openManage_xylhc')->name('historyLottery.xylhc'); //幸运六合彩
     });

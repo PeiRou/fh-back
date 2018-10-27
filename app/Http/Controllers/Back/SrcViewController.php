@@ -383,6 +383,17 @@ class SrcViewController extends Controller
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }
+    //新疆时时彩
+    public function openManage_xjssc()
+    {
+        $data = [
+            'title' => '新疆时时彩',
+            'activeName' => 'menu-openManage-xjssc',
+            'type' => 'xjssc',
+            'cat' => 'ssc' //游戏类别 时时彩
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
     //秒速快3
     public function openManage_msjsk3()
     {
@@ -445,6 +456,39 @@ class SrcViewController extends Controller
             'title' => '广西快3',
             'activeName' => 'menu-openManage-gxk3',
             'type' => 'gxk3',
+            'cat' => 'k3' //游戏类别 快3
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //河北快3
+    public function openManage_hebk3()
+    {
+        $data = [
+            'title' => '河北快3',
+            'activeName' => 'menu-openManage-hebk3',
+            'type' => 'hebk3',
+            'cat' => 'k3' //游戏类别 快3
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //贵州快3
+    public function openManage_gzk3()
+    {
+        $data = [
+            'title' => '贵州快3',
+            'activeName' => 'menu-openManage-gzk3',
+            'type' => 'gzk3',
+            'cat' => 'k3' //游戏类别 快3
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //甘肃快3
+    public function openManage_gsk3()
+    {
+        $data = [
+            'title' => '甘肃快3',
+            'activeName' => 'menu-openManage-gsk3',
+            'type' => 'gsk3',
             'cat' => 'k3' //游戏类别 快3
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
