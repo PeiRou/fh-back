@@ -336,7 +336,6 @@ class SrcViewController extends Controller
     }
     //北京快乐8
     public function openManage_bjkl8()
-
     {
         return view('back.open.bjkl8');
     }
