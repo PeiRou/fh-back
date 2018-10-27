@@ -167,7 +167,7 @@ function openbjpk10(id) {
     });
 }
 
-function cancel(issue,type) {
+function cancel(issue) {
     jc = $.confirm({
         title: '确定要导撤单',
         theme: 'material',
@@ -180,7 +180,7 @@ function cancel(issue,type) {
                 btnClass: 'btn-red',
                 action: function(){
                     $.ajax({
-                        url:'/action/admin/cancelBetting/'+issue+'/'+type,
+                        url:'/action/admin/cancelBetting/'+issue+'/'+gameType,
                         type:'post',
                         dataType:'json',
                         success:function (data) {
@@ -206,7 +206,7 @@ function cancel(issue,type) {
     });
 }
 
-function canceled(issue,type) {
+function canceled(issue) {
     jc = $.confirm({
         title: '确定要导撤单',
         theme: 'material',
@@ -219,7 +219,7 @@ function canceled(issue,type) {
                 btnClass: 'btn-red',
                 action: function(){
                     $.ajax({
-                        url:'/action/admin/Bet/canceled/'+issue+'/'+type,
+                        url:'/action/admin/Bet/canceled/'+issue+'/'+gameType,
                         type:'post',
                         dataType:'json',
                         success:function (data) {

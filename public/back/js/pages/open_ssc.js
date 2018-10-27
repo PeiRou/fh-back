@@ -254,7 +254,7 @@ function cancel(issue) {
     });
 }
 
-function canceled(issue,type) {
+function canceled(issue) {
     jc = $.confirm({
         title: '确定要导撤单',
         theme: 'material',
@@ -267,7 +267,7 @@ function canceled(issue,type) {
                 btnClass: 'btn-red',
                 action: function(){
                     $.ajax({
-                        url:'/action/admin/Bet/canceled/'+issue+'/'+type,
+                        url:'/action/admin/Bet/canceled/'+issue+'/'+gameType,
                         type:'post',
                         dataType:'json',
                         success:function (data) {
