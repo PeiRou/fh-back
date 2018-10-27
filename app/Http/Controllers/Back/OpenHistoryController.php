@@ -355,8 +355,17 @@ class OpenHistoryController extends Controller
             case 'gxk3':
                 $table = 'game_gxk3';
                 break;
+            case 'hebk3':
+                $table = 'game_hebeik3';
+                break;
+            case 'gzk3':
+                $table = 'game_gzk3';
+                break;
+            case 'gsk3':
+                $table = 'game_gsk3';
+                break;
             default:
-                return response()->json(['status' => false,'msg' => '参数不为空！']);
+                return response()->json(['status' => false,'msg' => '类型不存在！']);
         }
         $verifyData = $this->verifyData($request->all(),3);
         if($verifyData['stauts']){
