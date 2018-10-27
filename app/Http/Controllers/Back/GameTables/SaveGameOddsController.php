@@ -240,8 +240,8 @@ class SaveGameOddsController extends Controller
                 $animalsYear = "var animalsYear = " . json_encode(Config::get('website.animalsYear')) . ";";
                 $write = Storage::disk('static')->put('gamedatas.js', $game_txt . $next_row . $gameMap_txt . $next_row . $playCate_txt . $next_row . $plays_txt . $next_row . $animalsYear);
 
-                $gameMap_txt = '{ "gameMap" : ' . $game->keyBy('id') . ",";
-                $game_txt = ' "games" : [' . $game->pluck('id')->implode(',') . "],";
+                $game_txt = '{"games" : [' . $game->pluck('id')->implode(',') . "],";
+                $gameMap_txt = '"gameMap" : ' . $game->keyBy('id') . ",";
                 $playCate_txt = ' "playCates" : ' . $playCate->keyBy('id') . ",";
                 $plays_txt = ' "plays" : ' . collect($newCollect)->keyBy('id') . ",";
                 $animalsYear = ' "animalsYear" : ' . json_encode(Config::get('website.animalsYear')) . "}";
