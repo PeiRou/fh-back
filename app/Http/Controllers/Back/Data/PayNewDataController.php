@@ -22,7 +22,7 @@ class PayNewDataController extends Controller
     //在线支付配置新
     public function payOnline()
     {
-        $payOnline = PayOnlineNew::select('pay_online_new.*','pay_type_new.rechName as rechName1')->join('pay_type_new','pay_type_new.payName','=','pay_online_new.payName')->where('pay_online_new.rechType','onlinePayment')->orderBy('pay_online_new.status','desc')->orderBy('pay_online_new.sort','asc')->get();
+        $payOnline = PayOnlineNew::select('pay_online_new.*','pay_type_new.rechName as rechName1')->join('pay_type_new','pay_type_new.payName','=','pay_online_new.payName')->where('pay_online_new.rechType','onlinePayment')->orderBy('pay_online_new.status','desc')->orderBy('pay_online_new.sort','asc')->orderBy('pay_online_new.id','asc')->get();
         return DataTables::of($payOnline)
             ->editColumn('payType', function ($payOnline){
                 return $payOnline->rechName1;

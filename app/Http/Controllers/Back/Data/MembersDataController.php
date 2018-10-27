@@ -339,6 +339,7 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
         $account = $request->get('account'); //多条件 邮箱/账号/名称
         $mobile = $request->get('mobile');
         $qq = $request->get('qq');
+        $bank = $request->get('bank');
         $minMoney = $request->get('minMoney');
         $maxMoney = $request->get('maxMoney');
         $promoter = $request->get('promoter');
@@ -348,10 +349,17 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
         $start = empty($request->get('start'))?0:$request->get('start');
         $length = empty($request->get('length'))?50:$request->get('length');
 
-        $sql = ' FROM (select id ,agent,testFlag,users.mobile as user_mobile,users.qq as user_qq,users.promoter as user_promoter ,users.id as uid,users.rechLevel as user_rechLevel,users.created_at as user_created_at,users.updated_at as user_updated_at,users.username as user_username,users.email as user_email,users.fullName as user_fullName,users.money as user_money,users.status as user_status,users.PayTimes as user_PayTimes,users.DrawTimes as user_DrawTimes,users.saveMoneyCount as user_saveMoneyCount,users.drawMoneyCount as user_drawMoneyCount,users.lastLoginTime as user_lastLoginTime,users.content as user_content  from users ) u_fileds 
+        $sql = ' FROM (select id ,agent,testFlag,users.bank_num AS user_bank_num,users.mobile as user_mobile,users.qq as user_qq,users.promoter as user_promoter ,users.id as uid,users.rechLevel as user_rechLevel,users.created_at as user_created_at,users.updated_at as user_updated_at,users.username as user_username,users.email as user_email,users.fullName as user_fullName,users.money as user_money,users.status as user_status,users.PayTimes as user_PayTimes,users.DrawTimes as user_DrawTimes,users.saveMoneyCount as user_saveMoneyCount,users.drawMoneyCount as user_drawMoneyCount,users.lastLoginTime as user_lastLoginTime,users.content as user_content  from users ) u_fileds 
             left Join (SELECT name as level_name,value FROM level) lv on u_fileds.user_rechLevel = lv.value 
             left Join (SELECT a_id,account as ag_account,gagent_id FROM agent) ag on u_fileds.agent = ag.a_id  where 1 and testFlag in(0,2) ';
-
+        if(isset($bank) && $bank){
+            $userArr = DB::table('user_bank')->where('cardNo',$bank)->pluck('user_id')->toArray();
+            $or = '';
+            if($userArr){
+                $or = ' OR uid IN( '. implode(',',$userArr) .' )';
+            }
+            $sql .= ' AND ( user_bank_num = "' . $bank .'"'. $or . ' ) ';
+        }
         if(isset($status) && $status){
             $sql .=' and u_fileds.user_status = ' .$status;
         }

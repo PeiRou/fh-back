@@ -171,10 +171,10 @@ function lhh(a,b){
 function opencqssc(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '重庆时时彩-手动开奖',
+        title: '广东11选5-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content: 'url:/back/modal/openCqssc/'+id,
+        content:  'url:/back/modal/open/'+id+'/gd11x5/gd11x5',
         buttons: {
             formSubmit: {
                 text:'确定',

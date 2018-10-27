@@ -64,6 +64,18 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunHBK3' => [
             'App\Listeners\RunHBK3EventListener',
         ],
+        'App\Events\RunHEBEIK3' => [
+            'App\Listeners\RunHEBEIK3EventListener',
+        ],
+        'App\Events\RunGSK3' => [
+            'App\Listeners\RunGSK3EventListener',
+        ],
+        'App\Events\RunGZK3' => [
+            'App\Listeners\RunGZK3EventListener',
+        ],
+        'App\Events\RunXJSSC' => [
+            'App\Listeners\RunXJSSCEventListener',
+        ],
         'App\Events\RunMSJSK3' => [
             'App\Listeners\RunMSJSK3EventListener',
         ],

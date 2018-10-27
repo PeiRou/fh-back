@@ -162,10 +162,10 @@ function lhh(a,b){
 function opencqssc(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '重庆时时彩-手动开奖',
+        title: '重庆幸运农场-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content: 'url:/back/modal/openCqssc/'+id,
+        content: 'url:/back/modal/open/'+id+'/cqxync/xync',
         buttons: {
             formSubmit: {
                 text:'确定',
