@@ -69,6 +69,14 @@ class OpenHistoryController extends Controller
         'n7' => 'required|integer|max:20',
         'n8' => 'required|integer|max:20',
     ];
+    private $role5 = [
+        'id' => 'required',
+        'n1' => 'required|integer|max:11',
+        'n2' => 'required|integer|max:11',
+        'n3' => 'required|integer|max:11',
+        'n4' => 'required|integer|max:11',
+        'n5' => 'required|integer|max:11',
+    ];
 
     //验证器数据
     public function verifyData($data,$type = 1){
@@ -230,6 +238,7 @@ class OpenHistoryController extends Controller
             ]);
         }
     }
+    //广东11选5开奖数据
     public function addGd11x5Data(Request $request){
         $type = $request->get('type');
         switch ($type){
@@ -239,7 +248,7 @@ class OpenHistoryController extends Controller
             default:
                 return response()->json(['status' => false,'msg' => '参数不为空！']);
         }
-        $verifyData = $this->verifyData($request->all(),3);
+        $verifyData = $this->verifyData($request->all(),5);
         if($verifyData['stauts']){
             return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
         }
