@@ -58,6 +58,9 @@
 @endsection
 
 @section('page-js')
+    <script>
+        var gameType = "{{ $data['type'] }}";
+    </script>
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <script src="/back/js/pages/open_lhc.js"></script>

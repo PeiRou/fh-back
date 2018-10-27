@@ -496,12 +496,14 @@ class SrcViewController extends Controller
     //六合彩
     public function openManage_xglhc()
     {
-        return view('back.open.lhc');
+        $data['type'] = 'lhc';
+        return view('back.open.lhc',compact('data'));
     }
     //幸运六合彩
     public function openManage_xylhc()
     {
-        return view('back.open.xylhc');
+        $data['type'] = 'xylhc';
+        return view('back.open.xylhc',compact('data'));
     }
     
     //报表管理

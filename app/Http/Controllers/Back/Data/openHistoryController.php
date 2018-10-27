@@ -345,10 +345,20 @@ class openHistoryController extends Controller
                     return "<ul class='control-menu'>
                         <li onclick='edit(\"$lhc->id\")'>修改</li>
                         <li onclick='openLhc(\"$lhc->id\")'>手动开奖</li>
-                        <li onclick='cancel(\"$lhc->issue\",\"lhc\")'>撤单</li>
+                        <li onclick='cancel(\"$lhc->issue\")'>撤单</li>
                         </ul>";
                 }
                 if($lhc->is_open == 1){
+                    $html = "<ul class='control-menu'>";
+                    $html .= "<li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>";
+                    if(env('TEST') == 1) {
+                        $html .= "<li onclick='canceled(\"$lhc->issue\")'>撤单</li>";
+                        $html .= "<li onclick='freeze(\"$lhc->issue\")'>冻结</li>";
+                    }
+                    $html .= "</ul>";
+                    return $html;
+                }
+                if($lhc->is_open == 5){
                     return "<ul class='control-menu'>
                         <li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>
                         </ul>";
@@ -404,10 +414,20 @@ class openHistoryController extends Controller
                     return "<ul class='control-menu'>
                         <li onclick='edit(\"$lhc->id\")'>修改</li>
                         <li onclick='openLhc(\"$lhc->id\")'>手动开奖</li>
-                        <li onclick='cancel(\"$lhc->issue\",\"xylhc\")'>撤单</li>
+                        <li onclick='cancel(\"$lhc->issue\")'>撤单</li>
                         </ul>";
                 }
                 if($lhc->is_open == 1){
+                    $html = "<ul class='control-menu'>";
+                    $html .= "<li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>";
+                    if(env('TEST') == 1) {
+                        $html .= "<li onclick='canceled(\"$lhc->issue\")'>撤单</li>";
+                        $html .= "<li onclick='freeze(\"$lhc->issue\")'>冻结</li>";
+                    }
+                    $html .= "</ul>";
+                    return $html;
+                }
+                if($lhc->is_open == 5){
                     return "<ul class='control-menu'>
                         <li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>
                         </ul>";
