@@ -102,4 +102,80 @@ class Recharges extends Model
         ];
         return DB::select($aSql,$aArray)[0]->count;
     }
+
+    //导出会员数据
+    public static function exportExcelForRecharges($request){
+        $findUserId = '';
+        $killTestUser = $request->get('killTestUser');
+        $payType = $request->get('recharge_type');
+        $startTime = $request->get('startTime');
+        $endTime = $request->get('endTime');
+        $account_type = $request->get('account_type');
+        $account_param = $request->get('account_param');
+        $status = $request->get('status');
+        $pay_online_id = $request->get('pay_online_id');
+        $amount = $request->get('amount');
+        $fullName = $request->get('fullName');
+        if($fullName && isset($fullName)){
+            $findUserId = DB::table('users')->where('fullName',$fullName)->first();
+        }
+
+        $sql = ' from recharges JOIN users on recharges.userId = users.id LEFT JOIN level on level.value = recharges.levels WHERE 1 ';
+        $where = '';
+        if(isset($killTestUser) && $killTestUser){
+            $where .= ' and users.testFlag = 0 ';
+        }else{
+            $where .= ' and users.testFlag in (0,2) ';
+        }
+        if(isset($pay_online_id) && empty($pay_online_id)){
+            $where .= ' and recharges.pay_online_id = '.$pay_online_id;
+        }
+        if(isset($amount) && $amount){
+            $where .= ' and recharges.amount = '.$amount;
+        }
+        if(isset($findUserId) && $findUserId){
+            $where .= ' and recharges.userId = '.$findUserId->id;
+        }
+        if(isset($account_param) && $account_param){
+            if($account_type == 'account'){
+                $where .= " and recharges.username = '".$account_param."'";
+            }else if($account_type == 'orderNum'){
+                $where .= " and recharges.orderNum = '".$account_param."'";
+            }else if($account_type == 'operation_account'){
+                $where .= " and recharges.operation_account = '".$account_param."'";
+            }else if($account_type == 'sysOrderNum'){
+                $where .= " and recharges.sysPayOrder = '".$account_param."'";
+            }
+        }
+        if(isset($startTime) && $startTime){
+            $where .= " and recharges.created_at >= '".$startTime." 00:00:00'";
+        }
+        if(isset($endTime) && $endTime){
+            $where .= " and recharges.created_at <= '".$endTime." 23:59:59'";
+        }
+        if(empty($startTime) && empty($endTime))
+            $where .= " and recharges.created_at = now() ";
+//        $whereStaus = '';
+
+        if(empty($findUserId) && empty($account_param)){
+            if(isset($status) && $status){
+                $whereStaus = ' and recharges.status = '.$status;
+            }else{
+                $whereStaus = ' and recharges.status in (1,2,3)';
+            }
+            if(isset($payType) && $payType){
+                $where .= " and recharges.payType = '".$payType."'";
+            }else{
+                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
+            }
+        }else{
+            if(isset($status) && $status){
+                $whereStaus = ' and recharges.status = '.$status;
+            }else{
+                $whereStaus = ' and recharges.status in (1,2,3,4)';
+            }
+        }
+        $sql1 = 'SELECT users.username as username,recharges.amount as amount,recharges.operation_account as operation_account,recharges.shou_info as shou_info,recharges.status as re_status '.$sql.$where .$whereStaus. ' order by recharges.created_at desc ';
+        return DB::select($sql1);
+    }
 }
