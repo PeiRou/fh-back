@@ -58,6 +58,17 @@ class OpenHistoryController extends Controller
         'n2' => 'required|integer|max:6',
         'n3' => 'required|integer|max:6',
     ];
+    private $role4 = [
+        'id' => 'required',
+        'n1' => 'required|integer|max:20',
+        'n2' => 'required|integer|max:20',
+        'n3' => 'required|integer|max:20',
+        'n4' => 'required|integer|max:20',
+        'n5' => 'required|integer|max:20',
+        'n6' => 'required|integer|max:20',
+        'n7' => 'required|integer|max:20',
+        'n8' => 'required|integer|max:20',
+    ];
 
     //验证器数据
     public function verifyData($data,$type = 1){
@@ -275,7 +286,7 @@ class OpenHistoryController extends Controller
             default:
                 return response()->json(['status' => false,'msg' => '参数不为空！']);
         }
-        $verifyData = $this->verifyData($request->all(),3);
+        $verifyData = $this->verifyData($request->all(),4);
         if($verifyData['stauts']){
             return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
         }
