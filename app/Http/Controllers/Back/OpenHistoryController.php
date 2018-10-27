@@ -286,7 +286,7 @@ class OpenHistoryController extends Controller
     public function addXyncData(Request $request){
         $type = $request->get('type');
         switch ($type){
-            case 'cqxync':
+            case 'xync':
                 $table = 'game_cqxync';
                 break;
             case 'gdkl10':

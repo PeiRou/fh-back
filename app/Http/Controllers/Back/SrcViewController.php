@@ -298,7 +298,7 @@ class SrcViewController extends Controller
         $data = [
             'title' => '重庆幸运农场',
             'activeName' => 'menu-openManage-cqxync',
-            'type' => 'cqxync', //
+            'type' => 'xync', //
         ];
         return view('back.open.cqxync',compact('data'));
 //        return view('back.open.cqxync');

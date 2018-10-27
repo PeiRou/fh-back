@@ -165,7 +165,7 @@ function opencqssc(id) {
         title: '重庆幸运农场-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content: 'url:/back/modal/open/'+id+'/cqxync/xync',
+        content: 'url:/back/modal/open/'+id+'/xync/xync',
         buttons: {
             formSubmit: {
                 text:'确定',
