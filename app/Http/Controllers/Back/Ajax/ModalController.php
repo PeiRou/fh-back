@@ -709,7 +709,7 @@ class ModalController extends Controller
 
     //手动开奖
     public function open($id = '',$gameType = '', $cat = ''){
-        $table = 'game_'.$gameType;
+        $table = 'game_'.Games::$aCodeGameName[$gameType];
         $type = $gameType;
         $data = DB::table($table)->where('id',$id)->first();
         switch ($cat){
