@@ -88,10 +88,16 @@ $(function () {
             {data: function (data) {
                     if(data.is_open=="1"){        //已开奖
                         txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
+                        if(testServer == 1){
+                            txt += "<li onclick='canceled("+data.issue+")'>撤单</li>";
+                            txt += "<li onclick='freeze("+data.issue+")'>冻结</li>";
+                        }
                     }else if(data.is_open=="0"){                      //未开奖
                         txt = "<li onclick='cancelAll("+data.id+")'>修改</li>" +
                             "<li onclick='cancel("+data.issue+")'>撤单</li>" +
                             "<li onclick='openssc("+data.id+")'>手动开奖</li>" ;
+                    }else if(data.is_open == "5"){
+                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
                     }
                     return "<ul class='control-menu'>" + txt + "</ul>";
                 }}
@@ -293,7 +299,7 @@ function canceled(issue) {
     });
 }
 
-function freeze(issue,type) {
+function freeze(issue) {
     jc = $.confirm({
         title: '确定要冻结',
         theme: 'material',
@@ -306,7 +312,7 @@ function freeze(issue,type) {
                 btnClass: 'btn-red',
                 action: function(){
                     $.ajax({
-                        url:'/action/admin/freezeCqssc/'+issue+'/'+type,
+                        url:'/action/admin/freeze/'+issue+'/'+gameType,
                         type:'post',
                         dataType:'json',
                         success:function (data) {

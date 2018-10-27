@@ -68,10 +68,16 @@ $(function () {
             {data: function (data) {
                     if(data.is_open=="1"){        //已开奖
                         txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
-                    }else{                      //未开奖
+                        if(testServer == 1){
+                            txt += "<li onclick='canceled("+data.issue+")'>撤单</li>";
+                            txt += "<li onclick='freeze("+data.issue+")'>冻结</li>";
+                        }
+                    }else if(data.is_open == "0"){                      //未开奖
                         txt = "<li onclick='cancelAll("+data.id+")'>修改</li>" +
-                            "<li onclick='cancel("+data.issue+",\"bjkl8\")'>撤单</li>" +
+                            "<li onclick='cancel("+data.issue+")'>撤单</li>" +
                             "<li onclick='openbjkl8("+data.id+")'>手动开奖</li>" ;
+                    }else if(data.is_open == "5"){
+                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
                     }
                     return "<ul class='control-menu'>" + txt + "</ul>";
                 }}
@@ -165,7 +171,7 @@ function openbjkl8(id) {
     });
 }
 
-function cancel(issue,type) {
+function cancel(issue) {
     jc = $.confirm({
         title: '确定要导撤单',
         theme: 'material',
@@ -178,7 +184,7 @@ function cancel(issue,type) {
                 btnClass: 'btn-red',
                 action: function(){
                     $.ajax({
-                        url:'/action/admin/cancelBetting/'+issue+'/'+type,
+                        url:'/action/admin/cancelBetting/'+issue+'/'+gameType,
                         type:'post',
                         dataType:'json',
                         success:function (data) {
@@ -204,7 +210,7 @@ function cancel(issue,type) {
     });
 }
 
-function canceled(issue,type) {
+function canceled(issue) {
     jc = $.confirm({
         title: '确定要导撤单',
         theme: 'material',
@@ -217,12 +223,51 @@ function canceled(issue,type) {
                 btnClass: 'btn-red',
                 action: function(){
                     $.ajax({
-                        url:'/action/admin/Bet/canceled/'+issue+'/'+type,
+                        url:'/action/admin/Bet/canceled/'+issue+'/'+gameType,
                         type:'post',
                         dataType:'json',
                         success:function (data) {
                             if(data.status == true){
                                 alert('撤单成功');
+                            }else{
+                                Calert(data.msg,'red')
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
+
+function freeze(issue) {
+    jc = $.confirm({
+        title: '确定要冻结',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '这是一个需要注意的操作，冻结该期数下所有注单',
+        buttons: {
+            confirm: {
+                text:'确定撤单',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/action/admin/freeze/'+issue+'/'+gameType,
+                        type:'post',
+                        dataType:'json',
+                        success:function (data) {
+                            if(data.status == true){
+                                alert('冻结成功');
                             }else{
                                 Calert(data.msg,'red')
                             }

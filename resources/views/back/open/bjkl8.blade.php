@@ -50,6 +50,10 @@
 @endsection
 
 @section('page-js')
+    <script>
+        var testServer = {{ env('TEST',0) }};
+        var gameType = "bjkl8";
+    </script>
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <script src="/back/js/pages/open_bjkl8.js"></script>
