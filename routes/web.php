@@ -441,6 +441,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/opensc', 'Back\OpenHistoryController@addscData')->middleware('add-log-handle')->name('ac.ad.opensc');     //添加赛车开奖数据
     Route::post('/action/admin/openK3', 'Back\OpenHistoryController@addK3Data')->middleware('add-log-handle')->name('ac.ad.openK3');     //添加快三开奖数据
     Route::post('/action/admin/openBjkl8', 'Back\OpenHistoryController@addBjkl8Data')->middleware('add-log-handle')->name('ac.ad.openBjkl8');     //添加北京快乐8开奖数据
+    Route::post('/action/admin/openxync', 'Back\OpenHistoryController@addXyncData');     //添加幸运农场 广东快乐十分开奖数据
+    Route::post('/action/admin/opengd11x5', 'Back\OpenHistoryController@addGd11x5Data');     //添加广东11选5开奖数据
 
     Route::post('/action/admin/openLhc', 'Back\OpenHistoryController@addLhcData')->middleware('add-log-handle')->name('ac.ad.openLhc');
     Route::post('/action/admin/openXylhc', 'Back\OpenHistoryController@addXylhcData')->middleware('add-log-handle')->name('ac.ad.openXylhc');
