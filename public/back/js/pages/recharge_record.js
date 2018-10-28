@@ -491,7 +491,7 @@ function excelRecharges() {
                     text:'确定',
                     btnClass: 'btn-orange',
                     action: function(){
-                        window.location.href = '/action/admin/exportExcel/userRecharges?startTime='+startTime+'&endTime='+endTime+'&rechargesType='+rechargesType+'&isSearch='+isSearch+'&status='+status+'&pay_online_id='+pay_online_id+'&account_type='+account_type+'&account_param='+account_param+'&amount='+amount+'&fullName='+fullName+'&killTestUser='+killTestUser+'&recharges_id='+recharges_id;
+                        window.location.href = '/action/admin/exportExcel/userRecharges?startTime='+startTime+'&endTime='+endTime+'&rechargesType='+rechargesType+'&isSearch='+isSearch+'&status='+status+'&pay_online_id='+pay_online_id+'&account_type='+account_type+'&account_param='+account_param+'&amount='+amount+'&fullName='+fullName+'&killTestUser='+killTestUser+'&recharges_id='+recharges_id+'&recharge_type='+rechargesType;
                         // $.ajax({
                         //     url:'/action/admin/exportExcel/userRecharges',
                         //     type:'post',
