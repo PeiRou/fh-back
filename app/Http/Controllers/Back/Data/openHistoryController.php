@@ -182,7 +182,8 @@ class openHistoryController extends Controller
         if(!($gameType = $request->get('type'))){
             return false;
         }
-        $table = 'game_'.$gameType;
+//        $table = 'game_'.$gameType;
+        $table = 'game_'.Games::$aCodeGameName[$gameType];
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
         $start = $request->get('start');
@@ -250,40 +251,40 @@ class openHistoryController extends Controller
     //快三-表格数据
     public function k3(Request $request)
     {
-        $type = $request->get('type');
-        switch ($type){
-            case 'msjsk3':
-                $table = 'game_msjsk3';
-                break;
-            case 'jsk3':
-                $table = 'game_jsk3';
-                break;
-            case 'ahk3':
-                $table = 'game_ahk3';
-                break;
-            case 'jlk3':
-                $table = 'game_jlk3';
-                break;
-            case 'hbk3':
-                $table = 'game_hbk3';
-                break;
-            case 'gxk3':
-                $table = 'game_gxk3';
-                break;
-            case 'hebk3':
-                $table = 'game_hebeik3';
-                break;
-            case 'gzk3':
-                $table = 'game_gzk3';
-                break;
-            case 'gsk3':
-                $table = 'game_gsk3';
-                break;
-            default:
-                return false;
-                break;
-
-        }
+        $gameType = $request->get('type');
+        $table = 'game_'.Games::$aCodeGameName[$gameType];
+//        switch ($type){
+//            case 'msjsk3':
+//                $table = 'game_msjsk3';
+//                break;
+//            case 'jsk3':
+//                $table = 'game_jsk3';
+//                break;
+//            case 'ahk3':
+//                $table = 'game_ahk3';
+//                break;
+//            case 'jlk3':
+//                $table = 'game_jlk3';
+//                break;
+//            case 'hbk3':
+//                $table = 'game_hbk3';
+//                break;
+//            case 'gxk3':
+//                $table = 'game_gxk3';
+//                break;
+//            case 'hebk3':
+//                $table = 'game_hebeik3';
+//                break;
+//            case 'gzk3':
+//                $table = 'game_gzk3';
+//                break;
+//            case 'gsk3':
+//                $table = 'game_gsk3';
+//                break;
+//            default:
+//                return false;
+//                break;
+//        }
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
         $start = $request->get('start');

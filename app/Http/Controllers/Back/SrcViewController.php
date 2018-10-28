@@ -378,7 +378,7 @@ class SrcViewController extends Controller
         $data = [
             'title' => '秒速时时彩',
             'activeName' => 'menu-openManage-msssc',
-            'type' => 'msssc',
+            'type' => 'jsssc',
             'cat' => 'ssc' //游戏类别 时时彩
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
@@ -466,7 +466,7 @@ class SrcViewController extends Controller
         $data = [
             'title' => '河北快3',
             'activeName' => 'menu-openManage-hebk3',
-            'type' => 'hebk3',
+            'type' => 'hebeik3',
             'cat' => 'k3' //游戏类别 快3
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
