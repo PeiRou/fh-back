@@ -120,12 +120,19 @@ class OpenHistoryController extends Controller
             'is_open' => 1
         ];
         //处理牛牛
-        if($gameType == 'mssc'){//秒速赛车
+        if($table == 'game_mssc'){//秒速赛车
             $niuniu = $this->exePK10nn($openNum);
             $data['niuniu'] =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
         }
         $update = DB::table($table)->where('id',$id)->update($data);
-        if($gameType == 'bjpk10'){//北京pk10
+        if($table == 'game_bjpk10'){//北京pk10
+            //不能有两个以上相同的数
+            $openNumArr =  explode(',',$openNum);
+            $openNumArr1 = array_unique($openNumArr);
+//            $repeat_arr = array_diff_assoc ( $openNumArr, $openNumArr1 );
+            if(count($openNumArr1) < count($openNumArr)){
+                return response()->json(['status' => false,'msg' => '请勿提交重复号码']);
+            }
             $niuniu = $this->exePK10nn($openNum);
             $data['niuniu'] =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
             $updateNN = DB::table('game_pknn')->where('issue',$info->issue)->update($data);
@@ -177,7 +184,12 @@ class OpenHistoryController extends Controller
         $msg = $this->notTen($request->get('msg'));
 
         $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5.','.$n6.','.$n7.','.$n8.','.$n9.','.$n10.','.$n11.','.$n12.','.$n13.','.$n14.','.$n15.','.$n16.','.$n17.','.$n18.','.$n19.','.$n20;
-
+        //不能有两个以上相同的数
+        $openNumArr =  explode(',',$openNum);
+        $openNumArr1 = array_unique($openNumArr);
+        if(count($openNumArr1) < count($openNumArr)){
+            return response()->json(['status' => false,'msg' => '请勿提交重复号码']);
+        }
         $update = DB::table('game_bjkl8')->where('id',$id)->update([
             'opennum' => $openNum,
             'year'=> date('Y',strtotime($info->opentime)),
