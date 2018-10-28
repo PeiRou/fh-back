@@ -113,7 +113,7 @@
     </div>
     <div class="field" style="margin-top: 15px;">
         <label>自动获取</label>
-        <span onclick="getBJKL8Data('{{ date('Ymd',strtotime($bjkl8->opentime)) }}','{{ $bjkl8->issue }}')" class="getBtn">点击获取开奖号码</span>
+        <span onclick="getBJKL8Data('{{ date('Ymd',strtotime($bjkl8->opentime)) }}','{{ $bjkl8->opentime }}')" class="getBtn">点击获取开奖号码</span>
     </div>
     <div class="field" style="width: 120px;">
         <label>开奖理由</label>
@@ -175,7 +175,7 @@
         $('.modal-mask').fadeIn();
         $('.getBtn').html('获取中...');
         $.ajax({
-            url:'/back/openData/bjkl8/'+date+'/'+issue.slice(2),
+            url:'/back/openData/bjkl8/'+date+'/'+issue,
             type:'get',
             dataType:'json',
             success:function (result) {
@@ -185,6 +185,21 @@
                     $('#n3').val(result.n3);
                     $('#n4').val(result.n4);
                     $('#n5').val(result.n5);
+                    $('#n6').val(result.n6);
+                    $('#n7').val(result.n7);
+                    $('#n8').val(result.n8);
+                    $('#n9').val(result.n9);
+                    $('#n10').val(result.n10);
+                    $('#n11').val(result.n11);
+                    $('#n12').val(result.n12);
+                    $('#n13').val(result.n13);
+                    $('#n14').val(result.n14);
+                    $('#n15').val(result.n15);
+                    $('#n16').val(result.n16);
+                    $('#n17').val(result.n17);
+                    $('#n18').val(result.n18);
+                    $('#n19').val(result.n19);
+                    $('#n20').val(result.n20);
                     $('.getBtn').html('获取成功（点击可重新获取）');
                     $('.modal-mask').fadeOut();
                 }

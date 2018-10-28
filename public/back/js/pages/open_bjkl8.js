@@ -67,7 +67,7 @@ $(function () {
                 }},
             {data: function (data) {
                     if(data.is_open=="1"){        //已开奖
-                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
+                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>";
                         if(testServer == 1){
                             txt += "<li onclick='canceled("+data.issue+")'>撤单</li>";
                             txt += "<li onclick='freeze("+data.issue+")'>冻结</li>";

@@ -703,10 +703,10 @@ Route::group(['middleware'=>['check-ip']],function () {
 
 //后台状态轮询
     Route::get('/back/status', 'Back\AjaxStatusController@status');
-//后台获取六合彩开奖--接口
-    Route::get('/back/openData/lhc/{date}/{issue}', 'Back\OpenData\OpenApiGetController@lhc');
+//后台获取开奖--接口
+    Route::get('/back/openData/{type}/{date}/{issue}', 'Back\OpenData\OpenApiGetController@open');
 //后台获取北京PK10开奖--接口
-    Route::get('/back/openData/bjpk10/{date}/{issue}', 'Back\OpenData\OpenApiGetController@bjpk10');
+//    Route::get('/back/openData/bjpk10/{date}/{issue}', 'Back\OpenData\OpenApiGetController@bjpk10');
 //注单明细获取开奖历史
     Route::get('/ajax/openHistory/{gameId}/{issue}', 'Back\SrcViewController@BetListOpenHistory');
 //自动提款异步回调地址

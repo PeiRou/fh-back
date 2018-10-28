@@ -71,7 +71,7 @@ $(function () {
                 }},
             {data: function (data) {
                     if(data.is_open=="1"){        //已开奖
-                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
+                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>";
                     }else{                      //未开奖
                         txt = "<li onclick='cancelAll("+data.id+")'>修改</li>" +
                             "<li onclick='cancel("+data.issue+",\"cqssc\")'>撤单</li>" +

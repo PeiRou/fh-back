@@ -107,7 +107,7 @@
         $('.modal-mask').fadeIn();
         $('.getBtn').html('获取中...');
         $.ajax({
-            url:'/back/openData/cqssc/'+date+'/'+issue.slice(2),
+            url:'/back/openData/{{ $type }}/'+date+'/'+issue,
             type:'get',
             dataType:'json',
             success:function (result) {

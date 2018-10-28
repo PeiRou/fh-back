@@ -8,36 +8,320 @@ use GuzzleHttp\Client;
 
 class OpenApiGetController extends Controller
 {
-    public function lhc($date = '',$issue)
-    {
+    //获取开奖
+    public function open($type,$date,$issue){
+//        var_dump($type);die();
         $http = new Client();
         try{
-            $res = $http->request('get','http://api.caipiaokong.cn/lottery/?name=xglhc&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d&date='.$date);
+            $res = $http->request('get',$this->apiArray[$type].'&date='.$date);
             $json = json_decode((string) $res->getBody(), true);
-            $num_str = '';
-            foreach ($json as $k => $v){
-                $num_str .= $v['number'];
-            }
-            $arrCode = explode(',',$num_str);
-            return response()->json([
-                'code' => 200,
-                'data'=> $json,
-                'status' => true,
-                'openCode' => $num_str,
-                'n1' => (int)$arrCode[0],
-                'n2' => (int)$arrCode[1],
-                'n3' => (int)$arrCode[2],
-                'n4' => (int)$arrCode[3],
-                'n5' => (int)$arrCode[4],
-                'n6' => (int)$arrCode[5],
-                'n7' => (int)$arrCode[6],
-            ]);
+            return response()->json($this->$type($json,$issue));
         } catch (\Exception $e){
-            return response()->json([
+            return [
                 'code'=> $e->getCode(),
                 'status' => false,
                 'msg' => '获取失败，原因1.本期暂未开奖，2.接口数据返回异常'
-            ]);
+            ];
         }
+    }
+
+    //返回参数解析
+    public function parsingParameters(){
+
+    }
+
+    //开奖API
+    public $apiArray = [
+        'cqssc' => 'http://api.caipiaokong.cn/lottery/?name=cqssc&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'lhc' => 'http://api.caipiaokong.cn/lottery/?name=xglhc&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'bjkl8' => 'http://api.caipiaokong.cn/lottery/?name=bjklb&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'pk10' => 'http://api.caipiaokong.cn/lottery/?name=bjpks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'gsk3' => 'http://api.caipiaokong.cn/lottery/?name=gsks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'gd11x5' => 'http://api.caipiaokong.cn/lottery/?name=gdsyxw&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'gxk3' => 'http://api.caipiaokong.cn/lottery/?name=gxks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'gzk3' => 'http://api.caipiaokong.cn/lottery/?name=gzks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'hebk3' => 'http://api.caipiaokong.cn/lottery/?name=hbks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'hbk3' => 'http://api.caipiaokong.cn/lottery/?name=hubks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'jsk3' => 'http://api.caipiaokong.cn/lottery/?name=jsks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+
+    ];
+
+    //江苏快3开奖
+    public function jsk3($aJson,$issue){
+        if(empty($aJson[$issue])){
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+        }
+        $result = $aJson[$issue];
+        $arrCode = explode(',',$result['number']);
+        return [
+            'code' => 200,
+            'data'=> $aJson,
+            'status' => true,
+            'openCode' => $result['number'],
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+        ];
+    }
+
+    //湖北快3
+    public function hbk3($aJson,$issue){
+        if(empty($aJson[$issue])){
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+        }
+        $result = $aJson[$issue];
+        $arrCode = explode(',',$result['number']);
+        return [
+            'code' => 200,
+            'data'=> $aJson,
+            'status' => true,
+            'openCode' => $result['number'],
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+        ];
+    }
+
+    //河北快3开奖
+    public function hebk3($aJson,$issue){
+        if(empty($aJson[$issue])){
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+        }
+        $result = $aJson[$issue];
+        $arrCode = explode(',',$result['number']);
+        return [
+            'code' => 200,
+            'data'=> $aJson,
+            'status' => true,
+            'openCode' => $result['number'],
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+        ];
+    }
+
+    //贵州快3开奖
+    public function gzk3($aJson,$issue){
+        if(empty($aJson[$issue])){
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+        }
+        $result = $aJson[$issue];
+        $arrCode = explode(',',$result['number']);
+        return [
+            'code' => 200,
+            'data'=> $aJson,
+            'status' => true,
+            'openCode' => $result['number'],
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+        ];
+    }
+
+    //广西快3
+    public function gxk3($aJson,$issue){
+        if(empty($aJson[$issue])){
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+        }
+        $result = $aJson[$issue];
+        $arrCode = explode(',',$result['number']);
+        return [
+            'code' => 200,
+            'data'=> $aJson,
+            'status' => true,
+            'openCode' => $result['number'],
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+        ];
+    }
+
+    //广东11选5开奖
+    public function gd11x5($aJson,$issue){
+        if(empty($aJson[$issue])){
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+        }
+        $result = $aJson[$issue];
+        $arrCode = explode(',',$result['number']);
+        return [
+            'code' => 200,
+            'data'=> $aJson,
+            'status' => true,
+            'openCode' => $result['number'],
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+        ];
+    }
+
+    //甘肃快3开奖
+    public function gsk3($aJson,$issue){
+        if(empty($aJson[$issue])){
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+        }
+        $result = $aJson[$issue];
+        $arrCode = explode(',',$result['number']);
+        return [
+            'code' => 200,
+            'data'=> $aJson,
+            'status' => true,
+            'openCode' => $result['number'],
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+        ];
+    }
+
+    //北京pk10开奖
+    public function pk10($aJson,$issue){
+        $result = [];
+        foreach ($aJson as $kJson => $iJson){
+            if(date('Y-m-d H:i',strtotime($iJson['dateline'])) === date('Y-m-d H:i',strtotime($issue))){
+                $result = $iJson;
+            }
+        }
+        if(empty($result))
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+        $arrCode = explode(',',$result['number']);
+        return [
+            'code' => 200,
+            'data'=> $aJson,
+            'status' => true,
+            'openCode' => substr($result['number'],0,strripos($result['number'],',')),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+            'n8' => (int)$arrCode[7],
+            'n9' => (int)$arrCode[8],
+            'n10' => (int)$arrCode[9],
+        ];
+    }
+
+    //北京快乐8开奖
+    public function bjkl8($aJson,$issue){
+        $result = [];
+        foreach ($aJson as $kJson => $iJson){
+            if(date('Y-m-d H:i',strtotime($iJson['dateline'])) === date('Y-m-d H:i',strtotime($issue))){
+                $result = $iJson;
+            }
+        }
+        if(empty($result))
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+        $arrCode = explode(',',$result['number']);
+        return [
+            'code' => 200,
+            'data'=> $aJson,
+            'status' => true,
+            'openCode' => substr($result['number'],0,strripos($result['number'],',')),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+            'n8' => (int)$arrCode[7],
+            'n9' => (int)$arrCode[8],
+            'n10' => (int)$arrCode[9],
+            'n11' => (int)$arrCode[10],
+            'n12' => (int)$arrCode[11],
+            'n13' => (int)$arrCode[12],
+            'n14' => (int)$arrCode[13],
+            'n15' => (int)$arrCode[14],
+            'n16' => (int)$arrCode[15],
+            'n17' => (int)$arrCode[16],
+            'n18' => (int)$arrCode[17],
+            'n19' => (int)$arrCode[18],
+            'n20' => (int)$arrCode[19],
+        ];
+    }
+
+    //重庆时时彩开奖
+    public function cqssc($aJson,$issue){
+        if(empty($aJson[$issue])){
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+        }
+        $result = $aJson[$issue];
+        $arrCode = explode(',',$result['number']);
+        return [
+            'code' => 200,
+            'data'=> $aJson,
+            'status' => true,
+            'openCode' => $result['number'],
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+        ];
+    }
+
+    //六合彩开奖
+    public function lhc($json,$issue)
+    {
+        $num_str = '';
+        foreach ($json as $k => $v){
+            $num_str .= $v['number'];
+        }
+        $arrCode = explode(',',$num_str);
+        return [
+            'code' => 200,
+            'data'=> $json,
+            'status' => true,
+            'openCode' => $num_str,
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+        ];
     }
 }

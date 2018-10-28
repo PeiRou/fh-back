@@ -63,7 +63,7 @@
     </div>
     <div class="field" style="margin-top: 15px;">
         <label>自动获取</label>
-        <span onclick="getBJPK10Data('{{ date('Ymd',strtotime($data->opentime)) }}','{{ $data->issue }}')" class="getBtn">点击获取开奖号码</span>
+        <span onclick="getBJPK10Data('{{ date('Ymd',strtotime($data->opentime)) }}','{{ $data->opentime }}')" class="getBtn">点击获取开奖号码</span>
     </div>
     <div class="field" style="width: 120px;">
         <label>开奖理由</label>
@@ -123,7 +123,7 @@
         $('.modal-mask').fadeIn();
         $('.getBtn').html('获取中...');
         $.ajax({
-            url:'/back/openData/bjpk10/'+date+'/'+issue.slice(2),
+            url:'/back/openData/{{ $type }}/'+date+'/'+issue,
             type:'get',
             dataType:'json',
             success:function (result) {

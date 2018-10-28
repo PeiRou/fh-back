@@ -100,4 +100,35 @@
             }
         });
     });
+
+    function getk3Data(date,issue) {
+        $('.modal-mask').fadeIn();
+        $('.getBtn').html('获取中...');
+        $.ajax({
+            url:'/back/openData/{{ $type }}/'+date+'/'+issue,
+            type:'get',
+            dataType:'json',
+            success:function (result) {
+                if(result.status == true){
+                    $('#n1').val(result.n1);
+                    $('#n2').val(result.n2);
+                    $('#n3').val(result.n3);
+                    $('#n4').val(result.n4);
+                    $('#n5').val(result.n5);
+                    $('#n6').val(result.n6);
+                    $('#n7').val(result.n7);
+                    $('#n8').val(result.n8);
+                    $('#n9').val(result.n9);
+                    $('#n10').val(result.n10);
+                    $('.getBtn').html('获取成功（点击可重新获取）');
+                    $('.modal-mask').fadeOut();
+                }
+                if(result.status == false){
+                    $('.getBtn').html('点击获取开奖号码');
+                    Calert(result.msg,'red');
+                    $('.modal-mask').fadeOut();
+                }
+            }
+        });
+    }
 </script>
