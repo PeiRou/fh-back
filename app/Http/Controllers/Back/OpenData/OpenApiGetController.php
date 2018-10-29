@@ -46,6 +46,15 @@ class OpenApiGetController extends Controller
 
     ];
 
+    //强转整形
+    public function strongConversionInt($aParam){
+        $aArray = [];
+        foreach ($aParam as $value){
+            $aArray[] = (int)$value;
+        }
+        return implode(',',$aArray);
+    }
+
     //江苏快3开奖
     public function jsk3($aJson,$issue){
         if(empty($aJson[$issue])){
@@ -61,7 +70,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -83,7 +92,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -105,7 +114,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -127,7 +136,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -149,7 +158,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -171,7 +180,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -195,7 +204,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -221,7 +230,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => substr($result['number'],0,strripos($result['number'],',')),
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -293,7 +302,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
