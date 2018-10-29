@@ -187,7 +187,7 @@ class SaveGameOddsController extends Controller
             if ($run == 1) {
                 $write = Storage::disk('static')->put('gamedatas.js', '');
                 $write1 = Storage::disk('static')->put('gamedatas.json', '');
-                $game = Games::select('game_id as id', 'game_name as name', 'mode', 'code', 'order as sort', 'cate', 'maxReward', 'status as open', 'iconUrl', 'pageUrl', 'holiday_start as restStartDate', 'holiday_end as restEndDate', 'amount', 'isBan')->orderBy('order', 'ASC')->get();
+                $game = Games::select('game_id as id', 'game_name as name')->orderBy('order', 'ASC')->get();
                 $playCate = PlayCates::all();
                 $plays = Play::select('odds_tag','rebate_tag','name', 'id', 'gameId', 'playCateId', 'alias', 'code', 'odds', 'rebate', 'minMoney', 'maxMoney', 'maxTurnMoney')->get();
                 $views = $this->updateBatch1();
@@ -234,18 +234,14 @@ class SaveGameOddsController extends Controller
                 }
                 $gameMap_txt = "var gameMap = " . $game->keyBy('id') . ";";
                 $next_row = "\n";
-                $game_txt = "var games = [" . $game->pluck('id')->implode(',') . "];";
                 $playCate_txt = "var playCates = " . $playCate->keyBy('id') . ";";
                 $plays_txt = "var plays = " . collect($newCollect)->keyBy('id') . ";";
-                $animalsYear = "var animalsYear = " . json_encode(Config::get('website.animalsYear')) . ";";
-                $write = Storage::disk('static')->put('gamedatas.js', $game_txt . $next_row . $gameMap_txt . $next_row . $playCate_txt . $next_row . $plays_txt . $next_row . $animalsYear);
+                $write = Storage::disk('static')->put('gamedatas.js', $gameMap_txt . $next_row . $playCate_txt . $next_row . $plays_txt );
 
-                $game_txt = '{"games" : [' . $game->pluck('id')->implode(',') . "],";
                 $gameMap_txt = '"gameMap" : ' . $game->keyBy('id') . ",";
                 $playCate_txt = ' "playCates" : ' . $playCate->keyBy('id') . ",";
-                $plays_txt = ' "plays" : ' . collect($newCollect)->keyBy('id') . ",";
-                $animalsYear = ' "animalsYear" : ' . json_encode(Config::get('website.animalsYear')) . "}";
-                $write1 = Storage::disk('static')->put('gamedatas.json', $game_txt . $next_row . $gameMap_txt . $next_row . $playCate_txt . $next_row . $plays_txt . $next_row . $animalsYear);
+                $plays_txt = ' "plays" : ' . collect($newCollect)->keyBy('id') . "}";
+                $write1 = Storage::disk('static')->put('gamedatas.json', $gameMap_txt . $next_row . $playCate_txt . $next_row . $plays_txt );
                 //生成ios的json格式
                 $plays_txt = collect($newCollect)->keyBy('id');
                 $writeIos = Storage::disk('static')->put('iosOdds.json', $plays_txt);

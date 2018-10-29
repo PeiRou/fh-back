@@ -961,7 +961,7 @@ class OpenHistoryController extends Controller
 
     //冻结
     public function freeze($issue,$type){
-        $gameInfo = Games::where('code',$type)->first();
+        $gameInfo = Games::where('code',$type)->first();;
         return response()->json($this->freezeOperating($issue,$type,$gameInfo));
     }
 
@@ -976,29 +976,29 @@ class OpenHistoryController extends Controller
         $aUserId = [];
         foreach ($aBet as $kBet => $iBet){
             $aCapital[] = [
-                'to_user' => $iBet['id'],
+                'to_user' => $iBet->id,
                 'user_type' => 'user',
                 'order_id' => null,
                 'type' => 't25',
                 'rechargesType' => 0,
-                'game_id' => $iBet['game_id'],
-                'issue' => $iBet['issue'],
-                'money' => $iBet['amount']-$iBet['bet_bunko'],
-                'balance' => $iBet['money'],
+                'game_id' => $iBet->game_id,
+                'issue' => $iBet->issue,
+                'money' => $iBet->amount -$iBet->bet_bunko,
+                'balance' => $iBet->money,
                 'operation_id' => $adminId,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ];
             $aUserFreezeMoney[] = [
-                'user_id' => $iBet['id'],
-                'game_id' => $iBet['game_id'],
-                'issue' => $iBet['issue'],
-                'money' => -$iBet['bet_bunko'],
+                'user_id' => $iBet->id,
+                'game_id' => $iBet->game_id,
+                'issue' => $iBet->issue,
+                'money' => -$iBet->bet_bunko,
                 'status' => 0,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ];
-            $aUserId[] = $iBet['id'];
+            $aUserId[] = $iBet->id;
         }
 
         DB::beginTransaction();
@@ -1006,6 +1006,8 @@ class OpenHistoryController extends Controller
         try {
             Users::editBatchUserMoneyData2($aBet);
             Users::whereIn('id',$aUserId)->update(['status' => '4']);
+            Drawing::whereIn('user_id',$aUserId)->update(['status' => '3','msg' => '提款申请未通过,如有疑问，请咨询在线客服']);
+            Bets::where('issue',$issue)->whereIn('user_id',$aUserId)->update(['status' => '3']);
             Capital::insert($aCapital);
             UserFreezeMoney::insert($aUserFreezeMoney);
             if(!empty(Games::$aCodeGameName[$type])) {
