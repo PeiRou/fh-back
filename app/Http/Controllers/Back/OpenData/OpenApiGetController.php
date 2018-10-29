@@ -40,11 +40,20 @@ class OpenApiGetController extends Controller
         'gd11x5' => 'http://api.caipiaokong.cn/lottery/?name=gdsyxw&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'gxk3' => 'http://api.caipiaokong.cn/lottery/?name=gxks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'gzk3' => 'http://api.caipiaokong.cn/lottery/?name=gzks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
-        'hebk3' => 'http://api.caipiaokong.cn/lottery/?name=hbks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'hebeik3' => 'http://api.caipiaokong.cn/lottery/?name=hbks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'hbk3' => 'http://api.caipiaokong.cn/lottery/?name=hubks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'jsk3' => 'http://api.caipiaokong.cn/lottery/?name=jsks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
 
     ];
+
+    //强转整形
+    public function strongConversionInt($aParam){
+        $aArray = [];
+        foreach ($aParam as $value){
+            $aArray[] = (int)$value;
+        }
+        return implode(',',$aArray);
+    }
 
     //江苏快3开奖
     public function jsk3($aJson,$issue){
@@ -61,7 +70,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -83,7 +92,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -91,7 +100,7 @@ class OpenApiGetController extends Controller
     }
 
     //河北快3开奖
-    public function hebk3($aJson,$issue){
+    public function hebeik3($aJson,$issue){
         if(empty($aJson[$issue])){
             return [
                 'code'=> '201',
@@ -105,7 +114,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -127,7 +136,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -149,7 +158,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -171,7 +180,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -195,7 +204,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -221,7 +230,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => substr($result['number'],0,strripos($result['number'],',')),
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
@@ -293,7 +302,7 @@ class OpenApiGetController extends Controller
             'code' => 200,
             'data'=> $aJson,
             'status' => true,
-            'openCode' => $result['number'],
+            'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
