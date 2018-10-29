@@ -40,7 +40,7 @@ class OpenApiGetController extends Controller
         'gd11x5' => 'http://api.caipiaokong.cn/lottery/?name=gdsyxw&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'gxk3' => 'http://api.caipiaokong.cn/lottery/?name=gxks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'gzk3' => 'http://api.caipiaokong.cn/lottery/?name=gzks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
-        'hebk3' => 'http://api.caipiaokong.cn/lottery/?name=hbks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'hebeik3' => 'http://api.caipiaokong.cn/lottery/?name=hbks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'hbk3' => 'http://api.caipiaokong.cn/lottery/?name=hubks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'jsk3' => 'http://api.caipiaokong.cn/lottery/?name=jsks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
 
@@ -91,7 +91,7 @@ class OpenApiGetController extends Controller
     }
 
     //河北快3开奖
-    public function hebk3($aJson,$issue){
+    public function hebeik3($aJson,$issue){
         if(empty($aJson[$issue])){
             return [
                 'code'=> '201',

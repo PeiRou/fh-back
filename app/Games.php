@@ -41,7 +41,7 @@ class Games extends Model
         'gxk3' => 'gxk3',       //广西快3
         'hbk3' => 'hbk3',       //湖北快3
         'msjsk3' => 'msjsk3',   //秒速快3
-        'hebk3' => 'hebeik3',   //河北快3
+        'hebeik3' => 'hebeik3',   //河北快3
         'gzk3' => 'gzk3',       //贵州快3
         'gsk3' => 'gsk3',       //甘肃快3
     ];
