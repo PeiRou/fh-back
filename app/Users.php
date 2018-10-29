@@ -97,12 +97,12 @@ WHERE `users`.`testFlag` = 0 ";
     public static function editBatchUserMoneyData2($aData){
         $aArray = [];
         foreach ($aData as $kData => $iData){
-            if(isset($aArray[$iData['id']]) && array_key_exists($iData['id'],$aArray)){
-                $aArray[$iData['id']]['money'] += -$iData['bet_bunko'];
+            if(isset($aArray[$iData->id]) && array_key_exists($iData->id,$aArray)){
+                $aArray[$iData->id]['money'] += -$iData->bet_bunko;
             }else{
-                $aArray[$iData['id']] = [
-                    'id' => $iData['id'],
-                    'money' => $iData['amount']-$iData['bet_bunko'],
+                $aArray[$iData->id] = [
+                    'id' => $iData->id,
+                    'money' => $iData->amount - $iData->bet_bunko,
                 ];
             }
         }

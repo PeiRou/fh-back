@@ -53,6 +53,8 @@ $(function () {
             {data: function (data) {
                     if(data.is_open==1)
                         txt = "已开奖";
+                    else if(data.is_open==5)
+                        txt = "已冻结";
                     else
                         txt = "未开奖";
                     return '<span>'+txt+'</span>';
@@ -69,7 +71,8 @@ $(function () {
                             "<li onclick='cancel("+data.issue+")'>撤单</li>" +
                             "<li onclick='openbjpk10("+data.id+")'>手动开奖</li>" ;
                     }else if(data.is_open == "5"){
-                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
+                        txt = "<li onclick='cancel("+data.issue+")'>撤单</li>" +
+                            "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
                     }
                     return "<ul class='control-menu'>" + txt + "</ul>";
                 }}
