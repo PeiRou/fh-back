@@ -57,8 +57,8 @@ class KYActionController extends Controller
             case 6:
                 $param = http_build_query(array(
                     's' => $s,
-                    'startTime' => $kyUtils->get_param('startTime'),
-                    'endTime' => $kyUtils->get_param('endTime')
+                    'startTime' => $this->getMillisecond(),
+                    'endTime' => $this->getMillisecond() + (1000 * 30 * 60)
                 ));
                 break;
 
@@ -83,5 +83,11 @@ class KYActionController extends Controller
             }
         }
         return false;
+    }
+    public function getMillisecond()
+    {
+        list($t1, $t2) = explode(' ', microtime());
+
+        return  sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);
     }
 }
