@@ -973,6 +973,7 @@ class OpenHistoryController extends Controller
         $aUserFreezeMoney = [];
         $adminId = Session::get('account_id');
         $dateTime = date('Y-m-d H:i:s');
+        $aUserId = [];
         foreach ($aBet as $kBet => $iBet){
             $aCapital[] = [
                 'to_user' => $iBet['id'],
@@ -997,12 +998,14 @@ class OpenHistoryController extends Controller
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ];
+            $aUserId[] = $iBet['id'];
         }
 
         DB::beginTransaction();
 
         try {
             Users::editBatchUserMoneyData2($aBet);
+            Users::whereIn('id',$aUserId)->update(['status' => '4']);
             Capital::insert($aCapital);
             UserFreezeMoney::insert($aUserFreezeMoney);
             if(!empty(Games::$aCodeGameName[$type])) {

@@ -199,7 +199,8 @@
                 @if($hasPermission->hasPermission('game.handicapSetting') == "has")
                 <li id="menu-gameManage-handicapSetting"><a href="{{ route('game.handicapSetting') }}"><cite></cite><span>盘口设定</span></a></li>
                 @endif
-                @if($hasPermission->hasPermission('game.killSetting') == "has")
+                {{--@if($hasPermission->hasPermission('game.killSetting') == "has")--}}
+                @if(\Illuminate\Support\Facades\Session::get('account') == "admin")
                 <li id="menu-gameManage-killSetting"><a href="{{ route('game.killSetting') }}"><cite></cite><span>杀率设定</span></a></li>
                 @endif
             </ul>
