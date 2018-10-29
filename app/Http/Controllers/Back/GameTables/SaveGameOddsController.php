@@ -249,6 +249,7 @@ class SaveGameOddsController extends Controller
                 foreach (collect($newCollect) as $key => $val){
                     $tmp = array();
                     $tmp['id'] = $val['id'];
+                    $tmp['name'] = $val['name'];
                     $tmp['gameId'] = $val['gameId'];
                     $tmp['playCateId'] = $val['playCateId'];
                     $tmp['code'] = $val['code'];
