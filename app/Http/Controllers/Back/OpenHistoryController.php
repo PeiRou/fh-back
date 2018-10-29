@@ -367,7 +367,7 @@ class OpenHistoryController extends Controller
             case 'gxk3':
                 $table = 'game_gxk3';
                 break;
-            case 'hebk3':
+            case 'hebeik3':
                 $table = 'game_hebeik3';
                 break;
             case 'gzk3':
