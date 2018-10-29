@@ -467,6 +467,10 @@
 <script src="/back/js/core.js"></script>
 @yield('page-js')
 <script>
+    $(function () {
+       var marginTop = $('#menu-openManage li.active').index() * 30;
+       $('#menu-openManage ul').scrollTop(marginTop);
+    })
 </script>
 </body>
 </html>
