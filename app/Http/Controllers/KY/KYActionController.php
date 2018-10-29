@@ -57,8 +57,8 @@ class KYActionController extends Controller
             case 6:
                 $param = http_build_query(array(
                     's' => $s,
-                    'startTime' => $this->getMillisecond(),
-                    'endTime' => $this->getMillisecond() + (1000 * 30 * 60)
+                    'startTime' => $this->getMillisecond() - (1000 * 10 * 60),
+                    'endTime' => $this->getMillisecond()
                 ));
                 break;
 
