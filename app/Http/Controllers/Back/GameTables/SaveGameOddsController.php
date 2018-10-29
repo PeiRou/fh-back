@@ -250,6 +250,7 @@ class SaveGameOddsController extends Controller
                     $tmp = array();
                     $tmp['id'] = $val['id'];
                     $tmp['name'] = $val['name'];
+                    $tmp['alias'] = $val['alias'];
                     $tmp['gameId'] = $val['gameId'];
                     $tmp['playCateId'] = $val['playCateId'];
                     $tmp['code'] = $val['code'];
