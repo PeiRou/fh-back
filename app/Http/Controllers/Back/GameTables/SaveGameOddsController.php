@@ -234,33 +234,8 @@ class SaveGameOddsController extends Controller
                 }
                 $gameMap_txt = "var gameMap = " . $game->keyBy('id') . ";";
                 $next_row = "\n";
-
-                $playCates = [];
-                foreach ($playCate as $key => $val){
-                    $tmp = array();
-                    $tmp['id'] = $val['id'];
-                    $tmp['name'] = $val['name'];
-                    $tmp['gameId'] = $val['gameId'];
-                    $playCates[$key] = $tmp;
-                }
-                $playCate_txt = "var playCates = " . json_encode($playCates) . ";";
-
-                $plays = [];
-                foreach (collect($newCollect) as $key => $val){
-                    $tmp = array();
-                    $tmp['id'] = $val['id'];
-                    $tmp['name'] = $val['name'];
-                    $tmp['alias'] = $val['alias'];
-                    $tmp['gameId'] = $val['gameId'];
-                    $tmp['playCateId'] = $val['playCateId'];
-                    $tmp['code'] = $val['code'];
-                    $tmp['odds'] = $val['odds'];
-                    $tmp['rebate'] = $val['rebate'];
-                    $tmp['minMoney'] = $val['minMoney'];
-                    $tmp['maxMoney'] = $val['maxMoney'];
-                    $plays[$key] = $tmp;
-                }
-                $plays_txt = "var plays = " . json_encode($plays) . ";";
+                $playCate_txt = "var playCates = " . $playCate->keyBy('id') . ";";
+                $plays_txt = "var plays = " . collect($newCollect)->keyBy('id') . ";";
                 $write = Storage::disk('static')->put('gamedatas.js', $gameMap_txt . $next_row . $playCate_txt . $next_row . $plays_txt );
 
                 $gameMap_txt = '"gameMap" : ' . $game->keyBy('id') . ",";
