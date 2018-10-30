@@ -53,25 +53,29 @@ class new_gzk3 extends Command
             Redis::set('gzk3:nextIssueEndTime',strtotime($nextIssueEndTime));
         }
         $url = Config::get('website.guanServerUrl').'gzk3';
-        $html = json_decode(file_get_contents($url),true);
-        $redis_issue = Redis::get('gzk3:issue');
-        if($redis_issue !== $html[0]['issue']) {
-            try {
-                $up = DB::table('game_gzk3')->where('issue', $html[0]['issue'])
-                    ->update([
-                        'is_open' => 1,
-                        'year' => date('Y'),
-                        'month' => date('m'),
-                        'day' => date('d'),
-                        'opennum' => $html[0]['nums']
-                    ]);
-                if ($up == 1) {
-                    $key = 'gzk3:issue';
-                    Redis::set($key, $html[0]['issue']);
+        try {
+            $html = json_decode(file_get_contents($url),true);
+            $redis_issue = Redis::get('gzk3:issue');
+            if($redis_issue !== $html[0]['issue']) {
+                try {
+                    $up = DB::table('game_gzk3')->where('issue', $html[0]['issue'])
+                        ->update([
+                            'is_open' => 1,
+                            'year' => date('Y'),
+                            'month' => date('m'),
+                            'day' => date('d'),
+                            'opennum' => $html[0]['nums']
+                        ]);
+                    if ($up == 1) {
+                        $key = 'gzk3:issue';
+                        Redis::set($key, $html[0]['issue']);
+                    }
+                } catch (\Exception $exception) {
+                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
-            } catch (\Exception $exception) {
-                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             }
+        } catch (\Exception $exception) {
+            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
     }
 }
