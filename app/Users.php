@@ -110,15 +110,15 @@ WHERE `users`.`testFlag` = 0 ";
     }
 
     //修改余额2
-    public static function editBatchUserMoneyData3($aData){
+    public static function editBatchUserMoneyData3($aData,$symbol = '-'){
         $aArray = [];
         foreach ($aData as $kData => $iData){
             if(isset($aArray[$iData->id]) && array_key_exists($iData->id,$aArray)){
-                $aArray[$iData->id]['money'] += -$iData->bet_money;
+                $aArray[$iData->id]['money'] += $symbol.$iData->bet_money;
             }else{
                 $aArray[$iData->id] = [
                     'id' => $iData->id,
-                    'money' => - $iData->bet_money,
+                    'money' => $symbol.$iData->bet_money,
                 ];
             }
         }
