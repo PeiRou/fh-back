@@ -32,6 +32,8 @@ class KYActionController extends Controller
             return false;
         }
         $table = DB::table('ky_bet');
+        //删除两天以前的
+        DB::table('ky_bet')->where('GameStartTime', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 2))->delete();
         //根据GameID去掉重复的
         $distinctArr = $table->whereIn('GameID',$res['GameID'])->pluck('GameID')->toArray();
         $res['GameID'] = array_diff($res['GameID'],$distinctArr);
@@ -42,7 +44,7 @@ class KYActionController extends Controller
                 'Accounts' => $res['Accounts'][$k],
                 'AllBet' => $res['AllBet'][$k],
                 'Profit' => $res['Profit'][$k],
-                'Revenue' => $res['Revenue'][$k],
+//                'Revenue' => $res['Revenue'][$k],
                 'GameStartTime' => $res['GameStartTime'][$k],
                 'GameEndTime' => $res['GameEndTime'][$k],
             ];
