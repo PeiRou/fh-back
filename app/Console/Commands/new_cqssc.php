@@ -90,34 +90,38 @@ class new_cqssc extends Command
                 return $value;
             }
         });
-        $url = Config::get('website.guanServerUrl').'cqssc';
-        $html = json_decode(file_get_contents($url),true);
-        $redis_issue = Redis::get('cqssc:issue');
-        //清除昨天长龙，在录第一期的时候清掉
-        if($filtered['issue']=='001'){
-            DB::table('clong_kaijian1')->where('lotteryid',1)->delete();
-            DB::table('clong_kaijian2')->where('lotteryid',1)->delete();
-        }
-        if($redis_issue !== $html[0]['issue']){
-            try{
-                $up = DB::table('game_cqssc')->where('issue',$html[0]['issue'])
-                    ->update([
-                        'is_open' => 1,
-                        'year'=> date('Y'),
-                        'month'=> date('m'),
-                        'day'=>  date('d'),
-                        'opennum' => $html[0]['nums']
-                    ]);
-                if($up == 1){
-                    $key = 'cqssc:issue';
-                    Redis::set($key,$html[0]['issue']);
-                    $this->clong->setKaijian('cqssc',1,$html[0]['nums']);
-                    $this->clong->setKaijian('cqssc',2,$html[0]['nums']);
-                }
-            } catch (\Exception $exception){
-                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+        try{
+            $url = Config::get('website.guanServerUrl').'cqssc';
+            $html = json_decode(file_get_contents($url),true);
+            $redis_issue = Redis::get('cqssc:issue');
+            //清除昨天长龙，在录第一期的时候清掉
+            if($filtered['issue']=='001'){
+                DB::table('clong_kaijian1')->where('lotteryid',1)->delete();
+                DB::table('clong_kaijian2')->where('lotteryid',1)->delete();
             }
-            //\Log::info('读取重庆时时彩Mysql数据');
+            if($redis_issue !== $html[0]['issue']){
+                try{
+                    $up = DB::table('game_cqssc')->where('issue',$html[0]['issue'])
+                        ->update([
+                            'is_open' => 1,
+                            'year'=> date('Y'),
+                            'month'=> date('m'),
+                            'day'=>  date('d'),
+                            'opennum' => $html[0]['nums']
+                        ]);
+                    if($up == 1){
+                        $key = 'cqssc:issue';
+                        Redis::set($key,$html[0]['issue']);
+                        $this->clong->setKaijian('cqssc',1,$html[0]['nums']);
+                        $this->clong->setKaijian('cqssc',2,$html[0]['nums']);
+                    }
+                } catch (\Exception $exception){
+                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                }
+                //\Log::info('读取重庆时时彩Mysql数据');
+            }
+        } catch (\Exception $exception){
+            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
     }
 }
