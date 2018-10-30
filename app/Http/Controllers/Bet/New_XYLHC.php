@@ -104,7 +104,6 @@ class New_XYLHC
                 DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
             }
             $win = $this->exc_play($openCode,$gameId);
-//            $bunko = $this->bunko($win,$gameId,$issue,true);
             $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,true);
             if($bunko == 1){
                 $tmp = DB::connection('mysql::write')->select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
@@ -1883,15 +1882,18 @@ class New_XYLHC
             $sql_lose = "UPDATE ".$table." SET bunko = CASE "; //未中奖的SQL语句
 
             $ids = implode(',', $id);
+            $sql_bets = '';
+            $sql_bets_lose = '';
             foreach ($getUserBets as $item){
                 $bunko = ($item->bet_money * $item->play_odds) + ($item->bet_money * $item->play_rebate);
                 $bunko_lose = (0-$item->bet_money) + ($item->bet_money * $item->play_rebate);
-                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
             }
-            $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $run = DB::statement($sql);
+            $sql .= $sql_bets . "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql_lose .= $sql_bets_lose . "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            if(!empty($sql_bets))
+                $run = DB::statement($sql);
 
             if($run == 1){
                 //自选不中------开始
@@ -1966,35 +1968,36 @@ class New_XYLHC
                 }
 
                 //正肖-----结束
-
-                $run2 = DB::connection('mysql::write')->statement($sql_lose);
-                if($run2 == 1){
-                    $bunko_index++;
-                    if($sql_zxb !== 0){
-                        $run3 = DB::connection('mysql::write')->statement($sql_zxb);
-                        if($run3 == 1){
+                if(!empty($sql_bets_lose)){
+                    $run2 = DB::connection('mysql::write')->statement($sql_lose);
+                    if($run2 == 1){
+                        $bunko_index++;
+                        if($sql_zxb !== 0){
+                            $run3 = DB::connection('mysql::write')->statement($sql_zxb);
+                            if($run3 == 1){
+                                $bunko_index++;
+                            }
+                        } else {
                             $bunko_index++;
                         }
-                    } else {
-                        $bunko_index++;
-                    }
 
-                    if($sql_hexiao !== 0){
-                        $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
-                        if($run4 == 1){
+                        if($sql_hexiao !== 0){
+                            $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
+                            if($run4 == 1){
+                                $bunko_index++;
+                            }
+                        } else {
                             $bunko_index++;
                         }
-                    } else {
-                        $bunko_index++;
-                    }
 
-                    if($zx_sql !== 0){
-                        $run5 = DB::connection('mysql::write')->statement($zx_sql);
-                        if($run5 == 1){
+                        if($zx_sql !== 0){
+                            $run5 = DB::connection('mysql::write')->statement($zx_sql);
+                            if($run5 == 1){
+                                $bunko_index++;
+                            }
+                        } else {
                             $bunko_index++;
                         }
-                    } else {
-                        $bunko_index++;
                     }
                 }
             }

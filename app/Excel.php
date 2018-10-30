@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\BackPusherEvent;
 use Illuminate\Support\Facades\DB;
 
 class Excel
@@ -60,6 +61,12 @@ class Excel
                 $tmpCap['updated_at'] = date('Y-m-d H:i:s');
                 $capData[$ii] = $tmpCap;
                 $ii ++;
+                $content = ' 第'.$i->issue.'期 '.$i->playcate_name.' '.$i->play_name;
+                $tmpContent = array();
+                $tmpContent['game'] = $gameName;
+                $tmpContent['content'] = $content;
+                $tmpContent['amount'] = $i->bunko;
+                event(new BackPusherEvent('info','中奖通知',json_encode($tmpContent),array('fnotice-'.$i->user_id)));
             }
             krsort($capData);
             $capIns = DB::table('capital')->insert($capData);
