@@ -441,5 +441,28 @@ class openHistoryController extends Controller
             ->make(true);
     }
 
-
+    //棋牌下注查询
+    public function card_betInfo(Request $request){
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $sql = DB::table('ky_bet')->where(function ($aSql) use($request){
+            if(($startTime = $request->get('startTime')) && ($endTime = $request->get('endTime'))){
+                $aSql->whereBetween('GameStartTime',[$startTime.' 00:00:00',$endTime.' 23:59:59']);
+            }
+            if($Accounts = $request->get('Accounts')){
+                $aSql->whereIn('Accounts',[$Accounts,env('KY_AGENT').'_'.$Accounts]);
+            }
+        });
+        $count = $sql->count();
+        $res = $sql->orderBy('id','DESC')->skip($start)->take($length)->get();
+        return DataTables::of($res)
+            ->editColumn('control',function ($res){
+                    return "<ul class='control-menu'>
+                            <li onclick='openLhc(\"$res->id\")'>手动开奖</li>
+                            </ul>";
+            })
+            ->setTotalRecords($count)
+            ->skipPaging()
+            ->make(true);
+    }
 }
