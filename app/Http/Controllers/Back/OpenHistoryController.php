@@ -1030,8 +1030,13 @@ class OpenHistoryController extends Controller
     }
 
     //重新开奖
-    public function renewLottery($issue,$type){
-        $gameInfo = Games::where('code',$type)->first();;
+    public function renewLottery(Request $request,$issue,$type){
+        $aParam = $request->all();
+        $number = $this->getOpenLotteryNumber($aParam,$type);
+        if(!$number['status']){
+            return $number;
+        }
+        $gameInfo = Games::where('code',$type)->first();
         if(empty($tableSuffix = Games::$aCodeGameName[$type])){
             return ['status' => false,'msg' => '游戏分类标识错误'];
         }
@@ -1041,15 +1046,15 @@ class OpenHistoryController extends Controller
                 return $result;
             }
         }
-        return $this->renewLotteryOperating($issue,$type,$gameInfo);
+        return $this->renewLotteryOperating($issue,$type,$gameInfo,$number['number']);
     }
 
     //重新开奖操作
-    public function renewLotteryOperating($issue,$type,$gameInfo){
+    public function renewLotteryOperating($issue,$type,$gameInfo,$number){
         $aBet = Bets::getBetAndUserByIssueLose($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 7]);
         if(empty($aBet)) {
-            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 0]);
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
             return ['status' => true, 'msg' => '操作成功2'];
         }
         $aCapital = [];
@@ -1078,13 +1083,85 @@ class OpenHistoryController extends Controller
             Bets::updateBetBunkoClear($issue, $gameInfo->game_id);
             Users::editBatchUserMoneyData1($aBet);
             Capital::insert($aCapital);
-            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 0]);
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
             DB::commit();
             return ['status' => true,'msg'=>'操作成功'];
         }catch(\Exception $e){
             DB::rollback();
             return ['status' => false,'msg' => '撤单失败'];
         }
+    }
+
+    //通过标识获取开奖号
+    public function getOpenLotteryNumber($aParam,$type){
+        $aCategory = Games::$aCodeCategory;
+        $categry = '';
+        foreach ($aCategory as $kCategory => $iCategory){
+            if(in_array($type,$iCategory))
+                $categry = $kCategory;
+        }
+        if(empty($categry)) return ['status' => false,'msg' => '游戏分类标识不匹配'];
+        $actionName = 'get'.$categry.'Number';
+        return [
+            'status' => true,
+            'number' => $this->$actionName($aParam),
+        ];
+    }
+
+    public function getk3Number($aParam){
+        return implode(',',[
+            (int)$aParam['n1'],
+            (int)$aParam['n2'],
+            (int)$aParam['n3'],
+        ]);
+    }
+
+    public function getsscNumber($aParam){
+        return implode(',',[
+            (int)$aParam['n1'],
+            (int)$aParam['n2'],
+            (int)$aParam['n3'],
+            (int)$aParam['n4'],
+            (int)$aParam['n5'],
+        ]);
+    }
+
+    public function getscNumber($aParam){
+        return implode(',',[
+            (int)$aParam['n1'],
+            (int)$aParam['n2'],
+            (int)$aParam['n3'],
+            (int)$aParam['n4'],
+            (int)$aParam['n5'],
+            (int)$aParam['n6'],
+            (int)$aParam['n7'],
+            (int)$aParam['n8'],
+            (int)$aParam['n9'],
+            (int)$aParam['n10'],
+        ]);
+    }
+
+    public function getxyncNumber($aParam){
+        return implode(',',[
+            (int)$aParam['n1'],
+            (int)$aParam['n2'],
+            (int)$aParam['n3'],
+            (int)$aParam['n4'],
+            (int)$aParam['n5'],
+            (int)$aParam['n6'],
+            (int)$aParam['n7'],
+            (int)$aParam['n8'],
+        ]);
+    }
+
+    public function getgd11x5Number($aParam){
+        return implode(',',[
+            (int)$aParam['n1'],
+            (int)$aParam['n2'],
+            (int)$aParam['n3'],
+            (int)$aParam['n4'],
+            (int)$aParam['n5'],
+        ]);
     }
 
 }

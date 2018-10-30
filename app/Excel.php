@@ -66,7 +66,7 @@ class Excel
                 $tmpContent['game'] = $gameName;
                 $tmpContent['content'] = $content;
                 $tmpContent['amount'] = $i->bunko;
-//                event(new BackPusherEvent('info','中奖通知',json_encode($tmpContent),array('fnotice-'.$i->user_id)));
+                event(new BackPusherEvent('info','中奖通知',json_encode($tmpContent),array('fnotice-'.$i->user_id)));
             }
             krsort($capData);
             $capIns = DB::table('capital')->insert($capData);

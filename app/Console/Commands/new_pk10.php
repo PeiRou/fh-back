@@ -79,32 +79,36 @@ class new_pk10 extends Command
             Redis::set('pk10:nextIssueEndTime',strtotime($nextIssueEndTime));
         }
         $url = Config::get('website.guanServerUrl').'bjpk10';
-        $html = json_decode(file_get_contents($url),true);
-        $redis_issue = Redis::get('pk10:issue');
-        //清除昨天长龙，在录第一期的时候清掉
-        if($filtered['time']=='09:07:30'){
-            DB::table('clong_kaijian1')->where('lotteryid',50)->delete();
-            DB::table('clong_kaijian2')->where('lotteryid',50)->delete();
-        }
-        if($redis_issue !== $html[0]['issue']) {
-            try {
-                $up = DB::table('game_bjpk10')->where('issue', $html[0]['issue'])
-                    ->update([
-                        'is_open' => 1,
-                        'year' => date('Y'),
-                        'month' => date('m'),
-                        'day' => date('d'),
-                        'opennum' => $html[0]['nums']
-                    ]);
-                if ($up == 1) {
-                    $key = 'pk10:issue';
-                    Redis::set($key, $html[0]['issue']);
-                    $this->clong->setKaijian('pk10',1,$html[0]['nums']);
-                    $this->clong->setKaijian('pk10',2,$html[0]['nums']);
-                }
-            } catch (\Exception $exception) {
-                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+        try {
+            $html = json_decode(file_get_contents($url), true);
+            $redis_issue = Redis::get('pk10:issue');
+            //清除昨天长龙，在录第一期的时候清掉
+            if ($filtered['time'] == '09:07:30') {
+                DB::table('clong_kaijian1')->where('lotteryid', 50)->delete();
+                DB::table('clong_kaijian2')->where('lotteryid', 50)->delete();
             }
+            if ($redis_issue !== $html[0]['issue']) {
+                try {
+                    $up = DB::table('game_bjpk10')->where('issue', $html[0]['issue'])
+                        ->update([
+                            'is_open' => 1,
+                            'year' => date('Y'),
+                            'month' => date('m'),
+                            'day' => date('d'),
+                            'opennum' => $html[0]['nums']
+                        ]);
+                    if ($up == 1) {
+                        $key = 'pk10:issue';
+                        Redis::set($key, $html[0]['issue']);
+                        $this->clong->setKaijian('pk10', 1, $html[0]['nums']);
+                        $this->clong->setKaijian('pk10', 2, $html[0]['nums']);
+                    }
+                } catch (\Exception $exception) {
+                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                }
+            }
+        } catch (\Exception $exception) {
+            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
     }
 }

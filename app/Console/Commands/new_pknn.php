@@ -76,26 +76,30 @@ class new_pknn extends Command
             Redis::set('pknn:nextIssueEndTime',strtotime($nextIssueEndTime));
         }
         $url = Config::get('website.guanServerUrl').'pknn';
-        $html = json_decode(file_get_contents($url),true);
-        $redis_issue = Redis::get('pknn:issue');
-        if($redis_issue !== $html[0]['issue']){
-            try{
-                $up = DB::table('game_pknn')->where('issue',$html[0]['issue'])
-                    ->update([
-                        'is_open' => 1,
-                        'year'=> date('Y'),
-                        'month'=> date('m'),
-                        'day'=>  date('d'),
-                        'opennum' => $html[0]['nums'],
-                        'niuniu' => $html[0]['pknn_nums']
-                    ]);
-                if($up == 1){
-                    $key = 'pknn:issue';
-                    Redis::set($key,$html[0]['issue']);
+        try{
+            $html = json_decode(file_get_contents($url),true);
+            $redis_issue = Redis::get('pknn:issue');
+            if($redis_issue !== $html[0]['issue']){
+                try{
+                    $up = DB::table('game_pknn')->where('issue',$html[0]['issue'])
+                        ->update([
+                            'is_open' => 1,
+                            'year'=> date('Y'),
+                            'month'=> date('m'),
+                            'day'=>  date('d'),
+                            'opennum' => $html[0]['nums'],
+                            'niuniu' => $html[0]['pknn_nums']
+                        ]);
+                    if($up == 1){
+                        $key = 'pknn:issue';
+                        Redis::set($key,$html[0]['issue']);
+                    }
+                } catch (\Exception $exception) {
+                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
-            } catch (\Exception $exception) {
-                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             }
+        }catch (\Exception $exception) {
+            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
     }
 }

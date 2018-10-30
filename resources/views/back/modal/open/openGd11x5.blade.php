@@ -1,7 +1,7 @@
 <div class="modal-mask">
     <div>获取开奖数据中...请稍后</div>
 </div>
-<form id="openCqssc" class="ui mini form" action="{{ url('/action/admin/opengd11x5') }}">
+<form id="openCqssc" class="ui mini form" @if($typeC == 1) action="{{ url('/action/admin/opengd11x5') }}" @else action="{{ url('/action/admin/renewLottery/'.$issue.'/gd11x5') }}" @endif>
     <div class="field" style="width: 120px;">
         <label>期号</label>
         <div class="ui input icon">
@@ -85,8 +85,8 @@
                 n1:$('#n1').val(),
                 n2:$('#n2').val(),
                 n3:$('#n3').val(),
-                n4:$('#n3').val(),
-                n5:$('#n3').val(),
+                n4:$('#n4').val(),
+                n5:$('#n5').val(),
                 msg:$('#msg').val(),
                 type:$('#type').val()
             },
