@@ -708,7 +708,7 @@ class ModalController extends Controller
     }
 
     //手动开奖
-    public function open($id = '',$gameType = '', $cat = ''){
+    public function open($id = '',$gameType = '', $cat = '',$issue,$typeC){
         $table = 'game_'.Games::$aCodeGameName[$gameType];
         $type = $gameType;
         $data = DB::table($table)->where('id',$id)->first();
@@ -735,7 +735,7 @@ class ModalController extends Controller
         if(!isset($view)){
             return false;
         }
-        return view($view,compact('data','type'));
+        return view($view,compact('data','type','issue','typeC'));
     }
     //重庆幸运农场开奖 1-20
     public function openCqxync($id = '')

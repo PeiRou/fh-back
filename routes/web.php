@@ -548,7 +548,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 
     Route::get('/back/modal/openBjpk10/{id}', 'Back\Ajax\ModalController@openBjpk10');           //北京PK10 - 手动开奖
     Route::get('/back/modal/openBjkl8/{id}', 'Back\Ajax\ModalController@openBjkl8');             //北京快乐8 - 手动开奖
-    Route::get('/back/modal/open/{id}/{gameType}/{cat}', 'Back\Ajax\ModalController@open');       //手动开奖 id/游戏名/类型
+    Route::get('/back/modal/open/{id}/{gameType}/{cat}/{issue}/{type}', 'Back\Ajax\ModalController@open');       //手动开奖 id/游戏名/类型
 
     Route::get('/back/modal/openLhc/{id}', 'Back\Ajax\ModalController@openLhc');
     Route::get('/back/modal/openXylhc/{id}', 'Back\Ajax\ModalController@openXylhc');

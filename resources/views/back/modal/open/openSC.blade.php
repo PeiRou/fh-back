@@ -1,7 +1,7 @@
 <div class="modal-mask">
     <div>获取开奖数据中...请稍后</div>
 </div>
-<form id="openBjpk10" class="ui mini form" action="{{ url('/action/admin/opensc') }}">
+<form id="openBjpk10" class="ui mini form" @if($typeC == 1) action="{{ url('/action/admin/opensc') }}" @else action="{{ url('/action/admin/renewLottery/'.$issue.'/'.$type) }}" @endif>
     <div class="field" style="width: 120px;">
         <label>期号</label>
         <div class="ui input icon">
