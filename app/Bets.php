@@ -157,7 +157,7 @@ class Bets extends Model
     }
 
     public static function getBetAndUserByIssueLose($issue,$gameId){
-        $aSql = "SELECT `users`.`id`,SUM(`bet`.`bunko`) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`
+        $aSql = "SELECT `users`.`id`,SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` > 0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END)END) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`
                     FROM `bet` 
                     JOIN `users` ON `users`.`id` = `bet`.`user_id`
                     WHERE `bet`.`issue` = :issue AND `bet`.`game_id` = :game_id 
@@ -170,7 +170,7 @@ class Bets extends Model
     }
 
     public static function getBetUserDrawingByIssue($issue,$gameId){
-        $aSql = "SELECT `users`.`id`,SUM(`bet`.`bunko`) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`,`dr`.`amount`
+        $aSql = "SELECT `users`.`id`,SUM(bet_money) AS betMoney,SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` > 0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END)END) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`,`dr`.`amount`
                     FROM `bet` 
                     JOIN `users` ON `users`.`id` = `bet`.`user_id`
                     LEFT JOIN (SELECT `user_id`,SUM(`amount`) AS `amount` FROM `drawing` WHERE `status` = 0 GROUP BY `user_id`) AS `dr` ON `dr`.`user_id` = `bet`.`user_id`
@@ -194,7 +194,7 @@ class Bets extends Model
     }
 
     public static function updateBetStatus($issue,$gameId){
-        return self::where('issue',$issue)->where('game_id',$gameId)->where('status',0)->update(['status' => 2,'bunko' => 0,'bet_money' => 0]);
+        return self::where('issue',$issue)->where('game_id',$gameId)->where('status',0)->update(['status' => 2,'bunko' => DB::raw('`bet_money`'),'nn_view_money' => 0]);
     }
 
     public static function updateBetBunkoClear($issue,$gameId){
