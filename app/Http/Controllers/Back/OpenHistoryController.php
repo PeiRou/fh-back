@@ -931,6 +931,7 @@ class OpenHistoryController extends Controller
         $aBet = Bets::getBetAndUserByIssueLose($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
         if(empty($aBet)){
+            Bets::updateBetStatus($issue, $gameInfo->game_id);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             return ['status' => true,'mag' => '操作成功2'];
         }

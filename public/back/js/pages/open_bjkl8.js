@@ -84,7 +84,7 @@ $(function () {
                             "<li onclick='cancel("+data.issue+")'>撤单</li>" +
                             "<li onclick='openbjpk10("+data.id+")'>手动开奖</li>" ;
                     }else if(data.is_open == "5"){
-                        txt = "<li onclick='cancel("+data.issue+")'>撤单</li>" +
+                        txt = "<li onclick='canceled("+data.issue+")'>撤单</li>" +
                             "<li onclick='changeNumber("+data.issue+")'>重新开奖</li>" ;
                     }else if(data.is_open == "7"){
                         "<li onclick='changeNumber("+data.issue+")'>重新开奖</li>" ;
