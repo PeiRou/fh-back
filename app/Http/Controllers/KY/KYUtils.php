@@ -32,11 +32,12 @@ class KYUtils
 
     function curl_get_content($url, $conn_timeout=7, $timeout=15, $user_agent=null)
     {
+//        $res = Storage::disk('local')->get('KY_test.txt');
+//        return $res;
         if (!$this->is_curl_ready()) {
             $this->dbglog('PHP CURL MODULE MISSING. INSTALL: apt install php7.1-curl php7.2-curl');
             return null;
         }
-
         $headers = array(
             "Accept: application/json",
             "Accept-Encoding: deflate,sdch",
@@ -46,9 +47,7 @@ class KYUtils
             $user_agent = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36';
         }
         $headers[] = $user_agent;
-
         $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -57,17 +56,13 @@ class KYUtils
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_ENCODING, "");
-
         $res = curl_exec($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $err = curl_errno($ch);
         curl_close($ch);
-        Storage::disk('local')->put('KY_test.txt',$res);
 //        $this->dbglog($err);
 //        $this->dbglog($httpcode);
 //        $this->dbglog($res);
-
-
         if (($err) || ($httpcode !== 200)) {
             return null;
         }

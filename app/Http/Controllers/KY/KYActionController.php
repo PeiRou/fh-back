@@ -31,24 +31,24 @@ class KYActionController extends Controller
         if(!$res){
             return false;
         }
-
-//        foreach ($res as $k => $v){
-//            $data = [];
-//            $data['GameID'] = $v['GameID'];
-//            $data['Accounts'] = $v['Accounts'];
-//            $data['ServerID'] = $v['ServerID'];
-//            $data['KindID'] = $v['KindID'];
-//            $data['TableID'] = $v['TableID'];
-//            $data['ChairID'] = $v['ChairID'];
-//            $data['UserCount'] = $v['UserCount'];
-//            $data['UserCount'] = $v['UserCount'];
-//            $data['UserCount'] = $v['UserCount'];
-//            $data['UserCount'] = $v['UserCount'];
-//            $data['UserCount'] = $v['UserCount'];
-//            $data['UserCount'] = $v['UserCount'];
-//        }
-//        $table = DB::table('ky_bet')->insert();
-
+        $table = DB::table('ky_bet');
+        //根据GameID去掉重复的
+        $distinctArr = $table->whereIn('GameID',$res['GameID'])->pluck('GameID')->toArray();
+        $res['GameID'] = array_diff($res['GameID'],$distinctArr);
+        $data = [];
+        foreach ($res['GameID'] as $k => $k){
+            $data[] = [
+                'GameID' => $res['GameID'][$k],
+                'Accounts' => $res['Accounts'][$k],
+                'AllBet' => $res['AllBet'][$k],
+                'Profit' => $res['Profit'][$k],
+                'Revenue' => $res['Revenue'][$k],
+                'GameStartTime' => $res['GameStartTime'][$k],
+                'GameEndTime' => $res['GameEndTime'][$k],
+            ];
+        }
+        $res = $table->insert($data);
+        return $res;
     }
     public function res($s){
         $kyUtils = new KYUtils();
