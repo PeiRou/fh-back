@@ -1055,8 +1055,10 @@ class OpenHistoryController extends Controller
     //重新开奖操作
     public function renewLotteryOperating($issue,$type,$gameInfo,$number){
         $aBet = Bets::getBetAndUserByIssueLose($issue,$gameInfo->game_id);
+        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 7]);
         if(empty($aBet)) {
+            if(!empty($aBetAll))    Users::editBatchUserMoneyData3($aBetAll);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
             return ['status' => true, 'msg' => '操作成功2'];
@@ -1087,6 +1089,7 @@ class OpenHistoryController extends Controller
             Bets::updateBetBunkoClear($issue, $gameInfo->game_id);
             Users::editBatchUserMoneyData1($aBet);
             Capital::insert($aCapital);
+            if(!empty($aBetAll))    Users::editBatchUserMoneyData3($aBetAll);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
             DB::commit();

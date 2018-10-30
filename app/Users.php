@@ -109,6 +109,22 @@ WHERE `users`.`testFlag` = 0 ";
         return DB::update(self::updateBatchStitching('users',$aArray,['money'],'id'));
     }
 
+    //修改余额2
+    public static function editBatchUserMoneyData3($aData){
+        $aArray = [];
+        foreach ($aData as $kData => $iData){
+            if(isset($aArray[$iData->id]) && array_key_exists($iData->id,$aArray)){
+                $aArray[$iData->id]['money'] += -$iData->bet_money;
+            }else{
+                $aArray[$iData->id] = [
+                    'id' => $iData->id,
+                    'money' => - $iData->bet_money,
+                ];
+            }
+        }
+        return DB::update(self::updateBatchStitching('users',$aArray,['money'],'id'));
+    }
+
     //多行修改拼接
     public static function updateBatchStitching($table,$data,$fields,$primary){
         $aSql = 'UPDATE '. $table . ' SET ';

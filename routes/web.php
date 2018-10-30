@@ -259,6 +259,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/openHistory/k3', 'Back\Data\openHistoryController@k3'); //历史开奖 - 秒速快三
     Route::get('/back/datatables/openHistory/ssc', 'Back\Data\openHistoryController@ssc'); //历史开奖 - 时时彩
 
+    Route::get('/back/datatables/openHistory/card_betInfo', 'Back\Data\openHistoryController@card_betInfo'); //棋牌下注
+
+
     Route::get('/back/datatables/agentSettle/report', 'Back\Data\AgentSettleController@report'); //代理结算报表-表格数据
     Route::get('/back/datatables/agentSettle/review', 'Back\Data\AgentSettleController@review'); //代理结算审核-表格数据
     Route::get('/back/datatables/agentSettle/withdraw', 'Back\Data\AgentSettleController@withdraw'); //代理提现-表格数据
