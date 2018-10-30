@@ -62,11 +62,8 @@ class Excel
                 $capData[$ii] = $tmpCap;
                 $ii ++;
                 $content = ' 第'.$i->issue.'期 '.$i->playcate_name.' '.$i->play_name;
-                $tmpContent = array();
-                $tmpContent['game'] = $gameName;
-                $tmpContent['content'] = $content;
-                $tmpContent['amount'] = $i->bunko;
-                event(new BackPusherEvent('info','中奖通知',$tmpContent,array('fnotice-'.$i->user_id)));
+                $tmpContent = '<div><span style=\"color: red\">'.$gameName.'</span>'.$content.'已中奖，中奖金额 <span style=\"color:red\">'.$i->bunko.'</span></div>';
+                event(new BackPusherEvent('win','中奖通知',$tmpContent,array('fnotice-'.$i->user_id)));
             }
             krsort($capData);
             $capIns = DB::table('capital')->insert($capData);
