@@ -34,8 +34,12 @@ class KYActionController extends Controller
         $table = DB::table('ky_bet');
         //删除两天以前的
         DB::table('ky_bet')->where('GameStartTime', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 2))->delete();
-        //根据GameID去掉重复的
-        $distinctArr = $table->whereIn('GameID',$res['GameID'])->pluck('GameID')->toArray();
+        //根据GameID Accounts去掉重复的
+        foreach ($res['GameID'] as $k => $k){
+            $table->orWhere(['GameID'=>$res['GameID'][$k]])
+                ->where(['Accounts' => $res['Accounts'][$k]]);
+        }
+        $distinctArr = $table->pluck('GameID')->toArray();
         $res['GameID'] = array_diff($res['GameID'],$distinctArr);
         $data = [];
         foreach ($res['GameID'] as $k => $k){
@@ -63,7 +67,6 @@ class KYActionController extends Controller
                     'endTime' => $this->getMillisecond()
                 ));
                 break;
-
         }
         $url = DEBUG ? recordUrlTest : recordUrl;
         $url .= '?' . http_build_query(array(
@@ -78,9 +81,9 @@ class KYActionController extends Controller
             if($res['d']['code'] == 0){
                 return $res['d']['list'];
             }else{
-                if(DEBUG){
+//                if(DEBUG){
                     \Log::info(json_encode($res));
-                }
+//                }
                 return false;
             }
         }
@@ -89,7 +92,6 @@ class KYActionController extends Controller
     public function getMillisecond()
     {
         list($t1, $t2) = explode(' ', microtime());
-
         return  sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);
     }
 }
