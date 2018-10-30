@@ -51,32 +51,36 @@ class new_gd11x5 extends Command
             Redis::set('gd11x5:nextIssueEndTime',strtotime($nextIssueEndTime));
         }
         $url = Config::get('website.guanServerUrl').'gd11x5';
-        $html = json_decode(file_get_contents($url),true);
-        $redis_issue = Redis::get('gd11x5:issue');
-        //清除昨天长龙，在录第一期的时候清掉
-        if($filtered['issue']=='01'){
-            DB::table('clong_kaijian1')->where('lotteryid',21)->delete();
-            DB::table('clong_kaijian2')->where('lotteryid',21)->delete();
-        }
-        if($redis_issue !== $html[0]['issue']){
-            try{
-                $up = DB::table('game_gd11x5')->where('issue',$html[0]['issue'])
-                    ->update([
-                        'is_open' => 1,
-                        'year'=> date('Y'),
-                        'month'=> date('m'),
-                        'day'=>  date('d'),
-                        'opennum' => $html[0]['nums']
-                    ]);
-                if($up == 1){
-                    $key = 'gd11x5:issue';
-                    Redis::set($key,$html[0]['issue']);
-                    $this->clong->setKaijian('gd11x5',1,$html[0]['nums']);
-                    $this->clong->setKaijian('gd11x5',2,$html[0]['nums']);
-                }
-            } catch (\Exception $exception){
-                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+        try{
+            $html = json_decode(file_get_contents($url),true);
+            $redis_issue = Redis::get('gd11x5:issue');
+            //清除昨天长龙，在录第一期的时候清掉
+            if($filtered['issue']=='01'){
+                DB::table('clong_kaijian1')->where('lotteryid',21)->delete();
+                DB::table('clong_kaijian2')->where('lotteryid',21)->delete();
             }
+            if($redis_issue !== $html[0]['issue']){
+                try{
+                    $up = DB::table('game_gd11x5')->where('issue',$html[0]['issue'])
+                        ->update([
+                            'is_open' => 1,
+                            'year'=> date('Y'),
+                            'month'=> date('m'),
+                            'day'=>  date('d'),
+                            'opennum' => $html[0]['nums']
+                        ]);
+                    if($up == 1){
+                        $key = 'gd11x5:issue';
+                        Redis::set($key,$html[0]['issue']);
+                        $this->clong->setKaijian('gd11x5',1,$html[0]['nums']);
+                        $this->clong->setKaijian('gd11x5',2,$html[0]['nums']);
+                    }
+                } catch (\Exception $exception){
+                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                }
+            }
+        } catch (\Exception $exception){
+            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
     }
 }
