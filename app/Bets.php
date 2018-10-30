@@ -194,7 +194,7 @@ class Bets extends Model
     }
 
     public static function updateBetStatus($issue,$gameId){
-        return self::where('issue',$issue)->where('game_id',$gameId)->where('status',0)->update(['status' => 2,'bunko' => 0,'bet_money' => 0]);
+        return self::where('issue',$issue)->where('game_id',$gameId)->where('status',0)->update(['status' => 2,'bunko' => DB::raw('`bet_money`'),'nn_view_money' => 0]);
     }
 
     public static function updateBetBunkoClear($issue,$gameId){
