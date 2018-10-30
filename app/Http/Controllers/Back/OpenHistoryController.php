@@ -930,7 +930,10 @@ class OpenHistoryController extends Controller
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
         $aBet = Bets::getBetAndUserByIssueLose($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
-        if(empty($aBet))    return ['status' => true,'mag' => '操作成功2'];
+        if(empty($aBet)){
+            UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
+            return ['status' => true,'mag' => '操作成功2'];
+        }
         $aCapital = [];
         $adminId = Session::get('account_id');
         $dateTime = date('Y-m-d H:i:s');
@@ -957,6 +960,7 @@ class OpenHistoryController extends Controller
             Bets::updateBetStatus($issue, $gameInfo->game_id);
             Users::editBatchUserMoneyData1($aBet);
             Capital::insert($aCapital);
+            UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             DB::commit();
             return ['status' => true,'mag' => '操作成功'];
         }catch(\Exception $e){
@@ -1016,7 +1020,6 @@ class OpenHistoryController extends Controller
 
         try {
             Users::editBatchUserMoneyData2($aBet);
-            Users::whereIn('id',$aUserId)->update(['status' => '4']);
             Drawing::whereIn('user_id',$aUserId)->update(['status' => '3','msg' => '提款申请未通过,如有疑问，请咨询在线客服']);
             Bets::where('issue',$issue)->whereIn('user_id',$aUserId)->update(['status' => '3']);
             Capital::insert($aCapital);
@@ -1052,8 +1055,11 @@ class OpenHistoryController extends Controller
     //重新开奖操作
     public function renewLotteryOperating($issue,$type,$gameInfo,$number){
         $aBet = Bets::getBetAndUserByIssueLose($issue,$gameInfo->game_id);
+        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 7]);
         if(empty($aBet)) {
+            if(!empty($aBetAll))    Users::editBatchUserMoneyData3($aBetAll);
+            UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
             return ['status' => true, 'msg' => '操作成功2'];
         }
@@ -1083,6 +1089,8 @@ class OpenHistoryController extends Controller
             Bets::updateBetBunkoClear($issue, $gameInfo->game_id);
             Users::editBatchUserMoneyData1($aBet);
             Capital::insert($aCapital);
+            if(!empty($aBetAll))    Users::editBatchUserMoneyData3($aBetAll);
+            UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
             DB::commit();
             return ['status' => true,'msg'=>'操作成功'];
