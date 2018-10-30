@@ -81,9 +81,9 @@ class KYActionController extends Controller
             if($res['d']['code'] == 0){
                 return $res['d']['list'];
             }else{
-                if(DEBUG){
+//                if(DEBUG){
                     \Log::info(json_encode($res));
-                }
+//                }
                 return false;
             }
         }
