@@ -156,6 +156,19 @@ class Bets extends Model
             ->join('users','users.id','=','bet.user_id')->get()->toArray();
     }
 
+    public static function getBetAndUserByIssueLose($issue,$gameId){
+        $aSql = "SELECT `users`.`id`,SUM(`bet`.`bunko`) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`
+                    FROM `bet` 
+                    JOIN `users` ON `users`.`id` = `bet`.`user_id`
+                    WHERE `bet`.`issue` = :issue AND `bet`.`game_id` = :game_id 
+                    GROUP BY `bet`.`user_id` HAVING `bet_bunko` < 0";
+        $aArray = [
+            'issue' => $issue,
+            'game_id' => $gameId
+        ];
+        return DB::select($aSql,$aArray);
+    }
+
     public static function getBetUserDrawingByIssue($issue,$gameId){
         $aSql = "SELECT `users`.`id`,SUM(`bet`.`bunko`) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`,`dr`.`amount`
                     FROM `bet` 
@@ -181,7 +194,11 @@ class Bets extends Model
     }
 
     public static function updateBetStatus($issue,$gameId){
-        return self::where('issue',$issue)->where('game_id',$gameId)->where('status',0)->update(['status' => 2]);
+        return self::where('issue',$issue)->where('game_id',$gameId)->where('status',0)->update(['status' => 2,'bunko' => 0,'bet_money' => 0]);
+    }
+
+    public static function updateBetBunkoClear($issue,$gameId){
+        return self::where('issue',$issue)->where('game_id',$gameId)->where('status',0)->update(['bunko' => 0]);
     }
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
