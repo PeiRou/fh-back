@@ -914,31 +914,37 @@ class OpenHistoryController extends Controller
     //撤单2
     public function canceledBetIssue($issue,$type){
         $gameInfo = Games::where('code',$type)->first();
-        $result = $this->freezeOperating($issue,$type,$gameInfo);
-        if(!$result['status']){
-            response()->json($result);
+        if(empty($tableSuffix = Games::$aCodeGameName[$type])){
+            return ['status' => false,'msg' => '游戏分类标识错误'];
         }
-        return response()->json($this->canceledBetIssueOperating($issue,$type,$gameInfo));
+        if(DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->value('is_open') != 5){
+            $result = $this->freezeOperating($issue,$type,$gameInfo);
+            if(!$result['status']){
+                return $result;
+            }
+        }
+        return $this->canceledBetIssueOperating($issue,$type,$gameInfo);
     }
 
     //撤单2操作
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
-        $aBet = Bets::getBetAndUserByIssue($issue,$gameInfo->game_id);
-        if(empty($aBet))    return ['status' => false,'msg' => '没有投注用户'];
+        $aBet = Bets::getBetAndUserByIssueLose($issue,$gameInfo->game_id);
+        DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
+        if(empty($aBet))    return ['status' => true,'mag' => '操作成功2'];
         $aCapital = [];
         $adminId = Session::get('account_id');
         $dateTime = date('Y-m-d H:i:s');
         foreach ($aBet as $kBet => $iBet){
             $aCapital[] = [
-                'to_user' => $iBet['id'],
+                'to_user' => $iBet->id,
                 'user_type' => 'user',
-                'order_id' => $iBet['order_id'],
+                'order_id' => null,
                 'type' => 't16',
                 'rechargesType' => 0,
                 'game_id' => $gameInfo->game_id,
-                'issue' => $iBet['issue'],
-                'money' => -$iBet['bunko'],
-                'balance' => $iBet['money'],
+                'issue' => $iBet->issue,
+                'money' => -$iBet->bet_bunko,
+                'balance' => $iBet->money,
                 'operation_id' => $adminId,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
@@ -952,7 +958,7 @@ class OpenHistoryController extends Controller
             Users::editBatchUserMoneyData1($aBet);
             Capital::insert($aCapital);
             DB::commit();
-            return ['status' => true];
+            return ['status' => true,'mag' => '操作成功'];
         }catch(\Exception $e){
             DB::rollback();
             return ['status' => false,'msg' => '撤单失败'];
@@ -962,13 +968,18 @@ class OpenHistoryController extends Controller
     //冻结
     public function freeze($issue,$type){
         $gameInfo = Games::where('code',$type)->first();;
-        return response()->json($this->freezeOperating($issue,$type,$gameInfo));
+        if(empty($tableSuffix = Games::$aCodeGameName[$type])){
+            return ['status' => false,'msg' => '游戏分类标识错误'];
+        }
+        return $this->freezeOperating($issue,$type,$gameInfo);
     }
 
     //冻结操作
     public function freezeOperating($issue,$type,$gameInfo){
         $aBet = Bets::getBetUserDrawingByIssue($issue,$gameInfo->game_id);
-        if(empty($aBet))    return ['status' => false,'msg' => '没有投注用户'];
+        DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
+        if(empty($aBet))    return ['status' => true,'mag' => '操作成功2'];
+
         $aCapital = [];
         $aUserFreezeMoney = [];
         $adminId = Session::get('account_id');
@@ -1010,17 +1021,69 @@ class OpenHistoryController extends Controller
             Bets::where('issue',$issue)->whereIn('user_id',$aUserId)->update(['status' => '3']);
             Capital::insert($aCapital);
             UserFreezeMoney::insert($aUserFreezeMoney);
-            if(!empty(Games::$aCodeGameName[$type])) {
-                $table = 'game_' . Games::$aCodeGameName[$type];
-                DB::table($table)->where('issue',$issue)->update([
-                    'is_open' => 5
-                ]);
-            }
             DB::commit();
-            return ['status' => true];
+            return ['status' => true,'msg'=> '操作成功'];
         }catch(\Exception $e){
             DB::rollback();
             return ['status' => false,'msg' => '冻结失败'];
+        }
+    }
+
+    //重新开奖
+    public function renewLottery($issue,$type){
+        $gameInfo = Games::where('code',$type)->first();;
+        if(empty($tableSuffix = Games::$aCodeGameName[$type])){
+            return ['status' => false,'msg' => '游戏分类标识错误'];
+        }
+        if(DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->value('is_open') != 5){
+            $result = $this->freezeOperating($issue,$type,$gameInfo);
+            if(!$result['status']){
+                return $result;
+            }
+        }
+        return $this->renewLotteryOperating($issue,$type,$gameInfo);
+    }
+
+    //重新开奖操作
+    public function renewLotteryOperating($issue,$type,$gameInfo){
+        $aBet = Bets::getBetAndUserByIssueLose($issue,$gameInfo->game_id);
+        DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 7]);
+        if(empty($aBet)) {
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 0]);
+            return ['status' => true, 'msg' => '操作成功2'];
+        }
+        $aCapital = [];
+        $adminId = Session::get('account_id');
+        $dateTime = date('Y-m-d H:i:s');
+        foreach ($aBet as $kBet => $iBet){
+            $aCapital[] = [
+                'to_user' => $iBet->id,
+                'user_type' => 'user',
+                'order_id' => null,
+                'type' => 't07',
+                'rechargesType' => 0,
+                'game_id' => $gameInfo->game_id,
+                'issue' => $iBet->issue,
+                'money' => -$iBet->bet_bunko,
+                'balance' => $iBet->money,
+                'operation_id' => $adminId,
+                'created_at' => $dateTime,
+                'updated_at' => $dateTime,
+            ];
+        }
+
+        DB::beginTransaction();
+
+        try {
+            Bets::updateBetBunkoClear($issue, $gameInfo->game_id);
+            Users::editBatchUserMoneyData1($aBet);
+            Capital::insert($aCapital);
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 0]);
+            DB::commit();
+            return ['status' => true,'msg'=>'操作成功'];
+        }catch(\Exception $e){
+            DB::rollback();
+            return ['status' => false,'msg' => '撤单失败'];
         }
     }
 

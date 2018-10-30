@@ -454,6 +454,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/reOpenXylhc', 'Back\OpenHistoryController@reOpenXylhcData')->middleware('add-log-handle')->name('ac.ad.reOpenXylhc');
 
     Route::post('/action/admin/freeze/{issue}/{type}', 'Back\OpenHistoryController@freeze')->middleware('add-log-handle')->name('ac.ad.freeze');     //冻结彩种
+    Route::post('/action/admin/renewLottery/{issue}/{type}', 'Back\OpenHistoryController@renewLottery')->middleware('add-log-handle')->name('ac.ad.renewLottery');     //重新开奖
     Route::post('/action/admin/cancelBetting/{issue}/{type}', 'Back\OpenHistoryController@cancelBetting')->middleware('add-log-handle')->name('ac.ad.cancelBetting'); // 撤单
     Route::post('/action/admin/Bet/canceled/{issue}/{type}', 'Back\OpenHistoryController@canceledBetIssue')->middleware('add-log-handle')->name('ac.ad.bet.canceled'); // 撤单2
     Route::post('/action/admin/bet/cancel/{orderId}', 'Back\OpenHistoryController@cancelBetOrder')->middleware('add-log-handle')->name('ac.ad.bet.cancel'); // 取消注单

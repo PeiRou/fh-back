@@ -81,23 +81,33 @@ $(function () {
             {data: function (data) {
                     if(data.is_open==1)
                         txt = "已开奖";
+                    else if(data.is_open==5)
+                        txt = "已冻结";
+                    else if(data.is_open==6)
+                        txt = "已撤单";
+                    else if(data.is_open==7)
+                        txt = "重新开奖中";
                     else
                         txt = "未开奖";
                     return '<span>'+txt+'</span>';
                 }},
             {data: function (data) {
+                    txt = '';
                     if(data.is_open=="1"){        //已开奖
-                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
+                        txt = "<li onclick='changeNumber("+data.issue+")'>重新开奖</li>" ;
                         if(testServer == 1){
                             txt += "<li onclick='canceled("+data.issue+")'>撤单</li>";
                             txt += "<li onclick='freeze("+data.issue+")'>冻结</li>";
                         }
-                    }else if(data.is_open=="0"){                      //未开奖
+                    }else if(data.is_open == "0"){                      //未开奖
                         txt = "<li onclick='cancelAll("+data.id+")'>修改</li>" +
                             "<li onclick='cancel("+data.issue+")'>撤单</li>" +
-                            "<li onclick='openssc("+data.id+")'>手动开奖</li>" ;
+                            "<li onclick='openbjpk10("+data.id+")'>手动开奖</li>" ;
                     }else if(data.is_open == "5"){
-                        txt = "<li onclick='changeNumber("+data.id+")'>重新开奖</li>" ;
+                        txt = "<li onclick='cancel("+data.issue+")'>撤单</li>" +
+                            "<li onclick='changeNumber("+data.issue+")'>重新开奖</li>" ;
+                    }else if(data.is_open == "7"){
+                        "<li onclick='changeNumber("+data.issue+")'>重新开奖</li>" ;
                     }
                     return "<ul class='control-menu'>" + txt + "</ul>";
                 }}
@@ -237,7 +247,7 @@ function cancel(issue) {
                         dataType:'json',
                         success:function (data) {
                             if(data.status == true){
-                                alert('撤单成功');
+                                dataTable.ajax.reload();
                             }else{
                                 Calert(data.msg,'red')
                             }
@@ -276,7 +286,7 @@ function canceled(issue) {
                         dataType:'json',
                         success:function (data) {
                             if(data.status == true){
-                                alert('撤单成功');
+                                dataTable.ajax.reload();
                             }else{
                                 Calert(data.msg,'red')
                             }
@@ -315,7 +325,46 @@ function freeze(issue) {
                         dataType:'json',
                         success:function (data) {
                             if(data.status == true){
-                                alert('冻结成功');
+                                dataTable.ajax.reload();
+                            }else{
+                                Calert(data.msg,'red')
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
+
+function changeNumber(issue) {
+    jc = $.confirm({
+        title: '确定要重新开奖',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '这是一个需要注意的操作，重新开奖该期数下所有注单',
+        buttons: {
+            confirm: {
+                text:'确定撤单',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/action/admin/renewLottery/'+issue+'/'+gameType,
+                        type:'post',
+                        dataType:'json',
+                        success:function (data) {
+                            if(data.status == true){
+                                dataTable.ajax.reload();
                             }else{
                                 Calert(data.msg,'red')
                             }
