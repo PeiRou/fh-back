@@ -18,7 +18,12 @@ class New_Gdklsf
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
-            $bunko = $this->bunko($win,$gameId,$issue,$openCode);
+            try{
+                $bunko = $this->bunko($win,$gameId,$issue,$openCode);
+            }catch (\exception $exception){
+                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+            }
             if($bunko == 1){
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
