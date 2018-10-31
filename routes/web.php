@@ -339,7 +339,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/agentSettle/editConfig', 'Back\AgentSettleController@editConfig')->middleware('add-log-handle')->name('ac.ad.agentSettle.editConfig'); //代理结算配置-修改配置
     Route::post('/action/admin/agentSettle/addAgentSettleDomain', 'Back\AgentSettleController@addAgentSettleDomain')->middleware('add-log-handle')->name('ac.ad.agentSettle.addAgentSettleDomain'); //代理专属域名-添加
     Route::post('/action/admin/agentSettle/editAgentSettleDomain', 'Back\AgentSettleController@editAgentSettleDomain')->middleware('add-log-handle')->name('ac.ad.agentSettle.editAgentSettleDomain'); //代理专属域名-修改
-    Route::post('/action/admin/agentSettle/delAgentSettleDomain', 'Back\AgentSettleController@delAgentSettleDomain')->middleware('add-log-handle')->name('ac.ad.agentSettle.delAgentSettleDomain'); //代理专属域名-修改
+    Route::post('/action/admin/agentSettle/delAgentSettleDomain', 'Back\AgentSettleController@delAgentSettleDomain')->middleware('add-log-handle')->name('ac.ad.agentSettle.delAgentSettleDomain'); //代理专属域名-删除
 
 
     Route::post('/action/admin/activity/addActivity', 'Back\ActivityController@addActivity')->middleware('add-log-handle')->name('ac.ad.activity.addActivity'); //活动列表-新增活动
