@@ -10,14 +10,14 @@ class New_Gd11x5
 {
     public function all($openCode,$issue,$gameId,$id)
     {
-        $win = collect([]);
-        $this->LM($openCode,$gameId,$win);
         $table = 'game_gd11x5';
         $gameName = '广东11选5';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             try{
+                $win = collect([]);
+                $this->LM($openCode,$gameId,$win);
                 $bunko = $this->bunko($win,$gameId,$issue,$openCode);
             }catch (\exception $exception){
                 \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
