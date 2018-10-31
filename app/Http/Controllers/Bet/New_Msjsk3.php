@@ -46,7 +46,7 @@ class New_Msjsk3
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $this->bunko($win,$gameId,$issue);
+                $bunko = $excelModel->bunko($win,$gameId,$issue);
                 $excelModel->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);

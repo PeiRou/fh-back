@@ -1694,18 +1694,20 @@ class New_Gdklsf
             $id[] = $v;
         }
         $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        $sql = "UPDATE bet SET bunko = CASE ";
-        $sql_lose = "UPDATE bet SET bunko = CASE ";
+        $sql_upd = "UPDATE bet SET bunko = CASE ";
+        $sql_upd_lose = "UPDATE bet SET bunko = CASE ";
         $ids = implode(',', $id);
+        $sql = "";
+        $sql_lose = "";
         foreach ($getUserBets as $item){
             $bunko = $item->bet_money * $item->play_odds;
             $bunko_lose = 0-$item->bet_money;
             $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
             $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
         }
-        $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $run = DB::statement($sql);
+        $sql_upd .= $sql ."END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+        $sql_upd_lose .= $sql_lose ."END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+        $run = !empty($sql)?DB::statement($sql_upd):0;
         if($run == 1){
             //连码- Start
             $lm_playCate = 63; //连码分类ID
@@ -1772,18 +1774,16 @@ class New_Gdklsf
             }
             //连码- End
 
-
-            $run2 = DB::connection('mysql::write')->statement($sql_lose);
-            if($run2 == 1){
+            $run2 = !empty($sql_lose)?DB::connection('mysql::write')->statement($sql_upd_lose):0;
+            if($run2 == 1)
                 $bunko_index++;
-                if($sql_lm !== 0){
-                    $run3 = DB::connection('mysql::write')->statement($sql_lm);
-                    if($run3 == 1){
-                        $bunko_index++;
-                    }
-                } else {
+            if($sql_lm !== 0){
+                $run3 = DB::connection('mysql::write')->statement($sql_lm);
+                if($run3 == 1){
                     $bunko_index++;
                 }
+            } else {
+                $bunko_index++;
             }
 
             if($bunko_index !== 0){

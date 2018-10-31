@@ -351,4 +351,44 @@ class Excel
         }
         return $total;
     }
+
+    public function bunko($win,$gameId,$issue,$excel=false){
+        if($excel) {
+            $table = 'excel_bet';
+            $getUserBets = DB::connection('mysql::write')->table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        }else{
+            $table = 'bet';
+            $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        }
+        $id = [];
+        foreach ($win as $k=>$v){
+            $id[] = $v;
+        }
+        if($getUserBets){
+            $sql_upd = "UPDATE ".$table." SET bunko = CASE ";
+            $sql_upd_lose = "UPDATE ".$table." SET bunko = CASE ";
+            $ids = implode(',', $id);
+            if($ids && isset($ids)){
+                $sql = "";
+                $sql_lose = "";
+                foreach ($getUserBets as $item){
+                    $bunko = $item->bet_money * $item->play_odds;
+                    $bunko_lose = 0-$item->bet_money;
+                    $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                    $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                }
+                $sql_upd .= $sql. "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                $sql_upd_lose .= $sql_lose. "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                if(!isset($bunko) || empty($bunko))
+                    return 0;
+                $run = empty($sql)?1:DB::statement($sql_upd);
+                if($run == 1){
+                    $run2 = empty($sql_lose)?1:DB::statement($sql_upd_lose);
+                    if($run2 == 1){
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
 }

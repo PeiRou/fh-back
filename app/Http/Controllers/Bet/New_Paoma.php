@@ -1218,9 +1218,11 @@ class New_Paoma
             $id[] = $v;
         }
         if($getUserBets){
-            $sql = "UPDATE ".$table." SET bunko = CASE ";
-            $sql_lose = "UPDATE ".$table." SET bunko = CASE ";
+            $sql_udp = "UPDATE ".$table." SET bunko = CASE ";
+            $sql_udp_lose = "UPDATE ".$table." SET bunko = CASE ";
             $ids = implode(',', $id);
+            $sql = "";
+            $sql_lose = "";
             if($ids && isset($ids)){
                 foreach ($getUserBets as $item){
                     $bunko = $item->bet_money * $item->play_odds;
@@ -1228,13 +1230,13 @@ class New_Paoma
                     $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                     $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
                 }
-                $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-                $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                $sql_udp .= $sql. "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                $sql_udp_lose .= $sql_lose. "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
                 if(!isset($bunko) || empty($bunko))
                     return 0;
-                $run = DB::statement($sql);
+                $run = DB::statement($sql_udp);
                 if($run == 1){
-                    $run2 = DB::statement($sql_lose);
+                    $run2 = DB::statement($sql_udp_lose);
                     if($run2 == 1){
                         return 1;
                     }
