@@ -750,7 +750,7 @@ class New_Gd11x5
                 $sql_he = 0;
             }
 
-            $run2 = !empty($sql_upd_lose)?DB::connection('mysql::write')->statement($sql_lose):0;
+            $run2 = !empty($sql_lose)?DB::connection('mysql::write')->statement($sql_upd_lose):0;
             if($run2 == 1){
                 $bunko_index++;
                 if($sql_zhixuan !== 0){
