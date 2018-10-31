@@ -6,6 +6,7 @@ use App\Activity;
 use App\ActivityCondition;
 use App\ActivityPrize;
 use App\Agent;
+use App\AgentOddsSetting;
 use App\Article;
 use App\Banks;
 use App\Capital;
@@ -887,5 +888,24 @@ class ModalController extends Controller
     //操作报表添加-模板
     public function addStatistics(){
         return view('back.modal.report.addStatistics');
+    }
+
+    //添加代理赔率-模板
+    public function gameAgentOddsAdd(){
+        $iOdds = AgentOddsSetting::orderBy('level','desc')->value('odds');
+        if(empty($iOdds))
+            $iOdds = SystemSetting::getValueByRemark1('agent_odds_basis');
+        return view('back.modal.game.agentOddsAdd',compact('iOdds'));
+    }
+
+    //修改代理赔率-模板
+    public function gameAgentOddsEdit($id){
+        $iData = AgentOddsSetting::find($id);
+        if($iData->level == 1){
+            $iOdds = SystemSetting::getValueByRemark1('agent_odds_basis');
+        }else{
+            $iOdds = AgentOddsSetting::where('level',$iData->level - 1)->value('odds');
+        }
+        return view('back.modal.game.agentOddsEdit',compact('iData','iOdds'));
     }
 }

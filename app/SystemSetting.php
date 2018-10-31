@@ -12,4 +12,8 @@ class SystemSetting extends Model
     public function getValueByRemark($value){
         return $this->where('id',1)->value($value);
     }
+
+    public static function getValueByRemark1($value){
+        return self::where('id',1)->value($value);
+    }
 }
