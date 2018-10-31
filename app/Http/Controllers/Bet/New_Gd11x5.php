@@ -572,8 +572,8 @@ class New_Gd11x5
             $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
             $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
         }
-        $sql_upd .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $sql_upd_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+        $sql_upd .= $sql ."END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+        $sql_upd_lose .= $sql_lose ."END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $run = !empty($sql_upd)?DB::statement($sql):0;
         if($run == 1){
             //直选- Start
