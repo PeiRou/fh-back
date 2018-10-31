@@ -911,7 +911,7 @@ class OpenHistoryController extends Controller
         return response()->json(['status' => false,'msg' => '注单失败']);
     }
 
-    //冻结后撤单
+    //结算后撤单
     public function canceledBetIssue($issue,$type){
         $gameInfo = Games::where('code',$type)->first();
         if(empty($tableSuffix = Games::$aCodeGameName[$type])){
@@ -928,11 +928,9 @@ class OpenHistoryController extends Controller
 
     //冻结后的撤单操作
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
-        $aBet = Bets::getBetAndUserByIssueLose($issue,$gameInfo->game_id);
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
-        if(empty($aBet)){
-            if(!empty($aBetAll))    Users::editBatchUserMoneyDataReturn($aBetAll);
+        if(empty($aBetAll)){
             Bets::updateBetStatus($issue, $gameInfo->game_id);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             return ['status' => true,'mag' => '操作成功2'];
@@ -940,7 +938,7 @@ class OpenHistoryController extends Controller
         $aCapital = [];
         $adminId = Session::get('account_id');
         $dateTime = date('Y-m-d H:i:s');
-        foreach ($aBet as $kBet => $iBet){
+        foreach ($aBetAll as $kBet => $iBet){
             $aCapital[] = [
                 'to_user' => $iBet->id,
                 'user_type' => 'user',
@@ -961,8 +959,7 @@ class OpenHistoryController extends Controller
 
         try {
             Bets::updateBetStatus($issue, $gameInfo->game_id);
-            Users::editBatchUserMoneyData1($aBet);
-            if(!empty($aBetAll))    Users::editBatchUserMoneyDataReturn($aBetAll);
+            Users::editBatchUserMoneyDataReturn($aBetAll);
             Capital::insert($aCapital);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             DB::commit();
