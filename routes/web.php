@@ -32,6 +32,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('rechargeRecord', 'Back\SrcViewController@rechargeRecord')->name('finance.rechargeRecord'); // 充值记录
         Route::get('drawingRecord', 'Back\SrcViewController@drawingRecord')->name('finance.drawingRecord'); // 提款记录
         Route::get('capitalDetails', 'Back\SrcViewController@capitalDetails')->name('finance.capitalDetails'); // 资金明细
+        Route::get('freezeRecord', 'Back\SrcViewController@freezeRecord')->name('finance.freezeRecord'); // 用户冻结记录
         Route::get('memberReconciliation', 'Back\SrcViewController@memberReconciliation')->name('finance.memberReconciliation'); // 会员对账
         Route::get('agentReconciliation', 'Back\SrcViewController@agentReconciliation')->name('finance.agentReconciliation'); // 代理对账
     });
@@ -212,6 +213,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/onlineUser', 'Back\Data\MembersDataController@onlineUser');
     Route::get('/back/datatables/rechargeRecord', 'Back\Data\FinanceDataController@rechargeRecord');
     Route::get('/back/datatables/drawingRecord', 'Back\Data\FinanceDataController@drawingRecord');
+    Route::get('/back/datatables/freezeRecord', 'Back\Data\FinanceDataController@freezeRecord');  //用户冻结记录-表格数据
     Route::get('/back/datatables/capitalDetails', 'Back\Data\FinanceDataController@capitalDetails'); //资金明细-表格数据
     Route::get('/back/datatables/memberReconciliation', 'Back\Data\FinanceDataController@memberReconciliation');
     Route::get('/back/datatables/agentReconciliation', 'Back\Data\FinanceDataController@agentReconciliation');
@@ -431,6 +433,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/addDrawingError', 'Back\DrawingController@addDrawingError')->middleware('add-log-handle')->name('ac.ad.addDrawingError'); //驳回提款申请
     Route::post('/action/admin/addDrawingErrorAuto', 'Back\DrawingController@addDrawingErrorAuto')->middleware('add-log-handle')->name('ac.ad.addDrawingErrorAuto'); //自动驳回提款申请
     Route::post('/action/admin/dispensingDrawing', 'Back\DrawingController@dispensingDrawing')->middleware('add-log-handle')->name('ac.ad.dispensingDrawing'); //自动出款
+    Route::post('/action/admin/drawingThaw', 'Back\DrawingController@drawingThaw')->middleware('add-log-handle')->name('ac.ad.drawingThaw'); //提现解冻
 
     Route::post('/action/recharge/totalRecharge', 'Back\RechargeController@totalRecharge')->middleware('add-log-handle')->name('ac.ad.recharge.totalRecharge'); //充值记录的总额统计
     Route::post('/action/drawing/totalDrawing', 'Back\DrawingController@totalDrawing')->middleware('add-log-handle')->name('ac.ad.drawing.totalDrawing'); //提款记录的总额统计

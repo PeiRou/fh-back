@@ -105,6 +105,9 @@
                 @if($hasPermission->hasPermission('finance.capitalDetails') == "has")
                 <li id="menu-financeManage-capitalDetails"><a href="{{ route('finance.capitalDetails') }}"><cite></cite><span>资金明细</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('finance.freezeRecord') == "has")
+                <li id="menu-financeManage-freezeRecord"><a href="{{ route('finance.freezeRecord') }}"><cite></cite><span>用户冻结记录</span></a></li>
+                @endif
                 @if($hasPermission->hasPermission('finance.memberReconciliation') == "has")
                 <li id="menu-financeManage-memberReconciliation"><a href="{{ route('finance.memberReconciliation') }}"><cite></cite><span>会员对账</span></a></li>
                 @endif

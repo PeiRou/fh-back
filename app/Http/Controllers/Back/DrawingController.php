@@ -9,6 +9,7 @@ use App\Helpers\PaymentPlatform;
 use App\PayOnlineNew;
 use App\SystemSetting;
 use App\User;
+use App\UserFreezeMoney;
 use App\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -376,5 +377,18 @@ class DrawingController extends Controller
         return $PaymentPlatform->postCurl(SystemSetting::where('id',1)->value('payment_platform_dispensing'),[
             'ciphertext' => base64_encode(json_encode($aArray)),
         ]);
+    }
+
+    //提现解冻
+    public function drawingThaw(Request $request){
+        $id = $request->post('id');
+        if(empty($id)){
+            return ['status' => false,'msg'=>'参数错误'];
+        }
+        if(UserFreezeMoney::where('id',$id)->delete()){
+            return ['status' => true];
+        }else{
+            return ['status' => false,'msg' => '解冻失败'];
+        }
     }
 }

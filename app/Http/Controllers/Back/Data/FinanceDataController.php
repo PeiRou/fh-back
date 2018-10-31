@@ -10,6 +10,7 @@ use App\Levels;
 use App\PayOnlineNew;
 use App\Recharges;
 use App\User;
+use App\UserFreezeMoney;
 use App\UserRecon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -508,5 +509,24 @@ class FinanceDataController extends Controller
 //        $agentRecon = AgentRecon::all();
 //        return DataTables::of($agentRecon)
 //            ->make(true);
+    }
+
+    //用户冻结记录
+    public function freezeRecord(Request $request){
+        $aData = UserFreezeMoney::freezeRecord($request->all());
+        return DataTables::of($aData['aData'])
+            ->editColumn('user',function ($aData){
+                return $aData->username.(empty($aData->fullName)?'':'('.$aData->fullName.')');
+            })
+            ->editColumn('status',function ($aData){
+                return $aData->userFreezeMoneyStatus[$aData->status];
+            })
+            ->editColumn('control',function ($aData){
+                return '<span class="edit-link" onclick="status(\''.$aData->id.'\')"> 解冻</span>';
+            })
+            ->rawColumns(['control'])
+            ->setTotalRecords($aData['iCount'])
+            ->skipPaging()
+            ->make(true);
     }
 }

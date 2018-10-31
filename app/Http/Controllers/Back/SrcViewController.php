@@ -273,6 +273,10 @@ class SrcViewController extends Controller
         $aRechargesType = Recharges::$rechargesType;
         return view('back.capitalDetails',compact('games','playTypes','capitalTimes','aRechargesType'));
     }
+    //用户冻结记录
+    public function freezeRecord(){
+        return view('back.freezeRecord');
+    }
     //会员对账
     public function memberReconciliation()
     {
