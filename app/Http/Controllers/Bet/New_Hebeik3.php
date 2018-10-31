@@ -284,34 +284,4 @@ class New_Hebeik3
             }
         }
     }
-
-    private function bunko($win,$gameId,$issue){
-        $id = [];
-        foreach ($win as $k=>$v){
-            $id[] = $v;
-        }
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        if($getUserBets){
-            $sql = "UPDATE bet SET bunko = CASE ";
-            $sql_lose = "UPDATE bet SET bunko = CASE ";
-            $ids = implode(',', $id);
-            if($ids && isset($ids)){
-                foreach ($getUserBets as $item){
-                    $bunko = $item->bet_money * $item->play_odds;
-                    $bunko_lose = 0-$item->bet_money;
-                    $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                    $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-                }
-                $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-                $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-                $run = DB::statement($sql);
-                if($run == 1){
-                    $run2 = DB::statement($sql_lose);
-                    if($run2 == 1){
-                        return 1;
-                    }
-                }
-            }
-        }
-    }
 }
