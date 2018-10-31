@@ -44,6 +44,12 @@ class SrcViewController extends Controller
         'k3' => 'back.open.k3', //快3类
         'ssc' => 'back.open.ssc', //时时彩
         'sc' => 'back.open.sc', //秒速赛车
+        'gd11x5' => 'back.open.gd11x5',//广东11选5
+        'gdklsf' => 'back.open.gdklsf',//广东快乐十分
+        'lhc' => 'back.open.lhc',//六合彩
+        'xylhc' => 'back.open.xylhc', //幸运六合彩
+        'bjkl8' => 'back.open.bjkl8', //北京快乐8
+        'cqxync' => 'back.open.cqxync', //重庆幸运农场
     ];
 
     //代理登录页面
@@ -299,18 +305,31 @@ class SrcViewController extends Controller
             'title' => '重庆幸运农场',
             'activeName' => 'menu-openManage-cqxync',
             'type' => 'xync', //
+            'cat' => 'cqxync'
         ];
-        return view('back.open.cqxync',compact('data'));
+        return view($this->viewArr[$data['cat']],compact('data'));
 //        return view('back.open.cqxync');
     }
     //广东快乐十分
     public function openManage_gdklsf()
     {
-        return view('back.open.gdklsf');
+        $data = [
+            'title' => '广东快乐十分',
+            'activeName' => 'menu-openManage-gdklsf',
+            'type' => 'gdkl10', //
+            'cat' => 'gdklsf' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }//广东11选5
     public function openManage_gd11x5()
     {
-        return view('back.open.gd11x5');
+        $data = [
+            'title' => '广东11选5',
+            'activeName' => 'menu-openManage-gd11x5',
+            'type' => 'gd11x5', //
+            'cat' => 'gd11x5' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //重庆时时彩
     public function openManage_cqssc()
@@ -337,7 +356,14 @@ class SrcViewController extends Controller
     //北京快乐8
     public function openManage_bjkl8()
     {
-        return view('back.open.bjkl8');
+        $data = [
+            'title' => '北京快乐8',
+            'activeName' => 'menu-openManage-bjkl8',
+            'type' => 'bjkl8', //
+            'cat' => 'bjkl8' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+//        return view('back.open.bjkl8');
     }
     //秒速赛车
     public function openManage_mssc()
@@ -496,13 +522,24 @@ class SrcViewController extends Controller
     //六合彩
     public function openManage_xglhc()
     {
-        $data['type'] = 'lhc';
-        return view('back.open.lhc',compact('data'));
+        $data = [
+            'title' => '六合彩',
+            'activeName' => 'menu-openManage-lhc',
+            'type' => 'lhc',
+            'cat' => 'lhc' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
     }
     //幸运六合彩
     public function openManage_xylhc()
     {
-        $data['type'] = 'xylhc';
+        $data = [
+            'title' => '六合彩',
+            'activeName' => 'menu-openManage-xylhc',
+            'type' => 'xylhc',
+            'cat' => 'xylhc' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
         return view('back.open.xylhc',compact('data'));
     }
     

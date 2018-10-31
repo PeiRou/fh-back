@@ -190,7 +190,7 @@ function opencqssc(id,issue,type) {
         title: '广东11选5-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content:  'url:/back/modal/open/'+id+'/gd11x5/gd11x5/'+issue+'/'+type,
+        content:  'url:/back/modal/open/'+id+'/'+gameType+'/'+cat+'/'+issue+'/'+type,
         buttons: {
             formSubmit: {
                 text:'确定',

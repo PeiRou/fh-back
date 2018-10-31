@@ -9,7 +9,7 @@
 @section('content')
     <div class="content-top">
         <div class="breadcrumb">
-            <b>位置：</b>重庆幸运农场历史记录
+            <b>位置：</b>{{ $data['title'] }}历史记录
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
     </div>
@@ -52,7 +52,12 @@
 
 @section('page-js')
     <script>
+        var gameType = "{{ $data['type'] }}";
+        var title = "{{ $data['title'] }}";
+        var cat = "{{ $data['cat'] }}";
         var testServer = {{ env('TEST',0) }};
+        $('#menu-openManage').addClass('nav-show');
+        $("#{{ $data['activeName'] }}").addClass('active');
     </script>
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
