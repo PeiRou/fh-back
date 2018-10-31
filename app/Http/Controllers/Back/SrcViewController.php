@@ -692,6 +692,11 @@ class SrcViewController extends Controller
     {
         return view('back.gameManage.killSetting');
     }
+    //代理赔率设定
+    public function agentOdds()
+    {
+        return view('back.gameManage.agentOdds');
+    }
 
     //权限控制
     public function PermissionsAuth(Request $request)

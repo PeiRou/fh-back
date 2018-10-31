@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back\Data;
 
+use App\AgentOddsSetting;
 use App\Games;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -87,6 +88,17 @@ class GameDataController extends Controller
             ->editColumn('kill_rate',function ($games){
                 return floatval($games->kill_rate);
             })
+            ->make(true);
+    }
+
+    //代理赔率设定
+    public function agentOdds(){
+        $aData = AgentOddsSetting::get();
+        return DataTables::of($aData)
+            ->editColumn('control',function ($iData){
+                return '<span class="edit-link" onclick="edit(\''.$iData->id.'\')"><i class="iconfont">&#xe64c;</i> 修改 </span>';
+            })
+            ->rawColumns(['control'])
             ->make(true);
     }
 }

@@ -68,6 +68,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('tradeSetting', 'Back\SrcViewController@tradeSetting')->name('game.tradeSetting'); //交易设定
         Route::get('handicapSetting', 'Back\SrcViewController@handicapSetting')->name('game.handicapSetting'); //盘口设定
         Route::get('killSetting', 'Back\SrcViewController@killSetting')->name('game.killSetting'); //杀率设定
+        Route::get('agentOdds', 'Back\SrcViewController@agentOdds')->name('game.agentOdds'); //代理赔率设定
     });
 
 //开奖管理
@@ -209,6 +210,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/feedback', 'Back\Data\SystemDataController@feedback'); //建议反馈-表格数据
     Route::get('/back/datatables/bank', 'Back\Data\PayDataController@bank');
     Route::get('/back/datatables/games', 'Back\Data\GameDataController@games');
+    Route::get('/back/datatables/agentOdds', 'Back\Data\GameDataController@agentOdds'); //代理赔率设定-表格数据
     Route::get('/back/datatables/gamekillsetting', 'Back\Data\GameDataController@gamekillsetting');
     Route::get('/back/datatables/onlineUser', 'Back\Data\MembersDataController@onlineUser');
     Route::get('/back/datatables/rechargeRecord', 'Back\Data\FinanceDataController@rechargeRecord');
@@ -423,6 +425,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/saveOddsRebate', 'Back\SrcGameController@saveOddsRebate')->middleware('add-log-handle')->name('ac.ad.saveOddsRebate');//修改游戏开启和停用状态
     Route::post('/action/admin/killStatus', 'Back\SrcGameController@killStatus')->middleware(['check-permission','add-log-handle'])->name('game.killStatus'); //杀率开关
     Route::post('/action/admin/editKillSetting', 'Back\SrcGameController@editKillSetting')->middleware(['check-permission','add-log-handle'])->name('game.editKillSetting'); //修改杀率保留营利比
+    Route::post('/action/admin/addAgentOdds', 'Back\SrcGameController@addAgentOdds');//添加代理赔率
+    Route::post('/action/admin/editAgentOdds', 'Back\SrcGameController@editAgentOdds');//修改代理赔率
 
     Route::post('/action/admin/passRecharge', 'Back\RechargeController@passRecharge')->middleware('add-log-handle')->name('ac.ad.passRecharge'); //通过充值申请
     Route::post('/action/admin/passOnlineRecharge', 'Back\RechargeController@passOnlineRecharge')->middleware('add-log-handle')->name('ac.ad.passOnlineRecharge'); //通过在线充值申请
@@ -575,7 +579,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/exportUser','Back\Ajax\ModalController@exportUser')->middleware('check-permission')->name('member.exportUser.view'); //导出用户数据-模板
     Route::get('/back/modal/addStatistics','Back\Ajax\ModalController@addStatistics')->middleware('check-permission')->name('report.addStatistics.view'); //操作报表添加-模板
     Route::get('/back/modal/addAgentSettleDomain', 'Back\Ajax\ModalController@addAgentSettleDomain'); //添加代理专属域名
-    Route::get('/back/modal/editAgentSettleDomain/{id}', 'Back\Ajax\ModalController@editAgentSettleDomain'); //修改代理专属域名
+    Route::get('/back/modal/editAgentSettleDomain/{id}', 'Back\Ajax\ModalController@editAgentSettleDomain'); //修改代理专属域名Route::get('/back/modal/gameAgentOddsAdd', 'Back\Ajax\ModalController@gameAgentOddsAdd'); //添加代理赔率-模板
+    Route::get('/back/modal/gameAgentOddsEdit/{id}', 'Back\Ajax\ModalController@gameAgentOddsEdit'); //修改代理赔率-模板
+
 
 
 //游戏MODAL
