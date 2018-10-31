@@ -93,32 +93,48 @@ WHERE `users`.`testFlag` = 0 ";
         return DB::update(self::updateBatchStitching('users',$aArray,['money'],'id'));
     }
 
-    //修改余额2
-    public static function editBatchUserMoneyData2($aData){
+    //冻结时返回提现金额
+    public static function editBatchUserMoneyDataWithdraw($aData){
         $aArray = [];
         foreach ($aData as $kData => $iData){
             if(isset($aArray[$iData->id]) && array_key_exists($iData->id,$aArray)){
-                $aArray[$iData->id]['money'] += -$iData->bet_bunko;
+                $aArray[$iData->id]['money'] += $iData->amount;
             }else{
                 $aArray[$iData->id] = [
                     'id' => $iData->id,
-                    'money' => $iData->amount - $iData->bet_bunko,
+                    'money' => $iData->amount,
                 ];
             }
         }
         return DB::update(self::updateBatchStitching('users',$aArray,['money'],'id'));
     }
 
-    //修改余额2
-    public static function editBatchUserMoneyData3($aData,$symbol = '-'){
+    //冻结时返回下注后结算前状态
+    public static function editBatchUserMoneyDataFreeze($aData){
         $aArray = [];
         foreach ($aData as $kData => $iData){
             if(isset($aArray[$iData->id]) && array_key_exists($iData->id,$aArray)){
-                $aArray[$iData->id]['money'] += $symbol.$iData->bet_money;
+                $aArray[$iData->id]['money'] += -$iData->bet_bunko - $iData->bet_money;
             }else{
                 $aArray[$iData->id] = [
                     'id' => $iData->id,
-                    'money' => $symbol.$iData->bet_money,
+                    'money' => -$iData->bet_bunko - $iData->bet_money,
+                ];
+            }
+        }
+        return DB::update(self::updateBatchStitching('users',$aArray,['money'],'id'));
+    }
+
+    //撤单后退还本金
+    public static function editBatchUserMoneyDataReturn($aData){
+        $aArray = [];
+        foreach ($aData as $kData => $iData){
+            if(isset($aArray[$iData->id]) && array_key_exists($iData->id,$aArray)){
+                $aArray[$iData->id]['money'] += $iData->bet_money;
+            }else{
+                $aArray[$iData->id] = [
+                    'id' => $iData->id,
+                    'money' => $iData->bet_money,
                 ];
             }
         }

@@ -911,7 +911,7 @@ class OpenHistoryController extends Controller
         return response()->json(['status' => false,'msg' => '注单失败']);
     }
 
-    //撤单2
+    //冻结后撤单
     public function canceledBetIssue($issue,$type){
         $gameInfo = Games::where('code',$type)->first();
         if(empty($tableSuffix = Games::$aCodeGameName[$type])){
@@ -926,13 +926,13 @@ class OpenHistoryController extends Controller
         return $this->canceledBetIssueOperating($issue,$type,$gameInfo);
     }
 
-    //撤单2操作
+    //冻结后的撤单操作
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
         $aBet = Bets::getBetAndUserByIssueLose($issue,$gameInfo->game_id);
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
         if(empty($aBet)){
-            if(!empty($aBetAll))    Users::editBatchUserMoneyData3($aBetAll,'+');
+            if(!empty($aBetAll))    Users::editBatchUserMoneyDataReturn($aBetAll);
             Bets::updateBetStatus($issue, $gameInfo->game_id);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             return ['status' => true,'mag' => '操作成功2'];
@@ -962,7 +962,7 @@ class OpenHistoryController extends Controller
         try {
             Bets::updateBetStatus($issue, $gameInfo->game_id);
             Users::editBatchUserMoneyData1($aBet);
-            if(!empty($aBetAll))    Users::editBatchUserMoneyData3($aBetAll,'+');
+            if(!empty($aBetAll))    Users::editBatchUserMoneyDataReturn($aBetAll);
             Capital::insert($aCapital);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             DB::commit();
@@ -975,7 +975,7 @@ class OpenHistoryController extends Controller
 
     //冻结
     public function freeze($issue,$type){
-        $gameInfo = Games::where('code',$type)->first();;
+        $gameInfo = Games::where('code',$type)->first();
         if(empty($tableSuffix = Games::$aCodeGameName[$type])){
             return ['status' => false,'msg' => '游戏分类标识错误'];
         }
@@ -988,7 +988,7 @@ class OpenHistoryController extends Controller
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
         if(empty($aBet)) {
-            if(!empty($aBetAll))    Users::editBatchUserMoneyData3($aBetAll);
+            if(!empty($aBetAll))    Users::editBatchUserMoneyDataFreeze($aBetAll);
             return ['status' => true, 'mag' => '操作成功2'];
         }
         $aCapital = [];
@@ -1026,8 +1026,8 @@ class OpenHistoryController extends Controller
         DB::beginTransaction();
 
         try {
-            Users::editBatchUserMoneyData2($aBet);
-            if(!empty($aBetAll))    Users::editBatchUserMoneyData3($aBetAll);
+            if(!empty($aBetAll))    Users::editBatchUserMoneyDataFreeze($aBetAll);
+            Users::editBatchUserMoneyDataWithdraw($aBet);
             Drawing::whereIn('user_id',$aUserId)->update(['status' => '3','msg' => '提款申请未通过,如有疑问，请咨询在线客服']);
             Bets::where('issue',$issue)->whereIn('user_id',$aUserId)->update(['status' => '3']);
             Capital::insert($aCapital);
@@ -1062,42 +1062,36 @@ class OpenHistoryController extends Controller
 
     //重新开奖操作
     public function renewLotteryOperating($issue,$type,$gameInfo,$number){
-        $aBet = Bets::getBetAndUserByIssueLose($issue,$gameInfo->game_id);
-//        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
+        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 7]);
-        if(empty($aBet)) {
-//            if(!empty($aBetAll))    Users::editBatchUserMoneyData3($aBetAll);
-            UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
-            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
-            return ['status' => true, 'msg' => '操作成功2'];
-        }
-        $aCapital = [];
-        $adminId = Session::get('account_id');
-        $dateTime = date('Y-m-d H:i:s');
-        foreach ($aBet as $kBet => $iBet){
-            $aCapital[] = [
-                'to_user' => $iBet->id,
-                'user_type' => 'user',
-                'order_id' => null,
-                'type' => 't07',
-                'rechargesType' => 0,
-                'game_id' => $gameInfo->game_id,
-                'issue' => $iBet->issue,
-                'money' => -$iBet->bet_bunko,
-                'balance' => $iBet->money,
-                'operation_id' => $adminId,
-                'created_at' => $dateTime,
-                'updated_at' => $dateTime,
-            ];
-        }
 
         DB::beginTransaction();
 
         try {
+            if(!empty($aBetAll)){
+                $aCapital = [];
+                $adminId = Session::get('account_id');
+                $dateTime = date('Y-m-d H:i:s');
+                foreach ($aBetAll as $kBet => $iBet){
+                    $aCapital[] = [
+                        'to_user' => $iBet->id,
+                        'user_type' => 'user',
+                        'order_id' => null,
+                        'type' => 't07',
+                        'rechargesType' => 0,
+                        'game_id' => $gameInfo->game_id,
+                        'issue' => $iBet->issue,
+                        'money' => -$iBet->bet_bunko,
+                        'balance' => $iBet->money,
+                        'operation_id' => $adminId,
+                        'created_at' => $dateTime,
+                        'updated_at' => $dateTime,
+                    ];
+                }
+                Capital::insert($aCapital);
+            }
+
             Bets::updateBetBunkoClear($issue, $gameInfo->game_id);
-            Users::editBatchUserMoneyData1($aBet);
-            Capital::insert($aCapital);
-//            if(!empty($aBetAll))    Users::editBatchUserMoneyData3($aBetAll);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
             DB::commit();
