@@ -1,7 +1,4 @@
 $(function () {
-    $('#menu-openManage').addClass('nav-show');
-    $('#menu-openManage-gdklsf').addClass('active');
-
     dataTable = $('#datTable').DataTable({
         searching: false,
         bLengthChange: false, 
@@ -183,7 +180,7 @@ function opencqssc(id,issue,type) {
         title: '广东快乐十分-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content: 'url:/back/modal/open/'+id+'/gdkl10/xync/'+issue+'/'+type,
+        content: 'url:/back/modal/open/'+id+'/'+gameType+'/xync/'+issue+'/'+type,
         buttons: {
             formSubmit: {
                 text:'确定',

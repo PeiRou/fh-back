@@ -1,7 +1,4 @@
 $(function () {
-    $('#menu-openManage').addClass('nav-show');
-    $('#menu-openManage-lhc').addClass('active');
-
     dataTable = $('#lhcHistoryTable').DataTable({
         searching: false,
         bLengthChange: false,

@@ -1,7 +1,4 @@
 $(function () {
-    $('#menu-openManage').addClass('nav-show');
-    $('#menu-openManage-bjkl8').addClass('active');
-
     dataTable = $('#datTable').DataTable({
         searching: false,
         bLengthChange: false,
