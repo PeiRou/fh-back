@@ -923,6 +923,7 @@ class OpenHistoryController extends Controller
                 return $result;
             }
         }
+        sleep(1);
         return $this->canceledBetIssueOperating($issue,$type,$gameInfo);
     }
 
@@ -947,8 +948,8 @@ class OpenHistoryController extends Controller
                 'rechargesType' => 0,
                 'game_id' => $gameInfo->game_id,
                 'issue' => $iBet->issue,
-                'money' => -$iBet->bet_bunko,
-                'balance' => $iBet->money,
+                'money' => $iBet->bet_money,
+                'balance' => $iBet->money + $iBet->bet_money,
                 'operation_id' => $adminId,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
@@ -984,51 +985,76 @@ class OpenHistoryController extends Controller
         $aBet = Bets::getBetUserDrawingByIssue($issue,$gameInfo->game_id);
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
-        if(empty($aBet)) {
-            if(!empty($aBetAll))    Users::editBatchUserMoneyDataFreeze($aBetAll);
-            return ['status' => true, 'mag' => '操作成功2'];
-        }
+        $aCapitalFreeze = [];
         $aCapital = [];
         $aUserFreezeMoney = [];
         $adminId = Session::get('account_id');
         $dateTime = date('Y-m-d H:i:s');
+        $dateTime1 = date('Y-m-d H:i:s',time()+1);
         $aUserId = [];
-        foreach ($aBet as $kBet => $iBet){
-            $aCapital[] = [
-                'to_user' => $iBet->id,
-                'user_type' => 'user',
-                'order_id' => null,
-                'type' => 't25',
-                'rechargesType' => 0,
-                'game_id' => $iBet->game_id,
-                'issue' => $iBet->issue,
-                'money' => $iBet->amount -$iBet->bet_bunko,
-                'balance' => $iBet->money,
-                'operation_id' => $adminId,
-                'created_at' => $dateTime,
-                'updated_at' => $dateTime,
-            ];
-            $aUserFreezeMoney[] = [
-                'user_id' => $iBet->id,
-                'game_id' => $iBet->game_id,
-                'issue' => $iBet->issue,
-                'money' => -$iBet->bet_bunko,
-                'status' => 0,
-                'created_at' => $dateTime,
-                'updated_at' => $dateTime,
-            ];
-            $aUserId[] = $iBet->id;
+        if(!empty($aBetAll)){
+            foreach ($aBetAll as $kBet => $iBet){
+                $aCapital[] = [
+                    'to_user' => $iBet->id,
+                    'user_type' => 'user',
+                    'order_id' => null,
+                    'type' => 't06',
+                    'rechargesType' => 0,
+                    'game_id' => $iBet->game_id,
+                    'issue' => $iBet->issue,
+                    'money' => -$iBet->bet_bunko - $iBet->bet_money,
+                    'balance' => $iBet->money + (-$iBet->bet_bunko - $iBet->bet_money),
+                    'operation_id' => $adminId,
+                    'created_at' => $dateTime,
+                    'updated_at' => $dateTime,
+                ];
+            }
+        }
+        if(!empty($aBet)) {
+            foreach ($aBet as $kBet1 => $iBet1) {
+                if(!empty($iBet1->amount)) {
+                    $aCapitalFreeze[] = [
+                        'to_user' => $iBet1->id,
+                        'user_type' => 'user',
+                        'order_id' => null,
+                        'type' => 't25',
+                        'rechargesType' => 0,
+                        'game_id' => $iBet1->game_id,
+                        'issue' => $iBet1->issue,
+                        'money' => $iBet1->amount,
+                        'balance' => $iBet1->money + (-$iBet1->bet_bunko - $iBet1->bet_money + $iBet1->amount),
+                        'operation_id' => $adminId,
+                        'created_at' => $dateTime1,
+                        'updated_at' => $dateTime1,
+                    ];
+                    $aUserFreezeMoney[] = [
+                        'user_id' => $iBet1->id,
+                        'game_id' => $iBet1->game_id,
+                        'issue' => $iBet1->issue,
+                        'money' => $iBet1->amount,
+                        'status' => 0,
+                        'created_at' => $dateTime1,
+                        'updated_at' => $dateTime1,
+                    ];
+                }
+                $aUserId[] = $iBet1->id;
+            }
         }
 
         DB::beginTransaction();
 
         try {
-            if(!empty($aBetAll))    Users::editBatchUserMoneyDataFreeze($aBetAll);
-            Users::editBatchUserMoneyDataWithdraw($aBet);
-            Drawing::whereIn('user_id',$aUserId)->update(['status' => '3','msg' => '提款申请未通过,如有疑问，请咨询在线客服']);
-            Bets::where('issue',$issue)->whereIn('user_id',$aUserId)->update(['status' => '3']);
-            Capital::insert($aCapital);
-            UserFreezeMoney::insert($aUserFreezeMoney);
+            if(!empty($aBetAll)){
+                Users::editBatchUserMoneyDataFreeze($aBetAll);
+                if(!empty($aCapital))    Capital::insert($aCapital);
+            }
+            if(!empty($aBet)) {
+                Users::editBatchUserMoneyDataWithdraw($aBet);
+                Drawing::whereIn('user_id',$aUserId)->update(['status' => '3','msg' => '后台手动冻结']);
+                Bets::where('issue',$issue)->whereIn('user_id',$aUserId)->update(['status' => '3']);
+                if(!empty($aCapitalFreeze))    Capital::insert($aCapitalFreeze);
+                UserFreezeMoney::insert($aUserFreezeMoney);
+            }
             DB::commit();
             return ['status' => true,'msg'=> '操作成功'];
         }catch(\Exception $e){
@@ -1078,8 +1104,8 @@ class OpenHistoryController extends Controller
                         'rechargesType' => 0,
                         'game_id' => $gameInfo->game_id,
                         'issue' => $iBet->issue,
-                        'money' => -$iBet->bet_bunko,
-                        'balance' => $iBet->money,
+                        'money' => $iBet->bet_money,
+                        'balance' => $iBet->money + $iBet->bet_money,
                         'operation_id' => $adminId,
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,

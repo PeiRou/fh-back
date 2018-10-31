@@ -183,7 +183,7 @@ class Bets extends Model
     }
 
     public static function getBetUserDrawingByIssue($issue,$gameId){
-        $aSql = "SELECT `users`.`id`,SUM(bet_money) AS betMoney,SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` > 0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END)END) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`,`dr`.`amount`
+        $aSql = "SELECT `users`.`id`,SUM(`bet`.`bet_money`) AS `bet_money`,SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` > 0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END)END) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`,`dr`.`amount`
                     FROM `bet` 
                     JOIN `users` ON `users`.`id` = `bet`.`user_id`
                     LEFT JOIN (SELECT `user_id`,SUM(`amount`) AS `amount` FROM `drawing` WHERE `status` = 0 GROUP BY `user_id`) AS `dr` ON `dr`.`user_id` = `bet`.`user_id`
