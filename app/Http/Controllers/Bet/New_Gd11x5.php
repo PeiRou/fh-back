@@ -732,14 +732,15 @@ class New_Gd11x5
                 $getUserHeBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArrayPush)->get();
                 if($getUserHeBets){
                     $updateHeId = [];
-                    $sql_he = "UPDATE bet SET bunko = CASE ";
+                    $sql_upd_he = "UPDATE bet SET bunko = CASE ";
+                    $sql_he = "";
                     foreach ($getUserHeBets as $item){
                         $updateHeId[] = $item->bet_id;
                         $bunko_he = $item->bet_money * 1;
                         $sql_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
                     }
                     $ids_he = implode(',', $updateHeId);
-                    $sql_he .= "END WHERE `bet_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
+                    $sql_upd_he .= $sql_he . "END WHERE `bet_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
                 } else {
                     $sql_he = 0;
                 }
@@ -768,8 +769,8 @@ class New_Gd11x5
                     $bunko_index++;
                 }
 
-                if($sql_he !== 0){
-                    $run5 = DB::connection('mysql::write')->statement($sql_he);
+                if($sql_he != ""){
+                    $run5 = DB::connection('mysql::write')->statement($sql_upd_he);
                     if($run5 == 1){
                         $bunko_index++;
                     }
