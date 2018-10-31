@@ -267,7 +267,7 @@ function canceled(issue) {
                         dataType:'json',
                         success:function (data) {
                             if(data.status == true){
-                                alert('撤单成功');
+                                dataTable.ajax.reload();
                             }else{
                                 Calert(data.msg,'red')
                             }
@@ -306,7 +306,7 @@ function freeze(issue) {
                         dataType:'json',
                         success:function (data) {
                             if(data.status == true){
-                                alert('冻结成功');
+                                dataTable.ajax.reload();
                             }else{
                                 Calert(data.msg,'red')
                             }

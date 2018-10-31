@@ -214,7 +214,7 @@ class OpenHistoryController extends Controller
         if(!$gameType = $request->get('type')){
             return response()->json(['status' => false,'msg' => '参数不为空！']);
         }
-        $table = 'game_'.$gameType;
+        $table = 'game_'.Games::$aCodeGameName[$gameType];
         $verifyData = $this->verifyData($request->all(),2);
         if($verifyData['stauts']){
             return response()->json(['status' => false, 'msg' => $verifyData['msg']]);
