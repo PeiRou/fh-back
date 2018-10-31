@@ -574,7 +574,7 @@ class New_Gd11x5
         }
         $sql_upd .= $sql ."END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $sql_upd_lose .= $sql_lose ."END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $run = !empty($sql_upd)?DB::statement($sql):0;
+        $run = !empty($sql)?DB::statement($sql_upd):0;
         if($run == 1){
             //直选- Start
             $zhixuan_playCate = 34; //直选分类ID
