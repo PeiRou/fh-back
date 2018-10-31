@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Back\GameTables;
 
+use App\AgentOddsSetting;
 use App\Games;
 use App\Play;
 use App\PlayCates;
+use App\SystemSetting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
@@ -236,6 +238,7 @@ class SaveGameOddsController extends Controller
                 $next_row = "\n";
                 $playCate_txt = "var playCates = " . $playCate->keyBy('id') . ";";
                 $plays_txt = "var plays = " . collect($newCollect)->keyBy('id') . ";";
+                $animalsYear = "var animalsYear = ".json_encode(Config::get('website.animalsYear')).";";
                 $write = Storage::disk('static')->put('gamedatas.js', $gameMap_txt . $next_row . $playCate_txt . $next_row . $plays_txt );
 
                 $gameMap_txt = '"gameMap" : ' . $game->keyBy('id') . ",";
@@ -246,6 +249,7 @@ class SaveGameOddsController extends Controller
                 $plays_txt = collect($newCollect)->keyBy('id');
                 $writeIos = Storage::disk('static')->put('iosOdds.json', $plays_txt);
                 if ($write == 1 && $write1 == 1 && $writeIos == 1) {
+                    $this->agentOddsAllFile($newCollect,$gameMap_txt,$gameMap_txt,$playCate_txt,$animalsYear,$next_row);
                     return response()->json([
                         'status' => true
                     ]);
@@ -359,5 +363,62 @@ class SaveGameOddsController extends Controller
         ];
         if(empty($id)) return $filter;
         return isset($filter[$id]) ? $filter[$id] : false;
+    }
+
+    //生成全部层级代理赔率文件
+    public function agentOddsAllFile($newCollect,$game_txt,$gameMap_txt,$playCate_txt,$animalsYear,$next_row){
+        $aAgentOdds = AgentOddsSetting::select('level','odds')->orderBy('level','asc')->get();
+        $this->agentOddsAloneFile($aAgentOdds,$newCollect,$game_txt,$gameMap_txt,$playCate_txt,$animalsYear,$next_row);
+    }
+
+    //生成单个层级代理赔率文件
+    public function agentOddsAloneFile($aAgentOdds,$newCollect,$game_txt,$gameMap_txt,$playCate_txt,$animalsYear,$next_row,$i = 0,$preOdds = 0){
+        if(!empty($aAgentOdds[$i]->odds) && !empty($aAgentOdds[$i]->level)){
+            $aArray = [];
+            if(empty($preOdds)){
+                $iAgentOddsBasis = SystemSetting::getValueByRemark1('agent_odds_basis');
+                foreach ($newCollect as $kNewCollect => $iNewCollect) {
+                    $aArray[$kNewCollect] = $iNewCollect;
+                    $aArray[$kNewCollect]['odds'] = $this->getAgentOdds($iAgentOddsBasis, $aAgentOdds[$i]->odds, $iNewCollect['odds']);
+                }
+                $preOdds = $aAgentOdds[$i]->odds;
+            }else{
+                foreach ($newCollect as $kNewCollect => $iNewCollect){
+                    $aArray[$kNewCollect] = $iNewCollect;
+                    $aArray[$kNewCollect]['odds'] = $this->getAgentOdds($preOdds, $aAgentOdds[$i]->odds, $iNewCollect['odds']);
+                }
+                $preOdds = $aAgentOdds[$i]->odds;
+            }
+
+            $plays_txt = "var plays = ".collect($aArray)->keyBy('id').";";
+            Storage::disk('static')->put('gamedatas'.$aAgentOdds[$i]->level.'.js',$game_txt.$next_row.$gameMap_txt.$next_row.$playCate_txt.$next_row.$plays_txt);
+
+            $plays_ios_txt = collect($aArray)->keyBy('id');
+            Storage::disk('static')->put('iosOdds'.$aAgentOdds[$i]->level.'.json',$plays_ios_txt);
+
+            $i++;
+            $this->agentOddsAloneFile($aAgentOdds,$aArray,$game_txt,$gameMap_txt,$playCate_txt,$animalsYear,$next_row,$i,$preOdds);
+        }
+    }
+
+    //获取集体赔率
+    public function getAgentOdds($preOdds,$setOdds,$justOdds){
+        //获取小数后位数
+        $length = $this->getDecimalNumber($justOdds);
+        $odds = (string)round((1 - ($preOdds -$setOdds)/$preOdds)*$justOdds,$length);
+        $oddsLength = $this->getDecimalNumber($odds);
+        if($oddsLength < $length){
+            return $odds.'0';
+        }
+        return $odds;
+    }
+
+    //获取小数后位数
+    public function getDecimalNumber($preOdds){
+        $aNum = explode('.',$preOdds);
+        if(empty($aNum[1]))
+            return 0;
+        else
+            return strlen($aNum[1]);
     }
 }
