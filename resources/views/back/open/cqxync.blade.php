@@ -55,7 +55,6 @@
         var gameType = "{{ $data['type'] }}";
         var title = "{{ $data['title'] }}";
         var cat = "{{ $data['cat'] }}";
-        var testServer = {{ env('TEST',0) }};
         $('#menu-openManage').addClass('nav-show');
         $("#{{ $data['activeName'] }}").addClass('active');
     </script>
