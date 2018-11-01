@@ -30,7 +30,7 @@ class New_Gsk3
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
-            $bunko = $this->bunko($win,$gameId,$issue);
+            $bunko = $excelModel->bunko($win,$gameId,$issue);
             if($bunko == 1){
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
@@ -281,36 +281,6 @@ class New_Gsk3
                 $playId = $v;
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
-            }
-        }
-    }
-
-    private function bunko($win,$gameId,$issue){
-        $id = [];
-        foreach ($win as $k=>$v){
-            $id[] = $v;
-        }
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        if($getUserBets){
-            $sql = "UPDATE bet SET bunko = CASE ";
-            $sql_lose = "UPDATE bet SET bunko = CASE ";
-            $ids = implode(',', $id);
-            if($ids && isset($ids)){
-                foreach ($getUserBets as $item){
-                    $bunko = $item->bet_money * $item->play_odds;
-                    $bunko_lose = 0-$item->bet_money;
-                    $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                    $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-                }
-                $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-                $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-                $run = DB::statement($sql);
-                if($run == 1){
-                    $run2 = DB::statement($sql_lose);
-                    if($run2 == 1){
-                        return 1;
-                    }
-                }
             }
         }
     }

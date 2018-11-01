@@ -156,16 +156,18 @@ class Bets extends Model
             ->join('users','users.id','=','bet.user_id')->get()->toArray();
     }
 
-    public static function getBetAndUserByIssueAll($issue,$gameId){
+    public static function getBetAndUserByIssueAll($issue,$gameId,$bunko = true){
         $aSql = "SELECT `users`.`id`,SUM(`bet`.`bet_money`) AS `bet_money`,SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` > 0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END)END) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`
                     FROM `bet` 
                     JOIN `users` ON `users`.`id` = `bet`.`user_id`
-                    WHERE `bet`.`issue` = :issue AND `bet`.`game_id` = :game_id 
-                    GROUP BY `bet`.`user_id`";
+                    WHERE `bet`.`issue` = :issue AND `bet`.`game_id` = :game_id ";
         $aArray = [
             'issue' => $issue,
             'game_id' => $gameId
         ];
+        if($bunko)
+            $aSql .= " AND `bet`.`bunko` != 0 ";
+        $aSql .= " GROUP BY `bet`.`user_id`";
         return DB::select($aSql,$aArray);
     }
 
