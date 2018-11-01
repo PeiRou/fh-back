@@ -276,6 +276,12 @@ class OpenHistoryController extends Controller
         $msg = $this->notTen($request->get('msg'));
 
         $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5;
+        //不能有两个以上相同的数
+        $openNumArr =  explode(',',$openNum);
+        $openNumArr1 = array_unique($openNumArr);
+        if(count($openNumArr1) < count($openNumArr)){
+            return response()->json(['status' => false,'msg' => '请勿提交重复号码']);
+        }
         $update = DB::table($table)->where('id',$id)->update([
             'opennum' => $openNum,
             'year'=> date('Y',strtotime($info->opentime)),
