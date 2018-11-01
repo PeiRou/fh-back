@@ -151,13 +151,40 @@
         e.preventDefault();
         var $form = $(e.target),
             fv    = $form.data('formValidation');
+        var data = {
+            n1:$('#n1').val(),
+            n2:$('#n2').val(),
+            n3:$('#n3').val(),
+            n4:$('#n4').val(),
+            n5:$('#n5').val(),
+            n6:$('#n5').val(),
+            n7:$('#n5').val(),
+            n8:$('#n5').val(),
+            n9:$('#n5').val(),
+            n10:$('#n5').val(),
+            n11:$('#n5').val(),
+            n12:$('#n5').val(),
+            n13:$('#n5').val(),
+            n14:$('#n5').val(),
+            n15:$('#n5').val(),
+            n16:$('#n5').val(),
+            n17:$('#n5').val(),
+            n18:$('#n5').val(),
+            n19:$('#n5').val(),
+            n20:$('#n5').val(),
+        }
+        if(gameType == 'bjkl8'){
+            if(!checkRepeatValue(data)){
+                return Calert('请勿提交重复号码','red');
+            }
+        }
+        data.msg = $('#msg').val();
+        data.id = $('#id').val();
+        data.type = $('#type').val();
         $.ajax({
             url: $form.attr('action'),
             type: 'POST',
-            data: {id:$('#id').val()
-                ,n1:$('#n1').val(),n2:$('#n2').val(),n3:$('#n3').val(),n4:$('#n4').val(),n5:$('#n5').val(),n6:$('#n6').val(),n7:$('#n7').val(),n8:$('#n8').val(),n9:$('#n9').val(),n10:$('#n10').val()
-                ,n11:$('#n11').val(),n12:$('#n12').val(),n13:$('#n13').val(),n14:$('#n14').val(),n15:$('#n15').val(),n16:$('#n16').val(),n17:$('#n17').val(),n18:$('#n18').val(),n19:$('#n19').val(),n20:$('#n20').val()
-                ,msg:$('#msg').val()},
+            data: data,
             success: function(result) {
                 if(result.status == true){
                     jc.close();

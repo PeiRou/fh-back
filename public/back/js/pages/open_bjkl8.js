@@ -79,7 +79,7 @@ $(function () {
                     }else if(data.is_open == "0"){                      //未开奖
                         txt = "<li onclick='cancelAll("+data.id+")'>修改</li>" +
                             "<li onclick='cancel("+data.issue+")'>撤单</li>" +
-                            "<li onclick='openbjpk10("+data.id+")'>手动开奖</li>" ;
+                            "<li onclick='openbjkl8("+data.id+")'>手动开奖</li>" ;
                     }else if(data.is_open == "5"){
                         txt = "<li onclick='canceled("+data.issue+")'>撤单</li>" +
                             "<li onclick='changeNumber("+data.issue+")'>重新开奖</li>" ;

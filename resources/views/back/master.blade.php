@@ -478,6 +478,16 @@
        var marginTop = $('#menu-openManage li.active').index() * 30;
        $('#menu-openManage ul').scrollTop(marginTop);
     })
+    function checkRepeatValue(data){
+        var c = [];
+        for(k in data){
+            if(c[data[k]] || data[k] == ''){
+                return false;
+            }
+            c[data[k]] = data[k];
+        }
+        return true;
+    }
 </script>
 </body>
 </html>

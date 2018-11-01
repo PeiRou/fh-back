@@ -276,6 +276,12 @@ class OpenHistoryController extends Controller
         $msg = $this->notTen($request->get('msg'));
 
         $openNum = $n1.','.$n2.','.$n3.','.$n4.','.$n5;
+        //不能有两个以上相同的数
+        $openNumArr =  explode(',',$openNum);
+        $openNumArr1 = array_unique($openNumArr);
+        if(count($openNumArr1) < count($openNumArr)){
+            return response()->json(['status' => false,'msg' => '请勿提交重复号码']);
+        }
         $update = DB::table($table)->where('id',$id)->update([
             'opennum' => $openNum,
             'year'=> date('Y',strtotime($info->opentime)),
@@ -929,39 +935,36 @@ class OpenHistoryController extends Controller
 
     //冻结后的撤单操作
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
-        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
+        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id,false);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
-        if(empty($aBetAll)){
-            Bets::updateBetStatus($issue, $gameInfo->game_id);
-            UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
-            return ['status' => true,'mag' => '操作成功2'];
-        }
-        $aCapital = [];
-        $adminId = Session::get('account_id');
-        $dateTime = date('Y-m-d H:i:s');
-        foreach ($aBetAll as $kBet => $iBet){
-            $aCapital[] = [
-                'to_user' => $iBet->id,
-                'user_type' => 'user',
-                'order_id' => null,
-                'type' => 't16',
-                'rechargesType' => 0,
-                'game_id' => $gameInfo->game_id,
-                'issue' => $iBet->issue,
-                'money' => $iBet->bet_money,
-                'balance' => $iBet->money + $iBet->bet_money,
-                'operation_id' => $adminId,
-                'created_at' => $dateTime,
-                'updated_at' => $dateTime,
-            ];
-        }
 
         DB::beginTransaction();
 
         try {
             Bets::updateBetStatus($issue, $gameInfo->game_id);
-            Users::editBatchUserMoneyDataReturn($aBetAll);
-            Capital::insert($aCapital);
+            if(!empty($aBetAll)){
+                Users::editBatchUserMoneyDataReturn($aBetAll);
+                $aCapital = [];
+                $adminId = Session::get('account_id');
+                $dateTime = date('Y-m-d H:i:s');
+                foreach ($aBetAll as $kBet => $iBet) {
+                    $aCapital[] = [
+                        'to_user' => $iBet->id,
+                        'user_type' => 'user',
+                        'order_id' => null,
+                        'type' => 't16',
+                        'rechargesType' => 0,
+                        'game_id' => $gameInfo->game_id,
+                        'issue' => $iBet->issue,
+                        'money' => $iBet->bet_money,
+                        'balance' => $iBet->money + $iBet->bet_money,
+                        'operation_id' => $adminId,
+                        'created_at' => $dateTime,
+                        'updated_at' => $dateTime,
+                    ];
+                }
+                Capital::insert($aCapital);
+            }
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             DB::commit();
             return ['status' => true,'mag' => '操作成功'];
