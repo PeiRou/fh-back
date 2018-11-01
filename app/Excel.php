@@ -394,6 +394,7 @@ class Excel
         }catch (\exception $exception){
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             DB::table($table)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+            return 0;
         }
     }
 }

@@ -26,6 +26,7 @@ class New_Msnn
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
+            $bunko = 0;
             try{
                 $bunko = $this->bunko($win,$lose,$nn,$gameId,$issue);
             }catch (\exception $exception){

@@ -24,6 +24,7 @@ class New_Pknn
         $gameName = 'PK10牛牛';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
+            $bunko = 0;
             try{
                 $bunko = $this->bunko($win,$lose,$nn,$gameId,$issue);
             }catch (\exception $exception){

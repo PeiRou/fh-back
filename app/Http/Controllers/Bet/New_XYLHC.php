@@ -109,6 +109,7 @@ class New_XYLHC
                 DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
             }
             $win = $this->exc_play($openCode,$gameId);
+            $bunko = 0;
             try{
                 $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,true);
             }catch (\exception $exception){

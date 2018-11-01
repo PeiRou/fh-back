@@ -45,6 +45,7 @@ class New_LHC
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
+            $bunko = 0;
             try{
                 $bunko = $this->BUNKO($openCode,$win,$gameId,$issue);
             }catch (\exception $exception){
