@@ -63,7 +63,12 @@ class New_XYLHC
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,$excel);
+                try {
+                    $bunko = $this->BUNKO($openCode, $win, $gameId, $issue, $excel);
+                }catch (\exception $exception){
+                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                    DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+                }
                 $excelModel->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
@@ -104,7 +109,12 @@ class New_XYLHC
                 DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
             }
             $win = $this->exc_play($openCode,$gameId);
-            $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,true);
+            try{
+                $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,true);
+            }catch (\exception $exception){
+                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                DB::table('excel_bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+            }
             if($bunko == 1){
                 $tmp = DB::connection('mysql::write')->select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)

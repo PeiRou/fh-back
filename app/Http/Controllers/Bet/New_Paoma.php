@@ -60,7 +60,7 @@ class New_Paoma
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $this->bunko($win,$gameId,$issue,$excel);
+                $bunko = $excelModel->bunko($win,$gameId,$issue,$excel);
                 $excelModel->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
@@ -90,18 +90,18 @@ class New_Paoma
     private function excel($openCode,$exeBase,$issue,$gameId,$table = ''){
         if(empty($table))
             return false;
+        $excel = new Excel();
         for($i=0;$i< (int)$exeBase->excel_num;$i++){
             if($i==0){
                 $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
                 if(empty($exeBet))
                     DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}' and bet.testFlag = 0");
             }else{
-                $excel = new Excel();
                 $openCode = $excel->opennum($table);
                 DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
             }
             $win = $this->exc_play($openCode,$gameId);
-            $bunko = $this->bunko($win,$gameId,$issue,true);
+            $bunko = $excel->bunko($win,$gameId,$issue,true);
             if($bunko == 1){
                 $tmp = DB::connection('mysql::write')->select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)
@@ -1203,43 +1203,5 @@ class New_Paoma
                 break;
         }
         return $win;
-    }
-
-    private function bunko($win,$gameId,$issue,$excel=false){
-        if($excel) {
-            $table = 'excel_bet';
-            $getUserBets = DB::connection('mysql::write')->table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        }else{
-            $table = 'bet';
-            $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        }
-        $id = [];
-        foreach ($win as $k=>$v){
-            $id[] = $v;
-        }
-        if($getUserBets){
-            $sql = "UPDATE ".$table." SET bunko = CASE ";
-            $sql_lose = "UPDATE ".$table." SET bunko = CASE ";
-            $ids = implode(',', $id);
-            if($ids && isset($ids)){
-                foreach ($getUserBets as $item){
-                    $bunko = $item->bet_money * $item->play_odds;
-                    $bunko_lose = 0-$item->bet_money;
-                    $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                    $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-                }
-                $sql .= "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-                $sql_lose .= "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-                if(!isset($bunko) || empty($bunko))
-                    return 0;
-                $run = DB::statement($sql);
-                if($run == 1){
-                    $run2 = DB::statement($sql_lose);
-                    if($run2 == 1){
-                        return 1;
-                    }
-                }
-            }
-        }
     }
 }
