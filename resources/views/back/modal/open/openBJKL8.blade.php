@@ -1,11 +1,11 @@
 <div class="modal-mask">
     <div>获取开奖数据中...请稍后</div>
 </div>
-<form id="openBjkl8" class="ui mini form" action="{{ url('/action/admin/openBjkl8') }}">
+<form id="openBjkl8" class="ui mini form" @if($typeC == 1) action="{{ url('/action/admin/openBjkl8') }}" @else action="{{ url('/action/admin/renewLottery/'.$issue.'/'.$type) }}" @endif>
     <div class="field" style="width: 120px;">
         <label>期号</label>
         <div class="ui input icon">
-            <input type="text" name="issue" value="{{ $bjkl8->issue }}" readonly/>
+            <input type="text" name="issue" value="{{ $data->issue }}" readonly/>
         </div>
     </div>
     <div class="field openSelect">
@@ -113,7 +113,7 @@
     </div>
     <div class="field" style="margin-top: 15px;">
         <label>自动获取</label>
-        <span onclick="getBJKL8Data('{{ date('Ymd',strtotime($bjkl8->opentime)) }}','{{ $bjkl8->opentime }}')" class="getBtn">点击获取开奖号码</span>
+        <span onclick="getBJKL8Data('{{ date('Ymd',strtotime($data->opentime)) }}','{{ $data->opentime }}')" class="getBtn">点击获取开奖号码</span>
     </div>
     <div class="field" style="width: 120px;">
         <label>开奖理由</label>
@@ -125,7 +125,7 @@
             <option value="5">未接受注单</option>
         </select>
     </div>
-    <input type="hidden" name="id" id="id" value="{{ $bjkl8->id }}">
+    <input type="hidden" name="id" id="id" value="{{ $data->id }}">
 </form>
 
 <script>
@@ -157,21 +157,21 @@
             n3:$('#n3').val(),
             n4:$('#n4').val(),
             n5:$('#n5').val(),
-            n6:$('#n5').val(),
-            n7:$('#n5').val(),
-            n8:$('#n5').val(),
-            n9:$('#n5').val(),
-            n10:$('#n5').val(),
-            n11:$('#n5').val(),
-            n12:$('#n5').val(),
-            n13:$('#n5').val(),
-            n14:$('#n5').val(),
-            n15:$('#n5').val(),
-            n16:$('#n5').val(),
-            n17:$('#n5').val(),
-            n18:$('#n5').val(),
-            n19:$('#n5').val(),
-            n20:$('#n5').val(),
+            n6:$('#n6').val(),
+            n7:$('#n7').val(),
+            n8:$('#n8').val(),
+            n9:$('#n9').val(),
+            n10:$('#n10').val(),
+            n11:$('#n11').val(),
+            n12:$('#n12').val(),
+            n13:$('#n13').val(),
+            n14:$('#n14').val(),
+            n15:$('#n15').val(),
+            n16:$('#n16').val(),
+            n17:$('#n17').val(),
+            n18:$('#n18').val(),
+            n19:$('#n19').val(),
+            n20:$('#n20').val(),
         }
         if(gameType == 'bjkl8'){
             if(!checkRepeatValue(data)){

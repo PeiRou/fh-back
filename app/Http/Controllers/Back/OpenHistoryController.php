@@ -1200,4 +1200,29 @@ class OpenHistoryController extends Controller
         ]);
     }
 
+    public function getbjkl8Number($aParam){
+        return implode(',',[
+            (int)$aParam['n1'],
+            (int)$aParam['n2'],
+            (int)$aParam['n3'],
+            (int)$aParam['n4'],
+            (int)$aParam['n5'],
+            (int)$aParam['n6'],
+            (int)$aParam['n7'],
+            (int)$aParam['n8'],
+            (int)$aParam['n9'],
+            (int)$aParam['n10'],
+            (int)$aParam['n11'],
+            (int)$aParam['n12'],
+            (int)$aParam['n13'],
+            (int)$aParam['n14'],
+            (int)$aParam['n15'],
+            (int)$aParam['n16'],
+            (int)$aParam['n17'],
+            (int)$aParam['n18'],
+            (int)$aParam['n19'],
+            (int)$aParam['n20'],
+        ]);
+    }
+
 }

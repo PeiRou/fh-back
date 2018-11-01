@@ -56,6 +56,8 @@ class Games extends Model
         //幸运农场 快乐十分
         'xync' => ['gdkl10','xync'],
         //广东11选5
-        'gd11x5' => ['gd11x5']
+        'gd11x5' => ['gd11x5'],
+        //北京快乐8
+        'bjkl8' => ['bjkl8'],
     ];
 }

@@ -729,6 +729,9 @@ class ModalController extends Controller
             case 'gd11x5':  //广东11选5
                 $view = 'back.modal.open.openGd11x5';
                 break;
+            case 'bjkl8':  //北京快乐8
+                $view = 'back.modal.open.openBJKL8';
+                break;
             default:
                 return false;
                 break;

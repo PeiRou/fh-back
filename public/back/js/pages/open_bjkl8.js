@@ -71,20 +71,18 @@ $(function () {
             {data: function (data) {
                     txt = '';
                     if(data.is_open=="1"){        //已开奖
-                        txt = "<li onclick='changeNumber("+data.issue+")'>重新开奖</li>" ;
-                        if(testServer == 1){
-                            txt += "<li onclick='canceled("+data.issue+")'>撤单</li>";
-                            txt += "<li onclick='freeze("+data.issue+")'>冻结</li>";
-                        }
+                        txt = "<li onclick='openbjkl8("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
+                        txt += "<li onclick='canceled("+data.issue+")'>撤单</li>";
+                        txt += "<li onclick='freeze("+data.issue+")'>冻结</li>";
                     }else if(data.is_open == "0"){                      //未开奖
                         txt = "<li onclick='cancelAll("+data.id+")'>修改</li>" +
                             "<li onclick='cancel("+data.issue+")'>撤单</li>" +
-                            "<li onclick='openbjkl8("+data.id+")'>手动开奖</li>" ;
+                            "<li onclick='openbjkl8("+data.id+","+data.issue+",1)'>手动开奖</li>" ;
                     }else if(data.is_open == "5"){
                         txt = "<li onclick='canceled("+data.issue+")'>撤单</li>" +
-                            "<li onclick='changeNumber("+data.issue+")'>重新开奖</li>" ;
+                            "<li onclick='openbjkl8("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
                     }else if(data.is_open == "7"){
-                        "<li onclick='changeNumber("+data.issue+")'>重新开奖</li>" ;
+                        "<li onclick='openbjkl8("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
                     }
                     return "<ul class='control-menu'>" + txt + "</ul>";
                 }}
@@ -147,13 +145,13 @@ $(function () {
 });
 
 
-function openbjkl8(id) {
+function openbjkl8(id,issue,type) {
     jc = $.confirm({
         theme: 'material',
         title: '北京快乐8-手动开奖',
         closeIcon:true,
         boxWidth:'700px',
-        content: 'url:/back/modal/openBjkl8/'+id,
+        content: 'url:/back/modal/open/'+id+'/'+gameType+'/'+cat+'/'+issue+'/'+type,
         buttons: {
             formSubmit: {
                 text:'确定',

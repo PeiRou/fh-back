@@ -69,10 +69,8 @@ $(function () {
                     txt = '';
                     if(data.is_open=="1"){        //已开奖
                         txt = "<li onclick='opencqssc("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
-                        if(testServer == 1){
-                            txt += "<li onclick='canceled("+data.issue+")'>撤单</li>";
-                            txt += "<li onclick='freeze("+data.issue+")'>冻结</li>";
-                        }
+                        txt += "<li onclick='canceled("+data.issue+")'>撤单</li>";
+                        txt += "<li onclick='freeze("+data.issue+")'>冻结</li>";
                     }else if(data.is_open == "0"){                      //未开奖
                         txt = "<li onclick='cancelAll("+data.id+")'>修改</li>" +
                             "<li onclick='cancel("+data.issue+")'>撤单</li>" +
