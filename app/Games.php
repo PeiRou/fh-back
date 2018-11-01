@@ -52,7 +52,7 @@ class Games extends Model
         //时时彩
         'ssc' => ['jsssc','cqssc','tjssc','xjssc'],
         //赛车
-        'sc' => ['jspk10','pk10','jsft','xyft'],
+        'sc' => ['jspk10','pk10','jsft','xyft','paoma','jspk10'],
         //幸运农场 快乐十分
         'xync' => ['gdkl10','xync'],
         //广东11选5
