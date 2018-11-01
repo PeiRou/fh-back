@@ -102,10 +102,31 @@
         e.preventDefault();
         var $form = $(e.target),
             fv    = $form.data('formValidation');
+
+        var data = {
+            n1:$('#n1').val(),
+            n2:$('#n2').val(),
+            n3:$('#n3').val(),
+            n4:$('#n4').val(),
+            n5:$('#n5').val(),
+            n6:$('#n6').val(),
+            n7:$('#n7').val(),
+            n8:$('#n8').val(),
+            n9:$('#n9').val(),
+            n10:$('#n10').val(),
+        }
+        if(gameType == 'pk10'){
+            if(!checkRepeatValue(data)){
+                return Calert('请勿提交重复号码','red');
+            }
+        }
+        data.msg = $('#msg').val();
+        data.id = $('#id').val();
+        data.type = $('#type').val();
         $.ajax({
             url: $form.attr('action'),
             type: 'POST',
-            data: {id:$('#id').val(),n1:$('#n1').val(),n2:$('#n2').val(),n3:$('#n3').val(),n4:$('#n4').val(),n5:$('#n5').val(),n6:$('#n6').val(),n7:$('#n7').val(),n8:$('#n8').val(),n9:$('#n9').val(),n10:$('#n10').val(),msg:$('#msg').val(),type:$('#type').val()},
+            data: data,
             success: function(result) {
                 if(result.status == true){
                     jc.close();

@@ -77,19 +77,25 @@
         e.preventDefault();
         var $form = $(e.target),
             fv    = $form.data('formValidation');
+        var data = {
+            n1:$('#n1').val(),
+            n2:$('#n2').val(),
+            n3:$('#n3').val(),
+            n4:$('#n4').val(),
+            n5:$('#n5').val(),
+        }
+        if(gameType == 'gd11x5'){
+            if(!checkRepeatValue(data)){
+                return Calert('请勿提交重复号码','red');
+            }
+        }
+        data.msg = $('#msg').val();
+        data.id = $('#id').val();
+        data.type = $('#type').val();
         $.ajax({
             url: $form.attr('action'),
             type: 'POST',
-            data: {
-                id:$('#id').val(),
-                n1:$('#n1').val(),
-                n2:$('#n2').val(),
-                n3:$('#n3').val(),
-                n4:$('#n4').val(),
-                n5:$('#n5').val(),
-                msg:$('#msg').val(),
-                type:$('#type').val()
-            },
+            data: data,
             success: function(result) {
                 if(result.status == true){
                     jc.close();
