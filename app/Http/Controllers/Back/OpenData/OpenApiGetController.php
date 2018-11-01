@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Back\OpenData;
 
+use App\Excel;
+use App\Games;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
@@ -11,23 +13,37 @@ class OpenApiGetController extends Controller
     //获取开奖
     public function open($type,$date,$issue){
 //        var_dump($type);die();
-        $http = new Client();
-        try{
-            $res = $http->request('get',$this->apiArray[$type].'&date='.$date);
-            $json = json_decode((string) $res->getBody(), true);
-            return response()->json($this->$type($json,$issue));
-        } catch (\Exception $e){
-            return [
-                'code'=> $e->getCode(),
-                'status' => false,
-                'msg' => '获取失败，原因1.本期暂未开奖，2.接口数据返回异常'
-            ];
+        if(!empty($this->apiArray[$type])) {
+            $http = new Client();
+            try {
+                $res = $http->request('get', $this->apiArray[$type] . '&date=' . $date);
+                $json = json_decode((string)$res->getBody(), true);
+                return response()->json($this->$type($json, $issue));
+            } catch (\Exception $e) {
+                return [
+                    'code' => $e->getCode(),
+                    'status' => false,
+                    'msg' => '获取失败，原因1.本期暂未开奖，2.接口数据返回异常'
+                ];
+            }
         }
+
+        $excelModel = new Excel();
+        $openCode = $excelModel->opennum('game_'.Games::$aCodeGameName[$type]);
+        if(empty($openCode)) return [
+            'code' => 200,
+            'status' => false,
+            'msg' => '获取失败，号码未获取'
+        ];
+        return $this->$type($openCode);
     }
 
-    //返回参数解析
-    public function parsingParameters(){
-
+    //获取开奖号码
+    public function parsingParameters($type,$issue){
+        $http = new Client();
+        $res = $http->request('get',$this->apiArray[$type].'&issue='.$issue);
+        $json = json_decode((string) $res->getBody(), true);
+        return $this->strongConversionInt(explode(',',$json['number']));
     }
 
     //开奖API
@@ -43,7 +59,6 @@ class OpenApiGetController extends Controller
         'hebeik3' => 'http://api.caipiaokong.cn/lottery/?name=hbks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'hbk3' => 'http://api.caipiaokong.cn/lottery/?name=hubks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'jsk3' => 'http://api.caipiaokong.cn/lottery/?name=jsks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
-
     ];
 
     //强转整形
@@ -53,6 +68,100 @@ class OpenApiGetController extends Controller
             $aArray[] = (int)$value;
         }
         return implode(',',$aArray);
+    }
+
+
+    //秒速快3
+    public function msjsk3($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+        ];
+    }
+
+    //秒速时时彩
+    public function jsssc($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+        ];
+    }
+
+    //祥光跑马
+    public function paoma($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+            'n8' => (int)$arrCode[7],
+            'n9' => (int)$arrCode[8],
+            'n10' => (int)$arrCode[9],
+        ];
+    }
+
+    //秒速飞艇
+    public function jsft($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+            'n8' => (int)$arrCode[7],
+            'n9' => (int)$arrCode[8],
+            'n10' => (int)$arrCode[9],
+        ];
+    }
+
+    //秒速赛车
+    public function jspk10($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+            'n8' => (int)$arrCode[7],
+            'n9' => (int)$arrCode[8],
+            'n10' => (int)$arrCode[9],
+        ];
     }
 
     //江苏快3开奖
