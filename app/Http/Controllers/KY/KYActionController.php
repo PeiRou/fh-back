@@ -78,7 +78,7 @@ class KYActionController extends Controller
         $res = $kyUtils->curl_get_content($url);
         if($res){
             $res = json_decode($res,true);
-            \Log::info($res['d']['code']);
+            echo $res['d']['code'];
             if($res['d']['code'] == 0){
                 return $res['d']['list'];
             }else{
