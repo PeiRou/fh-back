@@ -13,7 +13,7 @@ $(function () {
             {data:'bank'},
             {data:'payeeName'},
             {data:'payee'},
-            {data:'remark'},
+            {data:'pageDesc'},
             {data:'status'},
             {data:'levels'},
             {data:'remark2'},
