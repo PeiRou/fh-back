@@ -23,13 +23,13 @@
                     <div class="ui calendar" id="rangestart" style="width: 108px;">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
-                            <input type="text" id="startTime" value="{{ date('Y-m-d',strtotime('-2 day')) }}" placeholder="">
+                            <input type="text" id="startTime" value="{{ date('Y-m-d',strtotime('-1 day')) }}" placeholder="">
                         </div>
                     </div>
                     <div class="ui calendar" id="rangeend" style="width: 108px;">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
-                            <input type="text" id="endTime" value="{{ date('Y-m-d',strtotime('-2 day')) }}" placeholder="">
+                            <input type="text" id="endTime" value="{{ date('Y-m-d',strtotime('-1 day')) }}" placeholder="">
                         </div>
                     </div>
                     <div class="one wide field">
