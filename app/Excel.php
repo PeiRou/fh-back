@@ -49,7 +49,7 @@ class Excel
                     $tmpCap = [];
                     $tmpCap['to_user'] = $i->user_id;
                     $tmpCap['user_type'] = 'user';
-                    $tmpCap['order_id'] = $i->order_id;
+                    $tmpCap['order_id'] = 'F'.substr($i->order_id,1);
                     $tmpCap['type'] = 't26';
                     $tmpCap['money'] = $i->unfreeze_money;
                     $tmpCap['balance'] = round($capUsers[$i->user_id] + $i->unfreeze_money,3);
@@ -76,7 +76,7 @@ class Excel
                 $tmpCap = [];
                 $tmpCap['to_user'] = $bunko;
                 $tmpCap['user_type'] = 'user';
-                $tmpCap['order_id'] = $i->order_id;
+                $tmpCap['order_id'] = 'W'.substr($i->order_id,1);
                 $tmpCap['type'] = 't09';
                 $tmpCap['money'] = $i->bunko;
                 $tmpCap['balance'] = round($capUsers[$i->user_id],3);
