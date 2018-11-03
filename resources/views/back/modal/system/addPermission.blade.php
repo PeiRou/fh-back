@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/vendor/zTree_v3/css/metroStyle/metroStyle.css">
 <script type="text/javascript" src="/vendor/zTree_v3/js/jquery.ztree.core.min.js"></script>
 <script type="text/javascript" src="/vendor/zTree_v3/js/jquery.ztree.excheck.js"></script>
-<form id="addPermissionForm" class="ui form" action="{{ route('addPermission') }}">
+<form id="addPermissionForm" class="ui form" action="{{ route('system.addPermission') }}">
     <div class="field">
         <label>权限名称</label>
         <div class="ui input icon">
