@@ -67,9 +67,10 @@ class Excel
                         $capUsers[$i->user_id] += $i->unfreeze_money;
                         continue;
                     }
-                    $i->bunko = $i->nn_view_money + $i->bet_money;
+                    $capUsers[$i->user_id] += $i->nn_view_money + $i->bet_money; //累加馀额
+                }else{
+                    $capUsers[$i->user_id] += $i->bunko; //累加馀额
                 }
-                $capUsers[$i->user_id] += $i->bunko; //累加馀额
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
