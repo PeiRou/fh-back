@@ -44,15 +44,15 @@ class Excel
             Redis::select(5);
             //新增有返奖的用户的资金明细
             foreach ($getDt as $i){
-                $capUsers[$i->user_id] += $i->bunko; //累加馀额
                 if(in_array($i->game_id,array(90,91))){ //根据牛牛翻倍玩法增加解冻的资金明细
+                    $capUsers[$i->user_id] += $i->unfreeze_money; //累加馀额
                     $tmpCap = [];
                     $tmpCap['to_user'] = $i->user_id;
                     $tmpCap['user_type'] = 'user';
                     $tmpCap['order_id'] = $i->order_id;
                     $tmpCap['type'] = 't26';
                     $tmpCap['money'] = $i->unfreeze_money;
-                    $tmpCap['balance'] = round($capUsers[$i->user_id]-$i->nn_view_money,3);
+                    $tmpCap['balance'] = round($capUsers[$i->user_id],3);
                     $tmpCap['operation_id'] = 0;
                     $tmpCap['issue'] = $i->issue;
                     $tmpCap['game_id'] = $i->game_id;
@@ -67,6 +67,8 @@ class Excel
                     if($i->nn_view_money<0)
                         continue;
                     $capUsers[$i->user_id] += $i->nn_view_money;
+                }else{
+                    $capUsers[$i->user_id] += $i->bunko; //累加馀额
                 }
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
