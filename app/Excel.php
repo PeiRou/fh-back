@@ -63,12 +63,12 @@ class Excel
                     $tmpCap['updated_at'] = date('Y-m-d H:i:s');
                     $capData[$ii] = $tmpCap;
                     $ii++;
-                    if($i->nn_view_money<0)
+                    if($i->nn_view_money<0){
+                        $capUsers[$i->user_id] += $i->unfreeze_money;
                         continue;
-                    $capUsers[$i->user_id] += $i->nn_view_money; //累加馀额
-                }else{
-                    $capUsers[$i->user_id] += $i->bunko; //累加馀额
+                    }
                 }
+                $capUsers[$i->user_id] += $i->bunko; //累加馀额
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
