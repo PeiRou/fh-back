@@ -67,6 +67,7 @@ class Excel
                         $capUsers[$i->user_id] += $i->unfreeze_money;
                         continue;
                     }
+                    $i->bunko = $i->nn_view_money + $i->bet_money;
                 }
                 $capUsers[$i->user_id] += $i->bunko; //累加馀额
                 $tmpCap = [];
