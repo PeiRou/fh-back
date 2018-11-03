@@ -322,18 +322,14 @@ class OpenApiGetController extends Controller
 
     //北京pk10开奖
     public function pk10($aJson,$issue){
-        $result = [];
-        foreach ($aJson as $kJson => $iJson){
-            if(date('Y-m-d H:i',strtotime($iJson['dateline'])) === date('Y-m-d H:i',strtotime($issue))){
-                $result = $iJson;
-            }
-        }
-        if(empty($result))
+        if(empty($aJson[$issue])){
             return [
                 'code'=> '201',
                 'status' => false,
                 'msg' => '获取失败，原因1.本期暂未开奖'
             ];
+        }
+        $result = $aJson[$issue];
         $arrCode = explode(',',$result['number']);
         return [
             'code' => 200,
@@ -355,18 +351,14 @@ class OpenApiGetController extends Controller
 
     //北京快乐8开奖
     public function bjkl8($aJson,$issue){
-        $result = [];
-        foreach ($aJson as $kJson => $iJson){
-            if(date('Y-m-d H:i',strtotime($iJson['dateline'])) === date('Y-m-d H:i',strtotime($issue))){
-                $result = $iJson;
-            }
-        }
-        if(empty($result))
+        if(empty($aJson[$issue])){
             return [
                 'code'=> '201',
                 'status' => false,
                 'msg' => '获取失败，原因1.本期暂未开奖'
             ];
+        }
+        $result = $aJson[$issue];
         $arrCode = explode(',',$result['number']);
         return [
             'code' => 200,
