@@ -74,11 +74,11 @@ class Excel
                     $capUsers[$i->user_id] += $i->bunko; //累加馀额
                 }
                 $tmpCap = [];
-                $tmpCap['to_user'] = $bunko;
+                $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
                 $tmpCap['order_id'] = 'W'.substr($i->order_id,1);
                 $tmpCap['type'] = 't09';
-                $tmpCap['money'] = $i->bunko;
+                $tmpCap['money'] = $bunko;
                 $tmpCap['balance'] = round($capUsers[$i->user_id],3);
                 $tmpCap['operation_id'] = 0;
                 $tmpCap['issue'] = $i->issue;
