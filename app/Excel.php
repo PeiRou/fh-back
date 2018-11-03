@@ -16,7 +16,7 @@ class Excel
      */
     public function updateUserMoney($gameId,$issue,$gameName=''){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->get();
+        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds','bet_money','unfreeze_money','nn_view_money')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->get();
         if($get){
             //更新返奖的用户馀额
             $sql = "UPDATE users SET money = money+ CASE id ";
@@ -43,6 +43,29 @@ class Excel
             //新增有返奖的用户的资金明细
             foreach ($getDt as $i){
                 $capUsers[$i->user_id] += $i->bunko; //累加馀额
+                if(in_array($i->game_id,array(90,91))){
+                    $tmpCap = [];
+                    $tmpCap['to_user'] = $i->user_id;
+                    $tmpCap['user_type'] = 'user';
+                    $tmpCap['order_id'] = $i->order_id;
+                    $tmpCap['type'] = 't26';
+                    $tmpCap['money'] = $i->unfreeze_money;
+                    $tmpCap['balance'] = round($capUsers[$i->user_id]-$i->nn_view_money,3);
+                    $tmpCap['operation_id'] = 0;
+                    $tmpCap['issue'] = $i->issue;
+                    $tmpCap['game_id'] = $i->game_id;
+                    $tmpCap['game_name'] = $gameName;
+                    $tmpCap['playcate_id'] = $i->playcate_id;
+                    $tmpCap['playcate_name'] = $i->playcate_name;
+                    $tmpCap['content'] = $gameName.'-'.$i->play_name.'-'.$i->play_odds;
+                    $tmpCap['created_at'] = date('Y-m-d H:i:s');
+                    $tmpCap['updated_at'] = date('Y-m-d H:i:s');
+                    $capData[$ii] = $tmpCap;
+                    $ii++;
+                    if($i->nn_view_money<0)
+                        continue;
+                    $capUsers[$i->user_id] -= ($i->unfreeze_money+$i->bet_money);
+                }
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
