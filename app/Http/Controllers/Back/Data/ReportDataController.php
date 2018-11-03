@@ -38,6 +38,9 @@ class ReportDataController extends Controller
         }
 
         return DataTables::of($aData)
+            ->editColumn('fact_bet_bunko', function ($aData){
+                return $aData->bet_bunko - $aData->activity_money - $aData->handling_fee;
+            })
             ->setTotalRecords($aDataCount)
             ->skipPaging()
             ->make(true);
@@ -57,6 +60,10 @@ class ReportDataController extends Controller
                 $aData = ReportGeneral::reportQuerySum($aParam);
         }
 
+        $activity_money = empty($aData->activity_money)?0.00:$aData->activity_money;
+        $handling_fee = empty($aData->handling_fee)?0.00:$aData->handling_fee;
+
+
         return response()->json([
             'member_count' => empty($aData->member_count)?'':$aData->member_count,
             'recharges_money' => empty($aData->recharges_money)?'':$aData->recharges_money,
@@ -67,7 +74,7 @@ class ReportDataController extends Controller
             'activity_money' => empty($aData->activity_money)?'':$aData->activity_money,
             'handling_fee' => empty($aData->handling_fee)?'':$aData->handling_fee,
             'bet_bunko' => empty($aData->bet_bunko)?'':$aData->bet_bunko,
-            'fact_bet_bunko' => empty($aData->fact_bet_bunko)?'':$aData->fact_bet_bunko,
+            'fact_bet_bunko' => empty($aData->bet_bunko)?'':($aData->bet_bunko - $activity_money - $handling_fee),
         ]);
     }
 
@@ -90,6 +97,9 @@ class ReportDataController extends Controller
         }
 
         return DataTables::of($aData)
+            ->editColumn('fact_bet_bunko', function ($aData){
+                return $aData->bet_bunko - $aData->activity_money - $aData->handling_fee;
+            })
             ->setTotalRecords($aDataCount)
             ->skipPaging()
             ->make(true);
@@ -107,6 +117,10 @@ class ReportDataController extends Controller
             else
                 $aData = ReportAgent::reportQuerySum($aParam);
         }
+
+        $activity_money = empty($aData->activity_money)?0.00:$aData->activity_money;
+        $handling_fee = empty($aData->handling_fee)?0.00:$aData->handling_fee;
+
         return response()->json([
             'member_count' => empty($aData->member_count)?'':$aData->member_count,
             'recharges_money' => empty($aData->recharges_money)?'':$aData->recharges_money,
@@ -117,7 +131,7 @@ class ReportDataController extends Controller
             'activity_money' => empty($aData->activity_money)?'':$aData->activity_money,
             'handling_fee' => empty($aData->handling_fee)?'':$aData->handling_fee,
             'bet_bunko' => empty($aData->bet_bunko)?'':$aData->bet_bunko,
-            'fact_bet_bunko' => empty($aData->fact_bet_bunko)?'':$aData->fact_bet_bunko,
+            'fact_bet_bunko' => empty($aData->bet_bunko)?'':($aData->bet_bunko - $activity_money - $handling_fee),
         ]);
     }
 
@@ -140,6 +154,9 @@ class ReportDataController extends Controller
         }
 
         return DataTables::of($aData)
+            ->editColumn('fact_bet_bunko', function ($aData){
+                return $aData->bet_bunko - $aData->activity_money - $aData->handling_fee;
+            })
             ->setTotalRecords($aDataCount)
             ->skipPaging()
             ->make(true);
@@ -159,6 +176,9 @@ class ReportDataController extends Controller
                 $aData = ReportMember::reportQuerySum($aParam);
         }
 
+        $activity_money = empty($aData->activity_money)?0.00:$aData->activity_money;
+        $handling_fee = empty($aData->handling_fee)?0.00:$aData->handling_fee;
+
         return response()->json([
             'recharges_money' => empty($aData->recharges_money)?'':$aData->recharges_money,
             'drawing_money' => empty($aData->drawing_money)?'':$aData->drawing_money,
@@ -168,7 +188,7 @@ class ReportDataController extends Controller
             'activity_money' => empty($aData->activity_money)?'':$aData->activity_money,
             'handling_fee' => empty($aData->handling_fee)?'':$aData->handling_fee,
             'bet_bunko' => empty($aData->bet_bunko)?'':$aData->bet_bunko,
-            'fact_bet_bunko' => empty($aData->fact_bet_bunko)?'':$aData->fact_bet_bunko,
+            'fact_bet_bunko' => empty($aData->bet_bunko)?'':($aData->bet_bunko - $activity_money - $handling_fee),
         ]);
     }
 
