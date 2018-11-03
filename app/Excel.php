@@ -4,6 +4,7 @@ namespace App;
 
 use App\Events\BackPusherEvent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class Excel
 {
@@ -16,7 +17,7 @@ class Excel
      */
     public function updateUserMoney($gameId,$issue,$gameName=''){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds','bet_money','unfreeze_money','nn_view_money')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->get();
+        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds','order_id','bet_money','unfreeze_money','nn_view_money')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->get();
         if($get){
             //更新返奖的用户馀额
             $sql = "UPDATE users SET money = money+ CASE id ";
@@ -40,10 +41,11 @@ class Excel
             foreach ($getAfterUser as&$val){
                 $capUsers[$val->id] = $val->money;
             }
+            Redis::select(5);
             //新增有返奖的用户的资金明细
             foreach ($getDt as $i){
                 $capUsers[$i->user_id] += $i->bunko; //累加馀额
-                if(in_array($i->game_id,array(90,91))){
+                if(in_array($i->game_id,array(90,91))){ //根据牛牛翻倍玩法增加解冻的资金明细
                     $tmpCap = [];
                     $tmpCap['to_user'] = $i->user_id;
                     $tmpCap['user_type'] = 'user';
@@ -83,6 +85,11 @@ class Excel
                 $tmpCap['created_at'] = date('Y-m-d H:i:s');
                 $tmpCap['updated_at'] = date('Y-m-d H:i:s');
                 $capData[$ii] = $tmpCap;
+
+                $key = 'winInfo'.$i->order_id;
+                if(Redis::exists($key))
+                    continue;
+                Redis::setex($key,30,'on');
                 $content = ' 第'.$i->issue.'期 '.$i->playcate_name.' '.$i->play_name;
                 $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content.'已中奖，中奖金额 <span style="color:red">'.round($i->bunko,3).'元</span></div>';
                 event(new BackPusherEvent('win','中奖通知',$tmpContent,array('fnotice-'.$i->user_id)));
