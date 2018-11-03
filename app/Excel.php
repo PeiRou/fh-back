@@ -66,7 +66,7 @@ class Excel
                     $ii++;
                     if($i->nn_view_money<0)
                         continue;
-                    $capUsers[$i->user_id] -= ($i->unfreeze_money+$i->bet_money);
+                    $capUsers[$i->user_id] += $i->nn_view_money;
                 }
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
