@@ -66,7 +66,7 @@ class Excel
                     $ii++;
                     if($i->nn_view_money<0)
                         continue;
-                    $capUsers[$i->user_id] += $i->nn_view_money;
+                    $capUsers[$i->user_id] += ($i->nn_view_money+$i->bet_money);
                 }else{
                     $capUsers[$i->user_id] += $i->bunko; //累加馀额
                 }
