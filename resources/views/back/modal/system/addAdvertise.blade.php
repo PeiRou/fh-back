@@ -4,6 +4,10 @@
     .firstSpan{margin-left: 2%;}
     .firstSelect{width: 40%!important; height: 35px!important;}
 </style>
+<link rel="stylesheet" href="{{ asset('back/vendor/ueditor/themes/default/css/umeditor.css') }}">
+<script src="{{ asset('back/vendor/ueditor/umeditor.config.js') }}"></script>
+<script src="{{ asset('back/vendor/ueditor/umeditor.min.js') }}"></script>
+<script src="{{ asset('back/vendor/ueditor/lang/zh-cn/zh-cn.js') }}"></script>
 <form id="addRoleForm" class="ui form" method="post" action="{{ route('ac.ad.addAdvertise') }}">
     <div class="field">
         <label>标题</label>
@@ -45,7 +49,20 @@
         <label>键值</label>
         <div class="ui input icon">
             <input type="text" name="value1" id="value1"/>
-            <input style="display: none;" type="file" name="value2" id="value2"/>
+        </div>
+    </div>
+
+    <div class="field" id="div-value2" style="display: none">
+        <label>键值</label>
+        <div class="ui input icon">
+            <input type="file" name="value2" id="value2"/>
+        </div>
+    </div>
+
+    <div class="field" id="div-value3" style="display: none">
+        <label>键值</label>
+        <div class="ui input icon">
+            <textarea  name="value3" id="value3"></textarea>
         </div>
     </div>
 
@@ -73,6 +90,10 @@
     var ready = false;
     var data1 = new Object();
     $(function () {
+
+        window.um = UM.getEditor('value3',{
+            initialFrameWidth: null
+        });
 
         $('.ui.checkbox').checkbox();
         $('#addRoleForm').formValidation({
@@ -124,11 +145,17 @@
         $('#category').on('change',function () {
             var value = $(this).val();
             if(value == 1){
-                $('#value1').show();
-                $('#value2').hide();
+                $('#div-value').show();
+                $('#div-value2').hide();
+                $('#div-value3').hide();
             }else if(value == 2){
-                $('#value1').hide();
-                $('#value2').show();
+                $('#div-value').hide();
+                $('#div-value2').show();
+                $('#div-value3').hide();
+            }else if(value == 3){
+                $('#div-value').hide();
+                $('#div-value2').hide();
+                $('#div-value3').show();
             }
         });
     });
@@ -146,6 +173,7 @@
         data1.category = $('#category').val();
         data1.value1 = $('#value1').val();
         data1.aParamkey = $('#aParamkey').val();
+        data1.value3 = $('#value3').val();
         var paramKey = new Array();
         $('input[name=paramKey]').each(function () {
             paramKey.push($(this).val());

@@ -55,7 +55,7 @@ function add() {
         theme: 'material',
         title: '添加广告位',
         closeIcon:true,
-        boxWidth:'20%',
+        boxWidth:'40%',
         content: 'url:/back/modal/addAdvertise',
         buttons: {
             formSubmit: {
@@ -86,7 +86,7 @@ function edit(id) {
         theme: 'material',
         title: '修改广告位',
         closeIcon:true,
-        boxWidth:'20%',
+        boxWidth:'40%',
         content: 'url:/back/modal/editAdvertise/'+id,
         buttons: {
             formSubmit: {

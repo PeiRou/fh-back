@@ -250,6 +250,7 @@ class SystemSettingController extends Controller
     //添加广告位
     public function addAdvertise(Request $request){
         $aParams = $request->post();
+        var_dump($aParams);die();
         $validator = Validator::make($aParams,Advertise::$role);
         if($validator->fails())
             return response()->json([
@@ -294,6 +295,8 @@ class SystemSettingController extends Controller
                 $aData['js_value'] = $aParams['value1'];
             elseif($aParams['category'] == 2)
                 $aData['js_value'] = $aParams['value2'];
+            elseif($aParams['category'] == 3)
+                $aData['js_value'] = $aParams['value3'];
             $result4 = DB::table('advertise_value')->insert($aData);
         }else{
             $result2 = 1;

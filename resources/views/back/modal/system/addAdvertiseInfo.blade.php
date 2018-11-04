@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="{{ asset('back/vendor/ueditor/themes/default/css/umeditor.css') }}">
+<script src="{{ asset('back/vendor/ueditor/umeditor.config.js') }}"></script>
+<script src="{{ asset('back/vendor/ueditor/umeditor.min.js') }}"></script>
+<script src="{{ asset('back/vendor/ueditor/lang/zh-cn/zh-cn.js') }}"></script>
 <form id="addRoleForm" class="ui form" action="{{ route('ac.ad.addAdvertiseInfo') }}">
 
     <div class="field">
@@ -46,6 +50,7 @@
                 success: function (res) {
                     var result = res.data;
                     var info = res.info;
+                    var array = new Array();
                     for (var i = 0;i < result.length;i++){
                         html += '<div class="field">';
                         html += '<label>'+result[i].js_key+'</label>';
@@ -55,7 +60,8 @@
                         }else if(result[i].type == 2){
                             html += '<input onchange="getBase64(this)" type="file" name="pic[]"/><input type="hidden" name="'+result[i].js_key+'"/>';
                         }else if(result[i].type == 3){
-                            html += '<input type="text" name="'+result[i].js_key+'"/>';
+                            html += '<textarea type="text" name="'+result[i].js_key+'" id="'+result[i].js_key+'"></textarea>';
+                            array.push(result[i].js_key);
                         }
                         html += '</div></div>';
                     }
@@ -63,6 +69,7 @@
                         html += $('#aJsKeyHtml').html();
                     }
                     $('#div-key').html(html);
+                    getEditor(array);
                 }
             });
         });
@@ -94,6 +101,16 @@
             });
         });
     });
+
+    function getEditor(array) {
+        if(array.length !== 0) {
+            for(var i = 0;i < array.length;i++){
+                window.um = UM.getEditor(array[i], {
+                    initialFrameWidth: null
+                });
+            }
+        }
+    }
 
     function run(input_file,get_data){
         /*input_file：文件按钮对象*/

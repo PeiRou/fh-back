@@ -60,7 +60,7 @@ function add() {
         theme: 'material',
         title: '添加广告位内容',
         closeIcon:true,
-        boxWidth:'20%',
+        boxWidth:'40%',
         content: 'url:/back/modal/addAdvertiseInfo',
         buttons: {
             formSubmit: {
@@ -91,7 +91,7 @@ function edit(id) {
         theme: 'material',
         title: '修改广告位内容',
         closeIcon:true,
-        boxWidth:'20%',
+        boxWidth:'40%',
         content: 'url:/back/modal/editAdvertiseInfo/'+id,
         buttons: {
             formSubmit: {

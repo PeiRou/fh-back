@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="{{ asset('back/vendor/ueditor/themes/default/css/umeditor.css') }}">
+<script src="{{ asset('back/vendor/ueditor/umeditor.config.js') }}"></script>
+<script src="{{ asset('back/vendor/ueditor/umeditor.min.js') }}"></script>
+<script src="{{ asset('back/vendor/ueditor/lang/zh-cn/zh-cn.js') }}"></script>
 <form id="addRoleForm" class="ui form" action="{{ route('ac.ad.editAdvertiseInfo') }}">
 
     @foreach($aData as $kData => $iData)
@@ -11,7 +15,7 @@
                     <input type="hidden" name="{{ $iData->js_key }}" data-id="{{ $iData->id }}" value="{{ $iData->js_value }}"/>
                     <img src="{{ $iData->js_value }}" style="margin-top: 10px;">
                 @elseif($iData->type == 3)
-                    <input type="text" name="{{ $iData->js_key }}" data-id="{{ $iData->id }}" value="{{ $iData->js_value }}"/>
+                    <textarea name="{{ $iData->js_key }}" data-id="{{ $iData->id }}" id="{{ $iData->js_key }}">{{ $iData->js_value }}</textarea>
                 @endif
             </div>
         </div>
@@ -29,6 +33,14 @@
 
 <script>
     $(function () {
+        @foreach($aData as $kData => $iData)
+            @if($iData->type == 3)
+                window.um = UM.getEditor('{{ $iData->js_key }}',{
+                    initialFrameWidth: null
+                });
+            @endif
+        @endforeach
+
 
         $('#addRoleForm').formValidation({
             framework: 'semantic',

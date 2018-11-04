@@ -11,7 +11,7 @@ class AdvertiseKey extends Model
     public $advertiseType = [
         '1' => '文字',
         '2' => '图片',
-        '3' => '付文本',
+        '3' => '富文本',
     ];
 
     public $advertiseStatus = [
