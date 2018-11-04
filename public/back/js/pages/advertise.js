@@ -8,11 +8,12 @@ $(function () {
     $('#menu-systemManage').addClass('nav-show');
     $('#menu-systemManage-advertise').addClass('active');
 
-     dataTable = $('#example').DataTable({
+    dataTable = $('#example').DataTable({
         searching: false,
         bLengthChange: false,
         processing: true,
         serverSide: true,
+        aLengthMenu: [[50]],
         ajax: {
             url : '/back/datatables/advertise',
             data : function (d) {
