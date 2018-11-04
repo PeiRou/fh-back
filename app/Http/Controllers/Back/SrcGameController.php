@@ -30,6 +30,7 @@ class SrcGameController extends Controller
                     'order'=>$order
                 ]);
             if($update == 1){
+                DB::table('user_game_list')->truncate();
                 return response()->json([
                     'status'=>true,
                     'msg'=>'ok'

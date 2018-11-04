@@ -4,6 +4,7 @@ namespace App;
 
 use App\Events\BackPusherEvent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class Excel
 {
@@ -16,7 +17,7 @@ class Excel
      */
     public function updateUserMoney($gameId,$issue,$gameName=''){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->groupBy('user_id')->get();
-        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->get();
+        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds','order_id','bet_money','unfreeze_money','nn_view_money')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>=',0.01)->get();
         if($get){
             //更新返奖的用户馀额
             $sql = "UPDATE users SET money = money+ CASE id ";
@@ -40,15 +41,44 @@ class Excel
             foreach ($getAfterUser as&$val){
                 $capUsers[$val->id] = $val->money;
             }
+            Redis::select(5);
             //新增有返奖的用户的资金明细
             foreach ($getDt as $i){
-                $capUsers[$i->user_id] += $i->bunko; //累加馀额
+                if(in_array($i->game_id,array(90,91))){ //根据牛牛翻倍玩法增加解冻的资金明细
+                    $capUsers[$i->user_id] += $i->unfreeze_money;
+                    $tmpCap = [];
+                    $tmpCap['to_user'] = $i->user_id;
+                    $tmpCap['user_type'] = 'user';
+                    $tmpCap['order_id'] = 'UF'.substr($i->order_id,2);
+                    $tmpCap['type'] = 't26';
+                    $tmpCap['money'] = $i->unfreeze_money;
+                    $tmpCap['balance'] = round($capUsers[$i->user_id],3);
+                    $tmpCap['operation_id'] = 0;
+                    $tmpCap['issue'] = $i->issue;
+                    $tmpCap['game_id'] = $i->game_id;
+                    $tmpCap['game_name'] = $gameName;
+                    $tmpCap['playcate_id'] = $i->playcate_id;
+                    $tmpCap['playcate_name'] = $i->playcate_name;
+                    $tmpCap['content'] = $gameName.'-'.$i->play_name.'-'.$i->play_odds;
+                    $tmpCap['created_at'] = date('Y-m-d H:i:s');
+                    $tmpCap['updated_at'] = date('Y-m-d H:i:s');
+                    $capData[$ii] = $tmpCap;
+                    $ii++;
+                    if($i->nn_view_money<0){
+                        continue;
+                    }
+                    $bunko = $i->nn_view_money + $i->bet_money;
+                    $capUsers[$i->user_id] += $bunko; //累加馀额
+                }else{
+                    $capUsers[$i->user_id] += $i->bunko; //累加馀额
+                    $bunko = $capUsers[$i->user_id];
+                }
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
-                $tmpCap['order_id'] = $i->order_id;
+                $tmpCap['order_id'] = 'W'.substr($i->order_id,1);
                 $tmpCap['type'] = 't09';
-                $tmpCap['money'] = $i->bunko;
+                $tmpCap['money'] = $bunko;
                 $tmpCap['balance'] = round($capUsers[$i->user_id],3);
                 $tmpCap['operation_id'] = 0;
                 $tmpCap['issue'] = $i->issue;
@@ -60,6 +90,11 @@ class Excel
                 $tmpCap['created_at'] = date('Y-m-d H:i:s');
                 $tmpCap['updated_at'] = date('Y-m-d H:i:s');
                 $capData[$ii] = $tmpCap;
+
+                $key = 'winInfo'.$i->order_id;
+                if(Redis::exists($key))
+                    continue;
+                Redis::setex($key,30,'on');
                 $content = ' 第'.$i->issue.'期 '.$i->playcate_name.' '.$i->play_name;
                 $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content.'已中奖，中奖金额 <span style="color:red">'.round($i->bunko,3).'元</span></div>';
                 event(new BackPusherEvent('win','中奖通知',$tmpContent,array('fnotice-'.$i->user_id)));

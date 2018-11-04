@@ -26,6 +26,7 @@ class FinanceDataController extends Controller
         $findUserId = '';
         $killTestUser = $request->get('killTestUser');
         $payType = $request->get('recharge_type');
+        $recharges_id = $request->get('recharges_id');
         $startTime = $request->get('startTime');
         $endTime = $request->get('endTime');
         $account_type = $request->get('account_type');
@@ -90,6 +91,9 @@ class FinanceDataController extends Controller
                 $where .= " and recharges.payType = '".$payType."'";
             }else{
                 $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
+            }
+            if(isset($recharges_id) && $recharges_id > 0 ){
+                $where .= " and recharges.admin_add_money = ".$recharges_id."";
             }
         }else{
             if(isset($status) && $status){
