@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class SrcViewAdController extends Controller
 {
+    function __construct()
+    {
+        $this->replaceMYSQL();
+    }
 
     //动态更换mysql
     public function replaceMYSQL(){

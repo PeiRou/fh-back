@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\DB;
 
 class AdModalController extends Controller
 {
+    function __construct()
+    {
+        $this->replaceMYSQL();
+    }
+
     //动态更换mysql
     public function replaceMYSQL(){
         Config::set("database.connections.mysql", [

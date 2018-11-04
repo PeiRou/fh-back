@@ -20,6 +20,7 @@ $(function () {
             }
         },
         columns: [
+            {data: 'js_title'},
             {data: 'title'},
             {data: 'type'},
             {data: 'js_key'},

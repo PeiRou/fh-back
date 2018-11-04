@@ -12,6 +12,11 @@ use Yajra\DataTables\DataTables;
 
 class AdDataController extends Controller
 {
+    function __construct()
+    {
+        $this->replaceMYSQL();
+    }
+
     //动态更换mysql
     public function replaceMYSQL(){
         Config::set("database.connections.mysql", [
@@ -49,7 +54,7 @@ class AdDataController extends Controller
     public function advertiseInfo(Request $request){
         $this->replaceMYSQL();
         $aParam = $request->post();
-        $aData = DB::table('advertise_info')->select('advertise_info.status','advertise_info.created_at','advertise_info.sort','advertise_info.js_key','advertise.title','advertise_info.id','advertise.type')
+        $aData = DB::table('advertise_info')->select('advertise_info.status','advertise_info.js_title','advertise_info.created_at','advertise_info.sort','advertise_info.js_key','advertise.title','advertise_info.id','advertise.type')
             ->where(function ($aSql) use($aParam){
                 if(isset($aParam['ad_id']) && array_key_exists('ad_id',$aParam))
                     $aSql->where('advertise_info.ad_id',$aParam['ad_id']);

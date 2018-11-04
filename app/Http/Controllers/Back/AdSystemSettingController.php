@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Validator;
 
 class AdSystemSettingController extends Controller
 {
+    function __construct()
+    {
+        $this->replaceMYSQL();
+    }
+
     //动态更换mysql
     public function replaceMYSQL(){
         Config::set("database.connections.mysql", [
@@ -156,6 +161,7 @@ class AdSystemSettingController extends Controller
         $date = date('Y-m-d H:i:s');
         $aAdInfo = [
             'ad_id' => $aParam['ad_id'],
+            'js_title' => $aParam['js_title'],
             'status' => 1,
             'sort' => empty($aParam['sort'])?99:$aParam['sort'],
             'created_at' => $date,

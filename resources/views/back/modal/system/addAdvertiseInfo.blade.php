@@ -4,6 +4,13 @@
 <script src="{{ asset('back/vendor/ueditor/lang/zh-cn/zh-cn.js') }}"></script>
 <form id="addRoleForm" class="ui form" action="{{ route('ac.ad.addAdvertiseInfo') }}">
 
+    <div class="field" style="margin-top: 10px;">
+        <label>标题</label>
+        <div class="ui input icon">
+            <input type="text" name="js_title" id="js_title"/>
+        </div>
+    </div>
+
     <div class="field">
         <label>广告位</label>
         <div class="ui input icon">

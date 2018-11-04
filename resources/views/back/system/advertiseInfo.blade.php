@@ -39,6 +39,7 @@
         <table id="example" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
+                <th>标题</th>
                 <th>广告位</th>
                 <th>类型</th>
                 <th>键值</th>
