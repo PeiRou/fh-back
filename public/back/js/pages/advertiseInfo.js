@@ -23,8 +23,8 @@ $(function () {
             }
         },
         columns: [
-            {data: 'js_title'},
             {data: 'title'},
+            {data: 'js_title'},
             {data: 'type'},
             {data: 'js_key'},
             {data: 'status'},
