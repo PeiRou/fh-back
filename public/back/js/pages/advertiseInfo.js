@@ -15,6 +15,7 @@ $(function () {
         serverSide: true,
         ordering: true,
         "order": [],
+        aLengthMenu: [[50]],
         ajax: {
             url : '/back/datatables/advertiseInfo',
             data : function (d) {

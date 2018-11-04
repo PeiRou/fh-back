@@ -8,6 +8,7 @@ $(function () {
         processing: true,
         serverSide: true,
         ordering: false,
+        aLengthMenu: [[50]],
         ajax: '/back/datatables/whitelist',
         columns: [
             {data:'ip'},
