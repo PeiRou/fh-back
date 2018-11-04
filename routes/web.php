@@ -109,8 +109,8 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('articleManage', 'Back\SrcViewController@articleManage')->name('system.articleManage'); //文章管理
         Route::get('whitelist', 'Back\SrcViewController@whitelist')->name('system.whitelist'); //ip白名单设置
         Route::get('feedback', 'Back\SrcViewController@feedback')->name('system.feedback'); //意见反馈
-        Route::get('advertise', 'Back\SrcViewController@advertise')->name('system.advertise'); //广告位
-        Route::get('advertiseInfo', 'Back\SrcViewController@advertiseInfo')->name('system.advertiseInfo'); //广告位
+        Route::get('advertise', 'Back\SrcViewAdController@advertise')->name('system.advertise'); //广告位
+        Route::get('advertiseInfo', 'Back\SrcViewAdController@advertiseInfo')->name('system.advertiseInfo'); //广告位
     });
 
 //日志管理
@@ -210,8 +210,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/roles', 'Back\Data\SystemDataController@roles'); //角色-表格数据
     Route::get('/back/datatables/whitelist', 'Back\Data\SystemDataController@whitelist'); //ip白名单设置-表格数据
     Route::get('/back/datatables/feedback', 'Back\Data\SystemDataController@feedback'); //建议反馈-表格数据
-    Route::get('/back/datatables/advertise', 'Back\Data\SystemDataController@advertise'); //广告位-表格数据
-    Route::get('/back/datatables/advertiseInfo', 'Back\Data\SystemDataController@advertiseInfo'); //广告位内容-表格数据
+    Route::get('/back/datatables/advertise', 'Back\Data\AdDataController@advertise'); //广告位-表格数据
+    Route::get('/back/datatables/advertiseInfo', 'Back\Data\AdDataController@advertiseInfo'); //广告位内容-表格数据
     Route::get('/back/datatables/bank', 'Back\Data\PayDataController@bank');
     Route::get('/back/datatables/games', 'Back\Data\GameDataController@games');
     Route::get('/back/datatables/agentOdds', 'Back\Data\GameDataController@agentOdds'); //代理赔率设定-表格数据
@@ -335,14 +335,15 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/delWhitelist', 'Back\SystemSettingController@delWhitelist')->middleware('add-log-handle')->name('ac.ad.delWhitelist');//删除ip白名单
     Route::post('/action/admin/editWhitelist', 'Back\SystemSettingController@editWhitelist')->middleware('add-log-handle')->name('ac.ad.editWhitelist');//修改ip白名单
     Route::post('/action/admin/replyFeedback', 'Back\SystemSettingController@replyFeedback')->middleware('add-log-handle')->name('ac.ad.replyFeedback');//问题回复
-    Route::post('/action/admin/addAdvertise', 'Back\SystemSettingController@addAdvertise')->middleware('add-log-handle')->name('ac.ad.addAdvertise');//添加广告位
-    Route::post('/action/admin/editAdvertise', 'Back\SystemSettingController@editAdvertise')->middleware('add-log-handle')->name('ac.ad.editAdvertise');//修改广告位
-    Route::post('/action/admin/delAdvertise', 'Back\SystemSettingController@delAdvertise')->middleware('add-log-handle')->name('ac.ad.delAdvertise');//删除广告位
-    Route::post('/action/admin/getAdvertiseKey', 'Back\SystemSettingController@getAdvertiseKey')->middleware('add-log-handle')->name('ac.ad.getAdvertiseKey');//获取广告位栏位
-    Route::post('/action/admin/addAdvertiseInfo', 'Back\SystemSettingController@addAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.addAdvertiseInfo');//添加广告位内容
-    Route::post('/action/admin/editAdvertiseInfo', 'Back\SystemSettingController@editAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.editAdvertiseInfo');//修改广告位内容
-    Route::post('/action/admin/sortAdvertiseInfo', 'Back\SystemSettingController@sortAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.sortAdvertiseInfo');//排序广告位内容
-    Route::post('/action/admin/delAdvertiseInfo', 'Back\SystemSettingController@delAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.delAdvertiseInfo');//删除广告位内容
+    Route::post('/action/admin/addAdvertise', 'Back\AdSystemSettingController@addAdvertise')->middleware('add-log-handle')->name('ac.ad.addAdvertise');//添加广告位
+    Route::post('/action/admin/editAdvertise', 'Back\AdSystemSettingController@editAdvertise')->middleware('add-log-handle')->name('ac.ad.editAdvertise');//修改广告位
+    Route::post('/action/admin/delAdvertise', 'Back\AdSystemSettingController@delAdvertise')->middleware('add-log-handle')->name('ac.ad.delAdvertise');//删除广告位
+    Route::post('/action/admin/getAdvertiseKey', 'Back\AdSystemSettingController@getAdvertiseKey')->middleware('add-log-handle')->name('ac.ad.getAdvertiseKey');//获取广告位栏位
+    Route::post('/action/admin/addAdvertiseInfo', 'Back\AdSystemSettingController@addAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.addAdvertiseInfo');//添加广告位内容
+    Route::post('/action/admin/editAdvertiseInfo', 'Back\AdSystemSettingController@editAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.editAdvertiseInfo');//修改广告位内容
+    Route::post('/action/admin/sortAdvertiseInfo', 'Back\AdSystemSettingController@sortAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.sortAdvertiseInfo');//排序广告位内容
+    Route::post('/action/admin/delAdvertiseInfo', 'Back\AdSystemSettingController@delAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.delAdvertiseInfo');//删除广告位内容
+    Route::post('/action/admin/generateAdvertiseInfo', 'Back\AdSystemSettingController@generateAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.generateAdvertiseInfo');//生成广告位内容
 
     Route::post('/action/admin/agentSettle/settlement', 'Back\AgentSettleController@settlement')->middleware('add-log-handle')->name('ac.ad.agentSettle.settlement'); //代理结算报表-手动结算
     Route::post('/action/admin/agentSettle/submitReview', 'Back\AgentSettleController@submitReview')->middleware('add-log-handle')->name('ac.ad.agentSettle.submitReview'); //代理结算报表-提交审核
@@ -501,10 +502,10 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/addWhitelist', 'Back\Ajax\ModalController@addWhitelist'); //添加ip白名单
     Route::get('/back/modal/editWhitelist/{id}', 'Back\Ajax\ModalController@editWhitelist'); //修改ip白名单
     Route::get('/back/modal/viewFeedback/{id}', 'Back\Ajax\ModalController@viewFeedback'); //查看意见反馈
-    Route::get('/back/modal/addAdvertise', 'Back\Ajax\ModalController@addAdvertise'); //添加广告位
-    Route::get('/back/modal/editAdvertise/{id}', 'Back\Ajax\ModalController@editAdvertise'); //修改广告位
-    Route::get('/back/modal/addAdvertiseInfo', 'Back\Ajax\ModalController@addAdvertiseInfo'); //添加广告位内容
-    Route::get('/back/modal/editAdvertiseInfo/{id}', 'Back\Ajax\ModalController@editAdvertiseInfo'); //添加广告位内容
+    Route::get('/back/modal/addAdvertise', 'Back\Ajax\AdModalController@addAdvertise'); //添加广告位
+    Route::get('/back/modal/editAdvertise/{id}', 'Back\Ajax\AdModalController@editAdvertise'); //修改广告位
+    Route::get('/back/modal/addAdvertiseInfo', 'Back\Ajax\AdModalController@addAdvertiseInfo'); //添加广告位内容
+    Route::get('/back/modal/editAdvertiseInfo/{id}', 'Back\Ajax\AdModalController@editAdvertiseInfo'); //添加广告位内容
     Route::get('/back/modal/addSubAccount', 'Back\Ajax\ModalController@addSubAccount')->middleware('check-permission')->name('m.subAccount.add');
     Route::get('/back/modal/editSubAccount/{id}', 'Back\Ajax\ModalController@editSubAccount')->middleware('check-permission')->name('m.subAccount.edit');
     Route::get('/back/modal/googleSubAccount/{id}', 'Back\Ajax\ModalController@googleSubAccount')->middleware('check-permission')->name('m.subAccount.googleOTP');

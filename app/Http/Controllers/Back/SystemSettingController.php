@@ -501,4 +501,65 @@ class SystemSettingController extends Controller
             'msg' => '删除失败，请稍后再试！'
         ]);
     }
+
+    //生成广告位内容
+    public function generateAdvertiseInfo(){
+        ini_set('memory_limit','2048M');
+        //组装数据
+        $aKeyData = AdvertiseKey::where('status',1)->get();
+        $aValueData = AdvertiseValue::where('status',1)->get();
+        $aFieldArray = [];
+        foreach ($aKeyData as $kKey => $iKey){
+            foreach ($aValueData as $kValue => $iValue){
+                if($iValue->key_id == $iKey->id){
+                    $aFieldArray[] = [
+                        'key' => $iKey->js_key,
+                        'value' => $iValue->js_value,
+                        'info_id' => $iValue->info_id,
+                        'key_id' => $iValue->key_id
+                    ];
+                }
+            }
+        }
+        $aInfoData = AdvertiseInfo::where('status',1)->get();
+        $aDataArray = [];
+        foreach ($aInfoData as $kInfo => $iInfo){
+            $aDataArray[$kInfo] = [
+                'ad_id' => $iInfo->ad_id,
+                'js_key' => $iInfo->js_key,
+                'filed' => [],
+            ];
+            foreach ($aFieldArray as $kField => $iField){
+                if($iInfo->id == $iField['info_id']){
+                    $aDataArray[$kInfo]['filed'][$iField['key']] = $iField['value'];
+                }
+            }
+        }
+        unset($aFieldArray);
+        $aAdData = Advertise::where('status',1)->get();
+        $aArray = [];
+        foreach ($aAdData as $kAd => $iAd){
+            $aArray[$iAd->js_key] = $this->getCombinationParam($aDataArray,$iAd);
+
+        }
+        $file = public_path('static/jsFile/generate.json');
+        file_put_contents($file,json_encode($aArray));
+        return response()->json([
+            'status' => true
+        ]);
+    }
+
+    public function getCombinationParam($aDataArray,$iAd){
+        $aArray = [];
+        foreach ($aDataArray as $kData => $iData){
+            if($iAd->type == 1 && $iData['ad_id'] == $iAd->id){
+                $aArray = $iData['filed'][$iAd->js_key];
+            }elseif($iAd->type == 2 && $iData['ad_id'] == $iAd->id){
+                $aArray[] = $iData['filed'];
+            }elseif($iAd->type == 3 && $iData['ad_id'] == $iAd->id){
+                $aArray[$iData['js_key']] = $iData['filed'];
+            }
+        }
+        return $aArray;
+    }
 }

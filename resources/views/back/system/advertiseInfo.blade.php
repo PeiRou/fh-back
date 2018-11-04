@@ -9,6 +9,8 @@
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
         <div class="content-top-buttons">
+            <span onclick="generate()">生成文件</span>
+            <span onclick="preview()"><a target="_blank" href="/static/jsFile/generate.json">预览文件</a></span>
             <span onclick="add()">添加广告内容</span>
             <span onclick="setSort()">排序</span>
         </div>

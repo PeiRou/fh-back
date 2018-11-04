@@ -10,7 +10,7 @@
             <select class="ui dropdown" name="ad_id" id="adId" style='height:32px !important'>
                 <option value="">请选择广告位</option>
                 @foreach($aData as $iData)
-                    <option value="{{ $iData->id }}">{{ $iData->title }}({{ $iData->advertiseType[$iData->type] }})</option>
+                    <option value="{{ $iData->id }}">{{ $iData->title }}({{ $advertiseValue->advertiseType[$iData->type] }})</option>
                 @endforeach
             </select>
         </div>
@@ -51,6 +51,9 @@
                     var result = res.data;
                     var info = res.info;
                     var array = new Array();
+                    if(info.type == 3){
+                        html += $('#aJsKeyHtml').html();
+                    }
                     for (var i = 0;i < result.length;i++){
                         html += '<div class="field">';
                         html += '<label>'+result[i].js_key+'</label>';
@@ -64,9 +67,6 @@
                             array.push(result[i].js_key);
                         }
                         html += '</div></div>';
-                    }
-                    if(info.type == 3){
-                        html += $('#aJsKeyHtml').html();
                     }
                     $('#div-key').html(html);
                     getEditor(array);

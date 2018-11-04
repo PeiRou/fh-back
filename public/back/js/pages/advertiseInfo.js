@@ -157,7 +157,23 @@ function del(id) {
     });
 }
 
-
+function generate() {
+    $.ajax({
+        url:'/action/admin/generateAdvertiseInfo',
+        type:'post',
+        dataType:'json',
+        data:{},
+        success:function (data) {
+            Calert('已生成新的文件','green')
+        },
+        error:function (e) {
+            if(e.status == 403)
+            {
+                Calert('您没有此项权限！无法继续！','red')
+            }
+        }
+    });
+}
 
 function setSort() {
     var sort = new Array();

@@ -16,7 +16,7 @@ class AdvertiseInfo extends Model
 
     //修改排序
     public static function editBatchAdvertiseInfoData($data){
-        return DB::update(self::updateBatchStitching('advertise_info',$data,['sort'],'id'));
+        return self::updateBatchStitching('advertise_info',$data,['sort'],'id');
     }
 
     //多行修改拼接
