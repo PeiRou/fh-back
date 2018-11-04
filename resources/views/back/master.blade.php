@@ -362,6 +362,12 @@
                 @if($hasPermission->hasPermission('system.feedback') == "has")
                     <li id="menu-systemManage-feedback"><a href="{{ route('system.feedback') }}"><cite></cite><span>意见反馈</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('system.advertise') == "has")
+                <li id="menu-systemManage-advertise"><a href="{{ route('system.advertise') }}"><cite></cite><span>广告位</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('system.advertiseInfo') == "has")
+                <li id="menu-systemManage-advertiseInfo"><a href="{{ route('system.advertiseInfo') }}"><cite></cite><span>广告内容</span></a></li>
+                @endif
             </ul>
         </li>
         @endif

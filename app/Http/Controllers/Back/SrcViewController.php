@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back;
 
 use App\Activity;
 use App\ActivitySend;
+use App\Advertise;
 use App\Agent;
 use App\AgentDrawDetails;
 use App\AgentReport;
@@ -744,6 +745,16 @@ class SrcViewController extends Controller
         $aStatus = Feedback::$feedbackStatus;
         return view('back.system.feedback',compact('aType','aStatus'));
     }
+    //广告位
+    public function advertise(){
+        return view('back.system.advertise');
+    }
+    //广告详情
+    public function advertiseInfo(){
+        $aData = Advertise::get();
+        return view('back.system.advertiseInfo',compact('aData'));
+    }
+
     //日志管理
     //登录日志
     public function loginLog()

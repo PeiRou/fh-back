@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Back\Ajax;
 use App\Activity;
 use App\ActivityCondition;
 use App\ActivityPrize;
+use App\Advertise;
+use App\AdvertiseInfo;
+use App\AdvertiseKey;
+use App\AdvertiseValue;
 use App\Agent;
 use App\AgentOddsSetting;
 use App\Article;
@@ -910,5 +914,34 @@ class ModalController extends Controller
             $iOdds = AgentOddsSetting::where('level',$iData->level - 1)->value('odds');
         }
         return view('back.modal.game.agentOddsEdit',compact('iData','iOdds'));
+    }
+
+    //添加广告位-模板
+    public function addAdvertise(){
+        $aData = new Advertise();
+        $aData1 = new AdvertiseKey();
+        return view('back.modal.system.addAdvertise',compact('aData','aData1'));
+    }
+
+    //修改广告位-模板
+    public function editAdvertise($id){
+        $aData = new Advertise();
+        $iInfo = $aData->where('id',$id)->first();
+        return view('back.modal.system.editAdvertise',compact('aData','iInfo'));
+    }
+
+    //添加广告位-模板
+    public function addAdvertiseInfo(){
+        $aData = Advertise::where('type','!=',1)->get();
+        return view('back.modal.system.addAdvertiseInfo',compact('aData'));
+    }
+
+    //添加广告位-模板
+    public function editAdvertiseInfo($id){
+        $iInfo = AdvertiseInfo::where('id',$id)->first();
+        $type = Advertise::where('id',$iInfo->ad_id)->value('type');
+        $aData = AdvertiseValue::select('advertise_value.id','advertise_value.js_value','advertise_key.js_key','advertise_key.type')->where('advertise_value.info_id',$id)
+            ->join('advertise_key','advertise_key.id','=','advertise_value.key_id')->orderBy('advertise_key.id','asc')->get();
+        return view('back.modal.system.editAdvertiseInfo',compact('iInfo','aData','type'));
     }
 }
