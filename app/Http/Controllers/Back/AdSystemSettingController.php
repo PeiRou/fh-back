@@ -22,6 +22,7 @@ class AdSystemSettingController extends Controller
             "password" => env('DB_PASSWORD_AD'),
             'charset' => 'utf8',
             'collation' => 'utf8_general_ci',
+            'port' => env('DB_PORT_AD'),
         ]);
     }
 
