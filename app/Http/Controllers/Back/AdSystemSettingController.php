@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Validator;
 
 class AdSystemSettingController extends Controller
 {
-    function __construct(){
+    //动态更换mysql
+    public function replaceMYSQL(){
         Config::set("database.connections.mysql", [
             'driver' => 'mysql',
             "host" => env('DB_HOST_AD'),
@@ -28,6 +29,7 @@ class AdSystemSettingController extends Controller
 
     //添加广告位
     public function addAdvertise(Request $request){
+        $this->replaceMYSQL();
         $aParams = $request->post();
         $validator = Validator::make($aParams,Advertise::$role);
         if($validator->fails())
@@ -108,6 +110,7 @@ class AdSystemSettingController extends Controller
 
     //删除广告位
     public function delAdvertise(Request $request){
+        $this->replaceMYSQL();
         $aParams = $request->post();
         $iInfo = DB::table('advertise')->where('id',$aParams['id'])->first();
         $aAdInfo = DB::table('advertise_info')->where('ad_id',$iInfo->id)->get();
@@ -136,6 +139,7 @@ class AdSystemSettingController extends Controller
 
     //获取广告位栏位
     public function getAdvertiseKey(Request $request){
+        $this->replaceMYSQL();
         $aParam = $request->post();
         $aData = DB::table('advertise_key')->select('id','type','js_key')->where('ad_id',$aParam['ad_id'])->where('status',1)->orderBy('id','asc')->get();
         $iInfo = DB::table('advertise')->where('id',$aParam['ad_id'])->first();
@@ -147,6 +151,7 @@ class AdSystemSettingController extends Controller
 
     //添加广告位内容
     public function addAdvertiseInfo(Request $request){
+        $this->replaceMYSQL();
         $aParam = $request->post();
         $date = date('Y-m-d H:i:s');
         $aAdInfo = [
@@ -194,6 +199,7 @@ class AdSystemSettingController extends Controller
 
     //修改广告位内容
     public function editAdvertiseInfo(Request $request){
+        $this->replaceMYSQL();
         $aParam = $request->post();
         $date = date('Y-m-d H:i:s');
         $iInfo = DB::table('advertise_info')->select('advertise_info.ad_id','advertise.type','advertise_info.id')->where('advertise_info.id',$aParam['info_id'])
@@ -243,6 +249,7 @@ class AdSystemSettingController extends Controller
 
     //排序广告位内容
     public function sortAdvertiseInfo(Request $request){
+        $this->replaceMYSQL();
         $params = $request->all();
         $data = [];
         foreach ($params['sort'] as $key => $value){
@@ -263,6 +270,7 @@ class AdSystemSettingController extends Controller
 
     //删除广告位内容
     public function delAdvertiseInfo(Request $request){
+        $this->replaceMYSQL();
         $aParam = $request->all();
         DB::beginTransaction();
         $result1 = DB::table('advertise_info')->where('id',$aParam['id'])->delete();
@@ -283,6 +291,7 @@ class AdSystemSettingController extends Controller
     //生成广告位内容
     public function generateAdvertiseInfo(){
         ini_set('memory_limit','2048M');
+        $this->replaceMYSQL();
         //组装数据
         $aKeyData = DB::table('advertise_key')->where('status',1)->get();
         $aValueData = DB::table('advertise_value')->where('status',1)->get();

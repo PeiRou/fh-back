@@ -12,7 +12,8 @@ use Yajra\DataTables\DataTables;
 
 class AdDataController extends Controller
 {
-    function __construct(){
+    //动态更换mysql
+    public function replaceMYSQL(){
         Config::set("database.connections.mysql", [
             'driver' => 'mysql',
             "host" => env('DB_HOST_AD'),
@@ -27,6 +28,7 @@ class AdDataController extends Controller
 
     //广告位-表格数据
     public function advertise(Request $request){
+        $this->replaceMYSQL();
         $aData = DB::table('advertise')->get();
         $advertise = new Advertise();
         return DataTables::of($aData)
@@ -45,6 +47,7 @@ class AdDataController extends Controller
 
     //广告位-表格数据
     public function advertiseInfo(Request $request){
+        $this->replaceMYSQL();
         $aParam = $request->post();
         $aData = DB::table('advertise_info')->select('advertise_info.status','advertise_info.created_at','advertise_info.sort','advertise_info.js_key','advertise.title','advertise_info.id','advertise.type')
             ->where(function ($aSql) use($aParam){

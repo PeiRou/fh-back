@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\DB;
 
 class AdModalController extends Controller
 {
-    function __construct(){
+    //动态更换mysql
+    public function replaceMYSQL(){
         Config::set("database.connections.mysql", [
             'driver' => 'mysql',
             "host" => env('DB_HOST_AD'),
@@ -26,6 +27,7 @@ class AdModalController extends Controller
 
     //添加广告位-模板
     public function addAdvertise(){
+        $this->replaceMYSQL();
         $aData = new Advertise();
         $aData1 = new AdvertiseKey();
         return view('back.modal.system.addAdvertise',compact('aData','aData1'));
@@ -33,6 +35,7 @@ class AdModalController extends Controller
 
     //修改广告位-模板
     public function editAdvertise($id){
+        $this->replaceMYSQL();
         $aData = new Advertise();
         $iInfo = DB::table('advertise')->where('id',$id)->first();
         return view('back.modal.system.editAdvertise',compact('aData','iInfo'));
@@ -40,6 +43,7 @@ class AdModalController extends Controller
 
     //添加广告位-模板
     public function addAdvertiseInfo(){
+        $this->replaceMYSQL();
         $aData = DB::table('advertise')->where('type','!=',1)->get();
         $advertiseValue = new Advertise();
         return view('back.modal.system.addAdvertiseInfo',compact('aData','advertiseValue'));
@@ -47,6 +51,7 @@ class AdModalController extends Controller
 
     //添加广告位-模板
     public function editAdvertiseInfo($id){
+        $this->replaceMYSQL();
         $iInfo = DB::table('advertise_info')->where('id',$id)->first();
         $type = DB::table('advertise')->where('id',$iInfo->ad_id)->value('type');
         $aData = DB::table('advertise_value')->select('advertise_value.id','advertise_value.js_value','advertise_key.js_key','advertise_key.type')->where('advertise_value.info_id',$id)
