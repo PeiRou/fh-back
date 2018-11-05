@@ -12,4 +12,3 @@ yarn-error.log
 .env
 /storage/app/*
 /storage/framework/*
-/storage/logs/*
