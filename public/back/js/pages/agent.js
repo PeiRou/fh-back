@@ -360,3 +360,43 @@ function edit(id) {
         }
     });
 }
+function pass(id){
+    $.ajax({
+        url:'/action/admin/passAgent/'+id,
+        dataType:'json',
+        type:'get',
+        success:function (data) {
+            if(data.status == true){
+                $('#agentTable').DataTable().ajax.reload(null,false)
+            }else{
+                Calert(data.msg,'red')
+            }
+        },
+        error:function (e) {
+            if(e.status == 403)
+            {
+                Calert('您没有此项权限！无法继续！','red')
+            }
+        }
+    })
+}
+function error(id){
+    $.ajax({
+        url:'/action/admin/errorAgent/'+id,
+        dataType:'json',
+        type:'get',
+        success:function (data) {
+            if(data.status == true){
+                $('#agentTable').DataTable().ajax.reload(null,false)
+            }else{
+                Calert(data.msg,'red')
+            }
+        },
+        error:function (e) {
+            if(e.status == 403)
+            {
+                Calert('您没有此项权限！无法继续！','red')
+            }
+        }
+    })
+}

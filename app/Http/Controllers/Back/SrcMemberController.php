@@ -186,6 +186,30 @@ class SrcMemberController extends Controller
             ]);
         }
     }
+    public function passAgent($a_id){
+        if(Agent::where('a_id',$a_id)->update(['status'=>1])){
+            return  response()->json([
+                'status'=>true,
+                'msg'=>''
+            ]);
+        }
+        response()->json([
+            'status'=>false,
+            'msg'=>'error'
+        ]);
+    }
+    public function errorAgent($a_id){
+        if(Agent::where('a_id',$a_id)->update(['status'=>4])){
+            return  response()->json([
+                'status'=>true,
+                'msg'=>''
+            ]);
+        }
+        response()->json([
+            'status'=>false,
+            'msg'=>'error'
+        ]);
+    }
     //修改代理金额
     public function changeAgentMoney(Request $request)
     {

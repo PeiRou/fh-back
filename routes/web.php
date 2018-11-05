@@ -308,6 +308,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/editAgent', 'Back\SrcMemberController@editAgent')->middleware('add-log-handle')->name('ac.ad.editAgent');//修改代理账号
     Route::post('/action/admin/delAgent/{id}', 'Back\SrcMemberController@delAgent')->middleware(['check-permission','add-log-handle'])->name('m.agent.del');//删除代理账号
     Route::post('/action/admin/changeAgentMoney', 'Back\SrcMemberController@changeAgentMoney')->middleware('add-log-handle')->name('ac.ad.changeAgentMoney');//修改代理金额
+    Route::get('/action/admin/passAgent/{id}', 'Back\SrcMemberController@passAgent')->middleware('add-log-handle')->name('ac.ad.changeAgentMoney');//代理审核通过
+    Route::get('/action/admin/errorAgent/{id}', 'Back\SrcMemberController@errorAgent')->middleware('add-log-handle')->name('ac.ad.changeAgentMoney');//代理审核驳回
+
 
     Route::post('/action/admin/addUser', 'Back\SrcMemberController@addUser')->middleware('add-log-handle')->name('ac.ad.addUser');//添加会员
     Route::post('/action/admin/userChangeAgent', 'Back\SrcMemberController@userChangeAgent')->middleware('add-log-handle')->name('ac.ad.userChangeAgent');//会员更换代理

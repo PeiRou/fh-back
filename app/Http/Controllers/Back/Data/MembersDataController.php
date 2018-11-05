@@ -158,6 +158,9 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                 if($allAgent->status == 4){
                     return '<span class="status-3"><i class="iconfont">&#xe636;</i> 审核未通过</span>';
                 }
+                if($allAgent->status == 0){
+                    return '<span class="status-2"><i class="iconfont">&#xe656;</i> 待审核</span>';
+                }
             })
             ->editColumn('editOdds', function ($allAgent){
                 if($allAgent->editodds == 0)
@@ -185,7 +188,13 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                                 <span class="edit-link" onclick="visitMemberSuper(\''.$allAgent->a_id.'\',\''.$allAgent->account.'\')"><i class="iconfont">&#xe818;</i> 回访会员</span>';
                     else
                         return "系统默认-无法操作";
-                } else {
+                }else if($allAgent->status == 0){
+                    return  "<ul class='control-menu'>
+                        <li onclick='pass(". $allAgent->a_id .")'>通过</li>
+                        <li onclick='error(". $allAgent->a_id .")'>驳回</li>
+                        <ul>";
+
+                }else {
                     return "<ul class='control-menu'>
                         <li onclick='edit(\"$allAgent->a_id\")'>修改</li>
                         <li onclick='viewInfo(\"$allAgent->a_id\")'>详情</li>
