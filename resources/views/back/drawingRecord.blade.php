@@ -7,6 +7,9 @@
         .red {
             color: #ff6470 !important;
         }
+        .amount{
+            display: none;
+        }
     </style>
     <div class="content-top">
         <div class="breadcrumb">
@@ -55,8 +58,16 @@
                             <option value="operation_account">操作人账号</option>
                         </select>
                     </div>
-                    <div class="one wide field">
+                    <div class="one wide field account_param">
                         <input type="text" id="account_param" placeholder="用户账号">
+                    </div>
+
+                    <div class="one wide field amount">
+                        <input type="text" id="amount-min" placeholder="交易金额">
+                    </div>
+                    <div style="line-height: 32px;" class="amount">-</div>
+                    <div class="one wide field amount">
+                        <input type="text" id="amount-max" placeholder="交易金额">
                     </div>
                     <div class="one wide field">
                         <select class="ui dropdown" id="rechLevel" style='height:32px !important'>
