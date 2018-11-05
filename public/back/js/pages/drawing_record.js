@@ -13,6 +13,7 @@ $(function () {
                 var day = date.getDate();
                 var month = date.getMonth() + 1;
                 var year = date.getFullYear();
+
                 return year+'-'+month+'-'+day;
             }
         },
@@ -67,6 +68,8 @@ $(function () {
                 d.rechLevel = $('#rechLevel').val();
                 d.killTestUser = $('#killTestUser:checked').val();
                 d.draw_type = $('#draw_type').val();
+                d.amount_min = $('#amount-min').val();
+                d.amount_max = $('#amount-max').val();
             }
         },
         columns: [
@@ -338,7 +341,12 @@ $('#account_type').on('change',function () {
         $('#account_param').attr('placeholder','订单号');
     }
     if(account_type == "amount"){
-        $('#account_param').attr('placeholder','交易金额');
+        // $('#account_param').attr('placeholder','交易金额');
+        $('.amount').show();
+        $('.account_param').hide();
+    }else{
+        $('.amount').hide();
+        $('.account_param').show();
     }
     if(account_type == "amount_fw"){
         $('#account_param').attr('placeholder','金额范围');

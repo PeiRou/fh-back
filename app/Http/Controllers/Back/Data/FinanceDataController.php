@@ -217,7 +217,6 @@ class FinanceDataController extends Controller
         $rechLevel = $request->get('rechLevel');
         $start = $request->get('start');
         $length = $request->get('length');
-
         $drawingSQL = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
             ->leftJoin('level','drawing.levels', '=', 'level.value')
@@ -246,7 +245,7 @@ class FinanceDataController extends Controller
                     $q->where('users.rechLevel',$rechLevel);
                 }
             })
-            ->where(function ($q) use ($account_type, $account_param){
+            ->where(function ($q) use ($account_type, $account_param, $request){
                 if(isset($account_param) && $account_param){
                     if($account_type == 'account'){
                         $q->where('drawing.username',$account_param);
@@ -257,9 +256,12 @@ class FinanceDataController extends Controller
                     if($account_type == 'operation_account'){
                         $q->where('drawing.operation_account',$account_param);
                     }
-                    if($account_type == 'amount'){
-                        $q->where('drawing.amount',$account_param);
+                }
+                if(isset($account_type) && $account_type == 'amount'){
+                    if(($min = $request->get('amount_min')) && ($max = $request->get('amount_max'))){
+                        $q->whereBetween('drawing.amount',[$min, $max]);
                     }
+//                        $q->where('drawing.amount',$account_param);
                 }
             })
             ->where(function ($q) use ($startTime,$endTime) {
