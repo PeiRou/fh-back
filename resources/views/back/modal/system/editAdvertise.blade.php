@@ -74,6 +74,7 @@
                         $('#example').DataTable().ajax.reload(null,false);
                     }else{
                         alert(result.msg);
+                        jc.close();
                     }
                 }
             });

@@ -64,6 +64,9 @@
                     if(result.status == true){
                         jc.close();
                         $('#example').DataTable().ajax.reload(null,false);
+                    }else{
+                        alert(result.msg);
+                        jc.close();
                     }
                 }
             });

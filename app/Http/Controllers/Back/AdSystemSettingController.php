@@ -307,9 +307,11 @@ class AdSystemSettingController extends Controller
                 if($iValue->key_id == $iKey->id){
                     $aFieldArray[] = [
                         'key' => $iKey->js_key,
+                        'type' => $iKey->type,
                         'value' => $iValue->js_value,
                         'info_id' => $iValue->info_id,
-                        'key_id' => $iValue->key_id
+                        'key_id' => $iValue->key_id,
+                        'value_id' => $iValue->id           //内容的id
                     ];
                 }
             }
@@ -324,7 +326,10 @@ class AdSystemSettingController extends Controller
             ];
             foreach ($aFieldArray as $kField => $iField){
                 if($iInfo->id == $iField['info_id']){
-                    $aDataArray[$kInfo]['filed'][$iField['key']] = $iField['value'];
+                    if($iField['type']==3)          //如果是富文本类型
+                        $aDataArray[$kInfo]['filed'][$iField['key']] = $iField['value_id'];
+                    else
+                        $aDataArray[$kInfo]['filed'][$iField['key']] = $iField['value'];
                 }
             }
         }
