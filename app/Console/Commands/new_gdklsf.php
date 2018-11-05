@@ -37,8 +37,10 @@ class new_gdklsf extends Command
             $getIssue = DB::table('game_gdklsf')->where('opentime','=',$nowIssueTime)->first();
             $nextIssue = $getIssue->issue;
 
+            $New_nextIssue = $nextIssue+1;
             if(strtotime($filtered['time']) == strtotime('23:00:00')){
                 $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
+                $New_nextIssue = date("Ymd",strtotime($nextDay)).'001';                         //奖期
                 $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:08:30';
                 $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:10:00';
             } else {
@@ -46,7 +48,7 @@ class new_gdklsf extends Command
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
             }
 
-            Redis::set('gdklsf:nextIssue',(int)$nextIssue+1);
+            Redis::set('gdklsf:nextIssue',(int)$New_nextIssue);
             Redis::set('gdklsf:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             Redis::set('gdklsf:nextIssueEndTime',strtotime($nextIssueEndTime));
         }

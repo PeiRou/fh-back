@@ -56,8 +56,10 @@ class new_ahk3 extends Command
             $getIssue = DB::table('game_ahk3')->where('opentime','=',$nowIssueTime)->first();
             $nextIssue = $getIssue->issue;
 
+            $New_nextIssue = $nextIssue+1;
             if(strtotime($filtered['time']) == strtotime('22:00:00')){
                 $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
+                $New_nextIssue = date("Ymd",strtotime($nextDay)).'001';                         //奖期
                 $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 08:48:00';
                 $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 08:50:00';
             } else {
@@ -65,7 +67,7 @@ class new_ahk3 extends Command
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
             }
 
-            Redis::set('ahk3:nextIssue',(int)$nextIssue+1);
+            Redis::set('ahk3:nextIssue',(int)$New_nextIssue);
             Redis::set('ahk3:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             Redis::set('ahk3:nextIssueEndTime',strtotime($nextIssueEndTime));
         }

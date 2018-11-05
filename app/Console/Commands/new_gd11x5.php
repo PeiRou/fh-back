@@ -37,8 +37,10 @@ class new_gd11x5 extends Command
             $getIssue = DB::table('game_gd11x5')->where('opentime','=',$nowIssueTime)->first();
             $nextIssue = $getIssue->issue;
 
+            $New_nextIssue = $nextIssue+1;
             if(strtotime($filtered['time']) == strtotime('23:00:00')){
                 $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
+                $New_nextIssue = date("ymd",strtotime($nextDay)).'01';                         //奖期
                 $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:08:00';
                 $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:10:00';
             } else {
@@ -46,7 +48,7 @@ class new_gd11x5 extends Command
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
             }
 
-            Redis::set('gd11x5:nextIssue',(int)$nextIssue+1);
+            Redis::set('gd11x5:nextIssue',(int)$New_nextIssue);
             Redis::set('gd11x5:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             Redis::set('gd11x5:nextIssueEndTime',strtotime($nextIssueEndTime));
         }

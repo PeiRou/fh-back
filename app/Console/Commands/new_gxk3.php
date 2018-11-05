@@ -56,8 +56,10 @@ class new_gxk3 extends Command
             $getIssue = DB::table('game_gxk3')->where('opentime','=',$nowIssueTime)->first();
             $nextIssue = $getIssue->issue;
 
+            $New_nextIssue = $nextIssue+1;
             if(strtotime($filtered['time']) == strtotime('22:27:00')){
                 $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
+                $New_nextIssue = date("ymd",strtotime($nextDay)).'001';                         //奖期
                 $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:35:00';
                 $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:37:00';
             } else {
@@ -65,7 +67,7 @@ class new_gxk3 extends Command
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
             }
 
-            Redis::set('gxk3:nextIssue',(int)$nextIssue+1);
+            Redis::set('gxk3:nextIssue',(int)$New_nextIssue);
             Redis::set('gxk3:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             Redis::set('gxk3:nextIssueEndTime',strtotime($nextIssueEndTime));
         }

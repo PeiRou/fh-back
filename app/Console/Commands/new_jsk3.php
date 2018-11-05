@@ -58,8 +58,10 @@ class new_jsk3 extends Command
             $getIssue = DB::table('game_jsk3')->where('opentime','=',$nowIssueTime)->first();
             $nextIssue = $getIssue->issue;
 
+            $New_nextIssue = $nextIssue+1;
             if(strtotime($filtered['time']) == strtotime('22:09:00')){
                 $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
+                $New_nextIssue = date("ymd",strtotime($nextDay)).'001';                         //奖期
                 $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 08:36:10';
                 $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 08:38:00';
             } else {
@@ -67,7 +69,7 @@ class new_jsk3 extends Command
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
             }
 
-            Redis::set('jsk3:nextIssue',(int)$nextIssue+1);
+            Redis::set('jsk3:nextIssue',(int)$New_nextIssue);
             Redis::set('jsk3:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             Redis::set('jsk3:nextIssueEndTime',strtotime($nextIssueEndTime));
         }
