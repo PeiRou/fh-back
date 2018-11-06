@@ -18,7 +18,7 @@ class AdModalController extends Controller
 
     //动态更换mysql
     public function replaceMYSQL(){
-        if(env('DB_HOST_AD')=='' || env('DB_HOST_AD')=='127.0.0.1' ){
+        if(env('DB_HOST_AD')!='' || env('DB_HOST_AD')!='127.0.0.1' ){
             Config::set("database.connections.mysql", [
                 'driver' => 'mysql',
                 "host" => env('DB_HOST_AD'),
