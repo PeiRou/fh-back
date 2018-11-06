@@ -95,7 +95,7 @@ function edit(id) {
         theme: 'material',
         title: '修改广告位内容',
         closeIcon:true,
-        boxWidth:'40%',
+        boxWidth:'80%',
         content: 'url:/back/modal/editAdvertiseInfo/'+id,
         buttons: {
             formSubmit: {
