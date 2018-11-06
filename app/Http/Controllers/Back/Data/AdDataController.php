@@ -19,16 +19,18 @@ class AdDataController extends Controller
 
     //动态更换mysql
     public function replaceMYSQL(){
-        Config::set("database.connections.mysql", [
-            'driver' => 'mysql',
-            "host" => env('DB_HOST_AD'),
-            "database" => env('DB_DATABASE_AD'),
-            "username" => env('DB_USERNAME_AD'),
-            "password" => env('DB_PASSWORD_AD'),
-            'charset' => 'utf8',
-            'collation' => 'utf8_general_ci',
-            'port' => env('DB_PORT_AD'),
-        ]);
+        if(env('DB_HOST_AD')!='' || env('DB_HOST_AD')!='127.0.0.1' ) {
+            Config::set("database.connections.mysql", [
+                'driver' => 'mysql',
+                "host" => env('DB_HOST_AD'),
+                "database" => env('DB_DATABASE_AD'),
+                "username" => env('DB_USERNAME_AD'),
+                "password" => env('DB_PASSWORD_AD'),
+                'charset' => 'utf8',
+                'collation' => 'utf8_general_ci',
+                'port' => env('DB_PORT_AD'),
+            ]);
+        }
     }
 
     //广告位-表格数据
