@@ -1,36 +1,36 @@
+<style>
+    .firstParam{display: flex;align-items: center;margin-bottom: 10px;}
+    .firstInput{width: 20%!important;}
+    .firstSpan{margin-left: 2%;}
+    .firstSelect{width: 40%!important; height: 35px!important;}
+</style>
 <form id="addRoleForm" class="ui form" method="post" action="{{ route('ac.ad.editAdvertise') }}">
+
     <div class="field">
         <label>标题</label>
         <div class="ui input icon">
             <input type="text" name="title" id="title" value="{{ $iInfo->title }}"/>
         </div>
     </div>
-    <div class="field">
-        <label>键名</label>
-        <div class="ui input icon">
-            <input type="text" name="js_key" id="js_key" value="{{ $iInfo->js_key }}"/>
-        </div>
+
+    <div class="field" id="div-aParam">
+        @foreach($aKeyData as $kKeyData => $iKeyData)
+            <div class="ui input icon firstParam">
+                <span>键名：</span>
+                <input class="firstInput" type="text" name="paramKey[]" value="{{ $iKeyData->js_key }}"/>
+                <span class="firstSpan">描述：</span>
+                <input class="firstInput" type="text" name="paramDescription[]" value="{{ $iKeyData->description }}"/>
+                <span class="firstSpan">类型：</span>
+                <select name="paramType[]" class="firstSelect">
+                    @foreach($aKeyModel->advertiseType as $key => $value)
+                        <option @if($key == $iKeyData->type) selected="selected" @endif value="{{ $key }}">{{ $value }}</option>
+                    @endforeach
+                </select>
+                <input type="hidden" name="paramId[]" value="{{ $iKeyData->id }}"/>
+            </div>
+        @endforeach
     </div>
-    <div class="field">
-        <label>类型</label>
-        <div class="ui input icon">
-            <select class="ui fluid dropdown" name="type" id="type">
-                @foreach($aData->advertiseType as $key => $value)
-                    <option @if($key == $iInfo->type) selected="selected" @endif value="{{ $key }}">{{ $value }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-    <div class="field">
-        <label>状态</label>
-        <div class="ui input icon">
-            <select class="ui fluid dropdown" name="status" id="status">
-                @foreach($aData->advertiseStatus as $key => $value)
-                    <option @if($key == $iInfo->status) selected="selected" @endif value="{{ $key }}">{{ $value }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
+
     <input type="hidden" name="id" value="{{ $iInfo->id }}">
 </form>
 

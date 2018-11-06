@@ -6,7 +6,7 @@
 
     @foreach($aData as $kData => $iData)
         <div class="field">
-            <label>{{ $iData->js_key }}</label>
+            <label>{{ $iData->description }}({{ $iData->js_key }})</label>
             <div class="ui icon">
                 @if($iData->type == 1)
                     <input type="text" name="{{ $iData->js_key }}" data-id="{{ $iData->id }}" value="{{ $iData->js_value }}"/>

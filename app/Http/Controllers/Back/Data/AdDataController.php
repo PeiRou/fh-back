@@ -35,7 +35,6 @@ class AdDataController extends Controller
 
     //广告位-表格数据
     public function advertise(Request $request){
-        $this->replaceMYSQL();
         $aData = DB::table('advertise')->get();
         $advertise = new Advertise();
         return DataTables::of($aData)
@@ -46,7 +45,8 @@ class AdDataController extends Controller
                 return  $advertise->advertiseStatus[$aData->status];
             })
             ->editColumn('control',function ($data) {
-                return '<span class="edit-link" style="color:#4183c4" onclick="del('.$data->id.')">删除</span>';
+                return '<span class="edit-link" style="color:#4183c4" onclick="edit('.$data->id.')">修改</span> | 
+                        <span class="edit-link" style="color:#4183c4" onclick="del('.$data->id.')">删除</span>';
             })
             ->rawColumns(['control'])
             ->make(true);
@@ -54,7 +54,6 @@ class AdDataController extends Controller
 
     //广告位-表格数据
     public function advertiseInfo(Request $request){
-        $this->replaceMYSQL();
         $aParam = $request->post();
         $aData = DB::table('advertise_info')->select('advertise_info.status','advertise_info.js_title','advertise_info.created_at','advertise_info.sort','advertise_info.js_key','advertise.title','advertise_info.id','advertise.type')
             ->where(function ($aSql) use($aParam){
