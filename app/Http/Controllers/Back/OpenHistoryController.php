@@ -1150,6 +1150,12 @@ class OpenHistoryController extends Controller
             Bets::updateBetBunkoClear($issue, $gameInfo->game_id);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
+            /* 临时添加 */
+            if($type == 'bjkl8'){ //如果是北京快乐8  修改pc蛋蛋的号码
+                $opennum = implode(',',$this->exePCdd($number));
+                DB::table('game_' . Games::$aCodeGameName['pcdd'])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $opennum]);
+            }
+            /* 临时添加 end */
             DB::commit();
             return ['status' => true,'msg'=>'操作成功'];
         }catch(\Exception $e){
