@@ -63,7 +63,7 @@
                     }
                     for (var i = 0;i < result.length;i++){
                         html += '<div class="field">';
-                        html += '<label>'+result[i].js_key+'</label>';
+                        html += '<label>'+result[i].description+'('+result[i].js_key+')</label>';
                         html += '<div class="ui input icon">';
                         if(result[i].type == 1){
                             html += '<input type="text" name="'+result[i].js_key+'"/>';

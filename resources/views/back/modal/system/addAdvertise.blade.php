@@ -23,6 +23,13 @@
         </div>
     </div>
 
+    <div class="field" id="div-description">
+        <label>描述</label>
+        <div class="ui input icon">
+            <input type="text" name="description" id="description"/>
+        </div>
+    </div>
+
     <div class="field">
         <label>类型</label>
         <div class="ui input icon">
@@ -78,6 +85,8 @@
     <div class="ui input icon firstParam">
         <span>键名：</span>
         <input class="firstInput" type="text" name="paramKey"/>
+        <span class="firstSpan">描述：</span>
+        <input class="firstInput" type="text" name="paramDescription"/>
         <span class="firstSpan">类型：</span>
         <select name="paramType" class="firstSelect">
             @foreach($aData1->advertiseType as $key => $value)
@@ -130,17 +139,20 @@
             if(value == 1){
                 $('#div-category').show();
                 $('#div-value').show();
+                $('#div-description').show();
                 $('#div-aParam').hide();
             }else if(value == 2){
                 $('#div-category').hide();
                 $('#div-value').hide();
+                $('#div-description').hide();
                 $('#div-aParam').show();
             }else if(value == 3){
                 $('#div-category').hide();
                 $('#div-value').hide();
+                $('#div-description').hide();
                 $('#div-aParam').show();
             }
-        })
+        });
 
         $('#category').on('change',function () {
             var value = $(this).val();
@@ -166,7 +178,6 @@
     }
 
     function getData() {
-        console.log(1);
         data1.title = $('#title').val();
         data1.js_key = $('#js_key').val();
         data1.type = $('#type').val();
@@ -174,6 +185,7 @@
         data1.value1 = $('#value1').val();
         data1.aParamkey = $('#aParamkey').val();
         data1.value3 = $('#value3').val();
+        data1.description = $('#description').val();
         var paramKey = new Array();
         $('input[name=paramKey]').each(function () {
             paramKey.push($(this).val());
@@ -184,6 +196,11 @@
             paramType.push($(this).val());
         });
         data1.paramType = paramType;
+        var paramDescription = new Array();
+        $('input[name=paramDescription]').each(function () {
+            paramDescription.push($(this).val());
+        });
+        data1.paramDescription = paramDescription;
         run($('#value2')[0],function (res) {
             console.log(2);
             data1.value2 = res;

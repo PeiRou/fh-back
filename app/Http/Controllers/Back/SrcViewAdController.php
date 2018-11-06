@@ -29,12 +29,10 @@ class SrcViewAdController extends Controller
 
     //广告位
     public function advertise(){
-        $this->replaceMYSQL();
         return view('back.system.advertise');
     }
     //广告详情
     public function advertiseInfo(){
-        $this->replaceMYSQL();
         $aData = DB::table('advertise')->get();
         return view('back.system.advertiseInfo',compact('aData'));
     }
