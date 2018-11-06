@@ -31,11 +31,65 @@ class ReportGeneral extends Model
         return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']));
     }
 
+    public static function reportQuerySql($aParam){
+        $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
+                  SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
+                  SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
+                  SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
+                  `general_account`,`general_id`
+                   FROM `report_general` WHERE 1 ";
+        $result = self::conditionalConnection($aSql,$aParam);
+        $aSql = $result['aSql'];
+        $bSql = "SELECT COUNT(DISTINCT(`user_id`)) AS `memberCount`,`general_id` FROM `report_member` WHERE 1 ";
+        $bParam = [
+            'timeStart' => $aParam['timeStart'],
+            'timeEnd' => $aParam['timeEnd'],
+            'chkTest' => 1
+        ];
+        $resultB = ReportMember::conditionalConnection($bSql,$bParam,0);
+        $bSql = $resultB['aSql']." AND `bet_count` > 0 GROUP BY `general_id`";
+        $aSql = "SELECT `sum`.*,`count`.`memberCount` FROM (".$aSql.") AS `sum` JOIN (".$bSql.") AS `count` ON `count`.`general_id` = `sum`.`general_id`";
+        $aParam['timeStart'] = $aParam['timeEnd'] = date('Y-m-d');
+        $result2 = Bets::GagentTodaySql($aParam);
+        $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
+                  SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
+                  SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
+                  SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
+                  `general_account`,`general_id`,SUM(`memberCount`) AS `memberCount` 
+                   FROM (".$aSql." UNION ".$result2.") AS `report` GROUP BY `general_id` LIMIT ".$aParam['start'].",".$aParam['length'];
+        return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']));
+    }
+
     public static function reportQueryCount($aParam){
         $aSql = "SELECT `general_id` FROM `report_general` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
         $aSql = "SELECT COUNT(`a`.`general_id`) AS `count` FROM ( ".$result['aSql']." ) AS `a`";
         return DB::select($aSql,$result['aArray'])[0]->count;
+    }
+
+    public static function reportQueryCountSql($aParam){
+        $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
+                  SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
+                  SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
+                  SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
+                  `general_account`,`general_id`
+                   FROM `report_general` WHERE 1 ";
+        $result = self::conditionalConnection($aSql,$aParam);
+        $aSql = $result['aSql'];
+        $bSql = "SELECT COUNT(DISTINCT(`user_id`)) AS `memberCount`,`general_id` FROM `report_member` WHERE 1 ";
+        $bParam = [
+            'timeStart' => $aParam['timeStart'],
+            'timeEnd' => $aParam['timeEnd'],
+            'chkTest' => 1
+        ];
+        $resultB = ReportMember::conditionalConnection($bSql,$bParam,0);
+        $bSql = $resultB['aSql']." AND `bet_count` > 0 GROUP BY `general_id`";
+        $aSql = "SELECT `sum`.*,`count`.`memberCount` FROM (".$aSql.") AS `sum` JOIN (".$bSql.") AS `count` ON `count`.`general_id` = `sum`.`general_id`";
+        $aParam['timeStart'] = $aParam['timeEnd'] = date('Y-m-d');
+        $result2 = Bets::GagentTodaySql($aParam);
+        $aSql = "SELECT `general_id` FROM (".$aSql." UNION ".$result2.") AS `report` GROUP BY `general_id`";
+        $aSql = "SELECT COUNT(`a`.`general_id`) AS `count` FROM ( ".$aSql." ) AS `a`";
+        return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']))[0]->count;
     }
 
     public static function reportQuerySum($aParam){
@@ -54,6 +108,35 @@ class ReportGeneral extends Model
         $resultB = ReportMember::conditionalConnection($bSql,$bParam,0);
         $bSql = $resultB['aSql']." AND `bet_count` > 0";
         $aSql = "SELECT `sum`.*,`count`.`member_count` FROM (".$aSql.") AS `sum` JOIN (".$bSql.") AS `count` ON `count`.`link` = `sum`.`link`";
+        return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']))[0];
+    }
+
+    public static function reportQuerySumSql($aParam){
+        $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
+                  SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
+                  SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
+                  SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
+                  `general_account`,`general_id`
+                   FROM `report_general` WHERE 1 ";
+        $result = self::conditionalConnection($aSql,$aParam);
+        $aSql = $result['aSql'];
+        $bSql = "SELECT COUNT(DISTINCT(`user_id`)) AS `memberCount`,`general_id` FROM `report_member` WHERE 1 ";
+        $bParam = [
+            'timeStart' => $aParam['timeStart'],
+            'timeEnd' => $aParam['timeEnd'],
+            'chkTest' => 1
+        ];
+        $resultB = ReportMember::conditionalConnection($bSql,$bParam,0);
+        $bSql = $resultB['aSql']." AND `bet_count` > 0 GROUP BY `general_id`";
+        $aSql = "SELECT `sum`.*,`count`.`memberCount` FROM (".$aSql.") AS `sum` JOIN (".$bSql.") AS `count` ON `count`.`general_id` = `sum`.`general_id`";
+        $aParam['timeStart'] = $aParam['timeEnd'] = date('Y-m-d');
+        $result2 = Bets::GagentTodaySql($aParam);
+        $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
+                  SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
+                  SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
+                  SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
+                  `general_account`,`general_id`,SUM(`memberCount`) AS `memberCount` 
+                   FROM (".$aSql." UNION ".$result2.") AS `report` GROUP BY `general_id`";
         return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']))[0];
     }
 

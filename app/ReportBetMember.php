@@ -22,11 +22,46 @@ class ReportBetMember extends Model
         return DB::select($result['aSql'],$result['aArray']);
     }
 
+    public static function reportQuerySql($aParam){
+        $aSql = "SELECT `user_id`,`user_account`,`user_name`,`agent_id`, 
+                  `bet_count` AS `bet_count`,`bet_money` AS `bet_money`,`agent_account`,`bet_amount` AS `bet_amount`,
+                  `fact_bet_bunko` AS `fact_bet_bunko`,`bet_bunko` AS `bet_bunko`,
+                  `odds_amount` AS `odds_amount`,`return_amount` AS `return_amount`,`fact_return_amount` AS `fact_return_amount`,
+                  '0.00' AS `activity_money`,'0.00' AS `handling_fee`,'0.00' AS `drawing_money`,'0.00' AS `recharges_money`
+                  FROM `report_bet_member` WHERE 1 ";
+        $result1 = self::conditionalConnection($aSql,$aParam,0);
+        $aParam['timeStart'] = $aParam['timeEnd'] = date('Y-m-d');
+        $result2 = Bets::UserTodaySql($aParam);
+        $aSql = "SELECT `user_id`,`user_account`,`user_name`,`agent_id`, 
+                  SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,`agent_account`,SUM(`bet_amount`) AS `bet_amount`,
+                  SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_bunko`) AS `bet_bunko`,
+                  SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
+                  SUM(`activity_money`) AS `activity_money`,SUM(`handling_fee`) AS `handling_fee`,
+                  SUM(`drawing_money`) AS `drawing_money`,SUM(`recharges_money`) AS `recharges_money` FROM (".$result1['aSql'].' UNION '.$result2.") AS `report`
+                   GROUP BY `user_id` HAVING 1 ORDER BY `fact_bet_bunko` ASC LIMIT ".$aParam['start'].",".$aParam['length'];
+        return DB::select($aSql,$result1['aArray']);
+    }
+
     public static function reportQueryCount($aParam){
         $aSql = "SELECT `user_id`,SUM(`fact_bet_bunko`) AS `fact_bet_bunko` FROM `report_bet_member` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
         $aSql = "SELECT COUNT(`a`.`user_id`) AS `count` FROM ( ".$result['aSql']." ) AS `a`";
         return DB::select($aSql,$result['aArray'])[0]->count;
+    }
+
+    public static function reportQueryCountSql($aParam){
+        $aSql = "SELECT `user_id`,`user_account`,`user_name`,`agent_id`, 
+                  `bet_count` AS `bet_count`,`bet_money` AS `bet_money`,`agent_account`,`bet_amount` AS `bet_amount`,
+                  `fact_bet_bunko` AS `fact_bet_bunko`,`bet_bunko` AS `bet_bunko`,
+                  `odds_amount` AS `odds_amount`,`return_amount` AS `return_amount`,`fact_return_amount` AS `fact_return_amount`,
+                  '0.00' AS `activity_money`,'0.00' AS `handling_fee`,'0.00' AS `drawing_money`,'0.00' AS `recharges_money`
+                  FROM `report_bet_member` WHERE 1 ";
+        $result1 = self::conditionalConnection($aSql,$aParam,0);
+        $aParam['timeStart'] = $aParam['timeEnd'] = date('Y-m-d');
+        $result2 = Bets::UserTodaySql($aParam);
+        $aSql = "SELECT `user_id` FROM (".$result1['aSql'].' UNION '.$result2.") AS `report` GROUP BY `user_id`";
+        $aSql = "SELECT COUNT(`a`.`user_id`) AS `count` FROM ( ".$aSql." ) AS `a`";
+        return DB::select($aSql,$result1['aArray'])[0]->count;
     }
 
     public static function reportQuerySum($aParam){
@@ -36,6 +71,25 @@ class ReportBetMember extends Model
                   FROM `report_bet_member` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam,0);
         return DB::select($result['aSql'],$result['aArray'])[0];
+    }
+
+    public static function reportQuerySumSql($aParam){
+        $aSql = "SELECT `user_id`,`user_account`,`user_name`,`agent_id`, 
+                  `bet_count` AS `bet_count`,`bet_money` AS `bet_money`,`agent_account`,`bet_amount` AS `bet_amount`,
+                  `fact_bet_bunko` AS `fact_bet_bunko`,`bet_bunko` AS `bet_bunko`,
+                  `odds_amount` AS `odds_amount`,`return_amount` AS `return_amount`,`fact_return_amount` AS `fact_return_amount`,
+                  '0.00' AS `activity_money`,'0.00' AS `handling_fee`,'0.00' AS `drawing_money`,'0.00' AS `recharges_money`
+                  FROM `report_bet_member` WHERE 1 ";
+        $result1 = self::conditionalConnection($aSql,$aParam,0);
+        $aParam['timeStart'] = $aParam['timeEnd'] = date('Y-m-d');
+        $result2 = Bets::UserTodaySql($aParam);
+        $aSql = "SELECT `user_id`,`user_account`,`user_name`,`agent_id`, 
+                  SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,`agent_account`,SUM(`bet_amount`) AS `bet_amount`,
+                  SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_bunko`) AS `bet_bunko`,
+                  SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
+                  SUM(`activity_money`) AS `activity_money`,SUM(`handling_fee`) AS `handling_fee`,
+                  SUM(`drawing_money`) AS `drawing_money`,SUM(`recharges_money`) AS `recharges_money` FROM (".$result1['aSql'].' UNION '.$result2.") AS `report` ";
+        return DB::select($aSql,$result1['aArray'])[0];
     }
 
     public static function conditionalConnection($aSql,$aParam,$group = 1){

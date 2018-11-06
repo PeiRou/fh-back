@@ -27,6 +27,14 @@ class ReportDataController extends Controller
             $result = Bets::GagentToday($aParam);
             $aData = $result['aData'];
             $aDataCount = $result['aDataCount'];
+        }elseif(strtotime($aParam['timeEnd']) >= strtotime(date('Y-m-d'))){
+            if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam)) {
+                $aData = ReportBetGeneral::reportQuerySql($aParam);
+                $aDataCount = ReportBetGeneral::reportQueryCountSql($aParam);
+            } else {
+                $aData = ReportGeneral::reportQuerySql($aParam);
+                $aDataCount = ReportGeneral::reportQueryCountSql($aParam);
+            }
         }else{
             if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
                 $aData = ReportBetGeneral::reportQuery($aParam);
@@ -39,7 +47,9 @@ class ReportDataController extends Controller
 
         return DataTables::of($aData)
             ->editColumn('fact_bet_bunko', function ($aData){
-                return $aData->bet_bunko + $aData->activity_money + $aData->handling_fee;
+                $activity_money = empty($aData->activity_money)?0:$aData->activity_money;
+                $handling_fee = empty($aData->handling_fee)?0:$aData->handling_fee;
+                return $aData->bet_bunko + $activity_money + $handling_fee;
             })
             ->setTotalRecords($aDataCount)
             ->skipPaging()
@@ -53,6 +63,12 @@ class ReportDataController extends Controller
 
         if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
             $aData = Bets::GagentTodaySUM($aParam);
+        }elseif(strtotime($aParam['timeEnd']) >= strtotime(date('Y-m-d'))){
+            if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam)) {
+                $aData = ReportBetGeneral::reportQuerySumSql($aParam);
+            } else {
+                $aData = ReportGeneral::reportQuerySumSql($aParam);
+            }
         }else {
             if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam))
                 $aData = ReportBetGeneral::reportQuerySum($aParam);
@@ -86,6 +102,14 @@ class ReportDataController extends Controller
             $result = Bets::AgentToday($aParam);
             $aData = $result['aData'];
             $aDataCount = $result['aDataCount'];
+        }elseif(strtotime($aParam['timeEnd']) >= strtotime(date('Y-m-d'))){
+            if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam)) {
+                $aData = ReportBetAgent::reportQuerySql($aParam);
+                $aDataCount = ReportBetAgent::reportQueryCountSql($aParam);
+            } else {
+                $aData = ReportAgent::reportQuerySql($aParam);
+                $aDataCount = ReportAgent::reportQueryCountSql($aParam);
+            }
         }else {
             if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam)) {
                 $aData = ReportBetAgent::reportQuery($aParam);
@@ -98,7 +122,9 @@ class ReportDataController extends Controller
 
         return DataTables::of($aData)
             ->editColumn('fact_bet_bunko', function ($aData){
-                return $aData->bet_bunko + $aData->activity_money + $aData->handling_fee;
+                $activity_money = empty($aData->activity_money)?0:$aData->activity_money;
+                $handling_fee = empty($aData->handling_fee)?0:$aData->handling_fee;
+                return $aData->bet_bunko + $activity_money + $handling_fee;
             })
             ->setTotalRecords($aDataCount)
             ->skipPaging()
@@ -111,6 +137,12 @@ class ReportDataController extends Controller
         $aParam = $request->all();
         if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
             $aData = Bets::AgentTodaySum($aParam);
+        }elseif(strtotime($aParam['timeEnd']) >= strtotime(date('Y-m-d'))){
+            if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam)) {
+                $aData = ReportBetAgent::reportQuerySumSql($aParam);
+            } else {
+                $aData = ReportAgent::reportQuerySumSql($aParam);
+            }
         }else {
             if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam))
                 $aData = ReportBetAgent::reportQuerySum($aParam);
@@ -143,7 +175,15 @@ class ReportDataController extends Controller
             $result = Bets::UserToday($aParam);
             $aData = $result['aData'];
             $aDataCount = $result['aDataCount'];
-        }else {
+        }elseif(strtotime($aParam['timeEnd']) >= strtotime(date('Y-m-d'))){
+            if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam)) {
+                $aData = ReportBetMember::reportQuerySql($aParam);
+                $aDataCount = ReportBetMember::reportQueryCountSql($aParam);
+            } else {
+                $aData = ReportMember::reportQuerySql($aParam);
+                $aDataCount = ReportMember::reportQueryCountSql($aParam);
+            }
+        }else{
             if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam)) {
                 $aData = ReportBetMember::reportQuery($aParam);
                 $aDataCount = ReportBetMember::reportQueryCount($aParam);
@@ -155,7 +195,9 @@ class ReportDataController extends Controller
 
         return DataTables::of($aData)
             ->editColumn('fact_bet_bunko', function ($aData){
-                return $aData->bet_bunko + $aData->activity_money + $aData->handling_fee;
+                $activity_money = empty($aData->activity_money)?0:$aData->activity_money;
+                $handling_fee = empty($aData->handling_fee)?0:$aData->handling_fee;
+                return $aData->bet_bunko + $activity_money + $handling_fee;
             })
             ->setTotalRecords($aDataCount)
             ->skipPaging()
@@ -169,6 +211,12 @@ class ReportDataController extends Controller
 
         if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
             $aData = Bets::UserTodaySum($aParam);
+        }elseif(strtotime($aParam['timeEnd']) >= strtotime(date('Y-m-d'))){
+            if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam)) {
+                $aData = ReportBetMember::reportQuerySumSql($aParam);
+            } else {
+                $aData = ReportMember::reportQuerySumSql($aParam);
+            }
         }else {
             if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam))
                 $aData = ReportBetMember::reportQuerySum($aParam);
