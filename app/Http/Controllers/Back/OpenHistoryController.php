@@ -158,7 +158,7 @@ class OpenHistoryController extends Controller
     public function addBjkl8Data(Request $request)
     {
         $id = $this->notTen($request->get('id'));
-        $info = DB::table('game_bjkl8')->select('opentime')->where('id',$id)->first();
+        $info = DB::table('game_bjkl8')->select('opentime','issue')->where('id',$id)->first();
         if(strtotime($info->opentime) > time())
             return response()->json(['status' => false,'msg' => '请勿提早开奖']);
         $n1 = $this->notTen($request->get('n1'));
@@ -190,13 +190,24 @@ class OpenHistoryController extends Controller
         if(count($openNumArr1) < count($openNumArr)){
             return response()->json(['status' => false,'msg' => '请勿提交重复号码']);
         }
-        $update = DB::table('game_bjkl8')->where('id',$id)->update([
+
+        $data = [
             'opennum' => $openNum,
             'year'=> date('Y',strtotime($info->opentime)),
             'month'=> date('m',strtotime($info->opentime)),
             'day'=>  date('d',strtotime($info->opentime)),
             'is_open' => 1
-        ]);
+        ];
+        $update = DB::table('game_bjkl8')->where('id',$id)->update($data);
+        //处理pc蛋蛋
+        $data['opennum'] = implode(',',$this->exePCdd($openNum));
+        $update1 = DB::table('game_pcdd')->where('issue',$info->issue)->update($data);
+        if(!$update1){
+            return response()->json([
+                'status' => false,
+                'msg' => 'PC蛋蛋开奖数据添加失败！'
+            ]);
+        }
         if($update == 1){
             return response()->json([
                 'status' => true
@@ -800,6 +811,25 @@ class OpenHistoryController extends Controller
         $player5 = (int)$explodeNum[5].(int)$explodeNum[6].(int)$explodeNum[7].(int)$explodeNum[8].(int)$explodeNum[9];
         return [$banker,$player1,$player2,$player3,$player4,$player5];
     }
+    //处理pc蛋蛋
+    private function exePCdd($opencode){
+        if(empty($opencode))
+            return false;
+        $explodeNum = explode(',',$opencode);
+        $player1 = 0;
+        $player2 = 0;
+        $player3 = 0;
+        foreach ($explodeNum as $k=>$v){
+            if( $k >= 0 && $k <= 5){
+                $player1 += $v;
+            }else if( $k >= 6 && $k <= 11){
+                $player2 += $v;
+            }else if( $k >= 12 && $k <= 17){
+                $player3 += $v;
+            }
+        }
+        return [$player1%10, $player2%10, $player3%10];
+    }
 
     function nn($num){
         $aNumber = str_split($num);
@@ -1120,6 +1150,17 @@ class OpenHistoryController extends Controller
             Bets::updateBetBunkoClear($issue, $gameInfo->game_id);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
+            /* 临时添加 */
+            if($type == 'bjkl8'){ //如果是北京快乐8  修改pc蛋蛋的号码
+                $opennum = implode(',',$this->exePCdd($number));
+                DB::table('game_' . Games::$aCodeGameName['pcdd'])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $opennum]);
+            }
+            if($type = 'bjpk10'){ //如果是北京pk10  修改牛牛的号码
+                $niuniu = $this->exePK10nn($number);
+                $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
+                DB::table('game_' . Games::$aCodeGameName['pk10nn'])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $opennum]);
+            }
+            /* 临时添加 end */
             DB::commit();
             return ['status' => true,'msg'=>'操作成功'];
         }catch(\Exception $e){
