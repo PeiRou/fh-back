@@ -1155,6 +1155,11 @@ class OpenHistoryController extends Controller
                 $opennum = implode(',',$this->exePCdd($number));
                 DB::table('game_' . Games::$aCodeGameName['pcdd'])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $opennum]);
             }
+            if($type = 'bjpk10'){ //如果是北京pk10  修改牛牛的号码
+                $niuniu = $this->exePK10nn($number);
+                $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
+                DB::table('game_' . Games::$aCodeGameName['pk10nn'])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $opennum]);
+            }
             /* 临时添加 end */
             DB::commit();
             return ['status' => true,'msg'=>'操作成功'];
