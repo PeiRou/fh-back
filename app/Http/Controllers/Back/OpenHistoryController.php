@@ -1168,7 +1168,7 @@ class OpenHistoryController extends Controller
             if($type == 'jspk10'){ //秒速赛车 修改牛牛
                 $niuniu = $this->exePK10nn($number);
                 $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
-                DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['niuniu' => $opennum]);
+                DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['niuniu' => $opennum,'nn_bunko' => 0]);
             }
             if($type == 'pk10nn'){ //如果是北京pk10  修改牛牛的号码
                 $niuniu = $this->exePK10nn($number);
