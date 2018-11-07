@@ -283,11 +283,18 @@ class Excel
             case 'game_msssc':
                 return $this->opennum_ssc();
                 break;
+            case 'game_cqxync':
+                return $this->opennum_xync();
+                break;
+            case 'game_gdklsf':
+                return $this->opennum_xync();
+                break;
             case 'game_bjkl8':
                 return $this->opennum_kl8();
             case 'game_xylhc':
                 return $this->opennum_lhc();
                 break;
+
         }
         return false;
     }
@@ -328,6 +335,13 @@ class Excel
         $arr = range(1,49,1);
         shuffle($arr);   //打乱数组
         $newarr = array_splice($arr,0,7);
+        return implode(",",$newarr);
+    }
+    private function opennum_xync(){
+        $newarr = [];
+        for ($i = 1; $i <= 20; $i++){
+            $newarr[] = rand(1, 20);
+        }
         return implode(",",$newarr);
     }
     //处理秒速牛牛

@@ -12,7 +12,6 @@ class OpenApiGetController extends Controller
 {
     //获取开奖
     public function open($type,$date,$issue){
-//        var_dump($type);die();
         if(!empty($this->apiArray[$type])) {
             $http = new Client();
             try {
@@ -98,6 +97,42 @@ class OpenApiGetController extends Controller
             'n3' => (int)$arrCode[2],
             'n4' => (int)$arrCode[3],
             'n5' => (int)$arrCode[4],
+        ];
+    }
+    //重庆幸运农场
+    public function xync($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+            'n8' => (int)$arrCode[7],
+        ];
+    }
+    //广东快乐十分
+    public function gdkl10($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+            'n8' => (int)$arrCode[7],
         ];
     }
 

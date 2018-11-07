@@ -113,7 +113,7 @@
         $('.modal-mask').fadeIn();
         $('.getBtn').html('获取中...');
         $.ajax({
-            url:'/back/openData/bjpk10/'+date+'/'+issue.slice(2),
+            url:'/back/openData/'+gameType+'/'+date+'/'+issue.slice(2),
             type:'get',
             dataType:'json',
             success:function (result) {
