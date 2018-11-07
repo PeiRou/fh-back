@@ -1172,7 +1172,8 @@ class OpenHistoryController extends Controller
             }
             if($type == 'pk10nn'){ //如果是北京pk10  修改牛牛的号码
                 $niuniu = $this->exePK10nn($number);
-                $number =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
+                $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
+                DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['niuniu' => $opennum]);
             }
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
 
