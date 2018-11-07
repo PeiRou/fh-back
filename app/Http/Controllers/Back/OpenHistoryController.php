@@ -1048,6 +1048,16 @@ class OpenHistoryController extends Controller
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
                     ];
+
+                    $aUserFreezeMoney[] = [
+                        'user_id' => $iBet->id,
+                        'game_id' => $iBet->game_id,
+                        'issue' => $iBet->issue,
+                        'money' => $iBet->money - $iBet->bet_bunko,
+                        'status' => 0,
+                        'created_at' => $dateTime,
+                        'updated_at' => $dateTime,
+                    ];
                 }
             }
         }
@@ -1065,15 +1075,6 @@ class OpenHistoryController extends Controller
                         'money' => $iBet1->amount,
                         'balance' => $iBet1->money + (-$iBet1->bet_bunko + $iBet1->amount),
                         'operation_id' => $adminId,
-                        'created_at' => $dateTime1,
-                        'updated_at' => $dateTime1,
-                    ];
-                    $aUserFreezeMoney[] = [
-                        'user_id' => $iBet1->id,
-                        'game_id' => $iBet1->game_id,
-                        'issue' => $iBet1->issue,
-                        'money' => $iBet1->amount,
-                        'status' => 0,
                         'created_at' => $dateTime1,
                         'updated_at' => $dateTime1,
                     ];
