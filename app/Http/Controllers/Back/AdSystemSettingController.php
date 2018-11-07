@@ -245,46 +245,45 @@ class AdSystemSettingController extends Controller
         $iInfo = DB::table('advertise_info')->select('advertise_info.ad_id','advertise.type','advertise_info.id')->where('advertise_info.id',$aParam['info_id'])
             ->join('advertise','advertise.id','=','advertise_info.ad_id')->first();
         DB::beginTransaction();
-        if($iInfo->type == 3){
-            $result1 = DB::table('advertise_info')->where('id','=',$aParam['info_id'])->update(['js_key'=>$aParam['js_key'],'updated_at'=>$date]);
-        }else{
-            $result1 = 1;
-        }
-        $aKeyData = DB::table('advertise_key')->where('ad_id',$iInfo->ad_id)->get();
-        $aArray = [];
-        foreach ($aKeyData as $kKey => $iKey){
-            foreach ($aParam as $kParam => $iParam){
-                if($kParam == $iKey->js_key){
-                    $aArray[] = [
-                        'info_id' => $iInfo->id,
-                        'key_id' => $iKey->id,
-                        'js_value' => $iParam,
-                    ];
+        try {
+            if ($iInfo->type == 3) {
+                $result1 = DB::table('advertise_info')->where('id', '=', $aParam['info_id'])->update(['js_key' => $aParam['js_key'], 'updated_at' => $date]);
+            }
+            $aKeyData = DB::table('advertise_key')->where('ad_id', $iInfo->ad_id)->get();
+            $aArray = [];
+            foreach ($aKeyData as $kKey => $iKey) {
+                foreach ($aParam as $kParam => $iParam) {
+                    if ($kParam == $iKey->js_key) {
+                        $aArray[] = [
+                            'info_id' => $iInfo->id,
+                            'key_id' => $iKey->id,
+                            'js_value' => $iParam,
+                        ];
+                    }
                 }
             }
-        }
-        $aValueData = DB::table('advertise_value')->where('info_id',$iInfo->id)->get();
-        foreach ($aValueData as $kValue => $iValue){
-            foreach ($aArray as $kArray => $iArray){
-                if($iArray['info_id'] = $iValue->info_id && $iArray['key_id'] == $iValue->key_id){
-                    $aArray[$kValue]['id'] = $iValue->id;
+            $aValueData = DB::table('advertise_value')->where('info_id', $iInfo->id)->get();
+            foreach ($aValueData as $kValue => $iValue) {
+                foreach ($aArray as $kArray => $iArray) {
+                    if ($iArray['info_id'] = $iValue->info_id && $iArray['key_id'] == $iValue->key_id) {
+                        $aArray[$kValue]['id'] = $iValue->id;
+                    }
                 }
             }
-        }
 
-        $result2 = DB::update(AdvertiseValue::updateBatchStitching($aArray,['js_value']));
+            DB::update(AdvertiseValue::updateBatchStitching($aArray, ['js_value']));
 
-        if($result1 && $result2){
             DB::commit();
             return response()->json([
                 'status' => true
             ]);
+        }catch (\Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'msg' => '修改失败，请稍后再试！'
+            ]);
         }
-        DB::rollback();
-        return response()->json([
-            'status' => false,
-            'msg' => '修改失败，请稍后再试！'
-        ]);
     }
 
     //排序广告位内容
