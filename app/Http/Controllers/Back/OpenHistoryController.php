@@ -1030,21 +1030,23 @@ class OpenHistoryController extends Controller
         $dateTime1 = date('Y-m-d H:i:s',time()+1);
         $aUserId = [];
         if(!empty($aBetAll)){
-            foreach ($aBetAll as $kBet => $iBet){
-                $aCapital[] = [
-                    'to_user' => $iBet->id,
-                    'user_type' => 'user',
-                    'order_id' => null,
-                    'type' => 't06',
-                    'rechargesType' => 0,
-                    'game_id' => $iBet->game_id,
-                    'issue' => $iBet->issue,
-                    'money' => -$iBet->bet_bunko - $iBet->bet_money,
-                    'balance' => $iBet->money + (-$iBet->bet_bunko - $iBet->bet_money),
-                    'operation_id' => $adminId,
-                    'created_at' => $dateTime,
-                    'updated_at' => $dateTime,
-                ];
+            foreach ($aBetAll as $kBet => $iBet) {
+                if($iBet->bet_bunko > 0) {
+                    $aCapital[] = [
+                        'to_user' => $iBet->id,
+                        'user_type' => 'user',
+                        'order_id' => null,
+                        'type' => 't06',
+                        'rechargesType' => 0,
+                        'game_id' => $iBet->game_id,
+                        'issue' => $iBet->issue,
+                        'money' => -$iBet->bet_bunko - $iBet->bet_money,
+                        'balance' => -$iBet->bet_bunko,
+                        'operation_id' => $adminId,
+                        'created_at' => $dateTime,
+                        'updated_at' => $dateTime,
+                    ];
+                }
             }
         }
         if(!empty($aBet)) {

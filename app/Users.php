@@ -113,15 +113,18 @@ WHERE `users`.`testFlag` = 0 ";
     public static function editBatchUserMoneyDataFreeze($aData){
         $aArray = [];
         foreach ($aData as $kData => $iData){
-            if(isset($aArray[$iData->id]) && array_key_exists($iData->id,$aArray)){
-                $aArray[$iData->id]['money'] += -$iData->bet_bunko - $iData->bet_money;
-            }else{
-                $aArray[$iData->id] = [
-                    'id' => $iData->id,
-                    'money' => -$iData->bet_bunko - $iData->bet_money,
-                ];
+            if($iData->bet_bunko > 0) {
+                if (isset($aArray[$iData->id]) && array_key_exists($iData->id, $aArray)) {
+                    $aArray[$iData->id]['money'] += -$iData->bet_bunko - $iData->bet_money;
+                } else {
+                    $aArray[$iData->id] = [
+                        'id' => $iData->id,
+                        'money' => -$iData->bet_bunko - $iData->bet_money,
+                    ];
+                }
             }
         }
+        if(empty($aArray))   return true;
         return DB::update(self::updateBatchStitching('users',$aArray,['money'],'id'));
     }
 
