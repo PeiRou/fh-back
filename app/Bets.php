@@ -157,7 +157,7 @@ class Bets extends Model
     }
 
     public static function getBetAndUserByIssueAll($issue,$gameId,$bunko = true){
-        $aSql = "SELECT `users`.`id`,SUM(`bet`.`bet_money`) AS `bet_money`,SUM(`bunko`) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`
+        $aSql = "SELECT `users`.`id`,SUM(`bet`.`bet_money`) AS `bet_money`,SUM(CASE WHEN `bunko` > 0 THEN `bunko` ELSE 0 END) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`
                     FROM `bet` 
                     JOIN `users` ON `users`.`id` = `bet`.`user_id`
                     WHERE `bet`.`issue` = :issue AND `bet`.`game_id` = :game_id ";
@@ -172,11 +172,11 @@ class Bets extends Model
     }
 
     public static function getBetAndUserByIssueLose($issue,$gameId){
-        $aSql = "SELECT `users`.`id`,SUM(`bunko`) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`
+        $aSql = "SELECT `users`.`id`,SUM(CASE WHEN `bunko` < 0 THEN `bunko` ELSE 0 END) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`
                     FROM `bet` 
                     JOIN `users` ON `users`.`id` = `bet`.`user_id`
                     WHERE `bet`.`issue` = :issue AND `bet`.`game_id` = :game_id 
-                    GROUP BY `bet`.`user_id` HAVING `bet_bunko` < 0";
+                    GROUP BY `bet`.`user_id`";
         $aArray = [
             'issue' => $issue,
             'game_id' => $gameId
