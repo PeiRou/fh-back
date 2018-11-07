@@ -347,7 +347,7 @@ class AdSystemSettingController extends Controller
                 }
             }
         }
-        $aInfoData = DB::table('advertise_info')->where('status',1)->get();
+        $aInfoData = DB::table('advertise_info')->where('status',1)->orderBy('sort','asc')->get();
         $aDataArray = [];
         foreach ($aInfoData as $kInfo => $iInfo){
             $aDataArray[$kInfo] = [
