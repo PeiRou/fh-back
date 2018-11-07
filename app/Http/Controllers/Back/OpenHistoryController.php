@@ -1053,7 +1053,7 @@ class OpenHistoryController extends Controller
                         'user_id' => $iBet->id,
                         'game_id' => $iBet->game_id,
                         'issue' => $iBet->issue,
-                        'money' => $iBet->money - $iBet->bet_bunko,
+                        'money' => $iBet->bet_bunko,
                         'status' => 0,
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
