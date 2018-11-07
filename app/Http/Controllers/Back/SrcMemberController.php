@@ -130,7 +130,7 @@ class SrcMemberController extends Controller
             $superior_agent = 0;
         }else{
             $iAgent = Agent::where('a_id',$agentId)->first();
-            if($iAgent->oods_level < $odds_level){
+            if($iAgent->odds_level < $odds_level){
                 return response()->json([
                     'status'=>false,
                     'msg'=>'此代理赔率过高'
@@ -353,6 +353,7 @@ class SrcMemberController extends Controller
         $user->testFlag = $testFlag;
         $user->agent_odds = $odds['agent_odds'];
         $user->user_odds = $odds['user_odds'];
+        $user->user_odds_level = $odds['user_odds_level'];
         $insert = $user->save();
         if($insert == 1){
             return response()->json([
@@ -413,6 +414,7 @@ class SrcMemberController extends Controller
                     'testFlag' => 2,
                     'user_odds' => $odds['user_odds'],
                     'agent_odds' => $odds['agent_odds'],
+                    'user_odds_level' => $odds['user_odds_level'],
                 ]);
         } else if($agent == 3){
             $update = User::where('id',$uid)
@@ -421,6 +423,7 @@ class SrcMemberController extends Controller
                     'testFlag' => 1,
                     'user_odds' => $odds['user_odds'],
                     'agent_odds' => $odds['agent_odds'],
+                    'user_odds_level' => $odds['user_odds_level'],
                 ]);
         } else {
             $update = User::where('id',$uid)
@@ -429,6 +432,7 @@ class SrcMemberController extends Controller
                     'testFlag' => 0,
                     'user_odds' => $odds['user_odds'],
                     'agent_odds' => $odds['agent_odds'],
+                    'user_odds_level' => $odds['user_odds_level'],
                 ]);
         }
 
