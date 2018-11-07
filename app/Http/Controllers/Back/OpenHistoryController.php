@@ -996,6 +996,10 @@ class OpenHistoryController extends Controller
                 Capital::insert($aCapital);
             }
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
+            if(in_array($type,['pk10','bjkl8'])){
+                $gameInfo = Games::where('code',Games::$aCodeBindingGame[$type])->first();
+                $this->canceledBetIssueOperating($issue,Games::$aCodeBindingGame[$type],$gameInfo);
+            }
             DB::commit();
             return ['status' => true,'mag' => '操作成功'];
         }catch(\Exception $e){
@@ -1088,6 +1092,10 @@ class OpenHistoryController extends Controller
                 if(!empty($aCapitalFreeze))    Capital::insert($aCapitalFreeze);
                 UserFreezeMoney::insert($aUserFreezeMoney);
             }
+            if(in_array($type,['pk10','bjkl8'])){
+                $gameInfo = Games::where('code',Games::$aCodeBindingGame[$type])->first();
+                $this->freezeOperating($issue,Games::$aCodeBindingGame[$type],$gameInfo);
+            }
             DB::commit();
             return ['status' => true,'msg'=> '操作成功'];
         }catch(\Exception $e){
@@ -1149,21 +1157,24 @@ class OpenHistoryController extends Controller
 
             Bets::updateBetBunkoClear($issue, $gameInfo->game_id);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
-            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
             /* 临时添加 */
-            if($type == 'bjkl8'){ //如果是北京快乐8  修改pc蛋蛋的号码
-                $opennum = implode(',',$this->exePCdd($number));
-                DB::table('game_' . Games::$aCodeGameName['pcdd'])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $opennum]);
+            if($type == 'pcdd'){ //如果是北京快乐8  修改pc蛋蛋的号码
+                $number = implode(',',$this->exePCdd($number));
             }
             if($type == 'jspk10'){ //秒速赛车 修改牛牛
                 $niuniu = $this->exePK10nn($number);
                 $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['niuniu' => $opennum]);
             }
-            if($type = 'bjpk10'){ //如果是北京pk10  修改牛牛的号码
+            if($type == 'pk10nn'){ //如果是北京pk10  修改牛牛的号码
                 $niuniu = $this->exePK10nn($number);
-                $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
-                DB::table('game_' . Games::$aCodeGameName['pk10nn'])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $opennum]);
+                $number =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
+            }
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
+
+            if(in_array($type,['pk10','bjkl8'])){
+                $gameInfo = Games::where('code',Games::$aCodeBindingGame[$type])->first();
+                $this->renewLotteryOperating($issue,Games::$aCodeBindingGame[$type],$gameInfo,$number);
             }
             /* 临时添加 end */
             DB::commit();

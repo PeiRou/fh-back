@@ -46,6 +46,11 @@ class Games extends Model
         'gsk3' => 'gsk3',       //甘肃快3
     ];
 
+    public static $aCodeBindingGame = [
+        'pk10' => 'pk10nn',
+        'bjkl8' => 'pcdd',
+    ];
+
     public static $aCodeCategory = [
         //快3类
         'k3' => ['jsk3','ahk3','gxk3','hbk3','msjsk3','hebeik3','gzk3','gsk3'],
