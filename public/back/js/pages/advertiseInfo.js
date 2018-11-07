@@ -64,7 +64,7 @@ function add() {
         theme: 'material',
         title: '添加广告位内容',
         closeIcon:true,
-        boxWidth:'40%',
+        boxWidth:'80%',
         content: 'url:/back/modal/addAdvertiseInfo',
         buttons: {
             formSubmit: {
