@@ -49,6 +49,7 @@ class Games extends Model
     public static $aCodeBindingGame = [
         'pk10' => 'pk10nn',
         'bjkl8' => 'pcdd',
+        'jspk10' => 'msnn',
     ];
 
     public static $aCodeCategory = [

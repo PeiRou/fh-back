@@ -966,7 +966,8 @@ class OpenHistoryController extends Controller
     //冻结后的撤单操作
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id,false);
-        DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
+        if(!in_array($type,['msnn']))
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
 
         DB::beginTransaction();
 
@@ -996,7 +997,7 @@ class OpenHistoryController extends Controller
                 Capital::insert($aCapital);
             }
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
-            if(in_array($type,['pk10','bjkl8'])){
+            if(in_array($type,['pk10','bjkl8','jspk10'])){
                 $gameInfo = Games::where('code',Games::$aCodeBindingGame[$type])->first();
                 $this->canceledBetIssueOperating($issue,Games::$aCodeBindingGame[$type],$gameInfo);
             }
@@ -1021,7 +1022,8 @@ class OpenHistoryController extends Controller
     public function freezeOperating($issue,$type,$gameInfo){
         $aBet = Bets::getBetUserDrawingByIssue($issue,$gameInfo->game_id);
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
-        DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
+        if(!in_array($type,['msnn']))
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
         $aCapitalFreeze = [];
         $aCapital = [];
         $aUserFreezeMoney = [];
@@ -1094,7 +1096,7 @@ class OpenHistoryController extends Controller
                 if(!empty($aCapitalFreeze))    Capital::insert($aCapitalFreeze);
                 UserFreezeMoney::insert($aUserFreezeMoney);
             }
-            if(in_array($type,['pk10','bjkl8'])){
+            if(in_array($type,['pk10','bjkl8','jspk10'])){
                 $gameInfo = Games::where('code',Games::$aCodeBindingGame[$type])->first();
                 $this->freezeOperating($issue,Games::$aCodeBindingGame[$type],$gameInfo);
             }

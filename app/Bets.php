@@ -157,7 +157,7 @@ class Bets extends Model
     }
 
     public static function getBetAndUserByIssueAll($issue,$gameId,$bunko = true){
-        $aSql = "SELECT `users`.`id`,SUM(`bet`.`bet_money`) AS `bet_money`,SUM(CASE WHEN `bunko` > 0 THEN `bunko` ELSE 0 END) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`
+        $aSql = "SELECT `users`.`id`,SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`bet_money` + `bet`.`freeze_money` ELSE `bet`.`bet_money` END) AS `bet_money`,SUM(CASE WHEN `bunko` > 0 THEN `bunko` ELSE 0 END) AS `bet_bunko`,`bet`.`game_id`,`bet`.`issue`,`users`.`money`
                     FROM `bet` 
                     JOIN `users` ON `users`.`id` = `bet`.`user_id`
                     WHERE `bet`.`issue` = :issue AND `bet`.`game_id` = :game_id ";
