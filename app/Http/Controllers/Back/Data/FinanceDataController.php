@@ -386,9 +386,12 @@ class FinanceDataController extends Controller
         $param = $request->all();
         $start = $request->get('start');
         $length = $request->get('length');
-        if(empty($param['account']))            //预设没有填用户的时候没有任何值
+//        if(empty($param['account']))            //预设没有填用户的时候没有任何值
+//            return array('draw'=>1,'recordsTotal'=>0,'recordsFiltered'=>0,'data'=>[]);
+        /* 修改 */
+                if(empty($param['account']) && !$param['type'])            //预设没有填用户的时候没有任何值
             return array('draw'=>1,'recordsTotal'=>0,'recordsFiltered'=>0,'data'=>[]);
-
+        /* 修改end */
         if(isset($param['type']) && array_key_exists('type', $param)){
             if(in_array($param['type'],Capital::$includePlayTypeOption)){
                 $capital = Bets::AssemblyFundDetails($param);
