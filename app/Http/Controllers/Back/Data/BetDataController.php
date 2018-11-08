@@ -83,6 +83,9 @@ class BetDataController extends Controller
                 }
             })
             ->where('bet.testFlag',0);
+        if($minMoney && $maxMoney){
+            $betSQl->whereBetween('bet.bet_money',[$minMoney, $maxMoney]);
+        }
         $betCount = $betSQl->count();
         $bet = $betSQl->orderBy('bet.created_at','desc')->skip($start)->take($length)->get();
         $betMoney = DB::table('bet')
