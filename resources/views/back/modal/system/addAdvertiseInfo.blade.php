@@ -5,7 +5,7 @@
 <form id="addRoleForm" class="ui form" action="{{ route('ac.ad.addAdvertiseInfo') }}">
 
     <div class="field" style="margin-top: 10px;">
-        <label>标题</label>
+        <label>后台备注(这不会显示在前台)</label>
         <div class="ui input icon">
             <input type="text" name="js_title" id="js_title"/>
         </div>
