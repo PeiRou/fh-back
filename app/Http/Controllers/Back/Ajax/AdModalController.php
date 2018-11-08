@@ -41,9 +41,30 @@ class AdModalController extends Controller
 
     //修改广告位-模板
     public function editAdvertise($id){
+        $date = date('Y-m-d H:i:s');
         $aData = new Advertise();
         $iInfo = DB::table('advertise')->where('id',$id)->first();
         $aKeyData = DB::table('advertise_key')->where('ad_id',$id)->get();
+        $iInfo_val = DB::table('advertise_info')->where('ad_id',$id)->first();
+        if(empty($iInfo_val)){
+            $result1 = DB::table('advertise_info')->insertGetId([
+                'js_title' => '',
+                'ad_id' => $id,
+                'js_key' => NULL,
+                'status' => 1,
+                'sort' => 99,
+                'created_at' => $date,
+                'updated_at' => $date,
+            ]);
+            $result1 = DB::table('advertise_value')->insertGetId([
+                'info_id' => $result1,
+                'key_id' => $aKeyData[0]->id,
+                'js_value' => '',
+                'status' => 1,
+                'created_at' => $date,
+                'updated_at' => $date,
+            ]);
+        }
         $aKeyModel = new AdvertiseKey();
         return view('back.modal.system.editAdvertise',compact('aData','iInfo','aKeyData','aKeyModel'));
     }

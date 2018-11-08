@@ -356,7 +356,7 @@ class AdSystemSettingController extends Controller
             ];
             foreach ($aFieldArray as $kField => $iField){
                 if($iInfo->id == $iField['info_id']){
-                    if($iField['type']==3)          //如果是富文本类型
+                    if($iField['type']==3 && $iField['key']!='PChomeActivityKey')          //如果是富文本类型
                         $aDataArray[$kInfo]['filed'][$iField['key']] = $iField['value_id'];
                     else
                         $aDataArray[$kInfo]['filed'][$iField['key']] = $iField['value'];
