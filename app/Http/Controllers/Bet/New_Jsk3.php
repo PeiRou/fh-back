@@ -43,6 +43,9 @@ class New_Jsk3
         ]);
         if ($update !== 1) {
             \Log::info($gameName . $issue . "结算not Finshed");
+        }else{
+            $agentJob = new \AgentBackwaterJob($gameId,$issue);
+            $agentJob->addQueue();
         }
     }
 
