@@ -130,7 +130,7 @@ class SrcMemberController extends Controller
             $superior_agent = 0;
         }else{
             $iAgent = Agent::where('a_id',$agentId)->first();
-            if($iAgent->odds_level < $odds_level){
+            if($iAgent->odds_level < $odds_level && !empty($iAgent->odds_level)){
                 return response()->json([
                     'status'=>false,
                     'msg'=>'此代理赔率过高'
