@@ -66,4 +66,25 @@ class Agent extends Model
         }
         return serialize($aArray);
     }
+
+    public static function updateBatchStitching($data,$fields,$primary,$table = 'agent'){
+        $aSql = 'UPDATE '. $table . ' SET ';
+        foreach ($fields as $field){
+            $str1 = '`money` = `money` + CASE ' . $primary . ' ';
+            foreach ($data as $key => $value){
+                $str1 .= 'WHEN \'' . $value[$primary] . '\' THEN \'' . $value[$field] . '\' ';
+            }
+            $str1 .= 'END , ';
+            $aSql .= $str1;
+        }
+        $aSql = substr($aSql,0,strlen($aSql)-2);
+        $endStr = 'WHERE ' . $primary . ' IN (';
+        foreach ($data as $key => $value){
+            $endStr .= '\''.$value[$primary] . '\',';
+        }
+        $endStr = substr($endStr,0,strlen($endStr)-1);
+        $endStr .= ')';
+        $aSql .= $endStr;
+        return $aSql;
+    }
 }
