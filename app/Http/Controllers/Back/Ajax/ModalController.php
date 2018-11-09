@@ -621,9 +621,9 @@ class ModalController extends Controller
         $payType = PayTypeNew::all();
         $levels = Levels::all();
         $getPayOnlineData = PayOnlineNew::where('id',$id)->first();
-        $getPayOnlineData->apiKey = empty($getPayOnlineData->apiKey)?'':substr($getPayOnlineData->apiKey,0).'*********'.substr($getPayOnlineData->apiKey,-2);
-        $getPayOnlineData->apiPublicKey = empty($getPayOnlineData->apiPublicKey)?'':substr($getPayOnlineData->apiPublicKey,0).'*********'.substr($getPayOnlineData->apiPublicKey,-2);
-        $getPayOnlineData->apiPrivateKey = empty($getPayOnlineData->apiPrivateKey)?'':substr($getPayOnlineData->apiPrivateKey,0).'*********'.substr($getPayOnlineData->apiPrivateKey,-2);;
+        $getPayOnlineData->apiKey = empty($getPayOnlineData->apiKey)?'':substr($getPayOnlineData->apiKey,0,2).'*********'.substr($getPayOnlineData->apiKey,-2);
+        $getPayOnlineData->apiPublicKey = empty($getPayOnlineData->apiPublicKey)?'':substr($getPayOnlineData->apiPublicKey,0, 2).'*********'.substr($getPayOnlineData->apiPublicKey,-2);
+        $getPayOnlineData->apiPrivateKey = empty($getPayOnlineData->apiPrivateKey)?'':substr($getPayOnlineData->apiPrivateKey,0,2).'*********'.substr($getPayOnlineData->apiPrivateKey,-2);;
         $getPayOnlineData->levels = explode(",",$getPayOnlineData->levels);
         return view('back.modal.payNew.editPayOnline')->with('payType',$payType)->with('levels',$levels)->with('id',$id)->with('payOnline',$getPayOnlineData);
     }

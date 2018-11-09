@@ -91,7 +91,7 @@ function edit(id) {
         theme: 'material',
         title: '修改在线支付配置',
         closeIcon:true,
-        boxWidth:'26%',
+        boxWidth:'32%',
         content: 'url:/back/modal/editPayOnlineNew/'+id,
         buttons: {
             formSubmit: {
