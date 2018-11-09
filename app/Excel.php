@@ -41,7 +41,8 @@ class Excel
             foreach ($getAfterUser as&$val){
                 $capUsers[$val->id] = $val->money;
             }
-            Redis::select(5);
+            $redis = Redis::connection();
+            $redis->select(5);
             //新增有返奖的用户的资金明细
             foreach ($getDt as $i){
                 if(in_array($i->game_id,array(90,91))){ //根据牛牛翻倍玩法增加解冻的资金明细
@@ -91,10 +92,10 @@ class Excel
                 $tmpCap['updated_at'] = date('Y-m-d H:i:s');
                 $capData[$ii] = $tmpCap;
                 $ii ++;
-                $key = 'winInfo'.$i->order_id;
-                if(Redis::exists($key))
+                $keyEx = 'winInfo'.$i->order_id;
+                if($redis->exists($keyEx))
                     continue;
-                Redis::setex($key,60,'on');
+                $redis->setex($keyEx,60,'on');
                 $content = ' 第'.$i->issue.'期 '.$i->playcate_name.' '.$i->play_name;
                 $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content.'已中奖，中奖金额 <span style="color:red">'.round($i->bunko,3).'元</span></div>';
                 event(new BackPusherEvent('win','中奖通知',$tmpContent,array('fnotice-'.$i->user_id)));
