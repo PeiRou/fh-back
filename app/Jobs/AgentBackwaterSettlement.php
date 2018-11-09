@@ -78,6 +78,7 @@ class AgentBackwaterSettlement implements ShouldQueue
         }
 
         $aData = $this->getBackwaterMoney($aData);
+        $Common->customWriteLog('agentBackwater',$aData);
         $aCapitalAgent = [];
         $aAgent = DB::connection('mysql::write')->table('agent')->select('balance','a_id')->get();
         $gameName = DB::table('game')->where('game_id',$this->gameId)->value('game_name');
