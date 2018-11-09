@@ -71,7 +71,7 @@ class new_msjsk3 extends Command
             $New_nextIssue = $nextIssue+1;
             if(substr($New_nextIssue,-4)=='1441'){
                 $dateIssue = substr($nextIssue,strlen($nextIssue)-4);
-                $New_nextIssue = date("Ymd",strtotime($dateIssue)+3600).'0001';
+                $New_nextIssue = date("Ymd",strtotime($dateIssue)+86400).'0001';
             }
 
             Redis::set('msjsk3:nextIssue',(int)$New_nextIssue);

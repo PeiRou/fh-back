@@ -2,11 +2,6 @@
 
 namespace App\Http\Controllers\Back;
 
-use App\ActivityCondition;
-use App\Advertise;
-use App\AdvertiseInfo;
-use App\AdvertiseKey;
-use App\AdvertiseValue;
 use App\Article;
 use App\Feedback;
 use App\FeedbackMessage;
