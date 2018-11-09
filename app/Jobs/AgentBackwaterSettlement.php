@@ -127,8 +127,8 @@ class AgentBackwaterSettlement implements ShouldQueue
         $aArray = [];
 
         foreach ($aData as $kData => $iData){
-            if(!empty($iData->agent_odds)){
-                foreach (unserialize($iData->agent_odds) as $key => $value){
+            if(!empty($iData->agnet_odds)){
+                foreach (unserialize($iData->agnet_odds) as $key => $value){
                     if(isset($aArray[$iData->user_id.$key]) && array_key_exists($iData->user_id.$key,$aArray))
                         $aArray[$iData->user_id.$key]['money'] += $iData->bet_money * $value;
                     else
