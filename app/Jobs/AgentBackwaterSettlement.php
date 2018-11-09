@@ -58,7 +58,7 @@ class AgentBackwaterSettlement implements ShouldQueue
             return false;
         }
 
-        $aData = DB::connection('mysql::write')->table('bet')->select('play_odds','bet_money','agnet_odds','user_id')->where('game_id',$this->gameId)->where('issue',$this->issue)->where('bunko','!=',0)->get();
+        $aData = DB::connection('mysql::write')->table('bet')->select('play_odds','bet_money','agnet_odds','user_id')->where('game_id',$this->gameId)->where('issue',$this->issue)->where('agnet_odds','!=',0)->where('bunko','!=',0)->get();
         $Common->customWriteLog('agentBackwater',$aData->toArray());
         $aData = $this->getBackwaterMoneyGroupUser($aData);
         $time = date('Y-m-d H:i:s');
