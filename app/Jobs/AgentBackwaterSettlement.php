@@ -40,7 +40,7 @@ class AgentBackwaterSettlement implements ShouldQueue
      */
     public function handle()
     {
-        $table = Games::$aTableByGameId[$this->gameId];
+        $table = 'game_'.Games::$aTableByGameId[$this->gameId];
         $Common = new Common();
 
         if(empty($table)){
