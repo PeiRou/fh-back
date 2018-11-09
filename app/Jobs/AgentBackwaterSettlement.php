@@ -104,13 +104,13 @@ class AgentBackwaterSettlement implements ShouldQueue
         }
 
         $aAgentSql = Agent::updateBatchStitching($aData,['money'],'a_id');
-
         DB::beginTransaction();
         try{
             if(!empty($aData)) {
                 DB::table('agent_backwater')->insert($aAgentBackwater);
                 DB::table('capital_agent')->insert($aCapitalAgent);
                 DB::update($aAgentSql);
+                $Common->customWriteLog('agentBackwater',$aAgentSql);
             }
             if(in_array($this->gameId,[91]))
                 DB::table($table)->where('issue',$this->issue)->update(['nn_backwater' => 2]);
