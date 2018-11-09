@@ -1085,6 +1085,7 @@ class OpenHistoryController extends Controller
                 $aUserId[] = $iBet1->id;
             }
         }
+        Log::info($aUserFreezeMoney);
 
         DB::beginTransaction();
 
@@ -1098,7 +1099,6 @@ class OpenHistoryController extends Controller
                 Drawing::whereIn('user_id',$aUserId)->update(['status' => '3','msg' => '后台手动冻结']);
                 Bets::where('issue',$issue)->whereIn('user_id',$aUserId)->update(['status' => '3']);
                 if(!empty($aCapitalFreeze))    Capital::insert($aCapitalFreeze);
-                Log::info($aUserFreezeMoney);
                 UserFreezeMoney::insert($aUserFreezeMoney);
             }
             if(in_array($type,['pk10','bjkl8','jspk10'])){
