@@ -1048,22 +1048,13 @@ class OpenHistoryController extends Controller
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
                     ];
-
-                    $aUserFreezeMoney[] = [
-                        'user_id' => $iBet->id,
-                        'game_id' => $iBet->game_id,
-                        'issue' => $iBet->issue,
-                        'money' => $iBet->bet_bunko,
-                        'status' => 0,
-                        'created_at' => $dateTime,
-                        'updated_at' => $dateTime,
-                    ];
                 }
             }
         }
         if(!empty($aBet)) {
             foreach ($aBet as $kBet1 => $iBet1) {
-                if(!empty($iBet1->amount)) {
+                $amount = empty($iBet1->amount)?0:$iBet1->amount;
+                if(!empty($amount)) {
                     $aCapitalFreeze[] = [
                         'to_user' => $iBet1->id,
                         'user_type' => 'user',
@@ -1079,6 +1070,17 @@ class OpenHistoryController extends Controller
                         'updated_at' => $dateTime1,
                     ];
                 }
+
+                $aUserFreezeMoney[] = [
+                    'user_id' => $iBet1->id,
+                    'game_id' => $iBet1->game_id,
+                    'issue' => $iBet1->issue,
+                    'money' => $iBet1->bet_bunko,
+                    'status' => 0,
+                    'created_at' => $dateTime,
+                    'updated_at' => $dateTime,
+                ];
+
                 $aUserId[] = $iBet1->id;
             }
         }
@@ -1088,7 +1090,6 @@ class OpenHistoryController extends Controller
         try {
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataFreeze($aBetAll);
-                UserFreezeMoney::insert($aUserFreezeMoney);
                 if(!empty($aCapital))    Capital::insert($aCapital);
             }
             if(!empty($aBet)) {
@@ -1096,6 +1097,7 @@ class OpenHistoryController extends Controller
                 Drawing::whereIn('user_id',$aUserId)->update(['status' => '3','msg' => '后台手动冻结']);
                 Bets::where('issue',$issue)->whereIn('user_id',$aUserId)->update(['status' => '3']);
                 if(!empty($aCapitalFreeze))    Capital::insert($aCapitalFreeze);
+                UserFreezeMoney::insert($aUserFreezeMoney);
             }
             if(in_array($type,['pk10','bjkl8','jspk10'])){
                 $gameInfo = Games::where('code',Games::$aCodeBindingGame[$type])->first();
