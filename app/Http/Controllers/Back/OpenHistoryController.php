@@ -1085,7 +1085,6 @@ class OpenHistoryController extends Controller
                 $aUserId[] = $iBet1->id;
             }
         }
-        Log::info($aUserFreezeMoney);
 
         DB::beginTransaction();
 
