@@ -775,7 +775,7 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                 return "<span class='on-line-point'></span>";
             })
             ->editColumn('account',function ($user){
-                return '<a href="/back/control/userManage/userBetList/'.$user->id.'" target="_blank">'.$user->username.'</a>';
+                return '<a href="/back/control/userManage/userBetList/'.$user->id.'" target="_blank">'.$user->username."<span class='gary-text'> (".$user->fullName.")</span>".'</a>';
             })
             ->editColumn('userType',function ($user){
                 return "会员";
