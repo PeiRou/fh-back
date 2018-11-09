@@ -286,6 +286,7 @@ class SrcPayNewController extends Controller{
         $max_money = $request->input('max_money');
         $rebate_or_fee = $request->input('rebate_or_fee');
         $status = $request->input('status');
+        $sort = $request->input('sort');
         $remark2 = $request->input('remark2');
         $pageDesc = $request->input('pageDesc');
         $levels = $request->input('levels');
@@ -305,6 +306,7 @@ class SrcPayNewController extends Controller{
                 'remark' => $remark,
                 'remark2' => $remark2,
                 'pageDesc' => $pageDesc,
+                'sort' => $sort,
                 'min_money' => $min_money,
                 'max_money' => $max_money,
                 'rebate_or_fee' => $rebate_or_fee,
@@ -402,6 +404,7 @@ class SrcPayNewController extends Controller{
         $remark = $request->input('remark');
         $remark2 = $request->input('remark2');
         $pageDesc = $request->input('pageDesc');
+        $sort = $request->input('sort');
         $levels = $request->input('levels');
         if($levels !== null){
             $new_levels = implode(',',$levels);
@@ -423,7 +426,8 @@ class SrcPayNewController extends Controller{
                 'max_money' => $max_money,
                 'rebate_or_fee' => $rebate_or_fee,
                 'status' => $status,
-                'levels' => $new_levels
+                'levels' => $new_levels,
+                'sort' => $sort
             ]);
         if($update == 1){
             return response()->json([
@@ -515,6 +519,7 @@ class SrcPayNewController extends Controller{
         $remark2 = $request->input('remark2');
         $pageDesc = $request->input('pageDesc');
         $levels = $request->input('levels');
+        $sort = $request->input('sort');
         if($levels !== null){
             $new_levels = implode(',',$levels);
         } else {
@@ -535,7 +540,8 @@ class SrcPayNewController extends Controller{
                 'max_money' => $max_money,
                 'rebate_or_fee' => $rebate_or_fee,
                 'status' => $status,
-                'levels' => $new_levels
+                'levels' => $new_levels,
+                'sort' => $sort
             ]);
         if($update == 1){
             return response()->json([
@@ -627,6 +633,7 @@ class SrcPayNewController extends Controller{
         $remark2 = $request->input('remark2');
         $pageDesc = $request->input('pageDesc');
         $levels = $request->input('levels');
+        $sort =  $request->input('sort');
         if($levels !== null){
             $new_levels = implode(',',$levels);
         } else {
@@ -647,7 +654,8 @@ class SrcPayNewController extends Controller{
                 'max_money' => $max_money,
                 'rebate_or_fee' => $rebate_or_fee,
                 'status' => $status,
-                'levels' => $new_levels
+                'levels' => $new_levels,
+                'sort' => $sort
             ]);
         if($update == 1){
             return response()->json([
@@ -738,6 +746,8 @@ class SrcPayNewController extends Controller{
         $remark2 = $request->input('remark2');
         $pageDesc = $request->input('pageDesc');
         $levels = $request->input('levels');
+        $sort = $request->input('sort');
+
         if($levels !== null){
             $new_levels = implode(',',$levels);
         } else {
@@ -758,7 +768,8 @@ class SrcPayNewController extends Controller{
                 'max_money' => $max_money,
                 'rebate_or_fee' => $rebate_or_fee,
                 'status' => $status,
-                'levels' => $new_levels
+                'levels' => $new_levels,
+                'sort' => $sort
             ]);
         if($update == 1){
             return response()->json([

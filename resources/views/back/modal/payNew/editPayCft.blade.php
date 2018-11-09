@@ -1,3 +1,26 @@
+<style>
+    .ui.mini.form .field{
+        display: flex;
+    }
+    .ui.form .field>label{
+        min-width: 88px;
+        display: flex;
+        align-items: center;
+    }
+    .ui.checkbox input.hidden+label {
+        margin-right: 5px;
+    }
+    .ui.form .field {
+        clear: both;
+        margin: 0 0 0.3em;
+    }
+    .select2-container--default.select2-container--focus .select2-selection--multiple {
+        height: 1px;
+    }
+    .select2-container--default .select2-selection--multiple {
+        height: 1px;
+    }
+</style>
 <form id="editPayCftForm" class="ui mini form" action="{{ url('/action/admin/new/editPayCft') }}">
     <div class="field">
         <label>财付通名称</label>
@@ -107,15 +130,25 @@
             <input type="text" name="remark2" value="{{ $payCft->remark2 }}"/>
         </div>
     </div>
-
+    <div class="field">
+        <label>排序</label>
+        <div class="ui input icon" style="width: 35%;
+                display: flex;
+                align-items: center;">
+            <input type="text" name="sort" value="{{ $payCft->sort }}"/>
+            <span style="white-space: nowrap;">(数字越大排位越靠后)</span>
+        </div>
+    </div>
     <div class="field">
         <label>层设置</label>
+        <div>
         @foreach($levels as $item)
             <div class="ui checkbox">
                 <input type="checkbox" tabindex="0" value="{{ $item->value }}" name="levels[]" @foreach($payCft->levels as $items => $val) @if($val == $item->value) checked="checked"  @endif @endforeach class="hidden">
                 <label>{{ $item->name }}</label>
             </div>
         @endforeach
+        </div>
     </div>
 
     <div class="field">

@@ -18,7 +18,7 @@ $(function () {
             {data: 'status'},
             {data: 'levels'},
             {data: 'remark2'},
-            // {data: 'sort'},
+            {data: 'sort'},
             {data: 'control'},
         ],
         language: {
