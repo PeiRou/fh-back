@@ -82,17 +82,17 @@ class AgentBackwaterSettlement implements ShouldQueue
         $aAgentSql = Agent::updateBatchStitching($aData,['money'],'a_id');
 
         $Common = new Common();
-//        DB::beginTransaction();
+        DB::beginTransaction();
         try{
             if(!empty($aData)) {
                 DB::table('agent_backwater')->insert($aAgentBackwater);
                 DB::table('capital_agent')->insert($aCapitalAgent);
                 DB::update($aAgentSql);
             }
-//            DB::commit();
+            DB::commit();
             $Common->customWriteLog('agentBackwater','success..游戏id：'.$this->gameId.' 期号：'.$this->issue);
         }catch (\Exception $e){
-//            DB::rollback();
+            DB::rollback();
             $Common->customWriteLog('agentBackwater','failure..游戏id：'.$this->gameId.' 期号：'.$this->issue);
         }
     }
