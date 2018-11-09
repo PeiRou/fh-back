@@ -114,8 +114,7 @@ class AgentBackwaterSettlement implements ShouldQueue
                 DB::table($table)->where('issue',$this->issue)->update(['backwater' => 2]);
 
             DB::commit();
-//            $Common->customWriteLog('agentBackwater','success..游戏id：'.$this->gameId.' 期号：'.$this->issue);
-            $Common->customWriteLog('agentBackwater',$aAgentSql);
+            $Common->customWriteLog('agentBackwater','success..游戏id：'.$this->gameId.' 期号：'.$this->issue);
         }catch (\Exception $e){
             DB::rollback();
             $Common->customWriteLog('agentBackwater','failure..游戏id：'.$this->gameId.' 期号：'.$this->issue);
