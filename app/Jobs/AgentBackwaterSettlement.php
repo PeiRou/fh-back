@@ -38,7 +38,7 @@ class AgentBackwaterSettlement implements ShouldQueue
      */
     public function handle()
     {
-        $aData = $this->getBackwaterMoneyGroupUser(DB::table('bet')->select('bet.play_odds','bet.bet_money','bet.agnet_odds','bet.user_id')->where('bet.game_id',$this->gameId)->where('bet.issue',$this->issue)->where('bet.agnet_odds','!=',0)->where('bet.bunko','!=',0)->get());
+        $aData = $this->getBackwaterMoneyGroupUser(DB::connection('mysql::write')->table('bet')->select('bet.play_odds','bet.bet_money','bet.agnet_odds','bet.user_id')->where('bet.game_id',$this->gameId)->where('bet.issue',$this->issue)->where('bet.agnet_odds','!=',0)->where('bet.bunko','!=',0)->get());
         $time = date('Y-m-d H:i:s');
 
         $aAgentBackwater = [];
@@ -57,7 +57,7 @@ class AgentBackwaterSettlement implements ShouldQueue
 
         $aData = $this->getBackwaterMoney($aData);
         $aCapitalAgent = [];
-        $aAgent = DB::table('agent')->select('money','a_id')->get();
+        $aAgent = DB::connection('mysql::write')->table('agent')->select('balance','a_id')->get();
         $gameName = DB::table('game')->where('game_id',$this->gameId)->value('game_name');
         foreach ($aAgent as $kAgent => $iAgent) {
             foreach ($aData as $kData => $iData) {
@@ -69,7 +69,7 @@ class AgentBackwaterSettlement implements ShouldQueue
                         'game_id' => $this->gameId,
                         'issue' => $this->issue,
                         'money' => $iData['money'],
-                        'balance' => $iAgent->money,
+                        'balance' => $iAgent->balance,
                         'game_name' =>$gameName,
                         'created_at' =>$time,
                         'updated_at' =>$time,
