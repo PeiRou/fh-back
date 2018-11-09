@@ -5,6 +5,9 @@
  * Date: 18-11-8
  * Time: 下午5:04
  */
+
+namespace App\Helpers;
+
 class Common{
 
     //写入日志

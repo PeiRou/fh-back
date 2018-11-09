@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Agent;
+use App\Helpers\Common;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -80,7 +81,7 @@ class AgentBackwaterSettlement implements ShouldQueue
 
         $aAgentSql = Agent::updateBatchStitching($aData,['money'],'a_id');
 
-        $Common = new \Common();
+        $Common = new Common();
         DB::beginTransaction();
         try{
             DB::table('agent_backwater')->insert($aAgentBackwater);
