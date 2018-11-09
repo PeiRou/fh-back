@@ -49,7 +49,11 @@ class AgentBackwaterSettlement implements ShouldQueue
         }
 
         $table = 'game_'.$table;
-        if(DB::connection('mysql::write')->table($table)->where('issue',$this->issue)->value('backwater') == 2){
+        if(in_array($this->gameId,[91]))
+           $backwater = DB::connection('mysql::write')->table($table)->where('issue',$this->issue)->value('nn_backwater');
+        else
+            $backwater = DB::connection('mysql::write')->table($table)->where('issue',$this->issue)->value('backwater');
+        if($backwater == 2){
             $Common->customWriteLog('agentBackwater','已返水..游戏id：'.$this->gameId.' 期号：'.$this->issue);
             return false;
         }
@@ -103,7 +107,10 @@ class AgentBackwaterSettlement implements ShouldQueue
                 DB::table('capital_agent')->insert($aCapitalAgent);
                 DB::update($aAgentSql);
             }
-            DB::table($table)->where('issue',$this->issue)->update(['backwater' => 2]);
+            if(in_array($this->gameId,[91]))
+                DB::table($table)->where('issue',$this->issue)->update(['nn_backwater' => 2]);
+            else
+                DB::table($table)->where('issue',$this->issue)->update(['backwater' => 2]);
 
             DB::commit();
             $Common->customWriteLog('agentBackwater','success..游戏id：'.$this->gameId.' 期号：'.$this->issue);
