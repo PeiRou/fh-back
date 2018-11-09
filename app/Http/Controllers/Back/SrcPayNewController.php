@@ -128,6 +128,7 @@ class SrcPayNewController extends Controller{
         $payOnline->rechName = $iPayTypeNew->rechName;
         $payOnline->payCode = $iPayTypeNew->code;
         $payOnline->rechType = 'onlinePayment';
+        $payOnline->sort = $aParam['sort'];
         $payOnline->payName = $iPayTypeNew->payName;
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payeeName = $aParam['payeeName'];
