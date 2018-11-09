@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Bet;
 
 use App\Bets;
 use App\Excel;
+use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -44,6 +45,9 @@ class New_Pknn
         ]);
         if ($update !== 1) {
             \Log::info($gameName . $issue . "结算not Finshed");
+        }else{
+            $agentJob = new AgentBackwaterJob($gameId,$issue);
+            $agentJob->addQueue();
         }
     }
 

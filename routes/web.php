@@ -310,7 +310,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/changeAgentMoney', 'Back\SrcMemberController@changeAgentMoney')->middleware('add-log-handle')->name('ac.ad.changeAgentMoney');//修改代理金额
     Route::get('/action/admin/passAgent/{id}', 'Back\SrcMemberController@passAgent')->middleware('add-log-handle')->name('ac.ad.changeAgentMoney');//代理审核通过
     Route::get('/action/admin/errorAgent/{id}', 'Back\SrcMemberController@errorAgent')->middleware('add-log-handle')->name('ac.ad.changeAgentMoney');//代理审核驳回
-
+    Route::post('/action/admin/selectAgentOdds', 'Back\SrcMemberController@selectAgentOdds');//根据代理上级获取赔率
 
     Route::post('/action/admin/addUser', 'Back\SrcMemberController@addUser')->middleware('add-log-handle')->name('ac.ad.addUser');//添加会员
     Route::post('/action/admin/userChangeAgent', 'Back\SrcMemberController@userChangeAgent')->middleware('add-log-handle')->name('ac.ad.userChangeAgent');//会员更换代理
@@ -599,7 +599,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/exportUser','Back\Ajax\ModalController@exportUser')->middleware('check-permission')->name('member.exportUser.view'); //导出用户数据-模板
     Route::get('/back/modal/addStatistics','Back\Ajax\ModalController@addStatistics')->middleware('check-permission')->name('report.addStatistics.view'); //操作报表添加-模板
     Route::get('/back/modal/addAgentSettleDomain', 'Back\Ajax\ModalController@addAgentSettleDomain'); //添加代理专属域名
-    Route::get('/back/modal/editAgentSettleDomain/{id}', 'Back\Ajax\ModalController@editAgentSettleDomain'); //修改代理专属域名Route::get('/back/modal/gameAgentOddsAdd', 'Back\Ajax\ModalController@gameAgentOddsAdd'); //添加代理赔率-模板
+    Route::get('/back/modal/editAgentSettleDomain/{id}', 'Back\Ajax\ModalController@editAgentSettleDomain'); //修改代理专属域名
+    Route::get('/back/modal/gameAgentOddsAdd', 'Back\Ajax\ModalController@gameAgentOddsAdd'); //添加代理赔率-模板
     Route::get('/back/modal/gameAgentOddsEdit/{id}', 'Back\Ajax\ModalController@gameAgentOddsEdit'); //修改代理赔率-模板
 
 

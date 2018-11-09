@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Bet;
 
 use App\Excel;
 use App\Helpers\LHC_SX;
+use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
 class New_LHC
@@ -64,6 +65,9 @@ class New_LHC
         ]);
         if ($update !== 1) {
             \Log::info($gameName . $issue . "结算not Finshed");
+        }else{
+            $agentJob = new AgentBackwaterJob($gameId,$issue);
+            $agentJob->addQueue();
         }
     }
     
