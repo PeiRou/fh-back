@@ -60,4 +60,38 @@ class Games extends Model
         //北京快乐8
         'bjkl8' => ['bjkl8'],
     ];
+
+    public static $aTableByGameId = [
+        80 => 'mssc',
+        50 => 'bjpk10',
+        82 => 'msft',
+        81 => 'msssc',
+        1 => 'cqssc',
+        84 => '',
+        70 => 'lhc',
+        61 => 'cqxync',
+        85 => 'xylhc',
+        83 => '',
+        66 => 'pcdd',
+        21 => 'gd11x5',
+        10 => 'jsk3',
+        65 => 'bjkl8',
+        60 => 'gdklsf',
+        30 => 'fc3d',
+        5 => '',
+        4 => 'xjssc',
+        55 => '',
+        99 => 'paoma',
+        90 => 'pknn',
+        91 => '',
+        11 => 'ahk3',
+        12 => 'gxk3',
+        13 => 'hbk3',
+        86 => 'msjsk3',
+        111 => '',
+        15 => 'hebeik3',
+        16 => 'gsk3',
+        18 => 'gzk3',
+        112 => '',
+    ];
 }

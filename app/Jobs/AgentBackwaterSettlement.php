@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Agent;
+use App\Games;
 use App\Helpers\Common;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -39,6 +40,19 @@ class AgentBackwaterSettlement implements ShouldQueue
      */
     public function handle()
     {
+        $table = Games::$aTableByGameId[$this->gameId];
+        $Common = new Common();
+
+        if(empty($table)){
+            $Common->customWriteLog('agentBackwater','该游戏表不存在..游戏id：'.$this->gameId.' 期号：'.$this->issue);
+            return false;
+        }
+
+        if(DB::connection('mysql::write')->table($table)->where('issue',$this->issue)->value('backwater') == 1){
+            $Common->customWriteLog('agentBackwater','已返水..游戏id：'.$this->gameId.' 期号：'.$this->issue);
+            return false;
+        }
+
         $aData = $this->getBackwaterMoneyGroupUser(DB::connection('mysql::write')->table('bet')->select('bet.play_odds','bet.bet_money','bet.agnet_odds','bet.user_id')->where('bet.game_id',$this->gameId)->where('bet.issue',$this->issue)->where('bet.agnet_odds','!=',0)->where('bet.bunko','!=',0)->get());
         $time = date('Y-m-d H:i:s');
 
@@ -81,7 +95,6 @@ class AgentBackwaterSettlement implements ShouldQueue
 
         $aAgentSql = Agent::updateBatchStitching($aData,['money'],'a_id');
 
-        $Common = new Common();
         DB::beginTransaction();
         try{
             if(!empty($aData)) {
@@ -89,6 +102,8 @@ class AgentBackwaterSettlement implements ShouldQueue
                 DB::table('capital_agent')->insert($aCapitalAgent);
                 DB::update($aAgentSql);
             }
+            DB::table($table)->where('issue',$this->issue)->update(['backwater' => 2]);
+
             DB::commit();
             $Common->customWriteLog('agentBackwater','success..游戏id：'.$this->gameId.' 期号：'.$this->issue);
         }catch (\Exception $e){
