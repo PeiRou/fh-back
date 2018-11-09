@@ -65,16 +65,18 @@ class AgentBackwaterSettlement implements ShouldQueue
         $time = date('Y-m-d H:i:s');
         $aAgentBackwater = [];
         foreach ($aData as $kData => $iData){
-            $aAgentBackwater[] = [
-                'agent_id' => $iData['agent_id'],
-                'user_id' => $iData['user_id'],
-                'status' => 1,
-                'money' => $iData['money'],
-                'game_id' => $this->gameId,
-                'issue' => $this->issue,
-                'created_at' =>$time,
-                'updated_at' =>$time,
-            ];
+            if($iData['money'] != 0) {
+                $aAgentBackwater[] = [
+                    'agent_id' => $iData['agent_id'],
+                    'user_id' => $iData['user_id'],
+                    'status' => 1,
+                    'money' => $iData['money'],
+                    'game_id' => $this->gameId,
+                    'issue' => $this->issue,
+                    'created_at' => $time,
+                    'updated_at' => $time,
+                ];
+            }
         }
 
         $aData = $this->getBackwaterMoney($aData);
@@ -129,14 +131,16 @@ class AgentBackwaterSettlement implements ShouldQueue
         foreach ($aData as $kData => $iData){
             if(!empty($iData->agnet_odds)){
                 foreach (unserialize($iData->agnet_odds) as $key => $value){
-                    if(isset($aArray[$iData->user_id.$key]) && array_key_exists($iData->user_id.$key,$aArray))
-                        $aArray[$iData->user_id.$key]['money'] += $iData->bet_money * $value;
-                    else
-                        $aArray[$iData->user_id.$key] = [
-                            'money' => $iData->bet_money * $value,
-                            'agent_id' => $key,
-                            'user_id' => $iData->user_id,
-                        ];
+                    if($iData->bet_money != 0) {
+                        if (isset($aArray[$iData->user_id . $key]) && array_key_exists($iData->user_id . $key, $aArray))
+                            $aArray[$iData->user_id . $key]['money'] += $iData->bet_money * $value;
+                        else
+                            $aArray[$iData->user_id . $key] = [
+                                'money' => $iData->bet_money * $value,
+                                'agent_id' => $key,
+                                'user_id' => $iData->user_id,
+                            ];
+                    }
                 }
             }
         }
@@ -148,13 +152,15 @@ class AgentBackwaterSettlement implements ShouldQueue
         $aArray = [];
 
         foreach ($aData as $kData => $iData){
-            if(isset($aArray[$iData['agent_id']]) && array_key_exists($iData['agent_id'],$aArray))
-                $aArray[$iData['agent_id']]['money'] += $iData['money'];
-            else
-                $aArray[$iData['agent_id']] = [
-                    'money' => $iData['money'],
-                    'a_id' => $iData['agent_id'],
-                ];
+            if($iData['money'] != 0) {
+                if (isset($aArray[$iData['agent_id']]) && array_key_exists($iData['agent_id'], $aArray))
+                    $aArray[$iData['agent_id']]['money'] += $iData['money'];
+                else
+                    $aArray[$iData['agent_id']] = [
+                        'money' => $iData['money'],
+                        'a_id' => $iData['agent_id'],
+                    ];
+            }
         }
 
         return $aArray;
