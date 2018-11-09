@@ -59,9 +59,8 @@ class AgentBackwaterSettlement implements ShouldQueue
         }
 
         $aData = DB::connection('mysql::write')->table('bet')->select('play_odds','bet_money','agnet_odds','user_id')->where('game_id',$this->gameId)->where('issue',$this->issue)->where('bunko','!=',0)->get();
-        $Common->customWriteLog('agentBackwater',$aData->toArray());
+
         $aData = $this->getBackwaterMoneyGroupUser($aData);
-        $Common->customWriteLog('agentBackwater',$aData);
         $time = date('Y-m-d H:i:s');
         $aAgentBackwater = [];
         foreach ($aData as $kData => $iData){
@@ -80,7 +79,6 @@ class AgentBackwaterSettlement implements ShouldQueue
         }
 
         $aData = $this->getBackwaterMoney($aData);
-        $Common->customWriteLog('agentBackwater',$aData);
         $aCapitalAgent = [];
         $aAgent = DB::connection('mysql::write')->table('agent')->select('balance','a_id')->get();
         $gameName = DB::table('game')->where('game_id',$this->gameId)->value('game_name');
@@ -104,7 +102,6 @@ class AgentBackwaterSettlement implements ShouldQueue
         }
 
         $aAgentSql = Agent::updateBatchStitching($aData,['money'],'a_id');
-        $Common->customWriteLog('agentBackwater',$aAgentSql);
         DB::beginTransaction();
         try{
             if(!empty($aData)) {
