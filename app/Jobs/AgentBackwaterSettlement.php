@@ -86,7 +86,7 @@ class AgentBackwaterSettlement implements ShouldQueue
         $gameName = DB::table('game')->where('game_id',$this->gameId)->value('game_name');
         foreach ($aAgent as $kAgent => $iAgent) {
             foreach ($aData as $kData => $iData) {
-                if($iAgent->a_id == $iData['agent_id']) {
+                if($iAgent->a_id == $iData['a_id']) {
                     $aCapitalAgent[] = [
                         'agent_id' => $iData['a_id'],
                         'user_type' => 'agent',
@@ -131,7 +131,7 @@ class AgentBackwaterSettlement implements ShouldQueue
         foreach ($aData as $kData => $iData){
             if(!empty($iData->agnet_odds)){
                 foreach (unserialize($iData->agnet_odds) as $key => $value){
-                    if($iData->bet_money != 0) {
+                    if($value != 0) {
                         if (isset($aArray[$iData->user_id . $key]) && array_key_exists($iData->user_id . $key, $aArray))
                             $aArray[$iData->user_id . $key]['money'] += $iData->bet_money * $value;
                         else
