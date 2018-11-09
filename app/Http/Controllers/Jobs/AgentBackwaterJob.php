@@ -5,6 +5,9 @@
  * Date: 18-11-8
  * Time: 下午12:11
  */
+
+namespace App\Http\Controllers\Job;
+
 class AgentBackwaterJob {
 
     private $gameId;
