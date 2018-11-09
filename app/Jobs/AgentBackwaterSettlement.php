@@ -61,6 +61,7 @@ class AgentBackwaterSettlement implements ShouldQueue
         $aData = DB::connection('mysql::write')->table('bet')->select('play_odds','bet_money','agnet_odds','user_id')->where('game_id',$this->gameId)->where('issue',$this->issue)->where('bunko','!=',0)->get();
         $Common->customWriteLog('agentBackwater',$aData->toArray());
         $aData = $this->getBackwaterMoneyGroupUser($aData);
+        $Common->customWriteLog('agentBackwater',$aData);
         $time = date('Y-m-d H:i:s');
         $aAgentBackwater = [];
         foreach ($aData as $kData => $iData){
