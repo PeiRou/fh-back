@@ -83,7 +83,7 @@ class Games extends Model
         55 => '',
         99 => 'paoma',
         90 => 'pknn',
-        91 => 'game_mssc',
+        91 => 'mssc',
         11 => 'ahk3',
         12 => 'gxk3',
         13 => 'hbk3',
