@@ -90,15 +90,14 @@ class Excel
                 $tmpCap['created_at'] = date('Y-m-d H:i:s');
                 $tmpCap['updated_at'] = date('Y-m-d H:i:s');
                 $capData[$ii] = $tmpCap;
-
+                $ii ++;
                 $key = 'winInfo'.$i->order_id;
                 if(Redis::exists($key))
                     continue;
-                Redis::setex($key,30,'on');
+                Redis::setex($key,60,'on');
                 $content = ' 第'.$i->issue.'期 '.$i->playcate_name.' '.$i->play_name;
                 $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content.'已中奖，中奖金额 <span style="color:red">'.round($i->bunko,3).'元</span></div>';
                 event(new BackPusherEvent('win','中奖通知',$tmpContent,array('fnotice-'.$i->user_id)));
-                $ii ++;
             }
             krsort($capData);
             $capIns = DB::table('capital')->insert($capData);
