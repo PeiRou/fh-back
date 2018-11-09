@@ -84,9 +84,11 @@ class AgentBackwaterSettlement implements ShouldQueue
         $Common = new Common();
         DB::beginTransaction();
         try{
-            DB::table('agent_backwater')->insert($aAgentBackwater);
-            DB::table('capital_agent')->insert($aCapitalAgent);
-            DB::update($aAgentSql);
+            if(!empty($aData)) {
+                DB::table('agent_backwater')->insert($aAgentBackwater);
+                DB::table('capital_agent')->insert($aCapitalAgent);
+                DB::update($aAgentSql);
+            }
             DB::commit();
             $Common->customWriteLog('agentBackwater','success.游戏id：'.$this->gameId.' 期号：'.$this->issue);
         }catch (\Exception $e){
