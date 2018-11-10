@@ -98,12 +98,17 @@ $(function () {
     });
     $('#btn_search').on('click',function () {
         dataTable.ajax.reload();
+        getTotal();
     });
-    window.onload = function(){
+    function getTotal(){
+        var data = {};
+        data.startTime = $('#startTime').val();
+        data.endTime = $('#endTime').val();
         $.ajax({
             url:'/back/datatables/reportRegisterTotal',
             dataType:'json',
             type:'get',
+            data:data,
             success:function(e){
                 if(e.code == 0){
                     var data = e.data;
@@ -117,6 +122,7 @@ $(function () {
             }
         })
     }
+    getTotal();
 
 });
 

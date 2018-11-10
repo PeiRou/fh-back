@@ -321,8 +321,16 @@ class ReportDataController extends Controller
             ->skipPaging()
             ->make(true);
     }
-    public function RegisterTotal(){
-        $aSql = Agent::agentReportRegister_aSql();
+    public function RegisterTotal(Request $request){
+        $startTime = $request->get('startTime');
+        $endTime = $request->get('endTime');
+        $where = '';
+        $having = '';
+        if($startTime && $endTime){
+            $where .= " AND created_at BETWEEN '{$startTime} 00:00:00' AND '{$endTime} 23:59:59' ";
+            $having .= " AND created_at BETWEEN '{$startTime} 00:00:00' AND '{$endTime}  23:59:59' ";
+        }
+        $aSql = Agent::agentReportRegister_aSql($where, $having);
         //总计
         $TotalSql = "SELECT SUM(countMember) AS countMember, SUM(bet_bunko) AS bet_bunko, SUM(Damount) AS Damount, SUM(Ramount) AS Ramount, SUM(money) AS money,  SUM(FirstTimeNum) AS FirstTimeNum
                     FROM ( {$aSql} ) AS ag";
