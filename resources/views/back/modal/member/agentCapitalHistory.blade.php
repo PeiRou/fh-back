@@ -40,7 +40,7 @@
             </div>
             <div class="two wide field">
                 <label>&nbsp;</label>
-                <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 筛选查询 </button>
+                <button id="btn_search1" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 筛选查询 </button>
             </div>
             <div class="two wide field">
                 <label>&nbsp;</label>
@@ -157,7 +157,7 @@
             }
         });
 
-        $('#btn_search').on('click', function () {
+        $('#btn_search1').on('click', function () {
             dataTable.ajax.reload();
         });
 

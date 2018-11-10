@@ -221,77 +221,59 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
     //代理的资金明细
     public function agentCapital($id, Request $request)
     {
-        $start = $request->get('start');
-        $length = $request->get('length');
-        $capitalType = $request->get('capital_type');
-        $issue = $request->get('issue');
-        $startTime = strtotime($request->get('startTime').' 00:00:00');
-        $endTime = strtotime($request->get('endTime').' 23:59:59');
-        $loginId = Session::get('account_id');
-        $capitalModel = CapitalAgent::where(function($q) use($startTime,$endTime,$capitalType,$issue,$loginId,$id){
-//            if(isset($capitalType) && $capitalType)
-//            {
-//                $q->where('type',$capitalType);
-//            }
-//            if(isset($issue) && $issue)
-//            {
-//                $q->where('issue',$issue);
-//            }
-//            if(isset($startTime) && $startTime)
-//            {
-//                $q->where('created_at','>=',$startTime);
-//            }
-//            if(isset($endTime) && $endTime)
-//            {
-//                $q->where('created_at','<=',$endTime);
-//            }
-//            $q->where('agent_id',$id);
-        });
-        $capital = $capitalModel->orderBy('created_at','desc')->skip($start)->take($length)->get();
+        $aParam = $request->all();
+        $capitalModel = CapitalAgent::where(function($q) use($aParam){
+            if(isset($aParam['capital_type']) && array_key_exists('capital_type',$aParam))
+                $q->where('capital_agent.type',$aParam['capital_type']);
+            if(isset($aParam['issue']) && array_key_exists('issue',$aParam))
+                $q->where('capital_agent.issue',$aParam['issue']);
+            if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam))
+                $q->where('capital_agent.created_at','>=',$aParam['startTime']);
+            if(isset($aParam['endTime']) && array_key_exists('endTime',$aParam))
+                $q->where('capital_agent.created_at','<=',aParam['endTime'].' 23:59:59');
+        })->where('capital_agent.agent_id',$id);
         $capitalCount = $capitalModel->count();
+        $capital = $capitalModel->select('capital_agent.type','capital_agent.money','capital_agent.order_id','capital_agent.balance','capital_agent.issue','capital_agent.game_id','capital_agent.play_type','capital_agent.game_name','capital_agent.created_at','capital_agent.content','sub_account.account as sub_account','sub_account.name as sub_name')
+            ->leftJoin('sub_account','sub_account.sa_id','=','capital_agent.operation_id')
+            ->orderBy('capital_agent.created_at','desc')->skip($aParam['start'])->take($aParam['length'])->get();
 
+        $playTypeOption = CapitalAgent::$playTypeOption;
         return DataTables::of($capital)
-            ->editColumn('type', function($capital){
-                return $capital->playTypeOption[$capital->type];
+            ->editColumn('type', function($capital) use($playTypeOption){
+                return $playTypeOption[$capital->type];
             })
             ->editColumn('money', function($capital){
                 if($capital->money < 0)
-                {
                     return '<span class="green-text">'.$capital->money.'</span>';
-                } else {
-                    return '<span class="red-text">'.$capital->money.'</span>';
-                }
+                return '<span class="red-text">'.$capital->money.'</span>';
             })
             ->editColumn('balance', function($capital){
                 return '<span class="blue-text">'.$capital->balance.'</span>';
             })
             ->editColumn('issue', function ($capital){
                 if(empty($capital->issue))
-                {
                     return "-";
-                } else {
-                    return $capital->issue;
-                }
+                return $capital->issue;
             })
             ->editColumn('game', function ($capital){
                 if(empty($capital->game_id))
-                {
                     return "-";
-                } else {
-                    return $capital->game_id;
-                }
+                return $capital->game_id;
             })
             ->editColumn('play_type', function ($capital){
                 if(empty($capital->play_type))
-                {
                     return "-";
-                } else {
-                    return $capital->play_type;
-                }
+                return $capital->play_type;
             })
             ->editColumn('operation', function ($capital){
-                $getSubAccount = SubAccount::find($capital->operation_id);
-                return $getSubAccount->account."(".$getSubAccount->name.")";
+                if(empty($capital->sub_account))
+                    return '-';
+                return $capital->sub_account."(".$capital->sub_name.")";
+            })
+            ->editColumn('content', function ($capital){
+                if(empty($capital->content))
+                    return '-';
+                return $capital->content;
             })
             ->rawColumns(['money','balance'])
             ->setTotalRecords($capitalCount)
