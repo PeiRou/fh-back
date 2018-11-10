@@ -143,6 +143,10 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('rechargeWay', 'Back\SrcViewController@rechargeWay')->name('pay.rechargeWay'); //支付层级配置
         Route::get('rechType', 'Back\SrcViewController@rechType')->name('pay.rechType'); //支付前端显示
     });
+//平台接口设置
+    Route::group(['prefix' => 'back/GamesApi', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
+        Route::get('List', 'Back\SrcViewController@GamesApiList')->name('GamesApi.List'); //平台接口列表
+    });
 
 //充值配置新
     Route::group(['prefix' => 'back/control/payNewManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
@@ -289,6 +293,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/promotion/config','Back\Data\PromotionController@config'); //推广设置-表格数据
     Route::get('/back/datatables/platform/settlement','Back\Data\PlatformController@settlement'); //平台费用结算-表格数据
     Route::get('/back/datatables/platform/record','Back\Data\PlatformController@record'); //付款记录-表格数据
+    Route::get('/back/datatables/GameApiList','Back\GamesApiController@GameApiList'); //获取游戏接口列表
 
     //图表数据
     Route::post('/back/charts/gameBunko','Back\Charts\ChartsDataController@gameBunko');
@@ -498,6 +503,8 @@ Route::group(['middleware'=>['check-ip']],function () {
 
     Route::get('/action/admin/exportExcel/userRecharges','Back\ExportExcelController@exportExcelForRecharges')->middleware('add-log-handle')->name('ac.ad.exportExcel.userRecharges'); //导出充值数据为Excel文件
     Route::get('/action/admin/exportExcel/userDrawing','Back\ExportExcelController@exportExcelForDrawing')->middleware('add-log-handle')->name('ac.ad.exportExcel.userDrawing'); //导出充值数据为Excel文件
+    Route::post('/action/admin/gamesApi/edit','Back\GamesApiController@edit')->name('ac.ad.GamesApi.edit'); //平台接口编辑
+    Route::post('/action/admin/gamesApi/del','Back\GamesApiController@del')->name('ac.ad.GamesApi.del'); //平台接口删除
 
 //Modal
     Route::get('/back/modal/addPermission', 'Back\Ajax\ModalController@addPermission'); //添加权限
@@ -606,6 +613,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editAgentSettleDomain/{id}', 'Back\Ajax\ModalController@editAgentSettleDomain'); //修改代理专属域名
     Route::get('/back/modal/gameAgentOddsAdd', 'Back\Ajax\ModalController@gameAgentOddsAdd'); //添加代理赔率-模板
     Route::get('/back/modal/gameAgentOddsEdit/{id}', 'Back\Ajax\ModalController@gameAgentOddsEdit'); //修改代理赔率-模板
+    Route::get('/back/modal/editGameApi', 'Back\Ajax\ModalController@editGameApi'); //添加编辑平台接口页面
 
 
 
@@ -671,7 +679,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/table/save/bjpk10', 'Back\GameTables\SaveGameOddsController@bjpk10');
     Route::post('/game/table/save/cqssc', 'Back\GameTables\SaveGameOddsController@cqssc');
     Route::post('/game/table/save/xjssc', 'Back\GameTables\SaveGameOddsController@xjssc');
-    Route::post('/game/table/save/tjssc', 'Back\GameTables\SaveGameOddsController@tjssc');
+    Route::post('/game/table/save//**/tjssc', 'Back\GameTables\SaveGameOddsController@tjssc');
     Route::post('/game/table/save/gdklsf', 'Back\GameTables\SaveGameOddsController@gdklsf');
     Route::post('/game/table/save/jsk3', 'Back\GameTables\SaveGameOddsController@jsk3');
     Route::post('/game/table/save/ahk3', 'Back\GameTables\SaveGameOddsController@ahk3');

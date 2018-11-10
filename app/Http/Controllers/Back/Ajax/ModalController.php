@@ -917,4 +917,15 @@ class ModalController extends Controller
         }
         return view('back.modal.game.agentOddsEdit',compact('iData','iOdds'));
     }
+    //添加游戏接口配置
+    public function editGameApi(Request $request){
+        $g_id = $request->get('g_id') ?? 0;
+        $paramArr = [];
+        $data = [];
+        if($g_id){
+            $paramArr = DB::table('games_api_config')->where('g_id',$g_id)->get();
+            $data = DB::table('games_api')->where('g_id',$g_id)->first();
+        }
+        return view('back.gamesApi.list.editGameApi', compact('g_id', 'paramArr', 'data'));
+    }
 }

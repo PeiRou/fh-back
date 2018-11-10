@@ -1039,4 +1039,9 @@ class SrcViewController extends Controller
         $aType = PlatformDeposit::$PlatformType;
         return view('back.platform.record',compact('aStatus','aType'));
     }
+    //平台接口设置 - 平台接口列表
+    public function GamesApiList(){
+        return view('back.gamesApi.list.list',compact('aStatus','aType'));
+    }
+
 }
