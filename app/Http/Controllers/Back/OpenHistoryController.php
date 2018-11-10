@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Agent;
+use App\AgentBackwater;
 use App\Bets;
 use App\Capital;
 use App\Drawing;
@@ -970,6 +972,8 @@ class OpenHistoryController extends Controller
         if(!in_array($type,['msnn']))
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
 
+        $aAgentBackwater = AgentBackwater::getAgentBackwaterMoney($gameInfo->game_id,$issue);
+
         DB::beginTransaction();
 
         try {
@@ -997,6 +1001,12 @@ class OpenHistoryController extends Controller
                 }
                 Capital::insert($aCapital);
             }
+
+            if(!empty($aAgentBackwater)){
+                AgentBackwater::where('game_id',$gameInfo->game_id)->where('issue',$issue)->update(['status' => 2]);
+                DB::update(Agent::updateBatchStitching(json_decode(json_encode($aAgentBackwater),true),['money'],'a_id'));
+            }
+
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
             if(in_array($type,['pk10','bjkl8','jspk10'])){
                 $gameInfo = Games::where('code',Games::$aCodeBindingGame[$type])->first();
