@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back\Data;
 
 use App\Agent;
+use App\AgentBackwater;
 use App\Bets;
 use App\Capital;
 use App\CapitalAgent;
@@ -204,6 +205,7 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                         <li>更多操作
                         <ul>
                         <li onclick='panSetting(\"$allAgent->a_id\")'>盘口设定</li>
+                        <li onclick='backwater(\"$allAgent->a_id\")'>返水明细</li>
                         <li onclick='exportMember(\"$allAgent->a_id\",\"$allAgent->account\")'>导出会员</li>
                         <li onclick='visitMember(\"$allAgent->a_id\",\"$allAgent->account\")'>回访会员</li>
                         <li class='red-hover' onclick='del(\"$allAgent->a_id\",\"$allAgent->account\")'>删除会员</li>
@@ -276,6 +278,49 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                 return $capital->content;
             })
             ->rawColumns(['money','balance'])
+            ->setTotalRecords($capitalCount)
+            ->skipPaging()
+            ->make(true);
+    }
+
+    //代理的返水明细
+    public function agentBackwater($id, Request $request)
+    {
+        $aParam = $request->all();
+        $capitalModel = AgentBackwater::where(function($aSql) use($aParam){
+            if(isset($aParam['issue']) && array_key_exists('issue',$aParam))
+                $aSql->where('agent_backwater.issue',$aParam['issue']);
+            if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam))
+                $aSql->where('agent_backwater.game_id',$aParam['game_id']);
+            if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam))
+                $aSql->where('agent_backwater.created_at','>=',$aParam['timeStart']);
+            if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam))
+                $aSql->where('agent_backwater.created_at','<=',$aParam['timeEnd'].' 23:59:59');
+        })->where('agent_backwater.agent_id',$id);
+        $capitalCount = $capitalModel->count();
+        $capital = $capitalModel->select('agent_backwater.*','users.username','users.fullName','game.game_name')
+            ->leftJoin('users','users.id','=','agent_backwater.user_id')->leftJoin('game','game.game_id','=','agent_backwater.game_id')
+            ->skip($aParam['start'])->take($aParam['length'])->get();
+
+        $agentBackwaterStatus = AgentBackwater::$agentBackwaterStatus;
+        return DataTables::of($capital)
+            ->editColumn('status', function($capital) use($agentBackwaterStatus){
+                return $agentBackwaterStatus[$capital->status];
+            })
+            ->editColumn('money', function($capital){
+                if($capital->money < 0)
+                    return '<span class="green-text">'.$capital->money.'</span>';
+                return '<span class="red-text">'.$capital->money.'</span>';
+            })
+            ->editColumn('user', function($capital){
+                return $capital->username.'('.$capital->fullName.')';
+            })
+            ->editColumn('game_name', function ($capital){
+                if(empty($capital->game_name))
+                    return "-";
+                return $capital->game_name;
+            })
+            ->rawColumns(['money'])
             ->setTotalRecords($capitalCount)
             ->skipPaging()
             ->make(true);

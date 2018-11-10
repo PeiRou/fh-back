@@ -203,6 +203,29 @@ function capital(id) {
     });
 }
 
+function backwater(id) {
+    jc = $.confirm({
+        theme: 'material',
+        title: '返水明细',
+        closeIcon:true,
+        boxWidth:'70%',
+        content: 'url:/back/modal/agentBackwater/'+id,
+        buttons: {
+            formSubmit: {
+                text:'关闭'
+            }
+        },
+        contentLoaded: function(data, status, xhr){
+            $('.jconfirm-content').css('overflow','hidden');
+            if(data.status == 403)
+            {
+                this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
+                $('.jconfirm-buttons').hide();
+            }
+        }
+    });
+}
+
 function del(id,agentName) {
     jc = $.confirm({
         title: '确定要删除代理【'+ agentName +'】的信息吗？',

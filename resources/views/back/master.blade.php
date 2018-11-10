@@ -257,7 +257,7 @@
                     <li id="menu-openManage-gxk3"><a href="{{ route('historyLottery.gxk3') }}"><cite></cite><span>广西快3</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.jlk3') == "has")
-                    <li id="menu-openManage-jlk3"><a href="{{ route('historyLottery.jlk3') }}"><cite></cite><span>吉林快3</span></a></li>
+                    {{--<li id="menu-openManage-jlk3"><a href="{{ route('historyLottery.jlk3') }}"><cite></cite><span>吉林快3</span></a></li>--}}
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.xglhc') == "has")
                 <li id="menu-openManage-lhc"><a href="{{ route('historyLottery.xglhc') }}"><cite></cite><span>六合彩</span></a></li>
@@ -474,7 +474,7 @@
         @if($hasPermission->hasPermission('GamesApi') == "has")
             <li id="menu-GamesApi" class="nav-item"><a href="javascript:void(0)">
                     <span><img src="/back/old/images/leftico01.png"></span>
-                    平台接口设置</a>
+                    平台设置</a>
                 <ul>
                     @if($hasPermission->hasPermission('promotion.report') == "has")
                         <li id="menu-GamesApi-List"><a href="{{ route('GamesApi.List') }}"><cite></cite><span>接口列表</span></a></li>

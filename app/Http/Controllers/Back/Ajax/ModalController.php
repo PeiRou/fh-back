@@ -224,6 +224,11 @@ class ModalController extends Controller
         $aData = CapitalAgent::$playTypeOption;
         return view('back.modal.member.agentCapitalHistory')->with('a_id',$id)->with('aData',$aData);
     }
+    //代理返水明细
+    public function agentBackwater($id)
+    {
+        return view('back.modal.member.agentBackwater')->with('a_id',$id);
+    }
     //添加新用户
     public function addUser()
     {
