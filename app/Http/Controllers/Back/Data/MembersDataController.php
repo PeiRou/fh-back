@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back\Data;
 use App\Agent;
 use App\Bets;
 use App\Capital;
+use App\CapitalAgent;
 use App\Drawing;
 use App\GeneralAgent;
 use App\Levels;
@@ -220,117 +221,59 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
     //代理的资金明细
     public function agentCapital($id, Request $request)
     {
-        $start = $request->get('start');
-        $length = $request->get('length');
-        $capitalType = $request->get('capital_type');
-        $issue = $request->get('issue');
-        $startTime = strtotime($request->get('startTime').' 00:00:00');
-        $endTime = strtotime($request->get('endTime').' 23:59:59');
-        $loginId = Session::get('account_id');
-        $capitalModel = Capital::where(function($q) use($startTime,$endTime,$capitalType,$issue,$loginId,$id){
-            if(isset($capitalType) && $capitalType)
-            {
-                $q->whereRaw('type = "'.$capitalType.'"');
-            }
-            if(isset($issue) && $issue)
-            {
-                $q->whereRaw('issue = '.$issue);
-            }
-            if(isset($startTime) && $startTime)
-            {
-                $q->whereRaw('unix_timestamp(created_at) >= '.$startTime);
-            }
-            if(isset($endTime) && $endTime)
-            {
-                $q->whereRaw('unix_timestamp(created_at) <= '.$endTime);
-            }
-            $q->whereRaw('to_user = '.$id.' and user_type = "agent"');
-        });
-        $capital = $capitalModel->orderBy('created_at','desc')->skip($start)->take($length)->get();
+        $aParam = $request->all();
+        $capitalModel = CapitalAgent::where(function($q) use($aParam){
+            if(isset($aParam['capital_type']) && array_key_exists('capital_type',$aParam))
+                $q->where('capital_agent.type',$aParam['capital_type']);
+            if(isset($aParam['issue']) && array_key_exists('issue',$aParam))
+                $q->where('capital_agent.issue',$aParam['issue']);
+            if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam))
+                $q->where('capital_agent.created_at','>=',$aParam['startTime']);
+            if(isset($aParam['endTime']) && array_key_exists('endTime',$aParam))
+                $q->where('capital_agent.created_at','<=',aParam['endTime'].' 23:59:59');
+        })->where('capital_agent.agent_id',$id);
         $capitalCount = $capitalModel->count();
+        $capital = $capitalModel->select('capital_agent.type','capital_agent.money','capital_agent.order_id','capital_agent.balance','capital_agent.issue','capital_agent.game_id','capital_agent.play_type','capital_agent.game_name','capital_agent.created_at','capital_agent.content','sub_account.account as sub_account','sub_account.name as sub_name')
+            ->leftJoin('sub_account','sub_account.sa_id','=','capital_agent.operation_id')
+            ->orderBy('capital_agent.created_at','desc')->skip($aParam['start'])->take($aParam['length'])->get();
 
+        $playTypeOption = CapitalAgent::$playTypeOption;
         return DataTables::of($capital)
-            ->editColumn('type', function($capital){
-                switch ($capital->type)
-                {
-                    case 't01':
-                        return '充值';
-                    case 't02':
-                        return '撤单[中奖金额]';
-                    case 't03':
-                        return '撤单[退水金额]';
-                    case 't04':
-                        return '返利/手续费';
-                    case 't05':
-                        return '下注';
-                    case 't06':
-                        return '重新开奖[中奖金额]';
-                    case 't07':
-                        return '重新开奖[退水金额]';
-                    case 't08':
-                        return '活动';
-                    case 't09':
-                        return '奖金';
-                    case 't10':
-                        return '代理结算佣金';
-                    case 't11':
-                        return '代理佣金提现';
-                    case 't12':
-                        return '代理佣金提现失败退回';
-                    case 't13':
-                        return '抢到红包';
-                    case 't14':
-                        return '退水';
-                    case 't15':
-                        return '提现';
-                    case 't16':
-                        return '撤单';
-                    case 't17':
-                        return '提现失败';
-                    case 't18':
-                        return '后台加钱';
-                    case 't19':
-                        return '后台扣钱';
-                }
+            ->editColumn('type', function($capital) use($playTypeOption){
+                return $playTypeOption[$capital->type];
             })
             ->editColumn('money', function($capital){
                 if($capital->money < 0)
-                {
                     return '<span class="green-text">'.$capital->money.'</span>';
-                } else {
-                    return '<span class="red-text">'.$capital->money.'</span>';
-                }
+                return '<span class="red-text">'.$capital->money.'</span>';
             })
             ->editColumn('balance', function($capital){
                 return '<span class="blue-text">'.$capital->balance.'</span>';
             })
             ->editColumn('issue', function ($capital){
                 if(empty($capital->issue))
-                {
                     return "-";
-                } else {
-                    return $capital->issue;
-                }
+                return $capital->issue;
             })
             ->editColumn('game', function ($capital){
-                if(empty($capital->game_id))
-                {
+                if(empty($capital->game_name))
                     return "-";
-                } else {
-                    return $capital->game_id;
-                }
+                return $capital->game_name;
             })
             ->editColumn('play_type', function ($capital){
                 if(empty($capital->play_type))
-                {
                     return "-";
-                } else {
-                    return $capital->play_type;
-                }
+                return $capital->play_type;
             })
             ->editColumn('operation', function ($capital){
-                $getSubAccount = SubAccount::find($capital->operation_id);
-                return $getSubAccount->account."(".$getSubAccount->name.")";
+                if(empty($capital->sub_account))
+                    return '-';
+                return $capital->sub_account."(".$capital->sub_name.")";
+            })
+            ->editColumn('content', function ($capital){
+                if(empty($capital->content))
+                    return '-';
+                return $capital->content;
             })
             ->rawColumns(['money','balance'])
             ->setTotalRecords($capitalCount)
