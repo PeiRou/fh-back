@@ -62,7 +62,9 @@ $(function () {
             }
         },
         columns: [
-            {data:'name'},
+            {data:function(e){
+                return e.account+'<span class=\'gary-text\'> ('+e.name+')<span>'
+                }},
             {data:function(e){
                 return e.countMember || 0
                 }},
@@ -112,12 +114,12 @@ $(function () {
             success:function(e){
                 if(e.code == 0){
                     var data = e.data;
-                    $('#countMember').html(data.countMember);
-                    $('#FirstTimeNum').html(data.FirstTimeNum);
-                    $('#Ramount').html(data.Ramount);
-                    $('#Damount').html(data.Damount);
-                    $('#bet_bunko').html(data.bet_bunko);
-                    $('#money').html(data.money);
+                    $('#countMember').html(data.countMember || 0);
+                    $('#FirstTimeNum').html(data.FirstTimeNum || 0);
+                    $('#Ramount').html(data.Ramount || 0);
+                    $('#Damount').html(data.Damount || 0);
+                    $('#bet_bunko').html(data.bet_bunko || 0);
+                    $('#money').html(data.money || 0);
                 }
             }
         })
