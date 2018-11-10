@@ -582,6 +582,10 @@ class SrcViewController extends Controller
     {
         return view('back.reportBet');
     }
+    //注册报表
+    public function reportRegister(){
+        return view('back.reportRegister');
+    }
     //在线报表
     public function reportOnline()
     {
@@ -1010,7 +1014,6 @@ class SrcViewController extends Controller
         $aLevel = PromotionConfig::get();
         return view('back.promotion.report',compact('aStatus','aLevel'));
     }
-
     //推广结算审核
     public function promotionReview(){
         $aStatus = PromotionReview::$reportStatus;

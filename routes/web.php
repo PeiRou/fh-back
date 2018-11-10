@@ -44,6 +44,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('statistics', 'Back\SrcViewController@reportStatistics')->name('report.statistics'); // 报表统计
         Route::get('bet', 'Back\SrcViewController@reportBet')->name('report.bet'); // 投注报表
         Route::get('online', 'Back\SrcViewController@reportOnline')->name('report.online'); // 在线报表
+        Route::get('register', 'Back\SrcViewController@reportRegister')->name('report.register'); // 注册报表
     });
 //图表统计
     Route::group(['prefix' => 'back/control/chartsManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
@@ -111,6 +112,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('feedback', 'Back\SrcViewController@feedback')->name('system.feedback'); //意见反馈
         Route::get('advertise', 'Back\SrcViewAdController@advertise')->name('system.advertise'); //广告位
         Route::get('advertiseInfo', 'Back\SrcViewAdController@advertiseInfo')->name('system.advertiseInfo'); //广告位
+
     });
 
 //日志管理
@@ -227,6 +229,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/reportAgent', 'Back\Data\ReportDataController@Agent');     //报表管理-代理
     Route::get('/back/datatables/reportUser', 'Back\Data\ReportDataController@User');       //报表管理-用户
     Route::get('/back/datatables/reportStatistics', 'Back\Data\ReportDataController@Statistics');       //报表管理-操作报表
+    Route::get('/back/datatables/reportRegister', 'Back\Data\ReportDataController@Register');       //报表管理-注册报表
+    Route::get('/back/datatables/reportRegisterTotal', 'Back\Data\ReportDataController@RegisterTotal');       //报表管理-注册报表总计
     Route::get('/back/datatables/reportBet', 'Back\Data\ReportDataController@Bet');
     Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal'); //报表管理-总代总计
     Route::get('/back/datatables/reportAgentTotal', 'Back\Data\ReportDataController@AgentTotal');   //报表管理-代理总计
