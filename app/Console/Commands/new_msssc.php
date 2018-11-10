@@ -87,7 +87,7 @@ class new_msssc extends Command
             $New_nextIssue = $nextIssue+1;
             if(substr($New_nextIssue,-4)=='1106'){
                 $dateIssue = substr($nextIssue,strlen($nextIssue)-4);
-                $New_nextIssue = date("ymd",strtotime($dateIssue)+3600).'0001';
+                $New_nextIssue = date("Ymd",strtotime($dateIssue)+86400).'0001';
             }
             Redis::set('msssc:nextIssue',(int)$New_nextIssue);
             Redis::set('msssc:nextIssueEndTime',strtotime($nextIssueEndTime));
