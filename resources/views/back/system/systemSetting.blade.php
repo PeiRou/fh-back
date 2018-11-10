@@ -188,15 +188,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="allow_same_fullname_reg" data-c="是否允许注册同样的姓名：1-禁止，0-允许" class="edit-link">修改</td>
             </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">禁止投注区下注8码：1-开启，0-关闭</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->noallow_bet_8_num }}" data-id-input="noallow_bet_8_num"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="noallow_bet_8_num" data-c="禁止投注区下注8码：1-开启，0-关闭" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">禁止投注区下注8码：1-开启，0-关闭</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->noallow_bet_8_num }}" data-id-input="noallow_bet_8_num"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="noallow_bet_8_num" data-c="禁止投注区下注8码：1-开启，0-关闭" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">提现间隔时间</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
@@ -206,15 +206,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="drawing_time" data-c="提现间隔时间" class="edit-link">修改</td>
             </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">网页验证码开关：0-关闭，1-开启</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->web_captcha }}" data-id-input="web_captcha"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="web_captcha" data-c="网页验证码开关：0-关闭，1-开启" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">网页验证码开关：0-关闭，1-开启</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->web_captcha }}" data-id-input="web_captcha"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="web_captcha" data-c="网页验证码开关：0-关闭，1-开启" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">快汇宝自动收款安全码</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
@@ -314,42 +314,42 @@
                 {{--</td>--}}
                 {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="app_domain_open" data-c="APP域名开关，0-关闭，1-开启" class="edit-link">修改</td>--}}
             {{--</tr>--}}
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">是否开启登录Google验证码：0-关闭，1-开启</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->open_login_google_captcha }}" data-id-input="open_login_google_captcha"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="open_login_google_captcha" data-c="是否开启登录Google验证码：0-关闭，1-开启" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">用户注册页显示QQ字段：0-关，1-开</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->user_reg_qq_input }}" data-id-input="user_reg_qq_input"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_reg_qq_input" data-c="用户注册页显示QQ字段：0-关，1-开" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">用户注册页显示邮箱字段：0-关，1-开</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->user_reg_email_input }}" data-id-input="user_reg_email_input"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_reg_email_input" data-c="用户注册页显示邮箱字段：0-关，1-开" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">用户注册页显示手机字段：0-关，1-开</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->user_reg_mobile_input }}" data-id-input="user_reg_mobile_input"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_reg_mobile_input" data-c="用户注册页显示手机字段：0-关，1-开" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">是否开启登录Google验证码：0-关闭，1-开启</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->open_login_google_captcha }}" data-id-input="open_login_google_captcha"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="open_login_google_captcha" data-c="是否开启登录Google验证码：0-关闭，1-开启" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">用户注册页显示QQ字段：0-关，1-开</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->user_reg_qq_input }}" data-id-input="user_reg_qq_input"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_reg_qq_input" data-c="用户注册页显示QQ字段：0-关，1-开" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">用户注册页显示邮箱字段：0-关，1-开</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->user_reg_email_input }}" data-id-input="user_reg_email_input"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_reg_email_input" data-c="用户注册页显示邮箱字段：0-关，1-开" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">用户注册页显示手机字段：0-关，1-开</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->user_reg_mobile_input }}" data-id-input="user_reg_mobile_input"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_reg_mobile_input" data-c="用户注册页显示手机字段：0-关，1-开" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">IOS注册送彩金</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
@@ -386,15 +386,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_reg_message_info" data-c="用户注册成功平台向用户发送的消息内容" class="edit-link">修改</td>
             </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">除六合彩外，所有游戏的早上封盘时间，最小从7点开始，为空不设置，格式hh:mm:ss,如：07:25:00</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->game_nobet_time }}" data-id-input="game_nobet_time"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="game_nobet_time" data-c="除六合彩外，所有游戏的早上封盘时间，最小从7点开始，为空不设置，格式hh:mm:ss,如：07:25:00" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">除六合彩外，所有游戏的早上封盘时间，最小从7点开始，为空不设置，格式hh:mm:ss,如：07:25:00</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->game_nobet_time }}" data-id-input="game_nobet_time"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="game_nobet_time" data-c="除六合彩外，所有游戏的早上封盘时间，最小从7点开始，为空不设置，格式hh:mm:ss,如：07:25:00" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             {{--<tr>--}}
                 {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">代理专属客服地址</td>--}}
                 {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
