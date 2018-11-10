@@ -10,6 +10,7 @@ use App\AgentOddsSetting;
 use App\Article;
 use App\Banks;
 use App\Capital;
+use App\CapitalAgent;
 use App\Feedback;
 use App\FeedbackMessage;
 use App\Games;
@@ -220,7 +221,8 @@ class ModalController extends Controller
     //代理资金明细
     public function agentCapitalHistory($id)
     {
-        return view('back.modal.member.agentCapitalHistory')->with('a_id',$id);
+        $aData = CapitalAgent::$playTypeOption;
+        return view('back.modal.member.agentCapitalHistory')->with('a_id',$id)->with('aData',$aData);
     }
     //添加新用户
     public function addUser()
