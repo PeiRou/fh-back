@@ -490,7 +490,7 @@ class ModalController extends Controller
     {
         if ($uid) {
             $user = DB::table('users')->where('id', $uid)->first();
-            $userLastPay = DB::table('recharges')->select('amount')->where('userId', $uid)->orderBy('created_at', 'desc')->first();
+            $userLastPay = DB::table('recharges')->select('amount')->where('userId', $uid)->where('status',2)->orderBy('id', 'desc')->first();
             $hours48SQL = "SELECT sum(b.bet_money) as BETMONEY FROM bet b WHERE b.created_at > DATE_SUB(NOW(), INTERVAL 48 HOUR) AND user_id = {$uid}";
             $hours48Bet = DB::table('bet')
                 ->select(DB::raw('sum(bet_money) as sum , sum(bunko) as sumBunko, sum(case WHEN bunko = 0 then bet_money else 0 end) as noBunko'))
