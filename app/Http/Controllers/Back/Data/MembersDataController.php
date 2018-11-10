@@ -299,7 +299,7 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
         })->where('agent_backwater.agent_id',$id);
         $capitalCount = $capitalModel->count();
         $capital = $capitalModel->select('agent_backwater.*','users.username','users.fullName','game.game_name')
-            ->join('users','users.id','=','agent_backwater.agent_id')->join('game','game.g_id','=','agent_backwater.game_id')
+            ->leftJoin('users','users.id','=','agent_backwater.agent_id')->leftJoin('game','game.g_id','=','agent_backwater.game_id')
             ->skip($aParam['start'])->take($aParam['length'])->get();
 
         $agentBackwaterStatus = AgentBackwater::$agentBackwaterStatus;
