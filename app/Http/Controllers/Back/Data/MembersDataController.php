@@ -246,7 +246,6 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                 $q->where('created_at','<=',$endTime);
             }
             $q->where('agent_id',$id);
-            $q->where('user_type','=',"agent");
         });
         $capital = $capitalModel->orderBy('created_at','desc')->skip($start)->take($length)->get();
         $capitalCount = $capitalModel->count();
