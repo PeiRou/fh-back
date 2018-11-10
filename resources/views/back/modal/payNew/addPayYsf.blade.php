@@ -1,3 +1,4 @@
+<link href="/back/css/pages/Pay.css" rel="stylesheet" type="text/css">
 <form id="addPayAlipayForm" class="ui mini form" action="{{ url('/action/admin/new/addPayYsf') }}">
     <div class="field">
         <label>云闪付名称</label>
@@ -117,15 +118,25 @@
             <input type="text" name="remark2"/>
         </div>
     </div>
-
+    <div class="field">
+        <label>排序</label>
+        <div class="ui input icon" style="width: 35%;
+                display: flex;
+                align-items: center;">
+            <input type="text" name="sort" value=""/>
+            <span style="white-space: nowrap;">(数字越大排位越靠后)</span>
+        </div>
+    </div>
     <div class="field">
         <label>层设置</label>
+        <div>
         @foreach($levels as $item)
         <div class="ui checkbox">
             <input type="checkbox" tabindex="0" value="{{ $item->value }}" name="levels[]" class="hidden">
             <label>{{ $item->name }}</label>
         </div>
         @endforeach
+        </div>
     </div>
 
     <div class="field">

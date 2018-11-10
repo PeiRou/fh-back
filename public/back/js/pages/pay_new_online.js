@@ -42,7 +42,7 @@ function addPayOnline() {
         theme: 'material',
         title: '添加在线支付配置',
         closeIcon:true,
-        boxWidth:'26%',
+        boxWidth:'32%',
         content: 'url:/back/modal/addPayOnlineNew',
         buttons: {
             formSubmit: {

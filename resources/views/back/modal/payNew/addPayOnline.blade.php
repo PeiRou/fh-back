@@ -1,4 +1,6 @@
 <link href="/js/jquery.searchableSelect.css" rel="stylesheet" type="text/css">
+<link href="/back/css/pages/Pay.css" rel="stylesheet" type="text/css">
+
 <form id="addPayOnlineForm" class="ui mini form" action="{{ url('/action/admin/new/addPayOnline') }}">
     <div class="field">
         <label>支付类型</label>
@@ -173,15 +175,25 @@
             </select>
         </div>
     </div>
-
+    <div class="field">
+        <label>排序</label>
+        <div class="ui input icon" style="width: 35%;
+                display: flex;
+                align-items: center;">
+            <input type="text" name="sort" value=""/>
+            <span style="white-space: nowrap;">(数字越大排位越靠后)</span>
+        </div>
+    </div>
     <div class="field">
         <label>层设置</label>
+        <div>
         @foreach($levels as $item)
             <div class="ui checkbox">
                 <input type="checkbox" tabindex="0" value="{{ $item->value }}" name="levels[]" class="hidden">
                 <label>{{ $item->name }}</label>
             </div>
         @endforeach
+        </div>
     </div>
 </form>
 

@@ -33,6 +33,7 @@ class SrcPayNewController extends Controller{
             $new_levels = null;
         }
         $payOnline = new PayOnlineNew();
+        $payOnline->sort = $aParam['sort'];
         $payOnline->payType = $iPayTypeNew->id;
         $payOnline->rechName = $iPayTypeNew->rechName;
         $payOnline->payCode = $iPayTypeNew->code;
@@ -246,6 +247,7 @@ class SrcPayNewController extends Controller{
         $payOnline->lockArea = $new_lockArea;
         $payOnline->payee = $payee;
         $payOnline->payeeName = $payeeName;
+        $payOnline->sort = $request->input('sort') ?? 99;
         $payOnline->remark = $remark;
         $payOnline->remark2 = $remark2;
         $payOnline->pageDesc = $pageDesc;
@@ -355,6 +357,7 @@ class SrcPayNewController extends Controller{
 
         $payOnline = new PayOnlineNew();
         $payOnline->rechName = '支付宝支付';
+        $payOnline->sort = $request->input('sort') ?? 99;
         $payOnline->rechType = 'alipay';
         $payOnline->payCode = 'alipay';
         $payOnline->lockArea = $new_lockArea;
@@ -404,7 +407,7 @@ class SrcPayNewController extends Controller{
         $remark = $request->input('remark');
         $remark2 = $request->input('remark2');
         $pageDesc = $request->input('pageDesc');
-        $sort = $request->input('sort');
+        $sort = $request->input('sort') ?? 99;
         $levels = $request->input('levels');
         if($levels !== null){
             $new_levels = implode(',',$levels);
@@ -469,6 +472,7 @@ class SrcPayNewController extends Controller{
 
         $payOnline = new PayOnlineNew();
         $payOnline->rechName = '云闪付支付';
+        $payOnline->sort = $request->input('sort') ?? 99;
         $payOnline->rechType = 'ysf';
         $payOnline->payCode = 'ysf';
         $payOnline->lockArea = $new_lockArea;
@@ -583,6 +587,7 @@ class SrcPayNewController extends Controller{
 
         $payOnline = new PayOnlineNew();
         $payOnline->rechName = '微信支付';
+        $payOnline->sort = $request->input('sort') ?? 99;
         $payOnline->rechType = 'weixin';
         $payOnline->payCode = 'weixin';
         $payOnline->lockArea = $new_lockArea;
@@ -696,6 +701,7 @@ class SrcPayNewController extends Controller{
 
         $payOnline = new PayOnlineNew();
         $payOnline->rechName = '财付通支付';
+        $payOnline->sort = $request->input('sort') ?? 99;
         $payOnline->rechType = 'cft';
         $payOnline->payCode = 'cft';
         $payOnline->lockArea = $new_lockArea;
