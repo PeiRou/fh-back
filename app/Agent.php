@@ -30,6 +30,25 @@ class Agent extends Model
         return DB::select($aSql);
     }
 
+    public static function agentReportRegister_aSql($where = '', $having = ''){
+        $aSql = "SELECT COUNT(u.id) as countMember, SUM(bet_bunko) AS bet_bunko, SUM(Damount) AS Damount, SUM(Ramount) AS Ramount, SUM(money) AS money, ag.name, ag.a_id as agent, COUNT(FirstTime) AS FirstTimeNum, account
+                FROM `agent` AS ag
+                LEFT JOIN (
+                    SELECT u.id, b.bet_bunko, d.Damount, r.Ramount, u.money, d.user_id, u.agent, FirstTime
+                    FROM `users` as u 
+                    LEFT JOIN ( SELECT sum( CASE  WHEN b.game_id IN ( 90, 91 ) THEN
+                                        nn_view_money ELSE ( CASE WHEN bunko > 0 THEN bunko - bet_money ELSE bunko END ) 
+                                    END  ) AS bet_bunko,user_id FROM `bet` AS b WHERE 1 {$where} GROUP BY user_id ) AS b ON b.user_id = u.id
+                    LEFT JOIN ( SELECT SUM(d.amount) AS Damount, d.user_id FROM `drawing` AS d WHERE STATUS = 2 {$where} GROUP BY user_id ) AS d ON d.user_id = u.id
+                    LEFT JOIN ( SELECT SUM(re.amount) AS Ramount, re.userId FROM `recharges` AS re WHERE STATUS = 2 AND payType != 'adminAddMoney' {$where} GROUP BY userId ) AS r ON r.userId = u.id
+                    LEFT JOIN ( SELECT userId, created_at AS FirstTime FROM `recharges` WHERE STATUS = 2 AND payType != 'adminAddMoney' GROUP BY userId  HAVING 1  {$having} ) AS sc ON sc.userId = u.id
+                    WHERE testFlag IN ( 0, 2 )
+                    {$where}
+                ) AS u ON u.agent = ag.a_id 
+                GROUP BY a_id
+                ORDER BY countMember DESC , a_id DESC";
+        return $aSql;
+    }
     //用户返回赔率以及返水代理
     public static function returnUserOdds($agentId){
         $aArray = [];
@@ -77,12 +96,12 @@ class Agent extends Model
             $str1 .= 'END , ';
             $aSql .= $str1;
         }
-        $aSql = substr($aSql,0,strlen($aSql)-2);
+        $aSql = substr($aSql, 0, strlen($aSql) - 2);
         $endStr = 'WHERE ' . $primary . ' IN (';
-        foreach ($data as $key => $value){
-            $endStr .= '\''.$value[$primary] . '\',';
+        foreach ($data as $key => $value) {
+            $endStr .= '\'' . $value[$primary] . '\',';
         }
-        $endStr = substr($endStr,0,strlen($endStr)-1);
+        $endStr = substr($endStr, 0, strlen($endStr) - 1);
         $endStr .= ')';
         $aSql .= $endStr;
         return $aSql;

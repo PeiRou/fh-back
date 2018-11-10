@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Agent;
 
 class ReportDataController extends Controller
 {
@@ -281,5 +282,68 @@ class ReportDataController extends Controller
             })
             ->skipPaging()
             ->make(true);
+    }
+    //注册报表
+    public function Register(Request $request){
+        $startTime = $request->get('startTime');
+        $endTime = $request->get('endTime');
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $where = '';
+        $having = '';
+        if($startTime && $endTime){
+            $where .= " AND created_at BETWEEN '{$startTime} 00:00:00' AND '{$endTime} 23:59:59' ";
+            $having .= " AND created_at BETWEEN '{$startTime} 00:00:00' AND '{$endTime}  23:59:59' ";
+        }
+        $cSql = "SELECT COUNT(`a_id`) AS `count` FROM `agent`  WHERE 1";
+//        $aSql = "SELECT COUNT(u.id) as countMember, SUM(bet_bunko) AS bet_bunko, SUM(Damount) AS Damount, SUM(Ramount) AS Ramount, SUM(money) AS money, ag.name, ag.a_id as agent, COUNT(FirstTime) AS FirstTimeNum
+//                FROM `agent` AS ag
+//                LEFT JOIN (
+//                    SELECT u.id, b.bet_bunko, d.Damount, r.Ramount, u.money, d.user_id, u.agent, FirstTime
+//                    FROM `users` as u
+//                    LEFT JOIN ( SELECT sum( CASE  WHEN b.game_id IN ( 90, 91 ) THEN
+//                                        nn_view_money ELSE ( CASE WHEN bunko > 0 THEN bunko - bet_money ELSE bunko END )
+//                                    END  ) AS bet_bunko,user_id FROM `bet` AS b GROUP BY user_id ) AS b ON b.user_id = u.id
+//                    LEFT JOIN ( SELECT SUM(d.amount) AS Damount, d.user_id FROM `drawing` AS d WHERE STATUS = 2  GROUP BY user_id ) AS d ON d.user_id = u.id
+//                    LEFT JOIN ( SELECT SUM(re.amount) AS Ramount, re.userId FROM `recharges` AS re WHERE STATUS = 2 AND payType != 'adminAddMoney' GROUP BY userId ) AS r ON r.userId = u.id
+//                    LEFT JOIN ( SELECT userId, created_at AS FirstTime FROM `recharges` WHERE STATUS = 2 AND payType != 'adminAddMoney' GROUP BY userId {$having} ) AS sc ON sc.userId = u.id
+//                    WHERE testFlag IN ( 0, 2 )
+//                    {$where}
+//                ) AS u ON u.agent = ag.a_id
+//                GROUP BY a_id";
+        $aSql = Agent::agentReportRegister_aSql($where, $having);
+        $countSql = $cSql.$where;
+        $count = DB::select($countSql);
+        $aSql = $aSql . " LIMIT {$start},{$length}";
+        $res = DB::select($aSql);
+        return DataTables::of($res)
+            ->setTotalRecords($count[0]->count)
+            ->skipPaging()
+            ->make(true);
+    }
+    public function RegisterTotal(Request $request){
+        $startTime = $request->get('startTime');
+        $endTime = $request->get('endTime');
+        $where = '';
+        $having = '';
+        if($startTime && $endTime){
+            $where .= " AND created_at BETWEEN '{$startTime} 00:00:00' AND '{$endTime} 23:59:59' ";
+            $having .= " AND created_at BETWEEN '{$startTime} 00:00:00' AND '{$endTime}  23:59:59' ";
+        }
+        $aSql = Agent::agentReportRegister_aSql($where, $having);
+        //总计
+        $TotalSql = "SELECT SUM(countMember) AS countMember, SUM(bet_bunko) AS bet_bunko, SUM(Damount) AS Damount, SUM(Ramount) AS Ramount, SUM(money) AS money,  SUM(FirstTimeNum) AS FirstTimeNum
+                    FROM ( {$aSql} ) AS ag";
+        $res = DB::select($TotalSql);
+        if($res){
+            return response()->json([
+                'code' => 0,
+                'data' => $res[0]
+            ]);
+        }
+        return response()->json([
+            'code' => 1,
+                'data' => []
+        ]);
     }
 }

@@ -211,7 +211,7 @@ class SaveGameOddsController extends Controller
                                 foreach($v['name'] as $vv){
                                     if($item->odds_tag == $vv){
                                         $arr[$k]['fromDBOdds'][$item->odds_tag] = [
-                                            'key' => $item->odds,
+                                            'key' => $item->odds * 100,
                                             'minMoney' => $item->minMoney,
                                             'maxMoney' => $item->maxMoney,
                                             'maxTurnMoney' => $item->maxTurnMoney,
