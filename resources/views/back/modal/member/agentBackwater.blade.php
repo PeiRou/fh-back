@@ -118,7 +118,7 @@
             },
             columns: [
                 {data:'user'},
-                {data:'game_id'},
+                {data:'game_name'},
                 {data:'issue'},
                 {data:'money'},
                 {data:'status'},
