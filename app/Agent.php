@@ -67,10 +67,10 @@ class Agent extends Model
         return serialize($aArray);
     }
 
-    public static function updateBatchStitching($data,$fields,$primary,$table = 'agent'){
+    public static function updateBatchStitching($data,$fields,$primary,$symbol = '+',$table = 'agent'){
         $aSql = 'UPDATE '. $table . ' SET ';
         foreach ($fields as $field){
-            $str1 = '`balance` = `balance` + CASE ' . $primary . ' ';
+            $str1 = '`balance` = `balance` ' . $symbol . ' CASE ' . $primary . ' ';
             foreach ($data as $key => $value){
                 $str1 .= 'WHEN \'' . $value[$primary] . '\' THEN \'' . $value[$field] . '\' ';
             }
