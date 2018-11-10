@@ -1,26 +1,4 @@
-<style>
-    .ui.mini.form .field{
-        display: flex;
-    }
-    .ui.form .field>label{
-        min-width: 88px;
-        display: flex;
-        align-items: center;
-    }
-    .ui.checkbox input.hidden+label {
-        margin-right: 5px;
-    }
-    .ui.form .field {
-        clear: both;
-        margin: 0 0 0.4em;
-    }
-    .select2-container--default.select2-container--focus .select2-selection--multiple {
-        height: 1px;
-    }
-    .select2-container--default .select2-selection--multiple {
-        height: 1px;
-    }
-</style>
+<link href="/back/css/pages/Pay.css" rel="stylesheet" type="text/css">
 <form id="editPayAlipayForm" class="ui mini form" action="{{ url('/action/admin/new/editPayAlipay') }}">
     <div class="field">
         <label>支付宝名称</label>
