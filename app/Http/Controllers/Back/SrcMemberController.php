@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\Agent;
+use App\AgentOddsSetting;
 use App\Capital;
 use App\Drawing;
 use App\GeneralAgent;
@@ -110,7 +111,15 @@ class SrcMemberController extends Controller
         $name = $request->input('name');
         $password = $request->input('password');
         $editOdds = $request->input('editodds');
+        $agentId = $request->input('agentId');
+        $odds_level = $request->input('odds_level');
 
+        if(empty($odds_level)){
+            return response()->json([
+                'status'=>false,
+                'msg'=>'请选择赔率!'
+            ]);
+        }
         $has = Agent::where('account',$account)->first();
         if(!empty($has))
             return response()->json([
@@ -123,6 +132,23 @@ class SrcMemberController extends Controller
                 'status'=>false,
                 'msg'=>'此代理名字已存在！'
             ]);
+        if(empty($agentId)){
+            $superior_agent = 0;
+        }else{
+            $iAgent = Agent::where('a_id',$agentId)->first();
+            if ($iAgent->odds_level > $odds_level) {
+                return response()->json([
+                    'status' => false,
+                    'msg' => '此代理赔率过高'
+                ]);
+            }
+            $superior_agent = $iAgent->superior_agent;
+            if(empty($superior_agent)){
+                $superior_agent = $agentId;
+            }else{
+                $superior_agent .= ','.$agentId;
+            }
+        }
         try {
             $agent = new Agent();
             $agent->gagent_id = $gagent;
@@ -130,6 +156,8 @@ class SrcMemberController extends Controller
             $agent->name = $name;
             $agent->password = Hash::make($password);
             $agent->editodds = $editOdds;
+            $agent->superior_agent = $superior_agent;
+            $agent->odds_level = $odds_level;
             $insert = $agent->save();
         }catch (\exception $e){
             $insert = 0;
@@ -320,6 +348,8 @@ class SrcMemberController extends Controller
             $testFlag = 0;
         }
 
+        $odds = Agent::returnUserOdds($agent);
+
         $user = new User();
         $user->agent = $agent;
         $user->username = $username;
@@ -327,6 +357,9 @@ class SrcMemberController extends Controller
         $user->password = Hash::make(md5($password));
         $user->fullName = $fullName;
         $user->testFlag = $testFlag;
+        $user->agent_odds = $odds['agent_odds'];
+        $user->user_odds = $odds['user_odds'];
+        $user->user_odds_level = $odds['user_odds_level'];
         $insert = $user->save();
         if($insert == 1){
             return response()->json([
@@ -379,23 +412,33 @@ class SrcMemberController extends Controller
         $uid = $request->input('uid');
         $agent = $request->input('agent');
 
+        $odds = Agent::returnUserOdds($agent);
         if($agent == 2){
             $update = User::where('id',$uid)
                 ->update([
                     'agent'=>$agent,
-                    'testFlag' => 2
+                    'testFlag' => 2,
+                    'user_odds' => $odds['user_odds'],
+                    'agent_odds' => $odds['agent_odds'],
+                    'user_odds_level' => $odds['user_odds_level'],
                 ]);
         } else if($agent == 3){
             $update = User::where('id',$uid)
                 ->update([
                     'agent'=>$agent,
-                    'testFlag' => 1
+                    'testFlag' => 1,
+                    'user_odds' => $odds['user_odds'],
+                    'agent_odds' => $odds['agent_odds'],
+                    'user_odds_level' => $odds['user_odds_level'],
                 ]);
         } else {
             $update = User::where('id',$uid)
                 ->update([
                     'agent'=>$agent,
-                    'testFlag' => 0
+                    'testFlag' => 0,
+                    'user_odds' => $odds['user_odds'],
+                    'agent_odds' => $odds['agent_odds'],
+                    'user_odds_level' => $odds['user_odds_level'],
                 ]);
         }
 
@@ -846,5 +889,16 @@ class SrcMemberController extends Controller
         }
         $order_id = $order_id_main . str_pad((100 - $order_id_sum % 100) % 100,2,'0',STR_PAD_LEFT);
         return $fix.$order_id;
+    }
+
+    //
+    public function selectAgentOdds(Request $request){
+        $aParam = $request->post();
+        $oddsLevel = Agent::where('a_id',$aParam['id'])->value('odds_level');
+        $oddsLevel = empty($oddsLevel)?0:$oddsLevel;
+        $aAgentOdds = AgentOddsSetting::where('level','>=',$oddsLevel)->orderBy('level','asc')->get();
+        return response()->json([
+            'aAgentOdds' => $aAgentOdds
+        ]);
     }
 }

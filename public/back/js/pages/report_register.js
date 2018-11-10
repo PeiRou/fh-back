@@ -117,4 +117,9 @@ $(function () {
             }
         })
     }
+
 });
+
+function refreshTable(table) {
+    dataTable.ajax.reload();
+}

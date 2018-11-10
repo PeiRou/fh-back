@@ -292,8 +292,8 @@ class ReportDataController extends Controller
         $where = '';
         $having = '';
         if($startTime && $endTime){
-            $where .= " AND created_at BETWEEN '{$startTime}' AND '{$endTime}' ";
-            $having .= " AND created_at BETWEEN '{$startTime}' AND '{$endTime}' ";
+            $where .= " AND created_at BETWEEN '{$startTime} 00:00:00' AND '{$endTime} 23:59:59' ";
+            $having .= " AND created_at BETWEEN '{$startTime} 00:00:00' AND '{$endTime}  23:59:59' ";
         }
         $cSql = "SELECT COUNT(`a_id`) AS `count` FROM `agent`  WHERE 1";
 //        $aSql = "SELECT COUNT(u.id) as countMember, SUM(bet_bunko) AS bet_bunko, SUM(Damount) AS Damount, SUM(Ramount) AS Ramount, SUM(money) AS money, ag.name, ag.a_id as agent, COUNT(FirstTime) AS FirstTimeNum
@@ -337,6 +337,5 @@ class ReportDataController extends Controller
             'code' => 1,
                 'data' => []
         ]);
-        print_r($res);
     }
 }

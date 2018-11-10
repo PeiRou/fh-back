@@ -5,10 +5,6 @@ namespace App\Http\Controllers\Back\Ajax;
 use App\Activity;
 use App\ActivityCondition;
 use App\ActivityPrize;
-use App\Advertise;
-use App\AdvertiseInfo;
-use App\AdvertiseKey;
-use App\AdvertiseValue;
 use App\Agent;
 use App\AgentOddsSetting;
 use App\Article;
@@ -34,6 +30,7 @@ use App\RechargeWay;
 use App\RechType;
 use App\Roles;
 use App\SubAccount;
+use App\SystemSetting;
 use App\User;
 use App\Whitelist;
 use Illuminate\Http\Request;
@@ -173,7 +170,10 @@ class ModalController extends Controller
     public function addAgent()
     {
         $allGeneralAgent = GeneralAgent::all();
-        return view('back.modal.member.addAgent')->with('info',$allGeneralAgent);
+        $aAgent = Agent::all();
+        $aAgentOdds = AgentOddsSetting::orderBy('level','asc')->get();
+        $aBasisOdds = SystemSetting::getValueByRemark1('agent_odds_basis');
+        return view('back.modal.member.addAgent')->with('info',$allGeneralAgent)->with('aAgent',$aAgent)->with('aAgentOdds',$aAgentOdds)->with('aBasisOdds',$aBasisOdds);
     }
     //修改代理
     public function editAgent($id)

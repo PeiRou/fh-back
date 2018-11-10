@@ -22,7 +22,7 @@ class LogAbnormal extends Model
                 'user_id' => empty(Session::get('account_id')) ? null : Session::get('account_id'),
                 'username' => $account,
                 'name' => empty(Session::get('account_name')) ? null : Session::get('account_name'),
-                'ip' => $request->ip(),
+                'ip' => realIp(),
                 'type_id' => $routeData['type_id'],
                 'type_name' => $routeData['type_name'],
                 'route' => $routeData['route'],

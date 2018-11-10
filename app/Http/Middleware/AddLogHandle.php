@@ -32,7 +32,7 @@ class AddLogHandle
         if($username !== 'admin') {
             $routeData = LogHandle::getTypeAction(Route::currentRouteName());
             $params = $request->all();
-            $ip = $request->ip();
+            $ip = realIp();
             $data = [
                 'user_id' => $user_id,
                 'username' => $username,

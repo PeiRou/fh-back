@@ -14,6 +14,7 @@ use App\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -1048,22 +1049,13 @@ class OpenHistoryController extends Controller
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
                     ];
-
-                    $aUserFreezeMoney[] = [
-                        'user_id' => $iBet->id,
-                        'game_id' => $iBet->game_id,
-                        'issue' => $iBet->issue,
-                        'money' => $iBet->bet_bunko,
-                        'status' => 0,
-                        'created_at' => $dateTime,
-                        'updated_at' => $dateTime,
-                    ];
                 }
             }
         }
         if(!empty($aBet)) {
             foreach ($aBet as $kBet1 => $iBet1) {
-                if(!empty($iBet1->amount)) {
+                $amount = empty($iBet1->amount)?0:$iBet1->amount;
+                if(!empty($amount)) {
                     $aCapitalFreeze[] = [
                         'to_user' => $iBet1->id,
                         'user_type' => 'user',
@@ -1079,6 +1071,17 @@ class OpenHistoryController extends Controller
                         'updated_at' => $dateTime1,
                     ];
                 }
+
+                $aUserFreezeMoney[] = [
+                    'user_id' => $iBet1->id,
+                    'game_id' => $iBet1->game_id,
+                    'issue' => $iBet1->issue,
+                    'money' => $iBet1->bet_bunko,
+                    'status' => 0,
+                    'created_at' => $dateTime,
+                    'updated_at' => $dateTime,
+                ];
+
                 $aUserId[] = $iBet1->id;
             }
         }
