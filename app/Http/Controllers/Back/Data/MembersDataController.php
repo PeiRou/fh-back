@@ -256,9 +256,9 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                 return $capital->issue;
             })
             ->editColumn('game', function ($capital){
-                if(empty($capital->game_id))
+                if(empty($capital->game_name))
                     return "-";
-                return $capital->game_id;
+                return $capital->game_name;
             })
             ->editColumn('play_type', function ($capital){
                 if(empty($capital->play_type))
