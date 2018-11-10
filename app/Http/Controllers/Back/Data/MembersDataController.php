@@ -229,23 +229,23 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
         $endTime = strtotime($request->get('endTime').' 23:59:59');
         $loginId = Session::get('account_id');
         $capitalModel = CapitalAgent::where(function($q) use($startTime,$endTime,$capitalType,$issue,$loginId,$id){
-            if(isset($capitalType) && $capitalType)
-            {
-                $q->where('type',$capitalType);
-            }
-            if(isset($issue) && $issue)
-            {
-                $q->where('issue',$issue);
-            }
-            if(isset($startTime) && $startTime)
-            {
-                $q->where('created_at','>=',$startTime);
-            }
-            if(isset($endTime) && $endTime)
-            {
-                $q->where('created_at','<=',$endTime);
-            }
-            $q->where('agent_id',$id);
+//            if(isset($capitalType) && $capitalType)
+//            {
+//                $q->where('type',$capitalType);
+//            }
+//            if(isset($issue) && $issue)
+//            {
+//                $q->where('issue',$issue);
+//            }
+//            if(isset($startTime) && $startTime)
+//            {
+//                $q->where('created_at','>=',$startTime);
+//            }
+//            if(isset($endTime) && $endTime)
+//            {
+//                $q->where('created_at','<=',$endTime);
+//            }
+//            $q->where('agent_id',$id);
         });
         $capital = $capitalModel->orderBy('created_at','desc')->skip($start)->take($length)->get();
         $capitalCount = $capitalModel->count();
