@@ -80,78 +80,78 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="lhc_tu_num" data-c="六合彩【土】号码" class="edit-link">修改</td>
             </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">在线客服</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->online_service_url }}" data-id-input="online_service_url"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="online_service_url" data-c="在线客服" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">系统默认皮肤（blue：蓝色，red：红色）</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->default_skin }}" data-id-input="default_skin"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="default_skin" data-c="系统默认皮肤（blue：蓝色，red：红色）" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面QQ连接</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_qq_url }}" data-id-input="index_qq_url"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_qq_url" data-c="推广页面QQ连接" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面微信连接</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_wechat_url }}" data-id-input="index_wechat_url"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_wechat_url" data-c="推广页面微信连接" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面联系电话</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_phone_url }}" data-id-input="index_phone_url"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_phone_url" data-c="推广页面联系电话" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面客服QQ</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_service_qq_url }}" data-id-input="index_service_qq_url"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_service_qq_url" data-c="推广页面客服QQ" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面代理QQ</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_agent_qq_url }}" data-id-input="index_agent_qq_url"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_agent_qq_url" data-c="推广页面代理QQ" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面代理Email</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_agent_email_url }}" data-id-input="index_agent_email_url"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_agent_email_url" data-c="推广页面代理Email" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">在线客服</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->online_service_url }}" data-id-input="online_service_url"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="online_service_url" data-c="在线客服" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">系统默认皮肤（blue：蓝色，red：红色）</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->default_skin }}" data-id-input="default_skin"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="default_skin" data-c="系统默认皮肤（blue：蓝色，red：红色）" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面QQ连接</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_qq_url }}" data-id-input="index_qq_url"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_qq_url" data-c="推广页面QQ连接" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面微信连接</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_wechat_url }}" data-id-input="index_wechat_url"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_wechat_url" data-c="推广页面微信连接" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面联系电话</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_phone_url }}" data-id-input="index_phone_url"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_phone_url" data-c="推广页面联系电话" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面客服QQ</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_service_qq_url }}" data-id-input="index_service_qq_url"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_service_qq_url" data-c="推广页面客服QQ" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面代理QQ</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_agent_qq_url }}" data-id-input="index_agent_qq_url"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_agent_qq_url" data-c="推广页面代理QQ" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">推广页面代理Email</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->index_agent_email_url }}" data-id-input="index_agent_email_url"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="index_agent_email_url" data-c="推广页面代理Email" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">一天一个IP能注册多少用户</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
@@ -170,15 +170,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="reg_ip_black_list" data-c="注册IP黑名单，多个使用（;）隔开" class="edit-link">修改</td>
             </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">开奖直播地址：为空不显示，不为空则显示</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->open_site_url }}" data-id-input="open_site_url"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="open_site_url" data-c="开奖直播地址：为空不显示，不为空则显示" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">开奖直播地址：为空不显示，不为空则显示</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->open_site_url }}" data-id-input="open_site_url"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="open_site_url" data-c="开奖直播地址：为空不显示，不为空则显示" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">是否允许注册同样的姓名：1-禁止，0-允许</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
@@ -242,15 +242,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="activity_money_admin" data-c="抽奖活动，派奖审核的金额分界点，如填0表示所有金额都需要审核" class="edit-link">修改</td>
             </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">维护页面开关：0-关闭，1-开启</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->maintain_page }}" data-id-input="maintain_page"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;"  data-id="maintain_page" data-c="维护页面开关：0-关闭，1-开启" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">维护页面开关：0-关闭，1-开启</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->maintain_page }}" data-id-input="maintain_page"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;"  data-id="maintain_page" data-c="维护页面开关：0-关闭，1-开启" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">维护页面描述</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
@@ -278,42 +278,42 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="drawing_way" data-c="提现审核方式：0-直接通过驳回，1-锁定方式" class="edit-link">修改</td>
             </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">APP域名</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->app_domain }}" data-id-input="app_domain"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="app_domain" data-c="APP域名" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">电脑版APP下载地址：为空不显示，不为空则显示</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->pc_app_download_url }}" data-id-input="pc_app_download_url"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="pc_app_download_url" data-c="电脑版APP下载地址：为空不显示，不为空则显示" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">手机版APP下载地址：为空不显示，不为空则显示</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->mobile_app_download_url }}" data-id-input="mobile_app_download_url"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="mobile_app_download_url" data-c="手机版APP下载地址：为空不显示，不为空则显示" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">APP域名开关，0-关闭，1-开启</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->app_domain_open }}" data-id-input="app_domain_open"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="app_domain_open" data-c="APP域名开关，0-关闭，1-开启" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">APP域名</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->app_domain }}" data-id-input="app_domain"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="app_domain" data-c="APP域名" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">电脑版APP下载地址：为空不显示，不为空则显示</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->pc_app_download_url }}" data-id-input="pc_app_download_url"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="pc_app_download_url" data-c="电脑版APP下载地址：为空不显示，不为空则显示" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">手机版APP下载地址：为空不显示，不为空则显示</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->mobile_app_download_url }}" data-id-input="mobile_app_download_url"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="mobile_app_download_url" data-c="手机版APP下载地址：为空不显示，不为空则显示" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">APP域名开关，0-关闭，1-开启</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->app_domain_open }}" data-id-input="app_domain_open"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="app_domain_open" data-c="APP域名开关，0-关闭，1-开启" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">是否开启登录Google验证码：0-关闭，1-开启</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
@@ -359,15 +359,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_reg_send_lottery" data-c="IOS注册送彩金" class="edit-link">修改</td>
             </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">代理专属域名</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->agent_vip_domain }}" data-id-input="agent_vip_domain"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="agent_vip_domain" data-c="代理专属域名" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">代理专属域名</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->agent_vip_domain }}" data-id-input="agent_vip_domain"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="agent_vip_domain" data-c="代理专属域名" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">提现金额限制</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
@@ -395,24 +395,24 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="game_nobet_time" data-c="除六合彩外，所有游戏的早上封盘时间，最小从7点开始，为空不设置，格式hh:mm:ss,如：07:25:00" class="edit-link">修改</td>
             </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">代理专属客服地址</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->agent_vip_service_url }}" data-id-input="agent_vip_service_url"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="agent_vip_service_url" data-c="代理专属客服地址" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">原生APP域名</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->native_app_domain }}" data-id-input="native_app_domain"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="native_app_domain" data-c="原生APP域名" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">代理专属客服地址</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->agent_vip_service_url }}" data-id-input="agent_vip_service_url"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="agent_vip_service_url" data-c="代理专属客服地址" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">原生APP域名</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->native_app_domain }}" data-id-input="native_app_domain"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="native_app_domain" data-c="原生APP域名" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">飞单前端显示域名接口</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
@@ -486,15 +486,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="payment_platform_dispensing" data-c="支付平台代付接口" class="edit-link">修改</td>
             </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">聊天室开关 0关 1开</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->chat_open }}" data-id-input="chat_open"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="chat_open" data-c="聊天室开关" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">聊天室开关 0关 1开</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->chat_open }}" data-id-input="chat_open"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="chat_open" data-c="聊天室开关" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             @endif
             </tbody>
         </table>
