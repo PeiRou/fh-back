@@ -206,17 +206,17 @@ class SaveGameOddsController extends Controller
                                     'maxMoney' => $item->maxMoney,
                                     'maxTurnMoney' => $item->maxTurnMoney,
                                 ];
-                                $arr[$k]['fromDBRebate'][$item->name]['key'] = $item->rebate;
+                                $arr[$k]['fromDBRebate'][$item->name]['key'] = $item->rebate * 100;
                             }else{
                                 foreach($v['name'] as $vv){
                                     if($item->odds_tag == $vv){
                                         $arr[$k]['fromDBOdds'][$item->odds_tag] = [
-                                            'key' => $item->odds * 100,
+                                            'key' => $item->odds,
                                             'minMoney' => $item->minMoney,
                                             'maxMoney' => $item->maxMoney,
                                             'maxTurnMoney' => $item->maxTurnMoney,
                                         ];
-                                        $arr[$k]['fromDBRebate'][$item->rebate_tag]['key'] = $item->rebate;
+                                        $arr[$k]['fromDBRebate'][$item->rebate_tag]['key'] = $item->rebate * 100;
                                     }
                                 }
                             }
