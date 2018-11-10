@@ -204,6 +204,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/generalAgent', 'Back\Data\MembersDataController@generalAgent');
     Route::get('/back/datatables/agent', 'Back\Data\MembersDataController@agent');
     Route::get('/back/datatables/agentCapital/{id}', 'Back\Data\MembersDataController@agentCapital');
+    Route::get('/back/datatables/agentBackwater/{id}', 'Back\Data\MembersDataController@agentBackwater');
     Route::get('/back/datatables/userCapital/{id}', 'Back\Data\MembersDataController@userCapital');
     Route::get('/back/datatables/user', 'Back\Data\MembersDataController@user');
     Route::get('/back/datatables/userTotal', 'Back\Data\MembersDataController@userTotal')->middleware('check-permission')->name('m.user.userTotal');//会员统计查看;
@@ -524,6 +525,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/agentContent/{id}', 'Back\Ajax\ModalController@agentContent')->middleware('check-permission')->name('m.agent.viewDetails');
     Route::get('/back/modal/changeAgentMoney/{id}', 'Back\Ajax\ModalController@changeAgentMoney')->middleware('check-permission')->name('m.agent.editMoney');
     Route::get('/back/modal/agentCapitalHistory/{id}', 'Back\Ajax\ModalController@agentCapitalHistory')->middleware('check-permission')->name('m.agent.capitalDetails');
+    Route::get('/back/modal/agentBackwater/{id}', 'Back\Ajax\ModalController@agentBackwater')->middleware('check-permission')->name('m.agent.agentBackwater');
     Route::get('/back/modal/addBank', 'Back\Ajax\ModalController@addBank');
     Route::get('/back/modal/addUser', 'Back\Ajax\ModalController@addUser')->middleware('check-permission')->name('m.user.add');
     Route::get('/back/modal/userChangeAgent/{id}', 'Back\Ajax\ModalController@userChangeAgent')->middleware('check-permission')->name('m.user.changeAgent');
