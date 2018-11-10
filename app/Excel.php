@@ -69,11 +69,10 @@ class Excel
                         continue;
                     }
                     $bunko = $i->nn_view_money + $i->bet_money;
-                    $capUsers[$i->user_id] += $bunko; //累加馀额
                 }else{
-                    $capUsers[$i->user_id] += $i->bunko; //累加馀额
-                    $bunko = $capUsers[$i->user_id];
+                    $bunko = $i->bunko;
                 }
+                $capUsers[$i->user_id] += $bunko; //累加馀额
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
