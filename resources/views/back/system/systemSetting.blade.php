@@ -413,24 +413,24 @@
                 {{--</td>--}}
                 {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="native_app_domain" data-c="原生APP域名" class="edit-link">修改</td>--}}
             {{--</tr>--}}
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">飞单前端显示域名接口</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->feidan_before_domain_api }}" data-id-input="feidan_before_domain_api"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="feidan_before_domain_api" data-c="飞单前端显示域名接口" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">飞单管理后台域名接口</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->feidan_back_domain_api }}" data-id-input="feidan_back_domain_api"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="feidan_back_domain_api" data-c="飞单管理后台域名接口" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">飞单前端显示域名接口</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->feidan_before_domain_api }}" data-id-input="feidan_before_domain_api"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="feidan_before_domain_api" data-c="飞单前端显示域名接口" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">飞单管理后台域名接口</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->feidan_back_domain_api }}" data-id-input="feidan_back_domain_api"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="feidan_back_domain_api" data-c="飞单管理后台域名接口" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             @if(Session::get('account') === 'admin')
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">支付平台ID</td>
