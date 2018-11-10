@@ -21,6 +21,7 @@
             </select>
         </div>
     </div>
+    @if(env('TEST',0) === 1)
     <div class="field">
         <label>代理赔率(平台基本赔率为<span style="color: red;">{{$aBasisOdds}}</span>)</label>
         <div class="ui input icon">
@@ -32,6 +33,7 @@
             </select>
         </div>
     </div>
+    @endif
     <div class="field">
         <label>代理账号</label>
         <div class="ui input icon">
