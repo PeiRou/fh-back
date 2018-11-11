@@ -249,7 +249,7 @@ class SaveGameOddsController extends Controller
                 $plays_txt = collect($newCollect)->keyBy('id');
                 $writeIos = Storage::disk('static')->put('iosOdds.json', $plays_txt);
                 if ($write == 1 && $write1 == 1 && $writeIos == 1) {
-                    $this->agentOddsAllFile($newCollect,$gameMap_txt,$gameMap_txt,$playCate_txt,$animalsYear,$next_row);
+//                    $this->agentOddsAllFile($newCollect,$gameMap_txt,$gameMap_txt,$playCate_txt,$animalsYear,$next_row);
                     return response()->json([
                         'status' => true
                     ]);
