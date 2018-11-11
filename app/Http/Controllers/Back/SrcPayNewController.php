@@ -33,7 +33,7 @@ class SrcPayNewController extends Controller{
             $new_levels = null;
         }
         $payOnline = new PayOnlineNew();
-        $payOnline->sort = $aParam['sort'];
+        $payOnline->sort = empty($aParam['sort'])?0:$aParam['sort'];
         $payOnline->payType = $iPayTypeNew->id;
         $payOnline->rechName = $iPayTypeNew->rechName;
         $payOnline->payCode = $iPayTypeNew->code;
