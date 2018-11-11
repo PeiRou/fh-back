@@ -651,6 +651,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/tables/16', 'Back\GameTableController@gameTable16'); //甘肃快3
     Route::get('/game/tables/18', 'Back\GameTableController@gameTable18'); //贵州快3
     Route::get('/game/tables/112', 'Back\GameTableController@gameTable112'); //腾讯分分彩
+    Route::get('/game/tables/113', 'Back\GameTableController@gameTable113'); //QQ分分彩
+    Route::get('/game/tables/114', 'Back\GameTableController@gameTable114'); //秒速七星彩
 
     //交易设定表格
     Route::get('/game/trade/tables/50','Back\GameTradeTableController@gameTradeTable50'); //北京赛车
@@ -703,6 +705,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/table/save/gsk3', 'Back\GameTables\SaveGameOddsController@gsk3'); // 甘肃快3
     Route::post('/game/table/save/gzk3', 'Back\GameTables\SaveGameOddsController@gzk3'); // 贵州快3
     Route::post('/game/table/save/txffc', 'Back\GameTables\SaveGameOddsController@txffc'); // 腾讯分分彩
+    Route::post('/game/table/save/qqffc', 'Back\GameTables\SaveGameOddsController@qqffc'); // QQ分分彩
+    Route::post('/game/table/save/msqxc', 'Back\GameTables\SaveGameOddsController@msqxc'); // 秒速七星彩
     //保存交易设定的表格
     Route::post('/game/trade/table/save/bjpk10','Back\GameTradeTables\SaveGameTradeController@bjpk10'); //保存北京PK10
     Route::post('/game/trade/table/save/cqssc','Back\GameTradeTables\SaveGameTradeController@cqssc'); //保存重庆时时彩

@@ -45,6 +45,7 @@
                         <li data-tag="first" data-id="16">甘肃快3</li>
                         <li data-tag="first" data-id="18">贵州快3</li>
                         <li data-tag="first" data-id="112">腾讯分分彩</li>
+                        <li data-tag="first" data-id="113">QQ分分彩</li>
                     </ul>
                 </div>
                 <div id="first_content"></div>
@@ -57,6 +58,7 @@
                         <li data-tag="second" data-id="81">秒速时时彩</li>
                         <li data-tag="second" data-id="99">跑马</li>
                         <li data-tag="second" data-id="86">秒速快3</li>
+                        <li data-tag="second" data-id="114">秒速七星彩</li>
                     </ul>
                 </div>
                 <div id="second_content"></div>
