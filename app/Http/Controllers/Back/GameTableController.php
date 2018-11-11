@@ -97,6 +97,28 @@ class GameTableController extends Controller
         return view('back.gameTables.113')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
     }
 
+    public function gameTable114()
+    {
+        $data = Play::where('gameId',114)->get();
+        $filter = ['1_7_odds','1_7_rebate','2face_odds','2face_rebate','longhu_odds','longhu_rebate','he_odds','he_rebate'];
+        $fromDBOdds = collect([]);
+        $fromDBRebate = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->odds_tag == $i)
+                {
+                    $fromDBOdds->put($item->odds_tag,$item->odds);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->rebate_tag == $s){
+                    $fromDBRebate->put($item->rebate_tag,$item->rebate);
+                }
+            }
+        }
+        return view('back.gameTables.114')->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
+    }
+
     public function gameTable4()
     {
         $data = Play::where('gameId',4)->get();
