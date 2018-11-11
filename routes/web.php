@@ -651,6 +651,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/tables/16', 'Back\GameTableController@gameTable16'); //甘肃快3
     Route::get('/game/tables/18', 'Back\GameTableController@gameTable18'); //贵州快3
     Route::get('/game/tables/112', 'Back\GameTableController@gameTable112'); //腾讯分分彩
+    Route::get('/game/tables/113', 'Back\GameTableController@gameTable113'); //QQ分分彩
+    Route::get('/game/tables/114', 'Back\GameTableController@gameTable114'); //秒速七星彩
 
     //交易设定表格
     Route::get('/game/trade/tables/50','Back\GameTradeTableController@gameTradeTable50'); //北京赛车
