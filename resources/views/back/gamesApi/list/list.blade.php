@@ -14,12 +14,12 @@
     </div>
     <div class="table-content">
 
-        <table id="example" class="ui small selectable celled striped table" cellspacing="0" width="100%">
+        <table id="tableBox" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
-                <th>标题</th>
+                <th>名称</th>
                 <th>类型</th>
-                <th>键名</th>
+                <th>描述</th>
                 <th>状态</th>
                 <th>创建时间</th>
                 <th>操作</th>

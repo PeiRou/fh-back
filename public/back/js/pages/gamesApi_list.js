@@ -5,28 +5,31 @@
 var dataTable;
 
 $(function () {
-    $('#menu-systemManage').addClass('nav-show');
-    $('#menu-systemManage-advertise').addClass('active');
+    $('#menu-GamesApi').addClass('nav-show');
+    $('#menu-GamesApi-List').addClass('active');
 
-    dataTable = $('#example').DataTable({
+    dataTable = $('#tableBox').DataTable({
         searching: false,
         bLengthChange: false,
         processing: true,
         serverSide: true,
         aLengthMenu: [[50]],
         ajax: {
-            url : '/back/datatables/advertise',
+            url : '/back/datatables/GameApiList',
             data : function (d) {
 
             }
         },
         columns: [
-            {data: 'title'},
-            {data: 'type'},
-            {data: 'js_key'},
+            {data: 'name'},
+            {data: 'type_id'},
+            {data: 'description'},
             {data: 'status'},
             {data: 'created_at'},
-            {data: 'control'},
+            {data: function(e){
+                return '<span class="edit-link" style="color:#4183c4" onclick="edit('+e.g_id+')">修改</span> | ' +
+                    '<span class="edit-link" style="color:#4183c4" onclick="del('+e.g_id+')">删除</span>';
+                }},
         ],
          language: {
              "zeroRecords": "暂无数据",
@@ -54,16 +57,16 @@ $(function () {
 function add() {
     jc = $.confirm({
         theme: 'material',
-        title: '添加广告位',
+        title: '添加配置',
         closeIcon:true,
         boxWidth:'40%',
-        content: 'url:/back/modal/addAdvertise',
+        content: 'url:/back/modal/editGameApi',
         buttons: {
             formSubmit: {
                 text:'确定提交',
                 btnClass: 'btn-blue',
                 action: function () {
-                    var form = this.$content.find('#addRoleForm').data('formValidation').validate().isValid();
+                    var form = this.$content.find('#formBox').data('formValidation').validate().isValid();
                     if(!form){
                         return false;
                     }
@@ -85,16 +88,16 @@ function add() {
 function edit(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '修改广告位',
+        title: '修改配置',
         closeIcon:true,
         boxWidth:'40%',
-        content: 'url:/back/modal/editAdvertise/'+id,
+        content: 'url:/back/modal/editGameApi?g_id='+id,
         buttons: {
             formSubmit: {
                 text:'确定提交',
                 btnClass: 'btn-blue',
                 action: function () {
-                    var form = this.$content.find('#addRoleForm').data('formValidation').validate().isValid();
+                    var form = this.$content.find('#formBox').data('formValidation').validate().isValid();
                     if(!form){
                         return false;
                     }
@@ -126,15 +129,15 @@ function del(id) {
                 btnClass: 'btn-red',
                 action: function(){
                     $.ajax({
-                        url:'/action/admin/delAdvertise',
+                        url:'/action/admin/gamesApi/del',
                         type:'post',
                         dataType:'json',
                         data:{id:id},
                         success:function (data) {
-                            if(data.status == true){
+                            if(data.code == 0){
                                 dataTable.ajax.reload(null,false)
                             }else{
-                                alert(data.msg);
+                                Calert(data.msg,'red')
                             }
                         },
                         error:function (e) {

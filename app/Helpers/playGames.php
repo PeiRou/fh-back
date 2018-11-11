@@ -297,3 +297,43 @@ if(!function_exists('realIp')){
     }
 }
 
+if(!function_exists('show')){
+    function show($code, $message = '', $data = [])
+    {
+        if ($message == '') {
+            if ($code == 0) {
+                $message = 'ok';
+            } elseif ($code == 2) {
+                $message = '参数错误!';
+            } else {
+                $message = 'error!';
+            }
+        }
+        $data = [
+            'code' => $code,
+            'data' => $data,
+            'msg' => $message,
+        ];
+        return response()->json($data);
+    }
+}
+/**
+ * 打印数据.
+ *
+ * @param [type] $var [description]
+ * @param  int  是否结束
+ */
+if(!function_exists('p')){
+    function p($var, $is_die = 0)
+    {
+        if (is_array($var)) {
+            echo "<pre style='position:relative;z-index:1000;padding:10px;border-radius:5px;background:#f5f5f5;border:1px solid #aaa;font-size:14px;line-height:18px;opacity:0.9;'>".print_r($var, true).'</pre>';
+        } else {
+            var_dump($var);
+        }
+        if ($is_die == 1) {
+            exit;
+        }
+    }
+}
+
