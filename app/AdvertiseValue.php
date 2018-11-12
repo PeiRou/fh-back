@@ -34,4 +34,9 @@ class AdvertiseValue extends Model
         $aSql .= $endStr;
         return $aSql;
     }
+
+    //获得内容
+    public static function getValueByInfoId($infoId){
+        return self::where('info_id',$infoId)->value('js_value');
+    }
 }

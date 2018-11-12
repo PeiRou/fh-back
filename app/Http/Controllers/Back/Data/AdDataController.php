@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back\Data;
 
 use App\Advertise;
 use App\AdvertiseInfo;
+use App\AdvertiseValue;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
@@ -76,11 +77,20 @@ class AdDataController extends Controller
             ->editColumn('js_key',function ($aData){
                 return  empty($aData->js_key)?'-':$aData->js_key;
             })
+            ->editColumn('content',function ($aData){
+                if($aData->type == 1){
+                    $value = AdvertiseValue::getValueByInfoId($aData->id);
+                    if(strpos($value,'data:image/png;base64,') === false)
+                        return $value;
+                    return '<img src="'.$value.'" style="width:100px;"/>';
+                }
+                return '-';
+            })
             ->editColumn('control',function ($data) {
                 return '<span class="edit-link" style="color:#4183c4" onclick="edit('.$data->id.')">修改</span> | 
                         <span class="edit-link" style="color:#4183c4" onclick="del('.$data->id.')">删除</span>';
             })
-            ->rawColumns(['control','sort'])
+            ->rawColumns(['control','sort','content'])
             ->make(true);
     }
 }

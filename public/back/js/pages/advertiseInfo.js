@@ -27,6 +27,7 @@ $(function () {
             {data: 'js_title'},
             {data: 'type'},
             {data: 'js_key'},
+            {data: 'content'},
             {data: 'status'},
             {data: 'sort'},
             {data: 'created_at'},
