@@ -43,7 +43,7 @@
                 <th>后台备注(这不会显示在前台)</th>
                 <th>类型</th>
                 <th>键值</th>
-                <th>内容</th>
+                <th style="width: 300px;">内容</th>
                 <th>状态</th>
                 <th>排序</th>
                 <th>创建时间</th>
