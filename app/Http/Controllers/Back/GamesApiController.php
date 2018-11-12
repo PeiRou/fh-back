@@ -25,6 +25,7 @@ class GamesApiController extends Controller
         return $this->verifyData($data, [
             'name' => ['required'],
             'description' => ['required'],
+            'alias' => ['required'],
             'paramValue' => ['required', function ($attribute, $value, $fail) {
                 if (!count($value)) {
                     return $fail($attribute . ' is invalid.');
@@ -49,6 +50,7 @@ class GamesApiController extends Controller
                     return $fail($attribute . ' is invalid.');
                 }
             }],
+            'class_name' => ['required'],
         ], [
 //            'name.required' => '',
 //            'description.required' => '提款密码暂未设置，请先设置提款密码',
@@ -74,6 +76,8 @@ class GamesApiController extends Controller
             'description' => $param['description'],
             'type_id' => $param['type_id'],
             'status' => 1,
+            'class_name' => $param['class_name'],
+            'alias' => $param['alias'],
 //            'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
