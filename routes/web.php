@@ -526,7 +526,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/googleSubAccount/{id}', 'Back\Ajax\ModalController@googleSubAccount')->middleware('check-permission')->name('m.subAccount.googleOTP');
     Route::get('/back/modal/addGeneralAgent', 'Back\Ajax\ModalController@addGeneralAgent')->middleware('check-permission')->name('m.gAgent.add');
     Route::get('/back/modal/editGeneralAgent/{id}', 'Back\Ajax\ModalController@editGeneralAgent')->middleware('check-permission')->name('m.gAgent.edit');
-    Route::get('/back/modal/addAgent', 'Back\Ajax\ModalController@addAgent')->middleware('check-permission')->name('m.agent.add');
+    Route::get('/back/modal/addAgent/{agentId}', 'Back\Ajax\ModalController@addAgent')->middleware('check-permission')->name('m.agent.add');
     Route::get('/back/modal/editAgent/{id}', 'Back\Ajax\ModalController@editAgent')->middleware('check-permission')->name('m.agent.edit');
     Route::get('/back/modal/agentInfo/{id}', 'Back\Ajax\ModalController@agentInfo')->middleware('check-permission')->name('m.agent.viewDetails');
     Route::get('/back/modal/agentContent/{id}', 'Back\Ajax\ModalController@agentContent')->middleware('check-permission')->name('m.agent.viewDetails');

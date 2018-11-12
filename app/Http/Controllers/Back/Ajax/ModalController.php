@@ -168,13 +168,19 @@ class ModalController extends Controller
         return view('back.modal.member.editGeneralAgent')->with('id',$id)->with('info',$getInfo);
     }
     //添加代理
-    public function addAgent()
+    public function addAgent($agentId)
     {
         $allGeneralAgent = GeneralAgent::all();
-        $aAgent = Agent::all();
-        $aAgentOdds = AgentOddsSetting::orderBy('level','asc')->get();
+//        $aAgent = Agent::all();
+        if(empty($agentId))
+            $aAgentOdds = [];
+        else{
+            $oddsLevel = Agent::where('a_id',$agentId)->value('odds_level');
+            $oddsLevel = empty($oddsLevel)?0:$oddsLevel;
+            $aAgentOdds = AgentOddsSetting::where('level','>=',$oddsLevel)->orderBy('level','asc')->get();
+        }
         $aBasisOdds = SystemSetting::getValueByRemark1('agent_odds_basis');
-        return view('back.modal.member.addAgent')->with('info',$allGeneralAgent)->with('aAgent',$aAgent)->with('aAgentOdds',$aAgentOdds)->with('aBasisOdds',$aBasisOdds);
+        return view('back.modal.member.addAgent')->with('agentId')->with('info',$allGeneralAgent)->with('aAgentOdds',$aAgentOdds)->with('aBasisOdds',$aBasisOdds);
     }
     //修改代理
     public function editAgent($id)
@@ -823,7 +829,7 @@ class ModalController extends Controller
     }
     //添加代理专属域名
     public function addAgentSettleDomain(){
-        return view('back.modal.agentSettle.addAgentSettleDomain');
+        return view('back.modal.agentSettle.addAgentSettleDomain',compact('agentId'));
     }
     //修改代理专属域名
     public function editAgentSettleDomain($id){

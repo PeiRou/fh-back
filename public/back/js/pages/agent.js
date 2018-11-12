@@ -71,13 +71,13 @@ $(function () {
     });
 });
 
-function addAgent() {
+function addAgent(agentId) {
     jc = $.confirm({
         theme: 'material',
         title: '添加代理',
         closeIcon:true,
         boxWidth:'20%',
-        content: 'url:/back/modal/addAgent',
+        content: 'url:/back/modal/addAgent/'+agentId,
         buttons: {
             formSubmit: {
                 text:'确定提交',

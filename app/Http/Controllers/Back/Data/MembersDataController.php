@@ -197,21 +197,26 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                         <ul>";
 
                 }else {
-                    return "<ul class='control-menu'>
+                    $html = "<ul class='control-menu'>
                         <li onclick='edit(\"$allAgent->a_id\")'>修改</li>
                         <li onclick='viewInfo(\"$allAgent->a_id\")'>详情</li>
                         <li onclick='changeAgentMoney(\"$allAgent->a_id\")'>修改余额</li>
                         <li onclick='capital(\"$allAgent->a_id\")'>资金明细</li>
                         <li>更多操作
                         <ul>
-                        <li onclick='panSetting(\"$allAgent->a_id\")'>盘口设定</li>
-                        <li onclick='backwater(\"$allAgent->a_id\")'>返水明细</li>
+                        <li onclick='panSetting(\"$allAgent->a_id\")'>盘口设定</li>";
+                    if(env('TEST',0) == 1) {
+                        $html .= "<li onclick='addAgent(\"$allAgent->a_id\")'>添加子代理</li>";
+                    }
+                    $html .= "<li onclick='backwater(\"$allAgent->a_id\")'>返水明细</li>
                         <li onclick='exportMember(\"$allAgent->a_id\",\"$allAgent->account\")'>导出会员</li>
                         <li onclick='visitMember(\"$allAgent->a_id\",\"$allAgent->account\")'>回访会员</li>
                         <li class='red-hover' onclick='del(\"$allAgent->a_id\",\"$allAgent->account\")'>删除代理</li>
                         </ul>
                         </li>
                         </ul>";
+
+                    return $html;
                 }
             })
             ->rawColumns(['online','agent','members','balance','status','editOdds','content','control'])

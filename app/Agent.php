@@ -106,4 +106,32 @@ class Agent extends Model
         $aSql .= $endStr;
         return $aSql;
     }
+
+    public static function updateFiledBatchStitching($data,$fields,$primary,$table = 'agent'){
+        $aSql = 'UPDATE '. $table . ' SET ';
+        foreach ($fields as $field){
+            $str1 = '`' . $field . '` = CASE ' . $primary . ' ';
+            foreach ($data as $key => $value){
+                $str1 .= 'WHEN \'' . $value[$primary] . '\' THEN \'' . $value[$field] . '\' ';
+            }
+            $str1 .= 'END , ';
+            $aSql .= $str1;
+        }
+        $aSql = substr($aSql, 0, strlen($aSql) - 2);
+        $endStr = 'WHERE ' . $primary . ' IN (';
+        foreach ($data as $key => $value) {
+            $endStr .= '\'' . $value[$primary] . '\',';
+        }
+        $endStr = substr($endStr, 0, strlen($endStr) - 1);
+        $endStr .= ')';
+        $aSql .= $endStr;
+        return $aSql;
+    }
+
+    //获得下级代理
+    public static function getSubordinateAgent($agentId){
+        $aSql = "SELECT * FROM `agent` WHERE FIND_IN_SET(:agentId,`superior_agent`)";
+        $aArray = ['agentId' => $agentId];
+        return DB::select($aSql,$aArray);
+    }
 }

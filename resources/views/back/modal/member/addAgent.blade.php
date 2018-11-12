@@ -10,18 +10,7 @@
             </select>
         </div>
     </div>
-    <div class="field">
-        <label>上级代理(可不选)</label>
-        <div class="ui input icon">
-            <select class="ui fluid dropdown" name="agentId" id="agentId">
-                <option value="0">请选择上级代理</option>
-                @foreach($aAgent as $kAgent => $iAgent)
-                    <option value="{{ $iAgent->a_id }}">{{ $iAgent->account.'('.$iAgent->name.')' }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-    @if(env('TEST',0) == 1)
+    @if(!empty($aAgentOdds))
     <div class="field">
         <label>代理赔率(平台基本赔率为<span style="color: red;">{{$aBasisOdds}}</span>)</label>
         <div class="ui input icon">
@@ -63,28 +52,28 @@
     </div>
 </form>
 <script>
-    $('#agentId').on('change',function () {
-        var agentId = $(this).val();
-        $.ajax({
-            url:'/action/admin/selectAgentOdds',
-            type:'post',
-            dataType:'json',
-            data:{id:agentId},
-            success:function (data) {
-                var html = "<option value=''>请选择代理赔率</option>";
-                for(i of data.aAgentOdds) {
-                    html += "<option value='"+i.level+"'>"+i.odds+"</option>";
-                }
-                $('#odds_level').html(html);
-            },
-            error:function (e) {
-                if(e.status == 403)
-                {
-                    Calert('您没有此项权限！无法继续！','red')
-                }
-            }
-        });
-    });
+    // $('#agentId').on('change',function () {
+    //     var agentId = $(this).val();
+    //     $.ajax({
+    //         url:'/action/admin/selectAgentOdds',
+    //         type:'post',
+    //         dataType:'json',
+    //         data:{id:agentId},
+    //         success:function (data) {
+    //             var html = "<option value=''>请选择代理赔率</option>";
+    //             for(i of data.aAgentOdds) {
+    //                 html += "<option value='"+i.level+"'>"+i.odds+"</option>";
+    //             }
+    //             $('#odds_level').html(html);
+    //         },
+    //         error:function (e) {
+    //             if(e.status == 403)
+    //             {
+    //                 Calert('您没有此项权限！无法继续！','red')
+    //             }
+    //         }
+    //     });
+    // });
 
     $('#addAgentForm').formValidation({
         framework: 'semantic',

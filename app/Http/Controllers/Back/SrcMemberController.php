@@ -295,21 +295,54 @@ class SrcMemberController extends Controller
     //删除代理账号
     public function delAgent($id)
     {
-        if(Users::where('agent',$id)->count() > 0)
-            return response()->json([
-                'status'=>false,
-                'msg'=>'该代理下存在用户！'
-            ]);
-        $del = Agent::find($id)->delete();
-        if($del == 1){
+        //处理下级代理
+        $aAgent = Agent::getSubordinateAgent($id);
+        $aArray = [];
+        $aArrayId = [];
+        foreach ($aAgent as $iAgent){
+            $aArray[] = [
+                'a_id' => $iAgent->a_id,
+                'superior_agent' => '1'.substr($iAgent->superior_agent,strpos($iAgent->superior_agent,$id)+strlen($id)),
+            ];
+            $aArrayId[] = $iAgent->a_id;
+        }
+        if(empty($aArray))
+            $aAgentSql = '';
+        else
+            $aAgentSql = Agent::updateFiledBatchStitching($aArray,['superior_agent'],'a_id');
+
+        //处理下级代理的会员
+        $aAgent = Users::select('id','agent_odds')->whereIn('agent',$aArrayId)->get();
+        $aArray = [];
+        foreach ($aAgent as $iAgent){
+            $agentOdds = unserialize($iAgent->agent_odds);
+            unset($agentOdds[$id]);
+            $aArray[] = [
+                'id' => $iAgent->id,
+                'agent_odds' => serialize($agentOdds)
+            ];
+        }
+        if(empty($aArray))
+            $aUserSql = '';
+        else
+            $aUserSql = Users::updateFiledBatchStitching($aArray,['agent_odds'],'id');
+        DB::beginTransaction();
+        try {
+            if(!empty($aAgentSql))  DB::update($aAgentSql);
+            Agent::where('a_id', $id)->delete();
+            //处理本代理下的会员
+            Users::where('agent',$id)->update(['agent_odds' => null,'agent' => 1]);
+            if(!empty($aUserSql))   DB::update($aUserSql);
+            DB::commit();
             return response()->json([
                 'status'=>true,
-                'msg'=>'ok!'
+                'msg'=>'ok'
             ]);
-        } else {
+        }catch (\Exception $e){
+            DB::rollback();
             return response()->json([
                 'status'=>false,
-                'msg'=>'操作失败，请稍后再试！'
+                'msg'=>'删除失败，请稍后再试！'
             ]);
         }
     }
