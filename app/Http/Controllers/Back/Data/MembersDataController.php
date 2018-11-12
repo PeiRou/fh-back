@@ -208,7 +208,7 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                         <li onclick='backwater(\"$allAgent->a_id\")'>返水明细</li>
                         <li onclick='exportMember(\"$allAgent->a_id\",\"$allAgent->account\")'>导出会员</li>
                         <li onclick='visitMember(\"$allAgent->a_id\",\"$allAgent->account\")'>回访会员</li>
-                        <li class='red-hover' onclick='del(\"$allAgent->a_id\",\"$allAgent->account\")'>删除会员</li>
+                        <li class='red-hover' onclick='del(\"$allAgent->a_id\",\"$allAgent->account\")'>删除代理</li>
                         </ul>
                         </li>
                         </ul>";
