@@ -282,6 +282,9 @@ class Excel
             case 'game_msssc':
                 return $this->opennum_ssc();
                 break;
+            case 'game_msqxc':
+                return $this->opennum_qxc();
+                break;
             case 'game_cqxync':
                 return $this->opennum_xync();
                 break;
@@ -322,6 +325,9 @@ class Excel
     }
     private function opennum_ssc(){
         return rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9);
+    }
+    private function opennum_qxc(){
+        return rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9);
     }
     private function opennum_kl8(){
         $arr = range(1,80,1);
