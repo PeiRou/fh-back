@@ -80,7 +80,7 @@ class AdDataController extends Controller
             ->editColumn('content',function ($aData){
                 if($aData->type == 1){
                     $value = AdvertiseValue::getValueByInfoId($aData->id);
-                    if(strpos($value,'data:image/png;base64,') === false)
+                    if(strpos($value,'data:image/') === false)
                         return $value;
                     return '<img src="'.$value.'" style="width:100px;"/>';
                 }
