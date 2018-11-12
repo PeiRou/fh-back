@@ -81,7 +81,7 @@ class AdDataController extends Controller
                 if($aData->type == 1){
                     $value = AdvertiseValue::getValueByInfoId($aData->id);
                     if(strpos($value,'data:image/') === false)
-                        return $value;
+                        return '<p style="width: 300px;flex-wrap:wrap;height:auto;word-wrap:break-word;word-break:break-all;overflow:hidden;">'.$value.'</p>';
                     return '<img src="'.$value.'" style="width:100px;"/>';
                 }
                 return '-';
