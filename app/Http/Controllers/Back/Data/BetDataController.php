@@ -469,8 +469,8 @@ class BetDataController extends Controller
             }
             $betSql .= " AND bet.user_id =".$user->id;
 
-            $betSql .= " ORDER BY bet.created_at desc,bet.bet_id desc LIMIT ".$startPage.','.$lengthPage;
-            $bet = DB::select($Sql.$betSql);
+            $betSql .= " ORDER BY bet.created_at desc,bet.bet_id desc ";
+            $bet = DB::select($Sql.$betSql."LIMIT ".$startPage.','.$lengthPage);
             $betCount = DB::select("select count(bet.bet_id) as count from bet LEFT JOIN game ON bet.game_id = game.game_id WHERE 1 = 1 ".$betSql);
             $currentIssue = '';
             $currentColor = '';
