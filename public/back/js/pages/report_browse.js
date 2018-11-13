@@ -57,7 +57,6 @@ $(function () {
             data:function (d) {
                 d.startTime = $('#startTime').val();
                 d.endTime = $('#endTime').val();
-                console.log(d)
             }
         },
         columns: columns,
