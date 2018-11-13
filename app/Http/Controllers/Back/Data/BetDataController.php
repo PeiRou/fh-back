@@ -438,38 +438,40 @@ class BetDataController extends Controller
         $orderNum = $request->get('orderNum');
         $startPage = $request->get('start');
         $lengthPage = $request->get('length');
-//        $user = DB::table('users')->where('id',$userId)->first();
         $user = DB::table('users')->where('username',$username)->first();
 
         if($user){
-            $betSql = DB::table('bet')
-                ->leftJoin('game','bet.game_id','=','game.game_id')
-                ->select('bet.bet_id as bet_bet_id','bet.order_id as bet_order_id','game.game_name as g_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.playcate_id as bet_playcate_id','bet.play_id as bet_play_id','bet.bet_money as bet_bet_money','bet.bunko as bet_bunko','bet.created_at as bet_created_at','bet.play_odds as bet_play_odds','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.platform as bet_platform','bet.game_id as bet_game_id','bet.freeze_money as bet_freeze_money','bet.nn_view_money as bet_nn_view_money','bet.bet_info as bet_bet_info')
-                ->where(function ($query) use ($games){
-                    if(count($games) !== 0){
-                        foreach ($games as $item){
-                            $query->orWhere("bet.game_id",$item);
-                        }
-                    }
-                })
-                ->where(function ($query) use ($issue){
-                    if(isset($issue) && isset($issue)){
-                        $query->where('bet.issue',$issue);
-                    }
-                })
-                ->where(function ($query) use ($orderNum){
-                    if(isset($orderNum) && isset($orderNum)){
-                        $query->where('bet.order_id',$orderNum);
-                    }
-                })
-                ->where(function ($query) use ($date,$start,$end){
-                    if(isset($start) && isset($end)){
-                        $query->whereBetween('bet.created_at',[$start.' 00:00:00', $end.' 23:59:59']);
-                    }
-                })
-                ->where('bet.user_id',$user->id);
-            $betCount = $betSql->count();
-            $bet = $betSql->orderBy('bet.created_at','desc')->orderBy('bet.bet_id','desc')->skip($startPage)->take($lengthPage)->get();
+            $Sql = 'select bet.bet_id as bet_bet_id,bet.order_id as bet_order_id,game.game_name as g_game_name,bet.color as bet_color,bet.issue as bet_issue,bet.playcate_id as bet_playcate_id,bet.play_id as bet_play_id,bet.bet_money as bet_bet_money,bet.bunko as bet_bunko,bet.created_at as bet_created_at,bet.play_odds as bet_play_odds,bet.playcate_name as bet_playcate_name,bet.play_name as bet_play_name,bet.platform as bet_platform,bet.game_id as bet_game_id,bet.freeze_money as bet_freeze_money,bet.nn_view_money as bet_nn_view_money,bet.bet_info as bet_bet_info from bet LEFT JOIN game ON bet.game_id = game.game_id WHERE 1 = 1 ';
+            $betSql = "";
+            if(count($games) > 0){
+                $games = implode(",",$games);
+                $betSql .= " AND bet.game_id in(".$games.")";
+            }
+            switch ($status){
+                case 1: //未结
+                    $betSql .= " AND bet.bunko =0";
+                    break;
+                case 2: //已结
+                    $betSql .= " AND bet.bunko !=0";
+                    break;
+                case 3: //撤单
+                    $betSql .= " AND bet.bet_money = bet.bunko ";
+                    break;
+            }
+            if(isset($issue) && isset($issue)){
+                $betSql .= " AND bet.issue =".$issue;
+            }
+            if(isset($orderNum) && isset($orderNum)){
+                $betSql .= " AND bet.order_id =".$orderNum;
+            }
+            if(isset($start) && isset($end)){
+                $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
+            }
+            $betSql .= " AND bet.user_id =".$user->id;
+
+            $betSql .= " ORDER BY bet.created_at desc,bet.bet_id desc LIMIT ".$startPage.','.$lengthPage;
+            $bet = DB::select($Sql.$betSql);
+            $betCount = DB::select("select count(bet.bet_id) as count from bet LEFT JOIN game ON bet.game_id = game.game_id WHERE 1 = 1 ".$betSql);
             $currentIssue = '';
             $currentColor = '';
             $betModel = new Bets();
@@ -526,7 +528,7 @@ class BetDataController extends Controller
                     return '0';
                 })
                 ->rawColumns(['order_id','user','game','issue','play','bunko','bet_money','platform'])
-                ->setTotalRecords($betCount)
+                ->setTotalRecords($betCount[0]->count)
                 ->skipPaging()
                 ->make(true);
         } else {
