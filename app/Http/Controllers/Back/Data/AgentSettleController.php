@@ -23,6 +23,10 @@ class AgentSettleController extends Controller
             if(isset($params['status']) && array_key_exists('status',$params)){
                 $sql->where('status','=',$params['status']);
             }
+            if(isset($params['chkTest']) && array_key_exists('chkTest',$params)){
+                if($params['chkTest'] === 'true')
+                    $sql->where('a_id','>=',4);
+            }
             if(isset($params['monthTime']) && array_key_exists('monthTime',$params)){
                 $date = new GetDate();
                 $dateTime = $date->GetTheSpecifiedDate($params['monthTime']);
