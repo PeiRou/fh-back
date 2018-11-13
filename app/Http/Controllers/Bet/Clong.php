@@ -19,6 +19,7 @@
             'msft' => array('id'=>82,'type'=>'car'),     //秒速飞艇
             'msssc' => array('id'=>81,'type'=>'ssc'),    //秒速时时彩
             'cqssc' => array('id'=>1,'type'=>'ssc'),    //重庆时时彩
+            'qqffc' => array('id'=>113,'type'=>'ssc'),    //QQ分分彩
             'xjssc' => array('id'=>4,'type'=>'ssc'),    //新疆时时彩
             'paoma' => array('id'=>99,'type'=>'car'),  //跑马
             'pcdd' => array('id'=>66,'type'=>'pcdd'),    //PC蛋蛋

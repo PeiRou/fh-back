@@ -1,4 +1,10 @@
+<style>
+    .ui.form .fields {
+        margin: 0 -0.5em .6em;
+    }
+</style>
 <form id="editUserForm" class="ui mini form" action="{{ url('/action/admin/editUser') }}">
+
     <div class="two fields">
         <div class="field">
             <label>会员账号</label>
@@ -109,19 +115,28 @@
                 </select>
             </div>
         </div>
-    </div>
-
-    <div class="two fields">
         <div class="field">
             <label>开启赔率修改权限</label>
             <div class="ui input icon">
-                <select class="ui fluid dropdown" name="editodds" style="height: 32px !important;">
+                <select class="ui fluid dropdown" name="editodds" style="">
                     <option @if($user->editodds == 0) selected @endif value="0">关闭</option>
                     <option @if($user->editodds == 1) selected @endif value="1">开启</option>
                 </select>
             </div>
         </div>
     </div>
+
+    {{--<div class="two fields">--}}
+        {{--<div class="field">--}}
+            {{--<label>开启赔率修改权限</label>--}}
+            {{--<div class="ui input icon">--}}
+                {{--<select class="ui fluid dropdown" name="editodds" style="height: 32px !important;">--}}
+                    {{--<option @if($user->editodds == 0) selected @endif value="0">关闭</option>--}}
+                    {{--<option @if($user->editodds == 1) selected @endif value="1">开启</option>--}}
+                {{--</select>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 
     <div class="field">
         <label>备注</label>

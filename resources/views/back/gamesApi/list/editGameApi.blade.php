@@ -23,7 +23,18 @@
             <input type="text" name="description" id="description" value="{{ $data->description ?? '' }}"/>
         </div>
     </div>
-
+    <div class="field" id="div-description">
+        <label>别名</label>
+        <div class="ui input icon">
+            <input type="text" name="alias" id="class_name" value="{{ $data->alias ?? '' }}"/>
+        </div>
+    </div>
+    <div class="field" id="div-description">
+        <label>类名</label>
+        <div class="ui input icon">
+            <input type="text" name="class_name" id="class_name" value="{{ $data->class_name ?? '' }}"/>
+        </div>
+    </div>
     <div class="field">
         <label>类型</label>
         <div class="ui input icon">

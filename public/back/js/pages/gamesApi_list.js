@@ -23,6 +23,8 @@ $(function () {
         columns: [
             {data: 'name'},
             {data: 'type_id'},
+            {data: 'alias'},
+            {data: 'class_name'},
             {data: 'description'},
             {data: 'status'},
             {data: 'created_at'},
