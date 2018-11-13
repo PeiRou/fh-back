@@ -63,11 +63,11 @@
                     </div>
 
                     <div class="one wide field amount">
-                        <input type="text" id="amount-min" placeholder="交易金额">
+                        <input type="text" id="amount-min" placeholder="金额">
                     </div>
                     <div style="line-height: 32px;" class="amount">-</div>
                     <div class="one wide field amount">
-                        <input type="text" id="amount-max" placeholder="交易金额">
+                        <input type="text" id="amount-max" placeholder="金额">
                     </div>
                     <div class="one wide field">
                         <select class="ui dropdown" id="rechLevel" style='height:32px !important'>

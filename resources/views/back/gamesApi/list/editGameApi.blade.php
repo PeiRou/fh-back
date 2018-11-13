@@ -3,6 +3,28 @@
     .firstInput{width: 20%!important;}
     .firstSpan{margin-left: 2%;}
     .firstSelect{width: 40%!important; height: 35px!important;}
+    /* 支付配置修改的css文件 修改样式 */
+    .ui.form .field{
+        display: flex;
+    }
+    .ui.form .field>label{
+        min-width: 88px;
+        display: flex;
+        align-items: center;
+    }
+    .ui.checkbox input.hidden+label {
+        margin-right: 5px;
+    }
+    .ui.form .field {
+        clear: both;
+        margin: 0 0 0.4em;
+    }
+    .select2-container--default.select2-container--focus .select2-selection--multiple {
+        height: 1px;
+    }
+    .select2-container--default .select2-selection--multiple {
+        height: 1px;
+    }
 </style>
 <link rel="stylesheet" href="{{ asset('back/vendor/ueditor/themes/default/css/umeditor.css') }}">
 <script src="{{ asset('back/vendor/ueditor/umeditor.config.js') }}"></script>
@@ -46,7 +68,16 @@
             </select>
         </div>
     </div>
-    <div class="field" id="div-aParam" style="">
+    <div class="field">
+        <label>开关</label>
+        <div class="ui toggle checkbox" style="display: flex; align-items: center" >
+            <input type="checkbox" id="chkOpenStatus" name="status" @if($data && $data->status == "1") checked="checked" @endif >
+            <label></label>
+            <span id="dvOpenStatusOn" class="green" @if(!$data || $data->status != "1")style="display: none"@endif>开启中</span>
+            <span id="dvOpenStatusUn" class="red" @if($data && $data->status == "1")style="display: none"@endif>关闭中</span>
+        </div>
+    </div>
+    <div class="field" id="div-aParam" style="display: inline-block">
         <label>携带参数<button type="button" onclick="param()" style="margin-bottom: 10px;margin-top: 10px;margin-left: 30px;">添加参数</button></label>
         <div id="aParam">
             @if(!empty($paramArr))
@@ -75,6 +106,15 @@
     </div>
 </script>
 <script>
+    $('#chkOpenStatus').change(function () {
+        if($(this).prop( "checked" )==true){
+            $('#dvOpenStatusOn').show();
+            $('#dvOpenStatusUn').hide();
+        }else{
+            $('#dvOpenStatusUn').show();
+            $('#dvOpenStatusOn').hide();
+        }
+    });
     function param() {
         var html = $('#aParamHtml').html();
         $('#aParam').append(html);

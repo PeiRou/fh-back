@@ -26,7 +26,9 @@ $(function () {
             {data: 'alias'},
             {data: 'class_name'},
             {data: 'description'},
-            {data: 'status'},
+            {data: function(e){
+                return e.status == 1 ? '开启' : '关闭';
+                }},
             {data: 'created_at'},
             {data: function(e){
                 return '<span class="edit-link" style="color:#4183c4" onclick="edit('+e.g_id+')">修改</span> | ' +
