@@ -23,6 +23,20 @@
         </div>
     </div>
     @endif
+    @if(empty($aAgentOdds))
+        <div class="field">
+            <label>代理模式</label>
+            <div class="ui input icon">
+                <select class="ui fluid dropdown" name="odds_level" id="odds_level">
+                    @foreach($agentModelStatus as $kAgentModelStatus => $iAgentModelStatus)
+                        @if($kAgentModelStatus != 0)
+                            <option value="{{ $kAgentModelStatus }}">{{ $iAgentModelStatus }}</option>
+                        @endif
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    @endif
     <div class="field">
         <label>代理账号</label>
         <div class="ui input icon">
@@ -50,6 +64,9 @@
             </select>
         </div>
     </div>
+    @if(!empty($agentId))
+        <input type="hidden" name="agentId" value="{{ $agentId }}">
+    @endif
 </form>
 <script>
     // $('#agentId').on('change',function () {

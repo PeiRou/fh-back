@@ -137,6 +137,7 @@ function status(id,nowStatus,name) {
                     $.ajax({
                         url:'/action/admin/new/changeOnlinePayStatus',
                         type:'post',
+                        timeout:5000, //超时时间设置，单位毫秒
                         dataType:'json',
                         data:{id:id,status:nowStatus},
                         success:function (data) {
@@ -148,6 +149,14 @@ function status(id,nowStatus,name) {
                             if(e.status == 403)
                             {
                                 Calert('您没有此项权限！无法继续！','red')
+                            }
+                        },
+                        complete:function(xhr,status){
+                            //请求完成后最终执行参数
+                            if(status == 'timeout')
+                            {
+                                //超时,status还有success,error等值的情况
+                                Calert('请求超时,请刷新重试','red')
                             }
                         }
                     });

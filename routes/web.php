@@ -44,6 +44,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('statistics', 'Back\SrcViewController@reportStatistics')->name('report.statistics'); // 报表统计
         Route::get('bet', 'Back\SrcViewController@reportBet')->name('report.bet'); // 投注报表
         Route::get('online', 'Back\SrcViewController@reportOnline')->name('report.online'); // 在线报表
+        Route::get('browse', 'Back\SrcViewController@reportBrowse')->name('report.browse'); // 访问报表
         Route::get('register', 'Back\SrcViewController@reportRegister')->name('report.register'); // 注册报表
     });
 //图表统计
@@ -236,6 +237,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/reportStatistics', 'Back\Data\ReportDataController@Statistics');       //报表管理-操作报表
     Route::get('/back/datatables/reportRegister', 'Back\Data\ReportDataController@Register');       //报表管理-注册报表
     Route::get('/back/datatables/reportRegisterTotal', 'Back\Data\ReportDataController@RegisterTotal');       //报表管理-注册报表总计
+    Route::get('/back/datatables/reportBrowse', 'Back\Data\ReportDataController@Browse');       //报表管理-访问报表
+//    Route::get('/back/datatables/reportBrowseTotal', 'Back\Data\ReportDataController@BrowseTotal');       //报表管理-访问报表总计 功能未实现,预留
     Route::get('/back/datatables/reportBet', 'Back\Data\ReportDataController@Bet');
     Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal'); //报表管理-总代总计
     Route::get('/back/datatables/reportAgentTotal', 'Back\Data\ReportDataController@AgentTotal');   //报表管理-代理总计
@@ -624,6 +627,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/killSetting/{id}', 'Back\Ajax\ModalController@killSetting');     //杀率设置
 
     Route::get('/web/api/select2/agents', 'Back\Api\ApiController@agents');
+    Route::get('/web/api/select2/defaultAgents', 'Back\Api\ApiController@defaultAgents');
     Route::post('/web/api/check/user/username', 'Back\Api\ApiController@checkUserUsername');
 
     Route::get('/game/tables/50', 'Back\GameTableController@gameTable50');

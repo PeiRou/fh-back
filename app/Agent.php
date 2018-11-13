@@ -17,6 +17,13 @@ class Agent extends Model
         '3' => '停用',
     ];
 
+    //模式
+    public static $agentModelStatus = [
+        '0' => '默认',
+        '1' => '代理模式',
+        '2' => '会员模式',
+    ];
+
     //获取所有代理商
     public static function getAgentAllBunko(){
         return self::select(DB::raw("a_id,account,name,created_at,0 as bunko"))->where('created_at','<',date('Y-m'))->get();

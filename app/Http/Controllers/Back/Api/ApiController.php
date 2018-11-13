@@ -35,6 +35,33 @@ class ApiController extends Controller
         ];
         return $result;
     }
+
+    public function defaultAgents(Request $request)
+    {
+        $q = $request->get('q');
+        $allAgent = Agent::select()
+            ->where(function ($query) use($q){
+                if(isset($q))
+                {
+                    $query->where('account','like',"%$q%")->orWhere('name','like',"%$q%");
+                }
+            })->where('a_id','<=',3)
+            ->get();
+        $data = [];
+        foreach ($allAgent as $item){
+            $data[] = [
+                'id' => $item->a_id,
+                'text' => $item->account."-".$item->name
+            ];
+        }
+        $result = [
+            "results" => $data,
+            "pagination" => [
+                "more"=> false
+            ]
+        ];
+        return $result;
+    }
     
     //检查用户表用户名是否可用
     public function checkUserUsername(Request $request)

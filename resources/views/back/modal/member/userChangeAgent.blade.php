@@ -37,7 +37,7 @@
                     return markup;
                 },
                 ajax: {
-                    url: "/web/api/select2/agents",//请求的API地址
+                    url: "/web/api/select2/defaultAgents",//请求的API地址
                     dataType: 'json',//数据类型
                     data: function(params){
                         return {

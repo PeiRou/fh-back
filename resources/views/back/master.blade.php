@@ -140,6 +140,9 @@
                 @if($hasPermission->hasPermission('report.online') == "has")
                 <li id="menu-reportManage-online"><a href="{{ route('report.online') }}"><cite></cite><span>在线报表</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('report.browse') == "has")
+                <li id="menu-reportManage-browse"><a href="{{ route('report.browse') }}"><cite></cite><span>访问报表</span></a></li>
+                @endif
                 @if($hasPermission->hasPermission('report.register') == "has")
                     <li id="menu-reportManage-register"><a href="{{ route('report.register') }}"><cite></cite><span>注册报表</span></a></li>
                 @endif

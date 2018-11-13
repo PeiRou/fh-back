@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Back\Data;
 
 use App\Bets;
+use App\DomainAccess;
+use App\DomainInfo;
 use App\ReportAgent;
 use App\ReportBetAgent;
 use App\ReportBetGeneral;
 use App\ReportBetMember;
 use App\ReportGeneral;
 use App\ReportMember;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use tests\Mockery\Adapter\Phpunit\EmptyTestCase;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -345,5 +349,65 @@ class ReportDataController extends Controller
             'code' => 1,
                 'data' => []
         ]);
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function Browse(Request $request){
+        $params = $request->all();
+        $startTime = $params['startTime'];
+        $endTime = $params['endTime'];
+        $daySeconds = 24*60*60;
+        $ranges = (strtotime($endTime)-strtotime($startTime))/$daySeconds + 1;   //查询记录天数跨度
+        if($startTime == $endTime){
+            $day = [$endTime];
+        } else {
+            $day = [];
+            $start = strtotime($startTime);
+            for ($i=0;$i<$ranges;$i++) {
+                $day[] = date('Y-m-d',$start+$daySeconds*$i);
+            }
+        }
+        $hours = '23:00:00';
+        $timeArr = [];
+        foreach ($day as $k=>$v) {
+            if($v == date('Y-m-d')){
+                $hours = date('H:00:00');
+            }
+            for ($i = 0; $i <= $hours; $i++) {
+                $timeArr[] = [
+                    'hours' => $i < 10 ? '0' . $i . ':00:00' : $i . ':00:00',
+                    'day' => $v,
+                ];
+            }
+        }
+        $accessRec = [];
+        $domain = (new DomainInfo())->get();
+        foreach ($domain as $k=>$v){
+            $accessRec[$v->id] = $v->domainAccess->toArray();
+        }
+        $accessRec = array_collapse($accessRec);
+        foreach ($timeArr as $k=>$v){
+            $tmp = [];
+            foreach ($accessRec as $key=>$val){
+                if(($v['day'] == $val['day']) && ($v['hours'] == $val['hours'])){
+                    $tmp[$val['domain_info_id']][] = $val['access_num'];
+                }else{
+                    $tmp[$val['domain_info_id']][] = 0;
+                }
+            }
+            foreach ($tmp as $tmpk => $tmpv){
+                rsort($tmpv);
+                $newtmp[$tmpk] = $tmpv[0];
+            }
+            $newtmp['time'] = $v['day'].' '.$v['hours'];
+            $arr[] = $newtmp;
+        }
+        $arr = array_slice($arr,$params['start'],$params['length']);
+        return DataTables::of($arr)
+            ->setTotalRecords(count($timeArr))
+            ->skipPaging()
+            ->make(true);
     }
 }

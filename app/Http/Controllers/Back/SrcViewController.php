@@ -591,7 +591,20 @@ class SrcViewController extends Controller
     {
         return view('back.reportOnline');
     }
-    
+    //访问报表
+    public function reportBrowse()
+    {
+        $aData = DB::table('domain_info')->get();
+        $aArray[] = ['field' => 'time','title' => '时间'];
+        foreach ($aData as $kData  =>  $iData){
+            $aArray[] = [
+                'field' => $iData->id,
+                'title' => $iData->domain
+            ];
+        }
+        return view('back.reportBrowse',compact('aArray'));
+    }
+
     //图表统计
     //盈亏统计
     public function chartsGameBunko()
