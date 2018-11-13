@@ -75,7 +75,7 @@ class GamesApiController extends Controller
             'name' => $param['name'],
             'description' => $param['description'],
             'type_id' => $param['type_id'],
-            'status' => 1,
+            'status' => isset($param['status']) ? 1 : 0,
             'class_name' => $param['class_name'],
             'alias' => $param['alias'],
 //            'created_at' => date('Y-m-d H:i:s'),

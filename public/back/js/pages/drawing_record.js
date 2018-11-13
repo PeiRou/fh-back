@@ -340,7 +340,7 @@ $('#account_type').on('change',function () {
     if(account_type == "orderNum"){
         $('#account_param').attr('placeholder','订单号');
     }
-    if(account_type == "amount"){
+    if(account_type == "amount_fw"){
         // $('#account_param').attr('placeholder','交易金额');
         $('.amount').show();
         $('.account_param').hide();
@@ -348,8 +348,8 @@ $('#account_type').on('change',function () {
         $('.amount').hide();
         $('.account_param').show();
     }
-    if(account_type == "amount_fw"){
-        $('#account_param').attr('placeholder','金额范围');
+    if(account_type == "amount"){
+        $('#account_param').attr('placeholder','交易金额');
     }
     if(account_type == "operation_account"){
         $('#account_param').attr('placeholder','操作人账号');

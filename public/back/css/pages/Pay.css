@@ -1,5 +1,5 @@
 /* 支付配置修改的css文件 修改样式 */
-.ui.mini.form .field{
+.ui.form .field{
     display: flex;
 }
 .ui.form .field>label{

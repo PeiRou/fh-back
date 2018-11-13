@@ -256,12 +256,14 @@ class FinanceDataController extends Controller
                     if($account_type == 'operation_account'){
                         $q->where('drawing.operation_account',$account_param);
                     }
+                    if($account_type == 'amount'){
+                        $q->where('drawing.amount',$account_param);
+                    }
                 }
-                if(isset($account_type) && $account_type == 'amount'){
-                    if(($min = $request->get('amount_min')) && ($max = $request->get('amount_max'))){
+                if(isset($account_type) && $account_type == 'amount_fw'){
+                    if(($min = (int) $request->get('amount_min')) && ($max = $request->get('amount_max'))){
                         $q->whereBetween('drawing.amount',[$min, $max]);
                     }
-//                        $q->where('drawing.amount',$account_param);
                 }
             })
             ->where(function ($q) use ($startTime,$endTime) {

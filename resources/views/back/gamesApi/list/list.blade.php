@@ -3,6 +3,16 @@
 @section('title','游戏列表')
 
 @section('content')
+    <style>
+        .contenr-title{
+            border: 1px solid rgba(185, 39, 27, 1);
+            border-radius: .5rem;
+            padding: .7rem;
+            font-size: 16px;
+            background: rgba(200, 77, 65, 1);
+            color: #fff;
+        }
+    </style>
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>游戏列表
@@ -12,8 +22,11 @@
             <span onclick="add()">添加游戏配置</span>
         </div>
     </div>
-    <div class="table-content">
 
+    <div class="table-content">
+        <div class="contenr-title">
+            警告：游戏接口配置参数，如未了解请勿随意修改！！！
+        </div>
         <table id="tableBox" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
