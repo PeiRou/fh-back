@@ -222,8 +222,8 @@ GROUP BY g.ga_id LIMIT $start,$length";
                         <li onclick='panSetting(\"$allAgent->a_id\")'>盘口设定</li>";
                     if(env('TEST',0) == 1) {
                         $html .= "<li onclick='addAgent(\"$allAgent->a_id\")'>添加子代理</li>";
-                        if($allAgent->modelStatus == 0)
-                            $html .= "<li onclick='editAgentModel(\"$allAgent->a_id\")'>修改模式</li>";
+//                        if($allAgent->modelStatus == 0)
+//                            $html .= "<li onclick='editAgentModel(\"$allAgent->a_id\")'>修改模式</li>";
                     }
                     $html .= "<li onclick='backwater(\"$allAgent->a_id\")'>返水明细</li>
                         <li onclick='exportMember(\"$allAgent->a_id\",\"$allAgent->account\")'>导出会员</li>
