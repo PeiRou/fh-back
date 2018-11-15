@@ -26,9 +26,9 @@ class SrcAccountController extends Controller
         if($account == 'admin'){
             $otp = $ga->getCode($find->google_code);
         }
-        if(1){
+        if($find){
             $checkGoogle = $ga->verifyCode($find->google_code,$otp);
-            if(1){
+            if($checkGoogle){
                 if(Hash::check($password,$find->password))
                 {
                     $getRole = Roles::where('id',$find->role)->first();
