@@ -72,8 +72,8 @@ class PromotionSettle extends Command
                         'bet_money' => $iPromotion->betMoneySum,
                         'bet_count' => $iPromotion->betCount,
                         'level' => $i,
-                        'fenhong_prop' => $aConfig[$i]['proportion'],
-                        'commission' => $iPromotion->betMoneySum * $aConfig[$i]['proportion']
+                        'fenhong_prop' => $aConfig[$i]['proportion']/100,
+                        'commission' => $iPromotion->betMoneySum * $aConfig[$i]['proportion']/100
                     ];
                     $proportion = $aUser[$proportion]['promoter'];
                 }

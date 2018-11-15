@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="field">
-        <label>提成比例</label>
+        <label>提成比例(%)</label>
         <div class="ui input icon">
             <input type="text" name="proportion" value="{{ $iPromotionInfo->proportion }}"/>
         </div>
