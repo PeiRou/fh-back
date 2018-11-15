@@ -59,8 +59,7 @@ class AgentBackwaterSettlement implements ShouldQueue
         }
 
         $aData = DB::connection('mysql::write')->table('bet')->select('bet.play_odds','bet.bet_money','bet.agnet_odds','bet.user_id')
-            ->join('users','users.id','=','bet.user_id')
-            ->where('user.promotion_id','=',0)
+            ->where('bet.promotion_id','=',0)
             ->where('bet.game_id',$this->gameId)->where('bet.issue',$this->issue)->where('bet.bunko','!=',0)->get();
 
         $aData = $this->getBackwaterMoneyGroupUser($aData);

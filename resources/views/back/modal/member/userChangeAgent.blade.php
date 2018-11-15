@@ -37,11 +37,12 @@
                     return markup;
                 },
                 ajax: {
-                    url: "/web/api/select2/agents",//请求的API地址
+                    url: "/web/api/select2/defaultAgents",//请求的API地址
                     dataType: 'json',//数据类型
                     data: function(params){
                         return {
-                            q: params.term//此处是最终传递给API的参数
+                            q: params.term,     //此处是最终传递给API的参数
+                            uid: '{{ $uid }}'
                         }
                     },
                     results : function(data){ return data;}//返回的结果s

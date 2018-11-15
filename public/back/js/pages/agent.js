@@ -23,22 +23,7 @@ $(function () {
                 d.day = $('#day').val();
             }
         },
-        columns: [
-            {data:'online'},
-            {data:'general_agent'},
-            {data:'agent'},
-            {data:'agentCount'},
-            {data:'members'},
-            {data:'balance'},
-            {data:'model'},
-            {data:'status'},
-            {data:'editOdds'},
-            {data:'created_at'},
-            {data:'updated_at'},
-            {data:'login'},
-            {data:'content'},
-            {data:'control'}
-        ],
+        columns: columns,
         language: {
             "zeroRecords": "暂无数据",
             "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",

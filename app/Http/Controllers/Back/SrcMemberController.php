@@ -115,12 +115,6 @@ class SrcMemberController extends Controller
         $agentId = $request->input('agentId');
         $odds_level = $request->input('odds_level');
 
-        if(empty($modelStatus)){
-            return response()->json([
-                'status'=>false,
-                'msg'=>'请选择代理模式！'
-            ]);
-        }
         $has = Agent::where('account',$account)->first();
         if(!empty($has))
             return response()->json([
@@ -133,9 +127,10 @@ class SrcMemberController extends Controller
                 'status'=>false,
                 'msg'=>'此代理名字已存在！'
             ]);
-        if(empty($agentId))
+
+        if (empty($agentId))
             $superior_agent = 0;
-        else{
+        else {
             $iAgent = Agent::where('a_id', $agentId)->first();
             if ($iAgent->odds_level > $odds_level) {
                 return response()->json([
@@ -150,6 +145,7 @@ class SrcMemberController extends Controller
                 $superior_agent .= ',' . $agentId;
             }
         }
+
         try {
             $agent = new Agent();
             $agent->gagent_id = $gagent;
@@ -159,7 +155,7 @@ class SrcMemberController extends Controller
             $agent->editodds = $editOdds;
             $agent->superior_agent = $superior_agent;
             $agent->odds_level = $odds_level;
-            $agent->modelStatus = $modelStatus;
+            $agent->modelStatus = empty($modelStatus)?0:$modelStatus;
             $insert = $agent->save();
         }catch (\exception $e){
             $insert = 0;
