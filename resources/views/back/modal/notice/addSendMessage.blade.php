@@ -19,7 +19,7 @@
                 <option value="1">1.部分用户</option>
                 <option value="2">2.在线用户</option>
                 <option value="3">3.所有用户</option>
-                <option value="4">4.支付层级</option>
+                <option value="4">4.会员层级</option>
             </select>
         </div>
     </div>
