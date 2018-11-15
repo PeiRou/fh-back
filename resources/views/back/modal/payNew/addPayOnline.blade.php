@@ -111,7 +111,9 @@
             <input type="text" name="req_url"/>
         </div>
     </div>
-
+    <div class="field" style="color:red; ">
+        (返回地址在平台最初部属已绑定，暂无需填写)
+    </div>
     <div class="field">
         <label>返回地址</label>
         <div class="ui input icon">
@@ -252,13 +254,13 @@
                         }
                     }
                 },
-                res_url:{
-                    validators: {
-                        notEmpty: {
-                            message: '返回地址必须填写'
-                        }
-                    }
-                },
+                // res_url:{
+                //     validators: {
+                //         notEmpty: {
+                //             message: '返回地址必须填写'
+                //         }
+                //     }
+                // },
                 min_money:{
                     validators: {
                         notEmpty: {
