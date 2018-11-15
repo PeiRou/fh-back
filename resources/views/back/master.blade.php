@@ -349,7 +349,9 @@
                 <span><img src="/back/old/images/leftico01.png"></span>
                 系统管理</a>
             <ul>
+                @if($hasPermission->hasPermission('system.PermissionsAuth') == "has")
                 <li id="menu-systemManage-permissionsAuth"><a href="{{ route('system.PermissionsAuth') }}"><cite></cite><span>权限控制管理</span></a></li>
+                @endif
                 @if($hasPermission->hasPermission('system.permission') == "has")
                 <li id="menu-systemManage-permissions"><a href="{{ route('system.permission') }}"><cite></cite><span>权限管理</span></a></li>
                 @endif
@@ -479,7 +481,7 @@
                     <span><img src="/back/old/images/leftico01.png"></span>
                     平台设置</a>
                 <ul>
-                    @if($hasPermission->hasPermission('promotion.report') == "has")
+                    @if($hasPermission->hasPermission('GamesApi.List') == "has")
                         <li id="menu-GamesApi-List"><a href="{{ route('GamesApi.List') }}"><cite></cite><span>接口列表</span></a></li>
                     @endif
                 </ul>

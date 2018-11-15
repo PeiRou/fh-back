@@ -98,13 +98,13 @@ class GamesApiController extends Controller
         $GamesApiConfig->where('g_id', $g_id)->delete();
         $data = [];
         foreach ($paramKey as $k => $v) {
-            if (empty($v) || empty($paramValue[$k]) || empty($paramDescribes[$k])) {
+            if (empty($v)) {
                 continue;
             }
             $data[] = [
                 'g_id' => $g_id,
                 'key' => $paramKey[$k],
-                'value' => $paramValue[$k],
+                'value' => $paramValue[$k] ?? '',
                 'description' => $paramDescribes[$k]
             ];
         }

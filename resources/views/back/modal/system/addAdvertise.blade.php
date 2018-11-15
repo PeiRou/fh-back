@@ -202,7 +202,6 @@
         });
         data1.paramDescription = paramDescription;
         run($('#value2')[0],function (res) {
-            console.log(2);
             data1.value2 = res;
             ready = true;
         });
@@ -241,7 +240,6 @@
     function check() {
         if (ready === true) {
             // do what you want with the result variable
-            console.log(data1);
             $.ajax({
                 url: '{{ route('ac.ad.addAdvertise') }}',
                 type: 'POST',
