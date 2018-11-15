@@ -48,14 +48,17 @@
             </div>
         </div>
         <input type="hidden" id="gaid" value="{{$gaid}}">
+        <input type="hidden" id="agentId" value="{{$agentId}}">
         <table id="agentTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>在线</th>
                 <th>上级总代理</th>
                 <th>代理</th>
+                <th>下级代理数</th>
                 <th>会员数</th>
                 <th>可用余额</th>
+                <th>模式</th>
                 <th>状态</th>
                 <th>修改赔率</th>
                 <th>新增时间</th>

@@ -171,12 +171,14 @@ class ModalController extends Controller
     public function addAgent($agentId)
     {
         $allGeneralAgent = GeneralAgent::all();
-        if(empty($agentId))
+        if(empty($agentId)) {
             $aAgentOdds = [];
-        else{
+            $iAgent = [];
+        }else{
             $oddsLevel = Agent::where('a_id',$agentId)->value('odds_level');
             $oddsLevel = empty($oddsLevel)?0:$oddsLevel;
             $aAgentOdds = AgentOddsSetting::where('level','>=',$oddsLevel)->orderBy('level','asc')->get();
+            $iAgent = Agent::find($agentId);
         }
         $aBasisOdds = SystemSetting::getValueByRemark1('agent_odds_basis');
         $agentModelStatus = Agent::$agentModelStatus;
@@ -185,6 +187,7 @@ class ModalController extends Controller
             ->with('agentId',$agentId)
             ->with('aAgentOdds',$aAgentOdds)
             ->with('aBasisOdds',$aBasisOdds)
+            ->with('iAgent',$iAgent)
             ->with('agentModelStatus',$agentModelStatus);
     }
     //修改代理

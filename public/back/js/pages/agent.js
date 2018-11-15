@@ -15,6 +15,7 @@ $(function () {
         ajax: {
             url :'/back/datatables/agent',
             data:function (d) {
+                d.agentId = $('#agentId').val();
                 d.gaid = $('#gaid').val();
                 d.status = $('#status').val();
                 d.type = $('#type').val();
@@ -26,8 +27,10 @@ $(function () {
             {data:'online'},
             {data:'general_agent'},
             {data:'agent'},
+            {data:'agentCount'},
             {data:'members'},
             {data:'balance'},
+            {data:'model'},
             {data:'status'},
             {data:'editOdds'},
             {data:'created_at'},

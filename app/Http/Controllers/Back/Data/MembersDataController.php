@@ -92,6 +92,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
     public function agent(Request $request)
     {
         $ga_id = $request->get('gaid');
+        $agentId = $request->get('agentId');
         $start = $request->get('start');
         $length = $request->get('length');
         $params = $request->post();
@@ -100,6 +101,9 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $where = "";
         if(isset($ga_id) && $ga_id>0 ){
             $where .= " and gagent_id = ".$ga_id;
+        }
+        if(isset($agentId) && $agentId>0 ){
+            $where .= " and FIND_IN_SET(".$agentId.",superior_agent)";
         }
         if(isset($params['status']) && array_key_exists('status',$params)){
             $where .= " and status = ".$params['status'];
@@ -118,13 +122,17 @@ GROUP BY g.ga_id LIMIT $start,$length";
 //            var_dump($time);die();
             $where .= " and updated_at <= '".$time."'";
         }
-        $aSql = "SELECT ag.*,`u`.`countMember`,`general_agent`.`account` AS `gAccount` FROM (".$aSql.$where." ORDER BY created_at desc LIMIT ".$start.",".$length.") AS ag 
-LEFT JOIN (SELECT COUNT(id) AS countMember,agent FROM `users` WHERE testFlag IN(0,2) GROUP BY `agent`) u on ag.a_id = u.agent 
-JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`.`created_at` DESC";
+        $aSql = "SELECT ag.*,`u`.`countMember`,`general_agent`.`account` AS `gAccount`,`countAgent`.countAgent AS `countAgent` FROM (".$aSql.$where." ORDER BY created_at desc LIMIT ".$start.",".$length.") AS ag 
+                    LEFT JOIN (SELECT COUNT(id) AS countMember,agent FROM `users` WHERE testFlag IN(0,2) GROUP BY `agent`) u on ag.a_id = u.agent
+                    LEFT JOIN (SELECT `agent`.a_id,COUNT(`agent`.a_id) AS `countAgent` FROM `agent`
+                                    JOIN (SELECT a_id,superior_agent FROM `agent`) AS `agent1` ON FIND_IN_SET(`agent`.a_id,`agent1`.`superior_agent`)
+                                GROUP BY `agent`.a_id) AS `countAgent` ON `countAgent`.a_id = ag.a_id
+                    JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`.`created_at` DESC";
         $allAgent = DB::select($aSql);
         $cSql = $cSql.$where;
         $countAgent = DB::select($cSql);
         $adminRole = DB::table('sub_account')->where('sa_id',Session::get('account_id'))->value('role');
+        $modelStatus = Agent::$agentModelStatus;
         return DataTables::of($allAgent)
             ->editColumn('online', function ($allAgent){
                 return '<span id="agent_'.$allAgent->a_id.'"><span class="tag-offline">离线</span></span>';
@@ -139,6 +147,10 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                 $count = empty($allAgent->countMember)?0:$allAgent->countMember;
                 return "<a class='tag-green' href='/back/control/userManage/user?id=".$allAgent->a_id."'>".$count."</a>";
             })
+            ->editColumn('agentCount', function ($allAgent){
+                $count = empty($allAgent->countAgent)?0:$allAgent->countAgent;
+                return "<a class='tag-gary' href='/back/control/userManage/agent?agentId=".$allAgent->a_id."'>".$count."</a>";
+            })
             ->editColumn('balance', function ($allAgent){
                 if($allAgent->balance == 0)
                 {
@@ -146,6 +158,9 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                 } else {
                     return "<span class='tag-gary have-money'>".$allAgent->balance."</span>";
                 }
+            })
+            ->editColumn('model', function ($allAgent) use($modelStatus){
+                return " <span class='gary-text'>(".$modelStatus[$allAgent->modelStatus].")</span>";
             })
             ->editColumn('status', function ($allAgent){
                 if($allAgent->status == 1){
@@ -219,7 +234,7 @@ JOIN `general_agent` ON `general_agent`.`ga_id` = `ag`.`gagent_id` ORDER BY `ag`
                     return $html;
                 }
             })
-            ->rawColumns(['online','agent','members','balance','status','editOdds','content','control'])
+            ->rawColumns(['online','agent','members','balance','status','editOdds','content','control','model','agentCount'])
             ->setTotalRecords($countAgent[0]->count)
             ->skipPaging()
             ->make(true);
