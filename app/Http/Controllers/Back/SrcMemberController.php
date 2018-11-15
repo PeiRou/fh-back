@@ -106,6 +106,7 @@ class SrcMemberController extends Controller
     //添加代理账号
     public function addAgent(Request $request)
     {
+        $modelStatus = $request->input('modelStatus');
         $gagent = $request->input('gagent');
         $account = $request->input('account');
         $name = $request->input('name');
@@ -113,6 +114,7 @@ class SrcMemberController extends Controller
         $editOdds = $request->input('editodds');
         $agentId = $request->input('agentId');
         $odds_level = $request->input('odds_level');
+
         $has = Agent::where('account',$account)->first();
         if(!empty($has))
             return response()->json([
@@ -125,26 +127,25 @@ class SrcMemberController extends Controller
                 'status'=>false,
                 'msg'=>'此代理名字已存在！'
             ]);
-        if(empty($agentId))
+
+        if (empty($agentId))
             $superior_agent = 0;
-        else{
-            if(!empty($odds_level)) {
-                $iAgent = Agent::where('a_id', $agentId)->first();
-                if ($iAgent->odds_level > $odds_level) {
-                    return response()->json([
-                        'status' => false,
-                        'msg' => '此代理赔率过高'
-                    ]);
-                }
-                $superior_agent = $iAgent->superior_agent;
-                if (empty($superior_agent)) {
-                    $superior_agent = $agentId;
-                } else {
-                    $superior_agent .= ',' . $agentId;
-                }
-            }else
-                $superior_agent = 0;
+        else {
+            $iAgent = Agent::where('a_id', $agentId)->first();
+            if ($iAgent->odds_level > $odds_level) {
+                return response()->json([
+                    'status' => false,
+                    'msg' => '此代理赔率过高'
+                ]);
+            }
+            $superior_agent = $iAgent->superior_agent;
+            if (empty($superior_agent)) {
+                $superior_agent = $agentId;
+            } else {
+                $superior_agent .= ',' . $agentId;
+            }
         }
+
         try {
             $agent = new Agent();
             $agent->gagent_id = $gagent;
@@ -154,6 +155,7 @@ class SrcMemberController extends Controller
             $agent->editodds = $editOdds;
             $agent->superior_agent = $superior_agent;
             $agent->odds_level = $odds_level;
+            $agent->modelStatus = empty($modelStatus)?0:$modelStatus;
             $insert = $agent->save();
         }catch (\exception $e){
             $insert = 0;

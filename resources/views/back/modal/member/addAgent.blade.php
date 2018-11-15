@@ -10,32 +10,34 @@
             </select>
         </div>
     </div>
-    @if(!empty($aAgentOdds))
-    <div class="field">
-        <label>代理赔率(平台基本赔率为<span style="color: red;">{{$aBasisOdds}}</span>)</label>
-        <div class="ui input icon">
-            <select class="ui fluid dropdown" name="odds_level" id="odds_level">
-                <option value="">请选择代理赔率</option>
-                @foreach($aAgentOdds as $kAgentOdds => $iAgentOdds)
-                    <option value="{{ $iAgentOdds->level }}">{{ $iAgentOdds->odds }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-    @endif
-    @if(empty($aAgentOdds))
+    @if(env('TEST',0) == 1)
+        @if(!empty($aAgentOdds) && $iAgent->modelStatus == 1)
         <div class="field">
-            <label>代理模式</label>
+            <label>代理赔率(平台基本赔率为<span style="color: red;">{{$aBasisOdds}}</span>)</label>
             <div class="ui input icon">
                 <select class="ui fluid dropdown" name="odds_level" id="odds_level">
-                    @foreach($agentModelStatus as $kAgentModelStatus => $iAgentModelStatus)
-                        @if($kAgentModelStatus != 0)
-                            <option value="{{ $kAgentModelStatus }}">{{ $iAgentModelStatus }}</option>
-                        @endif
+                    <option value="">请选择代理赔率</option>
+                    @foreach($aAgentOdds as $kAgentOdds => $iAgentOdds)
+                        <option value="{{ $iAgentOdds->level }}">{{ $iAgentOdds->odds }}</option>
                     @endforeach
                 </select>
             </div>
         </div>
+        @endif
+        @if(empty($aAgentOdds) || empty($agentId))
+            <div class="field">
+                <label>代理模式</label>
+                <div class="ui input icon">
+                    <select class="ui fluid dropdown" name="modelStatus" id="modelStatus">
+                        @foreach($agentModelStatus as $kAgentModelStatus => $iAgentModelStatus)
+                            <option value="{{ $kAgentModelStatus }}">{{ $iAgentModelStatus }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        @else
+            <input type="hidden" name="modelStatus" value="{{ $iAgent->modelStatus }}">
+        @endif
     @endif
     <div class="field">
         <label>代理账号</label>

@@ -15,6 +15,7 @@ $(function () {
         ajax: {
             url :'/back/datatables/agent',
             data:function (d) {
+                d.agentId = $('#agentId').val();
                 d.gaid = $('#gaid').val();
                 d.status = $('#status').val();
                 d.type = $('#type').val();
@@ -22,20 +23,7 @@ $(function () {
                 d.day = $('#day').val();
             }
         },
-        columns: [
-            {data:'online'},
-            {data:'general_agent'},
-            {data:'agent'},
-            {data:'members'},
-            {data:'balance'},
-            {data:'status'},
-            {data:'editOdds'},
-            {data:'created_at'},
-            {data:'updated_at'},
-            {data:'login'},
-            {data:'content'},
-            {data:'control'}
-        ],
+        columns: columns,
         language: {
             "zeroRecords": "暂无数据",
             "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",
@@ -383,6 +371,8 @@ function edit(id) {
         }
     });
 }
+
+
 function pass(id){
     $.ajax({
         url:'/action/admin/passAgent/'+id,

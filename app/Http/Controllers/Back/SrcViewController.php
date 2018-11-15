@@ -87,8 +87,9 @@ class SrcViewController extends Controller
     public function agent(Request $request)
     {
         $gaid = $request->get('id');
+        $agentId = $request->get('agentId');
         $aStatus = Agent::$agentStatus;
-        return view('back.agent',compact('gaid','aStatus'));
+        return view('back.agent',compact('gaid','aStatus','agentId','iAgent'));
     }
     //会员
     public function user(Request $request)

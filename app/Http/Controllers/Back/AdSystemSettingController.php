@@ -380,7 +380,7 @@ class AdSystemSettingController extends Controller
     public function getCombinationParam($aDataArray,$iAd){
         $aArray = [];
         foreach ($aDataArray as $kData => $iData){
-            if($iAd->type == 1 && $iData['ad_id'] == $iAd->id){
+            if($iAd->type == 1 && $iData['ad_id'] == $iAd->id && !empty($iData['filed'][$iAd->js_key])){
                 $aArray = $iData['filed'][$iAd->js_key];
             }elseif($iAd->type == 2 && $iData['ad_id'] == $iAd->id){
                 $aArray[] = $iData['filed'];
