@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -952,6 +953,13 @@ class OpenHistoryController extends Controller
 
     //结算后撤单
     public function canceledBetIssue($issue,$type){
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'cancel:'.$issue.$type;
+        if($redis->exists($key)){
+            return ['status' => false,'msg' => '你已经撤单过了，请休息一分钟'];
+        }
+        $redis->setex($key,61,time());
         $gameInfo = Games::where('code',$type)->first();
         if(empty($tableSuffix = Games::$aCodeGameName[$type])){
             return ['status' => false,'msg' => '游戏分类标识错误'];

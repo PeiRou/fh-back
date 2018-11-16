@@ -13,4 +13,8 @@ class AgentBackwater extends Model
         1 => '成功',
         2 => '取消',
     ];
+
+    public static function getAgentBackwaterMoney($gameId,$issue){
+        return self::where('game_id',$gameId)->where('issue',$issue)->where('status',1)->get();
+    }
 }
