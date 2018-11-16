@@ -306,7 +306,7 @@ class DrawingController extends Controller
                 }
             })
             ->whereBetween('drawing.created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('drawing.amount');
-        preg_match('/[\d]*\.{0,1}[\d]{0,2}/',$drawingTotal,$arr);
+        preg_match('/[\d]*\.{0,1}[\d]{0,2}/',$drawingTotal * 1,$arr);
         return response()->json([
             'total' => $arr[0] ?? $drawingTotal,
 //            'total' => number_format($drawingTotal,2,'.','')
