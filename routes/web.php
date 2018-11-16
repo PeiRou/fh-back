@@ -1,6 +1,6 @@
 <?php
 Route::group(['middleware'=>['check-ip']],function () {
-    Route::get('/', 'Home\IndexController@index')->middleware('mobile-check');
+    Route::get('/', 'Back\SrcViewController@index');
 
     Route::get('/getCaptcha',function(){});
 

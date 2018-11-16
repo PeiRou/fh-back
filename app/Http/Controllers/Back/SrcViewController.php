@@ -69,6 +69,12 @@ class SrcViewController extends Controller
         return view('back.O_adminLogin');
     }
     
+    //首页
+    public function index()
+    {
+        return '';
+    }
+
     //控制台
     public function Dash()
     {
