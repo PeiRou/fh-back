@@ -13,11 +13,11 @@
         <tbody>
         <tr>
             <td colspan="2">1-7球号</td>
-            <td>{{ $odds['1_5_odds']['key'] }}</td>
-            <td>{{ $rebate['1_5_rebate']['key'] }}%</td>
-            <td>{{ $odds['1_5_odds']['minMoney'] }}</td>
-            <td>{{ $odds['1_5_odds']['maxMoney'] }}</td>
-            <td>{{ $odds['1_5_odds']['maxTurnMoney'] }}</td>
+            <td>{{ $odds['1_7_odds']['key'] }}</td>
+            <td>{{ $rebate['1_7_rebate']['key'] }}%</td>
+            <td>{{ $odds['1_7_odds']['minMoney'] }}</td>
+            <td>{{ $odds['1_7_odds']['maxMoney'] }}</td>
+            <td>{{ $odds['1_7_odds']['maxTurnMoney'] }}</td>
         </tr>
         <tr>
             <td colspan="2">两面</td>
