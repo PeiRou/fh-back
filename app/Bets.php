@@ -278,14 +278,14 @@ class Bets extends Model
                   SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END) END) AS `sumBunko`
                   FROM `bet` 
                   JOIN `users` ON `users`.`id` = `bet`.`user_id`
-                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 ";
+                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`bunko` != 0 ";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " AND `bet`.`created_at` >= :startTime";
+            $aSql .= " AND `bet`.`updated_at` >= :startTime";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " AND `bet`.`created_at` <= :endTime";
+            $aSql .= " AND `bet`.`updated_at` <= :endTime";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `date`,`agentId`,`game_id` ORDER BY `date` ASC";
@@ -300,7 +300,7 @@ class Bets extends Model
                   FROM `bet` 
                   JOIN `users` ON `users`.`id` = `bet`.`user_id`
                   JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
-                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 ";
+                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`bunko` != 0";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `bet`.`created_at` >= :startTime";
@@ -322,7 +322,7 @@ class Bets extends Model
                   FROM `bet` 
                   JOIN `users` ON `users`.`id` = `bet`.`user_id`
                   JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
-                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 ";
+                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`bunko` != 0 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `bet`.`created_at` >= :startTime";

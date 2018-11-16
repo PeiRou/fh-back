@@ -10,7 +10,7 @@
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('capitalDetailsTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="add()">添加层级</span>
+            {{--<span onclick="add()">添加层级</span>--}}
         </div>
     </div>
     <div class="table-content">
