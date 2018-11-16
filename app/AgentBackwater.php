@@ -15,6 +15,11 @@ class AgentBackwater extends Model
     ];
 
     public static function getAgentBackwaterMoney($gameId,$issue){
-        return self::where('game_id',$gameId)->where('issue',$issue)->where('status',1)->get();
+        $aSql = "SELECT `agent_id` AS `a_id`,SUM(`money`) AS `money` FROM `agent_backwater` WHERE `game_id` = :gameId AND `issue` = :issue AND status = 1 GROUP BY `agent_id`";
+        $aArray = [
+            'gameId' => $gameId,
+            'issue' => $issue
+        ];
+        return DB::select($aSql,$aArray);
     }
 }
