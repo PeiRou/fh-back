@@ -1,5 +1,5 @@
 <div>
-    <table width="100%" class="info-table" border="1" style="white-space: nowrap;">
+    <table width="100%" class="info-table">
         <thead>
         <tr>
             <th colspan="2">玩法</th>
