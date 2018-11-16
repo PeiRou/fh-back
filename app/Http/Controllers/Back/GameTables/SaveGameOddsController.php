@@ -376,7 +376,7 @@ class SaveGameOddsController extends Controller
                 'name' => [] ,
                 'view' => 'pk10nn',
             ],
-            '112' => [
+            '114' => [
                 'name' => ['1_7_odds','2face_odds','he_odds','longhu_odds','1_7_rebate','2face_rebate','he_rebate','longhu_rebate'],
                 'view' => 'qxc'
             ]
