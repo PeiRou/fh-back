@@ -983,7 +983,13 @@ class OpenHistoryController extends Controller
                 $aCapital = [];
                 $adminId = Session::get('account_id');
                 $dateTime = date('Y-m-d H:i:s');
+                $aArrayMoney = [];
                 foreach ($aBetAll as $kBet => $iBet) {
+                    if(isset($aArrayMoney[$iBet->id]) && array_key_exists($iBet->id,$aArrayMoney)){
+                        $aArrayMoney[$iBet->id] += $iBet->bet_money;
+                    }else{
+                        $aArrayMoney[$iBet->id] = $iBet->bet_money;
+                    }
                     $aCapital[] = [
                         'to_user' => $iBet->id,
                         'user_type' => 'user',
@@ -993,7 +999,7 @@ class OpenHistoryController extends Controller
                         'game_id' => $gameInfo->game_id,
                         'issue' => $iBet->issue,
                         'money' => $iBet->bet_money,
-                        'balance' => $iBet->money + $iBet->bet_money,
+                        'balance' => $iBet->money + $aArrayMoney[$iBet->id],
                         'operation_id' => $adminId,
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
