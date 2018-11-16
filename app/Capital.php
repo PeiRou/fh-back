@@ -91,9 +91,6 @@ class Capital extends Model
                 if(isset($param['order_id']) && array_key_exists('order_id',$param)){
                     $sql->where('orderNum','=',$param['order_id']);
                 }
-                if(isset($param['issue']) && array_key_exists('issue',$param)){
-                    $sql->where('issue','=',$param['issue']);
-                }
                 if(isset($param['amount_min']) && array_key_exists('amount_min',$param)){
                     $sql->where('amount','>=',$param['amount_min']);
                 }
