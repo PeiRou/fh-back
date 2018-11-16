@@ -984,7 +984,7 @@ class OpenHistoryController extends Controller
 
         DB::beginTransaction();
 
-//        try {
+        try {
             Bets::updateBetStatus($issue, $gameInfo->game_id);
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataReturn($aBetAll);
@@ -1028,10 +1028,10 @@ class OpenHistoryController extends Controller
             }
             DB::commit();
             return ['status' => true,'mag' => '操作成功'];
-//        }catch(\Exception $e){
-//            DB::rollback();
-//            return ['status' => false,'msg' => '撤单失败'];
-//        }
+        }catch(\Exception $e){
+            DB::rollback();
+            return ['status' => false,'msg' => '撤单失败'];
+        }
     }
 
     //冻结
