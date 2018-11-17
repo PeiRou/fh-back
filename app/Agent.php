@@ -21,7 +21,7 @@ class Agent extends Model
     public static $agentModelStatus = [
         '0' => '默认',
         '1' => '代理模式',
-        '2' => '会员模式',
+        '2' => '会员推广模式',
     ];
 
     //获取所有代理商
