@@ -449,6 +449,7 @@ class SrcMemberController extends Controller
                 ->update([
                     'agent'=>$agent,
                     'testFlag' => 2,
+                    'promoter' => 0,
                     'user_odds' => $odds['user_odds'],
                     'agent_odds' => $odds['agent_odds'],
                     'user_odds_level' => $odds['user_odds_level'],
@@ -458,6 +459,7 @@ class SrcMemberController extends Controller
                 ->update([
                     'agent'=>$agent,
                     'testFlag' => 1,
+                    'promoter' => 0,
                     'user_odds' => $odds['user_odds'],
                     'agent_odds' => $odds['agent_odds'],
                     'user_odds_level' => $odds['user_odds_level'],
