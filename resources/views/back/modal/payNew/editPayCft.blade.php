@@ -118,7 +118,7 @@
     </div>
 
     <div class="field">
-        <label>前端备注说明</label>
+        <label>温馨提示说明</label>
         <div class="ui input icon">
             <input type="text" name="remark" value="{{ $payCft->remark }}"/>
         </div>
