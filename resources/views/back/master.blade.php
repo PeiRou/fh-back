@@ -263,7 +263,7 @@
                     {{--<li id="menu-openManage-jlk3"><a href="{{ route('historyLottery.jlk3') }}"><cite></cite><span>吉林快3</span></a></li>--}}
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.xglhc') == "has")
-                <li id="menu-openManage-lhc"><a href="{{ route('historyLottery.xglhc') }}"><cite></cite><span>六合彩</span></a></li>
+                <li id="menu-openManage-lhc"><a href="{{ route('historyLottery.xglhc') }}"><cite></cite><span>香港六合彩</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.xylhc') == "has")
                 <li id="menu-openManage-xylhc"><a href="{{ route('historyLottery.xylhc') }}"><cite></cite><span>幸运六合彩</span></a></li>
