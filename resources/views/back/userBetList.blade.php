@@ -291,7 +291,7 @@
                             if(data.bet_game_id == 91 || data.bet_game_id == 90){
                                 if(data.bet_nn_view_money > 0){
                                     txt = "<span class='blue-text'><b>"+data.bet_nn_view_money+"</b></span>";
-                                }else if(data.bet_nn_view_money = 0){
+                                }else if(data.bet_nn_view_money == 0){
                                     txt = '<span class=\'tiny-blue-text\'>已撤单</span>';
                                 } else {
                                     txt = "<span class='red-text'><b>"+data.bet_nn_view_money+"</b></span>";
