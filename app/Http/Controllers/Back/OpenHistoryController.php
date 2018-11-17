@@ -1064,7 +1064,7 @@ class OpenHistoryController extends Controller
                         'to_user' => $iBet->id,
                         'user_type' => 'user',
                         'order_id' => null,
-                        'type' => 't06',
+                        'type' => 't27',
                         'rechargesType' => 0,
                         'game_id' => $iBet->game_id,
                         'game_name' => $gameInfo->game_name,
