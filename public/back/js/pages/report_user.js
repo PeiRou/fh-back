@@ -85,7 +85,7 @@ $(function () {
             {data:'recharges_money'},
             {data:'drawing_money'},
             {data:function (data) {         //笔数
-                    return '<a href="/back/control/userManage/userBetList/'+data.user_id+'">'+data.bet_count+'</a>';
+                    return '<a href="/back/control/userManage/userBetList/'+data.user_id+'" target="_blank">'+data.bet_count+'</a>';
                 }},
             {data:'bet_money'},             //投注金额
             {data:'bet_amount'},             //赢利投注金额
