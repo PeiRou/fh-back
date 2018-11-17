@@ -72,6 +72,9 @@ class SrcViewController extends Controller
     //首页
     public function index()
     {
+        if(in_array($_SERVER['HTTP_HOST'],array(env('BACK_IP_1',''),env('BACK_IP_2',''))) ){
+            return redirect()->route('back.login');
+        }
         return '';
     }
 
