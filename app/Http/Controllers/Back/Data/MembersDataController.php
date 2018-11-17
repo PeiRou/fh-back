@@ -221,7 +221,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                         <ul>
                         <li onclick='panSetting(\"$allAgent->a_id\")'>盘口设定</li>";
                     if(env('TEST',0) == 1) {
-                        if($allAgent->modelStatus != 0)
+                        if($allAgent->modelStatus == 1)
                             $html .= "<li onclick='addAgent(\"$allAgent->a_id\")'>添加子代理</li>";
 //                        if($allAgent->modelStatus == 0)
 //                            $html .= "<li onclick='editAgentModel(\"$allAgent->a_id\")'>修改模式</li>";
