@@ -463,14 +463,19 @@ class SrcMemberController extends Controller
                     'user_odds_level' => $odds['user_odds_level'],
                 ]);
         } else {
+            $aArray = [
+                'agent'=>$agent,
+                'testFlag' => 0,
+                'user_odds' => $odds['user_odds'],
+                'agent_odds' => $odds['agent_odds'],
+                'user_odds_level' => $odds['user_odds_level'],
+            ];
+            $iAgent = Agent::where('a_id',$agent)->first();
+            if($iAgent->modelStatus == 2){
+                $aArray['promoter'] = -1;
+            }
             $update = User::where('id',$uid)
-                ->update([
-                    'agent'=>$agent,
-                    'testFlag' => 0,
-                    'user_odds' => $odds['user_odds'],
-                    'agent_odds' => $odds['agent_odds'],
-                    'user_odds_level' => $odds['user_odds_level'],
-                ]);
+                ->update($aArray);
         }
 
         if($update == 1){
