@@ -69,7 +69,7 @@ class Drawing extends Model
     }
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT `user_id`,SUM(`amount`) AS `drAmountSum`,LEFT(`created_at`,10) AS `date` FROM `drawing` WHERE `status` = 2 ";
+        $aSql = "SELECT `user_id`,SUM(`amount`) AS `drAmountSum`,LEFT(`created_at`,10) AS `date` FROM `drawing` WHERE `status` = 2  AND `draw_type` IN(0,1) ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `created_at` >= :startTime ";
@@ -87,7 +87,7 @@ class Drawing extends Model
         $aSql = "SELECT `users`.`agent` AS `agentId`,LEFT(`drawing`.`created_at`,10) AS `date`,SUM(`drawing`.`amount`) AS `drAmountSum`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`
                   FROM `drawing`
                   JOIN `users` ON `users`.`id` = `drawing`.`user_id`
-                  WHERE `drawing`.`status` = 2 AND `users`.`testFlag` = 0 ";
+                  WHERE `drawing`.`status` = 2 AND `drawing`.`draw_type` IN(0,1) AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `drawing`.`created_at` >= :startTime ";
@@ -107,7 +107,7 @@ class Drawing extends Model
                   FROM `drawing`
                   JOIN `users` ON `users`.`id` = `drawing`.`user_id`
                   JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
-                  WHERE `drawing`.`status` = 2 AND `users`.`testFlag` = 0 ";
+                  WHERE `drawing`.`status` = 2 AND `drawing`.`draw_type` IN(0,1) AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `drawing`.`created_at` >= :startTime ";
