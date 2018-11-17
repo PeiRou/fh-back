@@ -291,6 +291,8 @@
                             if(data.bet_game_id == 91 || data.bet_game_id == 90){
                                 if(data.bet_nn_view_money > 0){
                                     txt = "<span class='blue-text'><b>"+data.bet_nn_view_money+"</b></span>";
+                                }else if(data.bet_nn_view_money = 0){
+                                    txt = '<span class=\'tiny-blue-text\'>已撤单</span>';
                                 } else {
                                     txt = "<span class='red-text'><b>"+data.bet_nn_view_money+"</b></span>";
                                 }
@@ -298,9 +300,12 @@
                                 if(data.bet_bunko > 0){
                                     var tmpBet_bet_money = intVal(data.bet_bunko)>0?intVal(data.bet_bet_money):0;
                                     lastMoney = (parseFloat(intVal(data.bet_bunko) - tmpBet_bet_money)).toFixed(3);
-                                    txt = "<span class='blue-text'><b>"+lastMoney+"</b></span>";
-                                }
-                                if(data.bet_bunko < 0){
+                                    if(lastMoney == 0){
+                                        txt = '<span class=\'tiny-blue-text\'>未结算</span>';
+                                    }else {
+                                        txt = "<span class='blue-text'><b>" + lastMoney + "</b></span>";
+                                    }
+                                } else {
                                     txt = "<span class='red-text'><b>"+data.bet_bunko+"</b></span>";
                                 }
                             }
