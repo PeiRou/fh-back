@@ -43,12 +43,6 @@ class BetDataController extends Controller
                 $betSql .= " AND bet.bet_money = bet.bunko ";
                 break;
         }
-//        if(isset($issue) && isset($issue)){
-//            $betSql .= " AND bet.issue =".$issue;
-//        }
-//        if(isset($orderNum) && isset($orderNum)){
-//            $betSql .= " AND bet.order_id =".$orderNum;
-//        }
         if(isset($markSix) && $markSix == 2){
             $betSql .= " AND bet.game_id != 70";
         }
@@ -181,7 +175,7 @@ class BetDataController extends Controller
                     return '<a href="javascript:;" onclick="cancel(\''.$bet->bet_order_id.'\')">取消注单</a>';
             })
             ->rawColumns(['user','play','issue','bunko','bet_money','platform','control'])
-            ->setTotalRecords($betCount)
+            ->setTotalRecords($betCount[0]->count)
             ->skipPaging()
             ->with('betMoney',$betMoney)
             ->make(true);
