@@ -198,6 +198,7 @@ function editReview(id) {
     });
 }
 
+
 function userHref(promotion) {
-    window.location.href = '/back/control/userManage/user?promoter='+promotion;
+    window.open('/back/control/userManage/user?promoter='+promotion);
 }
