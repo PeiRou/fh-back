@@ -52,7 +52,7 @@ class PromotionSettle extends Command
         $aPromotion = PromotionReport::promotionBillingData($yesterday);
         //获取推广结算信息
         $aConfig = PromotionConfig::getPromotionConfigList();
-        //获取用户信息
+        //获取推广用户信息
         $aUser = Users::getUsersInfoList();
         //推广结算信息整合
         $aPromotionData = [];

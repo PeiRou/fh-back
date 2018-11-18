@@ -71,7 +71,7 @@ class Users extends Model
     }
 
     public static function getUsersInfoList(){
-        $data =  self::select('id','name','username','promoter')->get();
+        $data =  self::select('id','name','username','promoter')->where('promoter','!=',0)->get();
         $array = [];
         foreach ($data as $value){
             $array[$value->id] = [
