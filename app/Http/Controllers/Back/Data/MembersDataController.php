@@ -440,7 +440,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 return "<span class='off-line-point'></span>";
             })
             ->editColumn('promoter',function ($users){
-                return empty($users->user_promoter) ? '无' : ($users->pusername.'('.$users->pfullName.')');
+                return empty($users->pusername) ? '无' : ($users->pusername.'('.$users->pfullName.')');
             })
             ->editColumn('rechLevel',function ($user){
                 return  "<a href='javascript:void(0)' onclick='editLevels(\"$user->uid\",\"$user->user_rechLevel\")' class='allow-edit'>$user->level_name <i class='iconfont'>&#xe715;</i></a>";
