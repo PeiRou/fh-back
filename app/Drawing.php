@@ -69,14 +69,14 @@ class Drawing extends Model
     }
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT `user_id`,SUM(`amount`) AS `drAmountSum`,LEFT(`created_at`,10) AS `date` FROM `drawing` WHERE `status` = 2  AND `draw_type` IN(0,1) ";
+        $aSql = "SELECT `user_id`,SUM(`amount`) AS `drAmountSum`,LEFT(`updated_at`,10) AS `date` FROM `drawing` WHERE `status` = 2  AND `draw_type` IN(0,1) ";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " AND `created_at` >= :startTime ";
+            $aSql .= " AND `updated_at` >= :startTime ";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " AND `created_at` <= :endTime ";
+            $aSql .= " AND `updated_at` <= :endTime ";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `user_id`,`date` ORDER BY `date` ASC";
@@ -84,17 +84,17 @@ class Drawing extends Model
     }
 
     public static function betAgentReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT `users`.`agent` AS `agentId`,LEFT(`drawing`.`created_at`,10) AS `date`,SUM(`drawing`.`amount`) AS `drAmountSum`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`
+        $aSql = "SELECT `users`.`agent` AS `agentId`,LEFT(`drawing`.`updated_at`,10) AS `date`,SUM(`drawing`.`amount`) AS `drAmountSum`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`
                   FROM `drawing`
                   JOIN `users` ON `users`.`id` = `drawing`.`user_id`
                   WHERE `drawing`.`status` = 2 AND `drawing`.`draw_type` IN(0,1) AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " AND `drawing`.`created_at` >= :startTime ";
+            $aSql .= " AND `drawing`.`updated_at` >= :startTime ";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " AND `drawing`.`created_at` <= :endTime ";
+            $aSql .= " AND `drawing`.`updated_at` <= :endTime ";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `agentId`,`date` ORDER BY `date` ASC";
@@ -102,7 +102,7 @@ class Drawing extends Model
     }
 
     public static function betGeneralReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT `agent`.`gagent_id` AS `generalId`,LEFT(`drawing`.`created_at`,10) AS `date`,SUM(`drawing`.`amount`) AS `drAmountSum`,
+        $aSql = "SELECT `agent`.`gagent_id` AS `generalId`,LEFT(`drawing`.`updated_at`,10) AS `date`,SUM(`drawing`.`amount`) AS `drAmountSum`,
                   COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`
                   FROM `drawing`
                   JOIN `users` ON `users`.`id` = `drawing`.`user_id`
@@ -110,11 +110,11 @@ class Drawing extends Model
                   WHERE `drawing`.`status` = 2 AND `drawing`.`draw_type` IN(0,1) AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " AND `drawing`.`created_at` >= :startTime ";
+            $aSql .= " AND `drawing`.`updated_at` >= :startTime ";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " AND `drawing`.`created_at` <= :endTime ";
+            $aSql .= " AND `drawing`.`updated_at` <= :endTime ";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `generalId`,`date` ORDER BY `date` ASC";
