@@ -78,7 +78,7 @@
                         <input type="text" id="maxMoney" placeholder="最大金额">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="promoter" placeholder="推广人账号">
+                        <input type="text" id="promoter" placeholder="推广人账号" value="{{ $promoter }}">
                     </div>
                     <div class="one wide field">
                         <input type="text" id="noLoginDays" placeholder="未登录天数">

@@ -52,7 +52,7 @@ class PromotionController extends Controller
         $status = PromotionReport::$reportStatus;
         return DataTables::of($data)
             ->editColumn('promotion_account',function ($data) {
-                return empty($data->promotion_name) ? $data->promotion_account : $data->promotion_account.'('.$data->promotion_name.')';
+                return '<a href="javascript:;" onclick="userHref(\''.$data->promotion_account.'\')">'.$data->promotion_account.'('.$data->promotion_name.')</a>';
             })
             ->editColumn('sa_account',function ($data) {
                 return empty($data->sa_account) ? '-' : $data->sa_account;
@@ -72,7 +72,7 @@ class PromotionController extends Controller
                 }
                 return '';
             })
-            ->rawColumns(['control'])
+            ->rawColumns(['control','promotion_account'])
             ->make(true);
     }
 
@@ -102,7 +102,7 @@ class PromotionController extends Controller
         $status = PromotionReview::$reportStatus;
         return DataTables::of($data)
             ->editColumn('promotion_account',function ($data) {
-                return empty($data->promotion_name) ? $data->promotion_account : $data->promotion_account.'('.$data->promotion_name.')';
+                return '<a href="javascript:;" onclick="userHref(\''.$data->promotion_account.'\')">'.$data->promotion_account.'('.$data->promotion_name.')</a>';
             })
             ->editColumn('sa_account',function ($data) {
                 return empty($data->sa_account) ? '-' : $data->sa_account;
@@ -122,7 +122,7 @@ class PromotionController extends Controller
                 }
                 return '';
             })
-            ->rawColumns(['control'])
+            ->rawColumns(['control','promotion_account'])
             ->make(true);
     }
 }

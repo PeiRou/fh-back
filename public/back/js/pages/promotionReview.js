@@ -144,3 +144,7 @@ function commit(id,status) {
         }
     });
 }
+
+function userHref(promotion) {
+    window.location.href = '/back/control/userManage/user?promoter='+promotion;
+}
