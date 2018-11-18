@@ -929,7 +929,9 @@ class OpenHistoryController extends Controller
 
     //取消注单
     public function cancelBetOrder($orderId){
-        $iBet = Bets::where('order_id',$orderId)->first();
+//        $iBet = Bets::where('order_id',$orderId)->first();
+        $iBet = DB::table('bet')->select('bet.*','game.game_name')
+            ->leftjoin('game','bet.game_id','=','game.game_id')->where('order_id',$orderId)->first();
         if(empty($iBet))
             return response()->json(['status' => false,'msg' => '注单不存在']);
         $adminId = Session::get('account_id');
@@ -937,6 +939,7 @@ class OpenHistoryController extends Controller
         $iUser = Users::where('id',$iBet->user_id)->first();
         if(empty($iUser))
             return response()->json(['status' => false,'msg' => '用户不存在']);
+
         $iCapital = [
             'to_user' => $iBet->user_id,
             'user_type' => 'user',
@@ -944,8 +947,12 @@ class OpenHistoryController extends Controller
             'type' => 't16',
             'rechargesType' => 0,
             'game_id' => $iBet->game_id,
+            'game_name' => $iBet->game_name,
+            'playcate_id' => $iBet->playcate_id,
+            'playcate_name' => $iBet->playcate_name,
+            'content' => $iBet->game_name.'-'.$iBet->play_name.'-'.$iBet->play_odds,
             'issue' => $iBet->issue,
-            'money' => $iBet->bet_bunko,
+            'money' => $iBet->bet_money,
             'balance' => $iUser->money,
             'operation_id' => $adminId,
             'created_at' => $dateTime,
@@ -1010,8 +1017,6 @@ class OpenHistoryController extends Controller
                     }else{
                         $aArrayMoney[$iBet->id] = $iBet->bet_money;
                     }
-                    \Log::info($iBet);
-                    \Log::info($gameInfo);
                     $aCapital[] = [
                         'to_user' => $iBet->id,
                         'user_type' => 'user',
