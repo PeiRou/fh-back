@@ -379,6 +379,10 @@ class SrcMemberController extends Controller
             $testFlag = 0;
         }
 
+        $iAgent = Agent::where('a_id',$agent)->first();
+        $promoter = 0;
+        if($iAgent->modelStatus == 2)
+            $promoter = 1;
         $odds = Agent::returnUserOdds($agent);
 
         $user = new User();
@@ -391,6 +395,7 @@ class SrcMemberController extends Controller
         $user->agent_odds = $odds['agent_odds'];
         $user->user_odds = $odds['user_odds'];
         $user->user_odds_level = $odds['user_odds_level'];
+        $user->promoter = $promoter;
         $insert = $user->save();
         if($insert == 1){
             return response()->json([
