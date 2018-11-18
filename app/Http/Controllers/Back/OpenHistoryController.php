@@ -909,7 +909,7 @@ class OpenHistoryController extends Controller
             $aCapital[] = [
                 'to_user' => $iBet['id'],
                 'user_type' => 'user',
-                'order_id' => 'CN'.substr($iBet['order_id'],1),
+                'order_id' => 'CN'.substr($iBet->order_id,1),
                 'type' => 't16',
                 'rechargesType' => 0,
                 'game_id' => $gameInfo->game_id,
@@ -1010,6 +1010,8 @@ class OpenHistoryController extends Controller
                     }else{
                         $aArrayMoney[$iBet->id] = $iBet->bet_money;
                     }
+                    \Log::info($iBet);
+                    \Log::info($gameInfo);
                     $aCapital[] = [
                         'to_user' => $iBet->id,
                         'user_type' => 'user',
