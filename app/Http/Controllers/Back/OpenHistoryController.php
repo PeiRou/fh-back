@@ -909,7 +909,7 @@ class OpenHistoryController extends Controller
             $aCapital[] = [
                 'to_user' => $iBet['id'],
                 'user_type' => 'user',
-                'order_id' => $iBet['order_id'],
+                'order_id' => 'CN'.substr($iBet['order_id'],1),
                 'type' => 't16',
                 'rechargesType' => 0,
                 'game_id' => $gameInfo->game_id,
@@ -940,7 +940,7 @@ class OpenHistoryController extends Controller
         $iCapital = [
             'to_user' => $iBet->user_id,
             'user_type' => 'user',
-            'order_id' => $iBet->order_id,
+            'order_id' => 'CN'.substr($iBet->order_id,1),
             'type' => 't16',
             'rechargesType' => 0,
             'game_id' => $iBet->game_id,
