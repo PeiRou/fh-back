@@ -17,77 +17,69 @@ class BetDataController extends Controller
 {
     public function betToday(Request $request)
     {
-        $game = $request->get('game');
-        $playCate = $request->get('playCate');
-        $issue = $request->get('issue');
-        $status = $request->get('status');
-        $username = $request->get('username');
-        $order = $request->get('order');
-        $minMoney = $request->get('minMoney');
-        $maxMoney = $request->get('maxMoney');
-        $timeStart = $request->get('timeStart')." 00:00:00";
-        $timeEnd = $request->get('timeEnd')." 23:59:59";
-        $markSix = $request->get('markSix');
-        $start = $request->get('start');
-        $length = $request->get('length');
-        $betSQl = DB::table('bet')
-            ->leftJoin('game','bet.game_id','=','game.game_id')
-            ->leftJoin('users','bet.user_id','=','users.id')
-            ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at','bet.platform as bet_platform','bet.bet_info as bet_bet_info')
-            ->where(function ($query) use ($timeStart){
-                $query->where('bet.created_at','>=',$timeStart);
-            })
-            ->where(function ($query) use ($timeEnd){
-                $query->where('bet.created_at','<=',$timeEnd);
-            })
-            ->where(function ($query) use ($markSix){
-                if(isset($markSix) && $markSix){
-                    if($markSix == 2)
-                        $query->where("bet.game_id",'!=',70);
-                }
-            })
-            ->where(function ($query) use($status){
-                if($status && isset($status)){
-                    if($status == 'weijiesuan'){
-                        $query->where("bet.bunko",'=',0);
-                    } else if($status == 'jiesuan'){
-                        $query->where("bet.bunko",'!=',0);
-                    } else {
-                        $query->where("bet.bunko",'=',-8888);
-                    }
-                }
-            })
-            ->where(function ($query) use ($game){
-                if(isset($game) && $game){
-                    $query->where("bet.game_id",$game);
-                }
-            })
-            ->where(function ($query) use ($playCate){
-                if(isset($playCate) && $playCate){
-                    $query->where("bet.playcate_id",$playCate);
-                }
-            })
-            ->where(function ($query) use ($issue){
-                if(isset($issue) && $issue){
-                    $query->where("bet.issue",$issue);
-                }
-            })
-            ->where(function ($query) use ($order){
-                if(isset($order) && $order){
-                    $query->where("bet.order_id",$order);
-                }
-            })
-            ->where(function ($query) use ($username){
-                if(isset($username) && $username){
-                    $query->where("users.username",$username);
-                }
-            })
-            ->where('bet.testFlag',0);
-        if($minMoney && $maxMoney){
-            $betSQl->whereBetween('bet.bet_money',[$minMoney, $maxMoney]);
+        $game = $request->input('game');
+        $playCate = (int)$request->input('playCate');
+        $issue = (int)$request->input('issue');
+        $status = $request->input('status');
+        $username = $request->input('username');
+        $order = $request->input('order');
+        $minMoney = $request->input('minMoney');
+        $maxMoney = $request->input('maxMoney');
+        $timeStart = $request->input('timeStart');
+        $timeEnd = $request->input('timeEnd');
+        $markSix = $request->input('markSix');
+        $start = $request->input('start');
+        $length = $request->input('length');
+        $Sql = 'select users.username as users_username,game.game_name as game_game_name,bet.color as bet_color,bet.issue as bet_issue,bet.bet_money as bet_bet_money,bet.game_id as bet_game_id,bet.playcate_name as bet_playcate_name,bet.play_name as bet_play_name,bet.play_odds as bet_play_odds,bet.agnet_odds as bet_agnet_odds,bet.agent_rebate as bet_agent_rebate,bet.bunko as bet_bunko,bet.order_id as bet_order_id,bet.created_at as bet_created_at,bet.platform as bet_platform,bet.bet_info as bet_bet_info from bet LEFT JOIN game ON bet.game_id = game.game_id LEFT JOIN users ON bet.user_id = users.id WHERE 1 = 1 ';
+        $betSql = "";
+        switch ($status){
+            case 1: //未结
+                $betSql .= " AND bet.bunko =0";
+                break;
+            case 2: //已结
+                $betSql .= " AND bet.bunko !=0 AND bet.bet_money != bet.bunko ";
+                break;
+            case 3: //撤单
+                $betSql .= " AND bet.bet_money = bet.bunko ";
+                break;
         }
-        $betCount = $betSQl->count();
-        $bet = $betSQl->orderBy('bet.created_at','desc')->skip($start)->take($length)->get();
+//        if(isset($issue) && isset($issue)){
+//            $betSql .= " AND bet.issue =".$issue;
+//        }
+//        if(isset($orderNum) && isset($orderNum)){
+//            $betSql .= " AND bet.order_id =".$orderNum;
+//        }
+        if(isset($markSix) && $markSix == 2){
+            $betSql .= " AND bet.game_id != 70";
+        }
+        if(isset($start) && isset($end)){
+            $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
+        }
+        if(isset($game) && $game>0){
+            $betSql .= " AND bet.game_id = ".$game;
+        }
+        if(isset($playCate) && $playCate>0){
+            $betSql .= " AND bet.playcate_id = ".$playCate;
+        }
+        if(isset($issue) && $issue>0){
+            $betSql .= " AND bet.issue = ".$issue;
+        }
+        if(isset($order) && $order){
+            $betSql .= " AND bet.order_id = '".trim($order)."'";
+        }
+        if(isset($username) && $username){
+            $betSql .= " AND users.username ='".$username."'";
+        }
+        if($minMoney){
+            $betSql .= " AND bet.bet_money >= ".$minMoney;
+        }
+        if($maxMoney){
+            $betSql .= " AND bet.bet_money <= ".$maxMoney;
+        }
+        $betSql .= " AND bet.testFlag = 0 ";
+        $betSql .= " ORDER BY bet.created_at desc,bet.bet_id desc ";
+        $bet = DB::select($Sql.$betSql."LIMIT ".$start.','.$length);
+        $betCount = DB::select("select count(bet.bet_id) as count from bet LEFT JOIN game ON bet.game_id = game.game_id LEFT JOIN users ON bet.user_id = users.id WHERE 1 = 1 ".$betSql);
         $betMoney = DB::table('bet')
             ->leftJoin('users','bet.user_id','=','users.id')
             ->where(function ($query) use ($timeStart){
@@ -185,7 +177,8 @@ class BetDataController extends Controller
                 }
             })
             ->editColumn('control',function ($bet){
-                return '<a href="javascript:;" onclick="cancel(\''.$bet->bet_order_id.'\')">取消注单</a>';
+                if($bet->bet_bunko ==0)
+                    return '<a href="javascript:;" onclick="cancel(\''.$bet->bet_order_id.'\')">取消注单</a>';
             })
             ->rawColumns(['user','play','issue','bunko','bet_money','platform','control'])
             ->setTotalRecords($betCount)
@@ -452,7 +445,7 @@ class BetDataController extends Controller
                     $betSql .= " AND bet.bunko =0";
                     break;
                 case 2: //已结
-                    $betSql .= " AND bet.bunko !=0";
+                    $betSql .= " AND bet.bunko !=0 AND bet.bet_money != bet.bunko ";
                     break;
                 case 3: //撤单
                     $betSql .= " AND bet.bet_money = bet.bunko ";

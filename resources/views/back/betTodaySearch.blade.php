@@ -45,9 +45,9 @@
                     </div>
                     <div class="one wide field">
                         <select class="ui dropdown" id="status" style='height:32px !important'>
-                            <option value="weijiesuan">未结算</option>
-                            <option value="jiesuan">已结算</option>
-                            <option value="-8888">撤销</option>
+                            <option value="1">未结算</option>
+                            <option value="2">已结算</option>
+                            <option value="3">撤销</option>
                         </select>
                     </div>
                     <div class="two wide field">
