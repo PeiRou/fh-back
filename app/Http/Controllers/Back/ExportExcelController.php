@@ -39,7 +39,7 @@ class ExportExcelController extends Controller
 //
         $cellData = [
 //            ['订单日期','处理日期','会员','余额','订单号','付款方式','交易金额','操作人','收款信息','入款信息','状态'],
-            ['会员','交易金额','操作人','收款信息','状态'],
+            ['会员','订单号','交易金额','操作人','收款信息','状态'],
         ];
 //        $exportRecharges = DB::table('recharges')
 //            ->leftJoin('users','recharges.userId','=','users.id')
@@ -64,6 +64,7 @@ class ExportExcelController extends Controller
             }
             $cellData[] = [
                 $item->username,
+                $item->orderNum,
                 $item->amount,
                 $item->operation_account,
                 $item->shou_info,
