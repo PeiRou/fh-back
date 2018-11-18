@@ -50,7 +50,7 @@
                     <div class="ui calendar" id="rangestart" style="width: 108px;">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
-                            <input type="text" id="startTime" value="{{ date('Y-m-d') }}" placeholder="">
+                            <input type="text" id="startTime" value="{{ date('Y-m-d',strtotime('-1 day')) }}" placeholder="">
                         </div>
                     </div>
                     <div style="line-height: 32px;">-</div>
@@ -74,7 +74,6 @@
             <tr>
                 <th>日期</th>
                 <th>推广帐号</th>
-                <th>姓名</th>
                 <th>投注总额</th>
                 <th>分红比</th>
                 <th>本月佣金</th>

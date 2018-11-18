@@ -33,7 +33,6 @@ $(function () {
         columns: [
             {data:'date'},
             {data:'promotion_account'},
-            {data:'promotion_name'},
             {data:'bet_money'},
             {data:'fenhong_prop'},
             {data:'commission'},
