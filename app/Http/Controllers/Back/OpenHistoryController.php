@@ -927,8 +927,10 @@ class OpenHistoryController extends Controller
             Bets::cancelBetting($issue, $gameInfo->game_id);
             Users::editBatchUserMoneyData($aBet);
             Capital::insert($aCapital);
+            DB::commit();
             return response()->json(['status' => true]);
         }catch (\Exception $e){
+            DB::rollback();
             return response()->json(['status' => false,'msg'=>'撤单失败']);
         }
     }
