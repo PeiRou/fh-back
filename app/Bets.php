@@ -152,9 +152,9 @@ class Bets extends Model
 
     public static function getBetAndUserByIssue($issue,$gameId){
         $aSql = "SELECT `users`.id,SUM(`bet`.bet_money) AS `bet_money`,SUM(`bet`.bunko) AS `bunko`,`bet`.game_id,`bet`.issue,`users`.money FROM `bet` 
-                  WHERE `bet`.issue = :issue AND `bet`.game_id = :gameId 
                   JOIN `users` ON `users`.id = `bet`.user_id 
-                  GROUP BY `users`.id";
+                  WHERE `bet`.issue = :issue AND `bet`.game_id = :gameId 
+                  GROUP BY `users`.id ";
         $aArray = [
             'issue' => $issue,
             'game_id' => $gameId

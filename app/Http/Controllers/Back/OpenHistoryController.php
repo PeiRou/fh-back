@@ -898,14 +898,15 @@ class OpenHistoryController extends Controller
     }
 
     //取消撤单
-    public function cancelBetting($issue,$type){
-        $gameInfo = Games::where('code',$type)->first();
-        $aBet = Bets::getBetAndUserByIssue($issue,$gameInfo->game_id);
-        if(empty($aBet))    return response()->json(['status' => true]);
+    public function cancelBetting($issue,$type)
+    {
+        $gameInfo = Games::where('code', $type)->first();
+        $aBet = Bets::getBetAndUserByIssue($issue, $gameInfo->game_id);
+        if (empty($aBet)) return response()->json(['status' => true]);
         $aCapital = [];
         $adminId = Session::get('account_id');
         $dateTime = date('Y-m-d H:i:s');
-        foreach ($aBet as $kBet => $iBet){
+        foreach ($aBet as $kBet => $iBet) {
             $aCapital[] = [
                 'to_user' => $iBet['id'],
                 'user_type' => 'user',
@@ -921,10 +922,15 @@ class OpenHistoryController extends Controller
                 'updated_at' => $dateTime,
             ];
         }
-        Bets::cancelBetting($issue,$gameInfo->game_id);
-        Users::editBatchUserMoneyData($aBet);
-        Capital::insert($aCapital);
-        return response()->json(['status' => true]);
+        DB::beginTransaction();
+        try {
+            Bets::cancelBetting($issue, $gameInfo->game_id);
+            Users::editBatchUserMoneyData($aBet);
+            Capital::insert($aCapital);
+            return response()->json(['status' => true]);
+        }catch (\Exception $e){
+            return response()->json(['status' => false,'msg'=>'取消失败']);
+        }
     }
 
     //取消注单
@@ -952,7 +958,7 @@ class OpenHistoryController extends Controller
             'playcate_name' => $iBet->playcate_name,
             'issue' => $iBet->issue,
             'money' => $iBet->bet_money,
-            'balance' => $iUser->money,
+            'balance' => $iUser->money + $iBet->bet_money,
             'operation_id' => $adminId,
             'created_at' => $dateTime,
             'updated_at' => $dateTime,
