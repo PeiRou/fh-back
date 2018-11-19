@@ -157,9 +157,9 @@ class Bets extends Model
                   GROUP BY `users`.id ";
         $aArray = [
             'issue' => $issue,
-            'game_id' => $gameId
+            'gameId' => $gameId
         ];
-        return DB::select($aSql,$aArray);
+        return DB::select($aSql,$aArray)->toArray();
     }
 
     public static function getBetAndUserByIssueAll($issue,$gameId,$bunko = true){
