@@ -33,7 +33,6 @@ $(function () {
         columns: [
             {data:'date'},
             {data:'promotion_account'},
-            {data:'promotion_name'},
             {data:'bet_money'},
             {data:'fenhong_prop'},
             {data:'commission'},
@@ -144,4 +143,8 @@ function commit(id,status) {
             }
         }
     });
+}
+
+function userHref(promotion) {
+    window.open('/back/control/userManage/user?promoter='+promotion);
 }

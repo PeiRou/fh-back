@@ -60,7 +60,7 @@ class PromotionSettle extends Command
             //推荐人id
             $proportion = $iPromotion->promotion_id;
             for ($i=1;$i<=count($aConfig);$i++){
-                if($aConfig[$i]['money'] <= $iPromotion->betMoneySum) {
+                if($aConfig[$i]['money'] <= $iPromotion->betMoneySum && !empty($aUser[$proportion])) {
                     $aPromotionData[] = [
                         'date' => $current,
                         'promotion_id' => $aUser[$proportion]['id'],
@@ -80,18 +80,19 @@ class PromotionSettle extends Command
             }
         }
         //推广结算信息合并
-        $aReportData = [];
-        foreach ($aPromotionData as $promotionKey => $iPromotionData){
-            if(isset($aReportData[$iPromotionData['promotion_id'].$iPromotionData['level']]) && array_key_exists($iPromotionData['promotion_id'].$iPromotionData['level'],$aReportData)){
-                $aReportData[$iPromotionData['promotion_id'].$iPromotionData['level']]['bet_money'] += $aReportData[$iPromotionData['promotion_id']]['bet_money'];
-                $aReportData[$iPromotionData['promotion_id'].$iPromotionData['level']]['commission'] += $aReportData[$iPromotionData['promotion_id']]['commission'];
-            }else{
-                $aReportData[$iPromotionData['promotion_id'].$iPromotionData['level']] = $iPromotionData;
-            }
-        }
+//        $aReportData = [];
+//        foreach ($aPromotionData as $promotionKey => $iPromotionData){
+//            if(isset($aReportData[$iPromotionData['promotion_id'].$iPromotionData['level']]) && array_key_exists($iPromotionData['promotion_id'].$iPromotionData['level'],$aReportData)){
+//                $aReportData[$iPromotionData['promotion_id'].$iPromotionData['level']]['bet_money'] += $aReportData[$iPromotionData['promotion_id']]['bet_money'];
+//                $aReportData[$iPromotionData['promotion_id'].$iPromotionData['level']]['commission'] += $aReportData[$iPromotionData['promotion_id']]['commission'];
+//            }else{
+//                $aReportData[$iPromotionData['promotion_id'].$iPromotionData['level']] = $iPromotionData;
+//            }
+//        }
+//        var_dump($aPromotionData);die();
         PromotionReport::where('date','=',$current)->delete();
         PromotionReport::where('date','<=',$current)->where('status','=',0)->update(['status'=>4]);
-        PromotionReport::insert($aReportData);
+        PromotionReport::insert($aPromotionData);
         $this->info('Console settlement successfully.');
     }
 }

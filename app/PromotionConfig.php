@@ -22,7 +22,7 @@ class PromotionConfig extends Model
 
     //获取推广结算
     public static function getPromotionConfigList(){
-        $data = self::select('level','money','proportion')->get();
+        $data = self::select('level','money','proportion')->where('level',1)->get();
         $array = [];
         foreach ($data as $value){
             $array[$value->level] = [

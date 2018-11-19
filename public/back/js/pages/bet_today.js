@@ -102,12 +102,14 @@ $(function () {
                     if(data.bet_bunko == 0){
                         txt = '<span class=\'tiny-blue-text\'>未结算</span>';
                     }else{
-                        if(data.bet_bunko > 0){
+                        if(data.bet_bunko > 0 && data.bet_bunko != data.bet_bet_money){
                             var tmpBet_bet_money = intVal(data.bet_bunko)>0?intVal(data.bet_bet_money):0;
                             lastMoney = (parseFloat(intVal(data.bet_bunko) - tmpBet_bet_money)).toFixed(2);
-                            txt = "<span class='blue-text'><b>"+lastMoney+"</b></span>";
-                        }
-                        if(data.bet_bunko < 0){
+                            if(lastMoney==0)
+                                txt = '<span class=\'tiny-blue-text\'>已撤单</span>';
+                            else
+                                txt = "<span class='blue-text'><b>"+lastMoney+"</b></span>";
+                        }else if(data.bet_bunko < 0){
                             txt = "<span class='red-text'><b>"+data.bet_bunko+"</b></span>";
                         }
                     }
