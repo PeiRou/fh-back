@@ -31,6 +31,7 @@
 <div class="loginbody">
     <span class="systemlogo"></span>
     <div class="loginbox">
+        <img style="width: 210px;position: absolute;top: 128px;left: 10px;" src="{{ env('BACK_LOGO') }}">
         <ul>
             <li><input id="userName" type="text" class="loginuser" value="" onclick="javascript:this.value=''" /></li>
             <li><input id="userPwd" type="password" class="loginpwd" value="" onclick="javascript:this.value=''" /></li>
@@ -45,9 +46,5 @@
         </ul>
     </div>
 </div>
-
-<!-- <div class="loginbm">
-    版权所有 2013 <a href="#">CZ</a>
-</div> -->
 </body>
 </html>
