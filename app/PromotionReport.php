@@ -27,7 +27,7 @@ class PromotionReport extends Model
     //获取推广结算数据
     public static function promotionBillingData($date){
         $aSql = 'SELECT SUM(betCount) AS `betCount`,SUM(`betMoneySum`) AS `betMoneySum`,`agent_id`,`user_id`,`promotion_id`,`account`,`name` 
-                    FROM (SELECT COUNT(`bet`.`bet_id`) AS `betCount`,SUM(`bet`.`bunko`) AS `betMoneySum`,`bet`.`agent_id`,`bet`.`user_id`,`bet`.`promotion_id`,`agent`.`account`,`agent`.`name`  
+                    FROM (SELECT COUNT(`bet`.`bet_id`) AS `betCount`,SUM(CASE WHEN `bet`.game_id IN(90,91) THEN `bet`.nn_view_money ELSE (CASE WHEN `bet`.bunko > 0 THEN `bet`.bunko - `bet`.bet_money ELSE `bet`.bunko END)END) AS `betMoneySum`,`bet`.`agent_id`,`bet`.`user_id`,`bet`.`promotion_id`,`agent`.`account`,`agent`.`name`  
                       FROM `bet` 
                       JOIN `agent` ON `agent`.`a_id` = `bet`.`agent_id` 
                       WHERE `bet`.`promotion_id` != 0 AND bet.`updated_at` BETWEEN :startTime AND :endTime
