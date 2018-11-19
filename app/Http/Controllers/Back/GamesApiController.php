@@ -124,15 +124,18 @@ class GamesApiController extends Controller
         $length = $request->get('length');
         $GamesApi = new GamesApi;
         $resCount = $GamesApi->count();
-        $res = $GamesApi->orderBy('g_id', 'desc')->skip($start)->take($length)->get();
+        $res = $GamesApi
+            ->skip($start)->take($length)
+            ->orderBy('g_id', 'desc')
+            ->get();
         $statusArr = $GamesApi->statusArr;
         return DataTables::of($res)
-            ->setTotalRecords($resCount)
             ->editColumn('type_id',function ($res) use ($statusArr){
                 return $statusArr[$res->type_id] ?? '';
             })
+            ->setTotalRecords($resCount)
             ->skipPaging()
-            ->make(true);
+            ->make();
     }
 
     //删除
