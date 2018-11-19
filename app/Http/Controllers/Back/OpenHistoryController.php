@@ -902,7 +902,7 @@ class OpenHistoryController extends Controller
     {
         $gameInfo = Games::where('code', $type)->first();
         $aBet = Bets::getBetAndUserByIssue($issue, $gameInfo->game_id);
-        if (empty($aBet)) return response()->json(['status' => true]);
+        if (empty($aBet)) return response()->json(['status' => true,'msg'=>'1']);
         $aCapital = [];
         $adminId = Session::get('account_id');
         $dateTime = date('Y-m-d H:i:s');
@@ -929,7 +929,7 @@ class OpenHistoryController extends Controller
             Capital::insert($aCapital);
             return response()->json(['status' => true]);
         }catch (\Exception $e){
-            return response()->json(['status' => false,'msg'=>'取消失败']);
+            return response()->json(['status' => false,'msg'=>'撤单失败']);
         }
     }
 
