@@ -151,9 +151,6 @@ class Bets extends Model
     }
 
     public static function getBetAndUserByIssue($issue,$gameId){
-        return self::select('users.id','bet.bet_money','bet.bunko','bet.order_id','bet.game_id','bet.issue','users.money')
-            ->where('bet.issue',$issue)->where('bet.game_id',$gameId)->where('bet.status',0)
-            ->join('users','users.id','=','bet.user_id')->get()->toArray();
         $aSql = "SELECT `users`.id,SUM(`bet`.bet_money) AS `bet_money`,SUM(`bet`.bunko) AS `bunko`,`bet`.game_id,`bet`.issue,`users`.money FROM `bet` 
                   WHERE `bet`.issue = :issue AND `bet`.game_id = :gameId 
                   JOIN `users` ON `users`.id = `bet`.user_id 
