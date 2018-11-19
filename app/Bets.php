@@ -159,7 +159,7 @@ class Bets extends Model
             'issue' => $issue,
             'gameId' => $gameId
         ];
-        return DB::select($aSql,$aArray)->toArray();
+        return json_decode(json_encode(DB::select($aSql,$aArray)),true);
     }
 
     public static function getBetAndUserByIssueAll($issue,$gameId,$bunko = true){
