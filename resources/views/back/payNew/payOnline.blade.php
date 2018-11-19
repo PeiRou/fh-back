@@ -3,6 +3,14 @@
 @section('title','在线支付配置')
 
 @section('content')
+    <style>
+        #addPayOnlineForm , #editPayOnlineForm{
+            padding-bottom: 40px;
+        }
+        .jconfirm-content-pane::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>在线支付配置新

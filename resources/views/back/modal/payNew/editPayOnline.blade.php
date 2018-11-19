@@ -1,4 +1,5 @@
 <link href="/js/jquery.searchableSelect.css" rel="stylesheet" type="text/css">
+<link href="/back/css/pages/Pay.css" rel="stylesheet" type="text/css">
 <style>
     .ui.mini.form .field{
         display: flex;
@@ -7,19 +8,6 @@
         min-width: 88px;
         display: flex;
         align-items: center;
-    }
-    .ui.checkbox input.hidden+label {
-        margin-right: 5px;
-    }
-    .ui.form .field {
-        clear: both;
-        margin: 0 0 0.3em;
-    }
-    .select2-container--default.select2-container--focus .select2-selection--multiple {
-        height: 1px;
-    }
-    .select2-container--default .select2-selection--multiple {
-        height: 1px;
     }
 </style>
 <form id="editPayOnlineForm" class="ui mini form" action="{{ url('/action/admin/new/editPayOnline') }}">

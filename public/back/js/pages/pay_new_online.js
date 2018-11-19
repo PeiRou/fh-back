@@ -42,7 +42,7 @@ function addPayOnline() {
         theme: 'material',
         title: '添加在线支付配置',
         closeIcon:true,
-        boxWidth:'32%',
+        boxWidth:'34%',
         content: 'url:/back/modal/addPayOnlineNew',
         buttons: {
             formSubmit: {
@@ -91,7 +91,7 @@ function edit(id) {
         theme: 'material',
         title: '修改在线支付配置',
         closeIcon:true,
-        boxWidth:'32%',
+        boxWidth:'34%',
         content: 'url:/back/modal/editPayOnlineNew/'+id,
         buttons: {
             formSubmit: {

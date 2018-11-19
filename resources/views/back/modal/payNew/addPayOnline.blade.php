@@ -1,6 +1,15 @@
 <link href="/js/jquery.searchableSelect.css" rel="stylesheet" type="text/css">
 <link href="/back/css/pages/Pay.css" rel="stylesheet" type="text/css">
-
+<style>
+    .ui.mini.form .field{
+        display: flex;
+    }
+    .ui.form .field>label{
+        min-width: 88px;
+        display: flex;
+        align-items: center;
+    }
+</style>
 <form id="addPayOnlineForm" class="ui mini form" action="{{ url('/action/admin/new/addPayOnline') }}">
     <div class="field">
         <label>支付类型</label>
