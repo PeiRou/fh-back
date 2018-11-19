@@ -2,11 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Capital;
 use App\Http\Proxy\GetDate;
 use App\Models\Chat\Users;
 use App\PromotionConfig;
 use App\PromotionReport;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class PromotionSettle extends Command
 {
@@ -60,7 +63,8 @@ class PromotionSettle extends Command
             //推荐人id
             $proportion = $iPromotion->promotion_id;
             for ($i=1;$i<=count($aConfig);$i++){
-                if($aConfig[$i]['money'] <= $iPromotion->betMoneySum && !empty($aUser[$proportion])) {
+                if($aConfig[$i]['money'] <= -$iPromotion->betMoneySum && !empty($aUser[$proportion])) {
+                    $commission = $iPromotion->betMoneySum * $aConfig[$i]['proportion']/100;
                     $aPromotionData[] = [
                         'date' => $current,
                         'promotion_id' => $aUser[$proportion]['id'],
@@ -73,7 +77,7 @@ class PromotionSettle extends Command
                         'bet_count' => $iPromotion->betCount,
                         'level' => $i,
                         'fenhong_prop' => $aConfig[$i]['proportion']/100,
-                        'commission' => $iPromotion->betMoneySum * $aConfig[$i]['proportion']/100
+                        'commission' => $commission
                     ];
                     $proportion = $aUser[$proportion]['promoter'];
                 }
@@ -89,10 +93,15 @@ class PromotionSettle extends Command
 //                $aReportData[$iPromotionData['promotion_id'].$iPromotionData['level']] = $iPromotionData;
 //            }
 //        }
-//        var_dump($aPromotionData);die();
-        PromotionReport::where('date','=',$current)->delete();
-        PromotionReport::where('date','<=',$current)->where('status','=',0)->update(['status'=>4]);
-        PromotionReport::insert($aPromotionData);
-        $this->info('Console settlement successfully.');
+        DB::beginTransaction();
+        try {
+            PromotionReport::where('date', '=', $current)->delete();
+            PromotionReport::where('date', '<=', $current)->where('status', '=', 0)->update(['status' => 4]);
+            PromotionReport::insert($aPromotionData);
+            DB::commit();
+            $this->info('Console settlement successfully.');
+        }catch (\Exception $e){
+            DB::rollback();
+        }
     }
 }

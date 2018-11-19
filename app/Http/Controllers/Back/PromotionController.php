@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Capital;
 use App\Models\Chat\Users;
 use App\PromotionConfig;
 use App\PromotionReport;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class PromotionController extends Controller
@@ -140,21 +142,30 @@ class PromotionController extends Controller
         }
         //开启事务
         DB::beginTransaction();
-        $resultOne = PromotionReview::where('id','=',$params['id'])->update(['status'=>$params['status']]);
-        $reportInfo = PromotionReview::where('id','=',$params['id'])->first();
-        if(empty($reportInfo)){
-            DB::rollBack();
-            return response()->json(['status'=>false,'msg'=>'数据错误']);
-        }
-        $resultTwo = PromotionReport::where('id','=',$reportInfo->report_id)->update(['status'=>$params['status']]);
-        $resultThree = true;
-        if($params['status'] == 1){
-            $resultThree = Users::where('id','=',$reportInfo->promotion_id)->increment('money',$reportInfo->commission);
-        }
-        if($resultTwo && $resultOne && $resultThree){
+        try {
+            PromotionReview::where('id', '=', $params['id'])->update(['status' => $params['status']]);
+            $reportInfo = PromotionReview::select('promotion_review.*','users.money')->where('promotion_review.id', '=', $params['id'])
+                ->join('users','users.id','=','promotion_review.promotion_id')->first();
+            PromotionReport::where('id', '=', $reportInfo->report_id)->update(['status' => $params['status']]);
+            if ($params['status'] == 1) {
+                Users::where('id', '=', $reportInfo->promotion_id)->increment('money', -$reportInfo->commission);
+            }
+            $adminId = Session::get('account_id');
+            $dateTime = date('Y-m-d H:i:s');
+            Capital::insert([
+                'to_user' => $reportInfo->promotion_id,
+                'user_type' => 'user',
+                'type' => 't28',
+                'rechargesType' => 0,
+                'money' => -$reportInfo->commission,
+                'balance' => $reportInfo->money - $reportInfo->commission,
+                'operation_id' => $adminId,
+                'created_at' => $dateTime,
+                'updated_at' => $dateTime,
+            ]);
             DB::commit();
             return response()->json(['status'=>true,'msg'=>'提交结算成功']);
-        }else{
+        }catch (\Exception $e){
             DB::rollBack();
             return response()->json(['status'=>true,'msg'=>'提交结算失败']);
         }
