@@ -31,7 +31,7 @@
 <div class="loginbody">
     <span class="systemlogo"></span>
     <div class="loginbox">
-        <div class="middle" style="position: absolute;width: 220px;height: 315px">
+        <div style="position: absolute;width: 220px;height: 315px">
             <img style="width: 150px;position: absolute;left: 15px;right: 0;top: 0;bottom: 0;margin: auto" src="{{ env('FRONT_LOGO') }}">
         </div>
         <ul>
