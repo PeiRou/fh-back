@@ -148,4 +148,16 @@ class GamesApiController extends Controller
         GamesApi::where('g_id',$id)->delete();
         return show(0);
     }
+    //修改gameApi表参数
+    public function editParameter(Request $request){
+        if(!($id = $request->get('id'))){
+            return show(2);
+        }
+        $data['status'] = $request->get('status');
+        if(GamesApi::where('g_id',$id)->update($data)){
+            return show(0);
+        }
+        return show(3, 'error');
+    }
+
 }

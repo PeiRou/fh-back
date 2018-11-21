@@ -31,9 +31,15 @@ $(function () {
                 }},
             {data: 'created_at'},
             {data: function(e){
-                return '<span class="edit-link" style="color:#4183c4" onclick="edit('+e.g_id+')">修改</span> | ' +
-                    '<span class="edit-link" style="color:#4183c4" onclick="del('+e.g_id+')">删除</span>';
-                }},
+                var  str = '';
+                    if(adminName == 'admin'){
+                    str = '<span class="edit-link" style="color:#4183c4" onclick="edit('+e.g_id+')">修改</span> | ' +
+                        '<span class="edit-link" style="color:#4183c4" onclick="del('+e.g_id+')">删除</span> |';
+                }
+                    var show = e.status == 1 ? '开' : '关';
+                    str += `<span class="edit-link" style="color:#4183c4" onclick="editStatus(`+e.g_id+`,`+e.status+`)">`+show+`</span>`;
+                return str;
+            }},
         ],
          language: {
              "zeroRecords": "暂无数据",
@@ -57,7 +63,27 @@ $(function () {
         }
     });
 });
+function editStatus(id,status){
 
+    var data = {
+        id:id,
+        status: status == 1 ? 0 : 1,
+    };
+    $.ajax({
+        url: '/action/admin/gamesApi/editParameter',
+        data:data,
+        type:'post',
+        dataType:'json',
+        success:function(e){
+            if(e.code == 0){
+                Calert('状态修改成功','green')
+                dataTable.ajax.reload();
+            }else{
+                Calert(e.msg,'red')
+            }
+        }
+    })
+}
 function add() {
     jc = $.confirm({
         theme: 'material',
