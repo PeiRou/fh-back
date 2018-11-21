@@ -512,6 +512,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/gamesApi/editParameter','Back\GamesApiController@editParameter')->name('ac.ad.GamesApi.editParameter'); //平台接口参数修改
 
 //Modal
+    Route::get('/back/modal/alert', 'Back\Ajax\ModalController@alert'); //添加权限
     Route::get('/back/modal/addPermission', 'Back\Ajax\ModalController@addPermission'); //添加权限
     Route::get('/back/modal/editPermission/{id}', 'Back\Ajax\ModalController@editPermission'); //修改权限
     Route::get('/back/modal/addPermissionAuth', 'Back\Ajax\ModalController@addPermissionAuth'); //添加权限控制

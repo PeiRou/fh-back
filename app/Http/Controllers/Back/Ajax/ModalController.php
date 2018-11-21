@@ -40,6 +40,15 @@ use Illuminate\Support\Facades\DB;
 
 class ModalController extends Controller
 {
+    //弹窗
+    public function alert(Request $request)
+    {
+        $msg[0] = $request->get('content');
+        $msg[1] = $request->get('value');
+        $msg[2] = $request->get('url');
+        $msg[3] = $request->get('type');
+        return view('back.modal.notice.alert',compact('msg'));
+    }
     //添加权限
     public function addPermission()
     {
