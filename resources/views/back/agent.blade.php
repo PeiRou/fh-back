@@ -55,14 +55,10 @@
                 <th>在线</th>
                 <th>上级总代理</th>
                 <th>代理</th>
-                @if(env('TEST',0) == 1)
                 <th>下级代理数</th>
-                @endif
                 <th>会员数</th>
                 <th>可用余额</th>
-                @if(env('TEST',0) == 1)
                 <th>模式</th>
-                @endif
                 <th>状态</th>
                 <th>修改赔率</th>
                 <th>新增时间</th>
@@ -82,14 +78,10 @@
             {data:'online'},
             {data:'general_agent'},
             {data:'agent'},
-        @if(env('TEST',0) == 1)
             {data:'agentCount'},
-        @endif
             {data:'members'},
             {data:'balance'},
-        @if(env('TEST',0) == 1)
             {data:'model'},
-        @endif
             {data:'status'},
             {data:'editOdds'},
             {data:'created_at'},
