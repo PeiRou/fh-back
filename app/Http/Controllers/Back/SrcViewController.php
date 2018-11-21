@@ -52,15 +52,6 @@ class SrcViewController extends Controller
         'bjkl8' => 'back.open.bjkl8', //北京快乐8
         'cqxync' => 'back.open.cqxync', //重庆幸运农场
     ];
-
-    //代理登录页面
-    /**
-     * SrcViewController constructor.
-     */
-    public function AgentLogin()
-    {
-        return view('back.agentLogin');
-    }
     
     //管理登录页面
     public function AdminLogin()

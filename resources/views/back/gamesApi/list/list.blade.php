@@ -45,5 +45,11 @@
 @endsection
 
 @section('page-js')
+    <script>
+        var adminName = '';
+    <?php if(Session::get('account') === 'admin'){ ?>
+        adminName = 'admin';
+    <?php } ?>
+    </script>
     <script src="/back/js/pages/gamesApi_list.js"></script>
 @endsection

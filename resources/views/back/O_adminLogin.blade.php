@@ -10,9 +10,9 @@
 
     <link rel="shortcut icon" type="image/png" href="{{ env('ICON') }}"/>
     <script src="/js/jquery.min.js"></script>
-    <script src="{{ asset('back/old/cloud.js') }}"></script>
-    <script src="{{ asset('back/old/login.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('back/old/login.css') }}">
+    <script src="/back/old/cloud.js"></script>
+    <script src="/back/old/login.js"></script>
+    <link rel="stylesheet" href="/back/old/login.css">
 </head>
 <body id="login">
 <div id="mainBody">
@@ -31,6 +31,9 @@
 <div class="loginbody">
     <span class="systemlogo"></span>
     <div class="loginbox">
+        <div style="position: absolute;width: 220px;height: 315px">
+            <img style="width: 150px;position: absolute;left: 15px;right: 0;top: 0;bottom: 0;margin: auto" src="{{ env('FRONT_LOGO') }}">
+        </div>
         <ul>
             <li><input id="userName" type="text" class="loginuser" value="" onclick="javascript:this.value=''" /></li>
             <li><input id="userPwd" type="password" class="loginpwd" value="" onclick="javascript:this.value=''" /></li>
@@ -45,9 +48,5 @@
         </ul>
     </div>
 </div>
-
-<!-- <div class="loginbm">
-    版权所有 2013 <a href="#">CZ</a>
-</div> -->
 </body>
 </html>

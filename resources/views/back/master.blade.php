@@ -482,7 +482,7 @@
                     平台设置</a>
                 <ul>
                     @if($hasPermission->hasPermission('GamesApi.List') == "has")
-                        <li id="menu-GamesApi-List"><a href="{{ route('GamesApi.List') }}"><cite></cite><span>接口列表</span></a></li>
+                        <li id="menu-GamesApi-List"><a href="{{ route('GamesApi.List') }}"><cite></cite><span>第三方游戏</span></a></li>
                     @endif
                 </ul>
             </li>
