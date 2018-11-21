@@ -34,7 +34,7 @@ $(function () {
                 var  str = '';
                     if(adminName == 'admin'){
                     str = '<span class="edit-link" style="color:#4183c4" onclick="edit('+e.g_id+')">修改</span> | ' +
-                        '<span class="edit-link" style="color:#4183c4" onclick="del('+e.g_id+')">删除</span> |';
+                        '<span class="edit-link" style="color:#4183c4" onclick="del('+e.g_id+')">删除</span> | ';
                 }
                     var show = e.status == 1 ? '打开' : '关闭';
                     str += `<span class="edit-link" style="color:#4183c4" onclick="editStatus(`+e.g_id+`,`+e.status+`)">`+show+`</span>`;
