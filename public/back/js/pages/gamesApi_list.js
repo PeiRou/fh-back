@@ -31,13 +31,16 @@ $(function () {
                 }},
             {data: 'created_at'},
             {data: function(e){
-                var  str = '';
-                    if(adminName == 'admin'){
-                    str = '<span class="edit-link" style="color:#4183c4" onclick="edit('+e.g_id+')">修改</span> | ' +
-                        '<span class="edit-link" style="color:#4183c4" onclick="del('+e.g_id+')">删除</span> | ';
+                var  str = '<ul class="control-menu">';
+                var open = '<span class="status-1">开启</span>';
+                var back = '<span class="status-3">关闭</span>';
+                var show = e.status == 1 ? back : open;
+                str += `<li onclick="editStatus(`+e.g_id+`,`+e.status+`)">`+show+`</li>`;
+                if(adminName == 'admin'){
+                    str += '<li onclick="edit('+e.g_id+')">修改</li>' +
+                        '<li onclick="del('+e.g_id+')">删除</li>';
                 }
-                    var show = e.status == 1 ? '打开' : '关闭';
-                    str += `<span class="edit-link" style="color:#4183c4" onclick="editStatus(`+e.g_id+`,`+e.status+`)">`+show+`</span>`;
+                    str += `</ul>`;
                 return str;
             }},
         ],
@@ -64,25 +67,42 @@ $(function () {
     });
 });
 function editStatus(id,status){
-
-    var data = {
-        id:id,
-        status: status == 1 ? 0 : 1,
-    };
-    $.ajax({
-        url: '/action/admin/gamesApi/editParameter',
-        data:data,
-        type:'post',
-        dataType:'json',
-        success:function(e){
-            if(e.code == 0){
-                Calert('状态修改成功','green')
-                dataTable.ajax.reload();
-            }else{
-                Calert(e.msg,'red')
+    jc = $.confirm({
+        title: '确定要改变吗？',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '请确认您的操作',
+        buttons: {
+            confirm: {
+                text:'确定',
+                btnClass: 'btn-red',
+                action: function(){
+                    var data = {
+                        id:id,
+                        status: status == 1 ? 0 : 1,
+                    };
+                    $.ajax({
+                        url: '/action/admin/gamesApi/editParameter',
+                        data:data,
+                        type:'post',
+                        dataType:'json',
+                        success:function(e){
+                            if(e.code == 0){
+                                // Calert('状态修改成功','green')
+                                dataTable.ajax.reload();
+                            }else{
+                                Calert(e.msg,'red')
+                            }
+                        }
+                    })
+                }
+            },
+            cancel:{
+                text:'取消'
             }
         }
-    })
+    });
 }
 function add() {
     jc = $.confirm({
