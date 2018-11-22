@@ -1244,7 +1244,7 @@ class OpenHistoryController extends Controller
             }
             /* 临时添加 end */
             DB::commit();
-            if(!in_array($type,['lhc']))
+            if(in_array($type,['lhc']))
                 $this->reOpenLhc($number, $issue);
             return ['status' => true,'msg'=>'操作成功'];
         }catch(\Exception $e){
