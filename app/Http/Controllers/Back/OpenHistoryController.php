@@ -1393,7 +1393,7 @@ class OpenHistoryController extends Controller
             'open_num' => $openNum,
             'total_num' => $totalNum,
             'bunko' => 0,
-            'is_open' => 1,
+            'is_open' => 2,
         ]);
         $iInfo = DB::table('game_lhc')->where('issue',$issue)->first();
         event(new RunLHC($openNum,$issue,70,$iInfo->id));
