@@ -1236,8 +1236,9 @@ class OpenHistoryController extends Controller
                 $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['niuniu' => $opennum]);
             }
-            if(in_array($type,['lhc']))
-                $this->reOpenLhc($number,$issue);
+            if(in_array($type,['lhc'])) {
+                $this->reOpenLhc($number, $issue);
+            }
             else
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue', $issue)->update(['is_open' => 1, 'bunko' => 0, 'opennum' => $number]);
             if(in_array($type,['pk10','bjkl8'])){
@@ -1367,7 +1368,7 @@ class OpenHistoryController extends Controller
         $openNum = $Number['n1'].','.$Number['n2'].','.$Number['n3'].','.$Number['n4'].','.$Number['n5'].','.$Number['n6'].','.$Number['n7'];
         $totalNum = (int)$Number['n1']+(int)$Number['n2']+(int)$Number['n3']+(int)$Number['n4']+(int)$Number['n5']+(int)$Number['n6']+(int)$Number['n7'];
 
-        return DB::table('game_lhc')->where('issue',$issue)->update([
+        DB::table('game_lhc')->where('issue',$issue)->update([
             'n1' => $Number['n1'],
             'n2' => $Number['n2'],
             'n3' => $Number['n3'],
@@ -1394,6 +1395,8 @@ class OpenHistoryController extends Controller
             'bunko' => 0,
             'is_open' => 1,
         ]);
+        $iInfo = DB::table('game_lhc')->where('issue',$issue)->first();
+        event(new RunLHC($openNum,$issue,70,$iInfo->id));
     }
 
 }
