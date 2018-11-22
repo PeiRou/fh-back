@@ -1396,7 +1396,7 @@ class OpenHistoryController extends Controller
             'is_open' => 1,
         ]);
         $iInfo = DB::table('game_lhc')->where('issue',$issue)->first();
-//        event(new RunLHC($openNum,$issue,70,$iInfo->id));
+        event(new RunLHC($openNum,$issue,70,$iInfo->id));
     }
 
 }
