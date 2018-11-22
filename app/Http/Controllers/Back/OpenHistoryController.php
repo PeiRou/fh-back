@@ -1392,8 +1392,8 @@ class OpenHistoryController extends Controller
             'n7_sx' => $this->LHC->shengxiao($Number['n7']),
             'open_num' => $openNum,
             'total_num' => $totalNum,
-            'bunko' => 0,
-            'is_open' => 2,
+            'bunko' => 2,
+            'is_open' => 1,
         ]);
         $iInfo = DB::table('game_lhc')->where('issue',$issue)->first();
 //        event(new RunLHC($openNum,$issue,70,$iInfo->id));
