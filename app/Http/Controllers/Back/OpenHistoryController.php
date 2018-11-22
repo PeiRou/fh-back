@@ -1244,13 +1244,15 @@ class OpenHistoryController extends Controller
             }
             /* 临时添加 end */
             DB::commit();
-            if(in_array($type,['lhc']))
-                $this->reOpenLhc($number, $issue);
-            return ['status' => true,'msg'=>'操作成功'];
+            if(!in_array($type,['lhc']))
+                return ['status' => true,'msg'=>'操作成功'];
         }catch(\Exception $e){
             DB::rollback();
             return ['status' => false,'msg' => '撤单失败'];
         }
+        if(in_array($type,['lhc']))
+            $this->reOpenLhc($number, $issue);
+        return ['status' => true,'msg'=>'操作成功'];
     }
 
     //通过标识获取开奖号
@@ -1395,7 +1397,7 @@ class OpenHistoryController extends Controller
             'is_open' => 1,
         ]);
         $iInfo = DB::table('game_lhc')->where('issue',$issue)->first();
-//        event(new RunLHC($openNum,$issue,70,$iInfo->id));
+        event(new RunLHC($openNum,$issue,70,$iInfo->id));
     }
 
 }
