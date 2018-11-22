@@ -36,7 +36,7 @@ class Games extends Model
         'xyft' => '',           //幸运飞艇
         'paoma' => 'paoma',     //香港跑马
         'pk10nn' => 'pknn',     //PK10牛牛
-        'msnn' => '',           //秒速牛牛
+        'msnn' => 'mssc',       //秒速牛牛
         'ahk3' => 'ahk3',       //安徽快3
         'gxk3' => 'gxk3',       //广西快3
         'hbk3' => 'hbk3',       //湖北快3
