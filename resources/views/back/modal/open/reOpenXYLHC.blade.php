@@ -116,7 +116,7 @@
         $('.modal-mask').fadeIn();
         $('.getBtn').html('获取中...');
         $.ajax({
-            url:'/back/openData/lhc/'+date+'/'+issue.slice(2),
+            url:'/back/openData/xylhc/'+date+'/'+issue.slice(2),
             type:'get',
             dataType:'json',
             success:function (result) {
