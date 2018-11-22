@@ -1236,9 +1236,7 @@ class OpenHistoryController extends Controller
                 $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['niuniu' => $opennum]);
             }
-            if(in_array($type,['lhc']))
-                $this->reOpenLhc($number, $issue);
-            else
+            if(!in_array($type,['lhc']))
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue', $issue)->update(['is_open' => 1, 'bunko' => 0, 'opennum' => $number]);
             if(in_array($type,['pk10','bjkl8'])){
                 $gameInfo = Games::where('code',Games::$aCodeBindingGame[$type])->first();
@@ -1246,11 +1244,15 @@ class OpenHistoryController extends Controller
             }
             /* 临时添加 end */
             DB::commit();
-            return ['status' => true,'msg'=>'操作成功'];
+            if(!in_array($type,['lhc']))
+                return ['status' => true,'msg'=>'操作成功'];
         }catch(\Exception $e){
             DB::rollback();
             return ['status' => false,'msg' => '撤单失败'];
         }
+        if(in_array($type,['lhc']))
+            $this->reOpenLhc($number, $issue);
+        return ['status' => true,'msg'=>'操作成功'];
     }
 
     //通过标识获取开奖号
