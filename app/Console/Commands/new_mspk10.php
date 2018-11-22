@@ -95,6 +95,9 @@ class new_mspk10 extends Command
             Redis::set('msnn:nextIssue',(int)$New_nextIssue);
             Redis::set('msnn:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msnn:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+            $info = DB::connection('mysql::write')->table('game_mssc')->where('issue',$res->expect)->where('is_open',0)->first();
+            if(empty($info))
+                return false;
             //---kill start
             $table = 'game_mssc';
             $excel = new Excel();
