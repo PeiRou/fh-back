@@ -84,12 +84,12 @@ class new_paoma extends Command
             Redis::set('paoma:nextIssue',(int)$nextIssue+1);
             Redis::set('paoma:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('paoma:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-            $info = DB::connection('mysql::write')->table('game_paoma')->where('issue',$res->expect)->where('is_open',0)->first();
-            if(empty($info))
-                return false;
             //---kill start
             $table = 'game_paoma';
             $excel = new Excel();
+            $info = DB::connection('mysql::write')->table($table)->where('issue',$res->expect)->where('is_open',0)->first();
+            if(empty($info))
+                return '';
             $opennum = $excel->kill_count($table,$res->expect,$this->gameId,$res->opencode);
             //---kill end
             $opencode = empty($opennum)?$res->opencode:$opennum;

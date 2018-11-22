@@ -91,12 +91,12 @@ class new_msft extends Command
             Redis::set('msft:nextIssue',(int)$New_nextIssue);
             Redis::set('msft:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msft:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-            $info = DB::connection('mysql::write')->table('game_msft')->where('issue',$res->expect)->where('is_open',0)->first();
-            if(empty($info))
-                return false;
             //---kill start
             $table = 'game_msft';
             $excel = new Excel();
+            $info = DB::connection('mysql::write')->table($table)->where('issue',$res->expect)->where('is_open',0)->first();
+            if(empty($info))
+                return '';
             $opennum = $excel->kill_count($table,$res->expect,$this->gameId,$res->opencode);
             //---kill end
             $opencode = empty($opennum)?$res->opencode:$opennum;

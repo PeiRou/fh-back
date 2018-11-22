@@ -77,12 +77,12 @@ class new_msjsk3 extends Command
             Redis::set('msjsk3:nextIssue',(int)$New_nextIssue);
             Redis::set('msjsk3:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msjsk3:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-            $info = DB::connection('mysql::write')->table('game_msjsk3')->where('issue',$res->expect)->where('is_open',0)->first();
-            if(empty($info))
-                return false;
             
             $table = 'game_msjsk3';
             $excel = new Excel();
+            $info = DB::connection('mysql::write')->table($table)->where('issue',$res->expect)->where('is_open',0)->first();
+            if(empty($info))
+                return '';
             //---kill start
             $opennum = $excel->kill_count($table,$res->expect,$this->gameId,$res->opencode);
             //---kill end

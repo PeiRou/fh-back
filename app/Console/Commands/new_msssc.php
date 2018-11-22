@@ -92,12 +92,12 @@ class new_msssc extends Command
             Redis::set('msssc:nextIssue',(int)$New_nextIssue);
             Redis::set('msssc:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-            $info = DB::connection('mysql::write')->table('game_msssc')->where('issue',$res->expect)->where('is_open',0)->first();
-            if(empty($info))
-                return false;
             //---kill start
             $table = 'game_msssc';
             $excel = new Excel();
+            $info = DB::connection('mysql::write')->table($table)->where('issue',$res->expect)->where('is_open',0)->first();
+            if(empty($info))
+                return '';
             $opennum = $excel->kill_count($table,$res->expect,$this->gameId,$res->opencode);
             //---kill end
             $opencode = empty($opennum)?$res->opencode:$opennum;
