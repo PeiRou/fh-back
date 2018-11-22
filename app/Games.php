@@ -65,6 +65,8 @@ class Games extends Model
         'gd11x5' => ['gd11x5'],
         //北京快乐8
         'bjkl8' => ['bjkl8'],
+        //香港六合彩
+        'lhc' => ['lhc'],
     ];
 
     public static $aTableByGameId = [

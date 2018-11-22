@@ -1220,6 +1220,7 @@ class OpenHistoryController extends Controller
 
             Bets::updateBetBunkoClear($issue, $gameInfo->game_id);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
+
             /* 临时添加 */
             if($type == 'pcdd'){ //如果是北京快乐8  修改pc蛋蛋的号码
                 $number = implode(',',$this->exePCdd($number));
@@ -1235,8 +1236,10 @@ class OpenHistoryController extends Controller
                 $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['niuniu' => $opennum]);
             }
-            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
-
+            if(in_array($type,['lhc']))
+                $this->reOpenLhc($number);
+            else
+                DB::table('game_' . Games::$aCodeGameName[$type])->where('issue', $issue)->update(['is_open' => 1, 'bunko' => 0, 'opennum' => $number]);
             if(in_array($type,['pk10','bjkl8'])){
                 $gameInfo = Games::where('code',Games::$aCodeBindingGame[$type])->first();
                 $this->renewLotteryOperating($issue,Games::$aCodeBindingGame[$type],$gameInfo,$number);
@@ -1344,6 +1347,51 @@ class OpenHistoryController extends Controller
             (int)$aParam['n18'],
             (int)$aParam['n19'],
             (int)$aParam['n20'],
+        ]);
+    }
+
+    public function getlhcNumber($aParam){
+        return [
+            'n1' => $aParam['n1'],
+            'n2' => $aParam['n2'],
+            'n3' => $aParam['n3'],
+            'n4' => $aParam['n4'],
+            'n5' => $aParam['n5'],
+            'n6' => $aParam['n6'],
+            'n7' => $aParam['n7'],
+        ];
+    }
+
+    //六合彩重新开奖新
+    public function reOpenLhc($Number,$issue){
+        $openNum = $Number['n1'].','.$Number['n2'].','.$Number['n3'].','.$Number['n4'].','.$Number['n5'].','.$Number['n6'].','.$Number['n7'];
+        $totalNum = (int)$Number['n1']+(int)$Number['n2']+(int)$Number['n3']+(int)$Number['n4']+(int)$Number['n5']+(int)$Number['n6']+(int)$Number['n7'];
+
+        return DB::table('game_lhc')->where('issue',$issue)->update([
+            'n1' => $Number['n1'],
+            'n2' => $Number['n2'],
+            'n3' => $Number['n3'],
+            'n4' => $Number['n4'],
+            'n5' => $Number['n5'],
+            'n6' => $Number['n6'],
+            'n7' => $Number['n7'],
+            'n1_sb' => $this->LHC->sebo($Number['n1']),
+            'n2_sb' => $this->LHC->sebo($Number['n2']),
+            'n3_sb' => $this->LHC->sebo($Number['n3']),
+            'n4_sb' => $this->LHC->sebo($Number['n4']),
+            'n5_sb' => $this->LHC->sebo($Number['n5']),
+            'n6_sb' => $this->LHC->sebo($Number['n6']),
+            'n7_sb' => $this->LHC->sebo($Number['n7']),
+            'n1_sx' => $this->LHC->shengxiao($Number['n1']),
+            'n2_sx' => $this->LHC->shengxiao($Number['n2']),
+            'n3_sx' => $this->LHC->shengxiao($Number['n3']),
+            'n4_sx' => $this->LHC->shengxiao($Number['n4']),
+            'n5_sx' => $this->LHC->shengxiao($Number['n5']),
+            'n6_sx' => $this->LHC->shengxiao($Number['n6']),
+            'n7_sx' => $this->LHC->shengxiao($Number['n7']),
+            'open_num' => $openNum,
+            'total_num' => $totalNum,
+            'bunko' => 0
         ]);
     }
 
