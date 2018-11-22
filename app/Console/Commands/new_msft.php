@@ -91,6 +91,9 @@ class new_msft extends Command
             Redis::set('msft:nextIssue',(int)$New_nextIssue);
             Redis::set('msft:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('msft:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+            $info = DB::connection('mysql::write')->table('game_msft')->where('issue',$res->expect)->where('is_open',0)->first();
+            if(empty($info))
+                return false;
             //---kill start
             $table = 'game_msft';
             $excel = new Excel();
