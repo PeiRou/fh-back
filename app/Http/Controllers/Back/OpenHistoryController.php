@@ -1237,7 +1237,7 @@ class OpenHistoryController extends Controller
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['niuniu' => $opennum]);
             }
             if(in_array($type,['lhc']))
-                $this->reOpenLhc($number);
+                $this->reOpenLhc($number,$issue);
             else
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue', $issue)->update(['is_open' => 1, 'bunko' => 0, 'opennum' => $number]);
             if(in_array($type,['pk10','bjkl8'])){
