@@ -1233,6 +1233,7 @@ class OpenHistoryController extends Controller
                 $niuniu = $this->exePK10nn($number);
                 $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['niuniu' => $opennum]);
+                Bets::updateBetBunkoClear($issue, 91);
             }
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 1,'bunko' => 0,'opennum' => $number]);
 
