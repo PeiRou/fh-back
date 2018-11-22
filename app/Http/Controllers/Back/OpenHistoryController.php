@@ -1391,7 +1391,8 @@ class OpenHistoryController extends Controller
             'n7_sx' => $this->LHC->shengxiao($Number['n7']),
             'open_num' => $openNum,
             'total_num' => $totalNum,
-            'bunko' => 0
+            'bunko' => 0,
+            'is_open' => 1,
         ]);
     }
 
