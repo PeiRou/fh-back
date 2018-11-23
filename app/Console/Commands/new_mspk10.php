@@ -60,6 +60,8 @@ class new_mspk10 extends Command
 //                return $value;
 //            }
         });
+        \Log::info('start');
+        \Log::info($filtered);
         if($filtered!=null){
             if($filtered['issue'] >= 793 && $filtered['issue'] <= 1105){
                 $date = Carbon::parse(date('Y-m-d'))->addDays(-1);
