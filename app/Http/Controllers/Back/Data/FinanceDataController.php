@@ -17,6 +17,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Artisan;
 
 class FinanceDataController extends Controller
 {
@@ -506,12 +507,21 @@ class FinanceDataController extends Controller
             ->make(true);
     }
     
-    //会员对账
-    public function memberReconciliation()
+    //会员对账执行
+    public function memberReconciliation(Request $request)
     {
-//        $userRecon = UserRecon::all();
-//        return DataTables::of($userRecon)
-//            ->make(true);
+        $data = $request->all();
+        $commandstr = 'Member:DailyReconTotal';
+        $commandata = [
+            'dayTime'=>$data['dayTime'],
+            'user'=>$data['user']
+        ];
+        Artisan::call($commandstr,$commandata);
+
+        return response()->json([
+            'status'=>true,
+            'msg'=>'执行成功'
+        ]);
     }
     
     //代理对账
