@@ -38,6 +38,7 @@ class new_cqxync extends Command
         });
         if($filtered!=null){
             $nowIssueTime = date('Y-m-d').' '.$filtered['time'];
+            \Log::info('game_cqxync '.$nowIssueTime);
             $getIssue = DB::table('game_cqxync')->where('opentime','=',$nowIssueTime)->first();
             $nextIssue = $getIssue->issue;
 
