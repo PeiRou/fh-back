@@ -107,7 +107,7 @@ class SystemDataController extends Controller
         $status = Feedback::$feedbackStatus;
         return DataTables::of($data)
             ->editColumn('user_account',function ($data){
-                return  $data->user_account.'('.$data->user_name.')';
+                return  $data->user_account;
             })
             ->editColumn('type',function ($data) use ($type){
                 return  $type[$data->type];

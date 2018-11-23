@@ -69,6 +69,24 @@ class OpenApiGetController extends Controller
         return implode(',',$aArray);
     }
 
+    //幸运六合彩
+    public function xylhc($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+        ];
+    }
+
 
     //秒速快3
     public function msjsk3($arrCode){

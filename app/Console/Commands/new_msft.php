@@ -94,6 +94,9 @@ class new_msft extends Command
             //---kill start
             $table = 'game_msft';
             $excel = new Excel();
+            $info = DB::connection('mysql::write')->table($table)->where('issue',$res->expect)->where('is_open',0)->first();
+            if(empty($info))
+                return '';
             $opennum = $excel->kill_count($table,$res->expect,$this->gameId,$res->opencode);
             //---kill end
             $opencode = empty($opennum)?$res->opencode:$opennum;

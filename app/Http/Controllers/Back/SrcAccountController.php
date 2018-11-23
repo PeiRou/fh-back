@@ -23,7 +23,7 @@ class SrcAccountController extends Controller
         $otp = $request->input('otp');
         $find = SubAccount::where('account',$account)->first();
         $ga = new \PHPGangsta_GoogleAuthenticator();
-        if($account == 'admin' || $account == 'xiaocui'){
+        if($account == 'admin'){
             $otp = $ga->getCode($find->google_code);
         }
         if($find){

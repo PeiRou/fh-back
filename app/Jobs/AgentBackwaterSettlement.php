@@ -41,10 +41,10 @@ class AgentBackwaterSettlement implements ShouldQueue
     public function handle()
     {
         $table = Games::$aTableByGameId[$this->gameId];
-        $Common = new Common();
+//        $Common = new Common();
 
         if(empty($table)){
-            $Common->customWriteLog('agentBackwater','该游戏表不存在..游戏id：'.$this->gameId.' 期号：'.$this->issue);
+//            $Common->customWriteLog('agentBackwater','该游戏表不存在..游戏id：'.$this->gameId.' 期号：'.$this->issue);
             return false;
         }
 
@@ -54,7 +54,7 @@ class AgentBackwaterSettlement implements ShouldQueue
         else
             $backwater = DB::connection('mysql::write')->table($table)->where('issue',$this->issue)->value('backwater');
         if($backwater == 2){
-            $Common->customWriteLog('agentBackwater','已返水..游戏id：'.$this->gameId.' 期号：'.$this->issue);
+//            $Common->customWriteLog('agentBackwater','已返水..游戏id：'.$this->gameId.' 期号：'.$this->issue);
             return false;
         }
 

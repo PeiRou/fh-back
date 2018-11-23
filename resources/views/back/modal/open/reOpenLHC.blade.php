@@ -1,7 +1,7 @@
 <div class="modal-mask">
     <div>获取开奖数据中...请稍后</div>
 </div>
-<form id="reOpenLhc" class="ui mini form" action="{{ url('/action/admin/reOpenLhc') }}">
+<form id="reOpenLhc" class="ui mini form" action="{{ url('/action/admin/renewLottery/'.$lhc->issue.'/lhc') }}">
     <div class="field" style="width: 120px;">
         <label>期号</label>
         <div class="ui input icon">

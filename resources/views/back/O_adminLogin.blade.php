@@ -10,9 +10,9 @@
 
     <link rel="shortcut icon" type="image/png" href="{{ env('ICON') }}"/>
     <script src="/js/jquery.min.js"></script>
-    <script src="{{ asset('back/old/cloud.js') }}"></script>
-    <script src="{{ asset('back/old/login.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('back/old/login.css') }}">
+    <script src="/back/old/cloud.js"></script>
+    <script src="/back/old/login.js"></script>
+    <link rel="stylesheet" href="/back/old/login.css">
 </head>
 <body id="login">
 <div id="mainBody">
