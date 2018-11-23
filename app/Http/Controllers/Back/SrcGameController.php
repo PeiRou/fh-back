@@ -14,6 +14,9 @@ use PhpParser\Node\Expr\Array_;
 
 class SrcGameController extends Controller
 {
+    private function clearUserGameList(){
+        DB::table('user_game_list')->truncate();//清空表
+    }
     //修改游戏设定
     public function editGameSetting(Request $request)
     {
@@ -30,7 +33,7 @@ class SrcGameController extends Controller
                     'order'=>$order
                 ]);
             if($update == 1){
-                DB::table('user_game_list')->truncate();
+                $this->clearUserGameList();//清空表
                 return response()->json([
                     'status'=>true,
                     'msg'=>'ok'
@@ -76,6 +79,7 @@ class SrcGameController extends Controller
                 'status'=>$type
             ]);
         if($update == 1){
+            $this->clearUserGameList();//清空表
             return response()->json([
                 'status'=>true,
                 'msg'=>'ok'
