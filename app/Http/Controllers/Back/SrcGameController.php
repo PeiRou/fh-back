@@ -14,6 +14,7 @@ use PhpParser\Node\Expr\Array_;
 
 class SrcGameController extends Controller
 {
+    //清空用户保存的游戏排序表
     private function clearUserGameList(){
         DB::table('user_game_list')->truncate();//清空表
     }
