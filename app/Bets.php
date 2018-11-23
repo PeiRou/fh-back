@@ -64,6 +64,7 @@ class Bets extends Model
                 if (isset($param['amount_max']) && array_key_exists('amount_max', $param)) {
                     $sql->where('bet.bunko', '<=', $param['amount_max']);
                 }
+                $sql->where('users.testFlag',0);
             })->leftJoin('users', 'users.id', '=', 'bet.user_id')->leftJoin('game', 'game.game_id', '=', 'bet.game_id');
         return $aSql;
     }
