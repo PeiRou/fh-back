@@ -65,23 +65,25 @@ class LogDataController extends Controller
         $param = $request->all();
         $logHandleSql = LogHandle::where(function ($sql) use ($param){
             if(isset($param['username']) && array_key_exists('username',$param)){
-                $sql->where('username','=',$param['username']);
+                $sql->where('log_handle.username','=',$param['username']);
             }
             if(isset($param['type_id']) && array_key_exists('type_id',$param)){
-                $sql->where('type_id','=',$param['type_id']);
+                $sql->where('log_handle.type_id','=',$param['type_id']);
             }
             if(isset($param['param']) && array_key_exists('param',$param)){
-                $sql->where('param','=',$param['param']);
+                $sql->where('log_handle.param','=',$param['param']);
             }
             if(isset($param['startTime']) && array_key_exists('startTime',$param)){
-                $sql->where('create_at','>=',$param['startTime'] . ' 00:00:00');
+                $sql->where('log_handle.create_at','>=',$param['startTime'] . ' 00:00:00');
             }
             if(isset($param['endTime']) && array_key_exists('endTime',$param)){
-                $sql->where('create_at','<=',$param['endTime'] . ' 23:59:59');
+                $sql->where('log_handle.create_at','<=',$param['endTime'] . ' 23:59:59');
             }
         });
         $logHandleCount =  $logHandleSql->count();
-        $logHandle = $logHandleSql->orderBy('create_at','desc')->skip($param['start'])->take($param['length'])->get();
+        $logHandle = $logHandleSql->select('log_handle.id','log_handle.user_id','log_handle.username','log_handle.type_name','log_handle.ip','permissions_auth.auth_name as action','log_handle.create_at','log_handle.param')
+            ->leftJoin('permissions_auth','permissions_auth.route_name','=','log_handle.route')
+            ->orderBy('create_at','desc')->skip($param['start'])->take($param['length'])->get();
         return DataTables::of($logHandle)
             ->editColumn('action',function ($logHandle){
                 $str = $logHandle->action;

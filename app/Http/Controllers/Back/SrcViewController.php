@@ -281,9 +281,28 @@ class SrcViewController extends Controller
         return view('back.freezeRecord');
     }
     //会员对账
-    public function memberReconciliation()
+    public function memberReconciliation(Request $request)
     {
-        return view('back.memberReconciliation');
+        $aParam = $request->input();
+        if (!empty($aParam['daytime'])){
+            $date = date('Y-m-d',strtotime($aParam['daytime']));
+        }else{
+            $date=date('Y-m-d',strtotime(date('Y-m-d').' -1day'));
+        }
+        $daytstrot = strtotime(date($date));
+
+        $totalreportsql = 'select * from totalreport where daytstrot = \''.$daytstrot.'\'';
+        $totalreport =  DB::select($totalreportsql);
+        if (!empty($totalreport)){
+            $data = $totalreport[0]->data;
+            $data = unserialize($data) ;
+            $memberquota = $totalreport[0]->memberquota;
+        }else{
+            $data ='';
+            $memberquota ='';
+        }
+
+        return view('back.memberReconciliation',compact('data','date','memberquota'));
     }
     //代理对账
     public function agentReconciliation()

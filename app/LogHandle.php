@@ -16,7 +16,7 @@ class LogHandle extends Model
         $dataLists = [];
         foreach ($routeLists as $routeList){
             $dataLists[] = [
-                'type_id' => $routeList->id,
+                'type_id' => $routeList->type_pefix,
                 'type_name' => $routeList->type_name
             ];
         }
