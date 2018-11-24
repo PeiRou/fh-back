@@ -68,7 +68,7 @@ class Excel
                     if($i->nn_view_money<0){
                         continue;
                     }
-                    $bunko = $i->nn_view_money;
+                    $bunko = $i->nn_view_money + $i->bet_money;
                 }else{
                     $bunko = $i->bunko;
                 }
