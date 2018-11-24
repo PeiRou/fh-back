@@ -49,10 +49,8 @@ class next_issue_pk10 extends Command
         $redis = Redis::connection();
         $redis->select(0);
         $beforeLotteryTime = $redis->get('pk10:nextIssueEndTime');
-        if($beforeLotteryTime>=time()){
-            \Log::info('no need');
+        if($beforeLotteryTime>=time())
             return 'no need';
-        }
         //下一期獎期
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
@@ -68,7 +66,6 @@ class next_issue_pk10 extends Command
         $redis->set('pk10:nextIssue',(int)$nextIssue+1);
         $redis->set('pk10:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
         $redis->set('pk10:nextIssueEndTime',strtotime($nextIssueEndTime));
-        \Log::info('Ok');
         return 'Ok';
     }
 }
