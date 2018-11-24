@@ -1003,14 +1003,14 @@ class OpenHistoryController extends Controller
     //冻结后的撤单操作
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id,false);
-        if(!in_array($type,['msnn']))
-            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
 
         $aAgentBackwater = AgentBackwater::getAgentBackwaterMoney($gameInfo->game_id,$issue);
 
         DB::beginTransaction();
 
         try {
+            if(!in_array($type,['msnn']))
+                DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
             Bets::updateBetStatus($issue, $gameInfo->game_id);
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataReturn($aBetAll);
@@ -1032,8 +1032,6 @@ class OpenHistoryController extends Controller
                         'rechargesType' => 0,
                         'game_id' => $gameInfo->game_id,
                         'game_name' => $gameInfo->game_name,
-                        'playcate_id' => $iBet->playcate_id,
-                        'playcate_name' => $iBet->playcate_name,
                         'issue' => $iBet->issue,
                         'money' => $iBet->bet_money,
                         'balance' => $iBet->money + $aArrayMoney[$iBet->id],
