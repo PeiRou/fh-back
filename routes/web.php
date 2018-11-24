@@ -237,7 +237,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/reportStatistics', 'Back\Data\ReportDataController@Statistics');       //报表管理-操作报表
     Route::get('/back/datatables/reportRegister', 'Back\Data\ReportDataController@Register');       //报表管理-注册报表
     Route::get('/back/datatables/reportRegisterTotal', 'Back\Data\ReportDataController@RegisterTotal');       //报表管理-注册报表总计
-    Route::get('/back/datatables/reportBrowse', 'Back\Data\ReportDataController@Browse');       //报表管理-访问报表
+    Route::any('/back/datatables/reportBrowse', 'Back\Data\ReportDataController@Browse');       //报表管理-访问报表
 //    Route::get('/back/datatables/reportBrowseTotal', 'Back\Data\ReportDataController@BrowseTotal');       //报表管理-访问报表总计 功能未实现,预留
     Route::get('/back/datatables/reportBet', 'Back\Data\ReportDataController@Bet');
     Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal'); //报表管理-总代总计
