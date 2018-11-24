@@ -53,8 +53,15 @@ class next_open_bjkl8 extends Command
         $redis_issue = $redis->get('bjkl8:issue');
         $redis_needopen = $redis->exists('bjkl8:needopen')?$redis->get('bjkl8:needopen'):'';
         $redis_next_issue = $redis->get('bjkl8:nextIssue');
-        if($redis_issue == ($redis_next_issue - 1) && $redis_needopen=='on')
+        //在redis上的差距
+        $redis_gapnum = $redis->get('bjkl8:gapnum');
+        //在現在實際的差距
+        $gapnum = $redis_next_issue-$redis_issue;
+
+        //如果實際差距與redis上不一樣代表已經開新的一盤了，就有需要開號
+        if($gapnum == $redis_gapnum && $redis_needopen=='on')
             return 'no need';
+
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
