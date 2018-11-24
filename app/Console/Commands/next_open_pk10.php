@@ -60,6 +60,7 @@ class next_open_pk10 extends Command
         //當期獎期
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
+        //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
             $redis->set('pk10:needopen','on');
             return 'Fail';
@@ -73,6 +74,7 @@ class next_open_pk10 extends Command
             $url = Config::get('website.guanIssueServerUrl').'bjpk10?issue='.$nextIssue;
         try {
             $html = json_decode(file_get_contents($url), true);
+            //如果官方數據庫已經查不到需要追朔的獎期，則停止追朔
             if(!isset($html['issue'])){
                 $redis->set('pk10:needopen','on');
                 return 'no have';
