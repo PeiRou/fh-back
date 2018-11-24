@@ -28,7 +28,7 @@ class next_issue_pk10 extends Command
      *
      * @var string
      */
-    protected $description = '新-北京赛车';
+    protected $description = '北京赛车產下一期開盤';
 
     /**
      * Create a new command instance.
@@ -64,10 +64,11 @@ class next_issue_pk10 extends Command
             $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(270)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
         }
-
-        Redis::set('pk10:nextIssue',(int)$nextIssue+1);
-        Redis::set('pk10:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-        Redis::set('pk10:nextIssueEndTime',strtotime($nextIssueEndTime));
+        $redis = Redis::connection();
+        $redis->select(0);
+        $redis->set('pk10:nextIssue',(int)$nextIssue+1);
+        $redis->set('pk10:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+        $redis->set('pk10:nextIssueEndTime',strtotime($nextIssueEndTime));
         return 'Ok';
     }
 }
