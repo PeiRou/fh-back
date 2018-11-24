@@ -46,6 +46,12 @@ class next_issue_xylhc extends Command
         $res = $excel->getNextBetIssue($table);
         if(!$res)
             return 'Fail';
+        $redis = Redis::connection();
+        $redis->select(0);
+        $beforeLotteryTime = $redis->get('xylhc:nextIssueLotteryTime');
+        if($beforeLotteryTime>=time())
+            return 'no need';
+        //下一期獎期
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
         $New_nextIssue = $nextIssue+1;
@@ -57,9 +63,12 @@ class next_issue_xylhc extends Command
 
         $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(270)->toDateTimeString();
         $nextIssueLotteryTime = Carbon::parse($openTime)->addSeconds(300)->toDateTimeString();
-        Redis::set('xylhc:nextIssue',(int)$New_nextIssue);
-        Redis::set('xylhc:nextIssueEndTime',strtotime($nextIssueEndTime));
-        Redis::set('xylhc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+
+        $redis = Redis::connection();
+        $redis->select(0);
+        $redis->set('xylhc:nextIssue',(int)$New_nextIssue);
+        $redis->set('xylhc:nextIssueEndTime',strtotime($nextIssueEndTime));
+        $redis->set('xylhc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
         return 'Ok';
     }
 }

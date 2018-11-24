@@ -46,6 +46,12 @@ class next_issue_pk10 extends Command
         $res = $excel->getNextBetIssue($table);
         if(!$res)
             return 'Fail';
+        $redis = Redis::connection();
+        $redis->select(0);
+        $beforeLotteryTime = $redis->get('pk10:nextIssueEndTime');
+        if($beforeLotteryTime>=time())
+            return 'no need';
+        //下一期獎期
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
 
@@ -57,8 +63,6 @@ class next_issue_pk10 extends Command
             $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(270)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
         }
-        $redis = Redis::connection();
-        $redis->select(0);
         $redis->set('pk10:nextIssue',(int)$nextIssue+1);
         $redis->set('pk10:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
         $redis->set('pk10:nextIssueEndTime',strtotime($nextIssueEndTime));
