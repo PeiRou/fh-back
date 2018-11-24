@@ -86,7 +86,7 @@ class next_open_pk10 extends Command
             }
             if ($redis_issue !== $html['issue']) {
                 try {
-                    $up = DB::table('game_bjpk10')->where('issue', $html['issue'])
+                    $up = DB::table($table)->where('issue', $html['issue'])
                         ->update([
                             'is_open' => 1,
                             'year' => date('Y'),

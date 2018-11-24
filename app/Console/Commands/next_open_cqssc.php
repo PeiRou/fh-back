@@ -9,24 +9,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\Bet\Clong;
 
-class next_open_pcdd extends Command
+class next_open_cqssc extends Command
 {
-    protected  $code = 'pcdd';
-    protected  $gameId = 66;
+    protected  $code = 'cqssc';
+    protected  $gameId = 1;
     protected  $clong;
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'next_open_pcdd';
+    protected $signature = 'next_open_cqssc';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'PC蛋蛋-定時開號';
+    protected $description = '重庆时时彩-定時開號';
 
     /**
      * Create a new command instance.
@@ -46,42 +46,43 @@ class next_open_pcdd extends Command
      */
     public function handle()
     {
-        $table = 'game_pcdd';
+        $table = 'game_cqssc';
 
         $redis = Redis::connection();
         $redis->select(0);
-        $redis_issue = $redis->get('pcdd:issue');
-        $redis_needopen = $redis->exists('pcdd:needopen')?$redis->get('pcdd:needopen'):'';
-        $redis_next_issue = $redis->get('pcdd:nextIssue');
+        $redis_issue = $redis->get('cqssc:issue');
+        $redis_needopen = $redis->exists('cqssc:needopen')?$redis->get('cqssc:needopen'):'';
+        $redis_next_issue = $redis->get('cqssc:nextIssue');
         if($redis_issue == ($redis_next_issue - 1) || $redis_needopen=='on')
             return 'no need';
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
-            $redis->set('pcdd:needopen','on');
+            $redis->set('cqssc:needopen','on');
             return 'Fail';
         }else{
-            $redis->set('pcdd:needopen','');
+            $redis->set('cqssc:needopen','');
         }
         //當期獎期
         $nextIssue = $res->issue;
         $openTime = (string)$res->opentime;
 
         if($nextIssue == $redis_issue)
-            $url = Config::get('website.guanIssueServerUrl').'pcdd';
+            $url = Config::get('website.guanIssueServerUrl').'cqssc';
         else
-            $url = Config::get('website.guanIssueServerUrl').'pcdd?issue='.$nextIssue;
+            $url = Config::get('website.guanIssueServerUrl').'cqssc?issue='.$nextIssue;
         try {
             $html = json_decode(file_get_contents($url), true);
             //如果官方數據庫已經查不到需要追朔的獎期，則停止追朔
             if(!isset($html['issue'])){
-                $redis->set('pcdd:needopen','on');
+                $redis->set('cqssc:needopen','on');
                 return 'no have';
             }
             //清除昨天长龙，在录第一期的时候清掉
-            if (substr($openTime,-8) == '09:05:00') {
-                DB::table('clong_kaijian2')->where('lotteryid', $this->gameId)->delete();
+            if(substr($nextIssue,3)=='001'){
+                DB::table('clong_kaijian1')->where('lotteryid',$this->gameId)->delete();
+                DB::table('clong_kaijian2')->where('lotteryid',$this->gameId)->delete();
             }
             if ($redis_issue !== $html['issue']) {
                 try {
@@ -94,9 +95,10 @@ class next_open_pcdd extends Command
                             'opennum' => $html['nums']
                         ]);
                     if ($up == 1) {
-                        $key = 'pcdd:issue';
+                        $key = 'cqssc:issue';
                         Redis::set($key, $html['issue']);
-                        $this->clong->setKaijian('pcdd', 2, $html['nums']);
+                        $this->clong->setKaijian('cqssc',1,$html['nums']);
+                        $this->clong->setKaijian('cqssc', 2, $html['nums']);
                     }
                 } catch (\Exception $exception) {
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
