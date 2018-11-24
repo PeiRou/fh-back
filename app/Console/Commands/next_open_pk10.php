@@ -60,18 +60,23 @@ class next_open_pk10 extends Command
         //當期獎期
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
-        if(empty($res) || !($nextIssue >= $redis_issue)){
+        if(empty($res)){
             $redis->set('pk10:needopen','on');
             return 'Fail';
         }else{
             $redis->set('pk10:needopen','');
         }
 
-        $url = Config::get('website.guanServerUrl').'bjpk10';
+        if($nextIssue == $redis_issue)
+            $url = Config::get('website.guanIssueServerUrl').'bjpk10';
+        else
+            $url = Config::get('website.guanIssueServerUrl').'bjpk10?issue='.$nextIssue;
         try {
             $html = json_decode(file_get_contents($url), true);
-            if(count($html)<0)
+            if(count($html)==0){
+                $redis->set('pk10:needopen','on');
                 return 'no have';
+            }
             //清除昨天长龙，在录第一期的时候清掉
             if (substr($openTime,-8) == '09:07:30') {
                 DB::table('clong_kaijian1')->where('lotteryid', $this->gameId)->delete();
