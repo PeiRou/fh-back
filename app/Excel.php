@@ -69,8 +69,10 @@ class Excel
                         continue;
                     }
                     $bunko = $i->nn_view_money + $i->bet_money;
+                    $winBunko = $i->nn_view_money;
                 }else{
                     $bunko = $i->bunko;
+                    $winBunko = $i->bunko - $i->bet_money;
                 }
                 $capUsers[$i->user_id] += $bunko; //累加馀额
                 $tmpCap = [];
@@ -96,7 +98,7 @@ class Excel
                     continue;
                 $redis->setex($keyEx,60,'on');
                 $content = ' 第'.$i->issue.'期 '.$i->playcate_name.' '.$i->play_name;
-                $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content. '已中奖，中奖金额 <span style="color:#8d71ff">' .round($i->bunko-$i->bet_money,3).'元</span></div>';
+                $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content. '已中奖，中奖金额 <span style="color:#8d71ff">' .round($winBunko,3).'元</span></div>';
                 event(new BackPusherEvent('win','中奖通知',$tmpContent,array('fnotice-'.$i->user_id)));
             }
             krsort($capData);
