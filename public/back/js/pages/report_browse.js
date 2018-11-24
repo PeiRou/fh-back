@@ -60,6 +60,7 @@ $(function () {
         aLengthMenu: [[5]],
         ajax: {
             url:'/back/datatables/reportBrowse',
+            type:'post',
             data:function (d) {
                 d.startTime = $('#startTime').val();
                 d.endTime = $('#endTime').val();

@@ -1058,6 +1058,7 @@ class OpenHistoryController extends Controller
             DB::commit();
             return ['status' => true,'mag' => '操作成功'];
         }catch(\Exception $e){
+            Log::info($e->getMessage());
             DB::rollback();
             return ['status' => false,'msg' => '撤单失败'];
         }
