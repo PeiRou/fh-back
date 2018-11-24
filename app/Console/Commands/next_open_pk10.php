@@ -65,13 +65,13 @@ class next_open_pk10 extends Command
             $redis->set('pk10:needopen','');
         }
         //當期獎期
-        $nextIssue = $res->issue;
+        $needOpenIssue = $res->issue;
         $openTime = $res->opentime;
 
-        if($nextIssue == $redis_issue)
+        if($needOpenIssue == ($redis_next_issue-1))
             $url = Config::get('website.guanIssueServerUrl').'bjpk10';
         else
-            $url = Config::get('website.guanIssueServerUrl').'bjpk10?issue='.$nextIssue;
+            $url = Config::get('website.guanIssueServerUrl').'bjpk10?issue='.$needOpenIssue;
         try {
             $html = json_decode(file_get_contents($url), true);
             //如果官方數據庫已經查不到需要追朔的獎期，則停止追朔
@@ -89,12 +89,12 @@ class next_open_pk10 extends Command
                     $up = DB::table($table)->where('issue', $html['issue'])
                         ->update([
                             'is_open' => 1,
-                            'year' => date('Y'),
-                            'month' => date('m'),
-                            'day' => date('d'),
+                            'year' => date('Y',strtotime($openTime)),
+                            'month' => date('m',strtotime($openTime)),
+                            'day' => date('d',strtotime($openTime)),
                             'opennum' => $html['nums']
                         ]);
-                    if ($up == 1) {
+                    if ($up == 1 && $needOpenIssue == ($redis_next_issue-1)) {
                         $key = 'pk10:issue';
                         Redis::set($key, $html['issue']);
                         $this->clong->setKaijian('pk10', 1, $html['nums']);

@@ -65,13 +65,13 @@ class next_open_cqssc extends Command
             $redis->set('cqssc:needopen','');
         }
         //當期獎期
-        $nextIssue = $res->issue;
+        $needOpenIssue = $res->issue;
         $openTime = (string)$res->opentime;
 
-        if($nextIssue == $redis_issue)
+        if($needOpenIssue == $redis_issue)
             $url = Config::get('website.guanIssueServerUrl').'cqssc';
         else
-            $url = Config::get('website.guanIssueServerUrl').'cqssc?issue='.$nextIssue;
+            $url = Config::get('website.guanIssueServerUrl').'cqssc?issue='.$needOpenIssue;
         try {
             $html = json_decode(file_get_contents($url), true);
             //如果官方數據庫已經查不到需要追朔的獎期，則停止追朔
@@ -80,7 +80,7 @@ class next_open_cqssc extends Command
                 return 'no have';
             }
             //清除昨天长龙，在录第一期的时候清掉
-            if(substr($nextIssue,3)=='001'){
+            if(substr($needOpenIssue,3)=='001'){
                 DB::table('clong_kaijian1')->where('lotteryid',$this->gameId)->delete();
                 DB::table('clong_kaijian2')->where('lotteryid',$this->gameId)->delete();
             }
@@ -89,12 +89,12 @@ class next_open_cqssc extends Command
                     $up = DB::table($table)->where('issue', $html['issue'])
                         ->update([
                             'is_open' => 1,
-                            'year' => date('Y'),
-                            'month' => date('m'),
-                            'day' => date('d'),
+                            'year' => date('Y',strtotime($openTime)),
+                            'month' => date('m',strtotime($openTime)),
+                            'day' => date('d',strtotime($openTime)),
                             'opennum' => $html['nums']
                         ]);
-                    if ($up == 1) {
+                    if ($up == 1 && $needOpenIssue == ($redis_next_issue-1)) {
                         $key = 'cqssc:issue';
                         Redis::set($key, $html['issue']);
                         $this->clong->setKaijian('cqssc',1,$html['nums']);
