@@ -52,7 +52,7 @@ class next_issue_pk10 extends Command
         $excel = new Excel();
         $res = $excel->getNextBetIssue($table);
         if(!$res)
-            return false;
+            return 'Fail';
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
 
@@ -68,5 +68,6 @@ class next_issue_pk10 extends Command
         Redis::set('pk10:nextIssue',(int)$nextIssue+1);
         Redis::set('pk10:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
         Redis::set('pk10:nextIssueEndTime',strtotime($nextIssueEndTime));
+        return 'Ok';
     }
 }
