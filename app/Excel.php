@@ -253,6 +253,7 @@ class Excel
         $today = date('Y-m-d H:i:s',time());
         $yesterday = date('Y-m-d H:i:s',strtotime('-1 day'));
         $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE is_open=0 and opentime >='".$yesterday."' and opentime <='".$today."')");
+        \Log::info($tmp);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
