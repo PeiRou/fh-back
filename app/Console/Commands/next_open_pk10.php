@@ -50,7 +50,10 @@ class next_open_pk10 extends Command
 
         $redis = Redis::connection();
         $redis->select(0);
-        $redis_issue = Redis::get('pk10:issue');
+        $redis_issue = $redis->get('pk10:issue');
+        $redis_next_issue = $redis->get('pk10:nextIssue');
+        if($redis_issue == ($redis_next_issue - 1))
+            return 'no need';
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
         //當期獎期
