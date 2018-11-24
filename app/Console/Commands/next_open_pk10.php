@@ -73,8 +73,7 @@ class next_open_pk10 extends Command
             $url = Config::get('website.guanIssueServerUrl').'bjpk10?issue='.$nextIssue;
         try {
             $html = json_decode(file_get_contents($url), true);
-            \Log::info($html);
-            if(count($html)==0){
+            if(!isset($html['issue'])){
                 $redis->set('pk10:needopen','on');
                 return 'no have';
             }
