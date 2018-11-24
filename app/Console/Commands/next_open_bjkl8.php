@@ -53,7 +53,7 @@ class next_open_bjkl8 extends Command
         $redis_issue = $redis->get('bjkl8:issue');
         $redis_needopen = $redis->exists('bjkl8:needopen')?$redis->get('bjkl8:needopen'):'';
         $redis_next_issue = $redis->get('bjkl8:nextIssue');
-        if($redis_issue == ($redis_next_issue - 1) || $redis_needopen=='on')
+        if($redis_issue == ($redis_next_issue - 1) && $redis_needopen=='on')
             return 'no need';
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
