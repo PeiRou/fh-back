@@ -55,8 +55,8 @@ class next_open_pk10 extends Command
         //當期獎期
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
-        \Log::info($nextIssue);
-        \Log::info($redis_issue);
+        \Log::info('sql:'.$nextIssue);
+        \Log::info('redis'.$redis_issue);
         if(empty($res) || ($nextIssue != $redis_issue))
             return 'Fail';
 
