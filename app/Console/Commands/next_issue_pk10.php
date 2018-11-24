@@ -48,27 +48,25 @@ class next_issue_pk10 extends Command
      */
     public function handle()
     {
-        if(1){
-            $table = 'game_bjpk10';
-            $excel = new Excel();
-            $res = $excel->getNextBetIssue($table);
-            if(!$res)
-                return false;
-            $nextIssue = $res->issue;
-            $openTime = $res->opentime;
+        $table = 'game_bjpk10';
+        $excel = new Excel();
+        $res = $excel->getNextBetIssue($table);
+        if(!$res)
+            return false;
+        $nextIssue = $res->issue;
+        $openTime = $res->opentime;
 
-            if(date('H:i:s',strtotime($openTime)) == '23:57:30'){
-                $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
-                $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:07:00';
-                $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:07:30';
-            } else {
-                $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(270)->toDateTimeString();
-                $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
-            }
-
-            Redis::set('pk10:nextIssue',(int)$nextIssue+1);
-            Redis::set('pk10:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-            Redis::set('pk10:nextIssueEndTime',strtotime($nextIssueEndTime));
+        if(date('H:i:s',strtotime($openTime)) == '23:57:30'){
+            $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
+            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:07:00';
+            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:07:30';
+        } else {
+            $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(270)->toDateTimeString();
+            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
         }
+
+        Redis::set('pk10:nextIssue',(int)$nextIssue+1);
+        Redis::set('pk10:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+        Redis::set('pk10:nextIssueEndTime',strtotime($nextIssueEndTime));
     }
 }
