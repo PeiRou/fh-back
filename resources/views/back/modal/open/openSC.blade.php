@@ -11,52 +11,52 @@
     <div class="field openSelect">
         <label>开奖号码</label>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n1">
+            <select class="ui dropdown" name="nums" id="n1" data-nums="@if($typeC == 2) {{ $nums[0] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n2">
+            <select class="ui dropdown" name="nums" id="n2" data-nums="@if($typeC == 2) {{ $nums[1] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n3">
+            <select class="ui dropdown" name="nums" id="n3" data-nums="@if($typeC == 2) {{ $nums[2] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n4">
+            <select class="ui dropdown" name="nums" id="n4" data-nums="@if($typeC == 2) {{ $nums[3] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n5">
+            <select class="ui dropdown" name="nums" id="n5" data-nums="@if($typeC == 2) {{ $nums[4] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n6">
+            <select class="ui dropdown" name="nums" id="n6" data-nums="@if($typeC == 2) {{ $nums[5] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n7">
+            <select class="ui dropdown" name="nums" id="n7" data-nums="@if($typeC == 2) {{ $nums[6] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n8">
+            <select class="ui dropdown" name="nums" id="n8" data-nums="@if($typeC == 2) {{ $nums[7] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n9">
+            <select class="ui dropdown" name="nums" id="n9" data-nums="@if($typeC == 2) {{ $nums[8] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n10">
+            <select class="ui dropdown" name="nums" id="n10" data-nums="@if($typeC == 2) {{ $nums[9] }} @endif">
                 <option value=""></option>
             </select>
         </div>
@@ -82,11 +82,17 @@
 <script>
     $(function () {
         var selectNum = ['',1,2,3,4,5,6,7,8,9,10];
-        var str = '';
-        for(var i = 0;i<selectNum.length;i++){
-            str += '<option value="'+selectNum[i]+'">'+selectNum[i]+'</option>'
-        }
-        $('select[name="nums"]').html(str);
+        $('select[name="nums"]').each(function (i,e) {
+            var nums = $(e).attr('data-nums');
+            var str = '';
+            for(var i = 0;i<selectNum.length;i++){
+                str += '<option ';
+                if(selectNum[i] == nums)
+                    str += 'selected="selected" ';
+                str += 'value="'+selectNum[i]+'">'+selectNum[i]+'</option>'
+            }
+            $(e).html(str);
+        })
     });
     $('#openBjpk10').formValidation({
         framework: 'semantic',

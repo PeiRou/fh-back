@@ -773,7 +773,10 @@ class ModalController extends Controller
         if(!isset($view)){
             return false;
         }
-        return view($view,compact('data','type','issue','typeC'));
+        $nums = [];
+        if($typeC == 2)
+            $nums = explode(',',$data->opennum);
+        return view($view,compact('data','type','issue','typeC','nums'));
     }
     //重庆幸运农场开奖 1-20
     public function openCqxync($id = '')
