@@ -53,7 +53,7 @@ class next_open_pk10 extends Command
         $redis_issue = $redis->get('pk10:issue');
         $redis_needopen = $redis->exists('pk10:needopen')?$redis->get('pk10:needopen'):'';
         $redis_next_issue = $redis->get('pk10:nextIssue');
-        if($redis_issue == ($redis_next_issue - 1) || $redis_needopen=='on')
+        if($redis_issue == ($redis_next_issue - 1) && $redis_needopen=='on')
             return 'no need';
         $excel = new Excel();
         $res = $excel->getNextIssue($table);

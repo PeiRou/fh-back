@@ -53,7 +53,7 @@ class next_open_pcdd extends Command
         $redis_issue = $redis->get('pcdd:issue');
         $redis_needopen = $redis->exists('pcdd:needopen')?$redis->get('pcdd:needopen'):'';
         $redis_next_issue = $redis->get('pcdd:nextIssue');
-        if($redis_issue == ($redis_next_issue - 1) || $redis_needopen=='on')
+        if($redis_issue == ($redis_next_issue - 1) && $redis_needopen=='on')
             return 'no need';
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
