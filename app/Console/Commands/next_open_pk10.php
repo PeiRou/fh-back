@@ -83,21 +83,21 @@ class next_open_pk10 extends Command
                 DB::table('clong_kaijian1')->where('lotteryid', $this->gameId)->delete();
                 DB::table('clong_kaijian2')->where('lotteryid', $this->gameId)->delete();
             }
-            if ($redis_issue !== $html[0]['issue']) {
+            if ($redis_issue !== $html['issue']) {
                 try {
-                    $up = DB::table('game_bjpk10')->where('issue', $html[0]['issue'])
+                    $up = DB::table('game_bjpk10')->where('issue', $html['issue'])
                         ->update([
                             'is_open' => 1,
                             'year' => date('Y'),
                             'month' => date('m'),
                             'day' => date('d'),
-                            'opennum' => $html[0]['nums']
+                            'opennum' => $html['nums']
                         ]);
                     if ($up == 1) {
                         $key = 'pk10:issue';
-                        Redis::set($key, $html[0]['issue']);
-                        $this->clong->setKaijian('pk10', 1, $html[0]['nums']);
-                        $this->clong->setKaijian('pk10', 2, $html[0]['nums']);
+                        Redis::set($key, $html['issue']);
+                        $this->clong->setKaijian('pk10', 1, $html['nums']);
+                        $this->clong->setKaijian('pk10', 2, $html['nums']);
                     }
                 } catch (\Exception $exception) {
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
