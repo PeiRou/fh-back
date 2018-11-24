@@ -61,11 +61,13 @@ class next_open_pcdd extends Command
         //如果實際差距與redis上不一樣代表已經開新的一盤了，就有需要開號
         if($gapnum == $redis_gapnum && $redis_needopen=='on')
             return 'no need';
+
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
             $redis->set('pcdd:needopen','on');
+            $redis->set('pcdd:gapnum',$gapnum);
             return 'Fail';
         }else{
             $redis->set('pcdd:needopen','');
@@ -101,7 +103,8 @@ class next_open_pcdd extends Command
                         ]);
                     if ($up == 1 && $needOpenIssue == ($redis_next_issue-1)) {
                         $key = 'pcdd:issue';
-                        Redis::set($key, $html['issue']);
+                        $redis->set($key, $html['issue']);
+                        $redis->set('pcdd:gapnum',$gapnum);
                         $this->clong->setKaijian('pcdd', 2, $html['nums']);
                     }
                 } catch (\Exception $exception) {

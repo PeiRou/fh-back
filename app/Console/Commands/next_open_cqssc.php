@@ -61,11 +61,13 @@ class next_open_cqssc extends Command
         //如果實際差距與redis上不一樣代表已經開新的一盤了，就有需要開號
         if($gapnum == $redis_gapnum && $redis_needopen=='on')
             return 'no need';
+
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
             $redis->set('cqssc:needopen','on');
+            $redis->set('cqssc:gapnum',$gapnum);
             return 'Fail';
         }else{
             $redis->set('cqssc:needopen','');
@@ -102,7 +104,8 @@ class next_open_cqssc extends Command
                         ]);
                     if ($up == 1 && $needOpenIssue == ($redis_next_issue-1)) {
                         $key = 'cqssc:issue';
-                        Redis::set($key, $html['issue']);
+                        $redis->set($key, $html['issue']);
+                        $redis->set('cqssc:gapnum',$gapnum);
                         $this->clong->setKaijian('cqssc',1,$html['nums']);
                         $this->clong->setKaijian('cqssc', 2, $html['nums']);
                     }

@@ -54,12 +54,12 @@ class next_open_bjkl8 extends Command
         $redis_needopen = $redis->exists('bjkl8:needopen')?$redis->get('bjkl8:needopen'):'';
         $redis_next_issue = $redis->get('bjkl8:nextIssue');
         //在redis上的差距
-        $redis_gapnum = $redis->get('bjkl8:gapnum');
+        $redis_gapnum = $redis->exists('bjkl8:gapnum')?$redis->get('bjkl8:gapnum'):0;
         //在現在實際的差距
         $gapnum = $redis_next_issue-$redis_issue;
 
         //如果實際差距與redis上不一樣代表已經開新的一盤了，就有需要開號
-        if($gapnum == $redis_gapnum && $redis_needopen=='on')
+        if(!empty($redis_gapnum) && $gapnum == $redis_gapnum && $redis_needopen=='on')
             return 'no need';
 
         $excel = new Excel();
@@ -67,6 +67,7 @@ class next_open_bjkl8 extends Command
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
             $redis->set('bjkl8:needopen','on');
+            $redis->set('bjkl8:gapnum',$gapnum);
             return 'Fail';
         }else{
             $redis->set('bjkl8:needopen','');
@@ -102,7 +103,8 @@ class next_open_bjkl8 extends Command
                         ]);
                     if ($up == 1 && $needOpenIssue == ($redis_next_issue-1)) {
                         $key = 'bjkl8:issue';
-                        Redis::set($key, $html['issue']);
+                        $redis->set($key, $html['issue']);
+                        $redis->set('bjkl8:gapnum',$gapnum);
                         $this->clong->setKaijian('bjkl8', 2, $html['nums']);
                     }
                 } catch (\Exception $exception) {

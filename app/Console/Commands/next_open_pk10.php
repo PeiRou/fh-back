@@ -66,6 +66,7 @@ class next_open_pk10 extends Command
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
             $redis->set('pk10:needopen','on');
+            $redis->set('pk10:gapnum',$gapnum);
             return 'Fail';
         }else{
             $redis->set('pk10:needopen','');
@@ -102,7 +103,8 @@ class next_open_pk10 extends Command
                         ]);
                     if ($up == 1 && $needOpenIssue == ($redis_next_issue-1)) {
                         $key = 'pk10:issue';
-                        Redis::set($key, $html['issue']);
+                        $redis->set($key, $html['issue']);
+                        $redis->set('pk10:gapnum',$gapnum);
                         $this->clong->setKaijian('pk10', 1, $html['nums']);
                         $this->clong->setKaijian('pk10', 2, $html['nums']);
                     }
