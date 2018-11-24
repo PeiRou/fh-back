@@ -49,6 +49,8 @@ class next_open_pk10 extends Command
         $table = 'game_bjpk10';
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
+        $redis = Redis::connection();
+        $redis->select(0);
         $redis_issue = Redis::get('pk10:issue');
         //當期獎期
         $nextIssue = $res->issue;
