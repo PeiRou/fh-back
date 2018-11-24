@@ -251,7 +251,8 @@ class Excel
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time());
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=0)");
+        $yesterday = date('Y-m-d H:i:s',strtotime('-1 day'));
+        $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE is_open=0 and opentime >='".$yesterday."' and opentime <='".$today."')");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -263,7 +264,7 @@ class Excel
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time());
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."')");
+        $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."')");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -275,7 +276,7 @@ class Excel
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time());
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE opentime <='".$today."' and is_open=0)");
+        $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE is_open=0 and opentime <='".$today."')");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
