@@ -57,9 +57,6 @@ class next_open_pk10 extends Command
             return 'no need';
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
-        //當期獎期
-        $nextIssue = $res->issue;
-        $openTime = $res->opentime;
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
             $redis->set('pk10:needopen','on');
@@ -67,6 +64,9 @@ class next_open_pk10 extends Command
         }else{
             $redis->set('pk10:needopen','');
         }
+        //當期獎期
+        $nextIssue = $res->issue;
+        $openTime = $res->opentime;
 
         if($nextIssue == $redis_issue)
             $url = Config::get('website.guanIssueServerUrl').'bjpk10';
