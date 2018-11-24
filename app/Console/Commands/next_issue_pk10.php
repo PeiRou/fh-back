@@ -2,14 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Events\RunPk10;
+use App\Excel;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Bet\Clong;
 
 class next_issue_pk10 extends Command
 {
@@ -35,9 +31,8 @@ class next_issue_pk10 extends Command
      *
      * @return void
      */
-    public function __construct(Clong $clong)
+    public function __construct()
     {
-        $this->clong = $clong;
         parent::__construct();
     }
 
