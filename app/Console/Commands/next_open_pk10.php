@@ -57,6 +57,7 @@ class next_open_pk10 extends Command
             return 'no need';
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
+        \Log::info($res);
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
             $redis->set('pk10:needopen','on');
