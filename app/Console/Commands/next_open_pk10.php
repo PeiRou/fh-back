@@ -51,20 +51,27 @@ class next_open_pk10 extends Command
         $redis = Redis::connection();
         $redis->select(0);
         $redis_issue = $redis->get('pk10:issue');
+        $redis_needopen = $redis->exists('pk10:needopen')?$redis->get('pk10:needopen'):'';
         $redis_next_issue = $redis->get('pk10:nextIssue');
-        if($redis_issue == ($redis_next_issue - 1))
+        if($redis_issue == ($redis_next_issue - 1) && $redis_needopen=='on')
             return 'no need';
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
         //當期獎期
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
-        if(empty($res) || !($nextIssue >= $redis_issue))
+        if(empty($res) || !($nextIssue >= $redis_issue)){
+            $redis->set('pk10:needopen','on');
             return 'Fail';
+        }else{
+            $redis->set('pk10:needopen','');
+        }
 
         $url = Config::get('website.guanServerUrl').'bjpk10';
         try {
             $html = json_decode(file_get_contents($url), true);
+            if(count($html)<0)
+                return 'no have';
             //清除昨天长龙，在录第一期的时候清掉
             if (substr($openTime,-8) == '09:07:30') {
                 DB::table('clong_kaijian1')->where('lotteryid', $this->gameId)->delete();
