@@ -468,17 +468,17 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/dispensingDrawing', 'Back\DrawingController@dispensingDrawing')->middleware('add-log-handle')->name('ac.ad.dispensingDrawing'); //自动出款
     Route::post('/action/admin/drawingThaw', 'Back\DrawingController@drawingThaw')->middleware('add-log-handle')->name('ac.ad.drawingThaw'); //提现解冻
 
-    Route::post('/action/recharge/totalRecharge', 'Back\RechargeController@totalRecharge')->middleware('add-log-handle')->name('ac.ad.recharge.totalRecharge'); //充值记录的总额统计
-    Route::post('/action/drawing/totalDrawing', 'Back\DrawingController@totalDrawing')->middleware('add-log-handle')->name('ac.ad.drawing.totalDrawing'); //提款记录的总额统计
+    Route::post('/action/recharge/totalRecharge', 'Back\RechargeController@totalRecharge')->name('ac.ad.recharge.totalRecharge'); //充值记录的总额统计
+    Route::post('/action/drawing/totalDrawing', 'Back\DrawingController@totalDrawing')->name('ac.ad.drawing.totalDrawing'); //提款记录的总额统计
 
-    Route::post('/action/betTodat/total','Back\Data\BetDataController@betNumTotal')->middleware('add-log-handle')->name('ac.ad.betTodat.total');
+    Route::post('/action/betTodat/total','Back\Data\BetDataController@betNumTotal')->name('ac.ad.betTodat.total');
 
-    Route::post('/action/userBetList/total', 'Back\SrcViewController@userBetListTotal')->middleware('add-log-handle')->name('ac.ad.userBetList.total'); //用户注单页面下注统计
+    Route::post('/action/userBetList/total', 'Back\SrcViewController@userBetListTotal')->name('ac.ad.userBetList.total'); //用户注单页面下注统计
 
-    Route::post('/action/admin/addLhcNewIssue', 'Back\OpenHistoryController@addLhcNewIssue')->middleware('add-log-handle')->name('ac.ad.addLhcNewIssue');
-    Route::post('/action/admin/addXylhcNewIssue', 'Back\OpenHistoryController@addXylhcNewIssue')->middleware('add-log-handle')->name('ac.ad.addXylhcNewIssue');
-    Route::post('/action/admin/editLhcNewIssue', 'Back\OpenHistoryController@editLhcNewIssue')->middleware('add-log-handle')->name('ac.ad.editLhcNewIssue');
-    Route::post('/action/admin/editXylhcNewIssue', 'Back\OpenHistoryController@editXylhcNewIssue')->middleware('add-log-handle')->name('ac.ad.editXylhcNewIssue');
+    Route::post('/action/admin/addLhcNewIssue', 'Back\OpenHistoryController@addLhcNewIssue')->name('ac.ad.addLhcNewIssue');
+    Route::post('/action/admin/addXylhcNewIssue', 'Back\OpenHistoryController@addXylhcNewIssue')->name('ac.ad.addXylhcNewIssue');
+    Route::post('/action/admin/editLhcNewIssue', 'Back\OpenHistoryController@editLhcNewIssue')->name('ac.ad.editLhcNewIssue');
+    Route::post('/action/admin/editXylhcNewIssue', 'Back\OpenHistoryController@editXylhcNewIssue')->name('ac.ad.editXylhcNewIssue');
 
     Route::post('/action/admin/openssc', 'Back\OpenHistoryController@addsscData')->middleware('add-log-handle')->name('ac.ad.openssc');     //添加时时彩开奖数据
     Route::post('/action/admin/opensc', 'Back\OpenHistoryController@addscData')->middleware('add-log-handle')->name('ac.ad.opensc');     //添加赛车开奖数据
@@ -505,8 +505,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::any('/action/admin/member/visitMember/{id}/{name}', 'Back\MemberController@visitMember')->middleware(['check-permission','add-log-handle'])->name('member.visitMember');;//代理-导出会员
     Route::any('/action/admin/member/visitMemberSuper/{id}/{name}', 'Back\MemberController@visitMemberSuper')->middleware(['check-permission','add-log-handle'])->name('member.visitMemberSuper');;//总代代理-导出会员
 
-    Route::get('/action/admin/exportExcel/userRecharges','Back\ExportExcelController@exportExcelForRecharges')->middleware('add-log-handle')->name('ac.ad.exportExcel.userRecharges'); //导出充值数据为Excel文件
-    Route::get('/action/admin/exportExcel/userDrawing','Back\ExportExcelController@exportExcelForDrawing')->middleware('add-log-handle')->name('ac.ad.exportExcel.userDrawing'); //导出充值数据为Excel文件
+    Route::get('/action/admin/exportExcel/userRecharges','Back\ExportExcelController@exportExcelForRecharges')->name('ac.ad.exportExcel.userRecharges'); //导出充值数据为Excel文件
+    Route::get('/action/admin/exportExcel/userDrawing','Back\ExportExcelController@exportExcelForDrawing')->name('ac.ad.exportExcel.userDrawing'); //导出充值数据为Excel文件
     Route::post('/action/admin/gamesApi/edit','Back\GamesApiController@edit')->name('ac.ad.GamesApi.edit'); //平台接口编辑
     Route::post('/action/admin/gamesApi/del','Back\GamesApiController@del')->name('ac.ad.GamesApi.del'); //平台接口删除
     Route::post('/action/admin/gamesApi/editParameter','Back\GamesApiController@editParameter')->name('ac.ad.GamesApi.editParameter'); //平台接口参数修改

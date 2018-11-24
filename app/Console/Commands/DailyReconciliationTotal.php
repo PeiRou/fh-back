@@ -128,11 +128,11 @@ GROUP BY rechName';
             $ispresencesql = 'SELECT * FROM totalreport WHERE daytstrot = \''.$daytstrot.'\'';
             $ispresence = DB::select($ispresencesql);
 
-            $datatotalreport['daytstrot']=$daytstrot;
             $datatotalreport['data']=$serdata;
             $datatotalreport['updated_at']=date('Y-m-d H:i:s');
 
             if (!empty($ispresence)){
+                $datatotalreport['operation_account']='系统';
                 try{
                     DB::table('totalreport')
                         ->where('daytstrot', $daytstrot)
@@ -150,6 +150,8 @@ GROUP BY rechName';
                 foreach ($useramount as $k=>$v){
                     $memberquota=$v->amount;
                 }
+                $datatotalreport['daytstrot']=$daytstrot;
+                $datatotalreport['daytime']=$date;
                 $datatotalreport['memberquota']=$memberquota;
                 $datatotalreport['created_at']=date('Y-m-d H:i:s');
                 try{
