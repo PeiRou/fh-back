@@ -258,6 +258,18 @@ class Excel
             $res = $value;
         return $res;
     }
+    //取得目前开盘奖期
+    public function getNextBetIssue($table){
+        if(empty($table))
+            return false;
+        $today = date('Y-m-d H:i:s',time());
+        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."')");
+        if(empty($tmp))
+            return false;
+        foreach ($tmp as&$value)
+            $res = $value;
+        return $res;
+    }
     //取得目前需要开奖奖期
     public function getNeedtIssue($table){
         if(empty($table))
