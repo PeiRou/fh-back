@@ -1117,6 +1117,7 @@ class OpenHistoryController extends Controller
                         'type' => 't25',
                         'rechargesType' => 0,
                         'game_id' => $iBet1->game_id,
+                        'game_name' => $gameInfo->game_name,
                         'issue' => $iBet1->issue,
                         'money' => $iBet1->amount,
                         'balance' => $iBet1->money + (-$iBet1->bet_bunko + $iBet1->amount),
