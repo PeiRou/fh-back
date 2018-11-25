@@ -33,7 +33,7 @@ class WS extends Base{
 
     }
     private function getTime(){
-        $toMinute = date('i', time() - 60 * $this->intervals);
+        $toMinute = date('i');
         if ($toMinute >= 0 && $toMinute < 15){
             $toMinute = '15';
         }else if($toMinute >= 15 && $toMinute < 30){
