@@ -21,5 +21,8 @@ class GamesApi extends Model
     public static function getStatus($g_id){
         return self::where('g_id', $g_id)->value('status');
     }
-
+    //获取所有游戏名称
+    public static function getGamesNameList(){
+        return self::pluck('name', 'g_id');
+    }
 }
