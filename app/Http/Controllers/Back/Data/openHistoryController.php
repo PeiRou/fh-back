@@ -467,11 +467,13 @@ class openHistoryController extends Controller
             ->make(true);
     }
     //组合sql
-    private function card_betInfoSql(){
+    private function card_betInfoSql($request){
         //获取所有的游戏
         $gamesList = GamesApi::getList();
         $where = ' 1 ';
-
+        if(($startTime = $request->get('startTime')) && ($endTime = $request->get('endTime'))){
+            $where .= " AND `GameStartTime` BETWEEN {$startTime} AND {$endTime} ";
+        }
         $sqlArr = [];
         $columnArr = [];
         $column = implode(',', $columnArr);
@@ -480,7 +482,6 @@ class openHistoryController extends Controller
             $sqlArr[] = " (SELECT {$column} FROM `{$table}` WHERE {$where} ) ";
         }
         $sql = 'SELECT * FROM ( '.implode(' UNION ALL ', $sqlArr).' )';
-//        $sql .= 'LIMIT '
-        return DB::select($sql);
+        return $sql;
     }
 }

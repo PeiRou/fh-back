@@ -21,7 +21,7 @@ class WS extends Base{
         if(isset($res['code']) && $res['code'] == 0){
             $res = $res['data'];
             $page_info = $res['page_info'];
-            $data = $res['details '];
+            $data = $res['details'];
             $this->repo->createData($data);//组合数据  插入数据库
             //当前页数小于总页数  继续请求
             if($page_info['currentPage'] < $page_info['totalPage']){
