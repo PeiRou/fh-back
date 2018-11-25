@@ -34,7 +34,7 @@ class WS extends Base{
 
     }
     private function getTime(){
-        $Minute = date('i');
+        $Minute = date('i', time() - 60 * $this->intervals);
         if ($Minute >= 0 && $Minute < 15){
             $Minute = '00';
         }else if($Minute >= 15 && $Minute < 30){
@@ -45,7 +45,7 @@ class WS extends Base{
             $Minute = '45';
         }
         $time = date('YmdH').$Minute;
-        return $time.','.date('YmdH').($Minute + 15);
+        return $time.','.date('YmdH').($Minute - 15);
     }
 
 }
