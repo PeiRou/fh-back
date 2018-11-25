@@ -486,6 +486,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="payment_platform_dispensing" data-c="支付平台代付接口" class="edit-link">修改</td>
             </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">平台基本赔率</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->agent_odds_basis }}" data-id-input="agent_odds_basis"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="agent_odds_basis" data-c="平台基本赔率" class="edit-link">修改</td>
+            </tr>
             {{--<tr>--}}
                 {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">聊天室开关 0关 1开</td>--}}
                 {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
