@@ -56,7 +56,7 @@ class next_issue_pknn extends Command
         $openTime = $res->opentime;
 
         if(date('H:i:s',strtotime($openTime)) == '23:57:30'){
-            $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
+            $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
             $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:07:00';
             $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:07:30';
         } else {
