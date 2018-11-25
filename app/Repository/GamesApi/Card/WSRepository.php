@@ -16,10 +16,10 @@ class WSRepository extends BaseRepository
         $res = $this->Utils->getBetList(
             $this->param['time'],
             $this->param['page'] ?? 1);
-        if($res['status'] == 0){
+        if(isset($res['status']) && $res['status'] == 0){
             return $this->show(0, '', $res);
         }
-        return $this->show($res['status'] ?? 102,  $this->errorMessage($res['status'] ?? -1) ?? '请求超时');
+        return $this->show($res['status'] ?? 500,  $this->errorMessage($res['status'] ?? -1) ?? '请求超时');
     }
     /**
     {
@@ -43,8 +43,11 @@ class WSRepository extends BaseRepository
 
     //格式化数据  插入数据库
     public function createData($data){
-        $table = $this->getOtherModel('JqBet');
-        $distinctArr = $table->getOnly($this->gameInfo->g_id);
+        $tableName = 'jq_'.strtolower($this->gameInfo->name).'_bet';
+        $this->table = DB::table($tableName);
+//        $table = $this->getOtherModel('JqBet');
+//        $distinctArr = $table->getOnly($this->gameInfo->g_id);
+        $distinctArr = $this->table->pluck('GameID');
         $arr = [];
         foreach ($data as $v){
             if(in_array($v['betOrderNo'], $distinctArr))

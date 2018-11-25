@@ -9,11 +9,11 @@ use App\GamesApiConfig;
 class PrivodeController extends Controller{
     public function getBet(){
         $list = GamesApi::getList();
-//        foreach ($list as $k=>$v){
-            $res = $this->action(15, 'getBet');
-            if($res['code'])
-                echo '更新失败：'.$res['msg'].'。错误码：'.$res['code'];
-//        }
+        foreach ($list as $k=>$v){
+            $res = $this->action($v->g_id, 'getBet');
+            if(!isset($res['code']) || $res['code'])
+                echo $v->name.'更新失败：'.$res['msg'].'。错误码：'.$res['code'].'<br />';
+        }
     }
     private function action($g_id, $action){
         $getGamesApiInfo = GamesApi::getGamesApiInfo($g_id);

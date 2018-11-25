@@ -17,16 +17,20 @@ class WS extends Base{
     public function getBet(){
         $this->repo->param['time'] =  $this->repo->param['time'] ?? date('YmdHi');
         $res = $this->repo->getBet();
-        if(isset($res['status']) && $res['status'] == 0){
+        if(isset($res['code']) && $res['code'] == 0){
+            $res = $res['data'];
             $page_info = $res['page_info'];
             $data = $res['details '];
             $this->repo->createData($data);//组合数据  插入数据库
             //当前页数小于总页数  继续请求
             if($page_info['currentPage'] < $page_info['totalPage']){
                 $this->repo->param['page'] = $page_info['currentPage'] + 1;
-                $this->getBet();
+                return $this->getBet();
             }
+        }else{
+            return $this->show($res['code'] ?? 500, $this->repo->gameInfo->name.'第'.($this->repo->param['page']??1).'页数据获取失败:'.($res['msg']??'error'));
         }
+
     }
 
 }

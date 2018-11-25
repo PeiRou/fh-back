@@ -34,7 +34,7 @@ class BaseRepository
     }
     //插入数据库
     public function insertDB($data){
-        if($this->getOtherModel('JqBet')->insert($data)){
+        if($this->table->insert($data)){
             echo $this->gameInfo->name.'插入'.count($data).'条数据';
         }else{
             echo $this->gameInfo->name.'插入'.count($data).'条数据失败';
@@ -42,7 +42,7 @@ class BaseRepository
     }
     //格式化数据  插入数据库
     public function createData($data){
-        $table = DB::table('jq_bet');
+        $table = $this->table;
         //根据GameID Accounts去掉重复的
         foreach ($data['GameID'] as $k => $k){
             $table->orWhere(['GameID'=>$data['GameID'][$k]])
@@ -56,6 +56,7 @@ class BaseRepository
         $arr = [];
         foreach ($data['GameID'] as $k => $k){
             $arr[] = [
+                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $data['GameID'][$k],
                 'Accounts' => $data['Accounts'][$k],
                 'AllBet' => $data['AllBet'][$k],
@@ -75,20 +76,13 @@ class BaseRepository
             $timestamp = $this->Utils->microtime_int();
             $time_str = $this->Utils->timestamp_str('YmdHis', 'Asia/Chongqing');
             $this->param['ip'] = $this->Utils->get_ip();
-            $this->param['orderid'] = $this->param['orderid'] ?? $this->Config[$this->ConfigPrefix.'agent'] . $time_str . $this->param['account'];
+//            $this->param['orderid'] = $this->param['orderid'] ?? $this->Config[$this->ConfigPrefix.'agent'] . $time_str . $this->param['account'];
             switch($subCmd = intval($s)) {
                 case 6:
                     $param = http_build_query(array(
                         's' => $s,
                         'startTime' => $this->param['startTime'],
                         'endTime' => $this->param['endTime']
-                    ));
-                    break;
-                case 4: //查询订单状态
-                    $param = http_build_query(array(
-                        's' => $s,
-                        'orderid' => $this->param['orderid'],
-                        'ip' => $this->param['ip']
                     ));
                     break;
             }
@@ -99,8 +93,8 @@ class BaseRepository
                     'param' => $this->Utils->desEncode($this->Config[$this->ConfigPrefix.'desKey'], $param),
                     'key' => md5($this->Config[$this->ConfigPrefix.'agent'].$timestamp.($this->Config[$this->ConfigPrefix.'md5Key']))
                 ));
-            $res = $this->Utils->curl_get_content($url);
-            if(!empty($this->resData)){
+            $res = json_decode($this->Utils->curl_get_content($url), true);
+            if(!empty($res)){
                 if(isset($res['d']['code']) && $res['d']['code'] == 0){
                     return $this->show(0, $res['d']);
                 }

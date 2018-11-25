@@ -61,25 +61,10 @@ class Utils
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $err = curl_errno($ch);
         curl_close($ch);
+        \Log::info($res);
 //        $this->dbglog($err);
 //        $this->dbglog($httpcode);
 //        $this->dbglog($res);
-        //记录日志
-        if (($err) || ($httpcode !== 200)) {
-            $data = [
-                'url' => $url,
-                'err' => $err ?? '',
-                'httpcode' => $httpcode
-            ];
-            DB::table('log_abnormal')->insert([
-                'ip' => realIp(),
-                'type_id' => 'error',
-                'type_name' => '未知类型',
-                'action' => '未知方法',
-                'param' => serialize($data),
-            ]);
-            return null;
-        }
         return $res;
     }
 
