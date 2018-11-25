@@ -320,7 +320,9 @@ class SrcViewController extends Controller
     //棋牌投注查询
     public function cardBetInfo()
     {
-        return view('back.cardGame.cardBetInfo');
+        //获取所有游戏列表
+        $gameApiList = \App\GamesApi::getGamesNameList();
+        return view('back.cardGame.cardBetInfo', compact('gameApiList'));
     }
 
     //开奖记录

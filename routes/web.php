@@ -1,4 +1,5 @@
 <?php
+Route::any('/getbet', 'GamesApi\Card\PrivodeController@getBet');
 Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/', 'Back\SrcViewController@index');
 
