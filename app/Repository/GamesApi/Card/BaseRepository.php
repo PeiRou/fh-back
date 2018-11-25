@@ -56,7 +56,7 @@ class BaseRepository
         $arr = [];
         foreach ($data['GameID'] as $k => $k){
             $arr[] = [
-                'g_id' => $this->gameInfo->g_id,
+//                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $data['GameID'][$k],
                 'Accounts' => $data['Accounts'][$k],
                 'AllBet' => $data['AllBet'][$k],
@@ -94,6 +94,7 @@ class BaseRepository
                     'key' => md5($this->Config[$this->ConfigPrefix.'agent'].$timestamp.($this->Config[$this->ConfigPrefix.'md5Key']))
                 ));
             $res = json_decode($this->Utils->curl_get_content($url), true);
+            \Log::info($this->gameInfo->name.json_encode($res));
             if(!empty($res)){
                 if(isset($res['d']['code']) && $res['d']['code'] == 0){
                     return $this->show(0, '', $res['d']);

@@ -31,7 +31,7 @@ class Base
         $res = $this->repo->createReqData();
         if(isset($res['code']) && $res['code'] == 0 ){
             $data = $res['data']['list'];
-            return $this->createData($data);
+            return $this->repo->createData($data);
         }
         return $this->show($res['code'] ?? 500, $res['msg'] ?? 'error');
     }

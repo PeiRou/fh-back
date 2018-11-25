@@ -53,7 +53,7 @@ class WSRepository extends BaseRepository
             if(in_array($v['betOrderNo'], $distinctArr))
                 continue;
             $arr[] = [
-                'g_id' => $this->gameInfo->g_id,
+//                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['betOrderNo'],   //游戏代码
                 'Accounts' => $v['username'],   //玩家账号
                 'AllBet' => abs($v['gameCode']),//总下注

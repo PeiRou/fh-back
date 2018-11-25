@@ -61,7 +61,6 @@ class Utils
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $err = curl_errno($ch);
         curl_close($ch);
-        \Log::info($res);
 //        $this->dbglog($err);
 //        $this->dbglog($httpcode);
 //        $this->dbglog($res);
