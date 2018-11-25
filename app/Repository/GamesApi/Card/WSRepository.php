@@ -51,7 +51,7 @@ class WSRepository extends BaseRepository
         $arr = [];
         foreach ($data as $v){
             if(count($distinctArr) > 0)
-                if(in_array($v['betOrderNo'], $distinctArr))
+                if(in_array($v['betOrderNo'], (array)$distinctArr))
                     continue;
             $arr[] = [
 //                'g_id' => $this->gameInfo->g_id,
