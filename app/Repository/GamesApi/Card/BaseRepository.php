@@ -57,13 +57,13 @@ class BaseRepository
         foreach ($res['GameID'] as $k => $k){
             $arr[] = [
 //                'g_id' => $this->gameInfo->g_id,
-                'GameID' => $res['GameID'][$k],
-                'Accounts' => $res['Accounts'][$k],
-                'AllBet' => $res['AllBet'][$k],
-                'Profit' => $res['Profit'][$k],
+                'GameID' => $data['GameID'][$k],
+                'Accounts' => $data['Accounts'][$k],
+                'AllBet' => $data['AllBet'][$k],
+                'Profit' => $data['Profit'][$k],
 //                'Revenue' => $res['Revenue'][$k],
-                'GameStartTime' => $res['GameStartTime'][$k],
-                'GameEndTime' => $res['GameEndTime'][$k],
+                'GameStartTime' => $data['GameStartTime'][$k],
+                'GameEndTime' => $data['GameEndTime'][$k],
             ];
         }
         return $this->insertDB($arr, $table);
