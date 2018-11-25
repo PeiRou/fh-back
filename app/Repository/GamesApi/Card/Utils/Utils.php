@@ -232,7 +232,7 @@ class Utils
             $the_ip = $headers['HTTP_X_FORWARDED_FOR'];
         } else {
 
-            $the_ip = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 );
+            $the_ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 );
         }
         return $the_ip;
     }

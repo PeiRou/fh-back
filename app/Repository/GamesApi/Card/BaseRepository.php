@@ -23,7 +23,7 @@ class BaseRepository
         $class = 'App\\Repository\\GamesApi\\Card\\Utils\\'.$name;
         $this->Utils = new $class($config);
         $this->Config = $config;
-        $this->param['ip'] = realIp();
+//        $this->param['ip'] = realIp();
     }
     public function getOtherModel($model){
         if(empty($this->otherModel->$model)) {
@@ -75,7 +75,7 @@ class BaseRepository
             $s = $this->param['s'];
             $timestamp = $this->Utils->microtime_int();
             $time_str = $this->Utils->timestamp_str('YmdHis', 'Asia/Chongqing');
-            $this->param['ip'] = $this->Utils->get_ip();
+//            $this->param['ip'] = $this->Utils->get_ip();
 //            $this->param['orderid'] = $this->param['orderid'] ?? $this->Config[$this->ConfigPrefix.'agent'] . $time_str . $this->param['account'];
             switch($subCmd = intval($s)) {
                 case 6:

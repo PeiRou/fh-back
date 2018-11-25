@@ -12,7 +12,7 @@ class PrivodeController extends Controller{
         foreach ($list as $k=>$v){
             $res = $this->action($v->g_id, 'getBet');
             if(!isset($res['code']) || $res['code'])
-                echo $v->name.'更新失败：'.$res['msg'].'。错误码：'.$res['code'].'<br />';
+                echo $v->name.'更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
         }
     }
     private function action($g_id, $action){

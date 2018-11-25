@@ -22,6 +22,14 @@
         <div class="table-quick-bar">
             <div class="ui mini form">
                 <div class="fields">
+                    <div class="one wide field" style="width: initial!important;">
+                        <select class="ui dropdown" id="g_id" style='height:32px !important'>
+                            <option value="0">游戏选择</option>
+                        @foreach($gameApiList as $k=>$v)
+                                <option value="{{ $k }}">{{ $v }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="one wide field" style="width:8.25%!important">
                         <input type="text" id="Accounts" placeholder="玩家账号">
                     </div>
@@ -51,6 +59,7 @@
         </div>
         <table id="datTable" class="ui small selectable celled striped table" cellspacing="0" width="100%" style="text-align: center">
             <thead>
+            <th>游戏名称</th>
             <th>游戏局号</th>
             <th>玩家账号</th>
             <th>总下注</th>
