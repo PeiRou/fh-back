@@ -63,7 +63,7 @@ class WSRepository extends BaseRepository
                 'GameEndTime' => $v['endTime'],  //游戏结束时间
             ];
         }
-        $this->insertDB($data, $table);
+        $this->insertDB($arr, $table);
     }
 
 

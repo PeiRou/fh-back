@@ -54,16 +54,16 @@ class BaseRepository
         $distinctArr = $table->pluck('GameID')->toArray();
         $res['GameID'] = array_diff($data['GameID'],$distinctArr);
         $arr = [];
-        foreach ($data['GameID'] as $k => $k){
+        foreach ($res['GameID'] as $k => $k){
             $arr[] = [
 //                'g_id' => $this->gameInfo->g_id,
-                'GameID' => $data['GameID'][$k],
-                'Accounts' => $data['Accounts'][$k],
-                'AllBet' => $data['AllBet'][$k],
-                'Profit' => $data['Profit'][$k],
+                'GameID' => $res['GameID'][$k],
+                'Accounts' => $res['Accounts'][$k],
+                'AllBet' => $res['AllBet'][$k],
+                'Profit' => $res['Profit'][$k],
 //                'Revenue' => $res['Revenue'][$k],
-                'GameStartTime' => $data['GameStartTime'][$k],
-                'GameEndTime' => $data['GameEndTime'][$k],
+                'GameStartTime' => $res['GameStartTime'][$k],
+                'GameEndTime' => $res['GameEndTime'][$k],
             ];
         }
         return $this->insertDB($arr, $table);
