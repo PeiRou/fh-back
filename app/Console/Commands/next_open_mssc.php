@@ -76,6 +76,7 @@ class next_open_mssc extends Command
         $needOpenIssue = $res->issue;
         $openTime = $res->opentime;
         $issuenum = substr($needOpenIssue,-4);
+        $res->opencode = $excel->opennum($table);
 
         //---kill start
         $opennum = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
