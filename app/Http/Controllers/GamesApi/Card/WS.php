@@ -15,7 +15,6 @@ class WS extends Base{
 
     //获取棋牌投注详情
     public function getBet(){
-//        $this->repo->param['time'] =  $this->repo->param['time'] ?? date('YmdHi');
         $this->repo->param['time'] =  $this->repo->param['time'] ?? $this->getTime();
         $res = $this->repo->getBet();
         if(isset($res['code']) && $res['code'] == 0){
@@ -29,23 +28,23 @@ class WS extends Base{
                 return $this->getBet();
             }
         }else{
-            return $this->show($res['code'] ?? 500, $this->repo->gameInfo->name.'第'.($this->repo->param['page']??1).'页数据获取失败:'.($res['msg']??'error'));
+            return $this->show($res['code'] ?? 500, '第'.($this->repo->param['page']??1).'页数据获取失败:'.($res['msg']??'error'));
         }
 
     }
     private function getTime(){
-        $Minute = date('i', time() - 60 * $this->intervals);
-        if ($Minute >= 0 && $Minute < 15){
-            $Minute = '00';
-        }else if($Minute >= 15 && $Minute < 30){
-            $Minute = '15';
-        }else if($Minute >= 30 && $Minute < 45){
-            $Minute = '30';
+        $toMinute = date('i', time() - 60 * $this->intervals);
+        if ($toMinute >= 0 && $toMinute < 15){
+            $toMinute = '15';
+        }else if($toMinute >= 15 && $toMinute < 30){
+            $toMinute = '30';
+        }else if($toMinute >= 30 && $toMinute < 45){
+            $toMinute = '45';
         }else{
-            $Minute = '45';
+            $toMinute = '60';
         }
-        $time = date('YmdH').$Minute;
-        return $time.','.date('YmdH').($Minute - 15);
+        $Minute = ($toMinute - 15) == 0 ? '00' : $toMinute - 15;
+        return date('YmdH').$Minute.','.date('YmdH').$toMinute;
     }
 
 }
