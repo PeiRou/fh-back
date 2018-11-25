@@ -56,7 +56,7 @@ class WSRepository extends BaseRepository
 //                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['betOrderNo'],   //游戏代码
                 'Accounts' => $v['username'],   //玩家账号
-                'AllBet' => abs($v['gameCode']),//总下注
+                'AllBet' => abs($v['netPnl']),//总下注
                 'Profit' => $v['netPnl'],       //盈利
                 'GameStartTime' => $v['betTime'],//游戏开始时间
                 'GameEndTime' => $v['endTime'],  //游戏结束时间
