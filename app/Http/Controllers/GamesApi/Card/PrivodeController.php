@@ -11,7 +11,7 @@ class PrivodeController extends Controller{
         $list = GamesApi::getList();
         foreach ($list as $k=>$v){
             $res = $this->action($v->g_id, 'getBet');
-            if(!isset($res['code']) || $res['code'])
+            if(isset($res['code']) && $res['code'] != 0)
                 echo $v->name.'更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
         }
     }

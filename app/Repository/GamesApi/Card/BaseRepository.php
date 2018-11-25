@@ -66,7 +66,7 @@ class BaseRepository
                 'GameEndTime' => $data['GameEndTime'][$k],
             ];
         }
-        $this->insertDB($arr, $table);
+        return $this->insertDB($arr, $table);
     }
 
     //拼接请求数据
@@ -114,50 +114,6 @@ class BaseRepository
         return  sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);
     }
 
-    //增加用户资金明细
-    public function inCapital($type, $content, $nowMoney){
-        $time = time();
-        $content = '平台钱包';
-        if($type == 't23') {
-            $time += 1;
-            $content = $content . ' - ' . $this->gameInfo->name;
-        }else if($type == 't24'){
-            $content = $this->gameInfo->name . ' - ' . $content;
-        }
-        $data = [
-            'to_user' => $this->user['id'],
-            'user_type' => 'user',
-            'order_id' => $this->param['orderid'],
-            'type' => $type,
-            'money' => $this->param['money'],
-            'balance' => $nowMoney,
-            'operation_id' => 0,
-            'issue' => 0,
-            'game_id' => $this->gameInfo->type_id,
-            'game_name' => '棋牌游戏',
-            'playcate_id' => $this->gameInfo->type_id.'00'.$this->gameInfo->g_id,
-            'playcate_name' => $this->gameInfo->name,
-            'content' => $content,
-            'created_at' => date('Y-m-d H:i:s', $time),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ];
-        return DB::table('capital')->insert($data);
-    }
-    //增加棋牌游戏表
-    public function inList($type, $resmoney){
-        $data = [
-            'order_id' => $this->param['orderid'],
-            'userid' => $this->user['id'],
-            'username' => $this->user['username'],
-            'type' => $type,
-            'amount' => $this->param['money'],
-            'date' => date('Y-m-d H:i:s'),
-            'money_before' => 0,
-            'money_after' => $resmoney,
-            'ip' => $this->param['ip']
-        ];
-        return DB::table('jq_'.strtolower($this->gameInfo['alias']).'list')->insert($data);
-    }
     protected function show($code = '', $msg = '', $data = []){
         $data = [
             'code' => $code,
