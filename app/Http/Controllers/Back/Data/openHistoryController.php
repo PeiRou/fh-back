@@ -485,13 +485,15 @@ class openHistoryController extends Controller
         if(($startTime = $request->get('startTime')) && ($endTime = $request->get('endTime')))
             $where .= " AND `GameStartTime` BETWEEN '{$startTime} 00:00:00' AND '{$endTime} 23:59:59' ";
         if($Accounts = $request->get('Accounts'))
-            $where .= " AND `Accounts` IN({$Accounts},".(env('KY_AGENT').'_'.$Accounts).") ";
+            $where .= " AND `Accounts` IN('{$Accounts}','".(env('KY_AGENT').'_'.$Accounts)."') ";
         $sqlArr = [];
-        $columnArr = ['id', 'GameID', 'Accounts', 'AllBet', 'Profit', 'GameStartTime', 'GameEndTime'];
+//        $columnArr = ['id', 'GameID', 'Accounts', 'AllBet', 'Profit', 'GameStartTime', 'GameEndTime'];
+        $columnArr = ['id','SUM(AllBet) as AllBet', 'Accounts', 'SUM(Profit) AS Profit', ' MIN(GameStartTime) AS GameStartTime', 'MAX(GameEndTime) AS GameEndTime '];
+
         $column = implode(',', $columnArr);
         foreach ($gamesList as $k=>$v){
             $table = 'jq_'.strtolower($v->alias).'_bet';
-            $sqlArr[] = " (SELECT {$column},'{$v->name}' as name FROM `{$table}` WHERE {$where} ) ";
+            $sqlArr[] = " (SELECT {$column},'{$v->name}' as name FROM `{$table}` WHERE {$where} GROUP BY Accounts ) ";
         }
         $sql = 'SELECT * FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` DESC LIMIT '.$request->get('start').','.$request->get('length');
         $sqlCount =  'SELECT COUNT(`id`) AS `count` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS b';
