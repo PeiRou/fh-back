@@ -33,8 +33,8 @@ class BaseRepository
         return $this->otherModel->$model;
     }
     //插入数据库
-    public function insertDB($data){
-        if($this->table->insert($data)){
+    public function insertDB($data, $table){
+        if($table->insert($data)){
             echo $this->gameInfo->name.'插入'.count($data).'条数据';
         }else{
             echo $this->gameInfo->name.'插入'.count($data).'条数据失败';
@@ -42,7 +42,8 @@ class BaseRepository
     }
     //格式化数据  插入数据库
     public function createData($data){
-        $table = $this->table;
+        $tableName = 'jq_'.strtolower($this->gameInfo->name).'_bet';
+        $table = DB::table($tableName);
         //根据GameID Accounts去掉重复的
         foreach ($data['GameID'] as $k => $k){
             $table->orWhere(['GameID'=>$data['GameID'][$k]])
@@ -66,7 +67,7 @@ class BaseRepository
                 'GameEndTime' => $data['GameEndTime'][$k],
             ];
         }
-        $this->insertDB($arr);
+        $this->insertDB($arr, $table);
     }
 
     //拼接请求数据

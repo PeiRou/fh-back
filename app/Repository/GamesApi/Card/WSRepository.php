@@ -44,10 +44,10 @@ class WSRepository extends BaseRepository
     //格式化数据  插入数据库
     public function createData($data){
         $tableName = 'jq_'.strtolower($this->gameInfo->name).'_bet';
-        $this->table = DB::table($tableName);
+        $table = DB::table($tableName);
 //        $table = $this->getOtherModel('JqBet');
 //        $distinctArr = $table->getOnly($this->gameInfo->g_id);
-        $distinctArr = $this->table->pluck('GameID');
+        $distinctArr = $table->pluck('GameID');
         $arr = [];
         foreach ($data as $v){
             if(in_array($v['betOrderNo'], $distinctArr))
@@ -62,7 +62,7 @@ class WSRepository extends BaseRepository
                 'GameEndTime' => $v['endTime'],  //游戏结束时间
             ];
         }
-        $this->insertDB($data);
+        $this->insertDB($data, $table);
     }
 
 
