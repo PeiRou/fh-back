@@ -42,7 +42,7 @@ class BaseRepository
     }
     //格式化数据  插入数据库
     public function createData($data){
-        $tableName = 'jq_'.strtolower($this->gameInfo->name).'_bet';
+        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
         $table = DB::table($tableName);
         //根据GameID Accounts去掉重复的
         foreach ($data['GameID'] as $k => $k){

@@ -43,7 +43,7 @@ class WSRepository extends BaseRepository
 
     //格式化数据  插入数据库
     public function createData($data){
-        $tableName = 'jq_'.strtolower($this->gameInfo->name).'_bet';
+        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
         $table = DB::table($tableName);
 //        $table = $this->getOtherModel('JqBet');
 //        $distinctArr = $table->getOnly($this->gameInfo->g_id);
