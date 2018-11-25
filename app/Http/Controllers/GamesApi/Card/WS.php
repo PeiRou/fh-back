@@ -16,7 +16,7 @@ class WS extends Base{
     //获取棋牌投注详情
     public function getBet(){
 //        $this->repo->param['time'] =  $this->repo->param['time'] ?? date('YmdHi');
-        $this->repo->param['time'] =  $this->repo->param['time'] ?? '201811251500,201811251515';
+        $this->repo->param['time'] =  $this->repo->param['time'] ?? $this->getTime();
         $res = $this->repo->getBet();
         if(isset($res['code']) && $res['code'] == 0){
             $res = $res['data'];
@@ -32,6 +32,20 @@ class WS extends Base{
             return $this->show($res['code'] ?? 500, $this->repo->gameInfo->name.'第'.($this->repo->param['page']??1).'页数据获取失败:'.($res['msg']??'error'));
         }
 
+    }
+    private function getTime(){
+        $Minute = date('i');
+        if ($Minute >= 0 && $Minute < 15){
+            $Minute = '00';
+        }else if($Minute >= 15 && $Minute < 30){
+            $Minute = '15';
+        }else if($Minute >= 30 && $Minute < 45){
+            $Minute = '30';
+        }else{
+            $Minute = '45';
+        }
+        $time = date('YmdH').$Minute;
+        return $time.','.date('YmdH').($Minute + 15);
     }
 
 }
