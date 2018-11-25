@@ -72,9 +72,11 @@ class new_pcdd extends Command
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(5)->toDateTimeString();
             }
 
-            Redis::set('pcdd:nextIssue',(int)$nextIssue+1);
-            Redis::set('pcdd:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-            Redis::set('pcdd:nextIssueEndTime',strtotime($nextIssueEndTime));
+            $redis = Redis::connection();
+            $redis->select(0);
+            $redis->set('pcdd:nextIssue',(int)$nextIssue+1);
+            $redis->set('pcdd:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+            $redis->set('pcdd:nextIssueEndTime',strtotime($nextIssueEndTime));
         }
         $url = Config::get('website.guanServerUrl').'pcdd';
         try {

@@ -1003,14 +1003,14 @@ class OpenHistoryController extends Controller
     //冻结后的撤单操作
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id,false);
-        if(!in_array($type,['msnn']))
-            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
 
         $aAgentBackwater = AgentBackwater::getAgentBackwaterMoney($gameInfo->game_id,$issue);
 
         DB::beginTransaction();
 
         try {
+            if(!in_array($type,['msnn']))
+                DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
             Bets::updateBetStatus($issue, $gameInfo->game_id);
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataReturn($aBetAll);
@@ -1032,8 +1032,6 @@ class OpenHistoryController extends Controller
                         'rechargesType' => 0,
                         'game_id' => $gameInfo->game_id,
                         'game_name' => $gameInfo->game_name,
-                        'playcate_id' => $iBet->playcate_id,
-                        'playcate_name' => $iBet->playcate_name,
                         'issue' => $iBet->issue,
                         'money' => $iBet->bet_money,
                         'balance' => $iBet->money + $aArrayMoney[$iBet->id],
@@ -1058,6 +1056,7 @@ class OpenHistoryController extends Controller
             DB::commit();
             return ['status' => true,'mag' => '操作成功'];
         }catch(\Exception $e){
+            Log::info($e->getMessage());
             DB::rollback();
             return ['status' => false,'msg' => '撤单失败'];
         }
@@ -1117,6 +1116,7 @@ class OpenHistoryController extends Controller
                         'type' => 't25',
                         'rechargesType' => 0,
                         'game_id' => $iBet1->game_id,
+                        'game_name' => $gameInfo->game_name,
                         'issue' => $iBet1->issue,
                         'money' => $iBet1->amount,
                         'balance' => $iBet1->money + (-$iBet1->bet_bunko + $iBet1->amount),
@@ -1126,16 +1126,17 @@ class OpenHistoryController extends Controller
                     ];
                 }
 
-                $aUserFreezeMoney[] = [
-                    'user_id' => $iBet1->id,
-                    'game_id' => $iBet1->game_id,
-                    'issue' => $iBet1->issue,
-                    'money' => $iBet1->bet_bunko,
-                    'status' => 0,
-                    'created_at' => $dateTime,
-                    'updated_at' => $dateTime,
-                ];
-
+                if($iBet1->amount > 0) {
+                    $aUserFreezeMoney[] = [
+                        'user_id' => $iBet1->id,
+                        'game_id' => $iBet1->game_id,
+                        'issue' => $iBet1->issue,
+                        'money' => $iBet1->amount,
+                        'status' => 0,
+                        'created_at' => $dateTime,
+                        'updated_at' => $dateTime,
+                    ];
+                }
                 $aUserId[] = $iBet1->id;
             }
         }

@@ -38,7 +38,9 @@ class new_cqxync extends Command
         });
         if($filtered!=null){
             $nowIssueTime = date('Y-m-d').' '.$filtered['time'];
-            $getIssue = DB::table('game_cqxync')->where('opentime','=',$nowIssueTime)->first();
+            $getIssue = DB::table('game_cqxync')->where('opentime','=',$nowIssueTime)->where('is_open',0)->first();
+            if(empty($getIssue))
+                return '';
             $nextIssue = $getIssue->issue;
 
             if(strtotime($filtered['time']) == strtotime('23:52:20')){

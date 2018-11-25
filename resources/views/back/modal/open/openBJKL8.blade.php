@@ -11,102 +11,102 @@
     <div class="field openSelect">
         <label>开奖号码</label>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n1">
+            <select class="ui dropdown" name="nums" id="n1" data-nums="@if($typeC == 2) {{ $nums[0] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n2">
+            <select class="ui dropdown" name="nums" id="n2" data-nums="@if($typeC == 2) {{ $nums[1] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n3">
+            <select class="ui dropdown" name="nums" id="n3" data-nums="@if($typeC == 2) {{ $nums[2] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n4">
+            <select class="ui dropdown" name="nums" id="n4" data-nums="@if($typeC == 2) {{ $nums[3] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n5">
+            <select class="ui dropdown" name="nums" id="n5" data-nums="@if($typeC == 2) {{ $nums[4] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n6">
+            <select class="ui dropdown" name="nums" id="n6" data-nums="@if($typeC == 2) {{ $nums[5] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n7">
+            <select class="ui dropdown" name="nums" id="n7" data-nums="@if($typeC == 2) {{ $nums[6] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n8">
+            <select class="ui dropdown" name="nums" id="n8" data-nums="@if($typeC == 2) {{ $nums[7] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n9">
+            <select class="ui dropdown" name="nums" id="n9" data-nums="@if($typeC == 2) {{ $nums[8] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n10">
+            <select class="ui dropdown" name="nums" id="n10" data-nums="@if($typeC == 2) {{ $nums[9] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n11">
+            <select class="ui dropdown" name="nums" id="n11" data-nums="@if($typeC == 2) {{ $nums[10] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n12">
+            <select class="ui dropdown" name="nums" id="n12" data-nums="@if($typeC == 2) {{ $nums[11] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n13">
+            <select class="ui dropdown" name="nums" id="n13" data-nums="@if($typeC == 2) {{ $nums[12] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n14">
+            <select class="ui dropdown" name="nums" id="n14" data-nums="@if($typeC == 2) {{ $nums[13] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n15">
+            <select class="ui dropdown" name="nums" id="n15" data-nums="@if($typeC == 2) {{ $nums[14] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n16">
+            <select class="ui dropdown" name="nums" id="n16" data-nums="@if($typeC == 2) {{ $nums[15] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n17">
+            <select class="ui dropdown" name="nums" id="n17" data-nums="@if($typeC == 2) {{ $nums[16] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n18">
+            <select class="ui dropdown" name="nums" id="n18" data-nums="@if($typeC == 2) {{ $nums[17] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n19">
+            <select class="ui dropdown" name="nums" id="n19" data-nums="@if($typeC == 2) {{ $nums[18] }} @endif">
                 <option value=""></option>
             </select>
         </div>
         <div class="ui input icon">
-            <select class="ui dropdown" name="nums" id="n20">
+            <select class="ui dropdown" name="nums" id="n20" data-nums="@if($typeC == 2) {{ $nums[19] }} @endif">
                 <option value=""></option>
             </select>
         </div>
@@ -131,11 +131,17 @@
 <script>
     $(function () {
         var selectNum = ['',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80];
-        var str;
-        for(var i = 0;i<selectNum.length;i++){
-            str += '<option value="'+selectNum[i]+'">'+selectNum[i]+'</option>'
-        }
-        $('select[name="nums"]').html(str);
+        $('select[name="nums"]').each(function (i,e) {
+            var nums = $(e).attr('data-nums');
+            var str = '';
+            for(var i = 0;i<selectNum.length;i++){
+                str += '<option ';
+                if(selectNum[i] == nums)
+                    str += 'selected="selected" ';
+                str += 'value="'+selectNum[i]+'">'+selectNum[i]+'</option>'
+            }
+            $(e).html(str);
+        })
     });
     $('#openBjkl8').formValidation({
         framework: 'semantic',
