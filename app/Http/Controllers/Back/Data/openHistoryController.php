@@ -443,45 +443,63 @@ class openHistoryController extends Controller
     }
 
     //棋牌下注查询
+//    public function card_betInfo(Request $request){
+//        $start = $request->get('start');
+//        $length = $request->get('length');
+//        $sql = DB::table('ky_bet')->where(function ($aSql) use($request){
+//            if(($startTime = $request->get('startTime')) && ($endTime = $request->get('endTime'))){
+//                $aSql->whereBetween('GameStartTime',[$startTime.' 00:00:00',$endTime.' 23:59:59']);
+//            }
+//            if($Accounts = $request->get('Accounts')){
+//                $aSql->whereIn('Accounts',[$Accounts,env('KY_AGENT').'_'.$Accounts]);
+//            }
+//        });
+//        $count = $sql->count();
+//        $res = $sql->orderBy('id','DESC')->skip($start)->take($length)->get();
+//        return DataTables::of($res)
+//            ->editColumn('control',function ($res){
+//                    return "<ul class='control-menu'>
+//                            <li onclick='openLhc(\"$res->id\")'>手动开奖</li>
+//                            </ul>";
+//            })
+//            ->setTotalRecords($count)
+//            ->skipPaging()
+//            ->make(true);
+//    }
+
     public function card_betInfo(Request $request){
-        $start = $request->get('start');
-        $length = $request->get('length');
-        $sql = DB::table('ky_bet')->where(function ($aSql) use($request){
-            if(($startTime = $request->get('startTime')) && ($endTime = $request->get('endTime'))){
-                $aSql->whereBetween('GameStartTime',[$startTime.' 00:00:00',$endTime.' 23:59:59']);
-            }
-            if($Accounts = $request->get('Accounts')){
-                $aSql->whereIn('Accounts',[$Accounts,env('KY_AGENT').'_'.$Accounts]);
-            }
-        });
-        $count = $sql->count();
-        $res = $sql->orderBy('id','DESC')->skip($start)->take($length)->get();
-        return DataTables::of($res)
-            ->editColumn('control',function ($res){
-                    return "<ul class='control-menu'>
-                            <li onclick='openLhc(\"$res->id\")'>手动开奖</li>
-                            </ul>";
-            })
-            ->setTotalRecords($count)
+        $data = $this->card_betInfoSql($request);
+        return DataTables::of($data['res'])
+            ->setTotalRecords($data['count'])
             ->skipPaging()
             ->make(true);
     }
     //组合sql
     private function card_betInfoSql($request){
         //获取所有的游戏
-        $gamesList = GamesApi::getList();
+        $gamesList = GamesApi::where(function($aSql) use ($request){
+            if($g_id = $request->get('g_id'))
+                $aSql->where('g_id', $g_id);
+        })->get();
         $where = ' 1 ';
-        if(($startTime = $request->get('startTime')) && ($endTime = $request->get('endTime'))){
-            $where .= " AND `GameStartTime` BETWEEN {$startTime} AND {$endTime} ";
-        }
+        if(($startTime = $request->get('startTime')) && ($endTime = $request->get('endTime')))
+            $where .= " AND `GameStartTime` BETWEEN '{$startTime} 00:00:00' AND '{$endTime} 23:59:59' ";
+        if($Accounts = $request->get('Accounts'))
+            $where .= " AND `Accounts` IN({$Accounts},".(env('KY_AGENT').'_'.$Accounts).") ";
         $sqlArr = [];
-        $columnArr = [];
+        $columnArr = ['id', 'GameID', 'Accounts', 'AllBet', 'Profit', 'GameStartTime', 'GameEndTime'];
         $column = implode(',', $columnArr);
         foreach ($gamesList as $k=>$v){
-            $table = 'jq_'.$v->alias.'_bet';
-            $sqlArr[] = " (SELECT {$column} FROM `{$table}` WHERE {$where} ) ";
+            $table = 'jq_'.strtolower($v->alias).'_bet';
+            $sqlArr[] = " (SELECT {$column},'{$v->name}' as name FROM `{$table}` WHERE {$where} ) ";
         }
-        $sql = 'SELECT * FROM ( '.implode(' UNION ALL ', $sqlArr).' )';
-        return $sql;
+        $sql = 'SELECT * FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` DESC LIMIT '.$request->get('start').','.$request->get('length');
+        $sqlCount =  'SELECT COUNT(`id`) AS `count` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS b';
+        $res = DB::select($sql);
+        $resCount = DB::select($sqlCount);
+        return [
+            'res' => $res,
+            'count' => $resCount[0]->count
+        ];
     }
 }

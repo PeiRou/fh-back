@@ -33,6 +33,44 @@ class PrivodeController extends Controller{
         ];
     }
 
+
+    //格式化数据  插入数据库
+    public function createData($data){
+        $tableName = 'jq_ky_bet';
+        $table = DB::table($tableName);
+        //根据GameID Accounts去掉重复的
+        foreach ($data['GameID'] as $k => $k){
+            $table->orWhere(['GameID'=>$data['GameID'][$k]])
+                ->where([
+                    'Accounts' => $data['Accounts'][$k],
+                ]);
+        }
+        $distinctArr = $table->pluck('GameID')->toArray();
+        $res['GameID'] = array_diff($data['GameID'],$distinctArr);
+        $arr = [];
+        foreach ($data['GameID'] as $k => $k){
+            $arr[] = [
+//                'g_id' => $this->gameInfo->g_id,
+                'GameID' => $data['GameID'][$k],
+                'Accounts' => $data['Accounts'][$k],
+                'AllBet' => $data['AllBet'][$k],
+                'Profit' => $data['Profit'][$k],
+//                'Revenue' => $res['Revenue'][$k],
+                'GameStartTime' => $data['GameStartTime'][$k],
+                'GameEndTime' => $data['GameEndTime'][$k],
+            ];
+        }
+        return $this->insertDB($arr, $table);
+    }
+    //插入数据库
+    public function insertDB($data, $table){
+        if($table->insert($data)){
+            echo $this->gameInfo->name.'插入'.count($data).'条数据';
+        }else{
+            echo $this->gameInfo->name.'插入'.count($data).'条数据失败';
+        }
+    }
+
     //获取实例类名
     protected function getInstanceName($name = 'Base'){
         $class = sprintf("App\Http\Controllers\GamesApi\Card\%s",$name);

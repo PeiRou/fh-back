@@ -50,8 +50,9 @@ class WSRepository extends BaseRepository
         $distinctArr = $table->pluck('GameID');
         $arr = [];
         foreach ($data as $v){
-            if(in_array($v['betOrderNo'], $distinctArr))
-                continue;
+            if(count($distinctArr) > 0)
+                if(in_array($v['betOrderNo'], $distinctArr))
+                    continue;
             $arr[] = [
 //                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['betOrderNo'],   //游戏代码

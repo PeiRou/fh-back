@@ -19,10 +19,10 @@ $(function () {
             }
         },
         columns: [
+            {data: 'name'},
             {data: 'GameID'},
             {data: function(e){
                 return e.Accounts.match(/[0-9]*[_](.*)/)[1];
-
             }},
             {data: 'AllBet'},
             {data: 'Profit'},
