@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use App\GamesApi;
 
 class openHistoryController extends Controller
 {
@@ -464,5 +465,22 @@ class openHistoryController extends Controller
             ->setTotalRecords($count)
             ->skipPaging()
             ->make(true);
+    }
+    //组合sql
+    private function card_betInfoSql(){
+        //获取所有的游戏
+        $gamesList = GamesApi::getList();
+        $where = ' 1 ';
+
+        $sqlArr = [];
+        $columnArr = [];
+        $column = implode(',', $columnArr);
+        foreach ($gamesList as $k=>$v){
+            $table = 'jq_'.$v->alias.'_bet';
+            $sqlArr[] = " (SELECT {$column} FROM `{$table}` WHERE {$where} ) ";
+        }
+        $sql = 'SELECT * FROM ( '.implode(' UNION ALL ', $sqlArr).' )';
+//        $sql .= 'LIMIT '
+        return DB::select($sql);
     }
 }

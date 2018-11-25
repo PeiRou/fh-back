@@ -15,6 +15,7 @@ $(function () {
                 d.startTime = $('#startTime').val();//查询时间段
                 d.endTime = $('#endTime').val();
                 d.Accounts = $('#Accounts').val();//玩家账号
+                d.g_id = $('#g_id').val();
             }
         },
         columns: [
