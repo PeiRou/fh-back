@@ -49,7 +49,6 @@ class BaseRepository
             $table->orWhere(['GameID'=>$data['GameID'][$k]])
                 ->where([
                     'Accounts' => $data['Accounts'][$k],
-                    'g_id' => $this->gameInfo->g_id
                 ]);
         }
         $distinctArr = $table->pluck('GameID')->toArray();
