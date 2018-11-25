@@ -10,7 +10,9 @@ class PrivodeController extends Controller{
     public function getBet(){
         $list = GamesApi::getList();
 //        foreach ($list as $k=>$v){
-            $this->action(17, 'getBet');
+            $res = $this->action(15, 'getBet');
+            if($res['code'])
+                echo '更新失败：'.$res['msg'].'。错误码：'.$res['code'];
 //        }
     }
     private function action($g_id, $action){
@@ -22,9 +24,13 @@ class PrivodeController extends Controller{
             $repo = new $repoName($config);
             $instance = new $instanceName($repo);
             $repo->gameInfo = $getGamesApiInfo;
-            return $instance->action('getBet');
+            return $instance->action($action);
         }
-        return false;
+        return [
+            'code' => 1,
+            'msg' => '没有这个游戏',
+            'data' => []
+        ];
     }
 
     //获取实例类名

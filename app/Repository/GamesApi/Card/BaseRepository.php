@@ -8,11 +8,10 @@
 
 namespace App\Repository\GamesApi\Card;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class BaseRepository
 {
+    protected $otherModel;
     public $Utils = null; //依赖类
     public $gameInfo = []; //游戏信息
     public $Config = []; //配置
@@ -26,78 +25,63 @@ class BaseRepository
         $this->Config = $config;
         $this->param['ip'] = realIp();
     }
+    public function getOtherModel($model){
+        if(empty($this->otherModel->$model)) {
+            $model = '\App\\'.ucfirst($model);
+            $this->otherModel->$model = new $model;
+        }
+        return $this->otherModel->$model;
+    }
+    //插入数据库
+    public function insertDB($data){
+        if($this->getOtherModel('JqBet')->insert($data)){
+            echo $this->gameInfo->name.'插入'.count($data).'条数据';
+        }else{
+            echo $this->gameInfo->name.'插入'.count($data).'条数据失败';
+        }
+    }
+    //格式化数据  插入数据库
+    public function createData($data){
+        $table = DB::table('jq_bet');
+        //根据GameID Accounts去掉重复的
+        foreach ($data['GameID'] as $k => $k){
+            $table->orWhere(['GameID'=>$data['GameID'][$k]])
+                ->where([
+                    'Accounts' => $data['Accounts'][$k],
+                    'g_id' => $this->gameInfo->g_id
+                ]);
+        }
+        $distinctArr = $table->pluck('GameID')->toArray();
+        $res['GameID'] = array_diff($data['GameID'],$distinctArr);
+        $arr = [];
+        foreach ($data['GameID'] as $k => $k){
+            $arr[] = [
+                'GameID' => $data['GameID'][$k],
+                'Accounts' => $data['Accounts'][$k],
+                'AllBet' => $data['AllBet'][$k],
+                'Profit' => $data['Profit'][$k],
+//                'Revenue' => $res['Revenue'][$k],
+                'GameStartTime' => $data['GameStartTime'][$k],
+                'GameEndTime' => $data['GameEndTime'][$k],
+            ];
+        }
+        $this->insertDB($arr);
+    }
+
     //拼接请求数据
     public function createReqData(){
         try{
             $s = $this->param['s'];
             $timestamp = $this->Utils->microtime_int();
-            $this->param['account'] = $this->param['account'] ?? '';
-            $this->param['money'] = $this->param['money'] ?? 0;
             $time_str = $this->Utils->timestamp_str('YmdHis', 'Asia/Chongqing');
             $this->param['ip'] = $this->Utils->get_ip();
             $this->param['orderid'] = $this->param['orderid'] ?? $this->Config[$this->ConfigPrefix.'agent'] . $time_str . $this->param['account'];
-            $lineCode =  $this->Config[$this->ConfigPrefix.'lineCode'] ?? '';
-            $KindID = $this->param['KindID'] ?? 0;
-//            \Log::info(print($this->user));
-            $testFlag = $this->user['testFlag'];
-
-            //处理试玩用户
-            if($testFlag == 1){
-                $checkIsHaveMoney = DB::table(strtolower($this->gameInfo['alias']).'list')->where('userid',$this->user['id'])->count();
-                if($checkIsHaveMoney == 0){
-                    $this->param['money'] = 200;
-                    $this->inList(3, $this->param['money']);
-                } else {
-                    $this->param['money'] = 0;
-                }
-            }
             switch($subCmd = intval($s)) {
-                case 0: // login
-                    $param = http_build_query(array(
-                        's' => $s,
-                        'account' => $this->param['account'], //玩家账号
-                        'money' => $testFlag == 1 ? $this->param['money'] : 0, //上分的金额,如果不携带分数传 0
-                        'orderid' => $this->param['orderid'],
-                        'ip' => $this->param['ip'],
-                        'lineCode' => $lineCode, //代理下面的站点标识, 用防止站点之间导分
-                        'KindID' => $KindID
-                    ));
-                    break;
-                case 1: // 查询可下分
-                    $param = http_build_query(array(
-                        's' => $s,
-                        'account' => $this->param['account']
-                    ));
-                    break;
                 case 6:
                     $param = http_build_query(array(
                         's' => $s,
-                        'startTime' => $this->getMillisecond() - (1000 * 10 * 60),
-                        'endTime' => $this->getMillisecond()
-                    ));
-                    break;
-                case 8: // force one player offline
-                    $param = http_build_query(array(
-                        's' => $s,
-                        'account' => $this->param['account']
-                    ));
-                    break;
-                case 3: // 下分
-                    $param = http_build_query(array(
-                        's' => $s,
-                        'account' => $this->param['account'],
-                        'orderid' => $this->param['orderid'],
-                        'money' => $this->param['money'],
-                        'ip' => $this->param['ip']
-                    ));
-                    break;
-                case 2: //上分
-                    $param = http_build_query(array(
-                        's' => $s,
-                        'account' => $this->param['account'],
-                        'orderid' => $this->param['orderid'],
-                        'money' => $this->param['money'],
-                        'ip' => $this->param['ip']
+                        'startTime' => $this->param['startTime'],
+                        'endTime' => $this->param['endTime']
                     ));
                     break;
                 case 4: //查询订单状态
@@ -108,7 +92,6 @@ class BaseRepository
                     ));
                     break;
             }
-            \Log::info($this->user['username'].$this->gameInfo->name.json_encode($param));
             $url = $s != 6 ? $this->Config[$this->ConfigPrefix.'apiUrl'] : $this->Config[$this->ConfigPrefix.'recordUrl'];
             $url .= '?' . http_build_query(array(
                     'agent' => $this->Config[$this->ConfigPrefix.'agent'],
@@ -116,86 +99,26 @@ class BaseRepository
                     'param' => $this->Utils->desEncode($this->Config[$this->ConfigPrefix.'desKey'], $param),
                     'key' => md5($this->Config[$this->ConfigPrefix.'agent'].$timestamp.($this->Config[$this->ConfigPrefix.'md5Key']))
                 ));
-            $this->requrl = $url;
-//            \Log::info($url);
-            \Log::info($this->user['username'].$this->gameInfo->name.$url);
-            return true;
+            $res = $this->Utils->curl_get_content($url);
+            if(!empty($this->resData)){
+                if(isset($res['d']['code']) && $res['d']['code'] == 0){
+                    return $this->show(0, $res['d']);
+                }
+                return $this->show($res['d']['code'], $this->errorMessage($res['d']['code']));
+            }
+            return $this->show(500, '超时');
         }catch (\Exception $e){
-           \Log::info($this->gameInfo->name.'请求错误!'.$e->getMessage());
-            return false;
+            return $this->show(1, $e->getMessage());
         }
     }
-    public function req(){
-        $res = $this->Utils->curl_get_content($this->requrl);
-        \Log::info($res);
-        if(!$this->reqData = @json_decode($res, true)){
-            \Log::info($this->gameInfo->name.'-请求超时');
-        };
-    }
+
     //获取时间
     public function getMillisecond()
     {
         list($t1, $t2) = explode(' ', microtime());
         return  sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);
     }
-    //处理返回数据
-    public function createRes(){
-        if(empty($this->reqData) || is_null($this->reqData)){
-            return false;
-        }
-        $res_json = $this->reqData;
-        $res_m = @$res_json['s'];
-        $res_code = @$res_json['d']['code'];
-        if(isset($res_json['d']['code']) && $res_json['d']['code'] == 0){
-            //登录游戏
-            if($res_m == 100){
-                return [
-                    'status' => true,
-                    'data' => ['url'=>$res_json['d']['url']]
-                ];
-            }
-            //刷新余额
-            if($res_m == 101){
-                return [
-                    'status' => true,
-                    'data' => ['money'=>$res_json['d']['money']]
-                ];
-            }
-            //上分
-            if($res_m == 102){
-                return [
-                    'status' => true,
-                    'data' => ['money'=>$res_json['d']['money']]//上分后可下分金额
-                ];
-            }
-            //下分
-            if($res_m == 103){
-                return [
-                    'status' => true,
-                    'data' => ['money'=>$res_json['d']['money']],//下分后可下分金额
-                ];
-            }
-            //查订单状态
-            if($res_m == 104 && isset($res_json['d']['status']) && $res_json['d']['status'] == 0){
-                return [
-                    'status' => true,
-                    'data' => ['money'=>$res_json['d']['money']],//订单交易金额
-                ];
-            }
-            return [
-                'status' => false,
-                'data' => $res_json['d']
-            ];
-        } else {
-            return [
-                'status' => false,
-                'data' => [
-                    'errorCode' => $res_code,
-                    'errorMsg' => $this->errorMessage($res_code)
-                ]
-            ];
-        }
-    }
+
     //增加用户资金明细
     public function inCapital($type, $content, $nowMoney){
         $time = time();

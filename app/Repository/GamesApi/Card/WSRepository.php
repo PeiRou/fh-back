@@ -4,6 +4,7 @@
 namespace App\Repository\GamesApi\Card;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class WSRepository extends BaseRepository
 {
@@ -12,13 +13,54 @@ class WSRepository extends BaseRepository
         parent::__construct($config, 'WS');
     }
     public function getBet(){
-        $res = $this->Utils->getBetList($this->param['time'], $this->param['page'] ?? 1);
+        $res = $this->Utils->getBetList(
+            $this->param['time'],
+            $this->param['page'] ?? 1);
         if($res['status'] == 0){
             return $this->show(0, '', $res);
         }
         return $this->show($res['status'] ?? 102,  $this->errorMessage($res['status'] ?? -1) ?? '请求超时');
     }
+    /**
+    {
+    username: xxxxx,                            //用户名
+    netPnl : xxxx,                              //净输赢
+    transactionTime: "YYYY-MM-DD HH24:MI:SS",   //交易时间
+    gameCode: xxxxx,  //游戏代码
+    betOrderNo: xxxxxx,                        //投注订单号
+    betTime: "YYYY-MM-DD HH24:MI:SS",          //投注时间
+    endTime: "YYYY-MM-DD HH24:MI:SS",          //
+    productType: 1
+    sessionId: xxx,
+    rake: xxx
+    }
+      {
+    totalPage: xxx,  //总页数
+    currentPage: xx, //当前页数
+    totalCount: xx   //总数据
+    }
+     */
 
+    //格式化数据  插入数据库
+    public function createData($data){
+        $table = $this->getOtherModel('JqBet');
+        $distinctArr = $table->getOnly($this->gameInfo->g_id);
+        $arr = [];
+        foreach ($data as $v){
+            if(in_array($v['betOrderNo'], $distinctArr))
+                continue;
+            $arr[] = [
+                'g_id' => $this->gameInfo->g_id,
+                'GameID' => $v['betOrderNo'],   //游戏代码
+                'Accounts' => $v['username'],   //玩家账号
+                'AllBet' => abs($v['gameCode']),//总下注
+                'Profit' => $v['netPnl'],       //盈利
+                'GameStartTime' => $v['betTime'],//游戏开始时间
+                'GameEndTime' => $v['endTime'],  //游戏结束时间
+            ];
+        }
+        $this->insertDB($data);
+    }
 
 
     protected function errorMessage($code){
