@@ -96,7 +96,7 @@ class BaseRepository
             $res = json_decode($this->Utils->curl_get_content($url), true);
             if(!empty($res)){
                 if(isset($res['d']['code']) && $res['d']['code'] == 0){
-                    return $this->show(0, $res['d']);
+                    return $this->show(0, '', $res['d']);
                 }
                 return $this->show($res['d']['code'], $this->errorMessage($res['d']['code']));
             }
