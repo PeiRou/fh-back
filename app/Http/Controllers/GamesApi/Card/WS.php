@@ -15,8 +15,8 @@ class WS extends Base{
 
     //获取棋牌投注详情
     public function getBet(){
-//        $this->repo->param['time'] = $this->repo->param['time'] ?? $this->getTime();
-        $this->repo->param['time'] = '201811251845,201811251860';
+        $this->repo->param['time'] = $this->repo->param['time'] ?? $this->getTime();
+//        $this->repo->param['time'] = '201811251845,201811251860';
         $res = $this->repo->getBet();
         if(isset($res['code']) && $res['code'] == 0){
             $res = $res['data'];
