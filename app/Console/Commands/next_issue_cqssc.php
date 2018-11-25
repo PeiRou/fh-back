@@ -55,22 +55,21 @@ class next_issue_cqssc extends Command
         $nextIssue = $res->issue;
         $issuenum = substr($nextIssue,-3);
 
-        if(strtotime(date('H:i:s')) >= strtotime('10:00:00') && strtotime(date('H:i:s')) <= strtotime('22:00:00')){
+        if((int)$issuenum >= '24'){
+            if($issuenum == '120')
+                $nextIssueTime = date('Ymd').'001';
+            else
+                $nextIssueTime = (int)$nextIssue+1;
             $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(555)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($res->opentime)->addMinutes(10)->toDateTimeString();
-        } else if(strtotime(date('H:i:s')) >= strtotime('02:00:00') && strtotime(date('H:i:s')) <= strtotime('10:00:00')){
+        } else if((int)$issuenum == '23'){
+            $nextIssueTime = date('Ymd').'024';
             $nextIssueEndTime = date('Y-m-d',strtotime($res->opentime))." 10:00:00";
             $nextIssueLotteryTime = date('Y-m-d',strtotime($res->opentime))." 09:59:15";
         }else{
+            $nextIssueTime = (int)$nextIssue+1;
             $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(255)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($res->opentime)->addMinutes(5)->toDateTimeString();
-        }
-        if($issuenum == '120'){
-            $nextIssueTime = date('Ymd').'001';
-        }else if($issuenum == '023'){
-            $nextIssueTime = date('Ymd').'024';
-        } else {
-            $nextIssueTime = (int)$nextIssue+1;
         }
         $redis->set('cqssc:nextIssue',$nextIssueTime);
         $redis->set('cqssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
