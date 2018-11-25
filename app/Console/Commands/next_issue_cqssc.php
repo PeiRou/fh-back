@@ -53,6 +53,7 @@ class next_issue_cqssc extends Command
             return 'no need';
         //下一期獎期
         $nextIssue = $res->issue;
+        $openTime = $res->opentime;
         $issuenum = substr($nextIssue,-3);
 
         if((int)$issuenum >= '24'){
@@ -60,16 +61,17 @@ class next_issue_cqssc extends Command
                 $nextIssueTime = date('Ymd').'001';
             else
                 $nextIssueTime = (int)$nextIssue+1;
-            $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(555)->toDateTimeString();
-            $nextIssueLotteryTime = Carbon::parse($res->opentime)->addMinutes(10)->toDateTimeString();
+            $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(555)->toDateTimeString();
+            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(10)->toDateTimeString();
         } else if((int)$issuenum == '23'){
-            $nextIssueTime = date('Ymd').'024';
-            $nextIssueEndTime = date('Y-m-d',strtotime($res->opentime))." 10:00:00";
-            $nextIssueLotteryTime = date('Y-m-d',strtotime($res->opentime))." 09:59:15";
+            $openTime = strtotime($openTime);
+            $nextIssueTime = date('Ymd',$openTime).'024';
+            $nextIssueEndTime = date('Y-m-d',$openTime)." 10:00:00";
+            $nextIssueLotteryTime = date('Y-m-d',$openTime)." 09:59:15";
         }else{
             $nextIssueTime = (int)$nextIssue+1;
-            $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(255)->toDateTimeString();
-            $nextIssueLotteryTime = Carbon::parse($res->opentime)->addMinutes(5)->toDateTimeString();
+            $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(255)->toDateTimeString();
+            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
         }
         $redis->set('cqssc:nextIssue',$nextIssueTime);
         $redis->set('cqssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));

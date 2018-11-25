@@ -19,10 +19,12 @@ $(function () {
             }
         },
         columns: [
-            {data: 'GameID'},
+            {data: 'name'},
+            // {data: 'GameID'},
             {data: function(e){
-                return e.Accounts.match(/[0-9]*[_](.*)/)[1];
-
+                // return '';
+                    var Accounts = e.Accounts.match(/[0-9]*[_](.*)/)
+                return Accounts ? Accounts[1] : e.Accounts;
             }},
             {data: 'AllBet'},
             {data: 'Profit'},

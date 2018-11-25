@@ -54,7 +54,7 @@ class BaseRepository
         $distinctArr = $table->pluck('GameID')->toArray();
         $res['GameID'] = array_diff($data['GameID'],$distinctArr);
         $arr = [];
-        foreach ($data['GameID'] as $k => $k){
+        foreach ($res['GameID'] as $k => $k){
             $arr[] = [
 //                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $data['GameID'][$k],

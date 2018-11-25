@@ -60,12 +60,12 @@
         <table id="datTable" class="ui small selectable celled striped table" cellspacing="0" width="100%" style="text-align: center">
             <thead>
             <th>游戏名称</th>
-            <th>游戏局号</th>
+            {{--<th>游戏局号</th>--}}
             <th>玩家账号</th>
             <th>总下注</th>
             <th>盈利</th>
-            <th>游戏开始时间</th>
-            <th>游戏结束时间</th>
+            <th>第一次游戏时间</th>
+            <th>最后一次游戏时间</th>
             </tr>
             </thead>
         </table>
