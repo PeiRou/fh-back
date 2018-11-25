@@ -17,8 +17,8 @@ class KY_gameBet extends Command
 
     public function handle()
     {
-//        $res = (new KYActionController())->KY_gameBet();
-//        $this->info($res);
-        $res = (new PrivodeController())->getBet();
+        $res = (new KYActionController())->KY_gameBet();
+        $this->info($res);
+//        $res = (new PrivodeController())->getBet();
     }
 }

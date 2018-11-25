@@ -240,7 +240,7 @@ class WS {
         );
         $context  = stream_context_create($options);
         $result = @file_get_contents($this->url, false, $context);
-        \Log::info('无双'.$result);
+        \Log::info('无双res'.$result);
         if(empty($result)){
             return [
                 'status' => 500,
