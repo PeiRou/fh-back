@@ -15,13 +15,12 @@ class WS extends Base{
 
     //获取棋牌投注详情
     public function getBet(){
-//        $this->repo->param['time'] =  $this->repo->param['time'] ?? date('YmdHi');
-        $this->repo->param['time'] =  $this->repo->param['time'] ?? '201811251500,201811251515';
+        $this->repo->param['time'] =  $this->repo->param['time'] ?? $this->getTime();
         $res = $this->repo->getBet();
         if(isset($res['code']) && $res['code'] == 0){
             $res = $res['data'];
             $page_info = $res['page_info'];
-            $data = $res['details '];
+            $data = $res['details'];
             $this->repo->createData($data);//组合数据  插入数据库
             //当前页数小于总页数  继续请求
             if($page_info['currentPage'] < $page_info['totalPage']){
@@ -29,9 +28,23 @@ class WS extends Base{
                 return $this->getBet();
             }
         }else{
-            return $this->show($res['code'] ?? 500, $this->repo->gameInfo->name.'第'.($this->repo->param['page']??1).'页数据获取失败:'.($res['msg']??'error'));
+            return $this->show($res['code'] ?? 500, '第'.($this->repo->param['page']??1).'页数据获取失败:'.($res['msg']??'error'));
         }
 
+    }
+    private function getTime(){
+        $toMinute = date('i');
+        if ($toMinute >= 0 && $toMinute < 15){
+            $toMinute = '15';
+        }else if($toMinute >= 15 && $toMinute < 30){
+            $toMinute = '30';
+        }else if($toMinute >= 30 && $toMinute < 45){
+            $toMinute = '45';
+        }else{
+            $toMinute = '60';
+        }
+        $Minute = ($toMinute - 15) == 0 ? '00' : $toMinute - 15;
+        return date('YmdH').$Minute.','.date('YmdH').$toMinute;
     }
 
 }
