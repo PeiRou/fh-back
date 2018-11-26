@@ -10,6 +10,7 @@
             </select>
         </div>
     </div>
+    @if(env('TEST',0) == 1)
     @if(!empty($aAgentOdds) && $iAgent->modelStatus == 1)
     <div class="field">
         <label>代理赔率(平台基本赔率为<span style="color: red;">{{$aBasisOdds}}</span>)</label>
@@ -22,6 +23,7 @@
             </select>
         </div>
     </div>
+    @endif
     @endif
     @if(empty($aAgentOdds) || empty($agentId))
         <div class="field">
