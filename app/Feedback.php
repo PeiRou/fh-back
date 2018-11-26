@@ -37,4 +37,12 @@ class Feedback extends Model
         $data->typeName = self::$feedbackType[$data->type];
         return $data;
     }
+    //获取所有信息
+    public static function getAll($aParam){
+        return self::where(function($aSql) use($aParam){
+            if(isset($aParam['dateTime'])){
+                $aSql->whereBetween('created_at',[$aParam['dateTime'].' 00:00:00', $aParam['dateTime'].' 23:59:59']);
+            }
+        })->get();
+    }
 }

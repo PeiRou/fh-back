@@ -771,4 +771,5 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/pay/withdrawal/callback', 'Back\CallbackController@withdrawal');
 //总后台每日接受参数
     Route::post('/obtain/base/callback/{action}', 'Obtain\BaseController@callback');
+    Route::get('/obtain/base/callback', 'Obtain\FeedbackController@doAction');
 });
