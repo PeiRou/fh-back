@@ -74,7 +74,6 @@ class next_open_xylhc extends Command
         //當期獎期
         $needOpenIssue = $res->issue;
         $openTime = $res->opentime;
-        $issuenum = substr($needOpenIssue,-3);
         $res->opencode = $excel->opennum($table);
 
         //---kill start
@@ -95,11 +94,11 @@ class next_open_xylhc extends Command
                     $n7 = $openNum[6];
                     $totalNum = (int)$n1+(int)$n2+(int)$n3+(int)$n4+(int)$n5+(int)$n6+(int)$n7;
 
-                    $up = DB::table('game_xylhc')->where('issue',$res->expect)->update([
+                    $up = DB::table('game_xylhc')->where('issue',$needOpenIssue)->update([
                         'is_open' => 1,
-                        'year'=> date('Y'),
-                        'month'=> date('m'),
-                        'day'=>  date('d'),
+                        'year' => date('Y',strtotime($openTime)),
+                        'month' => date('m',strtotime($openTime)),
+                        'day' => date('d',strtotime($openTime)),
                         'open_num'=> $opencode,
                         'n1' => $n1,
                         'n2' => $n2,
