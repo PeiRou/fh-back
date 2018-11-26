@@ -89,7 +89,7 @@ class Swoole extends Command
         $this->ws->on('request', function ($serv) {
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
 
-            $this->timer = $this->serv->tick(1000, function($id) use ($data){
+            $this->timer = $this->serv->tick(500, function($id) use ($data){
                 //设置ID计数器
                 $this->setId($id);
                 //开始计数器
@@ -113,7 +113,7 @@ class Swoole extends Command
         }catch (\exception $exception){
             \Log::info('this commands not fund :'.$data['thread']);
         }
-        if($this->num[$id]>=59)
+        if($this->num[$id]>=89)
             $this->serv->clearTimer($id);
     }
     private function setId($id){
