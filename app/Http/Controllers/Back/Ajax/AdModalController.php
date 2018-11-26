@@ -65,7 +65,6 @@ class AdModalController extends Controller
                 'updated_at' => $date,
             ]);
         }else{
-            \Log::info($aKeyData);
             $iValue_val = DB::table('advertise_value')->where('info_id',$iInfo_val->id)->first();
             if(empty($iValue_val)){
                 $result1 = DB::table('advertise_value')->insertGetId([
