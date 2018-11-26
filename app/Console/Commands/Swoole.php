@@ -113,7 +113,7 @@ class Swoole extends Command
         }catch (\exception $exception){
             \Log::info('this commands not fund :'.$data['thread']);
         }
-        if($this->num[$id]>=89)
+        if($this->num[$id]>=100)
             $this->serv->clearTimer($id);
     }
     private function setId($id){
