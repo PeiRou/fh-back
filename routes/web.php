@@ -229,7 +229,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/drawingRecord', 'Back\Data\FinanceDataController@drawingRecord');
     Route::get('/back/datatables/freezeRecord', 'Back\Data\FinanceDataController@freezeRecord');  //用户冻结记录-表格数据
     Route::get('/back/datatables/capitalDetails', 'Back\Data\FinanceDataController@capitalDetails'); //资金明细-表格数据
-    Route::get('/back/datatables/memberReconciliation', 'Back\Data\FinanceDataController@memberReconciliation');
+    Route::get('/back/datatables/memberReconciliation', 'Back\Data\FinanceDataController@memberReconciliation');  //会员对账执行
     Route::get('/back/datatables/agentReconciliation', 'Back\Data\FinanceDataController@agentReconciliation');
     Route::get('/back/datatables/reportGagent', 'Back\Data\ReportDataController@Gagent');   //报表管理-总代
     Route::get('/back/datatables/reportAgent', 'Back\Data\ReportDataController@Agent');     //报表管理-代理
@@ -529,6 +529,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/addSubAccount', 'Back\Ajax\ModalController@addSubAccount')->middleware('check-permission')->name('m.subAccount.add');
     Route::get('/back/modal/editSubAccount/{id}', 'Back\Ajax\ModalController@editSubAccount')->middleware('check-permission')->name('m.subAccount.edit');
     Route::get('/back/modal/googleSubAccount/{id}', 'Back\Ajax\ModalController@googleSubAccount')->middleware('check-permission')->name('m.subAccount.googleOTP');
+    Route::get('/back/modal/reconciliationInfo/{id}', 'Back\Ajax\ModalController@reconciliationInfo')->name('m.member.reconciliation');  //会员对帐详情
     Route::get('/back/modal/addGeneralAgent', 'Back\Ajax\ModalController@addGeneralAgent')->middleware('check-permission')->name('m.gAgent.add');
     Route::get('/back/modal/editGeneralAgent/{id}', 'Back\Ajax\ModalController@editGeneralAgent')->middleware('check-permission')->name('m.gAgent.edit');
     Route::get('/back/modal/addAgent/{agentId}', 'Back\Ajax\ModalController@addAgent')->middleware('check-permission')->name('m.agent.add');

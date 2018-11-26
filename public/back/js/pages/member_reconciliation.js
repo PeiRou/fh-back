@@ -97,24 +97,22 @@ $(function () {
     //         dataTable.ajax.reload();
     //     }
     // });
-
 });
 
 $('#btn_search').on('click',function () {
-    window.location.href = '/back/control/financeManage/memberReconciliation?daytime='+document.getElementById("startTime").value;
+    window.location.href = '/back/control/financeManage/memberReconciliation?daytime='+document.getElementById("startTime").value+'|'+document.getElementById("endTime").value;
 });
 
 function refreshTable(){
     window.location.href = '/back/control/financeManage/memberReconciliation';
 }
 
-function refreshExcel() {
-    console.log(document.getElementById("user").getAttribute('value'));
-    var str = '确定重新执行 '+document.getElementById("startTime").value+' 的会员对帐？\n如果已生成的数据在重新执行期间删除过会员银行卡帐号、会员帐号，新生成的数据会出现与当天不符的情况。\n※注意:重新执行不会更新当天的会员余额。';
+function refreshExcel(daytime) {
+    var str = '确定重新执行 '+daytime+' 的会员对帐？\n如果已生成的数据在重新执行期间删除过会员银行卡帐号、会员帐号，新生成的数据会出现与当天不符的情况。\n※注意:重新执行不会更新当天的会员余额。';
     if (confirm(str)) {
         var dialog = document.getElementById("dialog");
         dialog.style.display = "block";
-        var url = '/back/datatables/memberReconciliation?dayTime='+document.getElementById("startTime").value+'&user='+document.getElementById("user").getAttribute('value');
+        var url = '/back/datatables/memberReconciliation?dayTime='+daytime+'&user='+document.getElementById("user").getAttribute('value');
         $.get(url, function(result){
             var restr = jQuery.parseJSON(JSON.stringify(result));
             // console.dir(str);
@@ -124,4 +122,60 @@ function refreshExcel() {
         });
     }
     return true;
+}
+
+function searchclick(daytime) {
+    var arraystr =daytime.split("|");
+    var titlestr = '';
+    switch(arraystr[1])
+    {
+        case 'onlinePayment':
+            titlestr = arraystr[0]+' 在线支付  总计 '+arraystr[2];
+            break;
+        case 'bankTransfer':
+            titlestr = arraystr[0]+' 银行汇款  总计 '+arraystr[2];
+            break;
+        case 'alipay':
+            titlestr = arraystr[0]+' 支付宝支付  总计 '+arraystr[2];
+            break;
+        case 'weixin':
+            titlestr = arraystr[0]+' 微信支付  总计 '+arraystr[2];
+            break;
+        case 'cft':
+            titlestr = arraystr[0]+' 财付通  总计 '+arraystr[2];
+            break;
+        case 'adminAddMoney':
+            titlestr = arraystr[0]+' 后台加钱  总计 '+arraystr[2];
+            break;
+        case 'draw':
+            titlestr = arraystr[0]+' 提款  总计 '+arraystr[2];
+            break;
+        case 'capital':
+            titlestr = arraystr[0]+' 资金明细  总计 '+arraystr[2];
+            break;
+        default:
+            titlestr = '';
+    }
+
+    jc = $.confirm({
+        theme: 'material',
+        title: titlestr,
+        closeIcon:true,
+        boxWidth:'50%',
+        content: 'url:/back/modal/reconciliationInfo/'+daytime,
+        buttons: {
+            formSubmit: {
+                text:'关闭',
+                btnClass: 'btn-blue'
+            }
+        },
+        contentLoaded: function(data, status, xhr){
+            $('.jconfirm-content').css('overflow','hidden');
+            if(data.status == 403)
+            {
+                this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
+                $('.jconfirm-buttons').hide();
+            }
+        }
+    });
 }

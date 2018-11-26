@@ -139,6 +139,44 @@ class ModalController extends Controller
         $qrCodeUrl = $ga->getQRCodeGoogleUrl($account,$google_code,null,['chs'=>'300x300']);
         return view('back.modal.member.subAccountGoogleCode',compact('qrCodeUrl','subAccountId','account','google_code'));
     }
+    //会员对帐详情
+    public function reconciliationInfo($id)
+    {
+        $strarray = explode("|",$id);
+        $daytstrot = strtotime(date($strarray[0]));
+
+        $totalreportsql = 'select data from totalreport where daytstrot = \''.$daytstrot.'\'';
+        $totalreport =  DB::select($totalreportsql);
+        if (!empty($totalreport)){
+            $data = $totalreport[0]->data;
+            $data = unserialize($data);
+            $data = $data[$strarray[0]][$strarray[1]];
+            $str= 0;
+            foreach ($data as $k=>$v){
+                $str += $v->amount;
+            }
+            foreach ($data as $k=>$v){
+                $v->totle = sprintf('%0.2f',$str);
+            }
+        }else{
+            $data ='';
+        }
+
+        if(!empty($data)){
+            $str='';
+            $str = "<div class='agent-info'><table id=\"memberReconciliationTable\" class=\"ui small table\" cellspacing=\"0\" width=\"100%\">
+            <tbody><tr><td>";
+            foreach($data as $k=>$v){
+                $amount = isset($v->amount)?$v->amount:'0';
+                $giftamount = isset($v->giftamount)?'赠送'.$v->giftamount:'';
+                $str .="<div id=\"v\">$v->rechname</br><p>$giftamount   总计$amount</p></div>";
+            }
+            $str .="</td></tr></tbody>
+            </table></div>";
+            return $str;
+        }
+        return '';
+    }
     //添加文章
     public function addArticle()
     {
