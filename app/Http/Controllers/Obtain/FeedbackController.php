@@ -21,24 +21,32 @@ class FeedbackController extends BaseController
                 }
             }
         }
+        p($data,1);
         echo $this->returnAction($data);
     }
     private function adminData($mData, $fData){
-        return [
+        $data = [
             'first_id' => $mData['feedback_id'],
             'type' => $fData['type'],
             'reply_type' => $mData['type'],
             'content' => $mData['content'],
-            'user_id' => $fData['user_id'],
-            'user_name' => $fData['user_name'],
-            'user_account' => $fData['user_account'],
-            'admin_id' => $mData['admin_id'],
-            'admin_name' => $mData['name'],
-            'admin_account' => $mData['account'],
             'status' => 2,
             'created_at' => $mData['created_at'],
             'updated_at' => $mData['updated_at'],
         ];
+        switch ($mData['type']) {
+            case 1:
+                $data['user_id'] = $fData['user_id'];
+                $data['user_name'] = $fData['user_name'];
+                $data['user_account'] = $fData['user_account'];
+                break;
+            case 2:
+                $data['admin_id'] = $mData['admin_id'];
+                $data['admin_name'] = $mData['name'];
+                $data['admin_account'] = $mData['account'];
+                break;
+        }
+        return $data;
     }
     private function userData($fData){
         return [
@@ -48,10 +56,9 @@ class FeedbackController extends BaseController
             'user_id' => $fData['user_id'],
             'user_name' => $fData['user_name'],
             'user_account' => $fData['user_account'],
+            'status' => $fData['status'],
             'created_at' => $fData['created_at'],
             'updated_at' => $fData['updated_at']
         ];
     }
-
-
 }
