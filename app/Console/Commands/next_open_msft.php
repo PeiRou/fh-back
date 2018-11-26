@@ -45,6 +45,7 @@ class next_open_msft extends Command
      */
     public function handle()
     {
+        \Log::info(1);
         $table = 'game_msft';
 
         $redis = Redis::connection();
