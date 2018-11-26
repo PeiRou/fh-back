@@ -83,6 +83,14 @@ class BaseController extends Controller
         echo $this->rsaPublicEncrypt(json_encode($aParam));
         exit();
     }
+    public function show($code = 0, $data = []){
+        $data = [
+            'code' => $code,
+            'data' => $data,
+            'msg' => $this->code[0],
+        ];
+        $this->returnAction($data);
+    }
 
     //拼接公钥
     public function splicePublicKey($splitLength = 64){
