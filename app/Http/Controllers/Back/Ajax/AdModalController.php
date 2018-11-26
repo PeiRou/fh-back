@@ -69,7 +69,7 @@ class AdModalController extends Controller
             if(empty($iValue_val)){
                 $result1 = DB::table('advertise_value')->insertGetId([
                     'info_id' => $iInfo_val->id,
-                    'key_id' => $aKeyData[0]->id,
+                    'key_id' => $aKeyData->id,
                     'js_value' => '',
                     'status' => 1,
                     'created_at' => $date,
