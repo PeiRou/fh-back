@@ -21,7 +21,6 @@ class FeedbackController extends BaseController
                 }
             }
         }
-        p($data,1);
         echo $this->returnAction($data);
     }
     private function adminData($mData, $fData){
