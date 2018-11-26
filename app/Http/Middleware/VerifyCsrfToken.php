@@ -13,5 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/obtain/base/callback/*',
+        '/obtain/login/doAction'
     ];
 }
