@@ -32,6 +32,12 @@ class FeedbackController extends BaseController
             'status' => 2,
             'created_at' => $mData['created_at'],
             'updated_at' => $mData['updated_at'],
+            'user_id'=> '',
+            'user_name'=> '',
+            'user_account'=> '',
+            'admin_id'=> '',
+            'admin_name'=> '',
+            'admin_account'=> '',
         ];
         switch ($mData['type']) {
             case 1:
@@ -51,13 +57,17 @@ class FeedbackController extends BaseController
         return [
             'first_id' => $fData['id'], //第一条留言id
             'type' => $fData['type'],
+            'reply_type' => 0,
             'content' => $fData['content'],
             'user_id' => $fData['user_id'],
             'user_name' => $fData['user_name'],
             'user_account' => $fData['user_account'],
             'status' => $fData['status'],
             'created_at' => $fData['created_at'],
-            'updated_at' => $fData['updated_at']
+            'updated_at' => $fData['updated_at'],
+            'admin_id'=> '',
+            'admin_name'=> '',
+            'admin_account'=> '',
         ];
     }
 }
