@@ -56,7 +56,7 @@ class next_issue_gxk3 extends Command
         $openTime = $res->opentime;
 
         $New_nextIssue = $nextIssue+1;
-        if(substr($openTime,-8) == strtotime('22:27:00')){
+        if(substr($openTime,-8) == '22:27:00'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
             $New_nextIssue = date("ymd",strtotime($nextDay)).'001';                         //奖期
             $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:35:00';

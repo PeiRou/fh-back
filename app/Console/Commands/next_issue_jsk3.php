@@ -56,10 +56,9 @@ class next_issue_jsk3 extends Command
         $openTime = $res->opentime;
 
         $New_nextIssue = $nextIssue+1;
-        if(substr($openTime,-8) == strtotime('22:08:00')){
+        if(substr($openTime,-8) == '22:08:00'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
             $New_nextIssue = date("ymd",strtotime($nextDay)).'001';                         //奖期
-            \Log::info('jsk3'.$New_nextIssue);
             $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 08:36:10';
             $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 08:38:00';
         } else {
