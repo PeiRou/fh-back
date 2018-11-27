@@ -22,7 +22,7 @@ class next_issue_msssc extends Command
      *
      * @var string
      */
-    protected $description = '秒速赛车+秒速牛牛-產下一期開盤';
+    protected $description = '秒速时时彩-產下一期開盤';
 
     /**
      * Create a new command instance.

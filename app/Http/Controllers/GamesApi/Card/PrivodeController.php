@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class PrivodeController extends Controller{
     public function getBet(){
-        $list = GamesApi::getList();
+        $list = GamesApi::getQpList();
         foreach ($list as $k=>$v){
             //删除两天以前的
             $tableName = 'jq_'.strtolower($v->alias).'_bet';
