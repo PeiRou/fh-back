@@ -2,9 +2,9 @@
 
 namespace App;
 
-class SportsEvent extends Base
+class SportsTeamname extends Base
 {
-    protected $table = 'sports_event';
+    protected $table = 'sports_teamname';
     protected $primaryKey = 'id';
 
 

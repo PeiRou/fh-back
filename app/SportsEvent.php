@@ -2,10 +2,11 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Banks extends Model
+class SportsEvent extends Base
 {
-    protected $table = 'bank';
-    protected $primaryKey = 'bank_id';
+    protected $table = 'sports_event';
+    protected $primaryKey = 'id';
+
+
+
 }

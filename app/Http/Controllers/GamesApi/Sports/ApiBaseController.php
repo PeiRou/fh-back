@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Sports;
+namespace App\Http\Controllers\GamesApi\Sports;
 
 class ApiBaseController extends BaseController
 {
     public function __construct(){
         parent::__construct();
-        $repoName = 'App\\Repository\\Sports\\ApiBaseRepository';
+        $repoName = 'App\\Repository\\GamesApi\\Sports\\ApiBaseRepository';
         $this->repository = new $repoName();
     }
     public function createData(){

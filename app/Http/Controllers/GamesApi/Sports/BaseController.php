@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Sports;
+namespace App\Http\Controllers\GamesApi\Sports;
 
 use App\Http\Controllers\Controller;
-use App\Service\FactoryService;
+use App\Http\Services\FactoryService;
 class BaseController extends Controller
 {
     protected $repository;

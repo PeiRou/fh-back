@@ -6,7 +6,7 @@
  * Time: 19:18
  */
 
-namespace App\Service;
+namespace App\Http\Services;
 
 
 class FactoryService
@@ -29,7 +29,7 @@ class FactoryService
      * @return mixed
      */
     public static function generateService($service,$param=""){
-        return self::generateClass('\App\\Service\\'.ucfirst($service).'Service',$param);
+        return self::generateClass('\App\\Http\\Services\\'.ucfirst($service).'Service',$param);
     }
 
     /**
@@ -46,7 +46,7 @@ class FactoryService
      * @return mixed
      */
     public static function generateModel($model){
-        return self::generateClass('\App\\Model\\'.ucfirst($model).'Model');
+        return self::generateClass('\App\\'.ucfirst($model));
     }
 
     /**

@@ -6,7 +6,7 @@
  * Time: 12:14
  */
 
-namespace App\Repository\Sports;
+namespace App\Repository\GamesApi\Sports;
 use App\Http\Services\FactoryService;
 use Illuminate\Support\Facades\DB;
 
