@@ -285,24 +285,83 @@ class SrcViewController extends Controller
     {
         $aParam = $request->input();
         if (!empty($aParam['daytime'])){
-            $date = date('Y-m-d',strtotime($aParam['daytime']));
+            $dayarray = explode("|",$aParam['daytime']);
+            $startime = $dayarray[0];
+            $endtime = $dayarray[1];
         }else{
-            $date=date('Y-m-d',strtotime(date('Y-m-d').' -1day'));
+            $startime = Carbon::yesterday()->subDays(7)->toDateTimeString();
+            $endtime = Carbon::yesterday()->toDateTimeString();
         }
-        $daytstrot = strtotime(date($date));
-
-        $totalreportsql = 'select * from totalreport where daytstrot = \''.$daytstrot.'\'';
+        $starstrto = strtotime($startime);
+        $endstrto = strtotime($endtime);
+        $totalreportsql = 'select daytstrot,daytime,data,memberquota,operation_account,created_at,updated_at from totalreport WHERE daytstrot >= '.$starstrto.' AND daytstrot <= '.$endstrto.' ORDER BY daytstrot DESC';
         $totalreport =  DB::select($totalreportsql);
-        if (!empty($totalreport)){
-            $data = $totalreport[0]->data;
-            $data = unserialize($data) ;
-            $memberquota = $totalreport[0]->memberquota;
-        }else{
-            $data ='';
-            $memberquota ='';
-        }
 
-        return view('back.memberReconciliation',compact('data','date','memberquota'));
+        if (!empty($totalreport)){
+            foreach ($totalreport as $k=>$v){
+                $v->data = unserialize($v->data)[$v->daytime];
+                foreach ($v->data as $kw=>$vw){
+                    $str= 0;
+                    foreach ($vw as $kx=>$vx){
+                        $str += $vx->amount;
+                    }
+                    foreach ($vw as $kx=>$vx){
+                        $vx->totle = sprintf('%0.2f',$str);
+                    }
+                }
+                //onlinePayment
+                if(!empty($v->data['onlinePayment'][0])){
+                    $v->onlinePayment = $v->data['onlinePayment'][0]->totle;
+                }else{
+                    $v->onlinePayment = "0.00";
+                }
+                //bankTransfer
+                if(!empty($v->data['bankTransfer'][0])){
+                    $v->bankTransfer = $v->data['bankTransfer'][0]->totle;
+                }else{
+                    $v->bankTransfer = "0.00";
+                }
+                //alipay
+                if(!empty($v->data['alipay'][0])){
+                    $v->alipay = $v->data['alipay'][0]->totle;
+                }else{
+                    $v->alipay = "0.00";
+                }
+                //weixin
+                if(!empty($v->data['weixin'][0])){
+                    $v->weixin = $v->data['weixin'][0]->totle;
+                }else{
+                    $v->weixin = "0.00";
+                }
+                //cft
+                if(!empty($v->data['cft'][0])){
+                    $v->cft = $v->data['cft'][0]->totle;
+                }else{
+                    $v->cft = "0.00";
+                }
+                //adminAddMoney
+                if(!empty($v->data['adminAddMoney'][0])){
+                    $v->adminAddMoney = $v->data['adminAddMoney'][0]->totle;
+                }else{
+                    $v->adminAddMoney = "0.00";
+                }
+                //draw
+                if(!empty($v->data['draw'][0])){
+                    $v->draw = $v->data['draw'][0]->totle;
+                }else{
+                    $v->draw = "0.00";
+                }
+                //capital
+                if(!empty($v->data['capital'][0])){
+                    $v->capital = $v->data['capital'][0]->totle;
+                }else{
+                    $v->capital = "0.00";
+                }
+            }
+        }else{
+            $totalreport = [];
+        }
+        return view('back.memberReconciliation',compact('totalreport','startime','endtime'));
     }
     //代理对账
     public function agentReconciliation()

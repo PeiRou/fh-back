@@ -8,24 +8,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\Bet\Clong;
 
-class next_open_msssc extends Command
+class next_open_msjsk3 extends Command
 {
-    protected  $code = 'msssc';
-    protected  $gameId = 81;
+    protected  $code = 'msjsk3';
+    protected  $gameId = 86;
     protected  $clong;
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'next_open_msssc';
+    protected $signature = 'next_open_msjsk3';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '秒速时时彩-定時開號';
+    protected $description = '秒速快三-定時開號';
 
     /**
      * Create a new command instance.
@@ -45,15 +45,15 @@ class next_open_msssc extends Command
      */
     public function handle()
     {
-        $table = 'game_msssc';
+        $table = 'game_msjsk3';
 
         $redis = Redis::connection();
         $redis->select(0);
-        $redis_issue = $redis->get('msssc:issue');
-        $redis_needopen = $redis->exists('msssc:needopen')?$redis->get('msssc:needopen'):'';
-        $redis_next_issue = $redis->get('msssc:nextIssue');
+        $redis_issue = $redis->get('msjsk3:issue');
+        $redis_needopen = $redis->exists('msjsk3:needopen')?$redis->get('msjsk3:needopen'):'';
+        $redis_next_issue = $redis->get('msjsk3:nextIssue');
         //在redis上的差距
-        $redis_gapnum = $redis->get('msssc:gapnum');
+        $redis_gapnum = $redis->get('msjsk3:gapnum');
         //在現在實際的差距
         $gapnum = $redis_next_issue-$redis_issue;
 
@@ -65,11 +65,11 @@ class next_open_msssc extends Command
         $res = $excel->getNextIssue($table);
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
-            $redis->set('msssc:needopen','on');
-            $redis->set('msssc:gapnum',$gapnum);
+            $redis->set('msjsk3:needopen','on');
+            $redis->set('msjsk3:gapnum',$gapnum);
             return 'Fail';
         }else{
-            $redis->set('msssc:needopen','');
+            $redis->set('msjsk3:needopen','');
         }
         //當期獎期
         $needOpenIssue = $res->issue;
@@ -82,11 +82,6 @@ class next_open_msssc extends Command
         //---kill end
         $opencode = empty($opennum)?$res->opencode:$opennum;
 
-        //清除昨天长龙，在录第一期的时候清掉
-        if($issuenum=='0001'){
-            DB::table('clong_kaijian1')->where('lotteryid',$this->gameId)->delete();
-            DB::table('clong_kaijian2')->where('lotteryid',$this->gameId)->delete();
-        }
         try {
             if ($redis_issue !== $needOpenIssue) {
                 try {
@@ -99,11 +94,9 @@ class next_open_msssc extends Command
                             'opennum'=> $opencode
                         ]);
                     if ($up == 1 && $needOpenIssue == ($redis_next_issue-1)) {
-                        $key = 'msssc:issue';
+                        $key = 'msjsk3:issue';
                         $redis->set($key, $needOpenIssue);
-                        $redis->set('msssc:gapnum',$gapnum);
-                        $this->clong->setKaijian('msssc',1,$opencode);
-                        $this->clong->setKaijian('msssc',2,$opencode);
+                        $redis->set('msjsk3:gapnum',$gapnum);
                     }
                 } catch (\Exception $exception) {
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());

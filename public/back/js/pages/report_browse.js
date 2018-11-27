@@ -64,6 +64,7 @@ $(function () {
             data:function (d) {
                 d.startTime = $('#startTime').val();
                 d.endTime = $('#endTime').val();
+                d._token = _token;
             }
         },
         columns: [
