@@ -269,12 +269,12 @@ class FinanceDataController extends Controller
             })
             ->where(function ($q) use ($startTime,$endTime) {
                 if(isset($startTime) && $startTime || isset($endTime) && $endTime){
-                    $q->whereBetween('drawing.updated_at',[$startTime.' 00:00:00', $endTime.' 23:59:59']);
+                    $q->whereBetween('drawing.created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59']);
                 } else {
-                    $q->whereDate('drawing.updated_at',date('Y-m-d'));
+                    $q->whereDate('drawing.created_at',date('Y-m-d'));
                 }
             })
-            ->orderBy('drawing.updated_at','desc')->orderBy('drawing.id','desc');
+            ->orderBy('drawing.created_at','desc')->orderBy('drawing.id','desc');
         $drawingCount = $drawingSQL->count();
         $drawing = $drawingSQL->skip($start)->take($length)->get();
         $aPayOnlineNew = PayOnlineNew::select('levels','rechName','id')->where('payCode','DF')->where('status',1)->get()->toArray();
