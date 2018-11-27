@@ -15,7 +15,7 @@ class GamesApi extends Model
     }
     //获取所有棋牌游戏
     public static function getQpList(){
-        return self::where('type', 111)->get();
+        return self::where('type_id', 111)->get();
     }
     //检查游戏是否开启
     public static function getStatus($g_id){
