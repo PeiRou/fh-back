@@ -9,6 +9,16 @@ class ApiBaseController extends BaseController
         $repoName = 'App\\Repository\\GamesApi\\Sports\\ApiBaseRepository';
         $this->repository = new $repoName();
     }
+
+    public function action(){
+
+    }
+
+    //获取数据
+    public function getData(){
+
+    }
+    //格式化储存
     public function createData(){
 
         $data = json_decode('{

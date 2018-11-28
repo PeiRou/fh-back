@@ -1,6 +1,6 @@
 <?php
 //测试
-Route::get('/createData', 'GamesApi\Sports\ApiBaseController@createData');
+Route::get('/createData', 'GamesApi\Sports\PrivodeController@getRes');
 Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/', 'Back\SrcViewController@index');
 

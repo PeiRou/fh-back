@@ -7,13 +7,12 @@ use App\Http\Services\FactoryService;
 class BaseController extends Controller
 {
     protected $repository;
-
     protected $otherRepository;
+
     public function __construct()
     {
         if(is_null($this->otherRepository))
             $this->otherRepository = new \stdClass;
-
     }
 
     /**

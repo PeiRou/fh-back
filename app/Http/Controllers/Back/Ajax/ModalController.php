@@ -34,6 +34,7 @@ use App\SubAccount;
 use App\SystemSetting;
 use App\User;
 use App\Whitelist;
+use App\GamesApi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -995,6 +996,8 @@ class ModalController extends Controller
             $paramArr = DB::table('games_api_config')->where('g_id',$g_id)->get();
             $data = DB::table('games_api')->where('g_id',$g_id)->first();
         }
-        return view('back.gamesApi.list.editGameApi', compact('g_id', 'paramArr', 'data'));
+        $GamesApi = new GamesApi();
+        $statusArr = $GamesApi->statusArr;
+        return view('back.gamesApi.list.editGameApi', compact('g_id', 'paramArr', 'data', 'statusArr'));
     }
 }

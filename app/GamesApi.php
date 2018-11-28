@@ -8,7 +8,10 @@ class GamesApi extends Model
 {
     protected $table = 'games_api';
     protected $primaryKey = 'g_id';
-
+    public $statusArr = [
+        '111' => '棋牌游戏',
+        '112' => '体育赛事'
+    ];
     //获取游戏信息
     public static function getGamesApiInfo($g_id){
         return self::where('g_id', $g_id)->first();
@@ -16,6 +19,10 @@ class GamesApi extends Model
     //获取所有棋牌游戏
     public static function getQpList(){
         return self::where('type_id', 111)->get();
+    }
+    //获取所有体彩游戏
+    public static function getTcList(){
+        return self::where('type_id', 112)->get();
     }
     //检查游戏是否开启
     public static function getStatus($g_id){
