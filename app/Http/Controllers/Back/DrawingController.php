@@ -296,7 +296,7 @@ class DrawingController extends Controller
                 }
             })
             ->where(function ($q) use ($draw_type){
-                if(isset($draw_type) && $draw_type){
+                if(isset($draw_type) && $draw_type!=''){
                     $q->where('drawing.draw_type',$draw_type);
                 }
             })
