@@ -572,14 +572,14 @@ GROUP BY g.ga_id LIMIT $start,$length";
 
         $aDrawingSql = "SELECT SUM(`amount`) AS `payDrawing` FROM `drawing` WHERE status = 2 AND `user_id` = $id ";
         if(isset($param['startTime']) && array_key_exists('startTime', $param)){
-            $aSql .= " AND `created_at` >= '".$param['startTime']."'";
-            $aBetSql .= " AND `created_at` >= '".$param['startTime']."'";
-            $aDrawingSql .= " AND `created_at` >= '".$param['startTime']."'";
+            $aSql .= " AND `updated_at` >= '".$param['startTime']."'";
+            $aBetSql .= " AND `updated_at` >= '".$param['startTime']."'";
+            $aDrawingSql .= " AND `updated_at` >= '".$param['startTime']."'";
         }
         if(isset($param['endTime']) && array_key_exists('endTime', $param)){
-            $aSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
-            $aBetSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
-            $aDrawingSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
+            $aSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
+            $aBetSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
+            $aDrawingSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
         }
         $payRecharges = DB::select($aSql)[0];
         $payBet = DB::select($aBetSql)[0];

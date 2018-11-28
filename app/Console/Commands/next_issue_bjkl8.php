@@ -55,7 +55,7 @@ class next_issue_bjkl8 extends Command
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
 
-        if(date('H:i:s',strtotime($openTime)) == '23:55:00'){
+        if(substr($openTime,-8) == '23:55:00'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
             $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:04:30';
             $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:05:00';

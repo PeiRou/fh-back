@@ -234,6 +234,15 @@
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="allow_user_register" data-c="是否限制会员注册：0-不限制，1-限制" class="edit-link">修改</td>
             </tr>
             <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">会员注册方式：0-关闭，1-手机，2-qq，3-微信</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->user_register_type ?? 0 }}" data-id-input="user_register_type"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_register_type" data-c="会员注册方式：0-关闭，1-手机，2-qq，3-微信" class="edit-link">修改</td>
+            </tr>
+            <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">抽奖活动，派奖审核的金额分界点，如填0表示所有金额都需要审核</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
                     <div class="ui input">

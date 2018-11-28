@@ -71,13 +71,13 @@ class FinanceDataController extends Controller
             }
         }
         if(isset($startTime) && $startTime){
-            $where .= " and recharges.created_at >= '".$startTime." 00:00:00'";
+            $where .= " and recharges.updated_at >= '".$startTime." 00:00:00'";
         }
         if(isset($endTime) && $endTime){
-            $where .= " and recharges.created_at <= '".$endTime." 23:59:59'";
+            $where .= " and recharges.updated_at <= '".$endTime." 23:59:59'";
         }
         if(empty($startTime) && empty($endTime))
-            $where .= " and recharges.created_at = now() ";
+            $where .= " and recharges.updated_at = now() ";
 //        $whereStaus = '';
 
         if(empty($findUserId) && empty($account_param)){

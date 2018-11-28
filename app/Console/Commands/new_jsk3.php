@@ -59,7 +59,7 @@ class new_jsk3 extends Command
             $nextIssue = $getIssue->issue;
 
             $New_nextIssue = $nextIssue+1;
-            if(strtotime($filtered['time']) == strtotime('22:09:00')){
+            if(strtotime($filtered['time']) == strtotime('22:08:00')){
                 $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
                 $New_nextIssue = date("ymd",strtotime($nextDay)).'001';                         //奖期
                 $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 08:36:10';

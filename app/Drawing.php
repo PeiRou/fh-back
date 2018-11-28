@@ -21,18 +21,18 @@ class Drawing extends Model
         $aSql = self::select('drawing.username','drawing.user_id','drawing.order_id','drawing.created_at',DB::raw("(CASE WHEN drawing.status = 3 THEN 't17' ELSE 't15' END) AS type"),'drawing.amount as money','drawing.balance',DB::raw("'' as issue,'' as game_id,'' as game_name,'' as play_type"),'drawing.operation_id','drawing.operation_account','drawing.msg',DB::raw("'' as content2,'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,drawing.amount as c_money,'' as bet_id,'' as rechargesType"))
             ->where(function ($aSql) use($param,$status){
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
-                    $aSql->whereBetween('drawing.created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
+                    $aSql->whereBetween('drawing.updated_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
                 }else{
                     if(isset($param['time_point']) && array_key_exists('time_point',$param)) {
                         if($param['time_point'] == 'today'){
                             $time = date('Y-m-d');
-                            $aSql->whereBetween('drawing.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $aSql->whereBetween('drawing.updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         }elseif($param['time_point'] == 'yesterday'){
                             $time = date('Y-m-d',strtotime('- 1 day',time()));
-                            $aSql->whereBetween('drawing.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $aSql->whereBetween('drawing.updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         }else{
                             $time = date('Y-m-d',strtotime('- 2 day',time()));
-                            $aSql->whereBetween('drawing.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $aSql->whereBetween('drawing.updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         }
                     }
                 }
