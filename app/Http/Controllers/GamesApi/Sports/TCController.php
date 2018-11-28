@@ -17,14 +17,14 @@ class TCController extends BaseController
 
     //获取体彩指数数据
     public function getTCZS(){
-        $res = $this->repository->getTCZS();
-        $res = $this->getOtherApiRepository('TCZS');
+//        $res = $this->repository->getTCZS();
+        $res = $this->getOtherApiRepository('TCZS')->getTCZS();
         if(!isset($res['code']) || $res['code'] != 0){
            return $res;
         }
         //清空表
-        $this->repository->deleteTCZS();
-        $this->repository->createDataTCZS($res['data']);
+        $this->getOtherApiRepository('TCZS')->deleteTCZS();
+        $this->getOtherApiRepository('TCZS')->createDataTCZS($res['data']);
     }
 
 }
