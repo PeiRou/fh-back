@@ -57,7 +57,7 @@ class next_issue_cqssc extends Command
         $issuenum = substr($nextIssue,-3);
 
         $nextIssueTime = (int)$nextIssue+1;
-        if((int)$issuenum >= '24'){
+        if((int)$issuenum >= '24' && (int)$issuenum <= '95'){
             if((int)$issuenum == '120')
                 $nextIssueTime = date('Ymd').'001';
             $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(555)->toDateTimeString();
