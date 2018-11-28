@@ -65,18 +65,18 @@ class Capital extends Model
                 $sql->where('payType','!=','adminAddMoney');
                 $sql->where('status','=',2);
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
-                    $sql->whereBetween('created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
+                    $sql->whereBetween('updated_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
                 }else{
                     if(isset($param['time_point']) && array_key_exists('time_point',$param)) {
                         if($param['time_point'] == 'today'){
                             $time = date('Y-m-d');
-                            $sql->whereBetween('created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $sql->whereBetween('updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         }elseif($param['time_point'] == 'yesterday'){
                             $time = date('Y-m-d',strtotime('- 1 day',time()));
-                            $sql->whereBetween('created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $sql->whereBetween('updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         }else{
                             $time = date('Y-m-d',strtotime('- 2 day',time()));
-                            $sql->whereBetween('created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $sql->whereBetween('updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         }
                     }
                 }
@@ -107,18 +107,18 @@ class Capital extends Model
         $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id','capital.game_name','capital.playcate_name','capital.operation_id','sub_account.account','capital.content',DB::raw("'' as content2,'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,capital.money as c_money,'' as bet_id"),'capital.rechargesType')
             ->where(function ($sql) use($param){
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
-                    $sql->whereBetween('capital.created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
+                    $sql->whereBetween('capital.updated_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
                 }else{
                     if(isset($param['time_point']) && array_key_exists('time_point',$param)) {
                         if($param['time_point'] == 'today'){
                             $time = date('Y-m-d');
-                            $sql->whereBetween('capital.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $sql->whereBetween('capital.updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         }elseif($param['time_point'] == 'yesterday'){
                             $time = date('Y-m-d',strtotime('- 1 day',time()));
-                            $sql->whereBetween('capital.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $sql->whereBetween('capital.updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         }else{
                             $time = date('Y-m-d',strtotime('- 2 day',time()));
-                            $sql->whereBetween('capital.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $sql->whereBetween('capital.updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         }
                     }
                 }

@@ -218,16 +218,16 @@ class ModalController extends Controller
     public function addAgent($agentId)
     {
         $allGeneralAgent = GeneralAgent::all();
+        $aBasisOdds = SystemSetting::getValueByRemark1('agent_odds_basis');
         if(empty($agentId)) {
             $aAgentOdds = [];
             $iAgent = [];
         }else{
             $oddsLevel = Agent::where('a_id',$agentId)->value('odds_level');
             $oddsLevel = empty($oddsLevel)?0:$oddsLevel;
-            $aAgentOdds = AgentOddsSetting::where('level','>=',$oddsLevel)->orderBy('level','asc')->get();
+            $aAgentOdds = AgentOddsSetting::where('level','>=',$oddsLevel)->where('odds','<=',$aBasisOdds)->orderBy('level','asc')->get();
             $iAgent = Agent::find($agentId);
         }
-        $aBasisOdds = SystemSetting::getValueByRemark1('agent_odds_basis');
         $agentModelStatus = Agent::$agentModelStatus;
         return view('back.modal.member.addAgent')
             ->with('info',$allGeneralAgent)

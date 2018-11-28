@@ -28,18 +28,18 @@ class Bets extends Model
             ->where(function ($sql) use ($param) {
 //                $sql->where('bet.bunko','!=','0');
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
-                    $sql->whereBetween('bet.created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
+                    $sql->whereBetween('bet.updated_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
                 }else{
                     if (isset($param['time_point']) && array_key_exists('time_point', $param)) {
                         if ($param['time_point'] == 'today') {
                             $time = date('Y-m-d');
-                            $sql->whereBetween('bet.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $sql->whereBetween('bet.updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         } elseif ($param['time_point'] == 'yesterday') {
                             $time = date('Y-m-d', strtotime('- 1 day', time()));
-                            $sql->whereBetween('bet.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $sql->whereBetween('bet.updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         } else {
                             $time = date('Y-m-d', strtotime('- 2 day', time()));
-                            $sql->where('bet.created_at', '<=', $time . '23:59:59');
+                            $sql->where('bet.updated_at', '<=', $time . '23:59:59');
                         }
                     }
                 }
