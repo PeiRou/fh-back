@@ -280,6 +280,7 @@ class DrawingController extends Controller
         $endDate = $request->get('endDate');
         $account_param = $request->get('account_param');
         $killTest = $request->get('killTest');
+        $draw_type = $request->get('draw_type');
 
         //提款总额统计
         $drawingTotal = DB::table('drawing')
@@ -292,6 +293,11 @@ class DrawingController extends Controller
             ->where(function ($q) use ($killTest){
                 if(isset($killTest) && $killTest){
                     $q->where('users.testFlag',0);
+                }
+            })
+            ->where(function ($q) use ($draw_type){
+                if(isset($draw_type) && $draw_type!=''){
+                    $q->where('drawing.draw_type',$draw_type);
                 }
             })
             ->where(function ($q) use ($status) {
