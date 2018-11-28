@@ -17,7 +17,7 @@ class LogAbnormal extends Model
     public static function addExceptionRecord($request,$e){
         $routeData = LogHandle::getTypeAction(Route::currentRouteName());
         $account = empty(Session::get('account')) ? null : Session::get('account');
-        if($account !== 'admin') {
+        if($account !== 'admin' && !empty($e->getMessage())) {
             $data = [
                 'user_id' => empty(Session::get('account_id')) ? null : Session::get('account_id'),
                 'username' => $account,
@@ -28,7 +28,8 @@ class LogAbnormal extends Model
                 'route' => $routeData['route'],
                 'action' => $routeData['action'],
                 'param' => json_encode($request->all()),
-                'content' => $e->getMessage()
+                'content' => $e->getMessage(),
+                'create_at' => date('Y-m-d'),
             ];
             self::insert($data);
         }
