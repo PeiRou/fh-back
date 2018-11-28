@@ -11,16 +11,19 @@ class FeedbackController extends BaseController
     public function doAction($aParam){
         $feedback = Feedback::getAll($aParam)->toArray();
         $feedbackMessage = FeedbackMessage::getAll($aParam)->toArray();
-        $data = [];
-        foreach ($feedback as $k=>$v){
-            $data[] = $this->userData($v);
-            foreach ($feedbackMessage as $kk=>$vv){
-                if($vv['feedback_id'] == $v['id']){
-                    $data[] = $this->adminData($vv, $v);
-                    unset($feedbackMessage[$kk]);
-                }
-            }
-        }
+        $data = [
+            'feedback' => $feedback,
+            'feedbackMessage' => $feedbackMessage
+        ];
+//        foreach ($feedback as $k=>$v){
+//            $data[$k] = $this->userData($v);
+//            foreach ($feedbackMessage as $kk=>$vv){
+//                if($vv['feedback_id'] == $v['id']){
+//                    $data[$k]['m'][] = $this->adminData($vv, $v);
+//                    unset($feedbackMessage[$kk]);
+//                }
+//            }
+//        }
         $this->show(0, $data);
     }
     private function adminData($mData, $fData){
