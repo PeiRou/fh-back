@@ -24,6 +24,11 @@ class BaseController extends Controller
             $this->otherRepository->$repository = FactoryService::generateRepository($repository);
         return $this->otherRepository->$repository;
     }
+    public function getOtherApiRepository($repository){
+        if(empty($this->otherRepository->$repository))
+            $this->otherRepository->$repository = FactoryService::generateRepository('GamesApi\\Sports\\'.$repository);
+        return $this->otherRepository->$repository;
+    }
     /**
      * 获得控制器名
      * @return string

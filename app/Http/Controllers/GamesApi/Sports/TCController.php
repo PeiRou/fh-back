@@ -18,6 +18,7 @@ class TCController extends BaseController
     //获取体彩指数数据
     public function getTCZS(){
         $res = $this->repository->getTCZS();
+        $res = $this->getOtherApiRepository('TCZS');
         if(!isset($res['code']) || $res['code'] != 0){
            return $res;
         }
