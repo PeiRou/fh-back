@@ -66,7 +66,7 @@ class Bets extends Model
                 }
                 $sql->where('users.testFlag',0);
             })->leftJoin('users', 'users.id', '=', 'bet.user_id')->leftJoin('game', 'game.game_id', '=', 'bet.game_id')
-            ->orderBy('bet.game_id','asc')->orderBy('bet.issue','desc')->orderBy('bet.bet_id','desc');
+            ->orderBy('bet.bet_id','desc');
         return $aSql;
     }
 
