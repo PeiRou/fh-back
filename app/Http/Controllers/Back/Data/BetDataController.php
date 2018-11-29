@@ -126,6 +126,7 @@ class BetDataController extends Controller
         $currentIssue = '';
         $currentColor = '';
         $betModel = new Bets();
+//        p($betMoney, 1);
         return DataTables::of($bet)
             ->editColumn('order_id',function ($bet){
                 return $bet->bet_order_id;
@@ -257,10 +258,10 @@ class BetDataController extends Controller
         $betMoney = DB::table('bet')
             ->leftJoin('users','bet.user_id','=','users.id')
             ->where(function ($query) use ($timeStart){
-                $query->where('bet.created_at','>=',$timeStart);
+                $query->where('bet.updated_at','>=',$timeStart.' 00:00:00');
             })
             ->where(function ($query) use ($timeEnd){
-                $query->where('bet.created_at','<=',$timeEnd);
+                $query->where('bet.updated_at','<=',$timeEnd.' 23:59:59');
             })
             ->where(function ($query) use ($markSix){
                 if(isset($markSix) && $markSix){
