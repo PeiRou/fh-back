@@ -54,7 +54,7 @@ class next_issue_cqssc extends Command
             return 'no need';
         //下一期獎期
         $nextIssue = $res->issue;
-        $openTime = (string)$res->opentime;
+        $openTime = $res->opentime;
         $issuenum = substr($nextIssue,-3);
 
         $nextIssueTime = (int)$nextIssue+1;
