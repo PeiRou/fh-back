@@ -69,6 +69,12 @@ class next_open_pk10 extends Command
             $redis->set('pk10:gapnum',$gapnum);
             return 'Fail';
         }else{
+            //阻止進行中
+            $key = $this->code.'ing:'.$res->issue;
+            if($redis->exists($key)){
+                return 'ing';
+            }
+            $redis->setex($key,60,'ing');
             $redis->set('pk10:needopen','');
         }
         //當期獎期
