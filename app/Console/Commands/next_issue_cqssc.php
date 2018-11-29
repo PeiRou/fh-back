@@ -44,6 +44,7 @@ class next_issue_cqssc extends Command
         $table = 'game_cqssc';
         $excel = new Excel();
         $res = $excel->getNextBetIssue($table);
+        \Log::info($res);
         if(!$res)
             return 'Fail';
         $redis = Redis::connection();
