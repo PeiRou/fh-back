@@ -174,7 +174,7 @@ class SrcGameController extends Controller
         $iOdds = AgentOddsSetting::orderBy('level','desc')->value('odds');
         if(empty($iOdds))
             $iOdds = SystemSetting::getValueByRemark1('agent_odds_basis');
-        if($aParam['odds'] >= $iOdds){
+        if($aParam['odds'] > $iOdds){
             return response()->json([
                 'status'=>false,
                 'msg'=>'赔率不得高于'.$iOdds
@@ -220,7 +220,7 @@ class SrcGameController extends Controller
         }else{
             $iOdds = AgentOddsSetting::where('level',$iData->level - 1)->value('odds');
         }
-        if($aParam['odds'] >= $iOdds){
+        if($aParam['odds'] > $iOdds){
             return response()->json([
                 'status'=>false,
                 'msg'=>'赔率不得高于'.$iOdds
