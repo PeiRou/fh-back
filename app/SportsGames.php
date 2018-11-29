@@ -19,13 +19,11 @@ class SportsGames extends Base
     public function checkInsertId($param){
         $this->getSelfRes();
         $first = $this->selfRes->last(function($v, $k) use ($param){
-            if($param['event'] == $v->event && $param['home'] == $v->home && $param['away'] == $v->away && $param['issue'] == $v->issue)
-                return true;
-            return false;
+            return ($param['event'] == $v->event && $param['home'] == $v->home && $param['away'] == $v->away && $param['issue'] == $v->issue);
         });
         if($first)
             return $first->id;
-        $this->selfRes->push($param); //保存到资源里
+        $this->selfRes->push((object)$param); //保存到资源里
         return $this->insertGetId($param);
     }
 

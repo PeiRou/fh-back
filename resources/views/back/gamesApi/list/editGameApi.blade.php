@@ -61,10 +61,10 @@
         <label>类型</label>
         <div class="ui input icon">
             <select class="ui fluid dropdown" name="type_id" id="type">
-                <option value="111">棋牌游戏</option>
-                {{--@foreach($aData->advertiseType as $key => $value)--}}
-                    {{--<option value="{{ $key }}">{{ $value }}</option>--}}
-                {{--@endforeach--}}
+                <option value="0">游戏类型</option>
+                @foreach($statusArr as $key => $value)
+                    <option  @if(isset($data->type_id) && $data->type_id == $key) selected = "selected" @endif value="{{ $key }}">{{ $value }}</option>
+                @endforeach
             </select>
         </div>
     </div>

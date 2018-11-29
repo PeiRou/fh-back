@@ -65,7 +65,8 @@ class Bets extends Model
                     $sql->where('bet.bunko', '<=', $param['amount_max']);
                 }
                 $sql->where('users.testFlag',0);
-            })->leftJoin('users', 'users.id', '=', 'bet.user_id')->leftJoin('game', 'game.game_id', '=', 'bet.game_id');
+            })->leftJoin('users', 'users.id', '=', 'bet.user_id')->leftJoin('game', 'game.game_id', '=', 'bet.game_id')
+            ->orderBy('bet.bet_id','desc');
         return $aSql;
     }
 
