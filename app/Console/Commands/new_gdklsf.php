@@ -42,7 +42,7 @@ class new_gdklsf extends Command
                 $nextDay = Carbon::parse(date('Y-m-d'))->addDay(1)->toDateTimeString();
                 $New_nextIssue = date("Ymd",strtotime($nextDay)).'001';                         //奖期
                 $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:08:30';
-                $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:10:00';
+                $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:08:30';
             } else {
                 $nextIssueEndTime = Carbon::parse($getIssue->opentime)->addSeconds(510)->toDateTimeString();
                 $nextIssueLotteryTime = Carbon::parse($getIssue->opentime)->addMinutes(10)->toDateTimeString();
