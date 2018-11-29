@@ -3,6 +3,16 @@
 @section('title','杀率设定')
 
 @section('content')
+    <style>
+        .contenr-title{
+            border: 1px solid rgba(185, 39, 27, 1);
+            border-radius: .5rem;
+            padding: .7rem;
+            font-size: 16px;
+            background: rgba(200, 77, 65, 1);
+            color: #fff;
+        }
+    </style>
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>杀率设定
@@ -10,6 +20,9 @@
         </div>
     </div>
     <div class="table-content">
+        <div class="contenr-title">
+            警告：杀率计算方式为商业机密，杀率比例不能调整范围外，此举会造成用户流失。
+        </div>
         <table id="gamesTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>

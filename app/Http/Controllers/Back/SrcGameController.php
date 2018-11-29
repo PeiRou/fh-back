@@ -144,6 +144,11 @@ class SrcGameController extends Controller
         $rate = $request->input('kill_rate');
 
         if(isset($id) && $id){
+            if((float)$rate>0.05)
+                return response()->json([
+                    'status'=>false,
+                    'msg'=>'已超过范围，请勿非法操作'
+                ]);
             $update = DB::table('excel_base')->where('excel_base_idx',$id)
                 ->update([
                     'kill_rate'=>$rate
