@@ -245,7 +245,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal'); //报表管理-总代总计
     Route::get('/back/datatables/reportAgentTotal', 'Back\Data\ReportDataController@AgentTotal');   //报表管理-代理总计
     Route::get('/back/datatables/reportUserTotal', 'Back\Data\ReportDataController@UserTotal');     //报表管理-用户总计
-    Route::get('/back/datatables/betToday', 'Back\Data\BetDataController@betToday');
+    Route::get('/back/datatables/betToday', 'Back\Data\BetDataController@betToday'); //今日注单搜索
+    Route::get('/back/datatables/exportExcelToday', 'Back\Data\BetDataController@exportExcelBetToday'); //今日注单搜索
+
     Route::get('/back/datatables/betHistory', 'Back\Data\BetDataController@betHistory');
     Route::get('/back/datatables/betRealTime', 'Back\Data\BetDataController@betRealTime');
     Route::get('/back/datatables/notice', 'Back\Data\NoticeDataController@notice');

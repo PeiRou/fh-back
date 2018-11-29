@@ -198,7 +198,7 @@
                 {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="noallow_bet_8_num" data-c="禁止投注区下注8码：1-开启，0-关闭" class="edit-link">修改</td>--}}
             {{--</tr>--}}
             <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">提现间隔时间</td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">提现间隔时间（分钟）</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
                     <div class="ui input">
                         <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->drawing_time }}" data-id-input="drawing_time"/>
