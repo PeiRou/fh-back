@@ -60,7 +60,7 @@ class Capital extends Model
 
     //资金明细组装-充值
     public static function AssemblyFundDetails_Rech($param){
-        $aSql = Recharges::select('username','userId','orderNum as order_id','updated_at',DB::raw("'t01' as type"),'amount as money','balance',DB::raw("'' as issue"),DB::raw("'' as game_id"),DB::raw("'' as game_name"),DB::raw("'' as playcate_name"),'operation_id','operation_account as account','shou_info as content','ru_info as content2',DB::raw("'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,amount as c_money,'' as bet_id,'' as rechargesType"))
+        $aSql = Recharges::select('username','userId','orderNum as order_id','created_at',DB::raw("'t01' as type"),'amount as money','balance',DB::raw("'' as issue"),DB::raw("'' as game_id"),DB::raw("'' as game_name"),DB::raw("'' as playcate_name"),'operation_id','operation_account as account','shou_info as content','ru_info as content2',DB::raw("'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,amount as c_money,'' as bet_id,'' as rechargesType"))
             ->where(function ($sql) use($param){
                 $sql->where('payType','!=','adminAddMoney');
                 $sql->where('status','=',2);
@@ -104,7 +104,7 @@ class Capital extends Model
 
     //资金明细组装
     public static function AssemblyFundDetails($param){
-        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.updated_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id','capital.game_name','capital.playcate_name','capital.operation_id','sub_account.account','capital.content',DB::raw("'' as content2,'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,capital.money as c_money,'' as bet_id"),'capital.rechargesType')
+        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id','capital.game_name','capital.playcate_name','capital.operation_id','sub_account.account','capital.content',DB::raw("'' as content2,'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,capital.money as c_money,'' as bet_id"),'capital.rechargesType')
             ->where(function ($sql) use($param){
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
                     $sql->whereBetween('capital.updated_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
