@@ -57,7 +57,7 @@ class next_issue_xjssc extends Command
         $issuenum = substr($nextIssue,-3);
 
         $New_nextIssue = $nextIssue+1;
-        if(substr($openTime,-8) == strtotime('02:00:00')){
+        if(substr($openTime,-8) == '02:00:00'){
             $New_nextIssue = date("Ymd",strtotime($openTime)).'01';                         //奖期
             $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 10:08:00';
             $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime)).' 10:10:00';
