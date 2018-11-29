@@ -26,6 +26,10 @@ class GamesApiController extends Controller
             'name' => ['required'],
             'description' => ['required'],
             'alias' => ['required'],
+            'type_id' => ['required',function($attribute, $value, $fail){
+                if((int)$value <= 0)
+                    return $fail('游戏类型不对');
+            }],
             'paramValue' => ['required', function ($attribute, $value, $fail) {
                 if (!count($value)) {
                     return $fail($attribute . ' is invalid.');
@@ -74,7 +78,7 @@ class GamesApiController extends Controller
         $data = [
             'name' => $param['name'],
             'description' => $param['description'],
-            'type_id' => $param['type_id'],
+            'type_id' => (int)$param['type_id'],
             'status' => isset($param['status']) ? 1 : 0,
             'class_name' => $param['class_name'],
             'alias' => $param['alias'],

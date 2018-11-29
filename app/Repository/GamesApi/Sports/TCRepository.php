@@ -8,13 +8,9 @@
 
 namespace App\Repository\GamesApi\Sports;
 
-class ApiBaseRepository extends BaseRepository
+
+class TCRepository extends BaseRepository
 {
-
-
-
-
-
 
     
 }

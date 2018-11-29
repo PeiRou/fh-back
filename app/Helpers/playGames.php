@@ -336,4 +336,10 @@ if(!function_exists('p')){
         }
     }
 }
+//获取队列真实名
+if(!function_exists('setQueueRealName')){
+    function setQueueRealName($queue){
+        return env('QUEUE_PREFIX_NAME','') . $queue;
+    }
+}
 
