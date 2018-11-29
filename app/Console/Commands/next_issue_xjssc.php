@@ -54,7 +54,6 @@ class next_issue_xjssc extends Command
         //下一期獎期
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
-        $issuenum = substr($nextIssue,-3);
 
         $New_nextIssue = $nextIssue+1;
         if(substr($openTime,-8) == '02:00:00'){
