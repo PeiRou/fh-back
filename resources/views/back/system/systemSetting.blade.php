@@ -206,6 +206,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="drawing_time" data-c="提现间隔时间" class="edit-link">修改</td>
             </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">提现检查打码量(参数是充值金额的倍数，0-关闭)</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->drawing_money_check_code }}" data-id-input="drawing_money_check_code"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="drawing_money_check_code" data-c="提现检查打码量(参数是充值金额的倍数，0-关闭)" class="edit-link">修改</td>
+            </tr>
             {{--<tr>--}}
                 {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">网页验证码开关：0-关闭，1-开启</td>--}}
                 {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
