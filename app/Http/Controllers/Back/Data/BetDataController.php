@@ -241,10 +241,10 @@ class BetDataController extends Controller
                 ->where(function ($query) use ($status){
                     if(isset($status) && $status){
                         if($status == 'jiesuan'){
-                            $query->where("bet.bunko",'!=',0);
+                            $query->where("bet.bunko",'!=',0)->whereColumn("bet.bunko",'!=',"bet.bet_money");
                         }
                         if($status == '-8888'){
-                            $query->where("bet.bunko",'=','bet.bet_money');
+                            $query->whereColumn("bet.bunko",'=',"bet.bet_money");
                         }
                     }
                 })
