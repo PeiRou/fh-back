@@ -18,7 +18,7 @@ class Drawing extends Model
     ];
 
     public static function AssemblyFundDetails($param,$status = ''){
-        $aSql = self::select('drawing.username','drawing.user_id','drawing.order_id','drawing.created_at',DB::raw("(CASE WHEN drawing.status = 3 THEN 't17' ELSE 't15' END) AS type"),'drawing.amount as money','drawing.balance',DB::raw("'' as issue,'' as game_id,'' as game_name,'' as play_type"),'drawing.operation_id','drawing.operation_account','drawing.msg',DB::raw("'' as content2,'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,drawing.amount as c_money,'' as bet_id,'' as rechargesType"))
+        $aSql = self::select('drawing.username','drawing.user_id','drawing.order_id','drawing.updated_at',DB::raw("(CASE WHEN drawing.status = 3 THEN 't17' ELSE 't15' END) AS type"),'drawing.amount as money','drawing.balance',DB::raw("'' as issue,'' as game_id,'' as game_name,'' as play_type"),'drawing.operation_id','drawing.operation_account','drawing.msg',DB::raw("'' as content2,'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,drawing.amount as c_money,'' as bet_id,'' as rechargesType"))
             ->where(function ($aSql) use($param,$status){
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
                     $aSql->whereBetween('drawing.updated_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);

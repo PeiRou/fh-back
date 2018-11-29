@@ -612,7 +612,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 $capital = $capital->skip($start)->take($length)->get();
             }else{
                 $capitalSql = Capital::AssemblyFundDetails($param);
-                $capital = $capitalSql->orderBy('bet_id','desc')->skip($start)->take($length)->get();
+                $capital = $capitalSql->orderBy('capital.updated_at','desc')->orderBy('bet_id','desc')->skip($start)->take($length)->get();
                 $capitalCount = $capitalSql->count();
             }
         }else {
@@ -621,7 +621,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
             $RechSql = Capital::AssemblyFundDetails_Rech($param);
             $drawingSql = Drawing::AssemblyFundDetails($param);
             $capitalCount = $capitalSql->count() + $betsSql->count() + $RechSql->count() + $drawingSql->count();
-            $capital = $capitalSql->union($RechSql)->union($betsSql)->union($drawingSql)->orderBy('created_at','desc')->orderBy('bet_id','desc')->skip($start)->take($length);
+            $capital = $capitalSql->union($RechSql)->union($betsSql)->union($drawingSql)->orderBy('updated_at','desc')->orderBy('bet_id','desc')->skip($start)->take($length);
         }
         $playTypeOptions = Capital::$playTypeOption;
         $rechargesType = Recharges::$rechargesType;
