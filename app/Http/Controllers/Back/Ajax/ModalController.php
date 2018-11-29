@@ -201,7 +201,14 @@ class ModalController extends Controller
     public function killSetting($id)
     {
         $game = DB::table('excel_base')->select('game.game_name','excel_base.kill_rate')->leftjoin('game','excel_base.game_id','=','game.game_id')->where('excel_base_idx',$id)->first();
-        return view('back.modal.game.killSetting',compact('id','game'));
+        $statusArr = array(
+            '0.01'=>'1%',
+            '0.02'=>'2%',
+            '0.03'=>'3%',
+            '0.04'=>'4%',
+            '0.05'=>'5%',
+        );
+        return view('back.modal.game.killSetting',compact('id','game','statusArr'));
     }
     
     //添加总代理账号
