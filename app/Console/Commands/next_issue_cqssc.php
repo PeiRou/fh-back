@@ -44,7 +44,6 @@ class next_issue_cqssc extends Command
         $table = 'game_cqssc';
         $excel = new Excel();
         $res = $excel->getNextBetIssue($table);
-        \Log::info($res);
         if(!$res)
             return 'Fail';
         $redis = Redis::connection();
@@ -54,7 +53,7 @@ class next_issue_cqssc extends Command
             return 'no need';
         //下一期獎期
         $nextIssue = $res->issue;
-        $openTime = $res->opentime;
+        $openTime = (string)$res->opentime;
         $issuenum = substr($nextIssue,-3);
 
         $nextIssueTime = (int)$nextIssue+1;
