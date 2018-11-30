@@ -18,7 +18,12 @@
         </div>
         <div class="line">
             <span class="icon2"><img src="{{ asset('back/img/time.png') }}"></span>
-            <span class="txt2">您上次登录时间：，上次登录IP：</span>
+            <span class="txt2">
+                {{ $accountInfo->last_login_time ? '您上次登录时间：'.$accountInfo->last_login_time.',' : '' }}
+                {{--您上次登录时间：，--}}
+                {{ $accountInfo->last_login_ip ? '上次登录IP：'.$accountInfo->last_login_ip : '' }}
+
+                </span>
         </div>
     </div>
 

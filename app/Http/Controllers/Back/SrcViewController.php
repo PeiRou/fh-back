@@ -72,10 +72,12 @@ class SrcViewController extends Controller
     //控制台
     public function Dash()
     {
-        if(Session::get('account_id'))
-            return view('back.dash');
-        else
+        if($sa_id = Session::get('account_id')){
+            $accountInfo = DB::table('sub_account')->first();
+            return view('back.dash', compact('accountInfo'));
+        }else{
             return view('back.O_adminLogin');
+        }
     }
 
     //总代理
