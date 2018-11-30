@@ -38,6 +38,7 @@ use App\GamesApi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ModalController extends Controller
 {
@@ -994,6 +995,14 @@ class ModalController extends Controller
         }
         return view('back.modal.game.agentOddsEdit',compact('iData','iOdds'));
     }
+
+    //查看代理赔率-模板
+    public function gameAgentOddsLook($level){
+        $gameData = json_decode(Storage::disk('local')->get('gameData.php'),true);
+        $game = Games::all();
+        return view('back.modal.game.handicapSetting',compact('gameData','game','level'));
+    }
+
     //添加游戏接口配置
     public function editGameApi(Request $request){
         $g_id = $request->get('g_id') ?? 0;

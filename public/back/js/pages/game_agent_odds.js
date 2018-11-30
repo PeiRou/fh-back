@@ -97,3 +97,7 @@ function edit(id) {
         }
     });
 }
+
+function look(level) {
+    window.location.href = '/back/modal/gameAgentOddsLook/'+level;
+}
