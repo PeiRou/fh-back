@@ -25,6 +25,7 @@
     </div>
     @endif
     @endif
+    @if(env('TEST',0) == 1)
     @if(empty($aAgentOdds) || empty($agentId))
         <div class="field">
             <label>代理模式</label>
@@ -38,6 +39,7 @@
         </div>
     @else
         <input type="hidden" name="modelStatus" value="{{ $iAgent->modelStatus }}">
+    @endif
     @endif
     <div class="field">
         <label>代理账号</label>
