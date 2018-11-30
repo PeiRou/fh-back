@@ -7,22 +7,22 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
 
-class next_issue_xjssc extends Command
+class next_issue_gd11x5 extends Command
 {
-    protected  $code = 'xjssc';
+    protected  $code = 'gd11x5';
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'next_issue_xjssc';
+    protected $signature = 'next_issue_gd11x5';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '新疆时时彩-產下一期開盤';
+    protected $description = '广东11选5-產下一期開盤';
 
     /**
      * Create a new command instance.
@@ -41,14 +41,14 @@ class next_issue_xjssc extends Command
      */
     public function handle()
     {
-        $table = 'game_xjssc';
+        $table = 'game_gd11x5';
         $excel = new Excel();
         $res = $excel->getNextBetIssue($table);
         if(!$res)
             return 'Fail';
         $redis = Redis::connection();
         $redis->select(0);
-        $beforeLotteryTime = $redis->get('xjssc:nextIssueEndTime');
+        $beforeLotteryTime = $redis->get('gd11x5:nextIssueLotteryTime');
         if($beforeLotteryTime>=time())
             return 'no need';
         //下一期獎期
@@ -56,18 +56,18 @@ class next_issue_xjssc extends Command
         $openTime = $res->opentime;
 
         $New_nextIssue = $nextIssue+1;
-        if(substr($openTime,-8) == '02:00:00'){
-            $New_nextIssue = date("Ymd",strtotime($openTime)).'01';                         //奖期
-            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 10:08:00';
-            $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime)).' 10:10:00';
+        if(substr($openTime,-8) =='23:00:00'){
+            $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
+            $New_nextIssue = date('ymd',strtotime($nextDay)).'001';
+            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:08:00';
+            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:10:00';
         } else {
-            $nextIssueEndTime = Carbon::parse($openTime)->addMinute(8)->toDateTimeString();
+            $nextIssueEndTime = Carbon::parse($openTime)->addMinutes(8)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(10)->toDateTimeString();
         }
-
-        $redis->set('xjssc:nextIssue',(int)$New_nextIssue);
-        $redis->set('xjssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-        $redis->set('xjssc:nextIssueEndTime',strtotime($nextIssueEndTime));
+        $redis->set('gd11x5:nextIssue',(int)$New_nextIssue);
+        $redis->set('gd11x5:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+        $redis->set('gd11x5:nextIssueEndTime',strtotime($nextIssueEndTime));
         return 'Ok';
     }
 }

@@ -69,6 +69,12 @@ class next_open_paoma extends Command
             $redis->set('paoma:gapnum',$gapnum);
             return 'Fail';
         }else{
+            //阻止進行中
+            $key = $this->code.'ing:'.$res->issue;
+            if($redis->exists($key)){
+                return 'ing';
+            }
+            $redis->setex($key,60,'ing');
             $redis->set('paoma:needopen','');
         }
         //當期獎期

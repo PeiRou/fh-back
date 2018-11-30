@@ -74,7 +74,7 @@ INNER JOIN (select id ,payeeName from pay_online_new where rechType =\'weixin\')
 GROUP BY rechName';
         $weixin = DB::select($weixinsql,[$date.' 00:00:00',$date.' 23:59:59']);
 
-        /*财付通*///'2018-10-29
+        /*财付通*/
         $cftsql = 'SELECT rechName AS \'rechname\',SUM(amount) AS \'amount\',SUM(rebate_or_fee) AS \'giftamount\'
 FROM(SELECT B.id AS \'id\',B.payeeName AS \'rechName\',A.amount AS \'amount\',A.rebate_or_fee AS \'rebate_or_fee\',A.updated_at AS \'updated_at\',A.status AS \'status\'
 FROM(select username,pay_online_id,payType,amount,rebate_or_fee,updated_at,status from recharges where username = (select username from users where testFlag = \'0\' and recharges.username = users.username) and payType = \'cft\' and status =\'2\' AND updated_at BETWEEN ? AND ? ) AS A
@@ -112,6 +112,22 @@ GROUP BY rechName';
         $capital = DB::select($capitalsql,[$date.' 00:00:00',$date.' 23:59:59']);
         $capital = array_merge($echarges,$capital);
 
+        /*注单当日实际总输赢*/
+        $bunkosql = 'SELECT LEFT(updated_at,10) AS date,
+SUM(CASE WHEN game_id IN(90,91) THEN (CASE WHEN nn_view_money >= 1 THEN (nn_view_money - bet_money) ELSE nn_view_money END) 
+ELSE(CASE WHEN bunko >= 1 THEN (bunko - bet_money) ELSE bunko END) 
+END) AS amount
+FROM bet WHERE 1 AND testFlag =\'0\' AND 	updated_at BETWEEN ? AND ?    ORDER BY date ASC';
+        $bunko = DB::select($bunkosql,[$date.' 00:00:00',$date.' 23:59:59']);
+        /*今日实际输赢--扣除活动金额和红包金额入款优惠得出的会员总输赢*/
+        foreach ($capital as $k=>$v){
+            if($v ->rechname == '活动') {
+                $bunko[0]->amount += $v ->amount;
+            }
+            if($v ->rechname == '抢到红包') {
+                $bunko[0]->amount += $v ->amount;
+            }
+        }
         $data[$date] = [
             'onlinePayment' => $this->arrayunset($onlinePayment),
             'bankTransfer' => $this->arrayunset($bankTransfer),
@@ -120,7 +136,8 @@ GROUP BY rechName';
             'cft' => $this->arrayunset($cft),
             'adminAddMoney' => $this->arrayunset($adminAddMoney),
             'draw' => $this->arrayunset($draw),
-            'capital' => $this->arrayunset($capital)
+            'capital' => $this->arrayunset($capital),
+            'bunko' => $bunko,
         ];
         $serdata =  serialize($data);
 
@@ -144,15 +161,20 @@ GROUP BY rechName';
                 $this->info('update to totalreport successfully');
                 \Log::info(date('Y-m-d H:i:s').' 系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
             }else{
-                /*会员馀额*/
+                /*今日会员馀额*/
                 $useramountsql = 'SELECT SUM(A.money) AS \'amount\' FROM (select id,money from users where testFlag = \'0\') AS A';
                 $useramount =  DB::select($useramountsql);
                 foreach ($useramount as $k=>$v){
                     $memberquota=$v->amount;
                 }
+                /*昨日会员馀额*/
+                $memberquotaydaysql = 'SELECT memberquota FROM totalreport WHERE daytstrot = '.strtotime("-1day",$daytstrot);
+                $memberquotayday = DB::select($memberquotaydaysql);
+
                 $datatotalreport['daytstrot']=$daytstrot;
                 $datatotalreport['daytime']=$date;
                 $datatotalreport['memberquota']=$memberquota;
+                $datatotalreport['memberquotayday']=empty($memberquotayday[0]->memberquota)?0:$memberquotayday[0]->memberquota;
                 $datatotalreport['created_at']=date('Y-m-d H:i:s');
                 try{
                     DB::table('totalreport')->insert([$datatotalreport]);

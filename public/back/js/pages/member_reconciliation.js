@@ -108,7 +108,7 @@ function refreshTable(){
 }
 
 function refreshExcel(daytime) {
-    var str = '确定重新执行 '+daytime+' 的会员对帐？\n如果已生成的数据在重新执行期间删除过会员银行卡帐号、会员帐号，新生成的数据会出现与当天不符的情况。\n※注意:重新执行不会更新当天的会员余额。';
+    var str = '确定重新执行 '+daytime+' 的会员对帐？\n如果已生成的数据在重新执行期间删除过会员银行卡帐号、会员帐号，新生成的数据会出现与当天不符的情况。\n※注意:『重新执行』不会更新今日与昨日的「会员余额」。';
     if (confirm(str)) {
         var dialog = document.getElementById("dialog");
         dialog.style.display = "block";
