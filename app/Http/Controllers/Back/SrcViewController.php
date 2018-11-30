@@ -72,10 +72,12 @@ class SrcViewController extends Controller
     //控制台
     public function Dash()
     {
-        if(Session::get('account_id'))
-            return view('back.dash');
-        else
+        if($sa_id = Session::get('account_id')){
+            $accountInfo = DB::table('sub_account')->first();
+            return view('back.dash', compact('accountInfo'));
+        }else{
             return view('back.O_adminLogin');
+        }
     }
 
     //总代理
@@ -294,7 +296,7 @@ class SrcViewController extends Controller
         }
         $starstrto = strtotime($startime);
         $endstrto = strtotime($endtime);
-        $totalreportsql = 'select daytstrot,daytime,data,memberquota,operation_account,created_at,updated_at from totalreport WHERE daytstrot >= '.$starstrto.' AND daytstrot <= '.$endstrto.' ORDER BY daytstrot DESC';
+        $totalreportsql = 'select daytstrot,daytime,data,memberquota,operation_account,created_at,updated_at,memberquotayday from totalreport WHERE daytstrot >= '.$starstrto.' AND daytstrot <= '.$endstrto.' ORDER BY daytstrot DESC';
         $totalreport =  DB::select($totalreportsql);
 
         if (!empty($totalreport)){
@@ -356,6 +358,12 @@ class SrcViewController extends Controller
                     $v->capital = $v->data['capital'][0]->totle;
                 }else{
                     $v->capital = "0.00";
+                }
+                //bunko
+                if(!empty($v->data['bunko'][0])){
+                    $v->bunko = $v->data['bunko'][0]->totle;
+                }else{
+                    $v->bunko = "0.00";
                 }
             }
         }else{
@@ -1052,6 +1060,17 @@ class SrcViewController extends Controller
             return response()->json([
                 'start'=> date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y'))),
                 'end' => date('Y-m-d',mktime(23,59,59,date('m'),date('t'),date('Y')))
+            ]);
+        }
+        if($date == 'month_ym'){
+            $startTine = date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y')));
+            $endTime = date('Y-m-d',strtotime('-1 day'));
+            if($endTime < $startTine){
+                $endTime = $startTine;
+            }
+            return response()->json([
+                'start'=> $startTine,
+                'end' => $endTime
             ]);
         }
         if($date == 'lastMonth'){

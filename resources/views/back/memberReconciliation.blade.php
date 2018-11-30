@@ -66,7 +66,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="one wide field" style="width:10.25%!important;">
                         <div class="ui calendar" id="rangeend">
                             <div class="ui input left icon">
@@ -75,13 +74,13 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
                     </div>
                 </div>
             </div>
         </div>
+        <div style="padding-top:1rem;" ></div>
         <table id="memberReconciliationTable" class="ui small selectable celled striped table dataTable no-footer" cellspacing="13" width="100%" aria-describedby="agentTable_info">
             <thead><tr>
                 <th>日期</th>
@@ -93,7 +92,9 @@
                 <th>后台加钱</th>
                 <th>提款</th>
                 <th>资金明细</th>
-                <th>会员馀额</th>
+                <th>今日实际输赢</th>
+                <th>今日会员馀额</th>
+                <th>昨日会员馀额</th>
                 <th>操作人帐号</th>
                 <th>创建时间</th>
                 <th>修改时间</th>
@@ -110,7 +111,9 @@
                     @if($v->adminAddMoney == '0.00')<td><span>{{$v->adminAddMoney}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|adminAddMoney|{{$v->adminAddMoney}}')">{{$v->adminAddMoney}}</span></td>@endif
                     @if($v->draw == '0.00')<td><span>{{$v->draw}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|draw|{{$v->draw}}')">{{$v->draw}}</span></td>@endif
                     @if($v->capital == '0.00')<td><span>{{$v->capital}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|capital|{{$v->capital}}')">{{$v->capital}}</span></td>@endif
+                    @if($v->bunko > 0) <td><span style="color:blue">{{$v->bunko}}</span></td> @elseif($v->bunko == '0') <td><span>{{$v->bunko}}</span></td>  @else <td><span style="color:green">{{$v->bunko}}</span></td> @endif
                     <td>{{$v->memberquota}}</td>
+                    <td>{{$v->memberquotayday}}</td>
                     <td>{{$v->operation_account}}</td>
                     <td>{{$v->created_at}}</td>
                     <td>{{$v->updated_at}}</td>

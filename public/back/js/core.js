@@ -99,6 +99,18 @@ $(function () {
             }
         })
     });
+    //本月
+    $('#btnMonth_ym').on('click',function () {
+        $.ajax({
+            url:'/recharge/selectData/dateChange/month_ym',
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                $('#timeStart').val(data.start);
+                $('#timeEnd').val(data.end);
+            }
+        })
+    });
     //上个月
     $('#btnLastMonth').on('click',function () {
         $.ajax({

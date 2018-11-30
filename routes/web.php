@@ -625,6 +625,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editAgentSettleDomain/{id}', 'Back\Ajax\ModalController@editAgentSettleDomain'); //修改代理专属域名
     Route::get('/back/modal/gameAgentOddsAdd', 'Back\Ajax\ModalController@gameAgentOddsAdd'); //添加代理赔率-模板
     Route::get('/back/modal/gameAgentOddsEdit/{id}', 'Back\Ajax\ModalController@gameAgentOddsEdit'); //修改代理赔率-模板
+    Route::get('/back/modal/gameAgentOddsLook/{level}', 'Back\Ajax\ModalController@gameAgentOddsLook'); //代理赔率查看-模板
     Route::get('/back/modal/editGameApi', 'Back\Ajax\ModalController@editGameApi'); //添加编辑平台接口页面
 
 
@@ -664,6 +665,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/tables/112', 'Back\GameTableController@gameTable112'); //腾讯分分彩
     Route::get('/game/tables/113', 'Back\GameTableController@gameTable113'); //QQ分分彩
     Route::get('/game/tables/114', 'Back\GameTableController@gameTable114'); //秒速七星彩
+
+    //不同层级的代理赔率
+    Route::get('/game/agent/tables/{gameId}/{level}', 'Back\GameAgentTableController@gameTable');
 
     //交易设定表格
     Route::get('/game/trade/tables/50','Back\GameTradeTableController@gameTradeTable50'); //北京赛车

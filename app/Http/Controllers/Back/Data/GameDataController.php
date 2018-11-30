@@ -96,7 +96,8 @@ class GameDataController extends Controller
         $aData = AgentOddsSetting::get();
         return DataTables::of($aData)
             ->editColumn('control',function ($iData){
-                return '<span class="edit-link" onclick="edit(\''.$iData->id.'\')"><i class="iconfont">&#xe64c;</i> 修改 </span>';
+                return '<span class="edit-link" onclick="edit(\''.$iData->id.'\')"><i class="iconfont">&#xe64c;</i> 修改 </span> | 
+                        <span class="edit-link" onclick="look(\''.$iData->level.'\')">当前赔率查看 </span>';
             })
             ->rawColumns(['control'])
             ->make(true);
