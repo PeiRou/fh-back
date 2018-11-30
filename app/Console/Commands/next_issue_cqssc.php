@@ -65,7 +65,7 @@ class next_issue_cqssc extends Command
             $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime))." 09:59:15";
         }else{
             if((int)$issuenum == '120')
-                $nextIssueTime = date('Ymd').'001';
+                $nextIssueTime = date('Ymd',time()+1000).'001';
             $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(255)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
         }
