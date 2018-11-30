@@ -72,6 +72,7 @@ class ExportExcelController extends Controller
             ];
         }
 
+
         Excel::create('【'.$fileTypeName.'】充值数据-['.$startTime.'-'.$endTime.']',function ($excel) use ($cellData,$fileTypeName){
             $excel->sheet($fileTypeName, function($sheet) use ($cellData){
                 $sheet->rows($cellData);

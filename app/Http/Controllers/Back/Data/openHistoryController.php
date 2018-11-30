@@ -478,6 +478,7 @@ class openHistoryController extends Controller
     private function card_betInfoSql($request){
         //获取所有的游戏
         $gamesList = GamesApi::where(function($aSql) use ($request){
+            $aSql->where('type_id', 111);
             if($g_id = $request->get('g_id'))
                 $aSql->where('g_id', $g_id);
         })->get();

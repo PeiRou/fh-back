@@ -8,7 +8,12 @@
     <div class="field">
         <label>平台保留营利比</label>
         <div class="ui input icon">
-            <input type="text" name="kill_rate" value="{{ floatval($game->kill_rate) }}"/>
+{{--            <input type="text" name="kill_rate" value="{{ floatval($game->kill_rate) }}"/>--}}
+            <select class="ui fluid dropdown" name="kill_rate">
+                @foreach($statusArr as $key => $value)
+                    <option  @if(floatval($game->kill_rate) == $key) selected = "selected" @endif value="{{ $key }}">{{ $value }}</option>
+                @endforeach
+            </select>
         </div>
     </div>
     <input type="hidden" name="id" value="{{ $id }}">

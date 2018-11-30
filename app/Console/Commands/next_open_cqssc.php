@@ -70,6 +70,12 @@ class next_open_cqssc extends Command
             $redis->set('cqssc:gapnum',$gapnum);
             return 'Fail';
         }else{
+            //阻止進行中
+            $key = $this->code.'ing:'.$res->issue;
+            if($redis->exists($key)){
+                return 'ing';
+            }
+            $redis->setex($key,60,'ing');
             $redis->set('cqssc:needopen','');
         }
         //當期獎期
@@ -88,7 +94,7 @@ class next_open_cqssc extends Command
                 return 'no have';
             }
             //清除昨天长龙，在录第一期的时候清掉
-            if(substr($needOpenIssue,3)=='001'){
+            if(substr($needOpenIssue,-3)=='001'){
                 DB::table('clong_kaijian1')->where('lotteryid',$this->gameId)->delete();
                 DB::table('clong_kaijian2')->where('lotteryid',$this->gameId)->delete();
             }

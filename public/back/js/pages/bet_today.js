@@ -283,6 +283,47 @@ $('#game').on('change',function () {
     });
 });
 
+function excelRecharges() {
+    var data = {};
+    data.game = $('#game').val();
+    data.playCate = $('#playCate').val();
+    data.issue = $('#issue').val();
+    data.status = $('#status').val();
+    data.order = $('#order').val();
+    data.username = $('#username').val();
+    data.minMoney = $('#minMoney').val();
+    data.maxMoney = $('#maxMoney').val();
+    data.timeStart = $('#timeStart').val();
+    data.timeEnd = $('#timeEnd').val();
+    data.markSix = $('#markSix').val();
+    jc = $.confirm({
+        title: '导出今日注单',
+        theme: 'material',
+        type: 'orange',
+        boxWidth:'25%',
+        content: '您选择了导出【'+data.timeStart+' - '+data.timeEnd+'】范围内的数据，确定导出吗？',
+        buttons: {
+            confirm: {
+                text:'确定',
+                btnClass: 'btn-orange',
+                action: function(){
+                    var url = '/back/datatables/exportExcelToday?ex=1';
+                    for (k in data){
+                        url += '&'+k+'='+data[k]
+                    }
+                    // console.log(url);
+                    // window.open(url);
+                    window.location.href = url;
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+
+}
+
 $('#checkMark').on('change',function () {
     if($(this).is(':checked'))
         $('#markSix').val(2);

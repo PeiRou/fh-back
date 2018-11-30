@@ -30,7 +30,6 @@ class CurlService
         curl_setopt($this->ch,CURLOPT_HEADER,0);
         $output = curl_exec($this->ch);
         return $output;
-        echo 'asd';
         $this->close();
     }
     public function get_https($url){

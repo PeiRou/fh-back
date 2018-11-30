@@ -81,7 +81,11 @@ class new_paoma extends Command
             $nextIssue = $res->expect;
             $nextIssueEndTime = Carbon::parse($res->opentime)->addSeconds(60)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($res->opentime)->addSeconds(75)->toDateTimeString();
-            Redis::set('paoma:nextIssue',(int)$nextIssue+1);
+            $New_nextIssue = $nextIssue+1;
+            if(substr($New_nextIssue,-3)=='986'){
+                $New_nextIssue = date("ymd",strtotime($res->opentime)).'001';
+            }
+            Redis::set('paoma:nextIssue',(int)$New_nextIssue);
             Redis::set('paoma:nextIssueEndTime',strtotime($nextIssueEndTime));
             Redis::set('paoma:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
             //---kill start
