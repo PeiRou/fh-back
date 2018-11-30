@@ -1057,6 +1057,12 @@ class SrcViewController extends Controller
             ]);
         }
         if($date == 'month'){
+            return response()->json([
+                'start'=> date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y'))),
+                'end' => date('Y-m-d',strtotime('-1 day'))
+            ]);
+        }
+        if($date == 'month_ym'){
             $startTine = date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y')));
             $endTime = date('Y-m-d',mktime(23,59,59,date('m'),date('t'),date('Y')));
             if($endTime < $startTine){
@@ -1065,12 +1071,6 @@ class SrcViewController extends Controller
             return response()->json([
                 'start'=> $startTine,
                 'end' => $endTime
-            ]);
-        }
-        if($date == 'month_ym'){
-            return response()->json([
-                'start'=> date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y'))),
-                'end' => date('Y-m-d',strtotime('-1 day'))
             ]);
         }
         if($date == 'lastMonth'){
