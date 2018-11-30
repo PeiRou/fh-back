@@ -42,7 +42,12 @@ class SrcAccountController extends Controller
                     }
                     $collection = collect($getAllAuth);
                     $collectionAuth = $collection->implode(',');
-
+                    SubAccount::where('account',$account)->update([
+                        'last_login_ip' => $find->login_ip,
+                        'last_login_time' => $find->login_dt,
+                        'login_ip' => realIp(),
+                        'login_dt' => date('Y-m-d H:i:s')
+                    ]);
                     Session::put('isLogin',true);
                     Session::put('account_id',$find->sa_id);
                     Session::put('account',$find->account);
