@@ -294,7 +294,7 @@ class SrcViewController extends Controller
         }
         $starstrto = strtotime($startime);
         $endstrto = strtotime($endtime);
-        $totalreportsql = 'select daytstrot,daytime,data,memberquota,operation_account,created_at,updated_at from totalreport WHERE daytstrot >= '.$starstrto.' AND daytstrot <= '.$endstrto.' ORDER BY daytstrot DESC';
+        $totalreportsql = 'select daytstrot,daytime,data,memberquota,operation_account,created_at,updated_at,memberquotayday from totalreport WHERE daytstrot >= '.$starstrto.' AND daytstrot <= '.$endstrto.' ORDER BY daytstrot DESC';
         $totalreport =  DB::select($totalreportsql);
 
         if (!empty($totalreport)){
@@ -356,6 +356,12 @@ class SrcViewController extends Controller
                     $v->capital = $v->data['capital'][0]->totle;
                 }else{
                     $v->capital = "0.00";
+                }
+                //bunko
+                if(!empty($v->data['bunko'][0])){
+                    $v->bunko = $v->data['bunko'][0]->totle;
+                }else{
+                    $v->bunko = "0.00";
                 }
             }
         }else{
