@@ -96,7 +96,7 @@ class next_open_pknn extends Command
                         return 'no have';
                 }
             }
-            if ($redis_issue !== $html['issue']) {
+            if (isset($html['issue']) && $redis_issue !== $html['issue']) {
                 try {
                     $up = DB::table($table)->where('issue', $html['issue'])
                         ->update([

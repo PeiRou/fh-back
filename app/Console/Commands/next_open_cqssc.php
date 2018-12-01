@@ -102,7 +102,7 @@ class next_open_cqssc extends Command
                 DB::table('clong_kaijian1')->where('lotteryid',$this->gameId)->delete();
                 DB::table('clong_kaijian2')->where('lotteryid',$this->gameId)->delete();
             }
-            if ($redis_issue !== $html['issue']) {
+            if (isset($html['issue']) && $redis_issue !== $html['issue']) {
                 try {
                     $up = DB::table($table)->where('issue', $html['issue'])
                         ->update([
