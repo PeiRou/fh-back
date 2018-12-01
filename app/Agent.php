@@ -26,7 +26,10 @@ class Agent extends Model
 
     //获取所有代理商
     public static function getAgentAllBunko(){
-        return self::select(DB::raw("a_id,account,name,created_at,0 as bunko"))->where('created_at','<',date('Y-m-01'))->get();
+        DB::enableQueryLog();
+        self::select(DB::raw("a_id,account,name,created_at,0 as bunko"))->where('created_at','<',date('Y-m-01'))->get();
+        var_dump(DB::getQueryLog());die();
+//        return self::select(DB::raw("a_id,account,name,created_at,0 as bunko"))->where('created_at','<',date('Y-m'))->get();
     }
 
     public static function betAgentReportData(){
