@@ -6,6 +6,7 @@ use App\Excel;
 use App\Events\RunMstf;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class BUNKO_msft extends Command
 {

@@ -6,6 +6,7 @@ use App\Excel;
 use App\Events\RunGXK3;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class BUNKO_gxk3 extends Command
 {

@@ -6,6 +6,7 @@ use App\Events\RunCqxync;
 use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class BUNKO_cqxync extends Command
 {

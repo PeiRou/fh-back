@@ -6,6 +6,7 @@ use App\Events\RunHEBEIK3;
 use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class BUNKO_hebeik3 extends Command
 {
