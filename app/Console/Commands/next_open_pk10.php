@@ -81,16 +81,20 @@ class next_open_pk10 extends Command
         $needOpenIssue = $res->issue;
         $openTime = $res->opentime;
 
-        if($needOpenIssue == ($redis_next_issue-1))
-            $url = Config::get('website.guanIssueServerUrl').'bjpk10';
-        else
-            $url = Config::get('website.guanIssueServerUrl').'bjpk10?issue='.$needOpenIssue;
         try {
-            $html = json_decode(file_get_contents($url), true);
+            $html = $excel->getGuanIssueNum($needOpenIssue,$redis_issue,$this->code);
             //如果官方數據庫已經查不到需要追朔的獎期，則停止追朔
             if(!isset($html['issue'])){
-                $redis->set('pk10:needopen','on');
-                return 'no have';
+                if(($gapnum == $redis_gapnum) && !empty($redis_gapnum)){
+                    $redis->set('pk10:needopen','on');
+                }else{
+                    $res = $excel->getNeedMinIssue($table);
+                    $needOpenIssue = $res->issue;
+                    $openTime = (string)$res->opentime;
+                    $html = $excel->getGuanIssueNum($needOpenIssue,$redis_issue,$this->code);
+                    if(!isset($html))
+                        return 'no have';
+                }
             }
             //清除昨天长龙，在录第一期的时候清掉
             if (substr($openTime,-8) == '09:07:30') {
