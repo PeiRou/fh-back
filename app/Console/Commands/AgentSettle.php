@@ -60,6 +60,7 @@ class AgentSettle extends Command
         $aAgentBaseInfo = AgentReportBase::getAgentBaseInfo();
         //获取所有代理商
         $aAgentAlls = Agent::getAgentAllBunko();
+        var_dump($aAgentAlls);die();
         //代理结算信息整合
         $aAgentInfos = [];
         foreach ($aAgentAlls as $aAgentKey => $aAgentAll){
