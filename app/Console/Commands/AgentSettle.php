@@ -54,7 +54,6 @@ class AgentSettle extends Command
         $beforeMonth = $date->beforeTwoMonthDate();
         //获取上月的前两月统计数据
         $aMemberBeforeDatas = AgentReport::getAccordingDateData($beforeMonth);
-//        var_dump(count($aMemberBeforeDatas));die();
         //获取需要统计的会员
         $aMemberDatas = Bets::preliminaryManualSettlement($currentMonth);
         //获取平台配置
@@ -118,7 +117,6 @@ class AgentSettle extends Command
                 }
             }
         }
-        var_dump($aAgentAlls);die();
         AgentReport::where('year_month','=',$yearMonth)->delete();
         AgentReportReview::where('year_month','=',$yearMonth)->delete();
         AgentReport::where('created_at','<',$yearMonthDay)->where('status','=',0)->update(['status'=>4]);
