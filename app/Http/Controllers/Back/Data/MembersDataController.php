@@ -612,8 +612,8 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 $capital = $capital->skip($start)->take($length)->get();
             }else{
                 $capitalSql = Capital::AssemblyFundDetails($param);
-                $capital = $capitalSql->orderBy('bet_id','desc')->skip($start)->take($length)->get();
                 $capitalCount = $capitalSql->count();
+                $capital = $capitalSql->orderBy('bet_id','desc')->skip($start)->take($length)->get();
             }
         }else {
             $capitalSql = Capital::AssemblyFundDetails($param);
