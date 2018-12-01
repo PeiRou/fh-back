@@ -252,7 +252,7 @@ class Excel
         if($needOpenIssue == $redis_issue)
             $url = Config::get('website.guanIssueServerUrl').$type;
         else
-            $url = Config::get('website.guanIssueServerUrl').$type.'issue='.$needOpenIssue;
+            $url = Config::get('website.guanIssueServerUrl').$type.'?issue='.$needOpenIssue;
         $res = json_decode(file_get_contents($url), true);
         return $res;
     }
