@@ -24,9 +24,8 @@ class Bets extends Model
     }
 
     public static function AssemblyFundDetails($param){
-        $aSql = Bets::select(DB::raw("users.username,bet.user_id,bet.order_id,bet.created_at,bet.status,bet.bet_money as money,bet.bet_balance as balance,bet.issue,bet.game_id,game.game_name,bet.playcate_name as playcate_name,'' as agent,bet.color as agent_id,bet.bet_info as content,'' as content1,bet.freeze_money,bet.unfreeze_money,bet.nn_view_money,bet.bunko as c_money,bet.bet_id,'' as rechargesType"))
+        $aSql = Bets::select(DB::raw("users.username,bet.user_id,bet.order_id,bet.created_at,bet.status,bet.bet_money as money,bet.bet_balance as balance,bet.issue,bet.game_id,game.game_name,concat(bet.playcate_name,concat('-',bet.play_name)) as playcate_name,'' as agent,bet.color as agent_id,bet.bet_info as content,'' as content1,bet.freeze_money,bet.unfreeze_money,bet.nn_view_money,bet.bunko as c_money,bet.bet_id,'' as rechargesType"))
             ->where(function ($sql) use ($param) {
-//                $sql->where('bet.bunko','!=','0');
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
                     $sql->whereBetween('bet.updated_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
                 }else{
@@ -64,7 +63,6 @@ class Bets extends Model
                 if (isset($param['amount_max']) && array_key_exists('amount_max', $param)) {
                     $sql->where('bet.bunko', '<=', $param['amount_max']);
                 }
-//                $sql->where('users.testFlag',0);
             })->leftJoin('users', 'users.id', '=', 'bet.user_id')->leftJoin('game', 'game.game_id', '=', 'bet.game_id')
             ->orderBy('bet.bet_id','desc');
         return $aSql;
