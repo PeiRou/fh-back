@@ -11,7 +11,7 @@ use App\Http\Controllers\Bet\Clong;
 
 class next_open_bjkl8 extends Command
 {
-    protected  $code = 'pcdd';
+    protected  $code = 'bjkl8';
     protected  $gameId = 65;
     protected  $clong;
     /**
