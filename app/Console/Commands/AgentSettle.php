@@ -118,7 +118,7 @@ class AgentSettle extends Command
                 }
             }
         }
-        var_dump($aMemberDatas);die();
+        var_dump($aAgentAlls);die();
         AgentReport::where('year_month','=',$yearMonth)->delete();
         AgentReportReview::where('year_month','=',$yearMonth)->delete();
         AgentReport::where('created_at','<',$yearMonthDay)->where('status','=',0)->update(['status'=>4]);
