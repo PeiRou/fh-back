@@ -49,7 +49,7 @@ class next_issue_msjsk3 extends Command
         $redis = Redis::connection();
         $redis->select(0);
         $beforeLotteryTime = $redis->get('msjsk3:nextIssueLotteryTime');
-        if($beforeLotteryTime>=time())
+        if($beforeLotteryTime>time())
             return 'no need';
         //下一期獎期
         $nextIssue = $res->issue;
