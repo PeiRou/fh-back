@@ -227,9 +227,9 @@ class FinanceDataController extends Controller
         $draw_type = $request->get('draw_type');
         $rechLevel = $request->get('rechLevel');
         $dateType = $request->get('dateType');//时间类型
-
         $start = $request->get('start');
         $length = $request->get('length');
+
         $drawingSQL = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
             ->leftJoin('level','drawing.levels', '=', 'level.value')
@@ -272,6 +272,12 @@ class FinanceDataController extends Controller
                     if($account_type == 'amount'){
                         $q->where('drawing.amount',$account_param);
                     }
+                }else{//如果沒有指定用戶查 就只顯示用戶當前層級的提款
+                    $usersLevel = Drawing::getUsersLevel();
+                    $str = "";
+                    foreach ($usersLevel as $k=>$v)
+                        $str .= "WHEN `drawing`.`user_id` = {$v->id} THEN `levels` = {$v->rechLevel} ";
+                    $q->whereRaw("CASE {$str} END");
                 }
                 if(isset($account_type) && $account_type == 'amount_fw'){
                     if(($min = (int) $request->get('amount_min')) && ($max = $request->get('amount_max'))){

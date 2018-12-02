@@ -174,4 +174,14 @@ class Drawing extends Model
             })
             ->orderBy('drawing.created_at','desc')->get();
     }
+    //获取所有提款用户的层级
+    public static function getUsersLevel(){
+        $aSql = " SELECT
+                    `user_id` AS id,
+                    `rechLevel` 
+                FROM
+                    ( SELECT DISTINCT `user_id` FROM `drawing` ) AS d
+                    LEFT JOIN `users` ON d.user_id = `users`.id ";
+        return DB::select($aSql);
+    }
 }
