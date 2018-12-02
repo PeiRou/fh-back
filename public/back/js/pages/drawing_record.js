@@ -130,13 +130,13 @@ $('#btn_search').on('click',function () {
     getTotalDrawing();
 });
 
-function showUserInfo(uid) {
+function showUserInfo(uid, drawing_id) {
     jc = $.confirm({
         theme: 'material',
         title: '会员48小时内资金详情',
         closeIcon:true,
         boxWidth:'35%',
-        content: 'url:/back/modal/user48hoursInfo/'+uid,
+        content: 'url:/back/modal/user48hoursInfo/'+uid+'?drawing_id='+drawing_id,
         buttons: {
             formSubmit: {
                 text:'关闭',

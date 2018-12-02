@@ -11,6 +11,7 @@ use App\Article;
 use App\Banks;
 use App\Capital;
 use App\CapitalAgent;
+use App\Drawing;
 use App\Feedback;
 use App\FeedbackMessage;
 use App\Games;
@@ -563,17 +564,37 @@ class ModalController extends Controller
         return view('back.modal.pay.drawingErrorAuto',compact('id'));
     }
     //提款记录 会员48小时详情
-    public function user48hoursInfo($uid = '')
+    public function user48hoursInfo(Request $request, $uid = '')
     {
+        //修改為這條記錄之前24小時的
+        if(isset($request->drawing_id))
+            $dTime = Drawing::where('id', $request->drawing_id)->value('created_at');
         if ($uid) {
             $user = DB::table('users')->where('id', $uid)->first();
             $userLastPay = DB::table('recharges')->select('amount')->where('userId', $uid)->where('status',2)->orderBy('id', 'desc')->first();
-            $hours48SQL = "SELECT sum(b.bet_money) as BETMONEY FROM bet b WHERE b.created_at > DATE_SUB(NOW(), INTERVAL 48 HOUR) AND user_id = {$uid}";
+            $hours48SQL = "SELECT sum(b.bet_money) as BETMONEY FROM bet b WHERE b.created_at > DATE_SUB('".($dTime ?? 'NOW()')."', INTERVAL 48 HOUR) AND user_id = {$uid}";
             $hours48Bet = DB::table('bet')
                 ->select(DB::raw('sum(bet_money) as sum , SUM(CASE WHEN `game_id` IN(90,91) THEN `nn_view_money` ELSE (CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE `bunko` END) END) AS `sumBunko`, sum(case WHEN bunko = 0 then bet_money else 0 end) as noBunko'))
-                ->whereRaw('created_at > DATE_SUB(NOW(), INTERVAL 48 HOUR)')
+                ->whereRaw('created_at > DATE_SUB("'.($dTime ?? 'NOW()').'", INTERVAL 48 HOUR)')
                 ->where('user_id', $uid)
                 ->first();
+            //获取棋牌投注资金
+            //获取所有的棋牌游戏
+            $gamesList = GamesApi::where(function($aSql){
+                $aSql->where('type_id', 111);
+            })->get();
+            foreach ($gamesList as $k=>$v){
+                $table = 'jq_'.strtolower($v->alias).'_bet';
+                $where = ' 1 ';
+                $name = $user->username;
+                if($v->alias == 'WS'){//无双的账户名处理过
+                    $name = substr(preg_replace("/[_]/","",$user->username), 0, 16);
+                }
+                $where .= " AND `Accounts` = '{$name}' ";
+                $sqlArr[] = " (SELECT SUM(`AllBet`) AS `AllBet`,'{$v->name}' as `name` FROM `{$table}` WHERE {$where} ) ";
+            }
+            $sql = 'SELECT SUM(`AllBet`) AS `ALLBet` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a ';
+            $jqBetMoney = DB::select($sql)[0]->ALLBet;
 
             $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
@@ -630,6 +651,12 @@ class ModalController extends Controller
                             <td valign="top" style="word-break: break-all;">0</td>
                             <td valign="top" style="word-break: break-all;">后台扣钱：</td>
                             <td valign="top" style="word-break: break-all;">0</td>
+                        </tr>
+                        <tr>
+                            <td valign="top" style="word-break: break-all;">棋牌投注：</td>
+                            <td valign="top" style="word-break: break-all;">'.(float)$jqBetMoney.'</td>
+                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;"></td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;" rowspan="1" colspan="4">备注：</td>

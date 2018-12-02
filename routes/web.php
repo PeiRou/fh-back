@@ -307,7 +307,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/back/charts/gameBunko','Back\Charts\ChartsDataController@gameBunko');
     Route::post('/back/charts/recharges','Back\Charts\ChartsDataController@recharges');
 
-//action
+    //action
     Route::post('/action/admin/login', 'Back\SrcAccountController@login');
     Route::post('/action/admin/logout', 'Back\SrcAccountController@logout');
 
