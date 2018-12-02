@@ -70,6 +70,7 @@ $(function () {
                 d.draw_type = $('#draw_type').val();
                 d.amount_min = $('#amount-min').val();
                 d.amount_max = $('#amount-max').val();
+                d.dateType = $('#bao_time').val();
             }
         },
         columns: [

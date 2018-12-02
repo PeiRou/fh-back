@@ -39,6 +39,7 @@ class FinanceDataController extends Controller
         $start = $request->get('start');
         $length = $request->get('length');
         $rechargeType = $request->get('rechargeType'); //收款方式
+        $dateType = $request->get('dateType');//时间类型
         if($fullName && isset($fullName)){
             $findUserId = DB::table('users')->where('fullName',$fullName)->first();
         }
@@ -73,11 +74,17 @@ class FinanceDataController extends Controller
                 $where .= " and recharges.sysPayOrder = '".$account_param."'";
             }
         }
+        $dateTypeName = 'updated_at';
+        if(isset($dateType) && $dateType == 1){//报表时间
+            $dateTypeName = 'updated_at';
+        }else if(isset($dateType) && $dateType == 2){
+            $dateTypeName = 'created_at';
+        }
         if(isset($startTime) && $startTime){
-            $where .= " and recharges.updated_at >= '".$startTime." 00:00:00'";
+            $where .= " and recharges.{$dateTypeName} >= '".$startTime." 00:00:00'";
         }
         if(isset($endTime) && $endTime){
-            $where .= " and recharges.updated_at <= '".$endTime." 23:59:59'";
+            $where .= " and recharges.{$dateTypeName} <= '".$endTime." 23:59:59'";
         }
         if(empty($startTime) && empty($endTime))
             $where .= " and recharges.updated_at = now() ";
@@ -219,6 +226,8 @@ class FinanceDataController extends Controller
         $account_param = $request->get('account_param');
         $draw_type = $request->get('draw_type');
         $rechLevel = $request->get('rechLevel');
+        $dateType = $request->get('dateType');//时间类型
+
         $start = $request->get('start');
         $length = $request->get('length');
         $drawingSQL = DB::table('drawing')
@@ -270,11 +279,17 @@ class FinanceDataController extends Controller
                     }
                 }
             })
-            ->where(function ($q) use ($startTime,$endTime) {
+            ->where(function ($q) use ($startTime,$endTime,$dateType) {
+                $dateTypeName = 'created_at';
+                if(isset($dateType) && $dateType == 1){//报表时间
+                    $dateTypeName = 'updated_at';
+                }else if(isset($dateType) && $dateType == 2){//添加时间
+                    $dateTypeName = 'created_at';
+                }
                 if(isset($startTime) && $startTime || isset($endTime) && $endTime){
-                    $q->whereBetween('drawing.created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59']);
+                    $q->whereBetween('drawing.'.$dateTypeName,[$startTime.' 00:00:00', $endTime.' 23:59:59']);
                 } else {
-                    $q->whereDate('drawing.created_at',date('Y-m-d'));
+                    $q->whereDate('drawing.'.$dateTypeName,date('Y-m-d'));
                 }
             })
             ->orderBy('drawing.created_at','desc')->orderBy('drawing.id','desc');

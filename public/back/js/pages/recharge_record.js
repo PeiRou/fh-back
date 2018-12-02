@@ -95,6 +95,7 @@ $(function () {
                 d.killTestUser = $('#killTestUser:checked').val();
                 d.recharges_id = $('#Recharges_id').val();
                 d.rechargeType = $('#rechargeType').val();
+                d.dateType = $('#dateType').val();
             }
         },
         columns: [
