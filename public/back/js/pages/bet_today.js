@@ -165,7 +165,7 @@ $(function () {
 
 $('#searchType').on('change',function () {
     var time = $(this).val();
-    if(time = 'today'){
+    if(time == 'today'){
         $.ajax({
             url:'/recharge/selectData/dateChange/today',
             type:'get',
@@ -175,7 +175,7 @@ $('#searchType').on('change',function () {
                 $('#timeEnd').val(data.end);
             }
         })
-    }else if(time = 'yesterday'){
+    }else if(time == 'yesterday'){
         $.ajax({
             url:'/recharge/selectData/dateChange/yesterday',
             type:'get',
