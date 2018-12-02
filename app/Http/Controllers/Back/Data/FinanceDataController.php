@@ -275,8 +275,11 @@ class FinanceDataController extends Controller
                 }else{//如果沒有指定用戶查 就只顯示用戶當前層級的提款
                     $usersLevel = Drawing::getUsersLevel();
                     $str = "";
-                    foreach ($usersLevel as $k=>$v)
-                        $str .= "WHEN `drawing`.`user_id` = {$v->id} THEN `levels` = ".($v->rechLevel ?? 0).' ';
+                    foreach ($usersLevel as $k=>$v){
+                        if($v->id)
+                            $str .= "WHEN `drawing`.`user_id` = {$v->id} THEN `levels` = ".($v->rechLevel ?? 0).' ';
+                    }
+
                     $q->whereRaw("CASE {$str} END");
                 }
                 if(isset($account_type) && $account_type == 'amount_fw'){
