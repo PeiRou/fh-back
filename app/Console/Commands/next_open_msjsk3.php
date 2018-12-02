@@ -100,9 +100,6 @@ class next_open_msjsk3 extends Command
                         $key = 'msjsk3:issue';
                         $redis->set($key, $needOpenIssue);
                         $redis->set('msjsk3:gapnum',$gapnum);
-                        //先录号到redis上
-                        $redis->set($table.':opennum',$opencode);
-                        $redis->set($table.':issue',$needOpenIssue);
                     }
                 } catch (\Exception $exception) {
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
