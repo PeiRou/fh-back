@@ -177,7 +177,7 @@ class Drawing extends Model
     //获取所有提款用户的层级
     public static function getUsersLevel(){
         $aSql = " SELECT
-                    `user_id` AS id,
+                    `users`.`id` AS id,
                     `rechLevel` 
                 FROM
                     ( SELECT DISTINCT `user_id` FROM `drawing` ) AS d

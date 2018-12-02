@@ -276,7 +276,7 @@ class FinanceDataController extends Controller
                     $usersLevel = Drawing::getUsersLevel();
                     $str = "";
                     foreach ($usersLevel as $k=>$v)
-                        $str .= "WHEN `drawing`.`user_id` = {$v->id} THEN `levels` = {$v->rechLevel} ";
+                        $str .= "WHEN `drawing`.`user_id` = {$v->id} THEN `levels` = ".($v->rechLevel ?? 0).' ';
                     $q->whereRaw("CASE {$str} END");
                 }
                 if(isset($account_type) && $account_type == 'amount_fw'){
