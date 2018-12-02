@@ -108,6 +108,9 @@ class next_open_msft extends Command
                         $key = 'msft:issue';
                         $redis->set($key, $needOpenIssue);
                         $redis->set('msft:gapnum',$gapnum);
+                        //先录号到redis上
+                        $redis->set($table.':opennum',$opencode);
+                        $redis->set($table.':issue',$needOpenIssue);
                         $this->clong->setKaijian('msft',1,$opencode);
                         $this->clong->setKaijian('msft',2,$opencode);
                     }

@@ -112,6 +112,9 @@ class next_open_mssc extends Command
                         $key = 'mssc:issue';
                         $redis->set($key, $needOpenIssue);
                         $redis->set('mssc:gapnum',$gapnum);
+                        //先录号到redis上
+                        $redis->set($table.':opennum',$opencode);
+                        $redis->set($table.':issue',$needOpenIssue);
                         $this->clong->setKaijian('mssc',1,$opencode);
                         $this->clong->setKaijian('mssc',2,$opencode);
                     }

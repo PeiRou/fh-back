@@ -108,6 +108,9 @@ class next_open_paoma extends Command
                         $key = 'paoma:issue';
                         $redis->set($key, $needOpenIssue);
                         $redis->set('paoma:gapnum',$gapnum);
+                        //先录号到redis上
+                        $redis->set($table.':opennum',$opencode);
+                        $redis->set($table.':issue',$needOpenIssue);
                         $this->clong->setKaijian('paoma',1,$opencode);
                         $this->clong->setKaijian('paoma',2,$opencode);
                     }
