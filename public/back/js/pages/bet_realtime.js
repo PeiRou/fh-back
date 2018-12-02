@@ -46,6 +46,11 @@ $(function () {
             }
         }
     });
+
+    $('#btn_search').click(function(){
+        window.open('/back/control/betManage/realTimeNew');
+    });
+
 });
 
 chk_value =[];//定义一个数组

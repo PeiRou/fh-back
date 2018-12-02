@@ -732,7 +732,12 @@ class SrcViewController extends Controller
         $games = Games::where('status',1)->get();
         return view('back.betRealTime',compact('games'));
     }
-
+    //实时滚单 新窗口打開
+    public function betRealTimeNew()
+    {
+        $games = Games::where('status',1)->get();
+        return view('back.betRealTimeNew',compact('games'));
+    }
     //公告管理
     //公告设置
     public function noticeSetting()
