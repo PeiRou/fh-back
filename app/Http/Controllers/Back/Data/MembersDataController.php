@@ -212,14 +212,18 @@ GROUP BY g.ga_id LIMIT $start,$length";
                         <ul>";
 
                 }else {
+
                     $html = "<ul class='control-menu'>
                         <li onclick='edit(\"$allAgent->a_id\")'>修改</li>
                         <li onclick='viewInfo(\"$allAgent->a_id\")'>详情</li>
                         <li onclick='changeAgentMoney(\"$allAgent->a_id\")'>修改余额</li>
                         <li onclick='capital(\"$allAgent->a_id\")'>资金明细</li>
                         <li>更多操作
-                        <ul>
-                        <li onclick='panSetting(\"$allAgent->a_id\")'>盘口设定</li>";
+                        <ul>";
+                    if($allAgent->modelStatus == 1) {
+                        $agentLevel = empty($allAgent->odds_level) ? 1 : $allAgent->odds_level;
+                        $html .= "<li onclick='panSetting(\"$agentLevel\")'>盘口设定</li>";
+                    }
                     if(env('TEST',0) == 1) {
                         if ($allAgent->modelStatus == 1)
                             $html .= "<li onclick='addAgent(\"$allAgent->a_id\")'>添加子代理</li>";
