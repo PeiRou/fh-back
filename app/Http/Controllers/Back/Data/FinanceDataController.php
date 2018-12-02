@@ -26,7 +26,7 @@ class FinanceDataController extends Controller
     {
         $findUserId = '';
         $killTestUser = $request->get('killTestUser');
-        $payType = $request->get('recharge_type');
+        $payType = $request->get('recharge_type'); //自动收款
         $recharges_id = $request->get('recharges_id');
         $startTime = $request->get('startTime');
         $endTime = $request->get('endTime');
@@ -38,6 +38,7 @@ class FinanceDataController extends Controller
         $fullName = $request->get('fullName');
         $start = $request->get('start');
         $length = $request->get('length');
+        $rechargeType = $request->get('rechargeType'); //收款方式
         if($fullName && isset($fullName)){
             $findUserId = DB::table('users')->where('fullName',$fullName)->first();
         }
@@ -59,6 +60,8 @@ class FinanceDataController extends Controller
         if(isset($findUserId) && $findUserId){
             $where .= ' and recharges.userId = '.$findUserId->id;
         }
+        if(isset($rechargeType))
+            $where .= ' and recharges.rechargeType = '.$rechargeType;
         if(isset($account_param) && $account_param){
             if($account_type == 'account'){
                 $where .= " and recharges.username = '".$account_param."'";

@@ -70,8 +70,8 @@
                     <div class="one wide field">
                         <select class="ui dropdown" id="rechargeType" style='height:32px !important'>
                             <option value="">收款方式</option>
-                            <option value="1">手动收款</option>
-                            <option value="2">自动收款</option>
+                            <option value="0">手动收款</option>
+                            <option value="1">自动收款</option>
                         </select>
                     </div>
                     <div class="one wide field">
