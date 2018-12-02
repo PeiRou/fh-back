@@ -1062,6 +1062,17 @@ class SrcViewController extends Controller
                 'end' => date('Y-m-d',mktime(23,59,59,date('m'),date('t'),date('Y')))
             ]);
         }
+        if($date == 'month_ym'){
+            $startTine = date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y')));
+            $endTime = date('Y-m-d',strtotime('-1 day'));
+            if($endTime < $startTine){
+                $endTime = $startTine;
+            }
+            return response()->json([
+                'start'=> $startTine,
+                'end' => $endTime
+            ]);
+        }
         if($date == 'lastMonth'){
             return response()->json([
                 'start'=> date('Y-m-d', mktime(0,0,0,date('m')-1,1,date('Y'))),

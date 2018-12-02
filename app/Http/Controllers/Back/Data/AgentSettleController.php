@@ -33,10 +33,10 @@ class AgentSettleController extends Controller
                 $sql->whereBetween('created_at',[$dateTime['start'],$dateTime['end']]);
             }else{
                 if(isset($params['startTime']) && array_key_exists('startTime',$params)){
-                    $sql->where('created_at','>=',$params['startTime']);
+                    $sql->where('created_at','>=',$params['startTime'].'-01');
                 }
                 if(isset($params['endTime']) && array_key_exists('endTime',$params)){
-                    $sql->where('created_at','<=',$params['endTime']);
+                    $sql->where('created_at','<=',$params['endTime'].'-01');
                 }
             }
         })->orderBy('created_at','desc')->get();

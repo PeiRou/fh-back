@@ -413,3 +413,7 @@ function error(id){
         }
     })
 }
+
+function panSetting(level) {
+    window.open('/back/modal/gameAgentOddsLook/'+level)
+}

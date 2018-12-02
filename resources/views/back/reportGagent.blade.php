@@ -62,7 +62,7 @@
                         <a class="fluid ui mini blue button" id="btnWeek">本周</a>
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
-                        <a class="fluid ui mini blue button" id="btnMonth">本月</a>
+                        <a class="fluid ui mini blue button" id="btnMonth_ym">本月</a>
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
                         <a class="fluid ui mini blue button"  id="btnLastMonth">上月</a>
@@ -70,6 +70,7 @@
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
                     </div>
+                    (<span style="color: red;">说明：历史记录不包含今天</span>)
                 </div>
             </div>
         </div>
