@@ -369,149 +369,152 @@ class BetDataController extends Controller
     //历史注单
     public function betHistory(Request $request)
     {
-        $startSearch = $request->get('startSearch');
-        $game = $request->get('game');
-        $playCate = $request->get('playCate');
-        $issue = $request->get('issue');
-        $status = $request->get('status');
-        $username = $request->get('username');
-        $order = $request->get('order');
-        $timeStart = strtotime($request->get('timeStart')." 00:00:00");
-        $timeEnd = strtotime($request->get('timeEnd')." 23:59:59");
-        $monthStart = date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y')));
-        $monthEnd = date('Y-m-d',mktime(23,59,59,date('m'),date('t'),date('Y')));
-        $start = $request->get('start');
-        $length = $request->get('length');
-        if($startSearch == 1){
-            $betSQL = DB::table('bet')
-                ->leftJoin('game','bet.game_id','=','game.game_id')
-                ->leftJoin('users','bet.user_id','=','users.id')
-                ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at','bet.platform as bet_platform')
-                ->where(function ($query) use ($playCate){
-                    if(isset($playCate) && $playCate){
-                        $query->where("bet.playcate_id",$playCate);
-                    }
-                })
-                ->where(function ($query) use ($game){
-                    if(isset($game) && $game){
-                        $query->where("bet.game_id",$game);
-                    }
-                })
-                ->where(function ($query) use ($issue){
-                    if(isset($issue) && $issue){
-                        $query->where("bet.issue",$issue);
-                    }
-                })
-                ->where(function ($query) use ($order){
-                    if(isset($order) && $order){
-                        $query->where("bet.order_id",$order);
-                    }
-                })
-                ->where(function ($query) use ($timeStart){
-                    if(isset($timeStart) && $timeStart){
-                        $query->whereRaw('unix_timestamp(bet.created_at) >= '.$timeStart);
-                    }
-                })
-                ->where(function ($query) use ($timeEnd){
-                    if(isset($timeEnd) && $timeEnd){
-                        $query->whereRaw('unix_timestamp(bet.created_at) <= '.$timeEnd);
-                    }
-                })
-                ->where(function ($query) use ($username){
-                    if(isset($username) && $username){
-                        $query->where("users.username",$username);
-                    }
-                })
-                ->where(function ($query) use ($status){
-                    if(isset($status) && $status){
-                        if($status == 'jiesuan'){
-                            $query->where("bet.bunko",'!=',0)->whereColumn("bet.bunko",'!=',"bet.bet_money");
-                        }
-                        if($status == '-8888'){
-                            $query->whereColumn("bet.bunko",'=',"bet.bet_money");
-                        }
-                    }
-                })
-                ->where('bet.testFlag',0)->whereBetween('bet.created_at',[$monthStart.' 00:00:00', $monthEnd.' 23:59:59']);
-            $betCount = $betSQL->count();
-            $bet = $betSQL->orderBy('bet.created_at','desc')->skip($start)->take($length)->get();
-        } else {
-            $betCount = Bets::where('order_id',888888)->count();
-            $bet = Bets::where('order_id',888888)->skip($start)->take($length)->get();
-        }
-        $currentIssue = '';
-        $currentColor = '';
-        $betModel = new Bets();
-        return DataTables::of($bet)
-            ->editColumn('order_id',function ($bet){
-                return $bet->bet_order_id;
-            })
-            ->editColumn('created_at',function ($bet){
-                return $bet->bet_created_at;
-            })
-            ->editColumn('user',function ($bet){
-                if($bet->users_username){
-                    return $bet->users_username;
-                } else {
-                    return "<span class='red-text'>用户不存在,请核实</span>";
-                }
-            })
-            ->editColumn('game',function ($bet){
-                return $bet->game_game_name;
-            })
-            ->editColumn('issue',function ($bet) use(&$currentIssue,&$currentColor,$betModel){
-                if($currentIssue != $bet->bet_issue){
-                    $currentIssue = $bet->bet_issue;
-                    $currentColor = $this->getRandColor($currentColor,$bet->bet_color,$betModel);
-                }
-                return '<span style="color: #'.$currentColor.'">'.$bet->bet_issue.'</span> 期';
-            })
-            ->editColumn('bet_money',function ($bet){
-                return "<span class='bet-text'>$bet->bet_bet_money</span>";
-            })
-            ->editColumn('play',function ($bet){
-                return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span>";
-            })
-            ->editColumn('agnet_odds',function ($bet){
-                if($bet->bet_agnet_odds == ""){
-                    return "--";
-                } else {
-                    return $bet->bet_agnet_odds;
-                }
-            })
-            ->editColumn('agent_rebate',function ($bet){
-                if($bet->bet_agent_rebate == ""){
-                    return "--";
-                } else {
-                    return $bet->bet_agent_rebate;
-                }
-            })
-            ->editColumn('bunko',function ($bet){
-                if($bet->bet_bunko == 0){
-                    return "<span class='tiny-blue-text'>未结算</span>";
-                } else {
-                    if($bet->bet_bunko > 0){
-                        $lastMoney = $bet->bet_bunko - $bet->bet_bet_money;
-                        return "<span class='blue-text'><b>$lastMoney</b></span>";
-                    }
-                    if($bet->bet_bunko < 0){
-                        return "<span class='red-text'><b>$bet->bet_bunko</b></span>";
-                    }
-                }
-            })
-            ->editColumn('platform',function ($bet){
-                if($bet->bet_platform == 1){
-                    return "<i class='iconfont'>&#xe696;</i> PC端";
-                } else if($bet->bet_platform == 2){
-                    return "<i class='iconfont'>&#xe686;</i> 移动端";
-                } else {
-                    return "--";
-                }
-            })
-            ->rawColumns(['user','play','issue','bunko','bet_money','platform'])
-            ->setTotalRecords($betCount)
-            ->skipPaging()
-            ->make(true);
+        $start = $request->input('start');
+        $length = $request->input('length');
+        return $this->betTodayRes($request, $start, $length);
+//        $startSearch = $request->get('startSearch');
+//        $game = $request->get('game');
+//        $playCate = $request->get('playCate');
+//        $issue = $request->get('issue');
+//        $status = $request->get('status');
+//        $username = $request->get('username');
+//        $order = $request->get('order');
+//        $timeStart = strtotime($request->get('timeStart')." 00:00:00");
+//        $timeEnd = strtotime($request->get('timeEnd')." 23:59:59");
+//        $monthStart = date('Y-m-d',mktime(0,0,0,date('m'),1,date('Y')));
+//        $monthEnd = date('Y-m-d',mktime(23,59,59,date('m'),date('t'),date('Y')));
+//        $start = $request->get('start');
+//        $length = $request->get('length');
+//        if($startSearch == 1){
+//            $betSQL = DB::table('bet')
+//                ->leftJoin('game','bet.game_id','=','game.game_id')
+//                ->leftJoin('users','bet.user_id','=','users.id')
+//                ->select('users.username as users_username','game.game_name as game_game_name','bet.color as bet_color','bet.issue as bet_issue','bet.bet_money as bet_bet_money','bet.game_id as bet_game_id','bet.playcate_name as bet_playcate_name','bet.play_name as bet_play_name','bet.play_odds as bet_play_odds','bet.agnet_odds as bet_agnet_odds','bet.agent_rebate as bet_agent_rebate','bet.bunko as bet_bunko','bet.order_id as bet_order_id','bet.created_at as bet_created_at','bet.platform as bet_platform')
+//                ->where(function ($query) use ($playCate){
+//                    if(isset($playCate) && $playCate){
+//                        $query->where("bet.playcate_id",$playCate);
+//                    }
+//                })
+//                ->where(function ($query) use ($game){
+//                    if(isset($game) && $game){
+//                        $query->where("bet.game_id",$game);
+//                    }
+//                })
+//                ->where(function ($query) use ($issue){
+//                    if(isset($issue) && $issue){
+//                        $query->where("bet.issue",$issue);
+//                    }
+//                })
+//                ->where(function ($query) use ($order){
+//                    if(isset($order) && $order){
+//                        $query->where("bet.order_id",$order);
+//                    }
+//                })
+//                ->where(function ($query) use ($timeStart){
+//                    if(isset($timeStart) && $timeStart){
+//                        $query->whereRaw('unix_timestamp(bet.created_at) >= '.$timeStart);
+//                    }
+//                })
+//                ->where(function ($query) use ($timeEnd){
+//                    if(isset($timeEnd) && $timeEnd){
+//                        $query->whereRaw('unix_timestamp(bet.created_at) <= '.$timeEnd);
+//                    }
+//                })
+//                ->where(function ($query) use ($username){
+//                    if(isset($username) && $username){
+//                        $query->where("users.username",$username);
+//                    }
+//                })
+//                ->where(function ($query) use ($status){
+//                    if(isset($status) && $status){
+//                        if($status == 'jiesuan'){
+//                            $query->where("bet.bunko",'!=',0)->whereColumn("bet.bunko",'!=',"bet.bet_money");
+//                        }
+//                        if($status == '-8888'){
+//                            $query->whereColumn("bet.bunko",'=',"bet.bet_money");
+//                        }
+//                    }
+//                })
+//                ->where('bet.testFlag',0)->whereBetween('bet.created_at',[$monthStart.' 00:00:00', $monthEnd.' 23:59:59']);
+//            $betCount = $betSQL->count();
+//            $bet = $betSQL->orderBy('bet.created_at','desc')->skip($start)->take($length)->get();
+//        } else {
+//            $betCount = Bets::where('order_id',888888)->count();
+//            $bet = Bets::where('order_id',888888)->skip($start)->take($length)->get();
+//        }
+//        $currentIssue = '';
+//        $currentColor = '';
+//        $betModel = new Bets();
+//        return DataTables::of($bet)
+//            ->editColumn('order_id',function ($bet){
+//                return $bet->bet_order_id;
+//            })
+//            ->editColumn('created_at',function ($bet){
+//                return $bet->bet_created_at;
+//            })
+//            ->editColumn('user',function ($bet){
+//                if($bet->users_username){
+//                    return $bet->users_username;
+//                } else {
+//                    return "<span class='red-text'>用户不存在,请核实</span>";
+//                }
+//            })
+//            ->editColumn('game',function ($bet){
+//                return $bet->game_game_name;
+//            })
+//            ->editColumn('issue',function ($bet) use(&$currentIssue,&$currentColor,$betModel){
+//                if($currentIssue != $bet->bet_issue){
+//                    $currentIssue = $bet->bet_issue;
+//                    $currentColor = $this->getRandColor($currentColor,$bet->bet_color,$betModel);
+//                }
+//                return '<span style="color: #'.$currentColor.'">'.$bet->bet_issue.'</span> 期';
+//            })
+//            ->editColumn('bet_money',function ($bet){
+//                return "<span class='bet-text'>$bet->bet_bet_money</span>";
+//            })
+//            ->editColumn('play',function ($bet){
+//                return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span>";
+//            })
+//            ->editColumn('agnet_odds',function ($bet){
+//                if($bet->bet_agnet_odds == ""){
+//                    return "--";
+//                } else {
+//                    return $bet->bet_agnet_odds;
+//                }
+//            })
+//            ->editColumn('agent_rebate',function ($bet){
+//                if($bet->bet_agent_rebate == ""){
+//                    return "--";
+//                } else {
+//                    return $bet->bet_agent_rebate;
+//                }
+//            })
+//            ->editColumn('bunko',function ($bet){
+//                if($bet->bet_bunko == 0){
+//                    return "<span class='tiny-blue-text'>未结算</span>";
+//                } else {
+//                    if($bet->bet_bunko > 0){
+//                        $lastMoney = $bet->bet_bunko - $bet->bet_bet_money;
+//                        return "<span class='blue-text'><b>$lastMoney</b></span>";
+//                    }
+//                    if($bet->bet_bunko < 0){
+//                        return "<span class='red-text'><b>$bet->bet_bunko</b></span>";
+//                    }
+//                }
+//            })
+//            ->editColumn('platform',function ($bet){
+//                if($bet->bet_platform == 1){
+//                    return "<i class='iconfont'>&#xe696;</i> PC端";
+//                } else if($bet->bet_platform == 2){
+//                    return "<i class='iconfont'>&#xe686;</i> 移动端";
+//                } else {
+//                    return "--";
+//                }
+//            })
+//            ->rawColumns(['user','play','issue','bunko','bet_money','platform'])
+//            ->setTotalRecords($betCount)
+//            ->skipPaging()
+//            ->make(true);
     }
     
     //实时滚单

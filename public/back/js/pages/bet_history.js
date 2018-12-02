@@ -4,7 +4,12 @@
 $(function () {
     $('#menu-betManage').addClass('nav-show');
     $('#menu-betManage-history').addClass('active');
-
+    var intVal = function ( i ) {
+        return typeof i === 'string' ?
+            i.replace(/[\$,]/g, '')*1 :
+            typeof i === 'number' ?
+                i : 0;
+    };
     $('#rangestart').calendar({
         type: 'date',
         endCalendar: $('#rangeend'),
@@ -78,10 +83,28 @@ $(function () {
             {data: 'game'},
             {data: 'issue'},
             {data: 'play'},
-            {data: 'bet_money'},
+            {data: function (data) {
+                    return "<span class='bet-text'>"+(parseFloat(data.bet_bet_money)).toFixed(2)+"</span>";
+                }},
             {data: 'agnet_odds'},
             {data: 'agent_rebate'},
-            {data: 'bunko'},
+            {data: function (data) {
+                    if(data.bet_bunko == 0){
+                        txt = '<span class=\'tiny-blue-text\'>未结算</span>';
+                    }else{
+                        if(data.bet_bunko > 0 && data.bet_bunko != data.bet_bet_money){
+                            var tmpBet_bet_money = intVal(data.bet_bunko)>0?intVal(data.bet_bet_money):0;
+                            lastMoney = (parseFloat(intVal(data.bet_bunko) - tmpBet_bet_money)).toFixed(2);
+                            if(lastMoney==0)
+                                txt = '<span class=\'tiny-blue-text\'>已撤单</span>';
+                            else
+                                txt = "<span class='blue-text'><b>"+lastMoney+"</b></span>";
+                        }else if(data.bet_bunko < 0){
+                            txt = "<span class='red-text'><b>"+data.bet_bunko+"</b></span>";
+                        }
+                    }
+                    return txt;
+                }},
             {data: 'platform'}
         ],
         language: {
