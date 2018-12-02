@@ -283,7 +283,7 @@ class FinanceDataController extends Controller
                 return date('m/d H:i',strtotime($drawing->dr_created_at));
             })
             ->editColumn('username',function ($drawing){
-                return '<span onclick="copyText(this)">'.$drawing->user_username.'</span></br><span class="blue-text" style="font-weight: normal;cursor: pointer;" onclick="showUserInfo(\''.$drawing->dr_uid.'\')">资金详情</span>';
+                return '<span onclick="copyText(this)">'.$drawing->user_username.'</span></br><span class="blue-text" style="font-weight: normal;cursor: pointer;" onclick="showUserInfo(\''.$drawing->dr_uid.'\','.$drawing->dr_id.')">资金详情</span>';
             })
             ->editColumn('balance',function ($drawing){
                 return $drawing->dr_balance;
