@@ -396,7 +396,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
         if(isset($agent) && $agent){
             $sql .= ' and u_fileds.agent = '.$agent;
         }
-        if(isset($rechLevel) && $rechLevel){
+        if(isset($rechLevel) && $rechLevel != ''){
             $sql .= ' and u_fileds.user_rechLevel = '. $rechLevel;
         }
         if(isset($account) && $account){
