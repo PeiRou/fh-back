@@ -59,7 +59,6 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('today', 'Back\SrcViewController@betTodaySearch')->name('bet.todaySearch'); // 今日注单搜索
         Route::get('history', 'Back\SrcViewController@betHistorySearch')->name('bet.historySearch'); // 历史注单搜索
         Route::get('realTime', 'Back\SrcViewController@betRealTime')->name('bet.betRealTime'); // 实时滚单
-        Route::get('realTimeNew', 'Back\SrcViewController@betRealTimeNew')->name('bet.betRealTimeNew'); // 实时滚单
     });
 //公告管理
     Route::group(['prefix' => 'back/control/noticeManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {

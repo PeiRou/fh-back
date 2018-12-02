@@ -47,9 +47,9 @@
                     <div class="two wide field" style="width: 8.5%!important;">
                         <button id="btn_hand_search" class="fluid ui mini labeled icon teal button"><i class="history icon"></i> 手动刷新 </button>
                     </div>
-                    <div class="two wide field" style="width: 8.5%!important;">
-                        <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="external icon"></i> 新窗口打开 </button>
-                    </div>
+                    {{--<div class="two wide field" style="width: 8.5%!important;">--}}
+                        {{--<button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="external icon"></i> 新窗口打开 </button>--}}
+                    {{--</div>--}}
                 </div>
             </div>
         </div>
