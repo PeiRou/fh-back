@@ -5,6 +5,7 @@ namespace App;
 use App\Events\BackPusherEvent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Config;
 
 class Excel
 {
@@ -246,13 +247,35 @@ class Excel
             $res = $value;
         return $res;
     }
+    //取得官方开奖
+    public function getGuanIssueNum($needOpenIssue,$redis_issue,$type){
+        if($needOpenIssue == $redis_issue)
+            $url = Config::get('website.guanIssueServerUrl').$type;
+        else
+            $url = Config::get('website.guanIssueServerUrl').$type.'?issue='.$needOpenIssue;
+        $res = json_decode(file_get_contents($url), true);
+        return $res;
+    }
     //取得目前未开奖奖期
     public function getNextIssue($table){
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time());
-        $yesterday = date('Y-m-d H:i:s',strtotime('-1 day'));
+        $yesterday = date('Y-m-d H:i:s',time()-21600);
         $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE is_open=0 and opentime >='".$yesterday."' and opentime <='".$today."')");
+        if(empty($tmp))
+            return false;
+        foreach ($tmp as&$value)
+            $res = $value;
+        return $res;
+    }
+    //取得目前未开奖奖期
+    public function getNeedMinIssue($table){
+        if(empty($table))
+            return false;
+        $today = date('Y-m-d H:i:s',time());
+        $yesterday = date('Y-m-d H:i:s',strtotime('-1 day'));
+        $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE is_open=0 and opentime >='".$yesterday."' and opentime <='".$today."')");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -447,8 +470,8 @@ class Excel
                         $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                         $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
                     }
-                    $sql_upd .= $sql . "END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-                    $sql_upd_lose .= $sql_lose . "END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+                    $sql_upd .= $sql . "END , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId ";
+                    $sql_upd_lose .= $sql_lose . "END , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId ";
                     if (!isset($bunko) || empty($bunko))
                         return 0;
                     $run = empty($sql) ? 1 : DB::statement($sql_upd);
