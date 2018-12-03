@@ -87,7 +87,10 @@ class Users extends Model
     public static function getTransferUserInfo($params){
         $sqlArray = [];
         $sqlArray['form_id'] = $params['form_id'];
-        $aSql = 'SELECT COUNT(`recharges`.`id`) AS `count`,SUM(`amount`) AS `amount`,`userId` FROM `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId` AND `users`.`rechLevel` = :form_id WHERE `recharges`.`status` = 2 ';
+        $aSql = 'SELECT COUNT(`recharges`.`id`) AS `count`,SUM(`amount`) AS `amount`,`userId` 
+        FROM `recharges` 
+        JOIN `users` ON `users`.`id` = `recharges`.`userId` AND `users`.`rechLevel` = :form_id 
+        WHERE `recharges`.`status` = 2 AND `recharges`.`payType` <> "adminAddMoney" ';
         if(!empty($params['startTime'])){
             $sqlArray['startTime'] = $params['startTime'] . ' 00:00:00';
             $aSql .= 'AND `recharges`.`created_at` >= :startTime ';

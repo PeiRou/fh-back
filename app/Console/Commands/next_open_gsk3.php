@@ -79,18 +79,22 @@ class next_open_gsk3 extends Command
         $needOpenIssue = $res->issue;
         $openTime = (string)$res->opentime;
 
-        if($needOpenIssue == $redis_issue)
-            $url = Config::get('website.guanIssueServerUrl').'gsk3';
-        else
-            $url = Config::get('website.guanIssueServerUrl').'gsk3?issue='.$needOpenIssue;
         try {
-            $html = json_decode(file_get_contents($url), true);
+            $html = $excel->getGuanIssueNum($needOpenIssue,$redis_issue,$this->code);
             //如果官方數據庫已經查不到需要追朔的獎期，則停止追朔
             if(!isset($html['issue'])){
-                $redis->set('gsk3:needopen','on');
-                return 'no have';
+                if(($gapnum == $redis_gapnum) && !empty($redis_gapnum)){
+                    $redis->set($this->code.':needopen','on');
+                }else{
+                    $res = $excel->getNeedMinIssue($table);
+                    $needOpenIssue = $res->issue;
+                    $openTime = (string)$res->opentime;
+                    $html = $excel->getGuanIssueNum($needOpenIssue,$redis_issue,$this->code);
+                    if(!isset($html))
+                        return 'no have';
+                }
             }
-            if ($redis_issue !== $html['issue']) {
+            if (isset($html['issue']) && $redis_issue !== $html['issue']) {
                 try {
                     $up = DB::table($table)->where('issue', $html['issue'])
                         ->update([

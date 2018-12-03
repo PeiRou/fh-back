@@ -88,6 +88,7 @@ class next_open_cqssc extends Command
             if(!isset($html['issue'])){
                 if(($gapnum == $redis_gapnum) && !empty($redis_gapnum)){
                     $redis->set($this->code.':needopen','on');
+                    return 'no have';
                 }else{
                     $res = $excel->getNeedMinIssue($table);
                     $needOpenIssue = $res->issue;
@@ -122,6 +123,9 @@ class next_open_cqssc extends Command
                 } catch (\Exception $exception) {
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
+            }else{
+                $key = $this->code.'ing:'.$res->issue;
+                $redis->setex($key,2,'ing');
             }
         } catch (\Exception $exception) {
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
