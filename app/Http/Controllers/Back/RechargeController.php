@@ -198,9 +198,9 @@ class RechargeController extends Controller
         $offlineMemberToday = Recharges::getOfflineMemberToday(date('Y-m-d'));
 
         $where = Session::get('recharge_report');
-        $whereStatus = Session::get('recharge_report_status');
+        $whereStatus = !empty(Session::get('recharge_report_status')) ? 'and recharges.status = '.Session::get('recharge_report_status') : '';
 //        \Log::info('select sum(amount) as total  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 and recharges.status = '.$whereStatus." ".$where);
-        $aRecharge = DB::select('select sum(amount) as total,SUM(rebate_or_fee) as give  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1 and recharges.status = '.$whereStatus." ".$where);
+        $aRecharge = DB::select('select sum(amount) as total,SUM(rebate_or_fee) as give  from recharges LEFT JOIN users on recharges.userId = users.id WHERE 1  '.$whereStatus." ".$where);
 
         return response()->json([
 //            'total' => number_format($aRecharge[0]->total,2,'.',''),
