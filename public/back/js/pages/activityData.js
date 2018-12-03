@@ -33,7 +33,7 @@ $(function () {
             {data:'user_account'},
             {data:'activity_name'},
             {data:'prize_name'},
-            {data:'activity_type'},
+            {data:'activity_type_name'},
             {data:'prize_status_name'},
             {data:'continue_days'},
             {data:'created_at'},
