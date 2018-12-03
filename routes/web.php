@@ -775,7 +775,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 //后台获取北京PK10开奖--接口
 //    Route::get('/back/openData/bjpk10/{date}/{issue}', 'Back\OpenData\OpenApiGetController@bjpk10');
 //注单明细获取开奖历史
-    Route::get('/ajax/openHistory/{gameId}/{issue}', 'Back\SrcViewController@BetListOpenHistory');
+    Route::get('/ajax/openHistory/{gameId}/{issue}/{gameName}', 'Back\SrcViewController@BetListOpenHistory');
 //自动提款异步回调地址
     Route::post('/pay/withdrawal/callback', 'Back\CallbackController@withdrawal');
 //总后台每日接受参数
