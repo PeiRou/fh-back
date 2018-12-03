@@ -283,7 +283,6 @@ class DrawingController extends Controller
         $draw_type = $request->get('draw_type');
 
         //提款总额统计
-        DB::enableQueryLog();
         $drawingTotal = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
             ->where(function ($q) use ($account_param){
@@ -313,7 +312,6 @@ class DrawingController extends Controller
                 }
             })
             ->whereBetween('drawing.updated_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('drawing.amount');
-        var_dump(DB::getQueryLog());die();
         preg_match('/[\d]*\.{0,1}[\d]{0,2}/',$drawingTotal * 1,$arr);
         return response()->json([
             'total' => $arr[0] ?? $drawingTotal,
