@@ -150,7 +150,7 @@ class Recharges extends Model
         }
         $dateName = 'created_at';
         if(isset($dateType) && $dateType = 1)
-            $dateName = 'updated_ad';
+            $dateName = 'updated_at';
         if(isset($startTime) && $startTime){
             $where .= " and recharges.".$dateName." >= '".$startTime." 00:00:00'";
         }
