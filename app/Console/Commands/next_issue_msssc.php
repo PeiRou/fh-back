@@ -49,7 +49,7 @@ class next_issue_msssc extends Command
         $redis = Redis::connection();
         $redis->select(0);
         $beforeLotteryTime = $redis->get('msssc:nextIssueLotteryTime');
-        if($beforeLotteryTime>=time())
+        if($beforeLotteryTime>time())
             return 'no need';
         //下一期獎期
         $nextIssue = $res->issue;

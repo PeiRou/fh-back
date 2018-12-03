@@ -59,7 +59,7 @@ class next_open_pk10 extends Command
         $gapnum = $redis_next_issue-$redis_issue;
 
         //如果實際差距與redis上不一樣代表已經開新的一盤了，就有需要開號
-        if($gapnum == $redis_gapnum && $redis_needopen=='on')
+        if($gapnum == $redis_gapnum && $redis_needopen == 'on')
             return 'no need';
         $excel = new Excel();
         $res = $excel->getNextIssue($table);
@@ -87,6 +87,7 @@ class next_open_pk10 extends Command
             if(!isset($html['issue'])){
                 if(($gapnum == $redis_gapnum) && !empty($redis_gapnum)){
                     $redis->set('pk10:needopen','on');
+                    return 'no have';
                 }else{
                     $res = $excel->getNeedMinIssue($table);
                     $needOpenIssue = $res->issue;
@@ -121,6 +122,9 @@ class next_open_pk10 extends Command
                 } catch (\Exception $exception) {
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
+            }else{
+                $key = $this->code.'ing:'.$res->issue;
+                $redis->setex($key,2,'ing');
             }
         } catch (\Exception $exception) {
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
