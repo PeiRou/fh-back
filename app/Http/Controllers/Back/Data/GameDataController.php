@@ -104,10 +104,7 @@ class GameDataController extends Controller
                     return 0;
             })
             ->editColumn('kill_rate',function ($games){
-                if($games->count_date == date('Y-m-d'))
-                    return floatval($games->kill_rate);
-                else
-                    return 0;
+                return floatval($games->kill_rate);
             })
             ->make(true);
     }
