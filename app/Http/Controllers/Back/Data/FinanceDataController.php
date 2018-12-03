@@ -258,13 +258,14 @@ class FinanceDataController extends Controller
                     $q->where('users.rechLevel',$rechLevel);
                     if(!(isset($account_param) && $account_type == 'account')){
                         //如果没有指定用户搜索的话只顯示用戶當前層級的提款
-                        $usersLevel = Drawing::getUsersLevel();
-                        $str = "";
-                        foreach ($usersLevel as $k=>$v){
-                            if($v->id)
-                                $str .= "WHEN `drawing`.`user_id` = {$v->id} THEN `levels` = ".($v->rechLevel ?? 0).' ';
-                        }
-                        $q->whereRaw("CASE {$str} END");
+//                        $usersLevel = Drawing::getUsersLevel();
+//                        $str = "";
+//                        foreach ($usersLevel as $k=>$v){
+//                            if($v->id)
+//                                $str .= "WHEN `drawing`.`user_id` = {$v->id} THEN `levels` = ".($v->rechLevel ?? 0).' ';
+//                        }
+//                        $q->whereRaw("CASE {$str} END");
+                        $q->where('drawing.levels', $rechLevel);
                     }
                 }
             })
