@@ -117,6 +117,7 @@
                 </div>
             </div>
             <div class="total-nums">
+                后台扣款：<span style="font-size: 13pt;" id="adminDrawing">0</span>
                 提款总计：<span style="font-size: 13pt;" id="drawingTotal">0</span>
             </div>
         </div>

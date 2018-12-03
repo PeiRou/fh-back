@@ -620,7 +620,7 @@ class SrcMemberController extends Controller
                         $recharges->balance = $getUserBalance->money+$money;
                         $recharges->shou_info = "后台加钱：".$content;
                         $recharges->msg = $content;
-
+                        $recharges->updated_at = date('Y-m-d H:i:s');
                         $recharges->status = 2;
                         $recharges->addMoney = 1;
                         $recharges->process_date = date('Y-m-d H:i:s');
@@ -654,6 +654,7 @@ class SrcMemberController extends Controller
                             'user_id' => $uid,
                             'username' => $getUserBalance->username,
                             'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
                             'balance' => $getUserBalance->money+$money,
                             'total_bet' => 0,
                             'operation_id' => Session::get('account_id'),

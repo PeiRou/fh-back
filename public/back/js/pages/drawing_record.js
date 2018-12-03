@@ -162,6 +162,7 @@ function getTotalDrawing() {
     var account_param = $('#account_param').val();
     var killTest = $('#killTestUser:checked').val();
     var draw_type = $('#draw_type').val();
+    var dateType = $('#bao_time').val();
     $.ajax({
         url:'/action/drawing/totalDrawing',
         type:'post',
@@ -172,10 +173,13 @@ function getTotalDrawing() {
             endDate : endDate,
             account_param : account_param,
             killTest : killTest,
-            draw_type : draw_type
+            draw_type : draw_type,
+            dateType : dateType
         },
         success:function (data) {
             $('#drawingTotal').html(data.total)
+            $('#adminDrawing').html(data.adminDrawing)
+
         }
     });
 }
