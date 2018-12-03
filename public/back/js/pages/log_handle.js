@@ -28,6 +28,7 @@ function createTable(columns) {
         serverSide: true,
         ordering: false,
         destroy: true,
+        aLengthMenu: [[50]],
         ajax: {
             url:'/back/datatables/logHandle',
             data:function (d) {

@@ -147,23 +147,46 @@ function edit(id) {
 }
 
 function editStatus(id) {
-    $.ajax({
-        url:'/action/admin/activity/onOffActivity',
-        type:'post',
-        dataType:'json',
-        data:{id:id},
-        success:function (data) {
-            if(data.status == true){
-                Calert(data.msg,'green');
-                $('#capitalDetailsTable').DataTable().ajax.reload(null,false);
-            }else{
-                Calert(data.msg,'red');
-            }
-        },
-        error:function (e) {
-            if(e.status == 403)
-            {
-                Calert('您没有此项权限！无法继续！','red')
+    if(id == 1){
+        var title = '关闭该活动';
+    }else{
+        var title = '开启该活动';
+    }
+    jc1 = $.confirm({
+        title: '确定要'+title,
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '这是一个需要注意的操作，开启或关闭将对活动有不可逆的操作',
+        buttons: {
+            confirm: {
+                text:'确定',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/action/admin/activity/onOffActivity',
+                        type:'post',
+                        dataType:'json',
+                        data:{id:id},
+                        success:function (data) {
+                            if(data.status == true){
+                                Calert(data.msg,'green');
+                                $('#capitalDetailsTable').DataTable().ajax.reload(null,false);
+                            }else{
+                                Calert(data.msg,'red');
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
             }
         }
     });

@@ -311,7 +311,7 @@ class DrawingController extends Controller
                     $q->where('drawing.status',2);
                 }
             })
-            ->whereBetween('drawing.created_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('drawing.amount');
+            ->whereBetween('drawing.updated_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('drawing.amount');
         preg_match('/[\d]*\.{0,1}[\d]{0,2}/',$drawingTotal * 1,$arr);
         return response()->json([
             'total' => $arr[0] ?? $drawingTotal,
