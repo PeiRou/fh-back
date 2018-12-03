@@ -166,10 +166,15 @@ class Drawing extends Model
                 }
             })
             ->where(function ($q) use ($aParam) {
+                $dateName = 'created_at';
+                if(isset($aParam['bao_time'])){
+                    if($aParam['bao_time'] == 1)
+                        $dateName = 'updated_at';
+                }
                 if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam) || isset($aParam['endTime']) && array_key_exists('endTime',$aParam)){
-                    $q->whereBetween('drawing.created_at',[$aParam['startTime'].' 00:00:00', $aParam['endTime'].' 23:59:59']);
+                    $q->whereBetween('drawing.'.$dateName,[$aParam['startTime'].' 00:00:00', $aParam['endTime'].' 23:59:59']);
                 } else {
-                    $q->whereDate('drawing.created_at',date('Y-m-d'));
+                    $q->whereDate('drawing.'.$dateName,date('Y-m-d'));
                 }
             })
             ->orderBy('drawing.created_at','desc')->get();
