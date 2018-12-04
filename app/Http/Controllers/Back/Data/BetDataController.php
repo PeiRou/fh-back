@@ -667,7 +667,7 @@ class BetDataController extends Controller
                         $currentIssue = $bet->bet_issue;
                         $currentColor = $this->getRandColor($currentColor,$bet->bet_color,$betModel);
                     }
-                    return '<div style="position: relative"><div class="show-open" id="openH_'.$bet->bet_bet_id.'"></div><span onmouseover="showOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" onmouseout="hideOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" style="color: #'.$currentColor.';cursor: pointer;">'.$bet->bet_issue.'</span></div>';
+                    return '<div style="position: relative"><div class="show-open" id="openH_'.$bet->bet_bet_id.'"></div><span onmouseover="showOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\',\''.$bet->g_game_name.'\')" onmouseout="hideOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" style="color: #'.$currentColor.';cursor: pointer;">'.$bet->bet_issue.'</span></div>';
                 })
                 ->editColumn('play',function ($bet){
                     if($bet->bet_playcate_id == 175 || $bet->bet_playcate_id == 77){

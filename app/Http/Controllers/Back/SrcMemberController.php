@@ -412,8 +412,11 @@ class SrcMemberController extends Controller
     //删除会员
     public function delUser($id)
     {
-        $del = User::find($id)->delete();
-        if($del == 1){
+        $User = User::find($id);
+        if($User){
+            $del = $User->delete();
+        }
+        if(isset($del) && $del == 1){
             return response()->json([
                 'status'=>true,
                 'msg'=>'ok!'
@@ -620,7 +623,7 @@ class SrcMemberController extends Controller
                         $recharges->balance = $getUserBalance->money+$money;
                         $recharges->shou_info = "后台加钱：".$content;
                         $recharges->msg = $content;
-
+                        $recharges->updated_at = date('Y-m-d H:i:s');
                         $recharges->status = 2;
                         $recharges->addMoney = 1;
                         $recharges->process_date = date('Y-m-d H:i:s');
@@ -654,6 +657,7 @@ class SrcMemberController extends Controller
                             'user_id' => $uid,
                             'username' => $getUserBalance->username,
                             'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
                             'balance' => $getUserBalance->money+$money,
                             'total_bet' => 0,
                             'operation_id' => Session::get('account_id'),

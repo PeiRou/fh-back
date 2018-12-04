@@ -583,18 +583,21 @@ class ModalController extends Controller
             $gamesList = GamesApi::where(function($aSql){
                 $aSql->where('type_id', 111);
             })->get();
-            foreach ($gamesList as $k=>$v){
-                $table = 'jq_'.strtolower($v->alias).'_bet';
-                $where = ' 1 ';
-                $name = $user->username;
-                if($v->alias == 'WS'){//无双的账户名处理过
-                    $name = substr(preg_replace("/[_]/","",$user->username), 0, 16);
+            if(count($gamesList)){
+                $sqlArr = [];
+                foreach ($gamesList as $k=>$v){
+                    $table = 'jq_'.strtolower($v->alias).'_bet';
+                    $where = ' 1 ';
+                    $name = $user->username;
+                    if($v->alias == 'WS'){//无双的账户名处理过
+                        $name = substr(preg_replace("/[_]/","",$user->username), 0, 16);
+                    }
+                    $where .= " AND `Accounts` = '{$name}' ";
+                    $sqlArr[] = " (SELECT SUM(`AllBet`) AS `AllBet`,'{$v->name}' as `name` FROM `{$table}` WHERE {$where} ) ";
                 }
-                $where .= " AND `Accounts` = '{$name}' ";
-                $sqlArr[] = " (SELECT SUM(`AllBet`) AS `AllBet`,'{$v->name}' as `name` FROM `{$table}` WHERE {$where} ) ";
+                $sql = 'SELECT SUM(`AllBet`) AS `ALLBet` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a ';
+                $jqBetMoney = (float)DB::select($sql)[0]->ALLBet;
             }
-            $sql = 'SELECT SUM(`AllBet`) AS `ALLBet` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a ';
-            $jqBetMoney = DB::select($sql)[0]->ALLBet;
 
             $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
@@ -654,7 +657,7 @@ class ModalController extends Controller
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;">棋牌投注：</td>
-                            <td valign="top" style="word-break: break-all;">'.(float)$jqBetMoney.'</td>
+                            <td valign="top" style="word-break: break-all;">'.($jqBetMoney ?? 0).'</td>
                             <td valign="top" style="word-break: break-all;"></td>
                             <td valign="top" style="word-break: break-all;"></td>
                         </tr>

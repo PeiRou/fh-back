@@ -90,5 +90,5 @@ Route::get('/mobile/userrech/getUserRechCfgs','Mobile\PayController@getUserRechC
 
 
 //获取游戏当期数据
-Route::get('/lottery/data/CurIssue/{id}','Mobile\LotteryDataController@GameCurIssue');
+//Route::get('/lottery/data/CurIssue/{id}','Mobile\LotteryDataController@GameCurIssue');
 

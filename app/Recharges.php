@@ -116,6 +116,7 @@ class Recharges extends Model
         $pay_online_id = $request->get('pay_online_id');
         $amount = $request->get('amount');
         $fullName = $request->get('fullName');
+        $dateType = $request->get('dateType');
         if($fullName && isset($fullName)){
             $findUserId = DB::table('users')->where('fullName',$fullName)->first();
         }
@@ -147,14 +148,17 @@ class Recharges extends Model
                 $where .= " and recharges.sysPayOrder = '".$account_param."'";
             }
         }
+        $dateName = 'created_at';
+        if(isset($dateType) && $dateType = 1)
+            $dateName = 'updated_at';
         if(isset($startTime) && $startTime){
-            $where .= " and recharges.created_at >= '".$startTime." 00:00:00'";
+            $where .= " and recharges.".$dateName." >= '".$startTime." 00:00:00'";
         }
         if(isset($endTime) && $endTime){
-            $where .= " and recharges.created_at <= '".$endTime." 23:59:59'";
+            $where .= " and recharges.".$dateName." <= '".$endTime." 23:59:59'";
         }
         if(empty($startTime) && empty($endTime))
-            $where .= " and recharges.created_at = now() ";
+            $where .= " and recharges.{$dateName} = now() ";
 //        $whereStaus = '';
 
         if(empty($findUserId) && empty($account_param)){

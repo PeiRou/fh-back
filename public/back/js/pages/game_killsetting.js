@@ -42,7 +42,7 @@ $(function () {
                     return '<span class="status-'+clsName+'">'+txt+'</span>';
                 }},
             {data:function (data) {
-                    var rate = (data.kill_rate * 100).toFixed(2);
+                    var rate = (data.kill_rate * 100).toFixed(0);
                     return rate+'%';
                 }},
             {data:'updated_at'},

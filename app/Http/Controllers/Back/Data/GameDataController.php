@@ -78,9 +78,27 @@ class GameDataController extends Controller
             ->leftJoin('game', 'excel_base.game_id', '=', 'game.game_id')
             ->get();
         return DataTables::of($games)
+            ->editColumn('bet_money',function ($games){     //今日总投注
+                if($games->count_date == date('Y-m-d'))
+                    return round( $games->bet_money,3);
+                else
+                    return 0;
+            })
+            ->editColumn('bet_lose',function ($games){     //今日输
+                if($games->count_date == date('Y-m-d'))
+                    return round( $games->bet_lose,3);
+                else
+                    return 0;
+            })
+            ->editColumn('bet_win',function ($games){     //今日赢
+                if($games->count_date == date('Y-m-d'))
+                    return round( $games->bet_win,3);
+                else
+                    return 0;
+            })
             ->editColumn('real_rate',function ($games){
                 $total = $games->bet_lose + $games->bet_win;
-                if($total>0)
+                if($total>0 && $games->count_date == date('Y-m-d'))
                     return round(($games->bet_lose-$games->bet_win) / $total,3);
                 else
                     return 0;

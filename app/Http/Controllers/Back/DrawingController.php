@@ -281,9 +281,11 @@ class DrawingController extends Controller
         $account_param = $request->get('account_param');
         $killTest = $request->get('killTest');
         $draw_type = $request->get('draw_type');
-
+        $dateName = 'updated_at';
+        if($request->get('dateType') == 2)
+            $dateName = 'created_at';
         //提款总额统计
-        $drawingTotal = DB::table('drawing')
+        $sql = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
             ->where(function ($q) use ($account_param){
                 if(isset($account_param) && $account_param){
@@ -311,11 +313,16 @@ class DrawingController extends Controller
                     $q->where('drawing.status',2);
                 }
             })
-            ->whereBetween('drawing.updated_at',[$startDate.' 00:00:00', $endDate.' 23:59:59'])->sum('drawing.amount');
+            ->whereBetween('drawing.'.$dateName,[$startDate.' 00:00:00', $endDate.' 23:59:59']);
+        $drawingTotal = $sql->sum('drawing.amount');
+        $adminDrawing = $sql->where('drawing.draw_type', 2)->sum('drawing.amount');
         preg_match('/[\d]*\.{0,1}[\d]{0,2}/',$drawingTotal * 1,$arr);
+        preg_match('/[\d]*\.{0,1}[\d]{0,2}/',$adminDrawing * 1,$arr1);
+
         return response()->json([
             'total' => $arr[0] ?? $drawingTotal,
 //            'total' => number_format($drawingTotal,2,'.','')
+            'adminDrawing' => $arr1[0] ?? $adminDrawing
         ]);
     }
 
