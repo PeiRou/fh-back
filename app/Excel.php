@@ -111,7 +111,7 @@ class Excel
             \Log::info($gameName.'已结算过，已阻止！');
         }
         //退水
-//        $this->reBackUser($gameId,$issue,$gameName);
+        $this->reBackUser($gameId,$issue,$gameName);
         return 0;
     }
     private function reBackUser($gameId,$issue,$gameName=''){
