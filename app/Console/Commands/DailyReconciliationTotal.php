@@ -114,8 +114,8 @@ GROUP BY rechName';
 
         /*注单当日实际总输赢*/
         $bunkosql = 'SELECT LEFT(updated_at,10) AS date,
-SUM(CASE WHEN game_id IN(90,91) THEN (CASE WHEN nn_view_money >= 1 THEN (nn_view_money - bet_money) ELSE nn_view_money END) 
-ELSE(CASE WHEN bunko >= 1 THEN (bunko - bet_money) ELSE bunko END) 
+SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money
+ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) 
 END) AS amount
 FROM bet WHERE 1 AND testFlag =\'0\' AND 	updated_at BETWEEN ? AND ?    ORDER BY date ASC';
         $bunko = DB::select($bunkosql,[$date.' 00:00:00',$date.' 23:59:59']);
