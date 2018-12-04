@@ -115,11 +115,30 @@ WHERE `users`.`testFlag` = 0 ";
         foreach ($aData as $kData => $iData){
             if($iData->bet_bunko > 0) {
                 if (isset($aArray[$iData->id]) && array_key_exists($iData->id, $aArray)) {
-                    $aArray[$iData->id]['money'] += -$iData->bet_bunko;
+                    $aArray[$iData->id]['money'] += -$iData->bet_bunko - $iData->back_money;
                 } else {
                     $aArray[$iData->id] = [
                         'id' => $iData->id,
-                        'money' => -$iData->bet_bunko,
+                        'money' => -$iData->bet_bunko - $iData->back_money,
+                    ];
+                }
+            }
+        }
+        if(empty($aArray))   return true;
+        return DB::update(self::updateBatchStitching('users',$aArray,['money'],'id'));
+    }
+
+    //重新开奖前退回返水
+    public static function editBatchUserMoneyDataBack($aData){
+        $aArray = [];
+        foreach ($aData as $kData => $iData){
+            if($iData->bet_bunko > 0) {
+                if (isset($aArray[$iData->id]) && array_key_exists($iData->id, $aArray)) {
+                    $aArray[$iData->id]['money'] += $iData->back_money;
+                } else {
+                    $aArray[$iData->id] = [
+                        'id' => $iData->id,
+                        'money' => $iData->back_money,
                     ];
                 }
             }
