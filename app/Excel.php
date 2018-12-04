@@ -110,6 +110,69 @@ class Excel
         } else {
             \Log::info($gameName.'已结算过，已阻止！');
         }
+        //退水
+        $this->reBackUser($gameId,$issue,$gameName);
+        return 0;
+    }
+    private function reBackUser($gameId,$issue,$gameName=''){
+        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00000001)->groupBy('user_id')->get();
+        if($get){
+            //更新返奖的用户馀额
+            $sql = "UPDATE users SET money = money+ CASE id ";
+            $users = [];
+            foreach ($get as $i){
+                $users[] = $i->user_id;
+                $sql .= "WHEN $i->user_id THEN $i->back_money ";
+            }
+            $getAfterUser = DB::connection('mysql::write')->table('users')->select('id','money')->whereIn('id',$users)->get();
+            \Log::info($getAfterUser);
+            $ids = implode(',',$users);
+            if($ids && isset($ids)){
+                $sql .= "END WHERE id IN (0,$ids)";
+                \Log::info($sql);
+                $up = DB::connection('mysql::write')->statement($sql);
+                if($up != 1){
+                    return 1;
+                }
+            }
+            \Log::info(1);
+            $capData = [];
+            $capUsers = [];
+            $ii = 0;
+            foreach ($getAfterUser as&$val){
+                $capUsers[$val->id] = $val->money;
+            }
+            \Log::info($get);
+            //新增有返奖的用户的资金明细
+            foreach ($get as $i){
+                $tmpCap = [];
+                $tmpCap['to_user'] = $i->user_id;
+                $tmpCap['user_type'] = 'user';
+                $tmpCap['order_id'] = $this->randOrder('BW');
+                $tmpCap['type'] = 't14';
+                $tmpCap['money'] = $i->back_money;
+                $tmpCap['balance'] = round($capUsers[$i->user_id]+$i->back_money,3);
+                $tmpCap['operation_id'] = 0;
+                $tmpCap['issue'] = $issue;
+                $tmpCap['game_id'] = $gameId;
+                $tmpCap['game_name'] = $gameName;
+                $tmpCap['playcate_id'] = 0;
+                $tmpCap['playcate_name'] = '';
+                $tmpCap['content'] = '';
+                $tmpCap['created_at'] = date('Y-m-d H:i:s',time()+1);
+                $tmpCap['updated_at'] = date('Y-m-d H:i:s',time()+1);
+                $capData[$ii] = $tmpCap;
+                $ii ++;
+            }
+            krsort($capData);
+            \Log::info($capData);
+            $capIns = DB::table('capital')->insert($capData);
+            if($capIns != 1){
+                return 1;
+            }
+        } else {
+            \Log::info($gameName.'已结算过，已阻止！');
+        }
         return 0;
     }
     //计算当日总输赢
@@ -488,5 +551,17 @@ class Excel
             DB::table($table)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
             return 0;
         }
+    }
+
+    private function randOrder($fix)
+    {
+        $order_id_main = date('YmdHis').rand(10000000,99999999);
+        $order_id_len = strlen($order_id_main);
+        $order_id_sum = 0;
+        for($i=0; $i<$order_id_len; $i++){
+            $order_id_sum += (int)(substr($order_id_main,$i,1));
+        }
+        $order_id = $order_id_main . str_pad((100 - $order_id_sum % 100) % 100,2,'0',STR_PAD_LEFT);
+        return $fix.$order_id;
     }
 }

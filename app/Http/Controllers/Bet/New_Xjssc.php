@@ -379,12 +379,11 @@ class New_Xjssc
             $playId = 252;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        } else { //虎
+        } else if($num1 < $num5){ //虎
             $playId = 253;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        if($num1 == $num5) { //和
+        } else if($num1 == $num5) { //和
             $playId = 254;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
