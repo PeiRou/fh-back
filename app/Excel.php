@@ -115,7 +115,7 @@ class Excel
         return 0;
     }
     private function reBackUser($gameId,$issue,$gameName=''){
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00001)->groupBy('user_id')->get();
+        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00000001)->groupBy('user_id')->get();
         if($get){
             //更新返奖的用户馀额
             $sql = "UPDATE users SET money = money+ CASE id ";
