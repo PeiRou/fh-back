@@ -31,7 +31,7 @@ class ActivitySend extends Model
 
     public function getDataByTime($time){
         return $this->select('activity_send.created_at','activity_send.updated_at','activity_send.user_id','activity_send.user_name','activity_send.user_account','activity_send.prize_id','activity_send.prize_name','activity_send.activity_id','activity_send.activity_name','activity_send.status','activity_sign_record.day','activity_sign_record.continue_days','activity.type')
-            ->whereBetween('activity_send.created_at',[$time,$time." 23:59:59"])
+            ->whereBetween('activity_send.updated_at',[$time,$time." 23:59:59"])
             ->join('activity','activity.id','=','activity_send.activity_id')
             ->leftJoin('activity_sign_record','activity_sign_record.send_id','=','activity_send.id')
             ->orderBy('activity_send.created_at','desc')->get();

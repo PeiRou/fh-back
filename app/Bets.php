@@ -70,7 +70,7 @@ class Bets extends Model
 
     //获取代理结算初步信息
     public static function preliminaryManualSettlement($array){
-        $sql = "SELECT count(bet.`bet_id`) AS `betCount`,sum(CASE WHEN bet.`bunko` > 0 THEN bet.`bunko` - bet.`bet_money` ELSE bet.`bunko` END) AS `sumBunko`,sum(bet.`bet_money`) AS `sumBetMoney`,bet.`user_id`,bet.`agent_id` FROM `bet` WHERE bet.`created_at` BETWEEN :startTime AND :endTime GROUP BY bet.`user_id`,bet.`agent_id`";
+        $sql = "SELECT count(bet.`bet_id`) AS `betCount`,sum(CASE WHEN bet.`bunko` > 0 THEN bet.`bunko` - bet.`bet_money` ELSE bet.`bunko` END) AS `sumBunko`,sum(bet.`bet_money`) AS `sumBetMoney`,bet.`user_id`,bet.`agent_id` FROM `bet` WHERE bet.`updated_at` BETWEEN :startTime AND :endTime GROUP BY bet.`user_id`,bet.`agent_id`";
         $sqlArray = ['startTime'=>$array['start'],'endTime'=>$array['end']];
         return DB::select($sql,$sqlArray);
     }
@@ -229,11 +229,11 @@ class Bets extends Model
                   FROM `bet` WHERE 1 AND `testFlag` IN(0,2)";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " AND `created_at` >= :startTime";
+            $aSql .= " AND `updated_at` >= :startTime";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " AND `created_at` <= :endTime";
+            $aSql .= " AND `updated_at` <= :endTime";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `date`,`user_id` ORDER BY `date` ASC";
@@ -247,11 +247,11 @@ class Bets extends Model
                   FROM `bet` WHERE 1 AND `testFlag` IN(0,2)";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " AND `created_at` >= :startTime";
+            $aSql .= " AND `updated_at` >= :startTime";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " AND `created_at` <= :endTime";
+            $aSql .= " AND `updated_at` <= :endTime";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `date`,`user_id`,`game_id` ORDER BY `date` ASC";
@@ -267,11 +267,11 @@ class Bets extends Model
                   WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " AND `bet`.`created_at` >= :startTime";
+            $aSql .= " AND `bet`.`updated_at` >= :startTime";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " AND `bet`.`created_at` <= :endTime";
+            $aSql .= " AND `bet`.`updated_at` <= :endTime";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `date`,`agentId` ORDER BY `date` ASC";
@@ -309,11 +309,11 @@ class Bets extends Model
                   WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`bunko` != 0";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " AND `bet`.`created_at` >= :startTime";
+            $aSql .= " AND `bet`.`updated_at` >= :startTime";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " AND `bet`.`created_at` <= :endTime";
+            $aSql .= " AND `bet`.`updated_at` <= :endTime";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `date`,`generalId` ORDER BY `date` ASC";
@@ -331,11 +331,11 @@ class Bets extends Model
                   WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`bunko` != 0 ";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " AND `bet`.`created_at` >= :startTime";
+            $aSql .= " AND `bet`.`updated_at` >= :startTime";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " AND `bet`.`created_at` <= :endTime";
+            $aSql .= " AND `bet`.`updated_at` <= :endTime";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `date`,`generalId`,`game_id` ORDER BY `date` ASC";
