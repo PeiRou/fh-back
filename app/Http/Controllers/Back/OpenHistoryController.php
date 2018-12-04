@@ -1015,15 +1015,11 @@ class OpenHistoryController extends Controller
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataReturn($aBetAll);
                 $aCapital = [];
+                $aCapitalBack = [];
                 $adminId = Session::get('account_id');
-                $dateTime = date('Y-m-d H:i:s');
-                $aArrayMoney = [];
+                $dateTime4 = date('Y-m-d H:i:s',time()+4);
+                $dateTime5 = date('Y-m-d H:i:s',time()+5);
                 foreach ($aBetAll as $kBet => $iBet) {
-                    if(isset($aArrayMoney[$iBet->id]) && array_key_exists($iBet->id,$aArrayMoney)){
-                        $aArrayMoney[$iBet->id] += $iBet->bet_money;
-                    }else{
-                        $aArrayMoney[$iBet->id] = $iBet->bet_money;
-                    }
                     $aCapital[] = [
                         'to_user' => $iBet->id,
                         'user_type' => 'user',
@@ -1033,14 +1029,32 @@ class OpenHistoryController extends Controller
                         'game_id' => $gameInfo->game_id,
                         'game_name' => $gameInfo->game_name,
                         'issue' => $iBet->issue,
-                        'money' => $iBet->bet_money,
-                        'balance' => $iBet->money + $aArrayMoney[$iBet->id],
+                        'money' => $iBet->bet_money - $iBet->back_money,
+                        'balance' => $iBet->money + $iBet->bet_money - $iBet->back_money,
                         'operation_id' => $adminId,
-                        'created_at' => $dateTime,
-                        'updated_at' => $dateTime,
+                        'created_at' => $dateTime4,
+                        'updated_at' => $dateTime4,
                     ];
+                    if($iBet->back_money > 0){
+                        $aCapitalBack = [
+                            'to_user' => $iBet->id,
+                            'user_type' => 'user',
+                            'order_id' => $this->randOrder('CNC'),
+                            'type' => 't03',
+                            'rechargesType' => 0,
+                            'game_id' => $gameInfo->game_id,
+                            'game_name' => $gameInfo->game_name,
+                            'issue' => $iBet->issue,
+                            'money' => $iBet->back_money,
+                            'balance' => $iBet->money + $iBet->bet_money,
+                            'operation_id' => $adminId,
+                            'created_at' => $dateTime5,
+                            'updated_at' => $dateTime5,
+                        ];
+                    }
                 }
                 Capital::insert($aCapital);
+                Capital::insert($aCapitalBack);
             }
 
             if(!empty($aAgentBackwater)){
@@ -1079,10 +1093,12 @@ class OpenHistoryController extends Controller
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
         $aCapitalFreeze = [];
         $aCapital = [];
+        $aCapitalBack = [];
         $aUserFreezeMoney = [];
         $adminId = Session::get('account_id');
         $dateTime = date('Y-m-d H:i:s');
         $dateTime1 = date('Y-m-d H:i:s',time()+1);
+        $dateTime2 = date('Y-m-d H:i:s',time()+2);
         $aUserId = [];
         if(!empty($aBetAll)){
             foreach ($aBetAll as $kBet => $iBet) {
@@ -1097,10 +1113,27 @@ class OpenHistoryController extends Controller
                         'game_name' => $gameInfo->game_name,
                         'issue' => $iBet->issue,
                         'money' => -$iBet->bet_bunko,
-                        'balance' => $iBet->money -$iBet->bet_bunko,
+                        'balance' => $iBet->money - $iBet->bet_bunko,
                         'operation_id' => $adminId,
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
+                    ];
+                }
+                if($iBet->back_money > 0){
+                    $aCapitalBack[] = [
+                        'to_user' => $iBet->id,
+                        'user_type' => 'user',
+                        'order_id' => $this->randOrder('FC'),
+                        'type' => 't29',
+                        'rechargesType' => 0,
+                        'game_id' => $iBet->game_id,
+                        'game_name' => $gameInfo->game_name,
+                        'issue' => $iBet->issue,
+                        'money' => -$iBet->back_money,
+                        'balance' => $iBet->money - $iBet->bet_bunko - $iBet->back_money,
+                        'operation_id' => $adminId,
+                        'created_at' => $dateTime1,
+                        'updated_at' => $dateTime1,
                     ];
                 }
             }
@@ -1119,10 +1152,10 @@ class OpenHistoryController extends Controller
                         'game_name' => $gameInfo->game_name,
                         'issue' => $iBet1->issue,
                         'money' => $iBet1->amount,
-                        'balance' => $iBet1->money + (-$iBet1->bet_bunko + $iBet1->amount),
+                        'balance' => $iBet1->money - $iBet1->bet_bunko - $iBet1->back_money + $iBet1->amount,
                         'operation_id' => $adminId,
-                        'created_at' => $dateTime1,
-                        'updated_at' => $dateTime1,
+                        'created_at' => $dateTime2,
+                        'updated_at' => $dateTime2,
                     ];
                 }
 
@@ -1147,6 +1180,7 @@ class OpenHistoryController extends Controller
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataFreeze($aBetAll);
                 if(!empty($aCapital))    Capital::insert($aCapital);
+                if(!empty($aCapitalBack)) Capital::insert($aCapitalBack);
             }
             if(!empty($aBet)) {
                 Users::editBatchUserMoneyDataWithdraw($aBet);
@@ -1195,29 +1229,32 @@ class OpenHistoryController extends Controller
         DB::beginTransaction();
 
         try {
-            if(!empty($aBetAll)){
-                $aCapital = [];
-                $adminId = Session::get('account_id');
-                $dateTime = date('Y-m-d H:i:s');
-                foreach ($aBetAll as $kBet => $iBet){
-                    $aCapital[] = [
-                        'to_user' => $iBet->id,
-                        'user_type' => 'user',
-                        'order_id' => null,
-                        'type' => 't07',
-                        'rechargesType' => 0,
-                        'game_id' => $gameInfo->game_id,
-                        'game_name' => $gameInfo->game_name,
-                        'issue' => $iBet->issue,
-                        'money' => $iBet->bet_money,
-                        'balance' => $iBet->money + $iBet->bet_money,
-                        'operation_id' => $adminId,
-                        'created_at' => $dateTime,
-                        'updated_at' => $dateTime,
-                    ];
-                }
-                Capital::insert($aCapital);
-            }
+//            if(!empty($aBetAll)){
+//                $aCapital = [];
+//                $adminId = Session::get('account_id');
+//                $dateTime3 = date('Y-m-d H:i:s',time()+3);
+//                foreach ($aBetAll as $kBet => $iBet){
+//                    if($iBet->back_money > 0) {
+//                        $aCapital[] = [
+//                            'to_user' => $iBet->id,
+//                            'user_type' => 'user',
+//                            'order_id' => $this->randOrder('CC'),
+//                            'type' => 't07',
+//                            'rechargesType' => 0,
+//                            'game_id' => $gameInfo->game_id,
+//                            'game_name' => $gameInfo->game_name,
+//                            'issue' => $iBet->issue,
+//                            'money' => $iBet->back_money,
+//                            'balance' => $iBet->money + $iBet->back_money,
+//                            'operation_id' => $adminId,
+//                            'created_at' => $dateTime3,
+//                            'updated_at' => $dateTime3,
+//                        ];
+//                    }
+//                }
+//                Capital::insert($aCapital);
+//                Users::editBatchUserMoneyDataBack($aBetAll);
+//            }
 
             Bets::updateBetBunkoClear($issue, $gameInfo->game_id);
             UserFreezeMoney::where('game_id',$gameInfo->game_id)->where('issue',$issue)->delete();
