@@ -412,8 +412,11 @@ class SrcMemberController extends Controller
     //删除会员
     public function delUser($id)
     {
-        $del = User::find($id)->delete();
-        if($del == 1){
+        $User = User::find($id);
+        if($User){
+            $del = $User->delete();
+        }
+        if(isset($del) && $del == 1){
             return response()->json([
                 'status'=>true,
                 'msg'=>'ok!'

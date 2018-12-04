@@ -22,6 +22,11 @@ class SrcPayNewController extends Controller{
     public function addPayOnline(Request $request){
         $aParam = $request->all();
         $iPayTypeNew = DB::table('pay_type_new')->where('id',$aParam['payType'])->first();
+        if(!$iPayTypeNew)
+            return response()->json([
+                'status' => false,
+                'msg' => '支付类型没找到，请刷新'
+            ]);
         if(!empty($aParam['lockArea'])){
             $new_lockArea = implode(',',$aParam['lockArea']);
         } else {
