@@ -119,7 +119,7 @@ ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END)
 END) AS amount
 FROM bet WHERE 1 AND testFlag =\'0\' AND 	updated_at BETWEEN ? AND ?    ORDER BY date ASC';
         $bunko = DB::select($bunkosql,[$date.' 00:00:00',$date.' 23:59:59']);
-        /*今日实际输赢--扣除活动金额和红包金额入款优惠得出的会员总输赢*/
+        /*今日实际输赢--扣除 活动金额 和 红包金额 和 入款优惠 得出的会员总输赢*/
         foreach ($capital as $k=>$v){
             if($v ->rechname == '活动') {
                 $bunko[0]->amount += $v ->amount;
@@ -127,7 +127,11 @@ FROM bet WHERE 1 AND testFlag =\'0\' AND 	updated_at BETWEEN ? AND ?    ORDER BY
             if($v ->rechname == '抢到红包') {
                 $bunko[0]->amount += $v ->amount;
             }
+            if($v ->rechname == '返利/手续费') {
+                $bunko[0]->amount += $v ->amount;
+            }
         }
+
         $data[$date] = [
             'onlinePayment' => $this->arrayunset($onlinePayment),
             'bankTransfer' => $this->arrayunset($bankTransfer),
