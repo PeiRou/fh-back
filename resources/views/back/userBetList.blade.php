@@ -426,13 +426,13 @@
         }
     }
 
-    function showOpenHistory(gameId,issue,id){
+    function showOpenHistory(gameId,issue,id,gameName){
         $('#openH_'+id).show();
         if($('#openH_'+id).html() == ""){
             $('#openH_'+id).html('<div class="ll-text">查询中...</div>');
             setTimeout(function () {
                 $.ajax({
-                    url:'/ajax/openHistory/'+gameId+'/'+issue,
+                    url:'/ajax/openHistory/'+gameId+'/'+issue+'/'+gameName,
                     type:'get',
                     dataType:'json',
                     success:function (r) {
