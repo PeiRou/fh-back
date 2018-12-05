@@ -123,7 +123,8 @@ class OpenApiGetController extends Controller
         return [
             'code' => 200,
             'data'=> [],
-            'status' => true,
+            'status' => false,
+            'msg' => '该彩种暂不支持自动获取',
             'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
@@ -141,7 +142,8 @@ class OpenApiGetController extends Controller
         return [
             'code' => 200,
             'data'=> [],
-            'status' => true,
+            'status' => false,
+            'msg' => '该彩种暂不支持自动获取',
             'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
