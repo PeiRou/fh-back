@@ -393,7 +393,15 @@ class DrawingController extends Controller
             'ciphertext' => base64_encode(json_encode($aArray)),
         ]);
     }
-
+    //刷新ip信息
+    public function refreshIp(Request $request){
+        if(!isset($request->key) || !isset($request->value) || !isset($request->table) || !isset($request->ip) || !isset($request->upKey)){
+            return ['status' => false,'msg'=>'参数错误'];
+        }
+        $ipInfo = ip($request->ip);
+        $res = DB::table($request->table)->where($request->key,$request->value)->update([$request->upKey => $ipInfo]);
+        return ['status' => true];
+    }
     //提现解冻
     public function drawingThaw(Request $request){
         $id = $request->post('id');

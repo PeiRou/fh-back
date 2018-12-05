@@ -820,7 +820,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 } else {
                     $redClass = 'red-text';
                 }
-                return "<span class='".$redClass."'><i class='iconfont'>&#xe627;</i> $user->login_ip_info</span>";
+                return "<span class='".$redClass."'><i class='iconfont'>&#xe627;</i> $user->login_ip_info  <span  class=\"refreshIp\"  onclick='refreshIp({$user->id},\"{$user->login_ip}\", this)' >刷新</span></span>";
             })
             ->editColumn('login_client',function ($user){
                 if($user->login_client == 1){
@@ -828,6 +828,15 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 }
                 if($user->login_client == 2){
                     return "<i class='iconfont'>&#xe686;</i> 移动端";
+                }
+                if($user->login_client == 3){
+                    return "<i class='iconfont'>&#xe686;</i> iOS";
+                }
+                if($user->login_client == 4){
+                    return "<i class='iconfont'>&#xe686;</i> Android";
+                }
+                if($user->login_client == 5){
+                    return " 其它";
                 }
             })
             ->editColumn('control',function ($user){

@@ -121,6 +121,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 //日志管理
     Route::group(['prefix' => 'back/control/logManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('login', 'Back\SrcViewController@loginLog')->name('log.login'); //登录日志
+        Route::get('adminLogin', 'Back\SrcViewController@adminLoginLog')->name('log.adminLogin'); //登录日志
         Route::get('handle', 'Back\SrcViewController@handleLog')->name('log.handle'); //操作日志
         Route::get('abnormal', 'Back\SrcViewController@abnormalLog')->name('log.abnormal'); //异常日志
     });
@@ -270,6 +271,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/suggest', 'Back\Data\SuggestController@index');
     Route::get('/back/datatables/userBetSearch', 'Back\Data\BetDataController@userBetSearch');
     Route::get('/back/datatables/log/login', 'Back\Data\LogDataController@login'); //登录日志
+    Route::get('/back/datatables/log/adminLogin', 'Back\Data\LogDataController@adminLogin'); //管理员登录日志
     Route::get('/back/datatables/logHandle', 'Back\Data\LogDataController@logHandle'); //操作日志
     Route::get('/back/datatables/logAbnormal', 'Back\Data\LogDataController@logAbnormal'); //异常日志
 
@@ -471,6 +473,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/addDrawingErrorAuto', 'Back\DrawingController@addDrawingErrorAuto')->middleware('add-log-handle')->name('ac.ad.addDrawingErrorAuto'); //自动驳回提款申请
     Route::post('/action/admin/dispensingDrawing', 'Back\DrawingController@dispensingDrawing')->middleware('add-log-handle')->name('ac.ad.dispensingDrawing'); //自动出款
     Route::post('/action/admin/drawingThaw', 'Back\DrawingController@drawingThaw')->middleware('add-log-handle')->name('ac.ad.drawingThaw'); //提现解冻
+    Route::post('/action/admin/refreshIp', 'Back\DrawingController@refreshIp')->middleware('add-log-handle')->name('ac.ad.refreshIp'); //刷新ip
 
     Route::post('/action/recharge/totalRecharge', 'Back\RechargeController@totalRecharge')->name('ac.ad.recharge.totalRecharge'); //充值记录的总额统计
     Route::post('/action/drawing/totalDrawing', 'Back\DrawingController@totalDrawing')->name('ac.ad.drawing.totalDrawing'); //提款记录的总额统计

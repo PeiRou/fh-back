@@ -1,6 +1,6 @@
 $(function () {
     $('#menu-logManage').addClass('nav-show');
-    $('#menu-logManage-login').addClass('active');
+    $('#menu-logManage-adminLogin').addClass('active');
 
     $('#rangestart').calendar({
         type: 'date',
@@ -55,7 +55,7 @@ $(function () {
         serverSide: true,
         aLengthMenu: [[25]],
         ajax: {
-            url:'/back/datatables/log/login',
+            url:'/back/datatables/log/adminLogin',
             data:function (d) {
                 d.username = $('#username').val();
                 d.ip = $('#ip').val();
@@ -66,31 +66,11 @@ $(function () {
             }
         },
         columns: [
-            {data:'user_id'},
-            {data:'username'},
+            {data:'id'},
+            {data:'name'},
             {data:'login_time'},
             {data:'ip'},
             {data:'ip_info'},
-            {
-                data:'type',
-                render:function (data, type, row) {
-                    if(data == 1){
-                        return '电脑';
-                    }
-                    if(data == 2){
-                        return '手机';
-                    }
-                    if(data == 3){
-                        return 'iOS';
-                    }
-                    if(data == 4){
-                        return 'Android';
-                    }
-                    if(data == 5){
-                        return '其他';
-                    }
-                }
-            },
             {data:'login_host'},
             {data:'logout_time'}
         ],
@@ -115,7 +95,7 @@ function refreshIp(id, ip, dom){//loading-gif
     var data = {
         key : 'id',
         value : id,
-        table : 'log_login',
+        table : 'log_admin_login',
         ip : ip,
         upKey : 'ip_info'
     };

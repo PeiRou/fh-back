@@ -227,7 +227,7 @@ class WS {
      * @return string
      */
     public function send_require($sendParams){
-        \Log::info('无双'.json_encode($sendParams));
+//        \Log::info('无双'.json_encode($sendParams));
         $params =  $this->encryptText(json_encode($sendParams),$this->desKey);
         $sign = hash('sha256', $params . $this->signKey);
         $data = array('merchant_code' => $this->merchant_code, 'params' => $params , 'sign' => $sign);
@@ -240,7 +240,7 @@ class WS {
         );
         $context  = stream_context_create($options);
         $result = @file_get_contents($this->url, false, $context);
-        \Log::info('无双res'.$result);
+//        \Log::info('无双res'.$result);
         if(empty($result)){
             return [
                 'status' => 500,

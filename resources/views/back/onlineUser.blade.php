@@ -25,7 +25,7 @@
                 <th>新增时间</th>
                 <th>最后活动时间</th>
                 <th>登录IP</th>
-                <th>IP信息</th>
+                <th style="min-width:160px;">IP信息</th>
                 <th>网站入口</th>
                 <th>终端</th>
                 <th>操作</th>
