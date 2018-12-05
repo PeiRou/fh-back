@@ -392,6 +392,15 @@ class FinanceDataController extends Controller
                 if($drawing->dr_platform == 2){
                     return '手机端';
                 }
+                if($drawing->dr_platform == 3){
+                    return 'IOS';
+                }
+                if($drawing->dr_platform == 4){
+                    return 'Android';
+                }
+                if($drawing->dr_platform == 5){
+                    return '其它';
+                }
             })
             ->editColumn('control',function ($drawing) use ($aPayOnlineNew){
                 if($drawing->dr_status == 2 || $drawing->dr_status == 3){
