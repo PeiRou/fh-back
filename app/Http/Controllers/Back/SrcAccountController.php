@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Events\LoginEvent;
 use App\Permissions;
 use App\Roles;
 use App\SubAccount;
@@ -53,7 +54,7 @@ class SrcAccountController extends Controller
                     Session::put('account',$find->account);
                     Session::put('account_name',$find->name);
                     Session::put('account_permission',$collectionAuth);
-
+                    event(new LoginEvent($find->account,realIp(),$find->sa_id,date('Y-m-d H:i:s'),1,$request->getHttpHost()));
                     //用户状态存入Redis
                     $session_id = Session::getId();
                     Session::put('account_session_id',$session_id);

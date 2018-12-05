@@ -65,6 +65,59 @@ class LogDataController extends Controller
             ->make(true);
     }
 
+    public function adminLogin(Request $request)
+    {
+        $name = $request->get('username');
+        $ip = $request->get('ip');
+        $loginHost = $request->get('loginHost');
+        $ipInfo = $request->get('ipInfo');
+        $startTime = $request->get('startTime');
+        $endTime = $request->get('endTime');
+        $start = $request->get('start');
+        $length = $request->get('length');
+
+        $loginLogSql = DB::table('log_admin_login')
+            ->where(function ($q) use ($name){
+                if($name && isset($name)){
+                    $q->where('name',$name);
+                }
+            })
+            ->where(function ($q) use ($ip){
+                if($ip && isset($ip)){
+                    $q->where('ip',$ip);
+                }
+            })
+            ->where(function ($q) use ($loginHost){
+                if($loginHost && isset($loginHost)){
+                    $q->where('login_host',$loginHost);
+                }
+            })
+            ->where(function ($q) use ($ipInfo){
+                if($ipInfo && isset($ipInfo)){
+                    $q->where('ip_info',$ipInfo);
+                }
+            })
+            ->where(function ($q) use ($startTime){
+                if($startTime && isset($startTime)){
+                    $q->where('login_time','>=',$startTime . ' 00:00:00');
+                }
+            })
+            ->where(function ($q) use ($endTime){
+                if($endTime && isset($endTime)){
+                    $q->where('login_time','<=',$endTime . ' 23:59:59');
+                }
+            });
+        $loginLogCount = $loginLogSql->count();
+        $loginLog = $loginLogSql->orderBy('id','DESC')->skip($start)->take($length)->get();
+        return DataTables::of($loginLog)
+            ->setTotalRecords($loginLogCount)
+            ->editColumn('ip_info',function($logHandle){
+                return "<span><i class='iconfont'>&#xe627;</i>$logHandle->ip_info<span  class=\"refreshIp\"  onclick='refreshIp({$logHandle->id},\"{$logHandle->ip}\", this)' >刷新</span></span>";
+            })
+            ->rawColumns(['ip_info'])
+            ->skipPaging()
+            ->make(true);
+    }
     public function logHandle(Request $request){
         $param = $request->all();
         $logHandleSql = LogHandle::where(function ($sql) use ($param){

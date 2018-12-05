@@ -386,6 +386,9 @@
                 @if($hasPermission->hasPermission('log.login') == "has")
                 <li id="menu-logManage-login"><a href="{{ route('log.login') }}"><cite></cite><span>登录日志</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('log.adminLogin') == "has")
+                    <li id="menu-logManage-adminLogin"><a href="{{ route('log.adminLogin') }}"><cite></cite><span>后台登录日志</span></a></li>
+                @endif
                 @if($hasPermission->hasPermission('log.handle') == "has")
                 <li id="menu-logManage-handle"><a href="{{ route('log.handle') }}"><cite></cite><span>操作日志</span></a></li>
                 @endif

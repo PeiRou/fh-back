@@ -829,6 +829,15 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 if($user->login_client == 2){
                     return "<i class='iconfont'>&#xe686;</i> 移动端";
                 }
+                if($user->login_client == 3){
+                    return "<i class='iconfont'>&#xe686;</i> iOS";
+                }
+                if($user->login_client == 4){
+                    return "<i class='iconfont'>&#xe686;</i> Android";
+                }
+                if($user->login_client == 5){
+                    return " 其它";
+                }
             })
             ->editColumn('control',function ($user){
                 return '<span class="edit-link" onclick="getOut(\''.$user->id.'\',\''.$user->username.'\')"><i class="iconfont">&#xeab6;</i> 踢下线</span>';

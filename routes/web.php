@@ -121,6 +121,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 //日志管理
     Route::group(['prefix' => 'back/control/logManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('login', 'Back\SrcViewController@loginLog')->name('log.login'); //登录日志
+        Route::get('adminLogin', 'Back\SrcViewController@adminLoginLog')->name('log.adminLogin'); //登录日志
         Route::get('handle', 'Back\SrcViewController@handleLog')->name('log.handle'); //操作日志
         Route::get('abnormal', 'Back\SrcViewController@abnormalLog')->name('log.abnormal'); //异常日志
     });
@@ -270,6 +271,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/suggest', 'Back\Data\SuggestController@index');
     Route::get('/back/datatables/userBetSearch', 'Back\Data\BetDataController@userBetSearch');
     Route::get('/back/datatables/log/login', 'Back\Data\LogDataController@login'); //登录日志
+    Route::get('/back/datatables/log/adminLogin', 'Back\Data\LogDataController@adminLogin'); //管理员登录日志
     Route::get('/back/datatables/logHandle', 'Back\Data\LogDataController@logHandle'); //操作日志
     Route::get('/back/datatables/logAbnormal', 'Back\Data\LogDataController@logAbnormal'); //异常日志
 

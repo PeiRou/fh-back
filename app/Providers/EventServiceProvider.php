@@ -105,7 +105,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\LotteryRenew' => [
             'App\Listeners\LotteryRenewEventListener',
-        ]
+        ],
+        'App\Events\LoginEvent' => [
+            'App\Listeners\LoginEventListener',
+        ],
     ];
     /**
      * Register any events for your application.
