@@ -7,6 +7,9 @@ use App\AgentBackwater;
 use App\Bets;
 use App\Capital;
 use App\Drawing;
+use App\Events\LotteryCanceled;
+use App\Events\LotteryFreeze;
+use App\Events\LotteryRenew;
 use App\Events\RunLHC;
 use App\Events\RunXYLHC;
 use App\Games;
@@ -986,6 +989,12 @@ class OpenHistoryController extends Controller
             return ['status' => false,'msg' => '你已经撤单过了，请休息一分钟'];
         }
         $redis->setex($key,61,time());
+        event(new LotteryCanceled($issue,$type));
+        return ['status' => true,'msg'=> '操作成功'];
+    }
+
+    //结算后撤单
+    public function canceledBetIssueEvent($issue,$type){
         $gameInfo = Games::where('code',$type)->first();
         if(empty($tableSuffix = Games::$aCodeGameName[$type])){
             return ['status' => false,'msg' => '游戏分类标识错误'];
@@ -1002,6 +1011,7 @@ class OpenHistoryController extends Controller
 
     //冻结后的撤单操作
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
+        DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 11]);
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id,false);
 
         $aAgentBackwater = AgentBackwater::getAgentBackwaterMoney($gameInfo->game_id,$issue);
@@ -1072,25 +1082,36 @@ class OpenHistoryController extends Controller
         }catch(\Exception $e){
             Log::info($e->getMessage());
             DB::rollback();
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 12]);
             return ['status' => false,'msg' => '撤单失败'];
         }
     }
 
     //冻结
     public function freeze($issue,$type){
-        $gameInfo = Games::where('code',$type)->first();
-        if(empty($tableSuffix = Games::$aCodeGameName[$type])){
-            return ['status' => false,'msg' => '游戏分类标识错误'];
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'freeze:'.$issue.$type;
+        if($redis->exists($key)){
+            return ['status' => false,'msg' => '你已经冻结过了，请休息一分钟'];
         }
+        $redis->setex($key,61,time());
+        event(new LotteryFreeze($issue,$type));
+        return ['status' => true,'msg'=> '操作成功'];
+    }
+
+    public function freezeEvent($issue,$type){
+        $gameInfo = Games::where('code',$type)->first();
+        if(empty($tableSuffix = Games::$aCodeGameName[$type]))
+            return ['status' => false,'msg' => '游戏分类标识错误'];
         return $this->freezeOperating($issue,$type,$gameInfo);
     }
 
     //冻结操作
     public function freezeOperating($issue,$type,$gameInfo){
+        DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 8]);
         $aBet = Bets::getBetUserDrawingByIssue($issue,$gameInfo->game_id);
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
-        if(!in_array($type,['msnn']))
-            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
         $aCapitalFreeze = [];
         $aCapital = [];
         $aCapitalBack = [];
@@ -1177,6 +1198,8 @@ class OpenHistoryController extends Controller
         DB::beginTransaction();
 
         try {
+            if(!in_array($type,['msnn']))
+                DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataFreeze($aBetAll);
                 if(!empty($aCapital))    Capital::insert($aCapital);
@@ -1197,34 +1220,45 @@ class OpenHistoryController extends Controller
             return ['status' => true,'msg'=> '操作成功'];
         }catch(\Exception $e){
             DB::rollback();
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 9]);
             return ['status' => false,'msg' => '冻结失败'];
         }
     }
 
     //重新开奖
     public function renewLottery(Request $request,$issue,$type){
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'renewLottery:'.$issue.$type;
+        if($redis->exists($key)){
+            return ['status' => false,'msg' => '你已经重新开奖过了，请休息一分钟'];
+        }
+        $redis->setex($key,61,time());
+        event(new LotteryRenew($request,$issue,$type));
+        return ['status' => true,'msg'=> '操作成功'];
+    }
+
+    //重新开奖
+    public function renewLotteryEvent(Request $request,$issue,$type){
         $aParam = $request->all();
         $number = $this->getOpenLotteryNumber($aParam,$type);
-        if(!$number['status']){
+        if(!$number['status'])
             return $number;
-        }
         $gameInfo = Games::where('code',$type)->first();
-        if(empty($tableSuffix = Games::$aCodeGameName[$type])){
+        if(empty($tableSuffix = Games::$aCodeGameName[$type]))
             return ['status' => false,'msg' => '游戏分类标识错误'];
-        }
         if(DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->value('is_open') != 5){
             $result = $this->freezeOperating($issue,$type,$gameInfo);
-            if(!$result['status']){
+            if(!$result['status'])
                 return $result;
-            }
         }
         return $this->renewLotteryOperating($issue,$type,$gameInfo,$number['number']);
     }
 
     //重新开奖操作
     public function renewLotteryOperating($issue,$type,$gameInfo,$number){
-        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 7]);
+//        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
 
         DB::beginTransaction();
 
@@ -1286,6 +1320,8 @@ class OpenHistoryController extends Controller
                 return ['status' => true,'msg'=>'操作成功'];
         }catch(\Exception $e){
             DB::rollback();
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 10]);
+            Log::info($e->getMessage());
             return ['status' => false,'msg' => '撤单失败'];
         }
         if(in_array($type,['lhc']))
