@@ -986,7 +986,7 @@ class OpenHistoryController extends Controller
         $redis->select(5);
         $key = 'cancel:'.$issue.$type;
         if($redis->exists($key)){
-            return ['status' => false,'msg' => '你已经撤单过了，请休息一分钟'];
+            return ['status' => false,'msg' => '冻结,撤单,重新开奖一分钟内只能操作一次'];
         }
         $redis->setex($key,61,time());
         event(new LotteryCanceled($issue,$type));
@@ -1093,9 +1093,9 @@ class OpenHistoryController extends Controller
     public function freeze($issue,$type){
         $redis = Redis::connection();
         $redis->select(5);
-        $key = 'freeze:'.$issue.$type;
+        $key = 'cancel:'.$issue.$type;
         if($redis->exists($key)){
-            return ['status' => false,'msg' => '你已经冻结过了，请休息一分钟'];
+            return ['status' => false,'msg' => '冻结,撤单,重新开奖一分钟内只能操作一次'];
         }
         $redis->setex($key,61,time());
         event(new LotteryFreeze($issue,$type));
@@ -1232,9 +1232,9 @@ class OpenHistoryController extends Controller
     public function renewLottery(Request $request,$issue,$type){
         $redis = Redis::connection();
         $redis->select(5);
-        $key = 'renewLottery:'.$issue.$type;
+        $key = 'cancel:'.$issue.$type;
         if($redis->exists($key)){
-            return ['status' => false,'msg' => '你已经重新开奖过了，请休息一分钟'];
+            return ['status' => false,'msg' => '冻结,撤单,重新开奖一分钟内只能操作一次'];
         }
         $redis->setex($key,61,time());
         event(new LotteryRenew($request,$issue,$type));
