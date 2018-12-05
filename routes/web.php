@@ -471,6 +471,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/addDrawingErrorAuto', 'Back\DrawingController@addDrawingErrorAuto')->middleware('add-log-handle')->name('ac.ad.addDrawingErrorAuto'); //自动驳回提款申请
     Route::post('/action/admin/dispensingDrawing', 'Back\DrawingController@dispensingDrawing')->middleware('add-log-handle')->name('ac.ad.dispensingDrawing'); //自动出款
     Route::post('/action/admin/drawingThaw', 'Back\DrawingController@drawingThaw')->middleware('add-log-handle')->name('ac.ad.drawingThaw'); //提现解冻
+    Route::post('/action/admin/refreshIp', 'Back\DrawingController@refreshIp')->middleware('add-log-handle')->name('ac.ad.refreshIp'); //刷新ip
 
     Route::post('/action/recharge/totalRecharge', 'Back\RechargeController@totalRecharge')->name('ac.ad.recharge.totalRecharge'); //充值记录的总额统计
     Route::post('/action/drawing/totalDrawing', 'Back\DrawingController@totalDrawing')->name('ac.ad.drawing.totalDrawing'); //提款记录的总额统计

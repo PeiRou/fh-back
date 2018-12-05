@@ -57,6 +57,10 @@ class LogDataController extends Controller
         $loginLog = $loginLogSql->orderBy('id','DESC')->skip($start)->take($length)->get();
         return DataTables::of($loginLog)
             ->setTotalRecords($loginLogCount)
+            ->editColumn('ip_info',function($logHandle){
+                return "<span><i class='iconfont'>&#xe627;</i>$logHandle->ip_info<span  class=\"refreshIp\"  onclick='refreshIp({$logHandle->id},\"{$logHandle->ip}\", this)' >刷新</span></span>";
+            })
+            ->rawColumns(['ip_info'])
             ->skipPaging()
             ->make(true);
     }

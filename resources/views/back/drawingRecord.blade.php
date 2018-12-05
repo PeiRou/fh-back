@@ -10,6 +10,7 @@
         .amount{
             display: none;
         }
+
     </style>
     <div class="content-top">
         <div class="breadcrumb">
@@ -156,5 +157,6 @@
     </script>
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
+
     <script src="/back/js/pages/drawing_record.js"></script>
 @endsection

@@ -3,6 +3,11 @@
 @section('title','登录日志')
 
 @section('content')
+    <style>
+        #loginLogTable{
+            white-space: nowrap;
+        }
+    </style>
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>登录日志
@@ -55,7 +60,7 @@
                 <th>会员</th>
                 <th>登录日期</th>
                 <th>IP</th>
-                <th>IP信息</th>
+                <th style="min-width: 160px">IP信息</th>
                 <th>来源</th>
                 <th>登录域名</th>
                 <th>退出时间</th>

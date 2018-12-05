@@ -40,6 +40,37 @@ $(function () {
     });
 });
 
+function refreshIp(id, ip, dom){//loading-gif
+    $(dom).addClass('loading-gif ').html('')
+    var data = {
+        key : 'id',
+        value : id,
+        table : 'users',
+        ip : ip,
+        upKey : 'login_ip_info'
+    };
+    $.ajax({
+        url:'/action/admin/refreshIp',
+        type:'post',
+        dataType:'json',
+        data:data,
+        success:function (data) {
+            if(data.status == true){
+                $('#onlineUserTable').DataTable().ajax.reload(null,false);
+            } else {
+                Calert(data.msg,'red')
+            }
+            $(dom).removeClass('loading-gif ').html('刷新')
+        },
+        error:function (e) {
+            $(dom).removeClass('loading-gif ').html('刷新')
+            if(e.status == 403)
+            {
+                Calert('您没有此项权限！无法继续！','red')
+            }
+        }
+    });
+}
 function getOut(userid,username) {
     jc = $.confirm({
         title: '确定要让会员【'+username+'】下线吗？',

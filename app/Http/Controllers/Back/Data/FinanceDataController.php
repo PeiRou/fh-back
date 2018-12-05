@@ -355,7 +355,7 @@ class FinanceDataController extends Controller
                 if($drawing->dr_draw_type == 2){
                     return '-';
                 } else {
-                    return "<span><i class='iconfont'>&#xe627;</i> $drawing->dr_ip</span></br><span>$drawing->dr_ip_info</span>";
+                    return "<span><i class='iconfont'>&#xe627;</i> $drawing->dr_ip</span></br><span>$drawing->dr_ip_info<span  class=\"refreshIp\"  onclick='refreshIp({$drawing->dr_id},\"{$drawing->dr_ip}\", this)' >刷新</span></span>";
                 }
             })
             ->editColumn('draw_type',function ($drawing){

@@ -820,7 +820,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 } else {
                     $redClass = 'red-text';
                 }
-                return "<span class='".$redClass."'><i class='iconfont'>&#xe627;</i> $user->login_ip_info</span>";
+                return "<span class='".$redClass."'><i class='iconfont'>&#xe627;</i> $user->login_ip_info  <span  class=\"refreshIp\"  onclick='refreshIp({$user->id},\"{$user->login_ip}\", this)' >刷新</span></span>";
             })
             ->editColumn('login_client',function ($user){
                 if($user->login_client == 1){

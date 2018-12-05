@@ -110,6 +110,37 @@ $(function () {
     });
 });
 
+function refreshIp(id, ip, dom){//loading-gif
+    $(dom).addClass('loading-gif ').html('')
+    var data = {
+        key : 'id',
+        value : id,
+        table : 'log_login',
+        ip : ip,
+        upKey : 'ip_info'
+    };
+    $.ajax({
+        url:'/action/admin/refreshIp',
+        type:'post',
+        dataType:'json',
+        data:data,
+        success:function (data) {
+            if(data.status == true){
+                $('#loginLogTable').DataTable().ajax.reload(null,false);
+            } else {
+                Calert(data.msg,'red')
+            }
+            $(dom).removeClass('loading-gif ').html('刷新')
+        },
+        error:function (e) {
+            $(dom).removeClass('loading-gif ').html('刷新')
+            if(e.status == 403)
+            {
+                Calert('您没有此项权限！无法继续！','red')
+            }
+        }
+    });
+}
 $(document).keyup(function(e){
     var key = e.which;
     if(key == 13 || key == 32){
