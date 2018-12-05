@@ -50,7 +50,7 @@ class next_open_xylhc extends Command
         $redis = Redis::connection();
         $redis->select(0);
         $redis_issue = $redis->get('xylhc:issue');
-        $redis_needopen = $redis->exists('xylhc:needopen')?$redis->get('xylhc:needopen'):'';
+        $redis_needopen = $redis->exists($this->code.':needopen')?$redis->get($this->code.':needopen'):'';
         $redis_next_issue = $redis->get('xylhc:nextIssue');
         //在redis上的差距
         $redis_gapnum = $redis->get('xylhc:gapnum');
@@ -65,7 +65,7 @@ class next_open_xylhc extends Command
         $res = $excel->getNextIssue($table);
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
-            $redis->set('xylhc:needopen','on');
+            $redis->set($this->code.':needopen','on');
             $redis->set('xylhc:gapnum',$gapnum);
             return 'Fail';
         }else{
@@ -75,7 +75,7 @@ class next_open_xylhc extends Command
                 return 'ing';
             }
             $redis->setex($key,60,'ing');
-            $redis->set('xylhc:needopen','');
+            $redis->set($this->code.':needopen','');
         }
         //當期獎期
         $needOpenIssue = $res->issue;

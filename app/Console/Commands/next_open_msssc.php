@@ -50,7 +50,7 @@ class next_open_msssc extends Command
         $redis = Redis::connection();
         $redis->select(0);
         $redis_issue = $redis->get('msssc:issue');
-        $redis_needopen = $redis->exists('msssc:needopen')?$redis->get('msssc:needopen'):'';
+        $redis_needopen = $redis->exists($this->code.':needopen')?$redis->get($this->code.':needopen'):'';
         $redis_next_issue = $redis->get('msssc:nextIssue');
         //在redis上的差距
         $redis_gapnum = $redis->get('msssc:gapnum');
@@ -65,7 +65,7 @@ class next_open_msssc extends Command
         $res = $excel->getNextIssue($table);
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
-            $redis->set('msssc:needopen','on');
+            $redis->set($this->code.':needopen','on');
             $redis->set('msssc:gapnum',$gapnum);
             return 'Fail';
         }else{
@@ -75,7 +75,7 @@ class next_open_msssc extends Command
                 return 'ing';
             }
             $redis->setex($key,60,'ing');
-            $redis->set('msssc:needopen','');
+            $redis->set($this->code.':needopen','');
         }
         //當期獎期
         $needOpenIssue = $res->issue;
