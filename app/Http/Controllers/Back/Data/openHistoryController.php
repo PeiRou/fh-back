@@ -428,10 +428,8 @@ class openHistoryController extends Controller
                 if($lhc->is_open == 1){
                     $html = "<ul class='control-menu'>";
                     $html .= "<li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>";
-                    if(env('TEST') == 1) {
-                        $html .= "<li onclick='canceled(\"$lhc->issue\")'>撤单</li>";
-                        $html .= "<li onclick='freeze(\"$lhc->issue\")'>冻结</li>";
-                    }
+                    $html .= "<li onclick='canceled(\"$lhc->issue\")'>撤单</li>";
+                    $html .= "<li onclick='freeze(\"$lhc->issue\")'>冻结</li>";
                     $html .= "</ul>";
                     return $html;
                 }
