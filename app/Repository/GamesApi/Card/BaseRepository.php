@@ -94,7 +94,7 @@ class BaseRepository
                     'key' => md5($this->Config[$this->ConfigPrefix.'agent'].$timestamp.($this->Config[$this->ConfigPrefix.'md5Key']))
                 ));
             $res = json_decode($this->Utils->curl_get_content($url), true);
-            \Log::info($this->gameInfo->name.json_encode($res));
+//            \Log::info($this->gameInfo->name.json_encode($res));
             if(!empty($res)){
                 if(isset($res['d']['code']) && $res['d']['code'] == 0){
                     return $this->show(0, '', $res['d']);

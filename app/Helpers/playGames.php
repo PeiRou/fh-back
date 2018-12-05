@@ -343,3 +343,33 @@ if(!function_exists('setQueueRealName')){
     }
 }
 
+if(!function_exists('ip')){
+    function ip($ip){
+        $checkIp = \Illuminate\Support\Facades\DB::table('ip')->where('ip',$ip)->first();
+        if(!$checkIp){
+            $http = new \GuzzleHttp\Client();
+            $key = 'BhE1TEz6FxQYVGt7F7eEhwfkwvEAHtMkEIKovK2zkT9Kx8to9R1sOzzgdnZzFM5p';
+            $res = $http->request('GET',"https://mall.ipplus360.com/ip/district/api?key=$key&ip=$ip&coord=WGS84", ['connect_timeout' => 2]);
+            $response = json_decode((string) $res->getBody(), true);
+            if(is_null($response))
+                return '网络波动，请重试';
+            if($response['code'] == 200){
+                $ipInfo = @$response['data']['country'].' '.@$response['data']['multiAreas'][0]['prov'].' '.@$response['data']['multiAreas'][0]['city'].' '.@$response['data']['multiAreas'][0]['district'];
+                if(empty($ipInfo))
+                    return 'IP没找到';
+                \Illuminate\Support\Facades\DB::table('ip')->insert([
+                    'ip' => $ip,
+                    'country' => @$response['data']['country'],
+                    'city' => @$response['data']['multiAreas'][0]['city'],
+                    'district' => @$response['data']['multiAreas'][0]['district'],
+                    'prov' => @$response['data']['multiAreas'][0]['prov']
+                ]);
+            } else {
+                $ipInfo = 'IP定位系统错误';
+            }
+        } else {
+            $ipInfo = $checkIp->country.' '.$checkIp->prov.' '.$checkIp->city.' '.$checkIp->district;
+        }
+        return $ipInfo;
+    }
+}

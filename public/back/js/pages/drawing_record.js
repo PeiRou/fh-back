@@ -532,3 +532,36 @@ function copyToClipboard(elem) {
     }
     return succeed;
 }
+
+function refreshIp(dr_id, dr_ip, dom){//loading-gif
+    $(dom).addClass('loading-gif ').html('')
+    var data = {
+        key : 'id',
+        value : dr_id,
+        table : 'drawing',
+        ip : dr_ip,
+        upKey : 'ip_info'
+    };
+    $.ajax({
+        url:'/action/admin/refreshIp',
+        type:'post',
+        dataType:'json',
+        data:data,
+        success:function (data) {
+            if(data.status == true){
+                $('#drawingRecordTable').DataTable().ajax.reload(null,false);
+                getTotalDrawing()
+            } else {
+                Calert(data.msg,'red')
+            }
+            $(dom).removeClass('loading-gif ').html('刷新')
+        },
+        error:function (e) {
+            $(dom).removeClass('loading-gif ').html('刷新')
+            if(e.status == 403)
+            {
+                Calert('您没有此项权限！无法继续！','red')
+            }
+        }
+    });
+}

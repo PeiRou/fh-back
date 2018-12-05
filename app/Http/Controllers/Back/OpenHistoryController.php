@@ -7,16 +7,19 @@ use App\AgentBackwater;
 use App\Bets;
 use App\Capital;
 use App\Drawing;
+use App\Events\LotteryCanceled;
+use App\Events\LotteryFreeze;
+use App\Events\LotteryRenew;
 use App\Events\RunLHC;
 use App\Events\RunXYLHC;
 use App\Games;
 use App\Helpers\LHC_SX;
 use App\UserFreezeMoney;
 use App\Users;
+use Illuminate\Contracts\Logging\Log;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -983,9 +986,15 @@ class OpenHistoryController extends Controller
         $redis->select(5);
         $key = 'cancel:'.$issue.$type;
         if($redis->exists($key)){
-            return ['status' => false,'msg' => '你已经撤单过了，请休息一分钟'];
+            return ['status' => false,'msg' => '冻结,撤单,重新开奖一分钟内只能操作一次'];
         }
         $redis->setex($key,61,time());
+        event(new LotteryCanceled($issue,$type));
+        return ['status' => true,'msg'=> '操作成功'];
+    }
+
+    //结算后撤单
+    public function canceledBetIssueEvent($issue,$type){
         $gameInfo = Games::where('code',$type)->first();
         if(empty($tableSuffix = Games::$aCodeGameName[$type])){
             return ['status' => false,'msg' => '游戏分类标识错误'];
@@ -1002,13 +1011,15 @@ class OpenHistoryController extends Controller
 
     //冻结后的撤单操作
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
-        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id,false);
-
-        $aAgentBackwater = AgentBackwater::getAgentBackwaterMoney($gameInfo->game_id,$issue);
-
+        if(!in_array($type,['msnn']))
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 11]);
         DB::beginTransaction();
 
         try {
+            $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id,false);
+
+            $aAgentBackwater = AgentBackwater::getAgentBackwaterMoney($gameInfo->game_id,$issue);
+
             if(!in_array($type,['msnn']))
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
             Bets::updateBetStatus($issue, $gameInfo->game_id);
@@ -1072,111 +1083,126 @@ class OpenHistoryController extends Controller
         }catch(\Exception $e){
             Log::info($e->getMessage());
             DB::rollback();
+            if(!in_array($type,['msnn']))
+                DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 12]);
             return ['status' => false,'msg' => '撤单失败'];
         }
     }
 
     //冻结
     public function freeze($issue,$type){
-        $gameInfo = Games::where('code',$type)->first();
-        if(empty($tableSuffix = Games::$aCodeGameName[$type])){
-            return ['status' => false,'msg' => '游戏分类标识错误'];
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'cancel:'.$issue.$type;
+        if($redis->exists($key)){
+            return ['status' => false,'msg' => '冻结,撤单,重新开奖一分钟内只能操作一次'];
         }
+        $redis->setex($key,61,time());
+        event(new LotteryFreeze($issue,$type));
+        return ['status' => true,'msg'=> '操作成功'];
+    }
+
+    public function freezeEvent($issue,$type){
+        $gameInfo = Games::where('code',$type)->first();
+        if(empty($tableSuffix = Games::$aCodeGameName[$type]))
+            return ['status' => false,'msg' => '游戏分类标识错误'];
         return $this->freezeOperating($issue,$type,$gameInfo);
     }
 
     //冻结操作
     public function freezeOperating($issue,$type,$gameInfo){
-        $aBet = Bets::getBetUserDrawingByIssue($issue,$gameInfo->game_id);
-        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
         if(!in_array($type,['msnn']))
-            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
-        $aCapitalFreeze = [];
-        $aCapital = [];
-        $aCapitalBack = [];
-        $aUserFreezeMoney = [];
-        $adminId = Session::get('account_id');
-        $dateTime = date('Y-m-d H:i:s');
-        $dateTime1 = date('Y-m-d H:i:s',time()+1);
-        $dateTime2 = date('Y-m-d H:i:s',time()+2);
-        $aUserId = [];
-        if(!empty($aBetAll)){
-            foreach ($aBetAll as $kBet => $iBet) {
-                if($iBet->bet_bunko > 0) {
-                    $aCapital[] = [
-                        'to_user' => $iBet->id,
-                        'user_type' => 'user',
-                        'order_id' => $this->randOrder('F'),
-                        'type' => 't27',
-                        'rechargesType' => 0,
-                        'game_id' => $iBet->game_id,
-                        'game_name' => $gameInfo->game_name,
-                        'issue' => $iBet->issue,
-                        'money' => -$iBet->bet_bunko,
-                        'balance' => $iBet->money - $iBet->bet_bunko,
-                        'operation_id' => $adminId,
-                        'created_at' => $dateTime,
-                        'updated_at' => $dateTime,
-                    ];
-                }
-                if($iBet->back_money > 0){
-                    $aCapitalBack[] = [
-                        'to_user' => $iBet->id,
-                        'user_type' => 'user',
-                        'order_id' => $this->randOrder('FC'),
-                        'type' => 't29',
-                        'rechargesType' => 0,
-                        'game_id' => $iBet->game_id,
-                        'game_name' => $gameInfo->game_name,
-                        'issue' => $iBet->issue,
-                        'money' => -$iBet->back_money,
-                        'balance' => $iBet->money - $iBet->bet_bunko - $iBet->back_money,
-                        'operation_id' => $adminId,
-                        'created_at' => $dateTime1,
-                        'updated_at' => $dateTime1,
-                    ];
-                }
-            }
-        }
-        if(!empty($aBet)) {
-            foreach ($aBet as $kBet1 => $iBet1) {
-                $amount = empty($iBet1->amount)?0:$iBet1->amount;
-                if(!empty($amount)) {
-                    $aCapitalFreeze[] = [
-                        'to_user' => $iBet1->id,
-                        'user_type' => 'user',
-                        'order_id' => null,
-                        'type' => 't25',
-                        'rechargesType' => 0,
-                        'game_id' => $iBet1->game_id,
-                        'game_name' => $gameInfo->game_name,
-                        'issue' => $iBet1->issue,
-                        'money' => $iBet1->amount,
-                        'balance' => $iBet1->money - $iBet1->bet_bunko - $iBet1->back_money + $iBet1->amount,
-                        'operation_id' => $adminId,
-                        'created_at' => $dateTime2,
-                        'updated_at' => $dateTime2,
-                    ];
-                }
-
-                if($iBet1->amount > 0) {
-                    $aUserFreezeMoney[] = [
-                        'user_id' => $iBet1->id,
-                        'game_id' => $iBet1->game_id,
-                        'issue' => $iBet1->issue,
-                        'money' => $iBet1->amount,
-                        'status' => 0,
-                        'created_at' => $dateTime,
-                        'updated_at' => $dateTime,
-                    ];
-                }
-                $aUserId[] = $iBet1->id;
-            }
-        }
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 8]);
 
         DB::beginTransaction();
 
         try {
+            $aBet = Bets::getBetUserDrawingByIssue($issue,$gameInfo->game_id);
+            $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
+            $aCapitalFreeze = [];
+            $aCapital = [];
+            $aCapitalBack = [];
+            $aUserFreezeMoney = [];
+            $adminId = Session::get('account_id');
+            $dateTime = date('Y-m-d H:i:s');
+            $dateTime1 = date('Y-m-d H:i:s',time()+1);
+            $dateTime2 = date('Y-m-d H:i:s',time()+2);
+            $aUserId = [];
+            if(!empty($aBetAll)){
+                foreach ($aBetAll as $kBet => $iBet) {
+                    if($iBet->bet_bunko > 0) {
+                        $aCapital[] = [
+                            'to_user' => $iBet->id,
+                            'user_type' => 'user',
+                            'order_id' => $this->randOrder('F'),
+                            'type' => 't27',
+                            'rechargesType' => 0,
+                            'game_id' => $iBet->game_id,
+                            'game_name' => $gameInfo->game_name,
+                            'issue' => $iBet->issue,
+                            'money' => -$iBet->bet_bunko,
+                            'balance' => $iBet->money - $iBet->bet_bunko,
+                            'operation_id' => $adminId,
+                            'created_at' => $dateTime,
+                            'updated_at' => $dateTime,
+                        ];
+                    }
+                    if($iBet->back_money > 0){
+                        $aCapitalBack[] = [
+                            'to_user' => $iBet->id,
+                            'user_type' => 'user',
+                            'order_id' => $this->randOrder('FC'),
+                            'type' => 't29',
+                            'rechargesType' => 0,
+                            'game_id' => $iBet->game_id,
+                            'game_name' => $gameInfo->game_name,
+                            'issue' => $iBet->issue,
+                            'money' => -$iBet->back_money,
+                            'balance' => $iBet->money - $iBet->bet_bunko - $iBet->back_money,
+                            'operation_id' => $adminId,
+                            'created_at' => $dateTime1,
+                            'updated_at' => $dateTime1,
+                        ];
+                    }
+                }
+            }
+            if(!empty($aBet)) {
+                foreach ($aBet as $kBet1 => $iBet1) {
+                    $amount = empty($iBet1->amount)?0:$iBet1->amount;
+                    if(!empty($amount)) {
+                        $aCapitalFreeze[] = [
+                            'to_user' => $iBet1->id,
+                            'user_type' => 'user',
+                            'order_id' => null,
+                            'type' => 't25',
+                            'rechargesType' => 0,
+                            'game_id' => $iBet1->game_id,
+                            'game_name' => $gameInfo->game_name,
+                            'issue' => $iBet1->issue,
+                            'money' => $iBet1->amount,
+                            'balance' => $iBet1->money - $iBet1->bet_bunko - $iBet1->back_money + $iBet1->amount,
+                            'operation_id' => $adminId,
+                            'created_at' => $dateTime2,
+                            'updated_at' => $dateTime2,
+                        ];
+                    }
+
+                    if($iBet1->amount > 0) {
+                        $aUserFreezeMoney[] = [
+                            'user_id' => $iBet1->id,
+                            'game_id' => $iBet1->game_id,
+                            'issue' => $iBet1->issue,
+                            'money' => $iBet1->amount,
+                            'status' => 0,
+                            'created_at' => $dateTime,
+                            'updated_at' => $dateTime,
+                        ];
+                    }
+                    $aUserId[] = $iBet1->id;
+                }
+            }
+            if(!in_array($type,['msnn']))
+                DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataFreeze($aBetAll);
                 if(!empty($aCapital))    Capital::insert($aCapital);
@@ -1197,34 +1223,46 @@ class OpenHistoryController extends Controller
             return ['status' => true,'msg'=> '操作成功'];
         }catch(\Exception $e){
             DB::rollback();
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 9]);
+            Log::info($e->getMessage());
             return ['status' => false,'msg' => '冻结失败'];
         }
     }
 
     //重新开奖
     public function renewLottery(Request $request,$issue,$type){
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'cancel:'.$issue.$type;
+        if($redis->exists($key)){
+            return ['status' => false,'msg' => '冻结,撤单,重新开奖一分钟内只能操作一次'];
+        }
+        $redis->setex($key,61,time());
+        event(new LotteryRenew($request,$issue,$type));
+        return ['status' => true,'msg'=> '操作成功'];
+    }
+
+    //重新开奖
+    public function renewLotteryEvent(Request $request,$issue,$type){
         $aParam = $request->all();
         $number = $this->getOpenLotteryNumber($aParam,$type);
-        if(!$number['status']){
+        if(!$number['status'])
             return $number;
-        }
         $gameInfo = Games::where('code',$type)->first();
-        if(empty($tableSuffix = Games::$aCodeGameName[$type])){
+        if(empty($tableSuffix = Games::$aCodeGameName[$type]))
             return ['status' => false,'msg' => '游戏分类标识错误'];
-        }
         if(DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->value('is_open') != 5){
             $result = $this->freezeOperating($issue,$type,$gameInfo);
-            if(!$result['status']){
+            if(!$result['status'])
                 return $result;
-            }
         }
         return $this->renewLotteryOperating($issue,$type,$gameInfo,$number['number']);
     }
 
     //重新开奖操作
     public function renewLotteryOperating($issue,$type,$gameInfo,$number){
-        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
         DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 7]);
+//        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
 
         DB::beginTransaction();
 
@@ -1286,6 +1324,8 @@ class OpenHistoryController extends Controller
                 return ['status' => true,'msg'=>'操作成功'];
         }catch(\Exception $e){
             DB::rollback();
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 10]);
+            Log::info($e->getMessage());
             return ['status' => false,'msg' => '撤单失败'];
         }
         if(in_array($type,['lhc']))

@@ -173,7 +173,13 @@ class BetDataController extends Controller
                     return "<i class='iconfont'>&#xe696;</i> PC端";
                 } else if($bet->bet_platform == 2){
                     return "<i class='iconfont'>&#xe686;</i> 移动端";
-                } else {
+                } else if($bet->bet_platform == 3){
+                    return "<i class='iconfont'>&#xe686;</i> IOS";
+                } else if($bet->bet_platform == 4){
+                    return "<i class='iconfont'>&#xe686;</i> Android";
+                } else if($bet->bet_platform == 5){
+                    return "<i class='iconfont'>&#xe686;</i> 其它";
+                }  else {
                     return "--";
                 }
             })
@@ -685,6 +691,12 @@ class BetDataController extends Controller
                         return "<i class='iconfont'>&#xe696;</i> PC端";
                     } else if($bet->bet_platform == 2){
                         return "<i class='iconfont'>&#xe686;</i> 移动端";
+                    } else if($bet->bet_platform == 3){
+                        return "<i class='iconfont'>&#xe686;</i> IOS";
+                    } else if($bet->bet_platform == 4){
+                        return "<i class='iconfont'>&#xe686;</i> Android";
+                    } else if($bet->bet_platform == 5){
+                        return "<i class='iconfont'>&#xe686;</i> 其它";
                     } else {
                         return "--";
                     }

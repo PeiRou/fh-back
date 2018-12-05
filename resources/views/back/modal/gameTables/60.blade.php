@@ -5,6 +5,11 @@
         <tr class="firstRow">
             <td valign="middle" rowspan="1" colspan="4" align="center" class="blue-title-table">广东快乐十分</td>
         </tr>
+        <tr class="firstRow">
+            <td valign="middle" rowspan="1" colspan="2" align="center" class="blue-title-table" style="font-size: 13px;padding: 4px !important;">种类</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-title-table" style="font-size: 13px;padding: 4px !important;">赔率</td>
+            <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-title-table" style="font-size: 13px;padding: 4px !important;">退水</td>
+        </tr>
         <tr>
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="deep-blue-td">1-8球号</td>
             <td valign="middle" colspan="1" rowspan="1" align="center" width="200" class="blue-td"></td>

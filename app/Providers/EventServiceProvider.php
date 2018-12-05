@@ -96,7 +96,19 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\BackPusherEvent' => [
             'App\Listeners\BackPusherEventListener',
-        ]
+        ],
+        'App\Events\LotteryFreeze' => [
+            'App\Listeners\LotteryFreezeEventListener',
+        ],
+        'App\Events\LotteryCanceled' => [
+            'App\Listeners\LotteryCanceledEventListener',
+        ],
+        'App\Events\LotteryRenew' => [
+            'App\Listeners\LotteryRenewEventListener',
+        ],
+        'App\Events\LoginEvent' => [
+            'App\Listeners\LoginEventListener',
+        ],
     ];
     /**
      * Register any events for your application.

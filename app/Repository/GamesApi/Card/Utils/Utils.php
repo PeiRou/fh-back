@@ -25,9 +25,9 @@ class Utils
             return;
         }
         if (is_string($msg)) {
-            \Log::info($msg);
+//            \Log::info($msg);
         } else {
-            \Log::info(json_encode($msg));
+//            \Log::info(json_encode($msg));
         }
     }
 

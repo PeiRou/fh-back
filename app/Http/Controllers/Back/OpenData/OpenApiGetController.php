@@ -15,7 +15,12 @@ class OpenApiGetController extends Controller
         if(!empty($this->apiArray[$type])) {
             $http = new Client();
             try {
-                $res = $http->request('get', $this->apiArray[$type] . '&date=' . $date);
+                if(in_array($type,['cqssc','lhc','bjkl8','pk10','gsk3','gd11x5','gxk3','gzk3','hebeik3','hbk3','jsk3'])) {
+                    $res = $http->request('get', $this->apiArray[$type] . '&date=' . $date);
+                }
+                if(in_array($type,['xync','gdkl10'])){
+                    $res = $http->request('get', $this->apiArray[$type]);
+                }
                 $json = json_decode((string)$res->getBody(), true);
                 return response()->json($this->$type($json, $issue));
             } catch (\Exception $e) {
@@ -58,6 +63,8 @@ class OpenApiGetController extends Controller
         'hebeik3' => 'http://api.caipiaokong.cn/lottery/?name=hbks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'hbk3' => 'http://api.caipiaokong.cn/lottery/?name=hubks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
         'jsk3' => 'http://api.caipiaokong.cn/lottery/?name=jsks&format=json&uid=973140&token=10b2f648e496015c7e8f4d82caade52b02d9905d',
+        'xync' => 'http://vip.jiangyuan365.com/K25ae456c03d2df/cqxync-5.json',
+        'gdkl10' => 'http://vip.jiangyuan365.com/K25ae456c03d2df/gdkl10-5.json',
     ];
 
     //强转整形
@@ -118,13 +125,25 @@ class OpenApiGetController extends Controller
         ];
     }
     //重庆幸运农场
-    public function xync($arrCode){
+    public function xync($aJson,$issue){
+        $arrCode = '';
+        foreach ($aJson as $iJson){
+            if($iJson['officialissue'] == $issue){
+                $arrCode = $iJson['code'];
+            }
+        }
+        if(empty($arrCode))
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+
         $arrCode = explode(',',$arrCode);
         return [
             'code' => 200,
             'data'=> [],
-            'status' => false,
-            'msg' => '该彩种暂不支持自动获取',
+            'status' => true,
             'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
@@ -137,13 +156,25 @@ class OpenApiGetController extends Controller
         ];
     }
     //广东快乐十分
-    public function gdkl10($arrCode){
+    public function gdkl10($aJson,$issue){
+        $arrCode = '';
+        foreach ($aJson as $iJson){
+            if($iJson['issue'] == $issue){
+                $arrCode = $iJson['code'];
+            }
+        }
+        if(empty($arrCode))
+            return [
+                'code'=> '201',
+                'status' => false,
+                'msg' => '获取失败，原因1.本期暂未开奖'
+            ];
+
         $arrCode = explode(',',$arrCode);
         return [
             'code' => 200,
             'data'=> [],
-            'status' => false,
-            'msg' => '该彩种暂不支持自动获取',
+            'status' => true,
             'openCode' => $this->strongConversionInt($arrCode),
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],

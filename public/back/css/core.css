@@ -829,3 +829,7 @@ input[readonly]
 .dash .nav-top {
     min-width: 1550px;
 }
+.refreshIp{
+    color:rgb(212,32,233);
+    display: inline-block;
+}

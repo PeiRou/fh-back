@@ -79,6 +79,7 @@ $(function () {
                     return "<span>" + txt + "</span>";
                 }},
             {data: function (data) {
+                    txt = '';
                     if(data.is_open==1)
                         txt = "已开奖";
                     else if(data.is_open==5)
@@ -87,8 +88,18 @@ $(function () {
                         txt = "已撤单";
                     else if(data.is_open==7)
                         txt = "重新开奖中";
-                    else
+                    else if(data.is_open==0)
                         txt = "未开奖";
+                    else if(data.is_open==8)
+                        txt = "冻结中";
+                    else if(data.is_open==9)
+                        txt = "冻结失败";
+                    else if(data.is_open==10)
+                        txt = "重新开奖失败";
+                    else if(data.is_open==11)
+                        txt = "撤单中";
+                    else if(data.is_open==12)
+                        txt = "撤单失败";
                     return '<span>'+txt+'</span>';
                 }},
             {data: function (data) {
@@ -104,8 +115,12 @@ $(function () {
                     }else if(data.is_open == "5"){
                         txt = "<li onclick='canceled("+data.issue+")'>撤单</li>" +
                             "<li onclick='openssc("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
-                    }else if(data.is_open == "7"){
-                        "<li onclick='openssc("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
+                    }else if(data.is_open == "10"){
+                        txt = "<li onclick='openssc("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
+                    }else if(data.is_open == "9"){
+                        txt = "<li onclick='freeze("+data.issue+")'>冻结</li>" ;
+                    }else if(data.is_open == "12"){
+                        txt = "<li onclick='canceled("+data.issue+")'>撤单</li>" ;
                     }
                     return "<ul class='control-menu'>" + txt + "</ul>";
                 }}

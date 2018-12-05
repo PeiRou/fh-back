@@ -14,6 +14,20 @@ class Games extends Model
         return self::select('game_id','game_name')->where('status','=',1)->get();
     }
 
+    //各个彩种is_open状态
+    public static $gameIsOpen = [
+        '0' => '未开奖',
+        '1' => '已开奖',
+        '5' => '已冻结',
+        '6' => '已撤单',
+        '7' => '重新开奖中',
+        '8' => '冻结中',
+        '9' => '冻结失败',
+        '10' => '重新开奖失败',
+        '11' => '撤单中',
+        '12' => '撤单失败',
+    ];
+
     public static $aCodeGameName = [
         'jspk10' => 'mssc',     //秒速赛车
         'pk10' => 'bjpk10',     //北京赛车

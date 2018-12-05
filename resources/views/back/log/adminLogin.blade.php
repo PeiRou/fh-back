@@ -61,7 +61,7 @@
                 <th>登录日期</th>
                 <th>IP</th>
                 <th style="min-width: 160px">IP信息</th>
-                <th>来源</th>
+                {{--<th>来源</th>--}}
                 <th>登录域名</th>
                 <th>退出时间</th>
             </tr>
@@ -73,5 +73,5 @@
 @section('page-js')
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
-    <script src="/back/js/pages/log_login.js"></script>
+    <script src="/back/js/pages/log_adminLogin.js"></script>
 @endsection

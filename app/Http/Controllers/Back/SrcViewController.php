@@ -834,6 +834,10 @@ class SrcViewController extends Controller
     {
         return view('back.log.login');
     }
+    //管理员登录日志
+    public function adminLoginLog(){
+        return view('back.log.adminLogin');
+    }
     //操作日志
     public function handleLog()
     {
