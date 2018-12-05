@@ -1111,7 +1111,8 @@ class OpenHistoryController extends Controller
 
     //冻结操作
     public function freezeOperating($issue,$type,$gameInfo){
-        DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 8]);
+        if(!in_array($type,['msnn']))
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 8]);
         $aBet = Bets::getBetUserDrawingByIssue($issue,$gameInfo->game_id);
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
         $aCapitalFreeze = [];
