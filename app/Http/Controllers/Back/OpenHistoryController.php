@@ -1013,13 +1013,13 @@ class OpenHistoryController extends Controller
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
         if(!in_array($type,['msnn']))
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 11]);
-        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id,false);
-
-        $aAgentBackwater = AgentBackwater::getAgentBackwaterMoney($gameInfo->game_id,$issue);
-
         DB::beginTransaction();
 
         try {
+            $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id,false);
+
+            $aAgentBackwater = AgentBackwater::getAgentBackwaterMoney($gameInfo->game_id,$issue);
+
             if(!in_array($type,['msnn']))
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
             Bets::updateBetStatus($issue, $gameInfo->game_id);
@@ -1113,94 +1113,94 @@ class OpenHistoryController extends Controller
     public function freezeOperating($issue,$type,$gameInfo){
         if(!in_array($type,['msnn']))
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 8]);
-        $aBet = Bets::getBetUserDrawingByIssue($issue,$gameInfo->game_id);
-        $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
-        $aCapitalFreeze = [];
-        $aCapital = [];
-        $aCapitalBack = [];
-        $aUserFreezeMoney = [];
-        $adminId = Session::get('account_id');
-        $dateTime = date('Y-m-d H:i:s');
-        $dateTime1 = date('Y-m-d H:i:s',time()+1);
-        $dateTime2 = date('Y-m-d H:i:s',time()+2);
-        $aUserId = [];
-        if(!empty($aBetAll)){
-            foreach ($aBetAll as $kBet => $iBet) {
-                if($iBet->bet_bunko > 0) {
-                    $aCapital[] = [
-                        'to_user' => $iBet->id,
-                        'user_type' => 'user',
-                        'order_id' => $this->randOrder('F'),
-                        'type' => 't27',
-                        'rechargesType' => 0,
-                        'game_id' => $iBet->game_id,
-                        'game_name' => $gameInfo->game_name,
-                        'issue' => $iBet->issue,
-                        'money' => -$iBet->bet_bunko,
-                        'balance' => $iBet->money - $iBet->bet_bunko,
-                        'operation_id' => $adminId,
-                        'created_at' => $dateTime,
-                        'updated_at' => $dateTime,
-                    ];
-                }
-                if($iBet->back_money > 0){
-                    $aCapitalBack[] = [
-                        'to_user' => $iBet->id,
-                        'user_type' => 'user',
-                        'order_id' => $this->randOrder('FC'),
-                        'type' => 't29',
-                        'rechargesType' => 0,
-                        'game_id' => $iBet->game_id,
-                        'game_name' => $gameInfo->game_name,
-                        'issue' => $iBet->issue,
-                        'money' => -$iBet->back_money,
-                        'balance' => $iBet->money - $iBet->bet_bunko - $iBet->back_money,
-                        'operation_id' => $adminId,
-                        'created_at' => $dateTime1,
-                        'updated_at' => $dateTime1,
-                    ];
-                }
-            }
-        }
-        if(!empty($aBet)) {
-            foreach ($aBet as $kBet1 => $iBet1) {
-                $amount = empty($iBet1->amount)?0:$iBet1->amount;
-                if(!empty($amount)) {
-                    $aCapitalFreeze[] = [
-                        'to_user' => $iBet1->id,
-                        'user_type' => 'user',
-                        'order_id' => null,
-                        'type' => 't25',
-                        'rechargesType' => 0,
-                        'game_id' => $iBet1->game_id,
-                        'game_name' => $gameInfo->game_name,
-                        'issue' => $iBet1->issue,
-                        'money' => $iBet1->amount,
-                        'balance' => $iBet1->money - $iBet1->bet_bunko - $iBet1->back_money + $iBet1->amount,
-                        'operation_id' => $adminId,
-                        'created_at' => $dateTime2,
-                        'updated_at' => $dateTime2,
-                    ];
-                }
-
-                if($iBet1->amount > 0) {
-                    $aUserFreezeMoney[] = [
-                        'user_id' => $iBet1->id,
-                        'game_id' => $iBet1->game_id,
-                        'issue' => $iBet1->issue,
-                        'money' => $iBet1->amount,
-                        'status' => 0,
-                        'created_at' => $dateTime,
-                        'updated_at' => $dateTime,
-                    ];
-                }
-                $aUserId[] = $iBet1->id;
-            }
-        }
 
         DB::beginTransaction();
 
         try {
+            $aBet = Bets::getBetUserDrawingByIssue($issue,$gameInfo->game_id);
+            $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id);
+            $aCapitalFreeze = [];
+            $aCapital = [];
+            $aCapitalBack = [];
+            $aUserFreezeMoney = [];
+            $adminId = Session::get('account_id');
+            $dateTime = date('Y-m-d H:i:s');
+            $dateTime1 = date('Y-m-d H:i:s',time()+1);
+            $dateTime2 = date('Y-m-d H:i:s',time()+2);
+            $aUserId = [];
+            if(!empty($aBetAll)){
+                foreach ($aBetAll as $kBet => $iBet) {
+                    if($iBet->bet_bunko > 0) {
+                        $aCapital[] = [
+                            'to_user' => $iBet->id,
+                            'user_type' => 'user',
+                            'order_id' => $this->randOrder('F'),
+                            'type' => 't27',
+                            'rechargesType' => 0,
+                            'game_id' => $iBet->game_id,
+                            'game_name' => $gameInfo->game_name,
+                            'issue' => $iBet->issue,
+                            'money' => -$iBet->bet_bunko,
+                            'balance' => $iBet->money - $iBet->bet_bunko,
+                            'operation_id' => $adminId,
+                            'created_at' => $dateTime,
+                            'updated_at' => $dateTime,
+                        ];
+                    }
+                    if($iBet->back_money > 0){
+                        $aCapitalBack[] = [
+                            'to_user' => $iBet->id,
+                            'user_type' => 'user',
+                            'order_id' => $this->randOrder('FC'),
+                            'type' => 't29',
+                            'rechargesType' => 0,
+                            'game_id' => $iBet->game_id,
+                            'game_name' => $gameInfo->game_name,
+                            'issue' => $iBet->issue,
+                            'money' => -$iBet->back_money,
+                            'balance' => $iBet->money - $iBet->bet_bunko - $iBet->back_money,
+                            'operation_id' => $adminId,
+                            'created_at' => $dateTime1,
+                            'updated_at' => $dateTime1,
+                        ];
+                    }
+                }
+            }
+            if(!empty($aBet)) {
+                foreach ($aBet as $kBet1 => $iBet1) {
+                    $amount = empty($iBet1->amount)?0:$iBet1->amount;
+                    if(!empty($amount)) {
+                        $aCapitalFreeze[] = [
+                            'to_user' => $iBet1->id,
+                            'user_type' => 'user',
+                            'order_id' => null,
+                            'type' => 't25',
+                            'rechargesType' => 0,
+                            'game_id' => $iBet1->game_id,
+                            'game_name' => $gameInfo->game_name,
+                            'issue' => $iBet1->issue,
+                            'money' => $iBet1->amount,
+                            'balance' => $iBet1->money - $iBet1->bet_bunko - $iBet1->back_money + $iBet1->amount,
+                            'operation_id' => $adminId,
+                            'created_at' => $dateTime2,
+                            'updated_at' => $dateTime2,
+                        ];
+                    }
+
+                    if($iBet1->amount > 0) {
+                        $aUserFreezeMoney[] = [
+                            'user_id' => $iBet1->id,
+                            'game_id' => $iBet1->game_id,
+                            'issue' => $iBet1->issue,
+                            'money' => $iBet1->amount,
+                            'status' => 0,
+                            'created_at' => $dateTime,
+                            'updated_at' => $dateTime,
+                        ];
+                    }
+                    $aUserId[] = $iBet1->id;
+                }
+            }
             if(!in_array($type,['msnn']))
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
             if(!empty($aBetAll)){
