@@ -1224,6 +1224,7 @@ class OpenHistoryController extends Controller
         }catch(\Exception $e){
             DB::rollback();
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 9]);
+            Log::info($e->getMessage());
             return ['status' => false,'msg' => '冻结失败'];
         }
     }
