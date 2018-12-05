@@ -5,6 +5,11 @@
     <tr class="firstRow">
         <td valign="middle" rowspan="1" colspan="4" align="center" class="blue-title-table">广西快3</td>
     </tr>
+    <tr class="firstRow">
+        <td valign="middle" rowspan="1" colspan="2" align="center" class="blue-title-table" style="font-size: 13px;padding: 4px !important;">种类</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-title-table" style="font-size: 13px;padding: 4px !important;">赔率</td>
+        <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-title-table" style="font-size: 13px;padding: 4px !important;">退水</td>
+    </tr>
     <tr>
         <td valign="middle" colspan="1" rowspan="9" align="center" class="deep-blue-td">和值</td>
         <td valign="middle" colspan="1" rowspan="1" align="center" class="blue-td">大小单双</td>
