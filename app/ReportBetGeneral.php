@@ -112,7 +112,8 @@ class ReportBetGeneral extends Model
         $resultB = ReportBetMember::conditionalConnection($bSql,$bParam,0);
         $bSql = $resultB['aSql'];
         $aSql = "SELECT `sum`.*,`count`.`member_count` FROM (".$aSql.") AS `sum` JOIN (".$bSql.") AS `count` ON `count`.`link` = `sum`.`link`";
-        return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']))[0];
+        $res = DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']));
+        return empty($res) ? null : $res[0];
     }
 
     public static function reportQuerySumSql($aParam){
