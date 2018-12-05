@@ -310,6 +310,7 @@ class openHistoryController extends Controller
         });
         $lhcCount = $lhcSql->count();
         $lhc = $lhcSql->orderBy('id','DESC')->skip($param['start'])->take($param['length'])->get();
+        $gameIsOpen = Games::$gameIsOpen;
         return DataTables::of($lhc)
             ->editColumn('issue',function ($lhc){
                 return "<b style='color: #".$lhc->color.";'>$lhc->issue</b>";
@@ -335,13 +336,8 @@ class openHistoryController extends Controller
             ->editColumn('n7',function ($lhc){
                 return "<span class='lhc-sb-".$lhc->n7_sb."'>$lhc->n7</span>";
             })
-            ->editColumn('is_open',function ($lhc){
-                if($lhc->is_open == 1){
-                    return '已开奖';
-                }
-                if($lhc->is_open == 0){
-                    return '暂未开奖';
-                }
+            ->editColumn('is_open',function ($lhc) use($gameIsOpen){
+                return $gameIsOpen[$lhc->is_open];
             })
             ->editColumn('control',function ($lhc){
                 if($lhc->is_open == 0){
@@ -354,16 +350,29 @@ class openHistoryController extends Controller
                 if($lhc->is_open == 1){
                     $html = "<ul class='control-menu'>";
                     $html .= "<li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>";
-                    if(env('TEST') == 1) {
-                        $html .= "<li onclick='canceled(\"$lhc->issue\")'>撤单</li>";
-                        $html .= "<li onclick='freeze(\"$lhc->issue\")'>冻结</li>";
-                    }
+                    $html .= "<li onclick='canceled(\"$lhc->issue\")'>撤单</li>";
+                    $html .= "<li onclick='freeze(\"$lhc->issue\")'>冻结</li>";
                     $html .= "</ul>";
                     return $html;
                 }
                 if($lhc->is_open == 5){
                     return "<ul class='control-menu'>
                         <li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>
+                        </ul>";
+                }
+                if($lhc->is_open == 9){
+                    return "<ul class='control-menu'>
+                        <li onclick='freeze(\"$lhc->issue\")'>冻结</li>
+                        </ul>";
+                }
+                if($lhc->is_open == 10){
+                    return "<ul class='control-menu'>
+                        <li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>
+                        </ul>";
+                }
+                if($lhc->is_open == 12){
+                    return "<ul class='control-menu'>
+                        <li onclick='canceled(\"$lhc->issue\")'>撤单</li>
                         </ul>";
                 }
             })
@@ -379,6 +388,7 @@ class openHistoryController extends Controller
         $HISModel = $this->getPostData('game_xylhc',$param['issue'],$param['issuedate']);
         $lhcCount = $HISModel->count();
         $lhc = $HISModel->orderBy('id','desc')->skip($param['start'])->take($param['length'])->get();
+        $gameIsOpen = Games::$gameIsOpen;
         return DataTables::of($lhc)
             ->editColumn('issue',function ($lhc){
                 return "<b style='color: #".$lhc->color.";'>$lhc->issue</b>";
@@ -404,13 +414,8 @@ class openHistoryController extends Controller
             ->editColumn('n7',function ($lhc){
                 return "<span class='lhc-sb-".$lhc->n7_sb."'>$lhc->n7</span>";
             })
-            ->editColumn('is_open',function ($lhc){
-                if($lhc->is_open == 1){
-                    return '已开奖';
-                }
-                if($lhc->is_open == 0){
-                    return '暂未开奖';
-                }
+            ->editColumn('is_open',function ($lhc) use($gameIsOpen){
+                return $gameIsOpen[$lhc->is_open];
             })
             ->editColumn('control',function ($lhc){
                 if($lhc->is_open == 0){
@@ -433,6 +438,21 @@ class openHistoryController extends Controller
                 if($lhc->is_open == 5){
                     return "<ul class='control-menu'>
                         <li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>
+                        </ul>";
+                }
+                if($lhc->is_open == 9){
+                    return "<ul class='control-menu'>
+                        <li onclick='freeze(\"$lhc->issue\")'>冻结</li>
+                        </ul>";
+                }
+                if($lhc->is_open == 10){
+                    return "<ul class='control-menu'>
+                        <li onclick='reOpen(\"$lhc->id\")'>重新开奖</li>
+                        </ul>";
+                }
+                if($lhc->is_open == 12){
+                    return "<ul class='control-menu'>
+                        <li onclick='canceled(\"$lhc->issue\")'>撤单</li>
                         </ul>";
                 }
             })

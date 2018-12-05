@@ -15,7 +15,7 @@ class Games extends Model
     }
 
     //各个彩种is_open状态
-    public $gameIsOpen = [
+    public static $gameIsOpen = [
         '0' => '未开奖',
         '1' => '已开奖',
         '5' => '已冻结',
