@@ -1011,7 +1011,8 @@ class OpenHistoryController extends Controller
 
     //冻结后的撤单操作
     public function canceledBetIssueOperating($issue,$type,$gameInfo){
-        DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 11]);
+        if(!in_array($type,['msnn']))
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 11]);
         $aBetAll = Bets::getBetAndUserByIssueAll($issue,$gameInfo->game_id,false);
 
         $aAgentBackwater = AgentBackwater::getAgentBackwaterMoney($gameInfo->game_id,$issue);
@@ -1082,7 +1083,8 @@ class OpenHistoryController extends Controller
         }catch(\Exception $e){
             Log::info($e->getMessage());
             DB::rollback();
-            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 12]);
+            if(!in_array($type,['msnn']))
+                DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 12]);
             return ['status' => false,'msg' => '撤单失败'];
         }
     }
