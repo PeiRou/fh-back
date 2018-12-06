@@ -47,7 +47,7 @@ class next_open_msjsk3 extends Command
         $redis = Redis::connection();
         $redis->select(0);
         $redis_issue = $redis->get('msjsk3:issue');
-        $redis_needopen = $redis->exists('msjsk3:needopen')?$redis->get('msjsk3:needopen'):'';
+        $redis_needopen = $redis->exists($this->code.':needopen')?$redis->get($this->code.':needopen'):'';
         $redis_next_issue = $redis->get('msjsk3:nextIssue');
         //在redis上的差距
         $redis_gapnum = $redis->get('msjsk3:gapnum');
@@ -62,7 +62,7 @@ class next_open_msjsk3 extends Command
         $res = $excel->getNextIssue($table);
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
-            $redis->set('msjsk3:needopen','on');
+            $redis->set($this->code.':needopen','on');
             $redis->set('msjsk3:gapnum',$gapnum);
             return 'Fail';
         }else{
@@ -72,7 +72,7 @@ class next_open_msjsk3 extends Command
                 return 'ing';
             }
             $redis->setex($key,60,'ing');
-            $redis->set('msjsk3:needopen','');
+            $redis->set($this->code.':needopen','');
         }
         //當期獎期
         $needOpenIssue = $res->issue;

@@ -50,7 +50,7 @@ class next_open_paoma extends Command
         $redis = Redis::connection();
         $redis->select(0);
         $redis_issue = $redis->get('paoma:issue');
-        $redis_needopen = $redis->exists('paoma:needopen')?$redis->get('paoma:needopen'):'';
+        $redis_needopen = $redis->exists($this->code.':needopen')?$redis->get($this->code.':needopen'):'';
         $redis_next_issue = $redis->get('paoma:nextIssue');
         //在redis上的差距
         $redis_gapnum = $redis->get('paoma:gapnum');
@@ -65,7 +65,7 @@ class next_open_paoma extends Command
         $res = $excel->getNextIssue($table);
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
-            $redis->set('paoma:needopen','on');
+            $redis->set($this->code.':needopen','on');
             $redis->set('paoma:gapnum',$gapnum);
             return 'Fail';
         }else{
@@ -75,7 +75,7 @@ class next_open_paoma extends Command
                 return 'ing';
             }
             $redis->setex($key,60,'ing');
-            $redis->set('paoma:needopen','');
+            $redis->set($this->code.':needopen','');
         }
         //當期獎期
         $needOpenIssue = $res->issue;

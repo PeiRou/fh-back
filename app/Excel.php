@@ -311,11 +311,8 @@ class Excel
         return $res;
     }
     //取得官方开奖
-    public function getGuanIssueNum($needOpenIssue,$redis_issue,$type){
-        if($needOpenIssue == $redis_issue)
-            $url = Config::get('website.guanIssueServerUrl').$type;
-        else
-            $url = Config::get('website.guanIssueServerUrl').$type.'?issue='.$needOpenIssue;
+    public function getGuanIssueNum($needOpenIssue,$type){
+        $url = Config::get('website.guanIssueServerUrl').$type.'?issue='.$needOpenIssue;
         $res = json_decode(file_get_contents($url), true);
         return $res;
     }
@@ -343,6 +340,17 @@ class Excel
             return false;
         foreach ($tmp as&$value)
             $res = $value;
+        return $res;
+    }
+    //取得目前未开奖奖期组
+    public function getNeedAarrayIssue($table){
+        if(empty($table))
+            return false;
+        $today = date('Y-m-d H:i:s',time());
+        $yesterday = date('Y-m-d H:i:s',strtotime('-1 day'));
+        $res = DB::connection('mysql::write')->select("SELECT issue,opentime FROM {$table} WHERE is_open=0 and opentime >='".$yesterday."' and opentime <='".$today."'");
+        if(empty($res))
+            return false;
         return $res;
     }
     //取得目前开盘奖期
@@ -563,5 +571,39 @@ class Excel
         }
         $order_id = $order_id_main . str_pad((100 - $order_id_sum % 100) % 100,2,'0',STR_PAD_LEFT);
         return $fix.$order_id;
+    }
+
+    //官方彩种获取开号
+    public function checkOpenGuan($table,$needOpenIssue,$code,$gapnum,$redis_gapnum,$redis){
+        $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
+        //如果官方數據庫已經查不到需要追朔的獎期，則停止追朔
+        if(!isset($html['issue'])){                         //先从最新需要开奖的奖期查起
+            if(($gapnum == $redis_gapnum) && !empty($redis_gapnum)){
+                $redis->set($code.':needopen','on');
+                return 'no have';
+            }else{
+                //检查不是当期需要追号的开奖
+                $res = $this->getNeedMinIssue($table);     //在从旧的需要开奖的奖期查起
+                $needOpenIssue = $res->issue;
+                $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
+                if(!isset($html['issue'])){
+                    $res = $this->getNeedAarrayIssue($table);     //在从旧的需要开奖的奖期查起
+                    for($i=0; $i<count($res); $i++){
+                        $needOpenIssue = $res[$i]->issue;
+                        $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
+                        if(!isset($html['issue']))
+                            continue;
+                        else {
+                            $i = count($res);
+                        }
+                        if($i == count($res)){   //如果全部都没有可以录奖的
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        $html['needOpenIssue'] = $needOpenIssue;
+        return $html;
     }
 }

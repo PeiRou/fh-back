@@ -51,7 +51,7 @@ class next_open_pcdd extends Command
         $redis = Redis::connection();
         $redis->select(0);
         $redis_issue = $redis->get('pcdd:issue');
-        $redis_needopen = $redis->exists('pcdd:needopen')?$redis->get('pcdd:needopen'):'';
+        $redis_needopen = $redis->exists($this->code.':needopen')?$redis->get($this->code.':needopen'):'';
         $redis_next_issue = $redis->get('pcdd:nextIssue');
         //在redis上的差距
         $redis_gapnum = $redis->get('pcdd:gapnum');
@@ -66,7 +66,7 @@ class next_open_pcdd extends Command
         $res = $excel->getNextIssue($table);
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
-            $redis->set('pcdd:needopen','on');
+            $redis->set($this->code.':needopen','on');
             $redis->set('pcdd:gapnum',$gapnum);
             return 'Fail';
         }else{
@@ -76,28 +76,16 @@ class next_open_pcdd extends Command
                 return 'ing';
             }
             $redis->setex($key,60,'ing');
-            $redis->set('pcdd:needopen','');
+            $redis->set($this->code.':needopen','');
         }
         //當期獎期
         $needOpenIssue = $res->issue;
         $openTime = (string)$res->opentime;
 
         try {
-            $html = $excel->getGuanIssueNum($needOpenIssue,$redis_issue,$this->code);
-            //如果官方數據庫已經查不到需要追朔的獎期，則停止追朔
-            if(!isset($html['issue'])){
-                if(($gapnum == $redis_gapnum) && !empty($redis_gapnum)){
-                    $redis->set($this->code.':needopen','on');
-                    return 'no have';
-                }else{
-                    $res = $excel->getNeedMinIssue($table);
-                    $needOpenIssue = $res->issue;
-                    $openTime = (string)$res->opentime;
-                    $html = $excel->getGuanIssueNum($needOpenIssue,$redis_issue,$this->code);
-                    if(!isset($html))
-                        return 'no have';
-                }
-            }
+            //官方彩种获取开号
+            $html = $excel->checkOpenGuan($table,$needOpenIssue,$this->code,$gapnum,$redis_gapnum,$redis);
+            $needOpenIssue = $html['needOpenIssue'];
             //清除昨天长龙，在录第一期的时候清掉
             if (substr($openTime,-8) == '09:05:00') {
                 DB::table('clong_kaijian2')->where('lotteryid', $this->gameId)->delete();
@@ -117,13 +105,13 @@ class next_open_pcdd extends Command
                         $redis->set($key, $html['issue']);
                         $redis->set('pcdd:gapnum',$gapnum);
                         $this->clong->setKaijian('pcdd', 2, $html['nums']);
+                    }else{
+                        $key = $this->code.'ing:'.$res->issue;
+                        $redis->setex($key,2,'ing');
                     }
                 } catch (\Exception $exception) {
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
-            }else{
-                $key = $this->code.'ing:'.$res->issue;
-                $redis->setex($key,2,'ing');
             }
         } catch (\Exception $exception) {
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
