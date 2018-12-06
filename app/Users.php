@@ -115,11 +115,30 @@ WHERE `users`.`testFlag` = 0 ";
         foreach ($aData as $kData => $iData){
             if($iData->bet_bunko > 0) {
                 if (isset($aArray[$iData->id]) && array_key_exists($iData->id, $aArray)) {
-                    $aArray[$iData->id]['money'] += -$iData->bet_bunko - $iData->back_money;
+                    $aArray[$iData->id]['money'] += -$iData->bet_bunko;
                 } else {
                     $aArray[$iData->id] = [
                         'id' => $iData->id,
-                        'money' => -$iData->bet_bunko - $iData->back_money,
+                        'money' => -$iData->bet_bunko,
+                    ];
+                }
+            }
+        }
+        if(empty($aArray))   return true;
+        return DB::update(self::updateBatchStitching('users',$aArray,['money'],'id'));
+    }
+
+    //冻结时返回下注后结算前状态
+    public static function editBatchUserMoneyDataBackWater($aData){
+        $aArray = [];
+        foreach ($aData as $kData => $iData){
+            if($iData->back_money > 0) {
+                if (isset($aArray[$iData->id]) && array_key_exists($iData->id, $aArray)) {
+                    $aArray[$iData->id]['money'] += -$iData->back_money;
+                } else {
+                    $aArray[$iData->id] = [
+                        'id' => $iData->id,
+                        'money' => -$iData->back_money,
                     ];
                 }
             }
