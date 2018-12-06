@@ -38,8 +38,7 @@ class BaseRepository
     }
     private function update(){
         if(!empty($this->param) && is_array($this->param)){
-
-            p(LogHandle::where('id', $this->id)->update($this->param),1);
+            LogHandle::where('id', $this->id)->update($this->param);
         }
     }
     //改变用户金额
