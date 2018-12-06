@@ -135,14 +135,12 @@ class Excel
                     return 1;
                 }
             }
-            \Log::info(1);
             $capData = [];
             $capUsers = [];
             $ii = 0;
             foreach ($getAfterUser as&$val){
                 $capUsers[$val->id] = $val->money;
             }
-            \Log::info($get);
             //新增有返奖的用户的资金明细
             foreach ($get as $i){
                 $tmpCap = [];
@@ -165,7 +163,6 @@ class Excel
                 $ii ++;
             }
             krsort($capData);
-            \Log::info($capData);
             $capIns = DB::table('capital')->insert($capData);
             if($capIns != 1){
                 return 1;
