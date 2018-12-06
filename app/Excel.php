@@ -125,11 +125,9 @@ class Excel
                 $sql .= "WHEN $i->user_id THEN $i->back_money ";
             }
             $getAfterUser = DB::connection('mysql::write')->table('users')->select('id','money')->whereIn('id',$users)->get();
-            \Log::info($getAfterUser);
             $ids = implode(',',$users);
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
-                \Log::info($sql);
                 $up = DB::connection('mysql::write')->statement($sql);
                 if($up != 1){
                     return 1;
