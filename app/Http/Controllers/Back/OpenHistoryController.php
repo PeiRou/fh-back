@@ -16,10 +16,10 @@ use App\Games;
 use App\Helpers\LHC_SX;
 use App\UserFreezeMoney;
 use App\Users;
-use Illuminate\Contracts\Logging\Log;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -951,6 +951,7 @@ class OpenHistoryController extends Controller
         if(empty($iUser))
             return response()->json(['status' => false,'msg' => '用户不存在']);
 
+        $money = $iBet->bet_money;
         $iCapital = [
             'to_user' => $iBet->user_id,
             'user_type' => 'user',
@@ -962,16 +963,43 @@ class OpenHistoryController extends Controller
             'playcate_id' => $iBet->playcate_id,
             'playcate_name' => $iBet->playcate_name,
             'issue' => $iBet->issue,
-            'money' => $iBet->bet_money,
-            'balance' => $iUser->money + $iBet->bet_money,
+            'money' => $money,
+            'balance' => $iUser->money + $money,
             'operation_id' => $adminId,
             'created_at' => $dateTime,
             'updated_at' => $dateTime,
         ];
+        $iCapital1 = [];
+        if(in_array($iBet->game_id,[90,91])) {
+            $money += $iBet->freeze_money;
+            $dateTime1 = date('Y-m-d H:i:s',time()+1);
+            $iCapital1 = [
+                'to_user' => $iBet->user_id,
+                'user_type' => 'user',
+                'order_id' => 'CN'.substr($iBet->order_id,1),
+                'type' => 't26',
+                'rechargesType' => 0,
+                'game_id' => $iBet->game_id,
+                'game_name' => $iBet->game_name,
+                'playcate_id' => $iBet->playcate_id,
+                'playcate_name' => $iBet->playcate_name,
+                'issue' => $iBet->issue,
+                'money' => $money,
+                'balance' => $iUser->money + $money,
+                'operation_id' => $adminId,
+                'created_at' => $dateTime1,
+                'updated_at' => $dateTime1,
+            ];
+        }
         DB::beginTransaction();
         $result1 = Capital::insert($iCapital);
-        $result2 = Users::where('id',$iBet->user_id)->increment('money',$iBet->bet_money);
-        $result3 = Bets::where('order_id',$orderId)->delete();
+        if(!empty($iCapital1)) Capital::insert($iCapital1);
+        $result2 = Users::where('id', $iBet->user_id)->increment('money', $money);
+        $result3 = Bets::where('order_id',$orderId)->update([
+            'bunko' =>  DB::raw("bet_money"),
+            'nn_view_money' => 0
+        ]);
+
         if($result1 && $result2 && $result3){
             DB::commit();
             return response()->json(['status' => true,'msg' => '']);
@@ -1040,7 +1068,7 @@ class OpenHistoryController extends Controller
                         'game_id' => $gameInfo->game_id,
                         'game_name' => $gameInfo->game_name,
                         'issue' => $iBet->issue,
-                        'money' => $iBet->bet_money - $iBet->back_money,
+                        'money' => $iBet->bet_money,
                         'balance' => $iBet->money + $iBet->bet_money - $iBet->back_money,
                         'operation_id' => $adminId,
                         'created_at' => $dateTime4,
@@ -1205,6 +1233,7 @@ class OpenHistoryController extends Controller
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataFreeze($aBetAll);
+                Users::editBatchUserMoneyDataBackWater($aBetAll);
                 if(!empty($aCapital))    Capital::insert($aCapital);
                 if(!empty($aCapitalBack)) Capital::insert($aCapitalBack);
             }
