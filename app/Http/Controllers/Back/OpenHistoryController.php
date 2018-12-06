@@ -970,8 +970,18 @@ class OpenHistoryController extends Controller
         ];
         DB::beginTransaction();
         $result1 = Capital::insert($iCapital);
-        $result2 = Users::where('id',$iBet->user_id)->increment('money',$iBet->bet_money);
-        $result3 = Bets::where('order_id',$orderId)->update(['bunko' =>  DB::raw("bet_money")]);
+        if(in_array($iBet->game_id,[90,91])) {
+            $result2 = Users::where('id', $iBet->user_id)->increment('money', $iBet->bet_money + $iBet->freeze_money);
+            $result3 = Bets::where('order_id',$orderId)->update([
+                'bunko' =>  DB::raw("bet_money"),
+                'nn_view_money' => 0
+            ]);
+        }else{
+            $result2 = Users::where('id', $iBet->user_id)->increment('money', $iBet->bet_money);
+            $result3 = Bets::where('order_id',$orderId)->update([
+                'bunko' =>  DB::raw("bet_money")
+            ]);
+        }
         if($result1 && $result2 && $result3){
             DB::commit();
             return response()->json(['status' => true,'msg' => '']);
