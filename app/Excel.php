@@ -117,6 +117,8 @@ class Excel
     private function reBackUser($gameId,$issue,$gameName=''){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00000001)->groupBy('user_id')->get();
         if($get){
+            if (count($get)==0)
+                return 1;
             //更新返奖的用户馀额
             $sql = "UPDATE users SET money = money+ CASE id ";
             $users = [];
