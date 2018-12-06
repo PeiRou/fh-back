@@ -951,6 +951,9 @@ class OpenHistoryController extends Controller
         if(empty($iUser))
             return response()->json(['status' => false,'msg' => '用户不存在']);
 
+        $money = $iBet->bet_money;
+        if(in_array($iBet->game_id,[90,91]))
+            $money += $iBet->freeze_money;
         $iCapital = [
             'to_user' => $iBet->user_id,
             'user_type' => 'user',
@@ -962,26 +965,19 @@ class OpenHistoryController extends Controller
             'playcate_id' => $iBet->playcate_id,
             'playcate_name' => $iBet->playcate_name,
             'issue' => $iBet->issue,
-            'money' => $iBet->bet_money,
-            'balance' => $iUser->money + $iBet->bet_money,
+            'money' => $money,
+            'balance' => $iUser->money + $money,
             'operation_id' => $adminId,
             'created_at' => $dateTime,
             'updated_at' => $dateTime,
         ];
         DB::beginTransaction();
         $result1 = Capital::insert($iCapital);
-        if(in_array($iBet->game_id,[90,91])) {
-            $result2 = Users::where('id', $iBet->user_id)->increment('money', $iBet->bet_money + $iBet->freeze_money);
-            $result3 = Bets::where('order_id',$orderId)->update([
-                'bunko' =>  DB::raw("bet_money"),
-                'nn_view_money' => 0
-            ]);
-        }else{
-            $result2 = Users::where('id', $iBet->user_id)->increment('money', $iBet->bet_money);
-            $result3 = Bets::where('order_id',$orderId)->update([
-                'bunko' =>  DB::raw("bet_money")
-            ]);
-        }
+        $result2 = Users::where('id', $iBet->user_id)->increment('money', $money);
+        $result3 = Bets::where('order_id',$orderId)->update([
+            'bunko' =>  DB::raw("bet_money"),
+            'nn_view_money' => 0
+        ]);
         if($result1 && $result2 && $result3){
             DB::commit();
             return response()->json(['status' => true,'msg' => '']);
