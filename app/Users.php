@@ -152,11 +152,11 @@ WHERE `users`.`testFlag` = 0 ";
         $aArray = [];
         foreach ($aData as $kData => $iData){
             if(isset($aArray[$iData->id]) && array_key_exists($iData->id,$aArray)){
-                $aArray[$iData->id]['money'] += $iData->bet_money;
+                $aArray[$iData->id]['money'] += $iData->bet_money - $iData->back_money;
             }else{
                 $aArray[$iData->id] = [
                     'id' => $iData->id,
-                    'money' => $iData->bet_money,
+                    'money' => $iData->bet_money - $iData->back_money,
                 ];
             }
         }
