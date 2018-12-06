@@ -955,7 +955,7 @@ class OpenHistoryController extends Controller
             'to_user' => $iBet->user_id,
             'user_type' => 'user',
             'order_id' => 'CN'.substr($iBet->order_id,1),
-            'type' => 't16',
+            'type' => 't02',
             'rechargesType' => 0,
             'game_id' => $iBet->game_id,
             'game_name' => $iBet->game_name,
@@ -971,7 +971,7 @@ class OpenHistoryController extends Controller
         DB::beginTransaction();
         $result1 = Capital::insert($iCapital);
         $result2 = Users::where('id',$iBet->user_id)->increment('money',$iBet->bet_money);
-        $result3 = Bets::where('order_id',$orderId)->delete();
+        $result3 = Bets::where('order_id',$orderId)->update(['bunko' =>  DB::raw("bet_money")]);
         if($result1 && $result2 && $result3){
             DB::commit();
             return response()->json(['status' => true,'msg' => '']);
