@@ -952,8 +952,6 @@ class OpenHistoryController extends Controller
             return response()->json(['status' => false,'msg' => '用户不存在']);
 
         $money = $iBet->bet_money;
-        if(in_array($iBet->game_id,[90,91]))
-            $money += $iBet->freeze_money;
         $iCapital = [
             'to_user' => $iBet->user_id,
             'user_type' => 'user',
@@ -971,13 +969,37 @@ class OpenHistoryController extends Controller
             'created_at' => $dateTime,
             'updated_at' => $dateTime,
         ];
+        $iCapital1 = [];
+        if(in_array($iBet->game_id,[90,91])) {
+            $money += $iBet->freeze_money;
+            $dateTime1 = date('Y-m-d H:i:s',time()+1);
+            $iCapital1 = [
+                'to_user' => $iBet->user_id,
+                'user_type' => 'user',
+                'order_id' => 'CN'.substr($iBet->order_id,1),
+                'type' => 't16',
+                'rechargesType' => 0,
+                'game_id' => $iBet->game_id,
+                'game_name' => $iBet->game_name,
+                'playcate_id' => $iBet->playcate_id,
+                'playcate_name' => $iBet->playcate_name,
+                'issue' => $iBet->issue,
+                'money' => $money,
+                'balance' => $iUser->money + $money,
+                'operation_id' => $adminId,
+                'created_at' => $dateTime1,
+                'updated_at' => $dateTime1,
+            ];
+        }
         DB::beginTransaction();
         $result1 = Capital::insert($iCapital);
+        if(!empty($iCapital1)) Capital::insert($iCapital1);
         $result2 = Users::where('id', $iBet->user_id)->increment('money', $money);
         $result3 = Bets::where('order_id',$orderId)->update([
             'bunko' =>  DB::raw("bet_money"),
             'nn_view_money' => 0
         ]);
+
         if($result1 && $result2 && $result3){
             DB::commit();
             return response()->json(['status' => true,'msg' => '']);
