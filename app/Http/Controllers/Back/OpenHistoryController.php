@@ -1056,7 +1056,7 @@ class OpenHistoryController extends Controller
                             'game_id' => $gameInfo->game_id,
                             'game_name' => $gameInfo->game_name,
                             'issue' => $iBet->issue,
-                            'money' => $iBet->back_money - $iBet->back_money,
+                            'money' => $iBet->back_money,
                             'balance' => $iBet->money + $iBet->bet_money - $iBet->back_money,
                             'operation_id' => $adminId,
                             'created_at' => $dateTime5,
