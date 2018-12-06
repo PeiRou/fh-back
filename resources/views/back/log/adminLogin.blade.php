@@ -1,6 +1,6 @@
 @extends('back.master')
 
-@section('title','登录日志')
+@section('title','后台登录日志')
 
 @section('content')
     <style>
@@ -10,7 +10,7 @@
     </style>
     <div class="content-top">
         <div class="breadcrumb">
-            <b>位置：</b>登录日志
+            <b>位置：</b>后台登录日志
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
     </div>
@@ -56,8 +56,8 @@
         <table id="loginLogTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
-                <th>会员ID</th>
-                <th>会员</th>
+                <th>子帐号ID</th>
+                <th>子帐号</th>
                 <th>登录日期</th>
                 <th>IP</th>
                 <th style="min-width: 160px">IP信息</th>
