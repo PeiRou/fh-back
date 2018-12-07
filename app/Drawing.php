@@ -58,6 +58,7 @@ class Drawing extends Model
                         $aSql->whereIn('drawing.status',[0,1,2,4]);
                     }
                 }
+                $aSql->where('drawing.draw_type','<',2);
             });
         return $aSql;
     }
