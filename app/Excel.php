@@ -588,19 +588,18 @@ class Excel
                     for($i=0; $i<count($res); $i++){
                         $needOpenIssue = $res[$i]->issue;
                         $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
-                        if(!isset($html['issue']))
-                            continue;
-                        else {
+                        if(isset($html['issue']))
                             $i = count($res);
-                        }
-                        if($i == count($res)){   //如果全部都没有可以录奖的
-                            break;
-                        }
                     }
                 }
             }
         }
-        $html['needOpenIssue'] = $needOpenIssue;
+        if(isset($html['issue']))
+            $html['needOpenIssue'] = $needOpenIssue;
+        else{
+            $html = [];
+            $html['needOpenIssue'] = $needOpenIssue;
+        }
         return $html;
     }
 }

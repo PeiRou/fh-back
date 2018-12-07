@@ -372,6 +372,9 @@ class AdSystemSettingController extends Controller
         }
         $file = public_path('static/jsFile/generate.json');
         file_put_contents($file,json_encode($aArray));
+        $redis = Redis::connection();
+        $redis->select(5);
+        $sourceTime = $redis->get('sourceTime');
         return response()->json([
             'status' => true
         ]);
