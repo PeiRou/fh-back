@@ -966,7 +966,7 @@ class OpenHistoryController extends Controller
         }catch (\Exception $e){
             DB::rollback();
             return response()->json(['status' => false,'msg'=>'撤单失败']);
-//        }
+        }
     }
 
     //取消注单
