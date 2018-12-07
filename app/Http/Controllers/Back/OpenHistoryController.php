@@ -945,7 +945,7 @@ class OpenHistoryController extends Controller
             }
         }
         DB::beginTransaction();
-//        try {
+        try {
             Bets::updateBetStatus($issue, $gameInfo->game_id);
             if(!empty($aBet)) {
                 Users::editBatchUserMoneyData($aBet);
@@ -963,9 +963,9 @@ class OpenHistoryController extends Controller
 
             DB::commit();
             return response()->json(['status' => true]);
-//        }catch (\Exception $e){
-//            DB::rollback();
-//            return response()->json(['status' => false,'msg'=>'撤单失败']);
+        }catch (\Exception $e){
+            DB::rollback();
+            return response()->json(['status' => false,'msg'=>'撤单失败']);
 //        }
     }
 
