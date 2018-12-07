@@ -82,7 +82,6 @@
                 <th>赢利投注金额</th>
                 <th>活动金额</th>
                 <th>充值优惠/手续费</th>
-                <th>代理赔率金额</th>
                 <th>代理退水金额</th>
                 <th>会员输赢(不含退水)</th>
                 <th>实际退水</th>
@@ -101,9 +100,8 @@
                 <th id="activity_money"></th>
                 <th id="handling_fee"></th>
                 <th></th>
-                <th></th>
                 <th id="bet_bunko"></th>
-                <th></th>
+                <th id="fact_return_amount"></th>
                 <th id="fact_bet_bunko"></th>
             </tr>
             </tfoot>
