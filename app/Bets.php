@@ -151,15 +151,15 @@ class Bets extends Model
     }
 
     public static function getBetAndUserByIssue($issue,$gameId){
-        $aSql = "SELECT `users`.id,SUM(`bet`.bet_money) AS `bet_money`,SUM(`bet`.bunko) AS `bunko`,`bet`.game_id,`bet`.issue,`users`.money FROM `bet` 
+        $aSql = "SELECT `users`.id,SUM(`bet`.bet_money) AS `bet_money`,SUM(`bet`.bunko) AS `bunko`,`bet`.game_id,`bet`.freeze_money,`bet`.issue,`users`.money FROM `bet` 
                   JOIN `users` ON `users`.id = `bet`.user_id 
-                  WHERE `bet`.issue = :issue AND `bet`.game_id = :gameId 
+                  WHERE `bet`.issue = :issue AND `bet`.game_id = :gameId AND `bet`.bunko = 0
                   GROUP BY `users`.id ";
         $aArray = [
             'issue' => $issue,
             'gameId' => $gameId
         ];
-        return json_decode(json_encode(DB::select($aSql,$aArray)),true);
+        return DB::select($aSql,$aArray);
     }
 
     public static function getBetAndUserByIssueAll($issue,$gameId,$bunko = true){
