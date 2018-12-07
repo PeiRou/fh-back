@@ -374,7 +374,7 @@ class AdSystemSettingController extends Controller
         file_put_contents($file,json_encode($aArray));
         $redis = Redis::connection();
         $redis->select(5);
-        $sourceTime = $redis->get('sourceTime');
+        $redis->set('sourceTime',date('YmdHi'));
         return response()->json([
             'status' => true
         ]);
