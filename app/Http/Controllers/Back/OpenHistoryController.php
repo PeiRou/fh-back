@@ -945,30 +945,28 @@ class OpenHistoryController extends Controller
             }
         }
         DB::beginTransaction();
-        try {
+//        try {
             Bets::updateBetStatus($issue, $gameInfo->game_id);
             if(!empty($aBet)) {
                 Users::editBatchUserMoneyData($aBet);
                 Capital::insert($aCapital);
             }
-            if(in_array($iBet->game_id,[90,91]))    Users::editBatchUserFreezeMoneyData($aBet);
+            if(in_array($gameInfo->game_id,[90,91]))    Users::editBatchUserFreezeMoneyData($aBet);
             if(!empty($iCapital1))  Capital::insert($iCapital1);
-            $openTime = DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->value('opentime');
-            if(!empty($openTime))
-                if(strtotime($openTime < time()))
-                    DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update([
-                        'is_open' => 6
-                    ]);
+
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update([
+                'is_open' => 6
+            ]);
 
             if(in_array($type,['pk10','bjkl8','jspk10']))
                 $this->cancelBetting($issue, Games::$aCodeBindingGame[$type]);
 
             DB::commit();
             return response()->json(['status' => true]);
-        }catch (\Exception $e){
-            DB::rollback();
-            return response()->json(['status' => false,'msg'=>'撤单失败']);
-        }
+//        }catch (\Exception $e){
+//            DB::rollback();
+//            return response()->json(['status' => false,'msg'=>'撤单失败']);
+//        }
     }
 
     //取消注单
