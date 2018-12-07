@@ -951,6 +951,7 @@ class OpenHistoryController extends Controller
                 Users::editBatchUserMoneyData($aBet);
                 Capital::insert($aCapital);
             }
+            if(in_array($iBet->game_id,[90,91]))    Users::editBatchUserFreezeMoneyData($aBet);
             if(!empty($iCapital1))  Capital::insert($iCapital1);
             $openTime = DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->value('opentime');
             if(!empty($openTime))

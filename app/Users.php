@@ -66,11 +66,27 @@ WHERE `users`.`testFlag` = 0 ";
         $aArray = [];
         foreach ($aData as $kData => $iData){
             if(isset($aArray[$iData->id]) && array_key_exists($iData->id,$aArray)){
-                $aArray[$iData->id]['money'] += $iData->bet_money + $iData->freeze_money;
+                $aArray[$iData->id]['money'] += $iData->bet_money;
             }else{
                 $aArray[$iData->id] = [
                     'id' => $iData->id,
-                    'money' => $iData->bet_money + $iData->freeze_money,
+                    'money' => $iData->bet_money,
+                ];
+            }
+        }
+        return DB::update(self::updateBatchStitching('users',$aArray,['money'],'id'));
+    }
+
+    //修改余额
+    public static function editBatchUserFreezeMoneyData($aData){
+        $aArray = [];
+        foreach ($aData as $kData => $iData){
+            if(isset($aArray[$iData->id]) && array_key_exists($iData->id,$aArray)){
+                $aArray[$iData->id]['money'] += $iData->freeze_money;
+            }else{
+                $aArray[$iData->id] = [
+                    'id' => $iData->id,
+                    'money' => $iData->freeze_money,
                 ];
             }
         }
