@@ -54,14 +54,17 @@ class next_issue_cqxync extends Command
         //下一期獎期
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
+        $issuenum = substr($nextIssue,-3);
 
         $New_nextIssue = $nextIssue+1;
-        if(substr($openTime,-8) =='23:52:20'){
-            $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
-            $New_nextIssue = date('ymd',strtotime($nextDay)).'001';
-            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 10:00:20';
-            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 10:02:20';
+        if((int)$issuenum == 13){
+            $nextIssueEndTime = date('Y-m-d 10:00:20');
+            $nextIssueLotteryTime = date('Y-m-d 10:02:20');
         } else {
+            if(substr($openTime,-8) =='23:52:20'){
+                $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
+                $New_nextIssue = date('ymd',strtotime($nextDay)).'001';
+            }
             $nextIssueEndTime = Carbon::parse($openTime)->addMinutes(8)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(10)->toDateTimeString();
         }
