@@ -905,7 +905,6 @@ class OpenHistoryController extends Controller
     {
         $gameInfo = Games::where('code', $type)->first();
         $aBet = Bets::getBetAndUserByIssue($issue, $gameInfo->game_id);
-        if (empty($aBet)) return response()->json(['status' => true,'msg'=>'1']);
         $aCapital = [];
         $iCapital1 = [];
         $adminId = Session::get('account_id');
@@ -948,8 +947,10 @@ class OpenHistoryController extends Controller
         DB::beginTransaction();
         try {
             Bets::updateBetStatus($issue, $gameInfo->game_id);
-            Users::editBatchUserMoneyData($aBet);
-            Capital::insert($aCapital);
+            if(!empty($aBet)) {
+                Users::editBatchUserMoneyData($aBet);
+                Capital::insert($aCapital);
+            }
             if(!empty($iCapital1))  Capital::insert($iCapital1);
             $openTime = DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->value('opentime');
             if(!empty($openTime))
@@ -959,7 +960,7 @@ class OpenHistoryController extends Controller
                     ]);
 
             if(in_array($type,['pk10','bjkl8','jspk10']))
-                $this->cancelBetting($issue,Games::$aCodeBindingGame[$type]);
+                $this->cancelBetting($issue, Games::$aCodeBindingGame[$type]);
 
             DB::commit();
             return response()->json(['status' => true]);
