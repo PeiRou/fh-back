@@ -9,7 +9,7 @@ class LogHandle extends Model
 {
     protected $table = 'log_handle';
     protected $primaryKey = 'id';
-
+    public $timestamps = false;
     //获取操作类型
     public static function getTypeOption(){
         $routeLists = PermissionsType::getPermissionType();

@@ -117,6 +117,8 @@ class Excel
     private function reBackUser($gameId,$issue,$gameName=''){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00000001)->groupBy('user_id')->get();
         if($get){
+            if (count($get)==0)
+                return 1;
             //更新返奖的用户馀额
             $sql = "UPDATE users SET money = money+ CASE id ";
             $users = [];
@@ -125,24 +127,20 @@ class Excel
                 $sql .= "WHEN $i->user_id THEN $i->back_money ";
             }
             $getAfterUser = DB::connection('mysql::write')->table('users')->select('id','money')->whereIn('id',$users)->get();
-            \Log::info($getAfterUser);
             $ids = implode(',',$users);
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
-                \Log::info($sql);
                 $up = DB::connection('mysql::write')->statement($sql);
                 if($up != 1){
                     return 1;
                 }
             }
-            \Log::info(1);
             $capData = [];
             $capUsers = [];
             $ii = 0;
             foreach ($getAfterUser as&$val){
                 $capUsers[$val->id] = $val->money;
             }
-            \Log::info($get);
             //新增有返奖的用户的资金明细
             foreach ($get as $i){
                 $tmpCap = [];
@@ -165,7 +163,6 @@ class Excel
                 $ii ++;
             }
             krsort($capData);
-            \Log::info($capData);
             $capIns = DB::table('capital')->insert($capData);
             if($capIns != 1){
                 return 1;

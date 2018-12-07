@@ -19,7 +19,7 @@ class AddLogHandle
      */
     public function handle($request, Closure $next)
     {
-
+        $response = $next($request);
         if(!$username = Session::get('account')){
             return redirect()->route('back.login');
         }
@@ -45,12 +45,13 @@ class AddLogHandle
                 'param' => json_encode($params),
                 'create_at' => date('Y-m-d H:i:s'),
             ];
-            if (DB::table('log_handle')->insert($data)) {
-                return $next($request);
+            if (!$id = DB::table('log_handle')->insertGetId($data)) {
+                return response()->json(['error' => 'Adding log failed']);
             }
-            return response()->json(['error' => 'Adding log failed']);
+            //细化操作日志
+            new \App\Repository\HandleLog\BaseRepository($response, $request, $id, $data);
         }
-        return $next($request);
+        return $response;
     }
 
 
