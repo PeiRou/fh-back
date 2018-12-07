@@ -905,31 +905,62 @@ class OpenHistoryController extends Controller
     {
         $gameInfo = Games::where('code', $type)->first();
         $aBet = Bets::getBetAndUserByIssue($issue, $gameInfo->game_id);
-        if (empty($aBet)) return response()->json(['status' => true,'msg'=>'1']);
         $aCapital = [];
+        $iCapital1 = [];
         $adminId = Session::get('account_id');
         $dateTime = date('Y-m-d H:i:s');
+        $dateTime1 = date('Y-m-d H:i:s',time()+1);
         foreach ($aBet as $kBet => $iBet) {
+            $money = $iBet->bet_money;
             $aCapital[] = [
-                'to_user' => $iBet['id'],
+                'to_user' => $iBet->id,
                 'user_type' => 'user',
                 'type' => 't16',
                 'rechargesType' => 0,
                 'game_id' => $gameInfo->game_id,
                 'game_name' => $gameInfo->game_name,
-                'issue' => $iBet['issue'],
-                'money' => $iBet['bet_money'],
-                'balance' => $iBet['money'] + $iBet['bet_money'],
+                'issue' => $iBet->issue,
+                'money' => $money,
+                'balance' => $iBet->money + $money,
                 'operation_id' => $adminId,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ];
+            if(in_array($iBet->game_id,[90,91])) {
+                $money += $iBet->freeze_money;
+                $iCapital1[] = [
+                    'to_user' => $iBet->id,
+                    'user_type' => 'user',
+                    'type' => 't26',
+                    'rechargesType' => 0,
+                    'game_id' => $gameInfo->game_id,
+                    'game_name' => $gameInfo->game_name,
+                    'issue' => $iBet->issue,
+                    'money' => $money,
+                    'balance' => $iBet->money + $money,
+                    'operation_id' => $adminId,
+                    'created_at' => $dateTime1,
+                    'updated_at' => $dateTime1,
+                ];
+            }
         }
         DB::beginTransaction();
         try {
-            Bets::cancelBetting($issue, $gameInfo->game_id);
-            Users::editBatchUserMoneyData($aBet);
-            Capital::insert($aCapital);
+            Bets::updateBetStatus($issue, $gameInfo->game_id);
+            if(!empty($aBet)) {
+                Users::editBatchUserMoneyData($aBet);
+                Capital::insert($aCapital);
+            }
+            if(in_array($gameInfo->game_id,[90,91]))    Users::editBatchUserFreezeMoneyData($aBet);
+            if(!empty($iCapital1))  Capital::insert($iCapital1);
+
+            DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update([
+                'is_open' => 6
+            ]);
+
+            if(in_array($type,['pk10','bjkl8','jspk10']))
+                $this->cancelBetting($issue, Games::$aCodeBindingGame[$type]);
+
             DB::commit();
             return response()->json(['status' => true]);
         }catch (\Exception $e){

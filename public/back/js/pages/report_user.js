@@ -91,8 +91,6 @@ $(function () {
             {data:'bet_amount'},             //赢利投注金额
             {data:'activity_money'},
             {data:'handling_fee'},
-            {data:'odds_amount'},           //代理赔率金额
-            {data:'return_amount'},         //代理退水金额
             {data:'bet_bunko'},             //会员输赢（不包括退水）
             {data:'fact_return_amount'},   //实际退水
             {data:'fact_bet_bunko'},             //会员输赢（不包括退水）
@@ -164,6 +162,7 @@ $(function () {
                 $('#activity_money').text(data.activity_money);
                 $('#handling_fee').text(data.handling_fee);
                 $('#bet_bunko').text(data.bet_bunko);
+                $('#fact_return_amount').text(data.fact_return_amount);
                 $('#fact_bet_bunko').text(data.fact_bet_bunko);
             }
         });
