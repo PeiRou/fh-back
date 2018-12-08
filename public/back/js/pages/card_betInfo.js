@@ -16,6 +16,11 @@ $(function () {
                 d.endTime = $('#endTime').val();
                 d.Accounts = $('#Accounts').val();//玩家账号
                 d.g_id = $('#g_id').val();
+            },
+            dataSrc:function(e){
+                $('#BetSum').html(e.TotalSum.BetSum);
+                $('#ProfitSum').html(e.TotalSum.ProfitSum);
+                return e.data;
             }
         },
         columns: [
@@ -31,6 +36,10 @@ $(function () {
             {data: 'GameStartTime'},
             {data: 'GameEndTime'},
         ],
+        footerCallback:function(e,data, c, d){
+            // console.log(c);
+            // console.log(d);
+        },
         language: {
             "zeroRecords": "暂无数据",
             "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",
@@ -43,7 +52,8 @@ $(function () {
                 "next":       "下一页",
                 "previous":   "上一页"
             }
-        }
+        },
+
     });
 
     $(document).keyup(function(e){
@@ -59,8 +69,8 @@ $(function () {
     });
 
     $('#reset').on('click',function () {
-        $('#issue').val('');                      //奖期
-        $('#issuedate').val('');              //开奖时间
+        $('#g_id').val(0);
+        $('#Accounts').val('');
         dataTable.ajax.reload();
     });
     $('#rangestart').calendar({

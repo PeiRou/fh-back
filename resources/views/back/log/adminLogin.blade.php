@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="username" placeholder="用户账户">
+                        <input type="text" id="username" placeholder="子账号">
                     </div>
                     <div class="one wide field">
                         <input type="text" id="ip" placeholder="登录IP">

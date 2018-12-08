@@ -486,12 +486,25 @@ class openHistoryController extends Controller
 //    }
 
     public function card_betInfo(Request $request){
-        $data = $this->card_betInfoSql($request);
-        return DataTables::of($data['res'])
-            ->setTotalRecords($data['count'])
+        $sqlArr = $this->card_betInfoSql($request);
+        $TotalSql =  'SELECT SUM(`AllBet`) AS `BetSum`, SUM(`Profit`) AS `ProfitSum` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` LIMIT 1 ';
+        $TotalSum = DB::select($TotalSql)[0];
+        $sql = 'SELECT * FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` DESC LIMIT '.$request->get('start').','.$request->get('length');
+        $sqlCount =  'SELECT COUNT(`id`) AS `count` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS b';
+        $res = DB::select($sql);
+        $resCount = DB::select($sqlCount)[0]->count;
+        return DataTables::of($res)
+            ->setTotalRecords($resCount)
             ->skipPaging()
+            ->with('TotalSum',$TotalSum)
             ->make(true);
     }
+//    private function card_betSum($request){
+//        $sqlArr = $this->card_betInfoSql($request);
+//        $sql = 'SELECT SUM(`AllBet`) AS `BetSum`, SUM(`Profit`) AS `ProfitSum` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` LIMIT 1 ';
+//        $res = DB::select($sql);
+//        return $res[0];
+//    }
     //组合sql
     private function card_betInfoSql($request){
         //获取所有的游戏
@@ -514,13 +527,14 @@ class openHistoryController extends Controller
             $table = 'jq_'.strtolower($v->alias).'_bet';
             $sqlArr[] = " (SELECT {$column},'{$v->name}' as name FROM `{$table}` WHERE {$where} GROUP BY Accounts ) ";
         }
-        $sql = 'SELECT * FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` DESC LIMIT '.$request->get('start').','.$request->get('length');
-        $sqlCount =  'SELECT COUNT(`id`) AS `count` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS b';
-        $res = DB::select($sql);
-        $resCount = DB::select($sqlCount);
-        return [
-            'res' => $res,
-            'count' => $resCount[0]->count
-        ];
+        return $sqlArr;
+//        $sql = 'SELECT * FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` DESC LIMIT '.$request->get('start').','.$request->get('length');
+//        $sqlCount =  'SELECT COUNT(`id`) AS `count` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS b';
+//        $res = DB::select($sql);
+//        $resCount = DB::select($sqlCount);
+//        return [
+//            'res' => $res,
+//            'count' => $resCount[0]->count
+//        ];
     }
 }

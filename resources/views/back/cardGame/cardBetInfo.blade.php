@@ -68,6 +68,16 @@
             <th>最后一次游戏时间</th>
             </tr>
             </thead>
+            <tfoot>
+            <tr>
+                <th>总计：</th>
+                <th id="member_count"></th>
+                <th id="BetSum"></th>
+                <th id="ProfitSum"></th>
+                <th id="bet_count"></th>
+                <th id="activity_money"></th>
+            </tr>
+            </tfoot>
         </table>
     </div>
 @endsection
