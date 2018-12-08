@@ -27,6 +27,15 @@
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="test_account_money" data-c="试玩账号默认金额" class="edit-link">修改</td>
             </tr>
             <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">同一IP每天试玩次数</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->test_account_num }}" data-id-input="test_account_num"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="test_account_num" data-c="同一IP每天试玩次数" class="edit-link">修改</td>
+            </tr>
+            <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">注册黑名单</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
                     <div class="ui input">

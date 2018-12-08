@@ -400,6 +400,7 @@ class DrawingController extends Controller
         }
         $ipInfo = ip($request->ip);
         $res = DB::table($request->table)->where($request->key,$request->value)->update([$request->upKey => $ipInfo]);
+        usleep(600000);
         return ['status' => true];
     }
     //提现解冻

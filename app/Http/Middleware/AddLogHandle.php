@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redis;
 
 class AddLogHandle
 {
@@ -19,7 +20,6 @@ class AddLogHandle
      */
     public function handle($request, Closure $next)
     {
-        $response = $next($request);
         if(!$username = Session::get('account')){
             return redirect()->route('back.login');
         }
@@ -29,7 +29,17 @@ class AddLogHandle
         if(!$user_id = Session::get('account_id')){
             return redirect()->route('back.login');
         }
-        if($username !== 'admin') {
+        //每次操作刷新登录过期时间
+        $key = 'sa:'.md5($user_id);
+        $redis = Redis::connection();
+        $redis->select(4);
+        $redisData = [
+            'session_id' => (string)Session::get('account_session_id'),
+            'sa_id' => (string)$user_id
+        ];
+        $jsonEncode = json_encode($redisData);
+        $redis->setex($key, 60 * 60 * 2,$jsonEncode);
+//        if($username !== 'admin') {
             $routeData = LogHandle::getTypeAction(Route::currentRouteName());
             $params = $request->all();
             $ip = realIp();
@@ -49,8 +59,13 @@ class AddLogHandle
                 return response()->json(['error' => 'Adding log failed']);
             }
             //细化操作日志
-            new \App\Repository\HandleLog\BaseRepository($response, $request, $id, $data);
-        }
+            try{
+                new \App\Repository\HandleLog\BaseRepository($request, $id, $data);
+            }catch (\Exception $e){
+                //修改日志失败
+            }
+//        }
+        $response = $next($request);
         return $response;
     }
 

@@ -12,12 +12,12 @@ use App\LogHandle;
 
 class BaseRepository
 {
-    protected $response;
+//    protected $response;
     protected $request;
     private $param = null;
-    public function __construct($response,$request,$id, $data)
+    public function __construct($request,$id, $data)
     {
-        $this->response = $response;
+//        $this->response = $response;
         $this->request = $request;
         $this->id = $id;
         $this->data = $data;
@@ -41,20 +41,38 @@ class BaseRepository
             LogHandle::where('id', $this->id)->update($this->param);
         }
     }
+    private function getUserName($id){
+        return \App\Users::where('id', $id)->value('username');
+    }
+    private function getAgentName($a_id){
+        return \App\Agent::where('a_id',$a_id)->value('account');
+    }
+    private function getAccountName($sa_id){
+        return \App\SubAccount::where('sa_id',$sa_id)->value('account');
+    }
+    //删除用户
+    private function mUserDelUser(){
+        $this->param['action'] = '删除会员('.$this->getUserName($this->request->id).')';
+    }
     //改变用户金额
     private function acAdChangeUserMoney(){
-        $this->param['action'] = '管理员'.$this->data['username'].'修改用户('.$this->data['user_id'].')金额：'.$this->request->money;
+        $this->param['action'] = '修改会员('.$this->getUserName($this->request->uid).')金额：'.$this->request->money;
     }
-
-    public function getOtherModel($model){
-        if(empty($this->otherModel->$model))
-            $this->otherModel->$model = FactoryService::generateModel($model);
-        return $this->otherModel->$model;
+    //修改会员资料
+    private function acAdEditUser(){
+        $this->param['action'] = '修改会员资料('.$this->request->account.')';
     }
-    public function getOtherRepository($repository){
-        if(empty($this->otherRepository->$repository))
-            $this->otherRepository->$repository = FactoryService::generateRepository($repository);
-        return $this->otherRepository->$repository;
+    //更换代理
+    private function acAdUserChangeAgent(){
+        $this->param['action'] = '更换会员('.$this->getUserName($this->request->uid).')代理为'.$this->getAgentName($this->request->agent);
+    }
+    //删除代理
+    private function mAgentDel(){
+        $this->param['action'] = '删除代理('.$this->getAgentName($this->request->id).')';
+    }
+    //删除子账号
+    private function acAdDelSubAccount(){
+        $this->param['action'] = '删除子账号('.$this->getAccountName($this->request->id).')';
     }
 
 }

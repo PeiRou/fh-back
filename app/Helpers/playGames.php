@@ -356,7 +356,7 @@ if(!function_exists('ip')){
             if($response['code'] == 200){
                 $ipInfo = @$response['data']['country'].' '.@$response['data']['multiAreas'][0]['prov'].' '.@$response['data']['multiAreas'][0]['city'].' '.@$response['data']['multiAreas'][0]['district'];
                 if(empty($ipInfo))
-                    return 'IP没找到';
+                    return '暂无此IP';
                 \Illuminate\Support\Facades\DB::table('ip')->insert([
                     'ip' => $ip,
                     'country' => @$response['data']['country'],

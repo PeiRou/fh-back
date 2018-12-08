@@ -29,12 +29,12 @@ class AjaxStatusController extends Controller
                     'msg'=>'您的账号已在异地登录，此账号现已强制下线！'
                 ]);
             }
-            $redisData = [
-                'session_id' => (string)Session::get('account_session_id'),
-                'sa_id' => (string)$saId
-            ];
-            $jsonEncode = json_encode($redisData);
-            $redis->setex($key,600,$jsonEncode);     //重新赋予后台登陆时间
+//            $redisData = [
+//                'session_id' => (string)Session::get('account_session_id'),
+//                'sa_id' => (string)$saId
+//            ];
+//            $jsonEncode = json_encode($redisData);
+//            $redis->setex($key,600,$jsonEncode);     //重新赋予后台登陆时间
 
             $getCount = Recharges::where('status',1)->where('payType','!=','onlinePayment')->count();
             $getDrawCount = Drawing::where('status',0)->count();

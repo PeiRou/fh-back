@@ -138,7 +138,7 @@ class LogDataController extends Controller
             }
         });
         $logHandleCount =  $logHandleSql->count();
-        $logHandle = $logHandleSql->select('log_handle.id','log_handle.user_id','log_handle.username','log_handle.type_name','log_handle.ip','permissions_auth.auth_name as action','log_handle.create_at','log_handle.param')
+        $logHandle = $logHandleSql->select('log_handle.id','log_handle.user_id','log_handle.username','log_handle.type_name','log_handle.ip','permissions_auth.auth_name as paction','log_handle.action as action','log_handle.create_at','log_handle.param')
             ->leftJoin('permissions_auth','permissions_auth.route_name','=','log_handle.route')
             ->orderBy('create_at','desc')->skip($param['start'])->take($param['length'])->get();
         return DataTables::of($logHandle)
