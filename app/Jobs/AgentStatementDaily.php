@@ -76,6 +76,7 @@ class AgentStatementDaily implements ShouldQueue
                     $aArray[$kArray]['bet_amount'] = empty($iBet->sumWinbet)?0.00:$iBet->sumWinbet;
                     $aArray[$kArray]['bet_bunko'] = empty($iBet->sumBunko)?0.00:$iBet->sumBunko;
                     $aArray[$kArray]['fact_bet_bunko'] = empty($iBet->sumBunko)?0.00:$iBet->sumBunko;
+                    $aArray[$kArray]['fact_return_amount'] = empty($iBet->back_money)?0.00:$iBet->back_money;
                     $aArray[$kArray]['bet_member_count'] = empty($iBet->userIdCount)?0:$iBet->userIdCount;
                 }
             }
