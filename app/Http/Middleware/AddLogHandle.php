@@ -39,7 +39,7 @@ class AddLogHandle
         ];
         $jsonEncode = json_encode($redisData);
         $redis->setex($key, 60 * 60 * 2,$jsonEncode);
-//        if($username !== 'admin') {
+        if($username !== 'admin') {
             $routeData = LogHandle::getTypeAction(Route::currentRouteName());
             $params = $request->all();
             $ip = realIp();
@@ -63,8 +63,9 @@ class AddLogHandle
                 new \App\Repository\HandleLog\BaseRepository($request, $id, $data);
             }catch (\Exception $e){
                 //修改日志失败
+                \Log::info(print_r($e->getPrevious(), 1));
             }
-//        }
+        }
         $response = $next($request);
         return $response;
     }
