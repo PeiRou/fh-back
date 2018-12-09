@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back\Data;
 use App\Bets;
 use App\DomainAccess;
 use App\DomainInfo;
+use App\GamesApi;
 use App\ReportAgent;
 use App\ReportBetAgent;
 use App\ReportBetGeneral;
@@ -352,6 +353,48 @@ class ReportDataController extends Controller
             'code' => 1,
                 'data' => []
         ]);
+    }
+
+    //棋牌投注报表
+    public function Card(Request $request){
+        if(isset($request->startTime) && ($request->startTime == date('Y-m-d')) && ($request->startTime == $request->endTime))
+            return $this->dayCard($request);
+        $table = DB::table('report_card')->where(function($aSql) use($request){
+            if(isset($request->startTime) && isset($request->endTime))
+                $aSql->whereBetween('date', [$request->startTime, $request->endTime]);
+        });
+        $totalTable = clone $table;
+        $count = $table->count();
+        $totalArr = $totalTable->select(DB::raw('SUM(`bet_count`) AS `BetCountSum`, SUM(`bet_money`) AS `betMoney`, SUM(`bet_bunko`) AS betBunko'))->first();
+        $res = $table->skip($request->start ?? 0)->take($request->length ?? 100)->get();
+        return DataTables::of($res)
+            ->setTotalRecords($count)
+            ->with('totalArr',$totalArr)
+            ->skipPaging()
+            ->make(true);
+    }
+    public function dayCard($request){
+        $repo = new \App\Repository\GamesApi\Card\Report();
+        $repo->getRes();
+        $repo->createData();
+        $repo->param->startTime = $request->startTime;
+        $repo->param->endTime = $request->endTime;
+        $repo->param->start = $request->start ?? 0;
+        $repo->param->length = $request->length ?? 100;
+        $res = $repo->getData();
+        $Total = GamesApi::card_betInfoTotal($request, $repo->sqlArr);
+        $sqlCount =  'SELECT COUNT(`id`) AS `count` FROM ( '.implode(' UNION ALL ', $repo->sqlArr).' ) AS b';
+        $resCount = DB::select($sqlCount)[0]->count;
+        $totalArr = [
+            'betMoney' => $Total->BetSum ?? 0,
+            'betBunko' => $Total->ProfitSum ?? 0,
+            'BetCountSum' => $Total->BetCountSum ?? 0
+        ];
+        return DataTables::of($res)
+            ->setTotalRecords($resCount)
+            ->with('totalArr',$totalArr)
+            ->skipPaging()
+            ->make(true);
     }
 
     /**

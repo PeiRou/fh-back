@@ -486,12 +486,11 @@ class openHistoryController extends Controller
 //    }
 
     public function card_betInfo(Request $request){
-        $sqlArr = $this->card_betInfoSql($request);
-        $TotalSql =  'SELECT SUM(`AllBet`) AS `BetSum`, SUM(`Profit`) AS `ProfitSum` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` LIMIT 1 ';
-        $TotalSum = DB::select($TotalSql)[0];
-        $sql = 'SELECT * FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` DESC LIMIT '.$request->get('start').','.$request->get('length');
+        $GamesApi = new GamesApi();
+        $sqlArr = $GamesApi->card_betInfoSql($request);
+        $TotalSum = $GamesApi->card_betInfoTotal($request, $sqlArr);
         $sqlCount =  'SELECT COUNT(`id`) AS `count` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS b';
-        $res = DB::select($sql);
+        $res = $GamesApi->card_betInfoData($request, $sqlArr);
         $resCount = DB::select($sqlCount)[0]->count;
         return DataTables::of($res)
             ->setTotalRecords($resCount)
@@ -499,42 +498,6 @@ class openHistoryController extends Controller
             ->with('TotalSum',$TotalSum)
             ->make(true);
     }
-//    private function card_betSum($request){
-//        $sqlArr = $this->card_betInfoSql($request);
-//        $sql = 'SELECT SUM(`AllBet`) AS `BetSum`, SUM(`Profit`) AS `ProfitSum` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` LIMIT 1 ';
-//        $res = DB::select($sql);
-//        return $res[0];
-//    }
-    //组合sql
-    private function card_betInfoSql($request){
-        //获取所有的游戏
-        $gamesList = GamesApi::where(function($aSql) use ($request){
-            $aSql->where('type_id', 111);
-            if($g_id = $request->get('g_id'))
-                $aSql->where('g_id', $g_id);
-        })->get();
-        $where = ' 1 ';
-        if(($startTime = $request->get('startTime')) && ($endTime = $request->get('endTime')))
-            $where .= " AND `GameStartTime` BETWEEN '{$startTime} 00:00:00' AND '{$endTime} 23:59:59' ";
-        if($Accounts = $request->get('Accounts'))
-            $where .= " AND `Accounts` IN('{$Accounts}','".(env('KY_AGENT').'_'.$Accounts)."') ";
-        $sqlArr = [];
-//        $columnArr = ['id', 'GameID', 'Accounts', 'AllBet', 'Profit', 'GameStartTime', 'GameEndTime'];
-        $columnArr = ['id','SUM(AllBet) as AllBet', 'Accounts', 'SUM(Profit) AS Profit', ' MIN(GameStartTime) AS GameStartTime', 'MAX(GameEndTime) AS GameEndTime '];
 
-        $column = implode(',', $columnArr);
-        foreach ($gamesList as $k=>$v){
-            $table = 'jq_'.strtolower($v->alias).'_bet';
-            $sqlArr[] = " (SELECT {$column},'{$v->name}' as name FROM `{$table}` WHERE {$where} GROUP BY Accounts ) ";
-        }
-        return $sqlArr;
-//        $sql = 'SELECT * FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` DESC LIMIT '.$request->get('start').','.$request->get('length');
-//        $sqlCount =  'SELECT COUNT(`id`) AS `count` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS b';
-//        $res = DB::select($sql);
-//        $resCount = DB::select($sqlCount);
-//        return [
-//            'res' => $res,
-//            'count' => $resCount[0]->count
-//        ];
-    }
+
 }

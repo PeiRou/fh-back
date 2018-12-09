@@ -620,6 +620,10 @@ class SrcViewController extends Controller
         $games = Games::where('status',1)->get();
         return view('back.reportAgent',compact('games','zd','start','end'));
     }
+    //棋牌投注报表
+    public function reportCard(){
+        return view('back.reportCard');
+    }
     //会员报表
     public function reportUser(Request $request)
     {
