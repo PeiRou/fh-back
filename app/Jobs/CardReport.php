@@ -37,9 +37,15 @@ class CardReport implements ShouldQueue
      */
     public function handle()
     {
-        $repo = new \App\Repository\GamesApi\Card\Report($this->aDateTime);
-        $repo->getRes();
-        $repo->createData();
-        $repo->insertData();
+        try{
+            $repo = new \App\Repository\GamesApi\Card\Report($this->aDateTime);
+            $repo->getRes();
+            $repo->createData();
+            $repo->insertData();
+        }catch (\Exception $e){
+            \Log::info(print_r($e->getPrevious(), 1));
+            echo 'error:'.$this->aDateTime;
+        }
+
     }
 }

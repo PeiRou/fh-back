@@ -357,6 +357,10 @@ class ReportDataController extends Controller
 
     //棋牌投注报表
     public function Card(Request $request){
+        if(isset($request->startTime))
+            $request->startTime = date('Y-m-d', strtotime($request->startTime));
+        if(isset($request->endTime))
+            $request->endTime = date('Y-m-d', strtotime($request->endTime));
         if(isset($request->startTime) && ($request->startTime == date('Y-m-d')) && ($request->startTime == $request->endTime))
             return $this->dayCard($request);
         $table = DB::table('report_card')->where(function($aSql) use($request){
