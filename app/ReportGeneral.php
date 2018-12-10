@@ -38,6 +38,7 @@ class ReportGeneral extends Model
                   SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
                   `general_account`,`general_id`
                    FROM `report_general` WHERE 1 ";
+
         $result = self::conditionalConnection($aSql,$aParam);
         $aSql = $result['aSql'];
         $bSql = "SELECT COUNT(DISTINCT(`user_id`)) AS `memberCount`,`general_id` FROM `report_member` WHERE 1 ";
