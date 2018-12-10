@@ -48,6 +48,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('online', 'Back\SrcViewController@reportOnline')->name('report.online'); // 在线报表
         Route::get('browse', 'Back\SrcViewController@reportBrowse')->name('report.browse'); // 访问报表
         Route::get('register', 'Back\SrcViewController@reportRegister')->name('report.register'); // 注册报表
+        Route::get('Card', 'Back\SrcViewController@reportCard')->name('report.Card'); // 棋牌投注报表
     });
 //图表统计
     Route::group(['prefix' => 'back/control/chartsManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
@@ -244,6 +245,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::any('/back/datatables/reportBrowse', 'Back\Data\ReportDataController@Browse');       //报表管理-访问报表
 //    Route::get('/back/datatables/reportBrowseTotal', 'Back\Data\ReportDataController@BrowseTotal');       //报表管理-访问报表总计 功能未实现,预留
     Route::get('/back/datatables/reportBet', 'Back\Data\ReportDataController@Bet');
+    Route::get('/back/datatables/reportCard', 'Back\Data\ReportDataController@Card');//棋牌投注报表
+    Route::get('/back/datatables/getReportCard', 'Back\Data\ReportDataController@getCard');//重新获取棋牌投注报表
     Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal'); //报表管理-总代总计
     Route::get('/back/datatables/reportAgentTotal', 'Back\Data\ReportDataController@AgentTotal');   //报表管理-代理总计
     Route::get('/back/datatables/reportUserTotal', 'Back\Data\ReportDataController@UserTotal');     //报表管理-用户总计

@@ -147,7 +147,7 @@ class SrcViewController extends Controller
                     $query->where('order_id',$orderNum);
                 }
             })
-            ->where('user_id',$userInfo->id)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
+            ->where('user_id',$userInfo->id ?? 0)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
         return response()->json($get);
     }
     //注单明细获取开奖历史
@@ -639,6 +639,10 @@ class SrcViewController extends Controller
         $end = $request->get('end');
         $games = Games::where('status',1)->get();
         return view('back.reportAgent',compact('games','zd','start','end'));
+    }
+    //棋牌投注报表
+    public function reportCard(){
+        return view('back.reportCard');
     }
     //会员报表
     public function reportUser(Request $request)
