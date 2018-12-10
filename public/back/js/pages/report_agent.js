@@ -159,6 +159,7 @@ $(function () {
                 $('#bet_bunko').text(data.bet_bunko);
                 $('#fact_bet_bunko').text(data.fact_bet_bunko);
                 $('#fact_return_amount').text(data.fact_return_amount);
+                $('#return_amount').text(data.return_amount);
             }
         });
     }
@@ -175,6 +176,7 @@ $(function () {
         $('#bet_bunko').text('');
         $('#fact_bet_bunko').text('');
         $('#fact_return_amount').text('');
+        $('#return_amount').text('');
     }
 
     footerTotal();

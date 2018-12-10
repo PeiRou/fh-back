@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\AgentBackwater;
 use App\Bets;
 use App\GeneralAgent;
 use App\ReportBetGeneral;
@@ -38,6 +39,8 @@ class GeneralBetStatementDaily implements ShouldQueue
         $aGeneral = GeneralAgent::betGeneralReportData();
         //获取投注
         $aBet = Bets::generalReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        //获取返水
+        $aBack = AgentBackwater::getBackGroupByGeneralGame($this->aDateTime,$this->aDateTime.' 23:59:59');
         $aArray = [];
         $dateTime = date('Y-m-d H:i:s');
         $time = strtotime($this->aDateTime);
@@ -62,6 +65,13 @@ class GeneralBetStatementDaily implements ShouldQueue
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
                     ];
+                }
+            }
+        }
+        foreach ($aArray as $kArray => $iArray){
+            foreach ($aBack as $iBack){
+                if($iArray['general_id'] == $iBack->g_id && $iArray['date'] == $iBack->date && $iArray['game_id'] == $iBack->game_id){
+                    $aArray[$kArray]['return_amount'] = $iBack->money;
                 }
             }
         }
