@@ -147,7 +147,7 @@ class SrcViewController extends Controller
                     $query->where('order_id',$orderNum);
                 }
             })
-            ->where('user_id',$userInfo->id)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
+            ->where('user_id',$userInfo->id ?? 0)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
         return response()->json($get);
     }
     //注单明细获取开奖历史

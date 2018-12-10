@@ -121,3 +121,36 @@ $('#date_param').on('change',function () {
         }
     });
 });
+function getReport(){
+    $.confirm({
+        title: '确定要重新获取昨日报表吗？',
+        theme: 'material',
+        type: 'orange',
+        boxWidth:'20%',
+        content: '手动获取将重新获取昨日报表',
+        buttons: {
+            confirm: {
+                text:'确定',
+                btnClass: 'btn-orange',
+                action: function(){
+                    $.ajax({
+                        url:'/back/datatables/getReportCard',
+                        type:'get',
+                        data:{},
+                        dataType:'json',
+                        success:function (data) {
+                            if(data.status == true){
+                                $('#reportBetTable').DataTable().ajax.reload(null,false)
+                            } else {
+                                Calert(data.msg,'red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}

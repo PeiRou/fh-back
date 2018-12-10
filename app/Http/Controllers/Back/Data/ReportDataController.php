@@ -354,7 +354,29 @@ class ReportDataController extends Controller
                 'data' => []
         ]);
     }
-
+    //重新获取棋牌投注报表
+    public function getCard(Request $request){
+        $iDate = date('Y-m-d',strtotime($request->date ?? '-1 day'));
+        try{
+            $repo = new \App\Repository\GamesApi\Card\Report($iDate);
+            $repo->getRes();
+            $repo->createData();
+            if($repo->insertData()){
+                return response()->json([
+                    'status' => true
+                ]);
+            }
+        }catch (\Exception $e){
+            return response()->json([
+                'status' => true,
+                'msg' => $e->getMessage()
+            ]);
+        }
+        return response()->json([
+            'status' => false,
+            'msg' => 'error'
+        ]);
+    }
     //棋牌投注报表
     public function Card(Request $request){
         if(isset($request->startTime))

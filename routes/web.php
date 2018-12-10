@@ -245,6 +245,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 //    Route::get('/back/datatables/reportBrowseTotal', 'Back\Data\ReportDataController@BrowseTotal');       //报表管理-访问报表总计 功能未实现,预留
     Route::get('/back/datatables/reportBet', 'Back\Data\ReportDataController@Bet');
     Route::get('/back/datatables/reportCard', 'Back\Data\ReportDataController@Card');//棋牌投注报表
+    Route::get('/back/datatables/getReportCard', 'Back\Data\ReportDataController@getCard');//重新获取棋牌投注报表
     Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal'); //报表管理-总代总计
     Route::get('/back/datatables/reportAgentTotal', 'Back\Data\ReportDataController@AgentTotal');   //报表管理-代理总计
     Route::get('/back/datatables/reportUserTotal', 'Back\Data\ReportDataController@UserTotal');     //报表管理-用户总计

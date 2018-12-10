@@ -39,9 +39,9 @@ class Report{
         if(count($this->iData)){
             $table->where('date', $this->param->aTime)->delete();
             if($table->insert($this->iData))
-                die('ok');
+                return true;
         }
-        die('error');
+        return false;
     }
     //
     private function createData(){
