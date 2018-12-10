@@ -148,7 +148,7 @@ class Recharges extends Model
                 $where .= " and recharges.sysPayOrder = '".$account_param."'";
             }
         }
-        $dateName = 'created_at';
+        $dateName = 'updated_at';
         if(isset($dateType) && $dateType = 1)
             $dateName = 'updated_at';
         if(isset($startTime) && $startTime){
