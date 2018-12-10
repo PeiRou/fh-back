@@ -307,6 +307,26 @@ class SrcViewController extends Controller
                 }else{
                     $v->cft = "0.00";
                 }
+                //echarges
+                $v->echarges = sprintf('%0.2f',$v->onlinePayment+$v->bankTransfer+$v->alipay+$v->weixin+$v->cft);
+                //adminAddMoney_reissue
+                if(!empty($v->data['adminAddMoney_reissue'][0])){
+                    $v->adminAddMoney_reissue = $v->data['adminAddMoney_reissue'][0]->totle;
+                }else{
+                    $v->adminAddMoney_reissue = "0.00";
+                }
+                //adminAddMoney_pluscolor
+                if(!empty($v->data['adminAddMoney_pluscolor'][0])){
+                    $v->adminAddMoney_pluscolor = $v->data['adminAddMoney_pluscolor'][0]->totle;
+                }else{
+                    $v->adminAddMoney_pluscolor = "0.00";
+                }
+                //adminAddMoney_other
+                if(!empty($v->data['adminAddMoney_other'][0])){
+                    $v->adminAddMoney_other = $v->data['adminAddMoney_other'][0]->totle;
+                }else{
+                    $v->adminAddMoney_other = "0.00";
+                }
                 //adminAddMoney
                 if(!empty($v->data['adminAddMoney'][0])){
                     $v->adminAddMoney = $v->data['adminAddMoney'][0]->totle;
@@ -680,7 +700,7 @@ class SrcViewController extends Controller
         $games = Games::where('status',1)->get();
         return view('back.betTodaySearch',compact('games'));
     }
-
+    // 下拉菜单获取玩法分类
     public function playCate($gameId = "")
     {
         $getCate = PlayCates::where('gameId',$gameId)->get();
@@ -930,7 +950,7 @@ class SrcViewController extends Controller
     public function rechType(){
         return view('back.pay.rechType');
     }
-
+    // 下拉菜单获取在线支付分类
     public function payOnlineSelectData($rechargeType = "")
     {
         if($rechargeType){
@@ -988,7 +1008,7 @@ class SrcViewController extends Controller
     public function rechTypeNew(){
         return view('back.payNew.rechType');
     }
-
+    // 下拉菜单获取今日，昨日，上周
     public function payOnlineDateChange($date = "")
     {
         $dt = Carbon::now();

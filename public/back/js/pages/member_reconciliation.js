@@ -144,8 +144,14 @@ function searchclick(daytime) {
         case 'cft':
             titlestr = arraystr[0]+' 财付通  总计 '+arraystr[2];
             break;
-        case 'adminAddMoney':
-            titlestr = arraystr[0]+' 后台加钱  总计 '+arraystr[2];
+        case 'adminAddMoney_reissue':
+            titlestr = arraystr[0]+' 后台加钱-掉单补发  总计 '+arraystr[2];
+            break;
+        case 'adminAddMoney_pluscolor':
+            titlestr = arraystr[0]+' 后台加钱-加彩金  总计 '+arraystr[2];
+            break;
+        case 'adminAddMoney_other':
+            titlestr = arraystr[0]+' 后台加钱-其他  总计 '+arraystr[2];
             break;
         case 'draw':
             titlestr = arraystr[0]+' 提款  总计 '+arraystr[2];

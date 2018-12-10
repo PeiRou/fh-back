@@ -82,8 +82,28 @@ INNER JOIN (select id ,payeeName from pay_online_new where rechType =\'cft\') AS
 GROUP BY rechName';
         $cft = DB::select($cftsql,[$date.' 00:00:00',$date.' 23:59:59']);
 
+        /*充值(无须语法，直接前五项加总)*/
+
+        /*后台加钱-掉单补发*/
+        $adminAddMoney_reissuesql ='SELECT rechname,amount FROM(
+select username,admin_add_money,payType,msg as \'rechname\',SUM(amount) as \'amount\',updated_at,status from recharges where username = (select username from users where testFlag = \'0\' and recharges.username = users.username) and payType = \'adminAddMoney\' and status =\'2\'and admin_add_money = 2 AND updated_at BETWEEN ? AND ? 
+GROUP BY admin_add_money,msg) AS A';
+        $adminAddMoney_reissue= DB::select($adminAddMoney_reissuesql,[$date.' 00:00:00',$date.' 23:59:59']);
+
+        /*后台加钱-加彩金*/
+        $adminAddMoney_pluscolorsql='SELECT rechname,amount FROM(
+select username,admin_add_money,payType,msg as \'rechname\',SUM(amount) as \'amount\',updated_at,status from recharges where username = (select username from users where testFlag = \'0\' and recharges.username = users.username) and payType = \'adminAddMoney\' and status =\'2\'and admin_add_money = 1 AND updated_at BETWEEN ? AND ? 
+GROUP BY admin_add_money,msg) AS A';
+        $adminAddMoney_pluscolor= DB::select($adminAddMoney_pluscolorsql,[$date.' 00:00:00',$date.' 23:59:59']);
+
+        /*后台加钱-其他*/
+        $adminAddMoney_othersql='SELECT rechname,amount FROM(
+select username,admin_add_money,payType,msg as \'rechname\',SUM(amount) as \'amount\',updated_at,status from recharges where username = (select username from users where testFlag = \'0\' and recharges.username = users.username) and payType = \'adminAddMoney\' and status =\'2\'and admin_add_money = 3 AND updated_at BETWEEN ? AND ? 
+GROUP BY admin_add_money,msg) AS A';
+        $adminAddMoney_other= DB::select($adminAddMoney_othersql,[$date.' 00:00:00',$date.' 23:59:59']);
+
         /*后台加钱*/
-        $adminAddMoneysql = 'SELECT rechName AS \'rechname\',SUM(amount) AS \'amount\',SUM(rebate_or_fee) AS \'giftamount\'
+        $adminAddMoneysql = 'SELECT rechName AS \'rechname\',SUM(amount) AS \'amount\'
 FROM(SELECT B.rechName AS \'rechName\',A.amount AS \'amount\',A.rebate_or_fee AS \'rebate_or_fee\',A.updated_at AS \'updated_at\',A.status AS \'status\'
 FROM(select username,admin_add_money,payType,amount,rebate_or_fee,updated_at,status from recharges where username = (select username from users where testFlag = \'0\' and recharges.username = users.username) and payType = \'adminAddMoney\' and status =\'2\' AND updated_at BETWEEN ? AND ? ) AS A
 INNER JOIN (select admin_add_money,case recharges.admin_add_money when \'1\' then \'加彩金\' when \'2\' then \'掉单补发\' when \'3\' then \'其他\' end as \'rechName\' from recharges where payType = \'adminAddMoney\' GROUP BY admin_add_money) AS B ON A.admin_add_money = B.admin_add_money) AS C
@@ -107,7 +127,7 @@ FROM (select username,amount,updated_at,status from recharges where username = (
         $capitalsql = 'SELECT rechName AS \'rechname\',SUM(amount) AS \'amount\'
 FROM(SELECT B.rechName AS \'rechName\',A.money AS \'amount\',A.updated_at AS \'updated_at\'
 FROM(select to_user,type,money,updated_at from capital where to_user = (select id from users where testFlag = \'0\' and capital.to_user = users.id) and updated_at BETWEEN ? AND ? ) AS A
-INNER JOIN (select type, case capital.type when \'t04\' then \'返利/手续费\' when \'t05\' then \'下注\' when \'t06\' then \'重新开奖[中奖金额]\' when \'t07\' then \'重新开奖[退水金额]\' when \'t08\' then \'活动\' when \'t09\' then \'奖金\' when \'t10\' then \'代理结算佣金\' when \'t11\' then \'代理佣金提现\' when \'t12\' then \'代理佣金提现失败退回\' when \'t13\' then \'抢到红包\' when \'t14\' then \'退水\' when \'t15\' then \'提现\' when \'t16\' then \'撤单\' when \'t17\' then \'提现失败\' when \'t18\' then \'后台加钱\' when \'t19\' then \'后台扣钱\' when \'t23\' then \'棋牌上分\' when \'t24\' then \'棋牌下分\' when \'t25\' then \'冻结提现金额\' when \'t26\' then \'解冻金额\' when \'t27\' then \'冻结金额\' when \'t28\' then \'推广人佣金\' when \'t29\' then \'冻结[退水金额]\' end as \'rechName\' from capital WHERE type in (\'t04\',\'t05\',\'t06\',\'t07\',\'t08\',\'t10\',\'t11\',\'t12\',\'t13\',\'t15\',\'t16\',\'17\',\'t18\',\'t19\',\'t23\',\'t24\',\'t28\')  GROUP BY type)AS B ON A.type = B.type) AS C
+INNER JOIN (select type, case capital.type when \'t04\' then \'返利/手续费\' when \'t05\' then \'下注\' when \'t06\' then \'重新开奖[中奖金额]\' when \'t07\' then \'重新开奖[退水金额]\' when \'t08\' then \'活动\' when \'t09\' then \'奖金\' when \'t10\' then \'代理结算佣金\' when \'t11\' then \'代理佣金提现\' when \'t12\' then \'代理佣金提现失败退回\' when \'t13\' then \'抢到红包\' when \'t14\' then \'退水\' when \'t15\' then \'提现\' when \'t16\' then \'撤单\' when \'t17\' then \'提现失败\' when \'t18\' then \'后台加钱\' when \'t19\' then \'后台扣钱\' when \'t23\' then \'棋牌上分\' when \'t24\' then \'棋牌下分\' when \'t25\' then \'冻结提现金额\' when \'t26\' then \'解冻金额\' when \'t27\' then \'冻结金额\' when \'t28\' then \'推广人佣金\' when \'t29\' then \'冻结[退水金额]\' end as \'rechName\' from capital WHERE type in (\'t04\',\'t05\',\'t06\',\'t07\',\'t08\',\'t10\',\'t11\',\'t12\',\'t13\',\'t15\',\'t16\',\'17\',\'t19\',\'t23\',\'t24\',\'t28\')  GROUP BY type)AS B ON A.type = B.type) AS C
 GROUP BY rechName';
         $capital = DB::select($capitalsql,[$date.' 00:00:00',$date.' 23:59:59']);
 //        $capital = array_merge($echarges,$capital);
@@ -138,6 +158,9 @@ FROM bet WHERE 1 AND testFlag =\'0\' AND 	updated_at BETWEEN ? AND ?    ORDER BY
             'alipay'=> $this->arrayunset($alipay),
             'weixin' => $this->arrayunset($weixin),
             'cft' => $this->arrayunset($cft),
+            'adminAddMoney_reissue' => $this->arrayunset($adminAddMoney_reissue),
+            'adminAddMoney_pluscolor' => $this->arrayunset($adminAddMoney_pluscolor),
+            'adminAddMoney_other' => $this->arrayunset($adminAddMoney_other),
             'adminAddMoney' => $this->arrayunset($adminAddMoney),
             'draw' => $this->arrayunset($draw),
             'capital' => $this->arrayunset($capital),
@@ -163,7 +186,7 @@ FROM bet WHERE 1 AND testFlag =\'0\' AND 	updated_at BETWEEN ? AND ?    ORDER BY
                     $this->error('update to totalreport error');
                 }
                 $this->info('update to totalreport successfully');
-                \Log::info(date('Y-m-d H:i:s').' 系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
+                \Log::info('系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
             }else{
                 /*今日会员馀额*/
                 $useramountsql = 'SELECT SUM(A.money) AS \'amount\' FROM (select id,money from users where testFlag = \'0\') AS A';
@@ -187,7 +210,7 @@ FROM bet WHERE 1 AND testFlag =\'0\' AND 	updated_at BETWEEN ? AND ?    ORDER BY
                     $this->error('insert to totalreport error');
                 }
                 $this->info('insert to totalreport successfully');
-                \Log::info(date('Y-m-d H:i:s').' 系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
+                \Log::info('系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
             }
         }else{
             $datatotalreport['data']=$serdata;
@@ -202,7 +225,7 @@ FROM bet WHERE 1 AND testFlag =\'0\' AND 	updated_at BETWEEN ? AND ?    ORDER BY
                 \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 $this->error('update to totalreport error');
             }
-            \Log::info(date('Y-m-d H:i:s').' 操作人：'.$this->argument('user').'  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
+            \Log::info('操作人：'.$this->argument('user').'  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
             $this->info('update to totalreport successfully');
         }
     }

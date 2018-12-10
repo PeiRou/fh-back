@@ -89,15 +89,17 @@
                 <th>支付宝支付</th>
                 <th>微信支付</th>
                 <th>财付通</th>
-                <th>后台加钱</th>
+                <th>充值</th>
                 <th>提款</th>
                 <th>资金明细</th>
+                <th>后台加钱<br>-掉单补发</th>
+                <th>后台加钱<br>-加彩金</th>
+                <th>后台加钱<br>-其他</th>
+                <th>后台加钱</th>
                 <th>今日实际输赢</th>
                 <th>今日会员馀额</th>
                 <th>昨日会员馀额</th>
                 <th>操作人帐号</th>
-                <th>创建时间</th>
-                <th>修改时间</th>
                 <th>操作</th>
             </tr></thead>
             <tbody>
@@ -108,15 +110,17 @@
                     @if($v->alipay == '0.00')<td><span>{{$v->alipay}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|alipay|{{$v->alipay}}')">{{$v->alipay}}</span></td>@endif
                     @if($v->weixin == '0.00')<td><span>{{$v->weixin}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|weixin|{{$v->weixin}}')">{{$v->weixin}}</span></td>@endif
                     @if($v->cft == '0.00')<td><span>{{$v->cft}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|cft|{{$v->cft}}')">{{$v->cft}}</span></td>@endif
-                    @if($v->adminAddMoney == '0.00')<td><span>{{$v->adminAddMoney}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|adminAddMoney|{{$v->adminAddMoney}}')">{{$v->adminAddMoney}}</span></td>@endif
+                    <td>{{$v->echarges}}</td>
                     @if($v->draw == '0.00')<td><span>{{$v->draw}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|draw|{{$v->draw}}')">{{$v->draw}}</span></td>@endif
                     @if($v->capital == '0.00')<td><span>{{$v->capital}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|capital|{{$v->capital}}')">{{$v->capital}}</span></td>@endif
+                    @if($v->adminAddMoney_reissue == '0.00')<td><span>{{$v->adminAddMoney_reissue}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|adminAddMoney_reissue|{{$v->adminAddMoney_reissue}}')">{{$v->adminAddMoney_reissue}}</span></td>@endif
+                    @if($v->adminAddMoney_pluscolor == '0.00')<td><span>{{$v->adminAddMoney_pluscolor}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|adminAddMoney_pluscolor|{{$v->adminAddMoney_pluscolor}}')">{{$v->adminAddMoney_pluscolor}}</span></td>@endif
+                    @if($v->adminAddMoney_other == '0.00')<td><span>{{$v->adminAddMoney_other}}</span></td> @else <td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|adminAddMoney_other|{{$v->adminAddMoney_other}}')">{{$v->adminAddMoney_other}}</span></td>@endif
+                    <td>{{$v->adminAddMoney}}</td>
                     @if($v->bunko > 0) <td><span style="color:blue">{{$v->bunko}}</span></td> @elseif($v->bunko == '0') <td><span>{{$v->bunko}}</span></td>  @else <td><span style="color:green">{{$v->bunko}}</span></td> @endif
                     <td>{{$v->memberquota}}</td>
                     <td>{{$v->memberquotayday}}</td>
                     <td>{{$v->operation_account}}</td>
-                    <td>{{$v->created_at}}</td>
-                    <td>{{$v->updated_at}}</td>
                     <td><ul class="control-menu"><li  onclick="refreshExcel('{{$v->daytime}}')">重新执行</li></ul></td></tr>
             @endforeach
             </tbody>

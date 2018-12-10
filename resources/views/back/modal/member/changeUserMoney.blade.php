@@ -1,3 +1,4 @@
+<link href="/js/jquery.searchableSelect.css" rel="stylesheet" type="text/css">
 <form id="changeUserMoneyForm" class="ui mini form" action="{{ url('/action/admin/changeUserMoney') }}">
     <div class="field">
         <label>会员账号</label>
@@ -12,12 +13,6 @@
         </div>
     </div>
     <div class="field">
-        <label>增减余额 <span class="tips-small">输入负值表示减少金额</span></label>
-        <div class="ui input icon">
-            <input type="text" name="money"/>
-        </div>
-    </div>
-    <div class="field">
         <label>加钱类型</label>
         <select class="ui dropdown" id="admin_add_money" name="admin_add_money" style='height:32px !important'>
             @foreach($aRechargesType as $kRechargesType => $iRechargesType)
@@ -25,15 +20,53 @@
             @endforeach
         </select>
     </div>
-    <div class="field">
-        <label>备注</label>
+    <div class="field" style="position: relative ;z-index:100">
+        <label>备注<br><span class="tips-small">※注意此备注会成为会员对帐功能--后台加钱分类的依据，务必谨慎填写</span></label>
         <div class="ui input icon">
-            <input type="text" name="content" placeholder="备注必填"/>
+            <select class="ui fluid dropdown" id="select" style=' position: relative ;z-index:100;height:100px !important'>
+                @foreach($aContent as $kContent => $iContent)
+                    <option selected value="{{ $iContent->content}}">{{ $iContent->content}}</option>
+                @endforeach
+            </select>
         </div>
+    </div>
+    <div class="field">
+        <label>增减余额 <span class="tips-small">输入负值表示减少金额</span></label>
+        <div class="ui input icon">
+            <input type="text" name="money" id ="money"/>
+        </div>
+    </div>
+    <div class="field">
+        <input type="hidden"  name="content" id ="content" />
     </div>
     <input type="hidden" name="uid" value="{{ $user->id }}"/>
 </form>
-<script>
+<script src="/js/jquery.searchableInputSelect.js"></script>
+<script type="text/javascript">
+    $('#select').searchableInputSelect();
+    $('#money').click(function() {
+        var selectholderval = document.getElementById('select-holder').innerHTML;
+        document.getElementById('content').value = selectholderval;
+    });
+    $('#admin_add_money').on('mouseleave', function(event) {
+        document.getElementById('select-holder').addEventListener('click',function () {
+            var moneyType = $('#admin_add_money').val();
+            $.ajax({
+                url:'/usermoney/selectData/addmoneytype/'+moneyType,
+                type:'get',
+                dataType:'json',
+                success:function (result) {
+                    var str = '';
+                    result.forEach(function(item){
+                        str += '<option value="'+item.msg+'">'+item.msg+'</option>';
+                    });
+                    $("#select").html(str);
+                    $("#searchable-select").remove();
+                    $('#select').searchableInputSelect();
+                }
+            });
+        });
+    });
     $('#changeUserMoneyForm').formValidation({
         framework: 'semantic',
         icon: {

@@ -366,7 +366,17 @@ class ModalController extends Controller
     {
         $user = User::find($id);
         $aRechargesType = Recharges::$rechargesType;
-        return view('back.modal.member.changeUserMoney',compact('user','aRechargesType'));
+        $aContentsql = 'SELECT msg AS \'content\' FROM recharges WHERE payType = \'adminAddMoney\' AND admin_add_money = 1 GROUP BY admin_add_money,msg';
+        $aContent = DB::select($aContentsql);
+        return view('back.modal.member.changeUserMoney',compact('user','aRechargesType','aContent'));
+    }
+    // 下拉菜单获取加钱类型
+    public function userMoneyType($type = ""){
+        if($type){
+            $aContentsql = 'SELECT msg  FROM recharges WHERE payType = \'adminAddMoney\' AND admin_add_money = '.$type.' GROUP BY admin_add_money,msg';
+            $aContent = DB::select($aContentsql);
+            return response()->json($aContent);
+        }
     }
     //查看用户资金明细
     public function userCapitalHistory($id)
