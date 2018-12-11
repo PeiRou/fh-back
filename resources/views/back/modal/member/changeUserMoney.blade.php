@@ -20,16 +20,16 @@
             @endforeach
         </select>
     </div>
-    <div class="field" style="position: relative ;z-index:100">
-        <label>备注<br><span class="tips-small">※注意此备注会成为会员对帐功能--后台加钱分类的依据，务必谨慎填写</span></label>
-        <div class="ui input icon">
-            <select class="ui fluid dropdown" id="select" style=' position: relative ;z-index:100;height:100px !important'>
-                @foreach($aContent as $kContent => $iContent)
-                    <option selected value="{{ $iContent->content}}">{{ $iContent->content}}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
+    {{--<div class="field" style="position: relative ;z-index:100">--}}
+        {{--<label>备注<br><span class="tips-small">※注意此备注会成为会员对帐功能--后台加钱分类的依据，务必谨慎填写</span></label>--}}
+        {{--<div class="ui input icon">--}}
+            {{--<select class="ui fluid dropdown" id="select" style=' position: relative ;z-index:100;height:100px !important'>--}}
+                {{--@foreach($aContent as $kContent => $iContent)--}}
+                    {{--<option selected value="{{ $iContent->content}}">{{ $iContent->content}}</option>--}}
+                {{--@endforeach--}}
+            {{--</select>--}}
+        {{--</div>--}}
+    {{--</div>--}}
     <div class="field">
         <label>增减余额 <span class="tips-small">输入负值表示减少金额</span></label>
         <div class="ui input icon">
@@ -37,7 +37,8 @@
         </div>
     </div>
     <div class="field">
-        <input type="hidden"  name="content" id ="content" />
+        <label>备注</label>
+        <input type="text"  name="content" id ="content" />
     </div>
     <input type="hidden" name="uid" value="{{ $user->id }}"/>
 </form>
