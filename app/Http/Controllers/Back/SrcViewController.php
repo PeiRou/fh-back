@@ -351,6 +351,18 @@ class SrcViewController extends Controller
                 }else{
                     $v->bunko = "0.00";
                 }
+                //todayprofitloss
+                if(!empty($v->data['todayprofitloss'][0])){
+                    $v->todayprofitloss = $v->data['todayprofitloss'][0]->totle;
+                }else{
+                    $v->todayprofitloss = "0.00";
+                }
+                //sysmemberquota
+                if($v->memberquotayday >0 && $v->todayprofitloss != "0.00"){
+                    $v->sysmemberquota = sprintf('%0.2f',$v->memberquotayday+$v->todayprofitloss);
+                }else{
+                    $v->sysmemberquota = "0.00";
+                }
             }
         }else{
             $totalreport = [];
