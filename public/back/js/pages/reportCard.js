@@ -70,6 +70,8 @@ $(function () {
                 $('#BetCountSum').html(e.totalArr.BetCountSum);
                 $('#betMoney').html(e.totalArr.betMoney);
                 $('#betBunko').html(e.totalArr.betBunko);
+                $('#upMoney').html(e.totalArr.totalUp || '0.00');
+                $('#downMoney').html(e.totalArr.totalDown || '0.00');
                 return e.data;
             }
         },
@@ -80,6 +82,12 @@ $(function () {
             {data:'bet_count'},
             {data:'bet_money'},
             {data:'bet_bunko'},
+            {data:function(e){
+                return e.up_money || '0.00'
+                }},
+            {data:function(e){
+                    return e.down_money || '0.00'
+                }},
             {data:'date'}
         ],
         language: {

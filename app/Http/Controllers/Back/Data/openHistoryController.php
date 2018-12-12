@@ -487,8 +487,8 @@ class openHistoryController extends Controller
 
     public function card_betInfo(Request $request){
         $GamesApi = new GamesApi();
-        $sqlArr = $GamesApi->card_betInfoSql($request);
-        $TotalSum = $GamesApi->card_betInfoTotal($request, $sqlArr);
+        $sqlArr = $GamesApi->card_betInfoSql1($request);
+        $TotalSum = $GamesApi->card_betInfoTotal1($request, $sqlArr);
         $sqlCount =  'SELECT COUNT(`id`) AS `count` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS b';
         $res = $GamesApi->card_betInfoData($request, $sqlArr);
         $resCount = DB::select($sqlCount)[0]->count;

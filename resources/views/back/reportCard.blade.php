@@ -60,6 +60,8 @@
                 <th>笔数</th>
                 <th>投注金额</th>
                 <th>盈利</th>
+                <th>上分</th>
+                <th>下分</th>
                 <th>报表时间</th>
             </tr>
             </thead>
@@ -71,6 +73,8 @@
                 <th id="BetCountSum"></th>
                 <th id="betMoney"></th>
                 <th id="betBunko"></th>
+                <th id="upMoney"></th>
+                <th id="downMoney"></th>
                 <th></th>
             </tr>
             </tfoot>

@@ -268,42 +268,41 @@ class SrcViewController extends Controller
         if (!empty($totalreport)){
             foreach ($totalreport as $k=>$v){
                 $v->data = unserialize($v->data)[$v->daytime];
-                foreach ($v->data as $kw=>$vw){
-                    $str= 0;
-                    foreach ($vw as $kx=>$vx){
-                        $str += $vx->amount;
+                $fordata = [];
+                foreach ($v->data as $keyw=>$valw){
+                    $datastr= 0;
+                    foreach ($valw as $kx=>$vx){
+                        $datastr += $vx->amount;
                     }
-                    foreach ($vw as $kx=>$vx){
-                        $vx->totle = sprintf('%0.2f',$str);
-                    }
+                    $fordata[$keyw]=sprintf('%0.2f',$datastr);
                 }
                 //onlinePayment
                 if(!empty($v->data['onlinePayment'][0])){
-                    $v->onlinePayment = $v->data['onlinePayment'][0]->totle;
+                    $v->onlinePayment = $fordata['onlinePayment'];
                 }else{
                     $v->onlinePayment = "0.00";
                 }
                 //bankTransfer
                 if(!empty($v->data['bankTransfer'][0])){
-                    $v->bankTransfer = $v->data['bankTransfer'][0]->totle;
+                    $v->bankTransfer = $fordata['bankTransfer'];
                 }else{
                     $v->bankTransfer = "0.00";
                 }
                 //alipay
                 if(!empty($v->data['alipay'][0])){
-                    $v->alipay = $v->data['alipay'][0]->totle;
+                    $v->alipay = $fordata['alipay'];
                 }else{
                     $v->alipay = "0.00";
                 }
                 //weixin
                 if(!empty($v->data['weixin'][0])){
-                    $v->weixin = $v->data['weixin'][0]->totle;
+                    $v->weixin = $fordata['weixin'];
                 }else{
                     $v->weixin = "0.00";
                 }
                 //cft
                 if(!empty($v->data['cft'][0])){
-                    $v->cft = $v->data['cft'][0]->totle;
+                    $v->cft = $fordata['cft'];
                 }else{
                     $v->cft = "0.00";
                 }
@@ -311,45 +310,57 @@ class SrcViewController extends Controller
                 $v->echarges = sprintf('%0.2f',$v->onlinePayment+$v->bankTransfer+$v->alipay+$v->weixin+$v->cft);
                 //adminAddMoney_reissue
                 if(!empty($v->data['adminAddMoney_reissue'][0])){
-                    $v->adminAddMoney_reissue = $v->data['adminAddMoney_reissue'][0]->totle;
+                    $v->adminAddMoney_reissue = $fordata['adminAddMoney_reissue'];
                 }else{
                     $v->adminAddMoney_reissue = "0.00";
                 }
                 //adminAddMoney_pluscolor
                 if(!empty($v->data['adminAddMoney_pluscolor'][0])){
-                    $v->adminAddMoney_pluscolor = $v->data['adminAddMoney_pluscolor'][0]->totle;
+                    $v->adminAddMoney_pluscolor = $fordata['adminAddMoney_pluscolor'];
                 }else{
                     $v->adminAddMoney_pluscolor = "0.00";
                 }
                 //adminAddMoney_other
                 if(!empty($v->data['adminAddMoney_other'][0])){
-                    $v->adminAddMoney_other = $v->data['adminAddMoney_other'][0]->totle;
+                    $v->adminAddMoney_other = $fordata['adminAddMoney_other'];
                 }else{
                     $v->adminAddMoney_other = "0.00";
                 }
                 //adminAddMoney
                 if(!empty($v->data['adminAddMoney'][0])){
-                    $v->adminAddMoney = $v->data['adminAddMoney'][0]->totle;
+                    $v->adminAddMoney = $fordata['adminAddMoney'];
                 }else{
                     $v->adminAddMoney = "0.00";
                 }
                 //draw
                 if(!empty($v->data['draw'][0])){
-                    $v->draw = $v->data['draw'][0]->totle;
+                    $v->draw = $fordata['draw'];
                 }else{
                     $v->draw = "0.00";
                 }
                 //capital
                 if(!empty($v->data['capital'][0])){
-                    $v->capital = $v->data['capital'][0]->totle;
+                    $v->capital = $fordata['capital'];
                 }else{
                     $v->capital = "0.00";
                 }
                 //bunko
                 if(!empty($v->data['bunko'][0])){
-                    $v->bunko = $v->data['bunko'][0]->totle;
+                    $v->bunko = $fordata['bunko'];
                 }else{
                     $v->bunko = "0.00";
+                }
+                //todayprofitloss
+                if(!empty($v->data['todayprofitloss'][0])){
+                    $v->todayprofitloss = $fordata['todayprofitloss'];
+                }else{
+                    $v->todayprofitloss = "0.00";
+                }
+                //sysmemberquota
+                if($v->memberquotayday >0 && $v->todayprofitloss != "0.00"){
+                    $v->sysmemberquota = sprintf('%0.2f',$v->memberquotayday+$v->todayprofitloss);
+                }else{
+                    $v->sysmemberquota = "0.00";
                 }
             }
         }else{

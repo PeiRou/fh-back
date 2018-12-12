@@ -370,13 +370,13 @@ class ReportDataController extends Controller
             }
         }catch (\Exception $e){
             return response()->json([
-                'status' => true,
+                'status' => false,
                 'msg' => $e->getMessage()
             ]);
         }
         return response()->json([
             'status' => false,
-            'msg' => 'error'
+            'msg' => '没有数据'
         ]);
     }
     //棋牌投注报表
@@ -393,7 +393,7 @@ class ReportDataController extends Controller
         });
         $totalTable = clone $table;
         $count = $table->count();
-        $totalArr = $totalTable->select(DB::raw('SUM(`bet_count`) AS `BetCountSum`, SUM(`bet_money`) AS `betMoney`, SUM(`bet_bunko`) AS betBunko'))->first();
+        $totalArr = $totalTable->select(DB::raw('SUM(`bet_count`) AS `BetCountSum`,SUM(`up_money`) AS totalUp,SUM(`down_money`) AS totaldown, SUM(`bet_money`) AS `betMoney`, SUM(`bet_bunko`) AS betBunko'))->first();
         $res = $table->skip($request->start ?? 0)->take($request->length ?? 100)->get();
         return DataTables::of($res)
             ->setTotalRecords($count)
@@ -416,7 +416,9 @@ class ReportDataController extends Controller
         $totalArr = [
             'betMoney' => $Total->BetSum ?? 0,
             'betBunko' => $Total->ProfitSum ?? 0,
-            'BetCountSum' => $Total->BetCountSum ?? 0
+            'BetCountSum' => $Total->BetCountSum ?? 0,
+            'totalUp' => $Total->totalUp ?? 0,
+            'totalDown' => $Total->totalDown ?? 0,
         ];
         return DataTables::of($res)
             ->setTotalRecords($resCount)
