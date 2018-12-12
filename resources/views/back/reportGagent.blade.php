@@ -78,16 +78,16 @@
             <thead>
                 <tr>
                     <th>账号</th>
-                    <th>会员数</th>
-                    <th>笔数</th>
-                    <th>投注金额</th>
-                    <th>赢利投注金额</th>
-                    <th>活动金额</th>
-                    <th>充值优惠/手续费</th>
-                    <th>代理退水金额</th>
-                    <th>会员输赢(不包括退水)</th>
-                    <th>实际退水</th>
-                    <th>实际输赢(包括退水)</th>
+                    <th><span class="tips-icon"><i data-tooltip="该总代理下的有下注记录的会员数" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 会员数</th>
+                    <th><span class="tips-icon"><i data-tooltip="该总代理下的会员投注笔数" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 笔数</th>
+                    <th><span class="tips-icon"><i data-tooltip="该总代理下的会员投注金额" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 投注金额</th>
+                    <th><span class="tips-icon"><i data-tooltip="该总代理下的会员盈利的投注金额" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 赢利投注金额</th>
+                    <th><span class="tips-icon"><i data-tooltip="该总代理下的会员活动金额" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 活动金额</th>
+                    <th><span class="tips-icon"><i data-tooltip="该总代理下的会员的充值优惠/手续费（今天没有下注，只有充值优惠/手续费不会显示）" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 充值优惠/手续费</th>
+                    <th><span class="tips-icon"><i data-tooltip="该总代理应得退水金额" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 代理退水金额</th>
+                    <th><span class="tips-icon"><i data-tooltip="该总代理的会员输赢（小于零为平台赢，大于零位会员赢）" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 会员输赢(不包括退水)</th>
+                    <th><span class="tips-icon"><i data-tooltip="该总代理的会员实际退水(单笔投注金额 * 退水比例)" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际退水</th>
+                    <th><span class="tips-icon"><i data-tooltip="会员输赢 - 活动金额 - 充值优惠/手续费" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际输赢(包括退水)</th>
                 </tr>
             </thead>
             <tfoot>
