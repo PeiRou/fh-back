@@ -64,6 +64,8 @@ class Report{
                 'bet_count' => $v->betCount ?? '',
                 'bet_money' => $v->AllBet ?? '',
                 'bet_bunko' => $v->Profit ?? '',
+                'up_money' => $v->upMoney ?? 0,
+                'down_money' => $v->downMoney ?? 0,
                 'date' => $this->param->aTime,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
