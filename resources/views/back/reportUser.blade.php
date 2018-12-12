@@ -90,16 +90,16 @@
                 <th>账号</th>
                 <th>姓名</th>
                 <th>上级代理</th>
-                <th>充值金额</th>
-                <th>取款金额</th>
+                <th><span class="tips-icon"><i data-tooltip="线上和线下充值成功的总和" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 充值金额</th>
+                <th><span class="tips-icon"><i data-tooltip="手动和自动提款成功的总和" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 取款金额</th>
                 <th>笔数</th>
                 <th>投注金额</th>
                 <th>赢利投注金额</th>
                 <th>活动金额</th>
                 <th>充值优惠/手续费</th>
-                <th>会员输赢(不含退水)</th>
-                <th>实际退水</th>
-                <th>实际输赢(含退水)</th>
+                <th><span class="tips-icon"><i data-tooltip="小于零为平台赢，大于零位会员赢" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 会员输赢(不含退水)</th>
+                <th><span class="tips-icon"><i data-tooltip="单笔投注金额 * 退水比例" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际退水</th>
+                <th><span class="tips-icon"><i data-tooltip="会员输赢 - 活动金额 - (充值优惠和手续费)" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际输赢(含退水)</th>
             </tr>
             </thead>
             <tfoot>

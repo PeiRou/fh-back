@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back;
 use App\Http\Controllers\Common\AgentLevelOdds;
 use App\Play;
 use App\Http\Controllers\Controller;
+use App\PlayAgentSet;
 use App\SystemSetting;
 use Illuminate\Support\Facades\DB;
 
@@ -40,6 +41,31 @@ class GameAgentTableController extends Controller
         }
 
         return view('back.modal.gameTables.'.$gameId)->with('odds',$fromDBOdds->all())->with('rebate',$fromDBRebate->all());
+    }
+
+    //直属代理赔率设定
+    public function gameTableSet($gameId,$agentId){
+        $data = PlayAgentSet::getAgentSetOdds($gameId,$agentId);
+        $filter = $this->getFilterArray($gameId);
+        $fromDBOdds = collect([]);
+        $fromDBRebate = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->odds_tag == $i)
+                {
+                    $fromDBOdds->put($item->odds_tag,empty($item->agentOdds)?$item->odds:$item->agentOdds);
+                }
+                if($item->rebate_tag == $i){
+                    $fromDBRebate->put($item->rebate_tag,empty($item->agentRebate)?$item->rebate:$item->agentRebate);
+                }
+            }
+        }
+
+        return view('back.modal.gameTablesSet.'.$gameId)
+            ->with('odds',$fromDBOdds->all())
+            ->with('rebate',$fromDBRebate->all())
+            ->with('gameId',$gameId)
+            ->with('agentId',$agentId);
     }
 
     //获得filter数组

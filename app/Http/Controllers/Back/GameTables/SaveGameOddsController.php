@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Back\GameTables;
 use App\AgentOddsSetting;
 use App\Games;
 use App\Play;
+use App\PlayAgentSet;
 use App\PlayCates;
 use App\SystemSetting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 class SaveGameOddsController extends Controller
 {
@@ -440,5 +442,33 @@ class SaveGameOddsController extends Controller
             return 0;
         else
             return strlen($aNum[1]);
+    }
+
+    //保存设置的代理赔率表
+    public function agentOddsAgent(Request $request,$gameId,$agentId){
+        $aParam = $request->input();
+        $aArray = [];
+        foreach ($aParam['code'] as $key => $value){
+            $aArray[] = [
+                'paly_code' => $value,
+                'agent_id' => $agentId,
+                'game_id' => $gameId,
+                'odds' => $aParam['odds'][$key],
+                'rebate' => $aParam['rebate'][$key],
+            ];
+        }
+
+        DB::beginTransaction();
+
+        try{
+            PlayAgentSet::where('game_id',$gameId)->where('agent_id',$agentId)->delete();
+            PlayAgentSet::insert($aArray);
+            DB::commit();
+            return ['status' => true];
+        }catch (\Exception $e){
+            DB::rollback();
+            Log::info($e->getMessage());
+            return ['status' => false];
+        }
     }
 }
