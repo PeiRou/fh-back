@@ -173,9 +173,16 @@ FROM bet WHERE 1 AND testFlag ='0' AND updated_at BETWEEN ? AND ? ) AS A";
         $nowtime = date('Y-m-d H',strtotime('-1 day')); //搭配定时任务的执行时间为 00时
         $executtime = date('Y-m-d H',strtotime($date));
         if($nowtime == $executtime){  //定时任务时间与输入执行日期一致
+            \Log::info('「会员对帐」功能定时任务执行了。');
             $unsettlementsql= "SELECT '未结算' AS 'rechname',SUM(CASE WHEN game_id IN(90,91) THEN freeze_money ELSE bet_money END) AS amount
 FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ? AND ?";
             $unsettlement = DB::select($unsettlementsql,[$date.' 00:00:00',$date.' 23:59:59']);
+
+            $unsettlementlogsql = "SELECT * FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ? AND ?";
+            $unsettlementlog = DB::select($unsettlementlogsql,[$date.' 00:00:00',$date.' 23:59:59']);
+            \Log::info('未结算执行加总的语法: '."SELECT '未结算' AS 'rechname',SUM(CASE WHEN game_id IN(90,91) THEN freeze_money ELSE bet_money END) AS amount FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ".$date." 00:00:00 AND ".$date." 23:59:59");
+            \Log::info('未结算执行捞数据的语法: '."SELECT * FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ".$date." 00:00:00 AND ".$date." 23:59:59");
+            \Log::info(json_encode($unsettlementlog));
         }else{
            /*//试算，有点问题
            $datetom = date('Y-m-d',strtotime($date."+1 days"));
@@ -184,11 +191,14 @@ FROM( SELECT SUM(CASE WHEN game_id IN(90,91) THEN `freeze_money` ELSE `bet_money
 SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) END) AS bunko
 FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_at BETWEEN ? AND ?) AS A";
             $unsettlement = DB::select($unsettlementsql,[$date.' 00:00:00',$date.' 23:59:59',$datetom.' 00:00:00',$datetom.' 23:59:59']);*/
+            \Log::info('「会员对帐」功能重新执行按钮执行了。');
             $val = 0.00;
             $unsettlementsql = "SELECT data FROM totalreport WHERE daytstrot = ".strtotime($date);
             $unsettlement = DB::select($unsettlementsql);
+            \Log::info('执行的语法: '.$unsettlementsql);
             $dataunsettlement = unserialize($unsettlement[0]->data)[$date];
             if(isset($dataunsettlement['todayprofitlossitem'])){
+                \Log::info('捞到今日盈亏的数据: '.json_encode($dataunsettlement['todayprofitlossitem']));
                 foreach ($dataunsettlement['todayprofitlossitem'] as $k=>$v){
                     if($v->rechname == "未结算"){
                         $val =  $v->amount;
@@ -201,6 +211,7 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                     "amount" => $val
                 ]
             ];
+            \Log::info('最后处理好的值 '.json_encode($unsettlement));
         }
 
         $merge1 = array_merge($echarges,$capitallittle);
