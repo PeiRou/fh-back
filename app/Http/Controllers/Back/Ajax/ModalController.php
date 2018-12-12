@@ -155,24 +155,69 @@ class ModalController extends Controller
             $data = unserialize($data);
             $data = $data[$strarray[0]][$strarray[1]];
             $str= 0;
+
             foreach ($data as $k=>$v){
                 $str += $v->amount;
             }
             foreach ($data as $k=>$v){
                 $v->totle = sprintf('%0.2f',$str);
             }
+            $phonyfitloss ='0.00';
+            if(isset($strarray[3]) && $strarray[1]=="todayprofitlossitem"){ //for回圈不含未结算   为平帐用的条件--（平帐总数-for回圈不含未结算的总数）
+                $profitlosstal= 0;$totle=[];
+                $todayprofitlossitem=$data;
+                foreach ($todayprofitlossitem as $k=>$v){
+                    if($v ->rechname == '充值') {
+                        $profitlosstal += $v ->amount;
+                    }
+                    if($v ->rechname == '返利/手续费') {
+                        $profitlosstal += $v ->amount;
+                    }
+                    if($v ->rechname == '活动') {
+                        $profitlosstal += $v ->amount;
+                    }
+                    if($v ->rechname == '抢到红包') {
+                        $profitlosstal += $v ->amount;
+                    }
+                    if($v ->rechname == '退水') {
+                        $profitlosstal += $v ->amount;
+                    }
+                    if($v ->rechname == '棋牌上分') {
+                        $profitlosstal -= $v ->amount;
+                    }
+                    if($v ->rechname == '棋牌下分') {
+                        $profitlosstal += $v ->amount;
+                    }
+                    if($v ->rechname == '会员输赢（含退水）') {
+                        $profitlosstal += $v ->amount;
+                    }
+                    //提款
+                    if($v ->rechname == '自动出款') {
+                        $profitlosstal -= $v ->amount;
+                    }
+                    if($v ->rechname == '手动出款') {
+                        $profitlosstal -= $v ->amount;
+                    }
+                    if($v ->rechname == '后台扣钱') {
+                        $profitlosstal -= $v ->amount;
+                    }
+                }
+                $phonyfitloss = sprintf('%0.3f',$profitlosstal - $strarray[3]);
+            }
         }else{
             $data ='';
         }
-
         if(!empty($data)){
-            $str='';
             $str = "<div class='agent-info'><table id=\"memberReconciliationTable\" class=\"ui small table\" cellspacing=\"0\" width=\"100%\">
             <tbody><tr><td>";
             foreach($data as $k=>$v){
                 $amount = isset($v->amount)?$v->amount:'0';
                 $giftamount = isset($v->giftamount)?'赠送'.$v->giftamount:'';
-                $str .="<div id=\"v\">$v->rechname</br><p>$giftamount   总计$amount</p></div>";
+                if($v->rechname == '未结算'){ //为平帐用的条件
+                    $str .="<div id=\"v\">$v->rechname</br><p>$giftamount   总计$phonyfitloss</p></div>";
+                }else{
+                    $str .="<div id=\"v\">$v->rechname</br><p>$giftamount   总计$amount</p></div>";
+                }
             }
             $str .="</td></tr></tbody>
             </table></div>";
