@@ -148,7 +148,8 @@
                 </div>
             </div>
             <div class="total-nums">
-                    赠送金额：<span id="rechargeGiveTotal" style="font-size: 13pt;">0</span> 充值总计：<span id="rechargeTotal" style="font-size: 13pt;">0</span>
+                <span class="tips-icon tips-info" style="cursor:pointer "><i  class="iconfont" style="color: #717171"></i></span>
+                赠送金额：<span id="rechargeGiveTotal" style="font-size: 13pt;">0</span> 充值总计：<span id="rechargeTotal" style="font-size: 13pt;">0</span>
             </div>
 
         </div>
@@ -197,4 +198,19 @@
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <script src="/back/js/pages/recharge_record.js"></script>
+    <script>
+        $('.tips-info').click(function(){
+            $.dialog({
+                title: '说明：',
+                content: '当前搜索条件下的所有正式用户的总计' +
+                '<br/>注：' +
+                '<br/>赠送金额：充值成功的返利' +
+                '<br/>充值总计：默认不显示在线支付、后台加钱，不包含赠送金额' +
+                '<br/>今日线上总额：只显示在线支付金额' +
+                '<br/>今日线上人数：只显示在线支付人数' +
+                '<br/>今日线下总额：不包含在线支付金额、赠送金额，包含后台加钱' +
+                '<br/>今日线下人数：不包含在线支付、后台加钱人数'
+            });
+        });
+    </script>
 @endsection
