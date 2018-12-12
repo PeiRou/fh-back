@@ -403,12 +403,12 @@ class ReportDataController extends Controller
     }
     public function dayCard($request){
         $repo = new \App\Repository\GamesApi\Card\Report();
-        $repo->getRes();
-        $repo->createData();
         $repo->param->startTime = $request->startTime;
         $repo->param->endTime = $request->endTime;
         $repo->param->start = $request->start ?? 0;
         $repo->param->length = $request->length ?? 100;
+        $repo->getRes();
+        $repo->createData();
         $res = $repo->getData();
         $Total = GamesApi::card_betInfoTotal($request, $repo->sqlArr);
         $sqlCount =  'SELECT COUNT(`id`) AS `count` FROM ( '.implode(' UNION ALL ', $repo->sqlArr).' ) AS b';
