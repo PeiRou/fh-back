@@ -417,3 +417,7 @@ function error(id){
 function panSetting(level) {
     window.open('/back/modal/gameAgentOddsLook/'+level)
 }
+
+function panSettingOne(agentId) {
+    window.open('/back/modal/gameAgentOddsSet/'+agentId)
+}

@@ -20,8 +20,9 @@ class Agent extends Model
     //模式
     public static $agentModelStatus = [
         '0' => '默认',
-        '1' => '代理模式',
+        '1' => '金字塔代理模式',
         '2' => '会员推广模式',
+        '3' => '直属代理模式',
     ];
 
     //获取所有代理商

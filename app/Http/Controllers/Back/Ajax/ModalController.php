@@ -1043,6 +1043,14 @@ class ModalController extends Controller
         return view('back.modal.game.handicapSetting',compact('gameData','game','level'));
     }
 
+    //代理赔率设置-模板
+    public function gameAgentOddsSet($agentId){
+        $gameData = json_decode(Storage::disk('local')->get('gameData.php'),true);
+        $game = Games::all();
+        $iAgent = Agent::where('a_id',$agentId)->first();
+        return view('back.modal.game.handicapSetting',compact('gameData','game','iAgent'));
+    }
+
     //添加游戏接口配置
     public function editGameApi(Request $request){
         $g_id = $request->get('g_id') ?? 0;

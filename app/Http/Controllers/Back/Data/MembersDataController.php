@@ -224,6 +224,8 @@ GROUP BY g.ga_id LIMIT $start,$length";
                     if($allAgent->modelStatus == 1) {
                         $agentLevel = empty($allAgent->odds_level) ? 1 : $allAgent->odds_level;
                         $html .= "<li onclick='panSetting(\"$agentLevel\")'>盘口设定</li>";
+                    }else if($allAgent->modelStatus == 3){
+                        $html .= "<li onclick='panSettingOne(\"$allAgent->a_id\")'>盘口设定</li>";
                     }
                     if(env('TEST',0) == 1) {
                         if ($allAgent->modelStatus == 1)

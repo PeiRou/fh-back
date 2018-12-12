@@ -1,6 +1,6 @@
 @extends('back.master')
 
-@section('title','第'.$level.'级代理赔率')
+@section('title','代理赔率')
 
 @section('content')
     <style>
@@ -12,7 +12,9 @@
     </style>
     <div class="content-top">
         <div class="breadcrumb">
-            <b>位置：</b>第{{ $level }}级代理赔率
+            <b>位置：</b>
+            @if(!empty($level))第{{ $level }}级代理赔率@endif
+            @if(!empty($iAgent)){{ $iAgent->account }}的代理赔率@endif
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
     </div>
@@ -120,7 +122,15 @@
             $('.sub-item ul li').removeClass('active');
             var dataTag = $(this).attr('data-tag');
             var dataId = $(this).attr('data-id');
-            var url = "/game/agent/tables/"+dataId+"/{{ $level }}";
+            @if(!empty($level))
+                var url = "/game/agent/tables/"+dataId+"/{{ $level }}";
+            @elseif(!empty($iAgent))
+                var url = "/game/agent/tables/set/"+dataId+"/{{ $iAgent->a_id }}";
+            @else
+                var url = '';
+            @endif
+            if(url === '')
+                return false;
             $('#'+dataTag+'_content').load(url,function (data,status,xhr) {
                 if(status == 'success'){
                     loader(false);
