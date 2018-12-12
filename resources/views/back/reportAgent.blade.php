@@ -74,18 +74,18 @@
             <thead>
             <tr>
                 <th width="120px">账号</th>
-                <th><span class="tips-icon"><i data-tooltip="该代理下的有下注记录的会员数" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 会员数</th>
-                <th><span class="tips-icon"><i data-tooltip="该代理下的会员的充值金额（今天没有下注，只有充值不会显示）" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 充值金额</th>
-                <th><span class="tips-icon"><i data-tooltip="该代理下的会员的提款金额（今天没有下注，只有提款不会显示）" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 取款金额</th>
-                <th><span class="tips-icon"><i data-tooltip="该代理下的会员投注笔数" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 笔数</th>
-                <th><span class="tips-icon"><i data-tooltip="该代理下的会员投注金额" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 投注金额</th>
-                <th><span class="tips-icon"><i data-tooltip="该代理下的会员盈利的投注金额" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 赢利投注金额</th>
-                <th><span class="tips-icon"><i data-tooltip="该代理下的会员的活动金额（今天没有下注，只有活动金额不会显示）" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 活动金额</th>
-                <th><span class="tips-icon"><i data-tooltip="该代理下的会员的充值优惠/手续费（今天没有下注，只有充值优惠/手续费不会显示）" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 充值优惠/手续费</th>
-                <th><span class="tips-icon"><i data-tooltip="该代理应得退水金额" data-position="top" data-inverted class="iconfont">&#xe61e;</i></span> 代理退水金额</th>
-                <th><span class="tips-icon"><i data-tooltip="该代理的会员输赢（小于零为平台赢，大于零位会员赢）" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 会员输赢(不含退水)</th>
-                <th><span class="tips-icon"><i data-tooltip="该代理的会员实际退水(单笔投注金额 * 退水比例)" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际退水</th>
-                <th><span class="tips-icon"><i data-tooltip="会员输赢 - 活动金额 - 充值优惠/手续费" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际输赢(含退水)</th>
+                <th>会员数</th>
+                <th><span class="tips-icon"><i data-tooltip="线上和线下充值成功的总和" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 充值金额</th>
+                <th><span class="tips-icon"><i data-tooltip="手动和自动提款成功的总和" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 取款金额</th>
+                <th>笔数</th>
+                <th>投注金额</th>
+                <th>赢利投注金额</th>
+                <th>活动金额</th>
+                <th>充值优惠/手续费</th>
+                <th>代理退水金额</th>
+                <th><span class="tips-icon"><i data-tooltip="小于零为平台赢，大于零位会员赢" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 会员输赢(不含退水)</th>
+                <th><span class="tips-icon"><i data-tooltip="单笔投注金额 * 退水比例" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际退水</th>
+                <th><span class="tips-icon"><i data-tooltip="会员输赢 - 活动金额 - (充值优惠和手续费)" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际输赢(含退水)</th>
             </tr>
             </thead>
             <tfoot>
