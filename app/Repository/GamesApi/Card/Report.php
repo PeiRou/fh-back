@@ -92,10 +92,13 @@ class Report{
     }
     private function createUserName(){
         $ky = GamesApiConfig::getConfig(15);
+        $lc = GamesApiConfig::getConfig(16);
         $nameArr = [];
         foreach ($this->res as $k=>&$v){
             if($v->g_id == 15)
                 $v->Accounts = str_replace($ky['agent'].'_' ?? '', '', $v->Accounts);
+            if($v->g_id == 16)
+                $v->Accounts = str_replace($lc['agent'].'_' ?? '', '', $v->Accounts);
             $nameArr[] = $v->Accounts;
         }
         return $nameArr;
