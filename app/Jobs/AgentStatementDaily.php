@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Agent;
+use App\AgentBackwater;
 use App\Bets;
 use App\Capital;
 use App\Drawing;
@@ -47,6 +48,8 @@ class AgentStatementDaily implements ShouldQueue
         $aDrawing = Drawing::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取活动金额
         $aActivity = Capital::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        //获取代理返水金额
+        $aBack = AgentBackwater::getBackGroupByAgentId($this->aDateTime,$this->aDateTime.' 23:59:59');
         $aArray = [];
         $dateTime = date('Y-m-d H:i:s');
         $time = strtotime($this->aDateTime);
@@ -66,6 +69,7 @@ class AgentStatementDaily implements ShouldQueue
                 'recharges_money' => 0.00,
                 'drawing_money' => 0.00,
                 'activity_money' => 0.00,
+                'return_amount' => 0.00
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -99,10 +103,15 @@ class AgentStatementDaily implements ShouldQueue
                     $aArray[$kArray]['activity_member_count'] = empty($iActivity->userIdCount)?0:$iActivity->userIdCount;
                 }
             }
+            foreach ($aBack as $kBack => $iBack){
+                if($iArray['agent_id'] == $iBack->agent_id && $iArray['date'] == $iBack->date){
+                    $aArray[$kArray]['return_amount'] = empty($iBack->money)?0.00:$iBack->money;
+                }
+            }
         }
         ReportAgent::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0)
+            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['return_amount'] > 0)
                 AgentStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('agentStatementInsert'));
         }
     }

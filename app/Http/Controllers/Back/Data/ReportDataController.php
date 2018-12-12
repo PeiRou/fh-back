@@ -83,6 +83,7 @@ class ReportDataController extends Controller
             'handling_fee' => empty($aData->handling_fee)?'':$aData->handling_fee,
             'bet_bunko' => empty($aData->bet_bunko)?'':$aData->bet_bunko,
             'fact_return_amount' => empty($aData->fact_return_amount)?'':$aData->fact_return_amount,
+            'return_amount' => empty($aData->return_amount)?'':$aData->return_amount,
             'fact_bet_bunko' => empty($aData->bet_bunko)?'':round($aData->bet_bunko + $activity_money + $handling_fee,3),
         ]);
     }
@@ -142,6 +143,7 @@ class ReportDataController extends Controller
             'activity_money' => empty($aData->activity_money)?'':$aData->activity_money,
             'handling_fee' => empty($aData->handling_fee)?'':$aData->handling_fee,
             'bet_bunko' => empty($aData->bet_bunko)?'':$aData->bet_bunko,
+            'return_amount' => empty($aData->return_amount)?'':$aData->return_amount,
             'fact_return_amount' => empty($aData->fact_return_amount)?'':$aData->fact_return_amount,
             'fact_bet_bunko' => empty($aData->bet_bunko)?'':round($aData->bet_bunko + $activity_money + $handling_fee,2),
         ]);

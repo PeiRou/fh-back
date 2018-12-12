@@ -28,7 +28,7 @@ class ReportBetGeneral extends Model
         ];
         $resultB = ReportBetMember::conditionalConnection($bSql,$bParam,0);
         $bSql = $resultB['aSql']." GROUP BY `general_id`";
-        $aSql = "SELECT `sum`.*,`count`.`memberCount` FROM (".$aSql.") AS `sum` JOIN (".$bSql.") AS `count` ON `count`.`general_id` = `sum`.`general_id`";
+        $aSql = "SELECT `sum`.*,`count`.`memberCount` FROM (".$aSql.") AS `sum` LEFT JOIN (".$bSql.") AS `count` ON `count`.`general_id` = `sum`.`general_id`";
         return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']));
     }
 
@@ -98,7 +98,8 @@ class ReportBetGeneral extends Model
     public static function reportQuerySum($aParam){
         $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
                   '' AS `recharges_money`,'' AS `drawing_money`,'' AS `activity_money`,'' AS `handling_fee`,
-                  SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,1 AS `link`
+                  SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
+                  SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,1 AS `link`
                   FROM `report_bet_general` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
         $aSql = $result['aSql'];

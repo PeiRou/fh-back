@@ -58,7 +58,7 @@ class next_issue_gd11x5 extends Command
         $New_nextIssue = $nextIssue+1;
         if(substr($openTime,-8) =='23:00:00'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
-            $New_nextIssue = date('ymd',strtotime($nextDay)).'001';
+            $New_nextIssue = date('ymd',strtotime($nextDay)).'01';
             $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:08:00';
             $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:10:00';
         } else {

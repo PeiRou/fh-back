@@ -204,6 +204,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('/today/selectData/playCate/{gameId?}','Back\SrcViewController@playCate')->name('select.playCate'); // 下拉菜单获取玩法分类
         Route::get('/recharge/selectData/payOnline/{rechargeType?}','Back\SrcViewController@payOnlineSelectData')->name('select.payOnlineSelectData'); // 下拉菜单获取在线支付分类
         Route::get('/recharge/selectData/dateChange/{date?}','Back\SrcViewController@payOnlineDateChange')->name('select.payOnlineDateChange'); // 下拉菜单获取今日，昨日，上周
+        Route::get('/usermoney/selectData/addmoneytype/{type?}','Back\Ajax\ModalController@userMoneyType')->name('select.userMoneyType'); // 下拉菜单获取加钱类型
     });
 
     Route::get('getLevel', 'Back\SrcViewController@getLevel'); // ajax 获取分层列表

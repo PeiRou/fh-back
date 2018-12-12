@@ -223,7 +223,7 @@ class Bets extends Model
     }
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT LEFT(`created_at`,10) AS `date`,`user_id`,COUNT(`bet_id`) AS `idCount`,SUM(`bet_money`) AS `betMoneySum`,
+        $aSql = "SELECT LEFT(`updated_at`,10) AS `date`,`user_id`,COUNT(`bet_id`) AS `idCount`,SUM(`bet_money`) AS `betMoneySum`,
                   SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bet_money` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bet_money` ELSE 0 END) END) AS `sumWinbet`,
                   SUM(CASE WHEN `game_id` IN(90,91) THEN `nn_view_money` ELSE (CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE `bunko` END) END) AS `sumBunko`,
                   SUM(`bet_money` * `play_rebate`) AS `back_money` 
@@ -242,7 +242,7 @@ class Bets extends Model
     }
 
     public static function memberReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT LEFT(`created_at`,10) AS `date`,`user_id`,`game_id`,COUNT(`bet_id`) AS `idCount`,SUM(`bet_money`) AS `betMoneySum`,
+        $aSql = "SELECT LEFT(`updated_at`,10) AS `date`,`user_id`,`game_id`,COUNT(`bet_id`) AS `idCount`,SUM(`bet_money`) AS `betMoneySum`,
                   SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bet_money` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bet_money` ELSE 0 END) END) AS `sumWinbet`,
                   SUM(CASE WHEN `game_id` IN(90,91) THEN `nn_view_money` ELSE (CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE `bunko` END) END) AS `sumBunko`,
                   SUM(`bet_money` * `play_rebate`) AS `back_money` 
@@ -261,7 +261,7 @@ class Bets extends Model
     }
 
     public static function betAgentReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT LEFT(`bet`.`created_at`,10) AS `date`,`users`.`agent` AS `agentId`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(`bet`.`bet_id`) AS `idCount`,SUM(`bet`.`bet_money`) AS `betMoneySum`, 
+        $aSql = "SELECT LEFT(`bet`.`updated_at`,10) AS `date`,`users`.`agent` AS `agentId`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(`bet`.`bet_id`) AS `idCount`,SUM(`bet`.`bet_money`) AS `betMoneySum`, 
                   SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN (CASE WHEN `bet`.`nn_view_money` > 0 THEN `bet`.`bet_money` ELSE 0 END) ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bet_money` ELSE 0 END) END) AS `sumWinbet`,
                   SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END) END) AS `sumBunko`,
                   SUM(`bet_money` * `play_rebate`) AS `back_money`  
@@ -282,7 +282,7 @@ class Bets extends Model
     }
 
     public static function agentReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT LEFT(`bet`.`created_at`,10) AS `date`,`users`.`agent` AS `agentId`,`bet`.`game_id` AS `game_id`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(`bet`.`bet_id`) AS `idCount`,SUM(`bet`.`bet_money`) AS `betMoneySum`, 
+        $aSql = "SELECT LEFT(`bet`.`updated_at`,10) AS `date`,`users`.`agent` AS `agentId`,`bet`.`game_id` AS `game_id`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(`bet`.`bet_id`) AS `idCount`,SUM(`bet`.`bet_money`) AS `betMoneySum`, 
                   SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN (CASE WHEN `bet`.`nn_view_money` > 0 THEN `bet`.`bet_money` ELSE 0 END) ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bet_money` ELSE 0 END) END) AS `sumWinbet`,
                   SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END) END) AS `sumBunko`,
                   SUM(`bet_money` * `play_rebate`) AS `back_money` 
@@ -303,7 +303,7 @@ class Bets extends Model
     }
 
     public static function betGeneralReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT LEFT(`bet`.`created_at`,10) AS `date`,`agent`.`gagent_id` AS `generalId`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,
+        $aSql = "SELECT LEFT(`bet`.`updated_at`,10) AS `date`,`agent`.`gagent_id` AS `generalId`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,
                   COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`,COUNT(`bet`.`bet_id`) AS `idCount`,SUM(`bet`.`bet_money`) AS `betMoneySum`, 
                   SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN (CASE WHEN `bet`.`nn_view_money` > 0 THEN `bet`.`bet_money` ELSE 0 END) ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bet_money` ELSE 0 END) END) AS `sumWinbet`,
                   SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END) END) AS `sumBunko`,
@@ -326,7 +326,7 @@ class Bets extends Model
     }
 
     public static function generalReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT LEFT(`bet`.`created_at`,10) AS `date`,`agent`.`gagent_id` AS `generalId`,`bet`.`game_id` AS `game_id`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,
+        $aSql = "SELECT LEFT(`bet`.`updated_at`,10) AS `date`,`agent`.`gagent_id` AS `generalId`,`bet`.`game_id` AS `game_id`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,
                   COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`,COUNT(`bet`.`bet_id`) AS `idCount`,SUM(`bet`.`bet_money`) AS `betMoneySum`, 
                   SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN (CASE WHEN `bet`.`nn_view_money` > 0 THEN `bet`.`bet_money` ELSE 0 END) ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bet_money` ELSE 0 END) END) AS `sumWinbet`,
                   SUM(CASE WHEN `bet`.`game_id` IN(90,91) THEN `bet`.`nn_view_money` ELSE (CASE WHEN `bet`.`bunko` >0 THEN `bet`.`bunko` - `bet`.`bet_money` ELSE `bet`.`bunko` END) END) AS `sumBunko`,
@@ -353,14 +353,17 @@ class Bets extends Model
 sum(bet_amount) as bet_amount,
 sum(bet_bunko) as bet_bunko,
 sum(fact_bet_bunko) as fact_bet_bunko,
-sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0.00' AS odds_amount,'0.00' AS return_amount,
+sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0.00' AS odds_amount,
+sum(ag_back.money) AS return_amount,
 sum(b.fact_return_amount) AS fact_return_amount";
         $where = "";
         $whereB = "";
         $whereU = "";
         $whereCp = "";
+        $whereAg = "";
         if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
             $whereB .= " and game_id = ".$aParam['game_id'];
+            $whereAg .= " and game_id = ".$aParam['game_id'];
         }
         if(isset($aParam['account']) && array_key_exists('account',$aParam)){
             $where .= " and zd.account = '".$aParam['account']."'";
@@ -368,10 +371,12 @@ sum(b.fact_return_amount) AS fact_return_amount";
         if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam)){
             $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereAg .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
             $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereAg .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
         }
         $whereB .= " and testFlag = 0";
         $whereU .= " and u.testFlag = 0";
@@ -386,6 +391,7 @@ sum(b.fact_return_amount) AS fact_return_amount";
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
         $aSql .= " LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id ";
         $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
+        $aSql .= " LEFT JOIN (select sum(money) as money,user_id,agent_id from `agent_backwater` where `status` = 1 ".$whereAg." group by user_id,agent_id) ag_back ON ag_back.user_id =  u.id and ag_back.agent_id = u.agent ";
         $aSql .= " WHERE 1 ";
         $aSql .= $where;
         $aSqlCount = "SELECT COUNT(DISTINCT(zd.ga_id)) AS count ".$aSql;
@@ -445,14 +451,17 @@ sum(b.fact_return_amount) AS fact_return_amount";
             sum(bet_amount) as bet_amount,
             sum(bet_bunko) as bet_bunko,
             sum(fact_bet_bunko) as fact_bet_bunko,
-            sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0.00' AS odds_amount,'0.00' AS return_amount,
+            sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0.00' AS odds_amount,
+            sum(ag_back.money) AS return_amount,
             sum(b.fact_return_amount) AS fact_return_amount";
         $where = "";
         $whereB = "";
         $whereU = "";
         $whereCp = "";
+        $whereAg = "";
         if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
             $whereB .= " and game_id = ".$aParam['game_id'];
+            $whereAg .= " and game_id = ".$aParam['game_id'];
         }
         if(isset($aParam['account']) && array_key_exists('account',$aParam)){
             $where .= " and zd.account = '".$aParam['account']."'";
@@ -460,10 +469,12 @@ sum(b.fact_return_amount) AS fact_return_amount";
         if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam)){
             $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereAg .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
             $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereAg .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
         }
         $whereB .= " and testFlag = 0";
         $whereU .= " and u.testFlag = 0";
@@ -477,6 +488,7 @@ sum(b.fact_return_amount) AS fact_return_amount";
         $aSql .= " LEFT JOIN `agent` ag on u.agent = ag.a_id ";
         $aSql .= " LEFT JOIN `general_agent` zd on ag.gagent_id = zd.ga_id ";
         $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
+        $aSql .= " LEFT JOIN (select sum(money) as money,user_id,agent_id from `agent_backwater` where `status` = 1 ".$whereAg." group by user_id,agent_id) ag_back ON ag_back.user_id =  u.id and ag_back.agent_id = u.agent ";
         $aSql .= " WHERE 1 ";
         $aSql .= $where;
         $aSql = $aSql1.$aSql;
@@ -486,16 +498,18 @@ sum(b.fact_return_amount) AS fact_return_amount";
     public static function AgentToday($aParam){
         $aSql1 = "SELECT ag.a_id AS agent_id,count(DISTINCT(u.id)) as memberCount,sum(b.bet_count) as bet_count,sum(b.bet_money) as bet_money,ag.account as agent_account,ag.name as agent_name, 
                     sum(b.bet_amount) AS bet_amount,sum(b.bet_bunko) AS bet_bunko,sum(b.fact_bet_bunko) AS fact_bet_bunko, 
-                    '0.00' AS odds_amount,'0.00' AS return_amount,sum(b.fact_return_amount) AS fact_return_amount,";
+                    '0.00' AS odds_amount,sum(ag_back.money) AS return_amount,sum(b.fact_return_amount) AS fact_return_amount,";
         $where = "";
         $whereB = "";
         $whereU = "";
         $whereCp = "";
         $whereDr = "";
         $whereRe = "";
+        $whereAg = "";
         if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
             $whereB .= " and game_id = ".$aParam['game_id'];
             $aSql1 .= " '' AS activity_money,'' AS handling_fee,'' as drawing_money,'' as recharges_money ";
+            $whereAg .= " and game_id = ".$aParam['game_id'];
         }else{
             $aSql1 .= " SUM(cp.sumActivity) AS activity_money,SUM(cp.sumRecharge_fee) AS handling_fee,sum(dr.amount) as drawing_money,sum(re.amount) as recharges_money ";
         }
@@ -510,12 +524,14 @@ sum(b.fact_return_amount) AS fact_return_amount";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereAg .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
             $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereAg .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
         }
         $whereB .= " and testFlag = 0 ";
         $whereU .= " and u.testFlag = 0 ";
@@ -531,6 +547,7 @@ sum(b.fact_return_amount) AS fact_return_amount";
         $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` where status = 2 AND draw_type IN(0,1) ".$whereDr." group by user_id) dr on dr.user_id = u.id ";
         $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2 AND payType != 'adminAddMoney' ".$whereRe." group by userId) re ON re.userId = u.id ";
         $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
+        $aSql .= " LEFT JOIN (select sum(money) as money,user_id,agent_id from `agent_backwater` where `status` = 1 ".$whereAg." group by user_id,agent_id) ag_back ON ag_back.user_id =  u.id and ag_back.agent_id = u.agent ";
         $aSql .= " WHERE 1 ";
         $aSql .= $where;
         $aSqlCount = "SELECT COUNT(DISTINCT(u.agent)) AS count ".$aSql;
@@ -600,15 +617,17 @@ sum(b.fact_return_amount) AS fact_return_amount";
     public static function AgentTodaySum($aParam){
         $aSql1 = "SELECT count(DISTINCT(u.id)) as member_count,sum(b.bet_count) as bet_count,sum(b.bet_money) as bet_money,
                     sum(b.bet_amount) AS bet_amount,sum(b.bet_bunko) AS bet_bunko,sum(b.fact_bet_bunko) AS fact_bet_bunko, 
-                    '0.00' AS odds_amount,'0.00' AS return_amount,sum(b.fact_return_amount) AS fact_return_amount,";
+                    '0.00' AS odds_amount,sum(ag_back.money) AS return_amount,sum(b.fact_return_amount) AS fact_return_amount,";
         $where = "";
         $whereB = "";
         $whereU = "";
         $whereCp = "";
         $whereDr = "";
         $whereRe = "";
+        $whereAg = "";
         if(isset($aParam['game_id']) && array_key_exists('game_id',$aParam)){
             $whereB .= " and game_id = ".$aParam['game_id'];
+            $whereAg .= " and game_id = ".$aParam['game_id'];
             $aSql1 .= " '' AS activity_money,'' AS handling_fee,'' as drawing_money,'' as recharges_money ";
         }else{
             $aSql1 .= " SUM(cp.sumActivity) AS activity_money,SUM(cp.sumRecharge_fee) AS handling_fee,sum(dr.amount) as drawing_money,sum(re.amount) as recharges_money ";
@@ -624,12 +643,14 @@ sum(b.fact_return_amount) AS fact_return_amount";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereAg .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
             $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereAg .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
         }
         $whereB .= " and testFlag = 0 ";
         $whereU .= " and u.testFlag = 0 ";
@@ -645,6 +666,7 @@ sum(b.fact_return_amount) AS fact_return_amount";
         $aSql .= " LEFT JOIN (select user_id,status,sum(amount) as amount from `drawing` where status = 2 AND draw_type IN(0,1) ".$whereDr." group by user_id) dr on dr.user_id = u.id ";
         $aSql .= " LEFT JOIN (select userId,status,sum(amount) as amount from `recharges` where status = 2 AND payType != 'adminAddMoney' ".$whereRe." group by userId) re ON re.userId = u.id ";
         $aSql .= " LEFT JOIN (select sum(case WHEN type = 't08' then money else 0 end) as sumActivity,sum(case WHEN type = 't04' then money else 0 end) as sumRecharge_fee,to_user,sum(money) as money from `capital` where type in ('t08','t04') ".$whereCp." group by to_user) cp ON cp.to_user = u.id ";
+        $aSql .= " LEFT JOIN (select sum(money) as money,user_id,agent_id from `agent_backwater` where `status` = 1 ".$whereAg." group by user_id,agent_id) ag_back ON ag_back.user_id = u.id and ag_back.agent_id = u.agent ";
         $aSql .= " WHERE 1 ";
         $aSql .= $where;
         $aSql = $aSql1.$aSql;

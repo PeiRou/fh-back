@@ -119,6 +119,7 @@ class RouteConfig
                 'select.playCate' => '下拉菜单获取玩法分类',
                 'select.payOnlineSelectData' => '下拉菜单获取在线支付分类',
                 'select.payOnlineDateChange' => '下拉菜单获取今日，昨日，上周',
+                'select.userMoneyType' => '下拉菜单获取加钱类型',
             ]
         ],
         'error' => [

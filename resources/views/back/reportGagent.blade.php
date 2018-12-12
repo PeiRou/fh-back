@@ -99,7 +99,7 @@
                     <th id="bet_amount"></th>
                     <th id="activity_money"></th>
                     <th id="handling_fee"></th>
-                    <th></th>
+                    <th id="return_amount"></th>
                     <th id="bet_bunko"></th>
                     <th id="fact_return_amount"></th>
                     <th id="fact_bet_bunko"></th>
