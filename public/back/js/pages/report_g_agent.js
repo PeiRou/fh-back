@@ -60,7 +60,7 @@ $(function () {
         bLengthChange: false,
         processing: true,
         serverSide: true,
-        ordering: true,
+        ordering: false,
         "order": [],
         aLengthMenu: [[10]],
         ajax: {
