@@ -36,7 +36,20 @@ class clear_data extends Command
      */
     public function handle()
     {
+
+        $redis = Redis::connection();
+        $redis->select(5);
+        $keyEx = 'clearing';
+        if($redis->exists($keyEx)){
+            echo "ing";
+            return "";
+        }
+        $redis->setex($keyEx,5,'on');
         $clearDate = date('Y-m-d 23:59:59',strtotime(date('Y-m-1 00:00:00',strtotime("-1 month")))-300);
+        //清-游客
+//        $sql = "delete from users where testFlag = 1 and loginTime <='".date("Y-m-d H:i:s",strtotime('-1 day'))."' LIMIT 1000";
+//        $res = DB::connection('mysql::write')->statement($sql);
+//        echo 'table bet :'.$res.PHP_EOL;
         //清-投注表
         $sql = "DELETE FROM bet WHERE created_at<='{$clearDate}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
