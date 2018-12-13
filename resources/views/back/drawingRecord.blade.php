@@ -25,7 +25,7 @@
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('drawingRecordTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="addSubAccount()">导出充值</span>
+            <span onclick="addSubAccount()">导出记录</span>
         </div>
     </div>
     <div class="table-content">
@@ -118,6 +118,7 @@
                 </div>
             </div>
             <div class="total-nums">
+                <span class="tips-icon tips-info" style="cursor:pointer "><i  class="iconfont" style="color: #717171"></i></span>
                 后台扣款：<span style="font-size: 13pt;" id="adminDrawing">0</span>
                 提款总计：<span style="font-size: 13pt;" id="drawingTotal">0</span>
             </div>
@@ -154,6 +155,18 @@
             var message = '{{ session('message') }}';
             alert(message);
         @endif
+        $('.tips-info').click(function(){
+            $.dialog({
+                title: '说明：',
+                content: '当前搜索条件下的所有正式用户的总计' +
+                '<br/>注：' +
+                '<br/>后台扣款：后台扣款金额' +
+                '<br/>提款总计：包含后台扣款金额，默认显示通过状态的总计，选择状态后显示当前选择下的提款总计' +
+                '<br/>用户层级：选择用户层级后显示当前层级下的用户记录，不包含用户历史层级下的记录' +
+                '<br/>更换会员层级以后会在会员下一次操作后生效' +
+                '<br/>导出记录会导出当前搜索条件下的所有正式用户的数据'
+            });
+        });
     </script>
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">

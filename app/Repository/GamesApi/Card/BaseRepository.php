@@ -58,7 +58,7 @@ class BaseRepository
             $arr[] = [
 //                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $data['GameID'][$k],
-                'Accounts' => $data['Accounts'][$k],
+                'Accounts' => str_replace($this->Config['agent'].'_','',$data['Accounts'][$k]),
                 'AllBet' => $data['AllBet'][$k],
                 'Profit' => $data['Profit'][$k],
 //                'Revenue' => $res['Revenue'][$k],

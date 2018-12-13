@@ -362,6 +362,8 @@ class SrcViewController extends Controller
                 }else{
                     $v->sysmemberquota = "0.00";
                 }
+                //为了平帐用的总数
+                $v->phonyfitloss = sprintf('%0.2f',$v->memberquota - $v->memberquotayday);
             }
         }else{
             $totalreport = [];

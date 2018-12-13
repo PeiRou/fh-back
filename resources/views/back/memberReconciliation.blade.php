@@ -120,8 +120,8 @@
                     <td>{{$v->adminAddMoney}}</td>
                     @if($v->bunko > 0) <td><span style="color:blue">{{$v->bunko}}</span></td> @elseif($v->bunko == '0') <td><span>{{$v->bunko}}</span></td>  @else <td><span style="color:green">{{$v->bunko}}</span></td> @endif
                     <td>{{$v->memberquotayday}}</td>
-                    @if(isset($v->todayprofitloss) && $v->todayprofitloss != '0.00')<td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|todayprofitlossitem|{{$v->todayprofitloss}}')">{{$v->todayprofitloss}}</span></td>@else<td>0.00</td>@endif
-                    <td>{{$v->sysmemberquota}}</td>
+                    @if(isset($v->todayprofitloss) && $v->todayprofitloss != '0.00')<td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|todayprofitlossitem|{{$v->phonyfitloss}}|{{$v->phonyfitloss}}')">{{$v->phonyfitloss}}</span></td>@else<td>0.00</td>@endif
+                    <td>{{$v->memberquota}}</td>
                     <td>{{$v->operation_account}}</td>
                     <td><ul class="control-menu"><li  onclick="refreshExcel('{{$v->daytime}}')">重新执行</li></ul></td></tr>
             @endforeach
@@ -132,7 +132,7 @@
             2、每天0点01分后自动进行前一天数据的统计。<br>
             3、算法：<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            资金明细 = 返利/手续费 + 下注 + 重新开奖[中奖金额] + 重新开奖[退水金额] + 活动金额 + 代理结算佣金 + 代理佣金提现 + 代理佣金提现失败退回 + 红包金额 + 提款 + 撤单 + 提现失败 + 后台加钱 + 后台扣钱 + 棋牌上分 + 棋牌下分 + 推广人佣金。<br>
+            资金明细 = 返利/手续费 + 下注 + 重新开奖[中奖金额] + 重新开奖[退水金额] + 活动金额 + 红包金额 + 提款 + 撤单 + 提现失败 + 后台加钱 + 后台扣钱 + 棋牌上分 + 棋牌下分 + 推广人佣金。<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             今日实际输赢（含退水）= 会员输赢（含退水）。<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -93,7 +93,9 @@
                     {{--</div>--}}
                 </div>
             </div>
+
             <div class="total-nums">
+                <span class="tips-icon tips-info" style="cursor:pointer "><i  class="iconfont" style="color: #717171"></i></span>
                 会员余额总计：<span style="font-size: 13pt;" id="moneyTotal">0</span>
             </div>
         </div>
@@ -146,5 +148,12 @@
                 }
             });
         @endif
+        $('.tips-info').click(function(){
+            $.dialog({
+                title: '说明：',
+                content: '余额总计只包含正式用户余额' +
+                '<br/>注：dl02（测试账号代理）、dl03（试玩账号代理）将不包含在内'
+            });
+        });
     </script>
 @endsection
