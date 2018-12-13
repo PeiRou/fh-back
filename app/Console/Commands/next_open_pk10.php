@@ -106,14 +106,13 @@ class next_open_pk10 extends Command
                         $redis->set('pk10:gapnum',$gapnum);
                         $this->clong->setKaijian('pk10', 1, $html['nums']);
                         $this->clong->setKaijian('pk10', 2, $html['nums']);
-                    }else{
-                        $key = $this->code.'ing:'.$res->issue;
-                        $redis->setex($key,2,'ing');
                     }
                 } catch (\Exception $exception) {
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
             }
+            $key = $this->code.'ing:'.$res->issue;
+            $redis->setex($key,2,'ing');
         } catch (\Exception $exception) {
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
