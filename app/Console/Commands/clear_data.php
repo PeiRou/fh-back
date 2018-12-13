@@ -45,7 +45,7 @@ class clear_data extends Command
             return "";
         }
         $redis->setex($keyEx,5,'on');
-        $clearDate = date('Y-m-d 23:59:59',strtotime(date('Y-m-1 00:00:00',strtotime("-1 month")))-300);
+        $clearDate = date('Y-m-d 23:59:59',strtotime("-31 days")-300);
         //清-游客
 //        $sql = "delete from users where testFlag = 1 and loginTime <='".date("Y-m-d H:i:s",strtotime('-1 day'))."' LIMIT 1000";
 //        $res = DB::connection('mysql::write')->statement($sql);
