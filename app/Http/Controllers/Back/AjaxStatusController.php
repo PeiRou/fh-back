@@ -18,9 +18,12 @@ class AjaxStatusController extends Controller
         $sessionId = Session::get('account_session_id');
         $saId = Session::get('account_id');
         $key = 'sa:'.md5($saId);
+        $timeOutKey = 'adminTimeOut:'.md5($saId);
         $redis = Redis::connection();
         $redis->select(4);
-        if($redis->exists($key)){
+        $timeOut = $redis->get($timeOutKey);
+        $timeOut = $timeOut + 60 * 60 * 2;
+        if($redis->exists($key) && $timeOut > time() ){
             $session_Id = (array)json_decode($redis->get($key),true);
             if($session_Id['session_id'] != $sessionId){
                 Session::flush();
@@ -29,12 +32,12 @@ class AjaxStatusController extends Controller
                     'msg'=>'您的账号已在异地登录，此账号现已强制下线！'
                 ]);
             }
-//            $redisData = [
-//                'session_id' => (string)Session::get('account_session_id'),
-//                'sa_id' => (string)$saId
-//            ];
-//            $jsonEncode = json_encode($redisData);
-//            $redis->setex($key,600,$jsonEncode);     //重新赋予后台登陆时间
+            $redisData = [
+                'session_id' => (string)Session::get('account_session_id'),
+                'sa_id' => (string)$saId
+            ];
+            $jsonEncode = json_encode($redisData);
+            $redis->setex($key,600,$jsonEncode);     //重新赋予后台登陆时间
 
             $getCount = Recharges::where('status',1)->where('payType','!=','onlinePayment')->count();
             $getDrawCount = Drawing::where('status',0)->count();

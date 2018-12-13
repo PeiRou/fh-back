@@ -97,14 +97,13 @@ class next_open_gzk3 extends Command
                         $key = 'gzk3:issue';
                         $redis->set($key, $html['issue']);
                         $redis->set('gzk3:gapnum',$gapnum);
-                    }else{
-                        $key = $this->code.'ing:'.$res->issue;
-                        $redis->setex($key,2,'ing');
                     }
                 } catch (\Exception $exception) {
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
             }
+            $key = $this->code.'ing:'.$res->issue;
+            $redis->setex($key,2,'ing');
         } catch (\Exception $exception) {
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }

@@ -31,6 +31,7 @@ class AddLogHandle
         }
         //每次操作刷新登录过期时间
         $key = 'sa:'.md5($user_id);
+        $timeOutKey = 'adminTimeOut:'.md5($user_id);
         $redis = Redis::connection();
         $redis->select(4);
         $redisData = [
@@ -39,6 +40,7 @@ class AddLogHandle
         ];
         $jsonEncode = json_encode($redisData);
         $redis->setex($key, 60 * 60 * 2,$jsonEncode);
+        $redis->setex($timeOutKey, (60 * 60 * 24), time());
         if($username !== 'admin') {
             $routeData = LogHandle::getTypeAction(Route::currentRouteName());
             $params = $request->all();
