@@ -973,7 +973,7 @@ class OpenHistoryController extends Controller
     public function cancelBetOrder($orderId){
 //        $iBet = Bets::where('order_id',$orderId)->first();
         $iBet = DB::table('bet')->select('bet.*','game.game_name')
-            ->leftjoin('game','bet.game_id','=','game.game_id')->where('order_id',$orderId)->where('bunko',0)->first();
+            ->leftjoin('game','bet.game_id','=','game.game_id')->where('bet.order_id',$orderId)->where('bet.bunko',0)->first();
         if(empty($iBet))
             return response()->json(['status' => false,'msg' => '注单不存在或已改变状态,请刷新后在尝试']);
         $adminId = Session::get('account_id');
