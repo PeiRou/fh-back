@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\Events\BackPusherEvent;
+use App\Events\BackPusherInsertEvent;
 use App\MessagePush;
 use App\Notices;
 use App\Swoole;
@@ -195,8 +196,10 @@ class SrcNoticeController extends Controller
                         break;
                 }
             }
-            if(isset($msgdata) && count($msgdata)>0)
-                DB::table('user_messages')->insert($msgdata);
+            if(isset($msgdata) && count($msgdata)>0){
+                event(new BackPusherInsertEvent($msgdata));
+            }
+//                DB::table('user_messages')->insert($msgdata);
             return response()->json([
                 'status' => true,
                 'msg' => "添加成功！"
