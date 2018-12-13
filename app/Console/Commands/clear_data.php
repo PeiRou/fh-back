@@ -37,9 +37,22 @@ class clear_data extends Command
     public function handle()
     {
         $clearDate = date('Y-m-d 23:59:59',strtotime(date('Y-m-1 00:00:00',strtotime("-1 month")))-300);
-        $sql = "DELETE FROM bet WHERE created_at<='{$clearDate}' LIMIT 500";
+        //清投注表
+        $sql = "DELETE FROM bet WHERE created_at<='{$clearDate}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
-        echo $res.PHP_EOL;
+        echo 'table bet :'.$res.PHP_EOL;
+        //清秒速赛车
+        $sql = "DELETE FROM game_mssc WHERE opentime<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table game_mssc :'.$res.PHP_EOL;
+        //清秒速时时彩
+        $sql = "DELETE FROM game_msssc WHERE opentime<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table game_msssc :'.$res.PHP_EOL;
+        //清秒速快三
+        $sql = "DELETE FROM game_msjsk3 WHERE opentime<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table game_msjsk3 :'.$res.PHP_EOL;
         echo 'Ok';
     }
 }
