@@ -60,6 +60,7 @@ class SrcAccountController extends Controller
                     $session_id = Session::getId();
                     Session::put('account_session_id',$session_id);
                     $key = 'sa:'.md5($find->sa_id);
+                    $timeOutKey = 'adminTimeOut:'.md5($find->sa_id);
                     $redisData = [
                         'session_id' => (string)Session::get('account_session_id'),
                         'sa_id' => (string)$find->sa_id
@@ -67,6 +68,7 @@ class SrcAccountController extends Controller
                     $jsonEncode = json_encode($redisData);
                     Redis::select(4);
                     Redis::setex($key,600,$jsonEncode);
+                    Redis::setex($timeOutKey, (60 * 60 * 24), time());
                     return response()->json([
                         'status'=>true,
                         'msg'=>'登录成功，正在进入'
