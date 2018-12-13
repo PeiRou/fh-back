@@ -392,9 +392,7 @@ class ActivityController extends Controller
                 try{
                     $userInfo = DB::connection('mysql::write')->table('users')->select('money')->where('id', $actSned->user_id)->first();
                     User::where('id',$actSned->user_id)
-                        ->update([
-                            'money'=> DB::raw('money') + $actAmount
-                        ]);
+                        ->increment('money',$actAmount);
                     $capital = new Capital();
                     $capital->to_user = $actSned->user_id;
                     $capital->user_type = 'user';
