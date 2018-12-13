@@ -50,6 +50,24 @@ class BaseRepository
     private function getAccountName($sa_id){
         return \App\SubAccount::where('sa_id',$sa_id)->value('account');
     }
+    private function getBet($order_id){
+        return \App\Bets::where('order_id',$order_id)->first();
+    }
+    //取消注单
+    private function acAdBetCancel(){
+        $this->param['action'] = '取消注单会员（'.$this->getUserName($this->getBet($this->request->orderId)->user_id ?? 0).'）
+         -订单号（'.$this->request->orderId.'）';
+    }
+    //充值审核通过
+    private function acAdPassRecharge(){
+        $getInfo = \App\Recharges::where('id',$this->request->id)->first();
+        $this->param['action'] = '审核充值通过会员（'.$this->getUserName($getInfo->userId).'）,金额（'.$getInfo->amount.'）';
+    }
+    //通过提款审核
+    private function acAdPassDrawing(){
+        $drawing = \App\Drawing::where('id',$this->request->id)->first();
+        $this->param['action'] = '审核提款通过会员（'.$this->getUserName($drawing->user_id).'）,金额（'.$drawing->amount.'）';
+    }
     //删除用户
     private function mUserDelUser(){
         $this->param['action'] = '删除会员('.$this->getUserName($this->request->id).')';
