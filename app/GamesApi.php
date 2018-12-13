@@ -45,7 +45,7 @@ class GamesApi extends Model
         if(($startTime = $request->startTime) && ($endTime = $request->endTime))
             $where .= " AND `GameStartTime` BETWEEN '{$startTime} 00:00:00' AND '{$endTime} 23:59:59' ";
         if(isset($request->Accounts) && $Accounts = $request->Accounts)
-            $where .= " AND `Accounts` IN('{$Accounts}','".(env('KY_AGENT').'_'.$Accounts)."') ";
+            $where .= " AND `Accounts` = '{$Accounts}' ";
         $sqlArr = [];
 //        $columnArr = ['id', 'GameID', 'Accounts', 'AllBet', 'Profit', 'GameStartTime', 'GameEndTime'];
         $columnArr = ['id','SUM(AllBet) as AllBet', 'COUNT(*) AS `betCount`', 'Accounts', 'SUM(Profit) AS Profit', ' MIN(GameStartTime) AS GameStartTime', 'MAX(GameEndTime) AS GameEndTime '];
@@ -99,8 +99,8 @@ class GamesApi extends Model
                        {$column}
                         FROM (
                         SELECT `Accounts`,`AllBet`,`Profit`,`GameStartTime` AS `GameStartTime`, 0 AS `amount`, 0 AS `type` FROM `{$table}` WHERE {$btwhere}
-                        UNION 
-                        SELECT `username` AS `Accounts`,0 AS `AllBet`,0 AS `Profit`, `type`, `amount`,`date` AS `GameStartTime` FROM `{$listTable}` WHERE {$ltwhere} AND type != 3
+                        UNION ALL
+                        SELECT `username` AS `Accounts`,null AS `AllBet`,null AS `Profit`, `type`, `amount`,`date` AS `GameStartTime` FROM `{$listTable}` WHERE {$ltwhere} AND type != 3
                         ) AS {$table}
                         WHERE $where
                         GROUP BY Accounts 
@@ -108,12 +108,12 @@ class GamesApi extends Model
         }
         return $sqlArr;
     }
-    //获取棋牌游戏的下注总计
+    //获取棋牌下注查询的总计
     public static function card_betInfoTotal1($request, $sqlArr){
         $sql = 'SELECT SUM(`betCount`) AS `BetCountSum`, SUM(`AllBet`) AS `BetSum`, SUM(`Profit`) AS `ProfitSum` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` LIMIT 1 ';
         return DB::select($sql)[0];
     }
-    //获取棋牌游戏的总计
+    //获取棋牌报表的总计
     public static function card_betInfoTotal($request, $sqlArr){
         $sql = 'SELECT SUM(`upMoney`) AS totalUp,SUM(`downMoney`) AS totalDown, SUM(`betCount`) AS `BetCountSum`, SUM(`AllBet`) AS `BetSum`, SUM(`Profit`) AS `ProfitSum` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` LIMIT 1 ';
         return DB::select($sql)[0];
