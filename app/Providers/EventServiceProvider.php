@@ -109,6 +109,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\LoginEvent' => [
             'App\Listeners\LoginEventListener',
         ],
+        'App\Events\BackPusherInsertEvent' => [
+            'App\Listeners\BackPusherInsertEventListener',
+        ],
     ];
     /**
      * Register any events for your application.

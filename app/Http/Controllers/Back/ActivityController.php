@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -356,11 +358,16 @@ class ActivityController extends Controller
     //派奖审核-审核奖品
     public function reviewAward(Request $request){
         $params = $request->post();
-        if(Session::put('act_send',$params['id']))
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'reviewAward:'.$params['id'];
+        if($redis->exists($key)){
             return response()->json([
                 'status'=>false,
-                'msg'=>'请勿连续点击'
+                'msg'=>'请勿连续点击,请等待10秒'
             ]);
+        }
+        $redis->setex($key,10,time());
         $data = $this->getAdmin($params);
         $params['updated_at'] = date("Y-m-d H:i:s",time());
         if(!isset($params['id']) && !array_key_exists('id',$params)){
@@ -381,28 +388,38 @@ class ActivityController extends Controller
             $actSned = ActivitySend::where('id','=',$params['id'])->first();
             if(strpos($actSned->prize_name,'元')>0) {
                 $actAmount = (float)substr($actSned->prize_name,0,-1);
-                $userInfo = DB::table('users')->select('money')->where('id', $actSned->user_id)->first();
-                $newBalance = $userInfo->money + $actAmount;
-                $capital = new Capital();
-                $capital->to_user = $actSned->user_id;
-                $capital->user_type = 'user';
-                $capital->order_id = $capital->randOrder('C');
-                $capital->type = 't08';
-                $capital->money = $actAmount;
-                $capital->balance = $newBalance;
-                $capital->operation_id = 0;
-                $capital->content = $actSned->activity_name;
-                $insert = $capital->save();
-                if ($insert){
-                    $updateBalance = User::where('id',$actSned->user_id)
-                        ->update([
-                            'money'=>$newBalance
-                        ]);
+                DB::beginTransaction();
+                try{
+                    $userInfo = DB::connection('mysql::write')->table('users')->select('money')->where('id', $actSned->user_id)->first();
+                    User::where('id',$actSned->user_id)
+                        ->increment('money',$actAmount);
+                    $capital = new Capital();
+                    $capital->to_user = $actSned->user_id;
+                    $capital->user_type = 'user';
+                    $capital->order_id = $capital->randOrder('C');
+                    $capital->type = 't08';
+                    $capital->money = $actAmount;
+                    $capital->balance = $userInfo->money + $actAmount;
+                    $capital->operation_id = 0;
+                    $capital->content = $actSned->activity_name;
+                    $capital->save();
+                    DB::commit();
+                    return response()->json([
+                        'status'=>true,
+                        'msg'=>'审核成功'
+                    ]);
+                }catch (\Exception $e){
+                    DB::rollback();
+                    Log::info($e->getMessage());
+                    return response()->json([
+                        'status'=>false,
+                        'msg'=>'审核失败'
+                    ]);
                 }
             }
             return response()->json([
-                'status'=>true,
-                'msg'=>'审核成功'
+                'status'=>false,
+                'msg'=>'审核失败'
             ]);
         }else{
             return response()->json([

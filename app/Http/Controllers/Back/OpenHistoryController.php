@@ -972,10 +972,17 @@ class OpenHistoryController extends Controller
     //取消注单
     public function cancelBetOrder($orderId){
 //        $iBet = Bets::where('order_id',$orderId)->first();
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'noCancel:'.$orderId;
+        if($redis->exists($key)){
+            return ['status' => false,'msg' => '您提交太快，请休息20秒'];
+        }
+        $redis->setex($key,20,time());
         $iBet = DB::table('bet')->select('bet.*','game.game_name')
-            ->leftjoin('game','bet.game_id','=','game.game_id')->where('order_id',$orderId)->first();
+            ->leftjoin('game','bet.game_id','=','game.game_id')->where('bet.order_id',$orderId)->where('bet.bunko',0)->first();
         if(empty($iBet))
-            return response()->json(['status' => false,'msg' => '注单不存在']);
+            return response()->json(['status' => false,'msg' => '注单不存在或已改变状态,请刷新后在尝试']);
         $adminId = Session::get('account_id');
         $dateTime = date('Y-m-d H:i:s');
         $iUser = Users::where('id',$iBet->user_id)->first();

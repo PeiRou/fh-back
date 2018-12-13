@@ -107,14 +107,13 @@ class next_open_cqssc extends Command
                         $redis->set('cqssc:gapnum',$gapnum);
                         $this->clong->setKaijian('cqssc',1,$html['nums']);
                         $this->clong->setKaijian('cqssc', 2, $html['nums']);
-                    }else{
-                        $key = $this->code.'ing:'.$res->issue;
-                        $redis->setex($key,2,'ing');
                     }
                 } catch (\Exception $exception) {
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
             }
+            $key = $this->code.'ing:'.$res->issue;
+            $redis->setex($key,2,'ing');
         } catch (\Exception $exception) {
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
