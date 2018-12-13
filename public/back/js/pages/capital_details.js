@@ -107,7 +107,8 @@ $(function () {
         var type = $('#type').val();
         var time_point = $('#time_point').val();
         var account = $('#account').val();
-        var search = typeTable(type,time_point,account);
+        var order = $('#order').val();
+        var search = typeTable(type,time_point,account,order);
 
         if(search == true){
             dataTable.destroy();
@@ -177,19 +178,88 @@ $(function () {
             $('#rechargesType-div').hide();
         }
     });
+    $('#time').hide();
+    $('#time_point').on('change',function () {
+        if($('#time_point').val()=='history'){
+            var lastwomonthdate = getLasTwotMonthYestdy();
+            $('#startTime').val(lastwomonthdate);
+            $('#time').show();
+        }else{
+            $('#time').hide();
+        }
+    });
+    $('#game').on('click',function () {
+        $('#type').val('t05');
+    });
+    $('#reset').on('click',function () {
+        $('#time_point').val('today');
+        $('#account').val("");
+        $('#game').val('');
+        $('#order').val("");
+        $('#issue').val("");
+        $('#type').val('');
+        $('#amount_min').val("");
+        $('#amount_max').val("");
+        var today = getDay(0, '-');
+        $('#startTime').val(today);
+        $('#endTime').val(today);
+    });
 });
 
-function typeTable(type,time_point,account) {
+function typeTable(type,time_point,account,order) {
     var search = true;
     if(type == ""){
+        if(order != ""){
+            var ordertype = '';
+            if(order.slice(0,2) != 'BW' && order.slice(0,1) == 'B'){
+                ordertype = '下注、奖金、撤单、解冻金额、冻结';
+            }
+            if(order.slice(0,2) == 'BW'){
+                ordertype = '退水';
+            }
+            if(order.slice(0,3) != 'CNC' && order.slice(0,1) == 'C'){
+                ordertype = '返利/手续费、活动、抢到红包、后台加钱、后台扣钱、棋牌上分、棋牌下分、冻结';
+            }
+            if(order.slice(0,2) == 'CN'){
+                ordertype = '撤单';
+            }
+            if(order.slice(0,3) == 'CNC'){
+                ordertype = '撤单[退水金额]';
+            }
+            if(order.slice(0,1) == 'D'){
+                ordertype = '充值、提现、提现失败';
+            }
+            if(order.slice(0,2) == 'FC'){
+                ordertype = '冻结[退水金额]';
+            }
+            if(order.slice(0,3) == 'PAY'){
+                ordertype = '充值';
+            }
+            if(order.slice(0,2) == 'WS'){
+                ordertype = '棋牌上分、棋牌下分';
+            }
+            alert('没有选择类型\n\n根据订单号类型，可选择 '+ordertype);
+            search = false;
+            return search;
+        }
         alert('没有选择类型');
         search = false;
         return search;
     }
     if(time_point == 'history' && account == ''){
-        alert('请填写用户名');
+        alert('选择历史明细，请填写用户名');
         search = false;
         return search;
+    }
+    if(time_point == 'today'){
+        var today = getDay(0, '-');
+        $('#startTime').val(today);
+        $('#endTime').val(today);
+    }
+    if(time_point == 'yesterday'){
+        var yesterday = getDay(-1, '-');
+        $('#startTime').val(yesterday);
+        $('#endTime').val(yesterday);
     }
     if(type == 't01'){
         columns = [
@@ -229,4 +299,47 @@ function typeTable(type,time_point,account) {
         ];
     }
     return search;
+}
+
+function refreshTable(){
+    window.location.href = '/back/control/financeManage/capitalDetails';
+}
+
+function getLasTwotMonthYestdy(){
+    var date = new Date();
+    var daysInMonth = new Array([0],[31],[28],[31],[30],[31],[30],[31],[31],[30],[31],[30],[31]);
+    var strYear = date.getFullYear();
+    var strDay = date.getDate();
+    var strMonth = date.getMonth()+1;
+    if(strYear%4 == 0 && strYear%100 != 0){
+        daysInMonth[2] = 29;
+    }
+    if(strMonth - 1 == 0) {
+        strYear -= 1;
+        strMonth = 12;
+    }else{
+        strMonth -= 2;
+    }
+    strDay = daysInMonth[strMonth] >= strDay ? strDay : daysInMonth[strMonth];
+    if(strMonth<10){
+        strMonth="0"+strMonth;
+    }
+    if(strDay<10){
+        strDay="0"+strDay;
+    }
+    var datastr = strYear+"-"+strMonth+"-"+strDay;
+    return datastr;
+}
+
+function getDay(num, str) {
+    var today = new Date();
+    var nowTime = today.getTime();
+    var ms = 24*3600*1000*num;
+    today.setTime(parseInt(nowTime + ms));
+    var oYear = today.getFullYear();
+    var oMoth = (today.getMonth() + 1).toString();
+    if (oMoth.length <= 1) oMoth = '0' + oMoth;
+    var oDay = today.getDate().toString();
+    if (oDay.length <= 1) oDay = '0' + oDay;
+    return oYear + str + oMoth + str + oDay;
 }
