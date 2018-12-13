@@ -106,14 +106,13 @@ class next_open_cqxync extends Command
                         $redis->set('cqxync:gapnum',$gapnum);
                         $this->clong->setKaijian('cqxync',1,$html['nums']);
                         $this->clong->setKaijian('cqxync',2,$html['nums']);
-                    }else{
-                        $key = $this->code.'ing:'.$res->issue;
-                        $redis->setex($key,2,'ing');
                     }
                 } catch (\Exception $exception) {
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
             }
+            $key = $this->code.'ing:'.$res->issue;
+            $redis->setex($key,2,'ing');
         } catch (\Exception $exception) {
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
