@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
-class clear_issue_cache extends Command
+class clear_data extends Command
 {
 
     protected $signature = 'clear_data';
