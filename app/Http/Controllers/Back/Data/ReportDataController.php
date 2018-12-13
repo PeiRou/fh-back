@@ -411,7 +411,7 @@ class ReportDataController extends Controller
         $repo->createData();
         $res = $repo->getData();
         $Total = GamesApi::card_betInfoTotal($request, $repo->sqlArr);
-        $sqlCount =  'SELECT COUNT(`id`) AS `count` FROM ( '.implode(' UNION ALL ', $repo->sqlArr).' ) AS b';
+        $sqlCount =  'SELECT COUNT(`Accounts`) AS `count` FROM ( '.implode(' UNION ALL ', $repo->sqlArr).' ) AS b';
         $resCount = DB::select($sqlCount)[0]->count;
         $totalArr = [
             'betMoney' => $Total->BetSum ?? 0,

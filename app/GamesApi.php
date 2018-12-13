@@ -45,7 +45,7 @@ class GamesApi extends Model
         if(($startTime = $request->startTime) && ($endTime = $request->endTime))
             $where .= " AND `GameStartTime` BETWEEN '{$startTime} 00:00:00' AND '{$endTime} 23:59:59' ";
         if(isset($request->Accounts) && $Accounts = $request->Accounts)
-            $where .= " AND `Accounts` IN('{$Accounts}','".(env('KY_AGENT').'_'.$Accounts)."') ";
+            $where .= " AND `Accounts` = '{$Accounts}' ";
         $sqlArr = [];
 //        $columnArr = ['id', 'GameID', 'Accounts', 'AllBet', 'Profit', 'GameStartTime', 'GameEndTime'];
         $columnArr = ['id','SUM(AllBet) as AllBet', 'COUNT(*) AS `betCount`', 'Accounts', 'SUM(Profit) AS Profit', ' MIN(GameStartTime) AS GameStartTime', 'MAX(GameEndTime) AS GameEndTime '];
@@ -74,15 +74,16 @@ class GamesApi extends Model
             $ltwhere .= " AND `date` BETWEEN '{$startTime} 00:00:00' AND '{$endTime} 23:59:59' ";
         }
         if(isset($request->Accounts) && $Accounts = $request->Accounts)
-            $where .= " AND `Accounts` IN('{$Accounts}','".(env('KY_AGENT').'_'.$Accounts)."') ";
+            $where .= " AND `Accounts` = '{$Accounts}' ";
         $sqlArr = [];
         $columnArr = [
-            'id',
+//            'id',
             'SUM(AllBet) as AllBet',
-            'COUNT(AllBet) AS `betCount`',
+            'COUNT(AllBet > 0 OR null) AS `betCount`',
             'SUM(Profit) AS Profit',
-            ' MIN(GameStartTime) AS GameStartTime',
-            'MAX(GameEndTime) AS GameEndTime ',
+//            ' MIN(GameStartTime) AS GameStartTime',
+//            'MAX(GameEndTime) AS GameEndTime ',
+            'GameStartTime',
             'SUM(CASE WHEN `type` = 1 THEN `amount` END) AS upMoney',
             'SUM(CASE WHEN `type` = 2 THEN `amount` END) AS downMoney'
         ];
@@ -90,31 +91,16 @@ class GamesApi extends Model
         foreach ($gamesList as $k=>$v){
             $table = 'jq_'.strtolower($v->alias).'_bet';
             $listTable = 'jq_'.strtolower($v->alias).'list';
-            $prefix = '';
-            if($v->alias == 'KY') {
-                $prefix = DB::table('games_api_config')->where('g_id', $v->g_id)->where('key', 'agent')->value('value') ?? '';
-                if(!empty($prefix))
-                    $prefix = $prefix.'_';
-            }
+
             $sqlArr[] = " ( 
                     SELECT 
-                        IFNULL(Accounts,CONCAT('{$prefix}',username)) AS Accounts,
+                         Accounts,
                         '{$v->name}' AS `name`,{$v->g_id} AS `g_id` ,
                        {$column}
                         FROM (
-                        
-                        SELECT `{$table}`.id, Accounts,AllBet,Profit,username,type,amount,GameStartTime,GameEndTime FROM 
-                        (SELECT * FROM `{$table}` WHERE {$btwhere}) AS `{$table}`
-                        LEFT JOIN (SELECT * FROM `{$listTable}` WHERE {$ltwhere}) AS `{$listTable}`
-                        ON `{$table}`.`Accounts` = CONCAT('{$prefix}',`{$listTable}`.`username`)
-                        
-                        UNION ALL 
-                        
-                        SELECT `{$table}`.id, Accounts,AllBet,Profit,username,type,amount,GameStartTime,GameEndTime FROM 
-                        (SELECT * FROM `{$table}` WHERE {$btwhere}) AS `{$table}`
-                        RIGHT JOIN (SELECT * FROM `{$listTable}` WHERE {$ltwhere}) AS `{$listTable}`
-                        ON `{$table}`.`Accounts` = CONCAT('{$prefix}',`{$listTable}`.`username`)
-                        
+                        SELECT `Accounts`,`AllBet`,`Profit`, 0 AS `type`, 0 AS `amount`,`GameStartTime` AS `GameStartTime` FROM `{$table}` WHERE {$btwhere}
+                        UNION ALL
+                        SELECT `username` AS `Accounts`,null AS `AllBet`,null AS `Profit`, `type`, `amount`,`date` AS `GameStartTime` FROM `{$listTable}` WHERE {$ltwhere} AND type != 3
                         ) AS {$table}
                         WHERE $where
                         GROUP BY Accounts 
@@ -122,12 +108,12 @@ class GamesApi extends Model
         }
         return $sqlArr;
     }
-    //获取棋牌游戏的下注总计
+    //获取棋牌下注查询的总计
     public static function card_betInfoTotal1($request, $sqlArr){
         $sql = 'SELECT SUM(`betCount`) AS `BetCountSum`, SUM(`AllBet`) AS `BetSum`, SUM(`Profit`) AS `ProfitSum` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` LIMIT 1 ';
         return DB::select($sql)[0];
     }
-    //获取棋牌游戏的总计
+    //获取棋牌报表的总计
     public static function card_betInfoTotal($request, $sqlArr){
         $sql = 'SELECT SUM(`upMoney`) AS totalUp,SUM(`downMoney`) AS totalDown, SUM(`betCount`) AS `BetCountSum`, SUM(`AllBet`) AS `BetSum`, SUM(`Profit`) AS `ProfitSum` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` LIMIT 1 ';
         return DB::select($sql)[0];
