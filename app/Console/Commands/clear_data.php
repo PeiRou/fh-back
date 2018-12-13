@@ -70,6 +70,10 @@ class clear_data extends Command
         $sql = "DELETE FROM game_msjsk3 WHERE opentime<='{$clearDate}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         echo 'table game_msjsk3 :'.$res.PHP_EOL;
+        //清-香港跑马
+        $sql = "DELETE FROM game_paoma WHERE opentime<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table game_paoma :'.$res.PHP_EOL;
         //清-幸运六合彩
         $sql = "DELETE FROM game_xylhc WHERE opentime<='{$clearDate}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
