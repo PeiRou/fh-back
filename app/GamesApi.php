@@ -74,15 +74,16 @@ class GamesApi extends Model
             $ltwhere .= " AND `date` BETWEEN '{$startTime} 00:00:00' AND '{$endTime} 23:59:59' ";
         }
         if(isset($request->Accounts) && $Accounts = $request->Accounts)
-            $where .= " AND `Accounts` IN('{$Accounts}','".(env('KY_AGENT').'_'.$Accounts)."') ";
+            $where .= " AND `Accounts` = '{$Accounts}' ";
         $sqlArr = [];
         $columnArr = [
-            'id',
+//            'id',
             'SUM(AllBet) as AllBet',
             'COUNT(AllBet) AS `betCount`',
             'SUM(Profit) AS Profit',
-            ' MIN(GameStartTime) AS GameStartTime',
-            'MAX(GameEndTime) AS GameEndTime ',
+//            ' MIN(GameStartTime) AS GameStartTime',
+//            'MAX(GameEndTime) AS GameEndTime ',
+            'GameStartTime',
             'SUM(CASE WHEN `type` = 1 THEN `amount` END) AS upMoney',
             'SUM(CASE WHEN `type` = 2 THEN `amount` END) AS downMoney'
         ];
@@ -90,31 +91,16 @@ class GamesApi extends Model
         foreach ($gamesList as $k=>$v){
             $table = 'jq_'.strtolower($v->alias).'_bet';
             $listTable = 'jq_'.strtolower($v->alias).'list';
-            $prefix = '';
-            if($v->alias == 'KY') {
-                $prefix = DB::table('games_api_config')->where('g_id', $v->g_id)->where('key', 'agent')->value('value') ?? '';
-                if(!empty($prefix))
-                    $prefix = $prefix.'_';
-            }
+
             $sqlArr[] = " ( 
                     SELECT 
-                        IFNULL(Accounts,CONCAT('{$prefix}',username)) AS Accounts,
+                         Accounts,
                         '{$v->name}' AS `name`,{$v->g_id} AS `g_id` ,
                        {$column}
                         FROM (
-                        
-                        SELECT `{$table}`.id, Accounts,AllBet,Profit,username,type,amount,GameStartTime,GameEndTime FROM 
-                        (SELECT * FROM `{$table}` WHERE {$btwhere}) AS `{$table}`
-                        LEFT JOIN (SELECT * FROM `{$listTable}` WHERE {$ltwhere}) AS `{$listTable}`
-                        ON `{$table}`.`Accounts` = CONCAT('{$prefix}',`{$listTable}`.`username`)
-                        
-                        UNION ALL 
-                        
-                        SELECT `{$table}`.id, Accounts,AllBet,Profit,username,type,amount,GameStartTime,GameEndTime FROM 
-                        (SELECT * FROM `{$table}` WHERE {$btwhere}) AS `{$table}`
-                        RIGHT JOIN (SELECT * FROM `{$listTable}` WHERE {$ltwhere}) AS `{$listTable}`
-                        ON `{$table}`.`Accounts` = CONCAT('{$prefix}',`{$listTable}`.`username`)
-                        
+                        SELECT `Accounts`,`AllBet`,`Profit`,`GameStartTime` AS `GameStartTime`, 0 AS `amount`, 0 AS `type` FROM `{$table}` WHERE {$btwhere}
+                        UNION 
+                        SELECT `username` AS `Accounts`,0 AS `AllBet`,0 AS `Profit`, `type`, `amount`,`date` AS `GameStartTime` FROM `{$listTable}` WHERE {$ltwhere}
                         ) AS {$table}
                         WHERE $where
                         GROUP BY Accounts 
