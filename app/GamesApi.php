@@ -98,7 +98,7 @@ class GamesApi extends Model
                         '{$v->name}' AS `name`,{$v->g_id} AS `g_id` ,
                        {$column}
                         FROM (
-                        SELECT `Accounts`,`AllBet`,`Profit`,`GameStartTime` AS `GameStartTime`, 0 AS `amount`, 0 AS `type` FROM `{$table}` WHERE {$btwhere}
+                        SELECT `Accounts`,`AllBet`,`Profit`, 0 AS `type`, 0 AS `amount`,`GameStartTime` AS `GameStartTime` FROM `{$table}` WHERE {$btwhere}
                         UNION ALL
                         SELECT `username` AS `Accounts`,null AS `AllBet`,null AS `Profit`, `type`, `amount`,`date` AS `GameStartTime` FROM `{$listTable}` WHERE {$ltwhere} AND type != 3
                         ) AS {$table}
