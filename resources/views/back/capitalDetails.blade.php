@@ -65,18 +65,20 @@
                     <div class="one wide field">
                         <input type="text" id="amount_max" placeholder="最大金额">
                     </div>
-                    <div style="line-height: 32px;">时间：</div>
-                    <div class="ui calendar" id="rangestart" style="width: 108px;">
-                        <div class="ui input left icon">
-                            <i class="calendar icon"></i>
-                            <input type="text" id="startTime" value="{{ date('Y-m-d',time()) }}" placeholder="">
+                    <div id="time">
+                        <div style="line-height: 32px;float: left;">时间：</div>
+                        <div class="ui calendar" id="rangestart" style="width: 108px;float: left;">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" id="startTime" value="{{ date('Y-m-d',time()) }}" placeholder="">
+                            </div>
                         </div>
-                    </div>
-                    <div style="line-height: 32px;">-</div>
-                    <div class="ui calendar" id="rangeend" style="width: 108px;">
-                        <div class="ui input left icon">
-                            <i class="calendar icon"></i>
-                            <input type="text" id="endTime" value="{{ date('Y-m-d',time()) }}" placeholder="">
+                        <div style="line-height: 32px;float: left;">-</div>
+                        <div class="ui calendar" id="rangeend" style="width: 108px;float: left;">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" id="endTime" value="{{ date('Y-m-d',time()) }}" placeholder="">
+                            </div>
                         </div>
                     </div>
                     <div class="one wide field">
