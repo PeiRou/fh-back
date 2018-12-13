@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class BackPusherInsertEventListener
 {
-    public $number = 100;
+    public $number = 1000;
     /**
      * Create the event listener.
      *
