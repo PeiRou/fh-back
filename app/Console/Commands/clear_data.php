@@ -54,6 +54,38 @@ class clear_data extends Command
         $sql = "DELETE FROM bet WHERE created_at<='{$clearDate}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         echo 'table bet :'.$res.PHP_EOL;
+        //清-资金明细
+        $sql = "DELETE FROM capital WHERE created_at<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table capital :'.$res.PHP_EOL;
+        //清-充值
+        $sql = "DELETE FROM recharges WHERE created_at<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table recharges :'.$res.PHP_EOL;
+        //清-提款
+        $sql = "DELETE FROM drawing WHERE created_at<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table drawing :'.$res.PHP_EOL;
+        //清-活动
+        $sql = "DELETE FROM activity_send WHERE created_at<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table activity_send :'.$res.PHP_EOL;
+        //清-活动
+        $sql = "DELETE FROM activity_sign_qiandao WHERE created_at<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table activity_sign_qiandao :'.$res.PHP_EOL;
+        //清-错误日志
+        $sql = "DELETE FROM log_abnormal WHERE create_at<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table log_abnormal :'.$res.PHP_EOL;
+        //清-操作日志
+        $sql = "DELETE FROM log_handle WHERE create_at<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table log_handle :'.$res.PHP_EOL;
+        //清-会员登陆日志
+        $sql = "DELETE FROM log_login WHERE login_time<='{$clearDate}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table log_login :'.$res.PHP_EOL;
         //清-秒速赛车
         $sql = "DELETE FROM game_mssc WHERE opentime<='{$clearDate}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
