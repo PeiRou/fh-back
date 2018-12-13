@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Excel;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;

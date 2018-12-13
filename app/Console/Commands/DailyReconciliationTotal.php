@@ -174,14 +174,14 @@ FROM bet WHERE 1 AND testFlag ='0' AND updated_at BETWEEN ? AND ? ) AS A";
         $executtime = date('Y-m-d H',strtotime($date));
         if($nowtime == $executtime){  //定时任务时间与输入执行日期一致
             \Log::info('「会员对帐」功能定时任务执行了。');
-            $unsettlementsql= "SELECT '未结算' AS 'rechname',SUM(CASE WHEN game_id IN(90,91) THEN freeze_money ELSE bet_money END) AS amount
+            $unsettlementsql= "SELECT '未结算' AS 'rechname',SUM(CASE WHEN game_id IN(90,91) THEN freeze_money+bet_money ELSE bet_money END) AS amount
 FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ? AND ?";
-            $unsettlement = DB::select($unsettlementsql,[$date.' 00:00:00',$date.' 23:59:59']);
+            $unsettlement = DB::select($unsettlementsql,[$date.' 00:00:00',date('Y-m-d H:i:s')]);
 
             $unsettlementlogsql = "SELECT * FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ? AND ?";
-            $unsettlementlog = DB::select($unsettlementlogsql,[$date.' 00:00:00',$date.' 23:59:59']);
-            \Log::info('未结算执行加总的语法: '."SELECT '未结算' AS 'rechname',SUM(CASE WHEN game_id IN(90,91) THEN freeze_money ELSE bet_money END) AS amount FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ".$date." 00:00:00 AND ".$date." 23:59:59");
-            \Log::info('未结算执行捞数据的语法: '."SELECT * FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ".$date." 00:00:00 AND ".$date." 23:59:59");
+            $unsettlementlog = DB::select($unsettlementlogsql,[$date.' 00:00:00',date('Y-m-d H:i:s')]);
+            \Log::info('未结算执行加总的语法: '."SELECT '未结算' AS 'rechname',SUM(CASE WHEN game_id IN(90,91) THEN freeze_money+bet_money ELSE bet_money END) AS amount FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ".$date." 00:00:00 AND ".date('Y-m-d H:i:s'));
+            \Log::info('未结算执行捞数据的语法: '."SELECT * FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ".$date." 00:00:00 AND ".date('Y-m-d H:i:s'));
             \Log::info(json_encode($unsettlementlog));
         }else{
            /*//试算，有点问题
