@@ -79,7 +79,7 @@ class GamesApi extends Model
         $columnArr = [
 //            'id',
             'SUM(AllBet) as AllBet',
-            'COUNT(AllBet) AS `betCount`',
+            'COUNT(AllBet > 0 OR null) AS `betCount`',
             'SUM(Profit) AS Profit',
 //            ' MIN(GameStartTime) AS GameStartTime',
 //            'MAX(GameEndTime) AS GameEndTime ',
@@ -100,7 +100,7 @@ class GamesApi extends Model
                         FROM (
                         SELECT `Accounts`,`AllBet`,`Profit`,`GameStartTime` AS `GameStartTime`, 0 AS `amount`, 0 AS `type` FROM `{$table}` WHERE {$btwhere}
                         UNION 
-                        SELECT `username` AS `Accounts`,0 AS `AllBet`,0 AS `Profit`, `type`, `amount`,`date` AS `GameStartTime` FROM `{$listTable}` WHERE {$ltwhere}
+                        SELECT `username` AS `Accounts`,0 AS `AllBet`,0 AS `Profit`, `type`, `amount`,`date` AS `GameStartTime` FROM `{$listTable}` WHERE {$ltwhere} AND type != 3
                         ) AS {$table}
                         WHERE $where
                         GROUP BY Accounts 
