@@ -99,8 +99,9 @@ class SrcAccountController extends Controller
         Redis::select(4);
         $uid = Session::get('account_id');
         $key = 'sa:'.md5($uid);
+        $timeOutKey = 'adminTimeOut:'.md5($uid);
         Redis::del($key);
-
+        Redis::del($timeOutKey);
         Session::flush();
         return response()->json([
            'status'=>true
