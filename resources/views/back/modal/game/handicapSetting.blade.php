@@ -107,7 +107,7 @@
     <script>
         $(function () {
             $('#menu-userManage').addClass('nav-show');
-            // $('#menu-gameManage-agentOdds').addClass('active');
+            $('#menu-userManage-agent').addClass('active');
 
             $('.menu .item').tab({
                 context: $('#context1')
