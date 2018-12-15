@@ -734,6 +734,8 @@ Route::group(['middleware'=>['check-ip']],function () {
 
     //保存设置的代理赔率表
     Route::post('/game/table/agent/odds/save/{gameId}/{agentId}', 'Back\GameTables\SaveGameOddsController@agentOddsAgent');
+    //重置设置的代理赔率表
+    Route::post('/game/table/agent/odds/restore/{gameId}/{agentId}', 'Back\GameTables\SaveGameOddsController@agentOddsRestore');
 
     //保存交易设定的表格
     Route::post('/game/trade/table/save/bjpk10','Back\GameTradeTables\SaveGameTradeController@bjpk10'); //保存北京PK10

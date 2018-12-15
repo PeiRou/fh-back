@@ -471,4 +471,10 @@ class SaveGameOddsController extends Controller
             return ['status' => false];
         }
     }
+
+    //重置设置的代理赔率表
+    public function agentOddsRestore($gameId,$agentId){
+        PlayAgentSet::where('game_id',$gameId)->where('agent_id',$agentId)->delete();
+        return ['status' => true];
+    }
 }
