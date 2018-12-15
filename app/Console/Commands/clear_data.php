@@ -45,12 +45,20 @@ class clear_data extends Command
             return "";
         }
         $redis->setex($keyEx,5,'on');
-        $clearDate = date('Y-m-d 23:59:59',strtotime("-31 days")-300);
+        $clearDate = date('Y-m-d 23:59:59',strtotime("-1 days")-300);
+        echo "clear Date:".$clearDate.PHP_EOL;
         //清-游客
 //        $sql = "delete from users where testFlag = 1 and loginTime <='".date("Y-m-d H:i:s",strtotime('-1 day'))."' LIMIT 1000";
 //        $res = DB::connection('mysql::write')->statement($sql);
 //        echo 'table bet :'.$res.PHP_EOL;
         //清-投注表
+        try {
+            $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE created_at<='{$clearDate}' LIMIT 1000";
+            $res = DB::connection('mysql::write')->statement($sql);
+            echo 'table insert into bet_his :'.$res.PHP_EOL;
+        }catch (\Exception $e){
+            echo 'table insert into bet_his :fail'.PHP_EOL;
+        }
         $sql = "DELETE FROM bet WHERE created_at<='{$clearDate}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         echo 'table bet :'.$res.PHP_EOL;
@@ -59,12 +67,12 @@ class clear_data extends Command
         $res = DB::connection('mysql::write')->statement($sql);
         echo 'table capital :'.$res.PHP_EOL;
         //清-充值
-        $sql = "DELETE FROM recharges WHERE created_at<='{$clearDate}' LIMIT 1000";
-        $res = DB::connection('mysql::write')->statement($sql);
+//        $sql = "DELETE FROM recharges WHERE created_at<='{$clearDate}' LIMIT 1000";
+//        $res = DB::connection('mysql::write')->statement($sql);
         echo 'table recharges :'.$res.PHP_EOL;
         //清-提款
-        $sql = "DELETE FROM drawing WHERE created_at<='{$clearDate}' LIMIT 1000";
-        $res = DB::connection('mysql::write')->statement($sql);
+//        $sql = "DELETE FROM drawing WHERE created_at<='{$clearDate}' LIMIT 1000";
+//        $res = DB::connection('mysql::write')->statement($sql);
         echo 'table drawing :'.$res.PHP_EOL;
         //清-活动
         $sql = "DELETE FROM activity_send WHERE created_at<='{$clearDate}' LIMIT 1000";
