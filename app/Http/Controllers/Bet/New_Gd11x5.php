@@ -582,8 +582,8 @@ class New_Gd11x5
             $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
             $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
         }
-        $sql_upd .= $sql ."END WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $sql_upd_lose .= $sql_lose ."END WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+        $sql_upd .= $sql ."END, updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+        $sql_upd_lose .= $sql_lose ."END, updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $run = !empty($sql)?DB::statement($sql_upd):0;
         if($run == 1){
             //直选- Start
@@ -612,7 +612,7 @@ class New_Gd11x5
             }
             $ids_zhixuan = implode(',', $zhixuan_ids);
             if($ids_zhixuan){
-                $sql_zhixuan = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_zhixuan)"; //中奖的SQL语句
+                $sql_zhixuan = "UPDATE bet SET bunko = bet_money * play_odds, updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_zhixuan)"; //中奖的SQL语句
             } else {
                 $sql_zhixuan = 0;
             }
@@ -698,7 +698,7 @@ class New_Gd11x5
             }
             $ids_lm = implode(',', $lm_ids);
             if($ids_lm){
-                $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
+                $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds, updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
             } else {
                 $sql_lm = 0;
             }
@@ -752,7 +752,7 @@ class New_Gd11x5
                         $sql_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
                     }
                     $ids_he = implode(',', $updateHeId);
-                    $sql_upd_he .= $sql_he . "END WHERE `bet_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
+                    $sql_upd_he .= $sql_he . "END, updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
                 } else {
                     $sql_he = 0;
                 }

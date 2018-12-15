@@ -45,21 +45,26 @@ class BaseRepository
         $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
         $table = DB::table($tableName);
         //根据GameID Accounts去掉重复的
-        foreach ($data['GameID'] as $k => $k){
-            $table->orWhere(['GameID'=>$data['GameID'][$k]])
-                ->where([
-                    'Accounts' => $data['Accounts'][$k],
-                ]);
-        }
+//        foreach ($data['GameID'] as $k => $k){
+//            $table->orWhere(['GameID'=>$data['GameID'][$k]])
+//                ->where([
+//                    'Accounts' => $data['Accounts'][$k],
+//                ]);
+//        }
+        $table->whereIn('GameID',$data['GameID']);
         $distinctArr = $table->pluck('GameID')->toArray();
         $res['GameID'] = array_diff($data['GameID'],$distinctArr);
+
+        //直接删除已有的
+//        $table->whereIn('GameID',$data['GameID'])->delete();
+//        $res['GameID'] = $data['GameID'];
         $arr = [];
         foreach ($res['GameID'] as $k => $k){
             $arr[] = [
 //                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $data['GameID'][$k],
                 'Accounts' => str_replace($this->Config['agent'].'_','',$data['Accounts'][$k]),
-                'AllBet' => $data['AllBet'][$k],
+                'AllBet' => $data['CellScore'][$k],
                 'Profit' => $data['Profit'][$k],
 //                'Revenue' => $res['Revenue'][$k],
                 'GameStartTime' => $data['GameStartTime'][$k],

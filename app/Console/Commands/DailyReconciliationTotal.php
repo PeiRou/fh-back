@@ -169,6 +169,14 @@ ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END)
 END) AS amount ,SUM(bet.bet_money * bet.play_rebate) AS back_money
 FROM bet WHERE 1 AND testFlag ='0' AND updated_at BETWEEN ? AND ? ) AS A";
         $bunkofact = DB::select($bunkofactsql,[$date.' 00:00:00',$date.' 23:59:59']);
+
+        $bunkofactlogsql = "SELECT '会员输赢（含退水）' AS 'rechname',SUM(A.amount-A.back_money) AS amount FROM(
+SELECT SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money
+ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) 
+END) AS amount ,SUM(bet.bet_money * bet.play_rebate) AS back_money
+FROM bet WHERE 1 AND testFlag ='0' AND updated_at BETWEEN ? AND ? ) AS A";
+        $bunkofactlog = DB::select($bunkofactlogsql,[$date.' 00:00:00',date('Y-m-d H:i:s')]);
+        \Log::info('会员输赢（含退水）'.date('Y-m-d H:i:s').'的值  '.json_encode($bunkofactlog));
         //未结算
         $nowtime = date('Y-m-d H',strtotime('-1 day')); //搭配定时任务的执行时间为 00时
         $executtime = date('Y-m-d H',strtotime($date));
@@ -211,8 +219,8 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                     "amount" => $val
                 ]
             ];
-            \Log::info('最后处理好的值 '.json_encode($unsettlement));
         }
+        \Log::info('未结算 最后处理好的值 '.json_encode($unsettlement));
 
         $merge1 = array_merge($echarges,$capitallittle);
         $merge2 = array_merge($merge1,$bunkofact);
@@ -324,6 +332,9 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                     $this->error('insert to totalreport error');
                 }
+                \Log::info('data: '.$datatotalreport['data']);
+                \Log::info('memberquota: '.$datatotalreport['memberquota']);
+                \Log::info('memberquotayday: '.$datatotalreport['memberquotayday']);
                 $this->info('insert to totalreport successfully');
                 \Log::info('系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
             }
