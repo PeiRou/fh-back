@@ -44,6 +44,9 @@
                     <div class="one wide field">
                         <button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>
                     </div>
+                    <div style="line-height: 32px;margin-left: 20px;">
+                        <span class="tips-icon tips-info" style="cursor:pointer "><i  class="iconfont" style="color: #717171"></i>代理说明</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -105,5 +108,13 @@
         var message = '{{ session('message') }}';
         alert(message);
         @endif
+        $('.tips-info').click(function(){
+            $.dialog({
+                title: '说明：',
+                content: '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认和会员模式的代理将没有盘口设定' +
+                    '<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;金字塔模式代理的盘口设定只能查看所属层级的盘口赔率' +
+                    '<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;直属代理的盘口设定可以设置赔率和返水，若没有设置则和平台赔率一致，不然就以设置赔率和返水一致',
+            });
+        });
     </script>
 @endsection
