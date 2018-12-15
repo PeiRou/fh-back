@@ -200,6 +200,13 @@
                     if (result.status == true) {
                         loader(false);
                     }
+                },
+                error: function(data, status, xhr){
+                    if(data.status == 403)
+                    {
+                        loader(false);
+                        alert('您无权操作');
+                    }
                 }
             });
         });
@@ -213,6 +220,13 @@
             success: function (result) {
                 if (result.status == true) {
                     resetOdds();
+                }
+            },
+            error: function(data, status, xhr){
+                if(data.status == 403)
+                {
+                    loader(false);
+                    alert('您无权操作');
                 }
             }
         });
