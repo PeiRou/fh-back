@@ -53,10 +53,10 @@ class GameAgentTableController extends Controller
             foreach ($filter as $i){
                 if($item->odds_tag == $i)
                 {
-                    $fromDBOdds->put($item->odds_tag,empty($item->agentOdds)?$item->odds:$item->agentOdds);
+                    $fromDBOdds->put($item->odds_tag,is_null($item->agentOdds)?$item->odds:$item->agentOdds);
                 }
                 if($item->rebate_tag == $i){
-                    $fromDBRebate->put($item->rebate_tag,empty($item->agentRebate)?$item->rebate:$item->agentRebate);
+                    $fromDBRebate->put($item->rebate_tag,is_null($item->agentRebate)?$item->rebate:$item->agentRebate);
                 }
             }
         }
