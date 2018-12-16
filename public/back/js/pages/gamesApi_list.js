@@ -13,6 +13,7 @@ $(function () {
         bLengthChange: false,
         processing: true,
         serverSide: true,
+        ordering:false,
         aLengthMenu: [[50]],
         ajax: {
             url : '/back/datatables/GameApiList',
