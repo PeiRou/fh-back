@@ -271,32 +271,69 @@
         </tbody>
     </table>
     <div class="foot-submit">
-        <button class="ui primary button">保 存</button>
+        <button class="ui primary button" onclick="resetOdds()" type="button">重 置</button>
+        <button class="ui primary button" onclick="saveOdds()">保 存</button>
+        <button class="ui primary button" onclick="restore()" type="button">默 认</button>
     </div>
 </form>
 <script>
-    $('#game21Form').formValidation({
-        framework: 'semantic',
-        icon: {
-            valid: 'checkmark icon',
-            invalid: 'remove icon',
-            validating: 'refresh icon'
-        },
-        fields: {}
-    }).on('success.form.fv', function(e) {
-        loader(true);
-        e.preventDefault();
-        var $form = $(e.target),
-            fv    = $form.data('formValidation');
+    function saveOdds() {
+        $('#game21Form').formValidation({
+            framework: 'semantic',
+            icon: {
+                valid: 'checkmark icon',
+                invalid: 'remove icon',
+                validating: 'refresh icon'
+            },
+            fields: {}
+        }).on('success.form.fv', function (e) {
+            loader(true);
+            e.preventDefault();
+            var $form = $(e.target),
+                fv = $form.data('formValidation');
+            $.ajax({
+                url: $form.attr('action'),
+                type: 'POST',
+                data: $form.serialize(),
+                success: function (result) {
+                    if (result.status == true) {
+                        loader(false);
+                    }
+                },
+                error: function(data, status, xhr){
+                    if(data.status == 403)
+                    {
+                        loader(false);
+                        alert('您无权操作');
+                    }
+                }
+            });
+        });
+    }
+
+    function restore() {
         $.ajax({
-            url: $form.attr('action'),
+            url: '{{ url('/game/table/agent/odds/restore/'.$gameId.'/'.$agentId) }}',
             type: 'POST',
-            data: $form.serialize(),
-            success: function(result) {
-                if(result.status == true){
+            data: [],
+            success: function (result) {
+                if (result.status == true) {
+                    resetOdds();
+                }
+            },
+            error: function(data, status, xhr){
+                if(data.status == 403)
+                {
                     loader(false);
+                    alert('您无权操作');
                 }
             }
         });
-    });
+    }
+
+    function resetOdds() {
+        $('#first_content').load('/game/agent/tables/set/{{ $gameId }}/{{ $agentId }}',function () {
+            loader(false);
+        });
+    }
 </script>

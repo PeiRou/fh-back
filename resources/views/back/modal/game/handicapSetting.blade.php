@@ -106,8 +106,8 @@
 @section('page-js')
     <script>
         $(function () {
-            $('#menu-gameManage').addClass('nav-show');
-            // $('#menu-gameManage-agentOdds').addClass('active');
+            $('#menu-userManage').addClass('nav-show');
+            $('#menu-userManage-agent').addClass('active');
 
             $('.menu .item').tab({
                 context: $('#context1')
