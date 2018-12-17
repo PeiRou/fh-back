@@ -22,7 +22,13 @@ class PrivodeController extends Controller{
     private function action($g_id, $action){
         $getGamesApiInfo = GamesApi::getGamesApiInfo($g_id);
         $config = $this->getConfig($g_id);
-        if($getGamesApiInfo && $getGamesApiInfo['class_name']){
+        if(count($config) <= 0)
+            return [
+                'code' => 0,
+                'msg' => '',
+                'data' => []
+            ];
+        if($getGamesApiInfo && isset($getGamesApiInfo['class_name'])){
             $instanceName = $this->getInstanceName($getGamesApiInfo['class_name']);
             $repoName= $this->getRepositoryName($getGamesApiInfo['class_name']);
             $repo = new $repoName($config);

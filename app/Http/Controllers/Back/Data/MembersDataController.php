@@ -699,6 +699,8 @@ GROUP BY g.ga_id LIMIT $start,$length";
             ->editColumn('operation', function ($capital){
                 if(!empty($capital->operation_id)){
                     $getSubAccount = SubAccount::find($capital->operation_id);
+                    if(empty($getSubAccount))
+                        return "-";
                     return $getSubAccount->account."(".$getSubAccount->name.")";
                 }else{
                     return "-";
