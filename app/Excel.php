@@ -538,8 +538,8 @@ class Excel
                         $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                         $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
                     }
-                    $sql_upd .= $sql . "END , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId ";
-                    $sql_upd_lose .= $sql_lose . "END , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId ";
+                    $sql_upd .= $sql . "END status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId ";
+                    $sql_upd_lose .= $sql_lose . "END status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId ";
                     if (!isset($bunko) || empty($bunko))
                         return 0;
                     $run = empty($sql) ? 1 : DB::statement($sql_upd);
