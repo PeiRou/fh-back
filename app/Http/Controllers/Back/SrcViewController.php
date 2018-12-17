@@ -73,7 +73,7 @@ class SrcViewController extends Controller
     public function Dash()
     {
         if($sa_id = Session::get('account_id')){
-            $accountInfo = DB::table('sub_account')->first();
+            $accountInfo = DB::table('sub_account')->where('sa_id', $sa_id)->first();
             return view('back.dash', compact('accountInfo'));
         }else{
             return view('back.O_adminLogin');
