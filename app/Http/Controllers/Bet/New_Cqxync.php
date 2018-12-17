@@ -1716,8 +1716,8 @@ class New_Cqxync
             $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
             $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
         }
-        $sql_upd .= $sql. "END, updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $sql_upd_lose .= $sql_lose. "END, updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+        $sql_upd .= $sql. "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+        $sql_upd_lose .= $sql_lose. "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
         $run = !empty($sql)?DB::statement($sql_upd):0;
         if($run == 1){
             //连码- Start
@@ -1779,7 +1779,7 @@ class New_Cqxync
             }
             $ids_lm = implode(',', $lm_ids);
             if($ids_lm){
-                $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds, updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
+                $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
             } else {
                 $sql_lm = 0;
             }

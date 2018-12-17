@@ -194,7 +194,7 @@ class New_Pknn
                 if($WinListIn && isset($WinListIn)){
                     $sql_win .= "END ";
                     $sql_nn_money .= "END ";
-                    $sql_unfreeze_win .= "END WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
+                    $sql_unfreeze_win .= "END, updated_at ='".date('Y-m-d H:i:s')." WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
                     //\Log::info('sql1+++'.$sql_win.$sql_nn_money.$sql_unfreeze_win);
                     $run = DB::statement($sql_win.$sql_nn_money.$sql_unfreeze_win);
                     if($run == 1){
