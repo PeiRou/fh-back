@@ -34,7 +34,6 @@ class LoginEventListener implements ShouldQueue
         $loginTime = $event->getLoginTime();
         $loginHost = $event->getLoginHost();
         $type = $event->getType();
-        \Log::info('************'.$ip);
 
 //        $ipInfo = ip($ip);
         $ipInfo = '';

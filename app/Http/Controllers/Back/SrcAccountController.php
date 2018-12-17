@@ -49,7 +49,6 @@ class SrcAccountController extends Controller
                         'login_ip' => realIp(),
                         'login_dt' => date('Y-m-d H:i:s')
                     ]);
-                    \Log::info('------------'.realIp());
                     Session::put('isLogin',true);
                     Session::put('account_id',$find->sa_id);
                     Session::put('account',$find->account);
