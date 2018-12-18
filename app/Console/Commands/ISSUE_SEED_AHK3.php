@@ -23,15 +23,17 @@ class ISSUE_SEED_AHK3 extends Command
         $checkUpdate = DB::table('issue_seed')->select('ahk3')->where('id',1)->first();
         $issueDate = '';
         if(isset($checkUpdate->ahk3)) {
-            if($curDate == $checkUpdate->ahk3)
-                $issueDate = date('Y-m-d',strtotime('+ 1 day',time()));
-            else if($curDate < $checkUpdate->ahk3)
+            if($curDate == $checkUpdate->ahk3) {
+                $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
+                $curDate = date('Ymd', strtotime('+ 1 day', time()));
+            }else if($curDate < $checkUpdate->ahk3)
                 \Log::info($curDate.'安徽快3期数已存在');
             else
                 $issueDate = date('Y-m-d',time());
         }else{
             $issueDate = date('Y-m-d',time());
         }
+        echo $issueDate;
         if(empty($issueDate))
             return '';
         $timeUp = $issueDate . $timeUp;
