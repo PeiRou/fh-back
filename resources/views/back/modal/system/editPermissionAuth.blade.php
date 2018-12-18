@@ -84,7 +84,7 @@
                 type_id: {
                     validators: {
                         notEmpty: {
-                            message: '清选择类型'
+                            message: '请选择类型'
                         }
                     }
                 }

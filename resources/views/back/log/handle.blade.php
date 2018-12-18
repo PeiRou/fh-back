@@ -31,7 +31,7 @@
                     </div>
                     <div class="one wide field">
                         <select class="ui dropdown" id="type_id" style='height:32px !important'>
-                            <option value="">清选择类型</option>
+                            <option value="">请选择类型</option>
                             @foreach($routeLists as $key => $routeList)
                                 <option value="{{ $routeList['type_id'] }}">{{ $routeList['type_name'] }}</option>
                             @endforeach
