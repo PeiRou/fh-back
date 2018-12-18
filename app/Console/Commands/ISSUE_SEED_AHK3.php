@@ -19,8 +19,22 @@ class ISSUE_SEED_AHK3 extends Command
     public function handle()
     {
         $curDate = date('Ymd');
-        $timeUp = date('Y-m-d 08:40:00');
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
+        $timeUp = ' 08:40:00';
+        $checkUpdate = DB::table('issue_seed')->select('ahk3')->where('id',1)->first();
+        $issueDate = '';
+        if(isset($checkUpdate->ahk3)) {
+            if($curDate == $checkUpdate->ahk3)
+                $issueDate = date('Y-m-d',strtotime('+ 1 day',time()));
+            else if($curDate < $checkUpdate->ahk3)
+                \Log::info(date('Y-m-d').'安徽快3期数已存在');
+            else
+                $issueDate = date('Y-m-d',time());
+        }else{
+            $issueDate = date('Y-m-d',time());
+        }
+        if(empty($issueDate))
+            return '';
+        $timeUp = $issueDate . $timeUp;
         $sql = "INSERT INTO game_ahk3 (issue,opentime) VALUES ";
         for($i=1;$i<=80;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(10);
