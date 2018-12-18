@@ -26,7 +26,7 @@ class ISSUE_SEED_AHK3 extends Command
             if($curDate == $checkUpdate->ahk3)
                 $issueDate = date('Y-m-d',strtotime('+ 1 day',time()));
             else if($curDate < $checkUpdate->ahk3)
-                \Log::info(date('Y-m-d').'安徽快3期数已存在');
+                \Log::info($curDate.'安徽快3期数已存在');
             else
                 $issueDate = date('Y-m-d',time());
         }else{
