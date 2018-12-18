@@ -886,4 +886,42 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $aSql = $aSql1.$aSql;
         return DB::select($aSql)[0];
     }
+
+    public static function userBetSearch($request,$user){
+        $games = $request->get('games');
+        $status = $request->get('status');
+        $start = $request->get('startTime');
+        $end = $request->get('endTime');
+        $issue = $request->get('issue');
+        $orderNum = $request->get('orderNum');
+
+        $Sql = 'select bet.bet_id as bet_bet_id,bet.play_rebate as bet_play_rebate,bet.order_id as bet_order_id,game.game_name as g_game_name,bet.color as bet_color,bet.issue as bet_issue,bet.playcate_id as bet_playcate_id,bet.play_id as bet_play_id,bet.bet_money as bet_bet_money,bet.bunko as bet_bunko,bet.created_at as bet_created_at,bet.play_odds as bet_play_odds,bet.playcate_name as bet_playcate_name,bet.play_name as bet_play_name,bet.platform as bet_platform,bet.game_id as bet_game_id,bet.freeze_money as bet_freeze_money,bet.nn_view_money as bet_nn_view_money,bet.bet_info as bet_bet_info from bet LEFT JOIN game ON bet.game_id = game.game_id WHERE 1 = 1 ';
+        $betSql = "";
+        if(count($games) > 0){
+            $games = implode(",",$games);
+            $betSql .= " AND bet.game_id in(".$games.")";
+        }
+        switch ($status){
+            case 1: //未结
+                $betSql .= " AND bet.bunko =0";
+                break;
+            case 2: //已结
+                $betSql .= " AND bet.bunko !=0 AND bet.bet_money != bet.bunko ";
+                break;
+            case 3: //撤单
+                $betSql .= " AND bet.bet_money = bet.bunko ";
+                break;
+        }
+        if(isset($issue) && isset($issue)){
+            $betSql .= " AND bet.issue =".$issue;
+        }
+        if(isset($orderNum) && isset($orderNum)){
+            $betSql .= " AND bet.order_id =".$orderNum;
+        }
+        if(isset($start) && isset($end)){
+            $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
+        }
+        $betSql .= " AND bet.user_id =".$user->id;
+        return $Sql.$betSql.' ORDER BY bet.created_at desc,bet.bet_id desc ';
+    }
 }

@@ -1278,7 +1278,7 @@ class OpenHistoryController extends Controller
             if(!empty($aBet)) {
                 Users::editBatchUserMoneyDataWithdraw($aBet);
                 Drawing::whereIn('user_id',$aUserId)->where('status',0)->update(['status' => '3','msg' => '后台手动冻结']);
-                Bets::where('issue',$issue)->whereIn('user_id',$aUserId)->update(['status' => '3']);
+//                Bets::where('issue',$issue)->whereIn('user_id',$aUserId)->update(['status' => '3']);
                 if(!empty($aCapitalFreeze))    Capital::insert($aCapitalFreeze);
                 UserFreezeMoney::insert($aUserFreezeMoney);
             }

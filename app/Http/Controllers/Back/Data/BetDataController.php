@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back\Data;
 
+use App\BetHis;
 use App\Bets;
 use App\Games;
 use App\Play;
@@ -607,50 +608,32 @@ class BetDataController extends Controller
     //用户注单-独占页面
     public function userBetSearch(Request $request)
     {
-        $games = $request->get('games');
         $username = $request->get('userName');
-        $userId = $request->get('userId');
-        $date = $request->get('date');
-        $status = $request->get('status');
-        $start = $request->get('startTime');
-        $end = $request->get('endTime');
-        $issue = $request->get('issue');
-        $orderNum = $request->get('orderNum');
         $startPage = $request->get('start');
+        $end = $request->get('endTime');
         $lengthPage = $request->get('length');
+        $start = $request->get('startTime');
         $user = DB::table('users')->where('username',$username)->first();
 
         if($user){
-            $Sql = 'select bet.bet_id as bet_bet_id,bet.play_rebate as bet_play_rebate,bet.order_id as bet_order_id,game.game_name as g_game_name,bet.color as bet_color,bet.issue as bet_issue,bet.playcate_id as bet_playcate_id,bet.play_id as bet_play_id,bet.bet_money as bet_bet_money,bet.bunko as bet_bunko,bet.created_at as bet_created_at,bet.play_odds as bet_play_odds,bet.playcate_name as bet_playcate_name,bet.play_name as bet_play_name,bet.platform as bet_platform,bet.game_id as bet_game_id,bet.freeze_money as bet_freeze_money,bet.nn_view_money as bet_nn_view_money,bet.bet_info as bet_bet_info from bet LEFT JOIN game ON bet.game_id = game.game_id WHERE 1 = 1 ';
-            $betSql = "";
-            if(count($games) > 0){
-                $games = implode(",",$games);
-                $betSql .= " AND bet.game_id in(".$games.")";
+            $aBetSql = '';
+            $aBetHisSql = '';
+            if(strtotime($end) >= strtotime(date('Y-m-d',strtotime('-2 day')))){
+                $aBetSql = Bets::userBetSearch($request,$user);
             }
-            switch ($status){
-                case 1: //未结
-                    $betSql .= " AND bet.bunko =0";
-                    break;
-                case 2: //已结
-                    $betSql .= " AND bet.bunko !=0 AND bet.bet_money != bet.bunko ";
-                    break;
-                case 3: //撤单
-                    $betSql .= " AND bet.bet_money = bet.bunko ";
-                    break;
+            if(strtotime($start) <= strtotime(date('Y-m-d',strtotime('-2 day')))) {
+                $aBetHisSql = BetHis::userBetSearch($request, $user);
             }
-            if(isset($issue) && isset($issue)){
-                $betSql .= " AND bet.issue =".$issue;
+            if(empty($aBetSql) && !empty($aBetHisSql)){
+                $aSql = $aBetHisSql;
+            }elseif(empty($aBetHisSql) && !empty($aBetSql)){
+                $aSql = $aBetSql;
+            }else{
+                $aSql = '(' . $aBetSql . ') UNION (' . $aBetHisSql . ')';
             }
-            if(isset($orderNum) && isset($orderNum)){
-                $betSql .= " AND bet.order_id =".$orderNum;
-            }
-            if(isset($start) && isset($end)){
-                $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
-            }
-            $betSql .= " AND bet.user_id =".$user->id;
 
-            $betSql .= " ORDER BY bet.created_at desc,bet.bet_id desc ";
-            $bet = DB::select($Sql.$betSql."LIMIT ".$startPage.','.$lengthPage);
+            var_dump($aSql);die();
+            $bet = DB::select($aSql."LIMIT ".$startPage.','.$lengthPage);
             $betCount = DB::select("select count(bet.bet_id) as count from bet LEFT JOIN game ON bet.game_id = game.game_id WHERE 1 = 1 ".$betSql);
             $currentIssue = '';
             $currentColor = '';
