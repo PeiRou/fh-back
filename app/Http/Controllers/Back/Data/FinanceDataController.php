@@ -35,7 +35,7 @@ class FinanceDataController extends Controller
         $account_param = $request->get('account_param');
         $status = $request->get('status');
         $pay_online_id = $request->get('pay_online_id');
-        $amount = $request->get('amount');
+        $amount = (int)$request->get('amount');
         $fullName = $request->get('fullName');
         $start = $request->get('start');
         $length = $request->get('length');

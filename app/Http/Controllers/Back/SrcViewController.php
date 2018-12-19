@@ -73,7 +73,7 @@ class SrcViewController extends Controller
     public function Dash()
     {
         if($sa_id = Session::get('account_id')){
-            $accountInfo = DB::table('sub_account')->first();
+            $accountInfo = DB::table('sub_account')->where('sa_id', $sa_id)->first();
             return view('back.dash', compact('accountInfo'));
         }else{
             return view('back.O_adminLogin');
@@ -168,6 +168,11 @@ class SrcViewController extends Controller
                 'status' => false
             ]);
         $get = DB::table($gameTable)->where('issue',$issue)->first();
+        if(!$get)
+            return response()->json([
+                'status' => true,
+                'openNum' => '<div class="ll-text">暂无此游戏，请联系技术</div>'
+            ]);
         if($gameId == 70 || $gameId == 85){
             if($get->open_num == ''){
                 return response()->json([

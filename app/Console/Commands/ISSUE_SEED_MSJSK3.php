@@ -19,9 +19,26 @@ class ISSUE_SEED_MSJSK3 extends Command
     public function handle()
     {
         $curDate = date('Ymd');
-        $timeUp = Carbon::parse(date('Y-m-d 23:59:00'))->addDay(-1)->toDateTimeString();
+        $timeUp = ' 23:59:00';
 //        $timeUp = date('2018-08-03 23:59:00');
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
+        $checkUpdate = DB::table('issue_seed')->select('msjsk3')->where('id',1)->first();
+        $issueDate = '';
+        if(isset($checkUpdate->msjsk3)) {
+            if($curDate == $checkUpdate->msjsk3) {
+                $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
+                $curDate = date('Ymd', strtotime('+ 1 day', time()));
+            }else if($curDate < $checkUpdate->msjsk3)
+                \Log::info($curDate.'秒速快3期数已存在');
+            else
+                $issueDate = date('Y-m-d',time());
+        }else{
+            $issueDate = date('Y-m-d',time());
+        }
+        echo $issueDate;
+        if(empty($issueDate))
+            return '';
+        $timeUp = $issueDate . $timeUp;
+        $timeUp = Carbon::parse($timeUp)->addDay(-1)->toDateTimeString();
         $sql = "INSERT INTO game_msjsk3 (issue,opentime) VALUES ";
         for($i=1;$i<=1440;$i++){
             $timeUp = Carbon::parse($timeUp)->addSeconds(60);

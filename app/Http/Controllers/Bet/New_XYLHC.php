@@ -1905,8 +1905,8 @@ class New_XYLHC
                 $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                 $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
             }
-            $sql .= $sql_bets . "END ,updated_at='".date("Y-m-d H:i:s")."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $sql_lose .= $sql_bets_lose . "END ,updated_at='".date("Y-m-d H:i:s")."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
             if(!empty($sql_bets))
                 $run = DB::statement($sql);
 
@@ -1928,7 +1928,7 @@ class New_XYLHC
                 }
                 $ids_zxbz = implode(',', $zxbz_ids);
                 if($ids_zxbz){
-                    $sql_zxb = "UPDATE ".$table." SET bunko = bet_money * play_odds ,updated_at='".date("Y-m-d H:i:s")."' WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
+                    $sql_zxb = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
                 } else {
                     $sql_zxb = 0;
                 }
@@ -1947,7 +1947,7 @@ class New_XYLHC
                 }
                 $ids_hexiao = implode(',', $hexiao_ids);
                 if($ids_hexiao){
-                    $sql_hexiao = "UPDATE ".$table." SET bunko = bet_money * play_odds ,updated_at='".date("Y-m-d H:i:s")."' WHERE `bet_id` IN ($ids_hexiao)"; //中奖的SQL语句
+                    $sql_hexiao = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_hexiao)"; //中奖的SQL语句
                 } else {
                     $sql_hexiao = 0;
                 }
@@ -1977,7 +1977,7 @@ class New_XYLHC
                 }
                 $zx_ids = implode(',',$zx_id);
                 if($zx_ids && isset($zx_ids)){
-                    $zx_sql .= "END ,updated_at='".date("Y-m-d H:i:s")."' WHERE play_id IN ($zx_ids) AND `issue` = $issue AND `game_id` = $gameId";
+                    $zx_sql .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE play_id IN ($zx_ids) AND `issue` = $issue AND `game_id` = $gameId";
                 } else {
                     $zx_sql = 0;
                 }

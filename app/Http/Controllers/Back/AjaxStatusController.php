@@ -61,9 +61,10 @@ class AjaxStatusController extends Controller
                 }else{
                     $redisUser = $redis->get($keyUser);
                     $redisUser = (array)json_decode($redisUser,true);
-                    if($redisUser['testFlag']==0){
-                        $onlineUserCount++;
-                    }
+                    if(!empty($redisUser))
+                        if($redisUser['testFlag']==0){
+                            $onlineUserCount++;
+                        }
                 }
             }
 

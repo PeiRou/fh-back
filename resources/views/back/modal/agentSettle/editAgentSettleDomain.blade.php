@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="field">
-        <label>名称</label>
+        <label>代理帐号</label>
         <div class="ui input icon">
             <input type="text"  name="name"  value="{{ $data->name }}" />
         </div>

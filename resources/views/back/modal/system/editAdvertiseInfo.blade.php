@@ -36,11 +36,13 @@
         @foreach($aData as $kData => $iData)
             @if($iData->type == 3)
                 window.um = UM.getEditor('{{ $iData->js_key }}',{
-                    initialFrameWidth: null
+                    initialFrameWidth: null,
+                    // imageUrl:'/back/vendor/ueditor/php/imageUp.php',
+                    // imagePath:'/back/vendor/ueditor/php/',
+                    // imageFieldName:'upload/'
                 });
             @endif
         @endforeach
-
 
         $('#addRoleForm').formValidation({
             framework: 'semantic',
