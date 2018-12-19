@@ -63,7 +63,7 @@ class clear_data extends Command
         }catch (\Exception $e){
             echo 'table insert into bet_his :fail'.PHP_EOL;
         }
-        $sql = "DELETE FROM bet WHERE created_at<='{$clearDate31}' LIMIT 1000";
+        $sql = "DELETE FROM bet WHERE created_at<='{$clearDate1}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         echo 'table bet :'.$res.PHP_EOL;
         //清-资金明细
