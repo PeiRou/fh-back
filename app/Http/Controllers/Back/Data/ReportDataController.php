@@ -255,11 +255,6 @@ class ReportDataController extends Controller
                 $bfb = $countWinBunkoBet/$countBets * 100;
                 return $countWinBunkoBet.' ('.round($bfb,1).'%)';
             })
-            ->editColumn('sumBunko', function ($aBet){
-                if($aBet->sumBunko >= 0)
-                    return '<span class="green-text">'.$aBet->sumBunko.'</span>';
-                return '<span class="red-text">'.$aBet->sumBunko.'</span>';
-            })
             ->rawColumns(['sumBunko'])
             ->make(true);
     }

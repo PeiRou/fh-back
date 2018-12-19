@@ -78,7 +78,13 @@ $(function () {
             {data:'sumWinBunko'},
             {data:'countWinBunkoBet'},
             {data:'countWinBunkoMember'},
-            {data:'sumBunko'},
+            {data:function (data) {
+                    var sumBunko = data.sumBunko;
+                    if(sumBunko >= 0){
+                        return '<span class="green-text">'+sumBunko+'</span>'
+                    }
+                    return '<span class="red-text">'+sumBunko+'</span>'
+                }},
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
