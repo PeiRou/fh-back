@@ -227,25 +227,6 @@ class ReportDataController extends Controller
         $killCloseGame = $request->get('killCloseGame');
         $start = $request->get('start');
         $length = $request->get('length');
-//        $sql1 = "SELECT g.game_name,g.status,g.game_id, sum(b.bet_money) as sumMoney, COUNT(b.bet_id) AS countBets,count(DISTINCT(b.user_id)) as countMember, sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bunko else 0 end) else(case WHEN bunko >0 then bunko else 0 end) end) as sumWinBunko, count(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then b.bet_id else Null end) else(case WHEN bunko >0 then b.bet_id else Null end) end) as countWinBunkoBet, count(DISTINCT(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then b.user_id else Null end) else(case WHEN bunko >0 then b.user_id else Null end) end)) as countWinBunkoMember, sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as sumBunko FROM `game` AS g ";
-//        $whereBet = "";
-//        $where = "";
-//        if(isset($killZeroBetGame) && $killZeroBetGame){        //过滤零投注彩种
-//            $where .= " and b.user_id >= 1 ";
-//        }
-//        if(isset($killCloseGame) && $killCloseGame){        //过滤未开启彩种
-//            $where .= " and g.status = 1 ";
-//        }
-//        if(isset($starttime) && $starttime){
-//            $whereBet .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-//        }
-//        if(isset($endtime) && $endtime){
-//            $whereBet .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-//        }
-//        $sql = "LEFT JOIN (select * from bet where 1 AND testFlag = 0 ".$whereBet.") as b ON g.game_id = b.game_id";
-//        $aSqlCount = "SELECT COUNT(`c`.`game_id`) AS `count` FROM (SELECT g.game_id FROM `game` AS g ".$sql." WHERE 1 ".$where." GROUP BY g.game_id) AS `c`";
-//        $sql .= " WHERE 1 ".$where." GROUP BY g.game_id order BY sumBunko asc LIMIT ".$start.','.$length;
-//        $sql = $sql1.$sql;
         $sql1 = "SELECT g.game_name,g.status,g.game_id, `b`.`sumMoney`, `b`.`countBets`,`b`.`countMember`, `b`.`sumWinBunko`, `b`.`countWinBunkoBet`,`b`.`countWinBunkoMember`, `b`.`sumBunko` FROM `game` AS g ";
         $whereBet = "";
         $where = "";

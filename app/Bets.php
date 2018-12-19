@@ -70,7 +70,9 @@ class Bets extends Model
 
     //获取代理结算初步信息
     public static function preliminaryManualSettlement($array){
-        $sql = "SELECT count(bet.`bet_id`) AS `betCount`,sum(CASE WHEN bet.`bunko` > 0 THEN bet.`bunko` - bet.`bet_money` ELSE bet.`bunko` END) AS `sumBunko`,sum(bet.`bet_money`) AS `sumBetMoney`,bet.`user_id`,bet.`agent_id` FROM `bet` WHERE bet.`updated_at` BETWEEN :startTime AND :endTime GROUP BY bet.`user_id`,bet.`agent_id`";
+        $sql = "SELECT count(bet.`bet_id`) AS `betCount`,sum(CASE WHEN bet.`bunko` > 0 THEN bet.`bunko` - bet.`bet_money` ELSE bet.`bunko` END) AS `sumBunko`,sum(bet.`bet_money`) AS `sumBetMoney`,bet.`user_id`,bet.`agent_id` 
+                  FROM `bet` WHERE bet.`updated_at` BETWEEN :startTime AND :endTime 
+                  GROUP BY bet.`user_id`,bet.`agent_id`";
         $sqlArray = ['startTime'=>$array['start'],'endTime'=>$array['end']];
         return DB::select($sql,$sqlArray);
     }
@@ -922,6 +924,46 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
         }
         $betSql .= " AND bet.user_id =".$user->id;
-        return $Sql.$betSql.' ORDER BY bet.created_at desc,bet.bet_id desc ';
+        return $Sql.$betSql;
+    }
+
+    public static function userBetSearchCount($request,$user){
+        $aSql = 'select count(bet.bet_id) as count from bet LEFT JOIN game ON bet.game_id = game.game_id WHERE 1 = 1 ';
+
+        $games = $request->get('games');
+        $status = $request->get('status');
+        $start = $request->get('startTime');
+        $end = $request->get('endTime');
+        $issue = $request->get('issue');
+        $orderNum = $request->get('orderNum');
+
+        $betSql = "";
+        if(count($games) > 0){
+            $games = implode(",",$games);
+            $betSql .= " AND bet.game_id in(".$games.")";
+        }
+        switch ($status){
+            case 1: //未结
+                $betSql .= " AND bet.bunko =0";
+                break;
+            case 2: //已结
+                $betSql .= " AND bet.bunko !=0 AND bet.bet_money != bet.bunko ";
+                break;
+            case 3: //撤单
+                $betSql .= " AND bet.bet_money = bet.bunko ";
+                break;
+        }
+        if(isset($issue) && isset($issue)){
+            $betSql .= " AND bet.issue =".$issue;
+        }
+        if(isset($orderNum) && isset($orderNum)){
+            $betSql .= " AND bet.order_id =".$orderNum;
+        }
+        if(isset($start) && isset($end)){
+            $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
+        }
+        $betSql .= " AND bet.user_id =".$user->id;
+
+        return DB::select($aSql.$betSql)[0]->count;
     }
 }

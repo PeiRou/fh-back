@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back\Data;
 
 use App\Agent;
 use App\AgentBackwater;
+use App\BetHis;
 use App\Bets;
 use App\Capital;
 use App\CapitalAgent;
@@ -601,9 +602,29 @@ GROUP BY g.ga_id LIMIT $start,$length";
         ];
         if(isset($param['type']) && array_key_exists('type', $param)){
             if(in_array($param['type'],Capital::$includePlayTypeOption)){
-                $capital = Bets::AssemblyFundDetails($param);
-                $capitalCount = $capital->count();
-                $capital = $capital->skip($start)->take($length)->get();
+                $aBetHis = '';
+                $aBets = '';
+                $aBetHisCount = 0;
+                $aBetsCount = 0;
+                if(strtotime($param['endTime']) >= strtotime(date('Y-m-d',strtotime('-1 day')))){
+                    $aBetHis = BetHis::AssemblyFundDetails($param);
+                    $aBetHisCount = $aBetHis->count();
+                }
+                if(strtotime($param['startTime']) < strtotime(date('Y-m-d',strtotime('-2 day')))) {
+                    $aBets = Bets::AssemblyFundDetails($param);
+                    $aBetsCount = $aBets->count();
+                }
+                if(empty($aBetHis) && !empty($aBets)){
+                    $capital = $aBets->skip($start)->take($length)->get();
+                }elseif(empty($aBets) && !empty($aBetHis)){
+                    $capital = $aBetHis->skip($start)->take($length)->get();
+                }else{
+                    $capital = $aBets->union($aBetHis)->orderBy('created_at','desc')->skip($start)->take($length)->get();
+                }
+                $capitalCount = $aBetHisCount + $aBetsCount;
+//                $capital = Bets::AssemblyFundDetails($param);
+//                $capitalCount = $capital->count();
+//                $capital = $capital->skip($start)->take($length)->get();
             }else if($param['type']=='t01'){        //充值
                 $capital = Capital::AssemblyFundDetails_Rech($param);
                 $capitalCount = $capital->count();
@@ -624,10 +645,11 @@ GROUP BY g.ga_id LIMIT $start,$length";
         }else {
             $capitalSql = Capital::AssemblyFundDetails($param);
             $betsSql = Bets::AssemblyFundDetails($param);
+            $betHisSql = BetHis::AssemblyFundDetails($param);
             $RechSql = Capital::AssemblyFundDetails_Rech($param);
             $drawingSql = Drawing::AssemblyFundDetails($param);
-            $capitalCount = $capitalSql->count() + $betsSql->count() + $RechSql->count() + $drawingSql->count();
-            $capital = $capitalSql->union($RechSql)->union($betsSql)->union($drawingSql)->orderBy('created_at','desc')->orderBy('bet_id','desc')->skip($start)->take($length);
+            $capitalCount = $capitalSql->count() + $betsSql->count() + $betHisSql->count() + $RechSql->count() + $drawingSql->count();
+            $capital = $capitalSql->union($RechSql)->union($betsSql)->union($betHisSql)->union($drawingSql)->orderBy('created_at','desc')->orderBy('bet_id','desc')->skip($start)->take($length);
         }
         $playTypeOptions = Capital::$playTypeOption;
         $rechargesType = Recharges::$rechargesType;

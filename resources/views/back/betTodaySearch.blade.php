@@ -65,15 +65,15 @@
                         <input type="text" id="maxMoney" placeholder="下注最大金额">
                     </div>
 
-                    <div class="one wide field">
+                    <div class="one wide field" style="display: none;">
                         <div class="ui calendar" id="rangestart">
                             <div class="ui input left">
                                 <input type="text" id="timeStart" value="{{ date('Y-m-d') }}" placeholder="起始日期">
                             </div>
                         </div>
                     </div>
-                    <div style="line-height: 32px;">-</div>
-                    <div class="one wide field">
+                    <div style="line-height: 32px;display: none">-</div>
+                    <div class="one wide field" style="display: none;">
                         <div class="ui calendar" id="rangeend">
                             <div class="ui input left">
                                 <input type="text" id="timeEnd" value="{{ date('Y-m-d') }}" placeholder="结束日期">

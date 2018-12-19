@@ -10,6 +10,7 @@ $(function () {
             typeof i === 'number' ?
                 i : 0;
     };
+    var today = new Date();
     $('#rangestart').calendar({
         type: 'date',
         endCalendar: $('#rangeend'),
@@ -30,7 +31,9 @@ $(function () {
             now: '现在',
             am: 'AM',
             pm: 'PM'
-        }
+        },
+        minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 99),
+        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2)
     });
     $('#rangeend').calendar({
         type: 'date',
@@ -52,7 +55,9 @@ $(function () {
             now: '现在',
             am: 'AM',
             pm: 'PM'
-        }
+        },
+        minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 99),
+        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2)
     });
 
     dataTable = $('#betHistoryTable').DataTable({
