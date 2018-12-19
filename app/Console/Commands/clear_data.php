@@ -45,7 +45,7 @@ class clear_data extends Command
             return "";
         }
         $redis->setex($keyEx,50,'on');
-        $clearDate1 = date('Y-m-d 23:59:59',strtotime("-1 days")-300);        //1天
+        $clearDate1 = date('Y-m-d 23:59:59',strtotime("-2 days")-300);        //1天
         $clearDate31 = date('Y-m-d 23:59:59',strtotime("-31 days")-300);        //31天
         $clearDate62 = date('Y-m-d 23:59:59',strtotime("-62 days")-300);        //62天
         echo "clear Date1:".$clearDate1.PHP_EOL;
