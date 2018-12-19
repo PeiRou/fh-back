@@ -74,25 +74,11 @@ $(function () {
             {data:'sumMoney'},
             {data:'countBets'},
             {data:'countMember'},
-            {data:function () {
-                    return 0;
-                }},
+            {data:'rebate'},
             {data:'sumWinBunko'},
-            {data:function (data) {
-                    var countWinBunkoBet = data.countWinBunkoBet;
-                    var countBets =  data.countBets;
-                    var bfb = countWinBunkoBet/countBets * 100;
-                    return countWinBunkoBet+' ('+bfb.toFixed(1)+'%)'
-                }},
+            {data:'countWinBunkoBet'},
             {data:'countWinBunkoMember'},
-            {data:function (data) {
-                var sumBunko = data.sumBunko;
-                if(sumBunko > 0){
-                    return '<span class="green-text">'+sumBunko+'</span>'
-                } else {
-                    return '<span class="red-text">'+sumBunko+'</span>'
-                }
-                }},
+            {data:'sumBunko'},
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;

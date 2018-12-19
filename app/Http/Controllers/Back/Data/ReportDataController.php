@@ -7,6 +7,7 @@ use App\DomainAccess;
 use App\DomainInfo;
 use App\GamesApi;
 use App\ReportAgent;
+use App\ReportBet;
 use App\ReportBetAgent;
 use App\ReportBetGeneral;
 use App\ReportBetMember;
@@ -221,32 +222,45 @@ class ReportDataController extends Controller
     //投注报表
     public function Bet(Request $request)
     {
-        $starttime = $request->get('startTime');
-        $endtime = $request->get('endTime');
-        $killZeroBetGame = $request->get('killZeroBetGame');
-        $killCloseGame = $request->get('killCloseGame');
-        $start = $request->get('start');
-        $length = $request->get('length');
-        $sql1 = "SELECT g.game_name,g.status,g.game_id, `b`.`sumMoney`, `b`.`countBets`,`b`.`countMember`, `b`.`sumWinBunko`, `b`.`countWinBunkoBet`,`b`.`countWinBunkoMember`, `b`.`sumBunko` FROM `game` AS g ";
-        $whereBet = "";
-        $where = "";
-        if(isset($killZeroBetGame) && $killZeroBetGame){        //过滤零投注彩种
-            $whereBet .= " and user_id >= 1 ";
+        $aParam = $request->input();
+
+        if(strtotime($aParam['startTime']) == strtotime(date('Y-m-d'))){
+            $aBet = Bets::todayReportBet($aParam);
+        }else{
+            $aBet = ReportBet::reportQuery($aParam);
         }
-        if(isset($killCloseGame) && $killCloseGame){        //过滤未开启彩种
-            $where .= " and g.status = 1 ";
-        }
-        if(isset($starttime) && $starttime){
-            $whereBet .= " and updated_at >= '".date("Y-m-d 00:00:00",strtotime($starttime))."'";
-        }
-        if(isset($endtime) && $endtime){
-            $whereBet .= " and updated_at <= '".date("Y-m-d 23:59:59",strtotime($endtime))."'";
-        }
-        $sql = "JOIN (select sum(`bet_money`) as `sumMoney`,COUNT(`bet_id`) AS `countBets`,count(DISTINCT(`user_id`)) as `countMember`,sum(case WHEN `game_id` in (90,91) then (case WHEN `nn_view_money` > 0 then `bunko` else 0 end) else(case WHEN `bunko` >0 then `bunko` else 0 end) end) as `sumWinBunko`,count(case WHEN `game_id` in (90,91) then (case WHEN `nn_view_money` > 0 then `bet_id` else Null end) else(case WHEN `bunko` >0 then `bet_id` else Null end) end) as `countWinBunkoBet`,count(DISTINCT(case WHEN `game_id` in (90,91) then (case WHEN `nn_view_money` > 0 then `user_id` else Null end) else(case WHEN `bunko` >0 then `user_id` else Null end) end)) as `countWinBunkoMember`,sum(case WHEN `game_id` in (90,91) then `nn_view_money` else(case when `bunko` >0 then `bunko` - `bet_money` else `bunko` end)end) as `sumBunko`,`game_id` from bet where 1 AND testFlag = 0 ".$whereBet." GROUP BY `game_id`) as b ON g.game_id = b.game_id ";
-        $sql .= " WHERE 1 ".$where." order BY sumBunko asc LIMIT ".$start.','.$length;
-        $sql = $sql1.$sql;
-        $bet = DB::select($sql);
-        return DataTables::of($bet)
+
+        return DataTables::of($aBet)
+            ->editColumn('countWinBunkoMember', function ($aBet){
+                return empty($aBet->countWinBunkoMember)?0:$aBet->countWinBunkoMember;
+            })
+            ->editColumn('sumMoney', function ($aBet){
+                return empty($aBet->sumMoney)?'0.00':$aBet->sumMoney;
+            })
+            ->editColumn('countBets', function ($aBet){
+                return empty($aBet->countBets)?0:$aBet->countBets;
+            })
+            ->editColumn('countMember', function ($aBet){
+                return empty($aBet->countMember)?0:$aBet->countMember;
+            })
+            ->editColumn('sumWinBunko', function ($aBet){
+                return empty($aBet->sumWinBunko)?'0.00':$aBet->sumWinBunko;
+            })
+            ->editColumn('rebate', function (){
+                return 0;
+            })
+            ->editColumn('countWinBunkoBet', function ($aBet){
+                $countWinBunkoBet = empty($aBet->countWinBunkoBet)?0:$aBet->countWinBunkoBet;
+                $countBets =  empty($aBet->countBets)?1:$aBet->countBets;
+                $bfb = $countWinBunkoBet/$countBets * 100;
+                return $countWinBunkoBet.' ('.round($bfb,1).'%)';
+            })
+            ->editColumn('sumBunko', function ($aBet){
+                if($aBet->sumBunko >= 0)
+                    return '<span class="green-text">'.$aBet->sumBunko.'</span>';
+                return '<span class="red-text">'.$aBet->sumBunko.'</span>';
+            })
+            ->rawColumns(['sumBunko'])
             ->make(true);
     }
 

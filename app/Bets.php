@@ -966,4 +966,42 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
 
         return DB::select($aSql.$betSql)[0]->count;
     }
+
+    public static function getReportBet($startTime,$endTime){
+        $aSql = "SELECT SUM(`bet_money`) AS `sumMoney`,COUNT(`bet_id`) AS `countBets`,COUNT(DISTINCT(`user_id`)) AS `countMember`,
+                  SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bunko` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bunko` ELSE 0 END) END) AS `sumWinBunko`,
+                  COUNT(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bet_id` ELSE NULL END) ELSE(CASE WHEN `bunko` >0 THEN `bet_id` ELSE NULL END) END) AS `countWinBunkoBet`,
+                  COUNT(DISTINCT(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `user_id` ELSE NULL END) ELSE(CASE WHEN `bunko` >0 THEN `user_id` ELSE NULL END) END)) AS `countWinBunkoMember`,
+                  SUM(CASE WHEN `game_id` IN (90,91) THEN `nn_view_money` ELSE(CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE `bunko` END)END) AS `sumBunko`,
+                  `game_id` ,`user_id` 
+                  FROM `bet` WHERE 1 AND `testFlag` = 0 AND `updated_at` >= :startTime AND `updated_at` <= :endTime GROUP BY `game_id`,`user_id`";
+        $aArray = [
+            'startTime' => $startTime,
+            'endTime' => $endTime
+        ];
+        return DB::select($aSql,$aArray);
+    }
+
+    public static function todayReportBet($aParam){
+        $sql1 = "SELECT g.game_name,g.status,g.game_id, `b`.`sumMoney`, `b`.`countBets`,`b`.`countMember`, `b`.`sumWinBunko`, `b`.`countWinBunkoBet`,`b`.`countWinBunkoMember`, (CASE WHEN `b`.`sumBunko` IS NULL THEN 0 ELSE `b`.`sumBunko` END) AS `sumBunko` FROM `game` AS g ";
+        $whereBet = "";
+        $where = "";
+        $join = ' LEFT ';
+        if(isset($aParam['killZeroBetGame']) && $aParam['killZeroBetGame']){        //过滤零投注彩种
+            $join = "";
+        }
+        if(isset($aParam['killCloseGame']) && $aParam['killCloseGame']){        //过滤未开启彩种
+            $where .= " and g.status = 1 ";
+        }
+        if(isset($aParam['startTime']) && $aParam['startTime']){
+            $whereBet .= " and updated_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['startTime']))."'";
+        }
+        if(isset($aParam['endTime']) && $aParam['endTime']){
+            $whereBet .= " and updated_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['endTime']))."'";
+        }
+        $sql = $join."JOIN (select sum(`bet_money`) as `sumMoney`,COUNT(`bet_id`) AS `countBets`,count(DISTINCT(`user_id`)) as `countMember`,sum(case WHEN `game_id` in (90,91) then (case WHEN `nn_view_money` > 0 then `bunko` else 0 end) else(case WHEN `bunko` >0 then `bunko` else 0 end) end) as `sumWinBunko`,count(case WHEN `game_id` in (90,91) then (case WHEN `nn_view_money` > 0 then `bet_id` else Null end) else(case WHEN `bunko` >0 then `bet_id` else Null end) end) as `countWinBunkoBet`,count(DISTINCT(case WHEN `game_id` in (90,91) then (case WHEN `nn_view_money` > 0 then `user_id` else Null end) else(case WHEN `bunko` >0 then `user_id` else Null end) end)) as `countWinBunkoMember`,sum(case WHEN `game_id` in (90,91) then `nn_view_money` else(case when `bunko` >0 then `bunko` - `bet_money` else `bunko` end)end) as `sumBunko`,`game_id` from bet where 1 AND testFlag = 0 ".$whereBet." GROUP BY `game_id`) as b ON g.game_id = b.game_id ";
+        $sql .= " WHERE 1 ".$where." order BY sumBunko asc LIMIT ".$aParam['start'].','.$aParam['length'];
+        $sql = $sql1.$sql;
+        return DB::select($sql);
+    }
 }
