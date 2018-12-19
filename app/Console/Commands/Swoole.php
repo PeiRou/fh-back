@@ -111,6 +111,7 @@ class Swoole extends Command
         try{
             Artisan::call($data['thread']);
         }catch (\exception $exception){
+            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             \Log::info('this commands not fund :'.$data['thread']);
         }
         if($this->num[$id]>=122)
