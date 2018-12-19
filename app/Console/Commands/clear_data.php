@@ -57,17 +57,17 @@ class clear_data extends Command
 //        echo 'table bet :'.$res.PHP_EOL;
         //清-投注表
         try {
-            $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE created_at<='{$clearDate1}' LIMIT 1000";
+            $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table insert into bet_his :'.$res.PHP_EOL;
         }catch (\Exception $e){
             echo 'table insert into bet_his :fail'.PHP_EOL;
         }
-        $sql = "DELETE FROM bet WHERE created_at<='{$clearDate1}' LIMIT 1000";
+        $sql = "DELETE FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         echo 'table bet :'.$res.PHP_EOL;
         //清-资金明细
-        $sql = "DELETE FROM capital WHERE created_at<='{$clearDate62}' LIMIT 1000";
+        $sql = "DELETE FROM capital WHERE created_at <= '{$clearDate62}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         echo 'table capital :'.$res.PHP_EOL;
         //清-充值
