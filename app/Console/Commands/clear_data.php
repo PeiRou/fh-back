@@ -55,6 +55,16 @@ class clear_data extends Command
 //        $sql = "delete from users where testFlag = 1 and loginTime <='".date("Y-m-d H:i:s",strtotime('-1 day'))."' LIMIT 1000";
 //        $res = DB::connection('mysql::write')->statement($sql);
 //        echo 'table bet :'.$res.PHP_EOL;
+        if(!$redis->exists('canClear')){
+            $res = DB::table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
+            $redis->setex('canClear',3600,'on');
+            if(empty($res)){
+                $time = strtotime(date('Y-m-d 23:59:59')) - time();
+                $redis->setex($keyEx,$time,'on');
+                echo 'nothing';
+                return '';
+            }
+        }
         //清-投注表
         try {
             $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
