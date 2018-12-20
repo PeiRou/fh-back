@@ -1024,6 +1024,10 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $bet->where('user_id', $param->userId);
             $bet_his->where('user_id', $param->userId);
         }
+        if(isset($param->startTime, $param->endTime)){
+            $bet->whereBetween('created_at',[$param->startTime.' 00:00:00', $param->endTime.' 23:59:59']);
+            $bet_his->whereBetween('created_at',[$param->startTime.' 00:00:00', $param->endTime.' 23:59:59']);
+        }
         $bet->unionAll($bet_his);
         $sql = $bet->toSql();
         return DB::table(DB::raw(" ($sql) AS a "))
