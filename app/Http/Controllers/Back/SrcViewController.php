@@ -10,6 +10,7 @@ use App\AgentDrawDetails;
 use App\AgentReport;
 use App\AgentReportBase;
 use App\AgentReportReview;
+use App\Bets;
 use App\Capital;
 use App\Feedback;
 use App\Games;
@@ -128,27 +129,30 @@ class SrcViewController extends Controller
     //会员注单统计
     public function userBetListTotal(Request $request)
     {
+        if(isset($request->username))
+            $request->userId = DB::table('users')->where('username',$request->username)->value('id');
+        return response()->json(Bets::getBetTotal($request));
         //$userId = $request->get('userId');
-        $username = $request->get('username');
-        $startTime = $request->get('startTime');
-        $endTime = $request->get('endTime');
-        $issue = $request->get('issue');
-        $orderNum = $request->get('orderNum');
-        $userInfo = DB::table('users')->where('username',$username)->first();
-
-        $get = DB::table('bet')->select(DB::raw('sum(bet_money) as betTotal, sum(case WHEN game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as winTotal'))
-            ->where(function ($query) use($issue) {
-                if($issue && isset($issue)){
-                    $query->where('issue',$issue);
-                }
-            })
-            ->where(function ($query) use($orderNum) {
-                if($orderNum && isset($orderNum)){
-                    $query->where('order_id',$orderNum);
-                }
-            })
-            ->where('user_id',$userInfo->id ?? 0)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
-        return response()->json($get);
+//        $username = $request->get('username');
+//        $startTime = $request->get('startTime');
+//        $endTime = $request->get('endTime');
+//        $issue = $request->get('issue');
+//        $orderNum = $request->get('orderNum');
+//        $userInfo = DB::table('users')->where('username',$username)->first();
+//
+//        $get = DB::table('bet')->select(DB::raw('sum(bet_money) as betTotal, sum(case WHEN game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as winTotal'))
+//            ->where(function ($query) use($issue) {
+//                if($issue && isset($issue)){
+//                    $query->where('issue',$issue);
+//                }
+//            })
+//            ->where(function ($query) use($orderNum) {
+//                if($orderNum && isset($orderNum)){
+//                    $query->where('order_id',$orderNum);
+//                }
+//            })
+//            ->where('user_id',$userInfo->id ?? 0)->whereBetween('created_at',[$startTime.' 00:00:00', $endTime.' 23:59:59'])->get();
+//        return response()->json($get);
     }
     //注单明细获取开奖历史
     public function BetListOpenHistory($gameId,$issue,$game_name)

@@ -38,10 +38,10 @@ class BetHis extends Model
                 break;
         }
         if(isset($issue) && isset($issue)){
-            $betSql .= " AND bet_his.issue =".$issue;
+            $betSql .= " AND bet_his.issue ='".$issue."'";
         }
         if(isset($orderNum) && isset($orderNum)){
-            $betSql .= " AND bet_his.order_id =".$orderNum;
+            $betSql .= " AND bet_his.order_id ='".$orderNum."'";
         }
         if(isset($start) && isset($end)){
             $betSql .= " AND bet_his.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
@@ -76,10 +76,10 @@ class BetHis extends Model
                 break;
         }
         if(isset($issue) && isset($issue)){
-            $betSql .= " AND bet_his.issue =".$issue;
+            $betSql .= " AND bet_his.issue ='".$issue."'";
         }
         if(isset($orderNum) && isset($orderNum)){
-            $betSql .= " AND bet_his.order_id =".$orderNum;
+            $betSql .= " AND bet_his.order_id ='".$orderNum."'";
         }
         if(isset($start) && isset($end)){
             $betSql .= " AND bet_his.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";

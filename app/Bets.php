@@ -915,10 +915,10 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
                 break;
         }
         if(isset($issue) && isset($issue)){
-            $betSql .= " AND bet.issue =".$issue;
+            $betSql .= " AND bet.issue ='".$issue."'";
         }
         if(isset($orderNum) && isset($orderNum)){
-            $betSql .= " AND bet.order_id =".$orderNum;
+            $betSql .= " AND bet.order_id ='".$orderNum."'";
         }
         if(isset($start) && isset($end)){
             $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
@@ -954,10 +954,10 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
                 break;
         }
         if(isset($issue) && isset($issue)){
-            $betSql .= " AND bet.issue =".$issue;
+            $betSql .= " AND bet.issue ='".$issue."'";
         }
         if(isset($orderNum) && isset($orderNum)){
-            $betSql .= " AND bet.order_id =".$orderNum;
+            $betSql .= " AND bet.order_id ='".$orderNum."'";
         }
         if(isset($start) && isset($end)){
             $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
@@ -1003,5 +1003,32 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $sql .= " WHERE 1 ".$where." order BY sumBunko asc LIMIT ".$aParam['start'].','.$aParam['length'];
         $sql = $sql1.$sql;
         return DB::select($sql);
+    }
+
+    //获取注单总计
+    public static function getBetTotal($param = null){
+        $bet = self::class;
+        $bet_his = DB::table('bet_his');
+        $column = [DB::raw('sum(bet_money) as betTotal, sum(case WHEN game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as winTotal')];
+        $bet = $bet::select(...$column);
+        $bet_his = $bet_his->select(...$column);
+        if(isset($param->issue)){
+            $bet->where('issue', $param->issue);
+            $bet_his->where('issue', $param->issue);
+        }
+        if(isset($param->orderNum)){
+            $bet->where('order_id', $param->orderNum);
+            $bet_his->where('order_id', $param->orderNum);
+        }
+        if(isset($param->userId)){
+            $bet->where('user_id', $param->userId);
+            $bet_his->where('user_id', $param->userId);
+        }
+        $bet->unionAll($bet_his);
+        $sql = $bet->toSql();
+        return DB::table(DB::raw(" ($sql) AS a "))
+            ->mergeBindings($bet->getQuery())
+            ->select(DB::raw('SUM(`betTotal`) AS `betTotal`, SUM(`winTotal`) AS `winTotal`'))
+            ->get();
     }
 }
