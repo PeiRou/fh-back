@@ -22,6 +22,198 @@ use Illuminate\Support\Facades\Artisan;
 
 class FinanceDataController extends Controller
 {
+    //12-20 备用
+//    public function rechargeRecord(Request $request)
+//    {
+//        $findUserId = '';
+//        $killTestUser = $request->get('killTestUser');
+//        $payType = $request->get('recharge_type'); //自动收款
+//        $recharges_id = $request->get('recharges_id');
+//        $startTime = $request->get('startTime');
+//        $endTime = $request->get('endTime');
+//        $account_type = $request->get('account_type');
+//        $account_param = $request->get('account_param');
+//        $status = $request->get('status');
+//        $pay_online_id = $request->get('pay_online_id');
+//        $amount = (int)$request->get('amount');
+//        $fullName = $request->get('fullName');
+//        $start = $request->get('start');
+//        $length = $request->get('length');
+//        $rechargeType = $request->get('rechargeType'); //收款方式
+//        $dateType = $request->get('dateType');//时间类型
+//        if($fullName && isset($fullName)){
+//            $findUserId = DB::table('users')->where('fullName',$fullName)->first();
+//        }
+//
+//        $sql = ' from recharges WHERE 1 ';
+//        $where = '';
+//        if(isset($killTestUser) && $killTestUser){
+//            $where .= ' and testFlag = 0 ';
+//        }else{
+//            $where .= ' and testFlag in (0,2) ';
+//        }
+//        if(isset($pay_online_id) && $pay_online_id){
+//            $where .= ' and recharges.pay_online_id = '.$pay_online_id;
+//        }
+//        if(isset($amount) && $amount){
+//            $where .= ' and recharges.amount = '.$amount;
+//        }
+//        if(isset($findUserId) && $findUserId){
+//            $where .= ' and recharges.userId = '.$findUserId->id;
+//        }
+//        if(isset($rechargeType))
+//            $where .= ' and recharges.rechargeType = '.$rechargeType;
+//        if(isset($account_param) && $account_param){
+//            if($account_type == 'account'){
+//                $where .= " and recharges.username = '".$account_param."'";
+//            }else if($account_type == 'orderNum'){
+//                $where .= " and recharges.orderNum = '".$account_param."'";
+//            }else if($account_type == 'operation_account'){
+//                $where .= " and recharges.operation_account = '".$account_param."'";
+//            }else if($account_type == 'sysOrderNum'){
+//                $where .= " and recharges.sysPayOrder = '".$account_param."'";
+//            }
+//        }
+//        $dateTypeName = 'updated_at';
+//        if(isset($dateType) && $dateType == 1){//报表时间
+//            $dateTypeName = 'updated_at';
+//        }else if(isset($dateType) && $dateType == 2){
+//            $dateTypeName = 'created_at';
+//        }
+//        if(isset($startTime) && $startTime){
+//            $where .= " and recharges.{$dateTypeName} >= '".$startTime." 00:00:00'";
+//        }
+//        if(isset($endTime) && $endTime){
+//            $where .= " and recharges.{$dateTypeName} <= '".$endTime." 23:59:59'";
+//        }
+//        if(empty($startTime) && empty($endTime))
+//            $where .= " and recharges.updated_at = now() ";
+////        $whereStaus = '';
+//
+//        if(empty($findUserId) && empty($account_param)){
+//            if(isset($status) && $status){
+//                $whereStaus = ' and recharges.status = '.$status;
+//                Session::put('recharge_report_status',$status);
+//            }else{
+//                $whereStaus = ' and recharges.status in (1,2,3)';
+//                Session::put('recharge_report_status',2);
+//            }
+//            if(isset($payType) && $payType){
+//                $where .= " and recharges.payType = '".$payType."'";
+//            }else{
+//                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
+//            }
+//            if(isset($recharges_id) && $recharges_id > 0 ){
+//                $where .= " and recharges.admin_add_money = ".$recharges_id."";
+//            }
+//        }else{
+//            if(isset($status) && $status){
+//                $whereStaus = ' and recharges.status = '.$status;
+//                Session::put('recharge_report_status',$status);
+//            }else{
+//                $whereStaus = ' and recharges.status in (1,2,3,4)';
+//                Session::put('recharge_report_status',2);
+//            }
+//        }
+//        $sql1 = 'SELECT userId as uid,recharges.id as rid,recharges.created_at as re_created_at,recharges.levels as re_levels,recharges.process_date as re_process_date,recharges.username as re_username,recharges.userId as userId,fullName as user_fullName,balance as user_money,recharges.payType as re_payType,recharges.amount as re_amount,rebate_or_fee,recharges.operation_account as re_operation_account,recharges.shou_info as re_shou_info,recharges.ru_info as re_ru_info,recharges.status as re_status,recharges.msg as re_msg,recharges.orderNum as re_orderNum,recharges.sysPayOrder as re_sysPayOrder,recharges.balance as re_balance,levels as user_rechLevel,level_name as level_name '.$sql.$where .$whereStaus. ' order by recharges.created_at desc ';
+//        $aSqlCount = 'select count(recharges.id) AS count '.$sql.$where .$whereStaus;
+//        Session::put('recharge_report',$where);
+//        $recharge = DB::select($sql1 ." LIMIT ".$start.','.$length);
+//        $rechargeCount = DB::select($aSqlCount);
+//
+//        return DataTables::of($recharge)
+//            ->editColumn('created_at',function ($recharge){
+//                return date('m/d H:i',strtotime($recharge->re_created_at));
+//            })
+//            ->editColumn('process_date',function ($recharge){
+//                if($recharge->re_process_date !== null){
+//                    return date('m/d H:i',strtotime($recharge->re_process_date));
+//                } else {
+//                    return "--";
+//                }
+//            })
+//            ->editColumn('orderNum',function ($recharge){
+//                return $recharge->re_orderNum;
+//            })
+//            ->editColumn('user',function ($recharge){
+//                return '<span onclick="copyText(this)">'.$recharge->re_username.'</span><span> (<b>'.$recharge->level_name.'</b> <i style="cursor:pointer;" onclick="editLevels(\''.$recharge->uid.'\',\''.$recharge->re_levels.'\',\''.$recharge->rid.'\')" class="iconfont">&#xe602;</i>)</span>';
+//            })
+//            ->editColumn('trueName',function ($recharge){
+//                return $recharge->user_fullName;
+//            })
+//            ->editColumn('balance',function ($recharge){
+//                return $recharge->re_balance;
+//            })
+//            ->editColumn('payType',function ($recharge){
+//                if($recharge->re_payType == 'onlinePayment'){
+//                    return "在线支付";
+//                }
+//                if($recharge->re_payType == 'bankTransfer'){
+//                    return "银行汇款";
+//                }
+//                if($recharge->re_payType == 'weixin'){
+//                    return "微信转账";
+//                }
+//                if($recharge->re_payType == 'alipay'){
+//                    return "支付宝转账";
+//                }
+//                if($recharge->re_payType == 'cft'){
+//                    return "财付通转账";
+//                }
+//                if($recharge->re_payType == 'adminAddMoney'){
+//                    return "后台加钱";
+//                }
+//            })
+//            ->editColumn('amount',function ($recharge){
+//                return "<b class='red-text'>$recharge->re_amount</b>";
+//            })
+//            ->editColumn('operation_account',function ($recharge){
+//                if($recharge->re_operation_account == ""){
+//                    return "--";
+//                } else {
+//                    return $recharge->re_operation_account;
+//                }
+//            })
+//            ->editColumn('shou_info',function ($recharge){
+//                return $recharge->re_shou_info;
+//            })
+//            ->editColumn('ru_info',function ($recharge){
+//                return $recharge->re_ru_info;
+//            })
+//            ->editColumn('status',function ($recharge){
+//                switch ($recharge->re_status){
+//                    case 1:
+//                        return "<b class='gary-text'>未受理</b>";
+//                        break;
+//                    case 2:
+//                        return "<b class='green-text'>充值成功</b>";
+//                        break;
+//                    case 3:
+//                        return '<b class="red-text">充值失败</b> <span class="tips-icon"><i data-tooltip="'.$recharge->re_msg.'" data-position="left center" data-inverted class="iconfont">&#xe61e;</i></span>';
+//                        break;
+//                    case 4:
+//                        return "<b class='blue-text'>充值中</b>";
+//                        break;
+//                }
+//            })
+//            ->editColumn('control',function ($recharge){
+//                if($recharge->re_payType == 'adminAddMoney') {
+//                    return "<span class='light-gary-text'>通过 | 驳回</span>";
+//                } else {
+//                    if($recharge->re_status == 2 || $recharge->re_status == 3){
+//                        return "<span class='light-gary-text'>通过 | 驳回</span>";
+//                    } else if($recharge->re_status == 4) {
+//                        return '<span class="hover-black" onclick="errorOnlinePay(\''.$recharge->rid.'\')">驳回</span>';
+//                    } else {
+//                        return '<span class="hover-black" onclick="pass(\''.$recharge->rid.'\')">通过</span> | <span class="hover-black" onclick="error(\''.$recharge->rid.'\')">驳回</span>';
+//                    }
+//                }
+//            })
+//            ->rawColumns(['amount','shou_info','ru_info','status','control','trueName','user'])
+//            ->setTotalRecords($rechargeCount[0]->count)
+//            ->skipPaging()
+//            ->make(true);
+//    }
     //充值记录
     public function rechargeRecord(Request $request)
     {
@@ -45,7 +237,7 @@ class FinanceDataController extends Controller
             $findUserId = DB::table('users')->where('fullName',$fullName)->first();
         }
 
-        $sql = ' from recharges 
+        $sql = ' from recharges
               JOIN users on recharges.userId = users.id LEFT JOIN level on level.value = recharges.levels WHERE 1 ';
         $where = '';
         if(isset($killTestUser) && $killTestUser){

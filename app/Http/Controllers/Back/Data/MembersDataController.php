@@ -569,25 +569,30 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $param['account_id'] = $id;
         $start = $request->get('start');
         $length = $request->get('length');
-
         $aSql = "SELECT SUM(CASE WHEN `payType` = 'onlinePayment' THEN `amount` ELSE 0 END) AS `payOnline`,
                   SUM(CASE WHEN `payType` IN ('bankTransfer','alipay','weixin','cft') THEN `amount` ELSE 0 END) AS `payOffline`,
                   SUM(CASE WHEN `payType` = 'adminAddMoney' THEN `amount` ELSE 0 END) AS `payManual`,
                   SUM(`rebate_or_fee`) AS `payFormalities` FROM `recharges` WHERE `userId` = $id AND `status` = 2";
 
         $aBetSql = "SELECT sum(case WHEN `game_id` in (90,91) then `nn_view_money` else(case when `bunko` >0 then `bunko` - `bet_money` else `bunko` end)end) as `payBetting` FROM `bet` WHERE `user_id` = $id";
+        $aBet_hisSql = "SELECT sum(case WHEN `game_id` in (90,91) then `nn_view_money` else(case when `bunko` >0 then `bunko` - `bet_money` else `bunko` end)end) as `payBetting` FROM `bet_his` WHERE `user_id` = $id";
 
         $aDrawingSql = "SELECT SUM(`amount`) AS `payDrawing` FROM `drawing` WHERE status = 2 AND `user_id` = $id ";
         if(isset($param['startTime']) && array_key_exists('startTime', $param)){
             $aSql .= " AND `updated_at` >= '".$param['startTime']."'";
             $aBetSql .= " AND `updated_at` >= '".$param['startTime']."'";
+            $aBet_hisSql .= " AND `updated_at` >= '".$param['startTime']."'";
             $aDrawingSql .= " AND `updated_at` >= '".$param['startTime']."'";
         }
         if(isset($param['endTime']) && array_key_exists('endTime', $param)){
             $aSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
             $aBetSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
             $aDrawingSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
+            $aBet_hisSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
         }
+        $aBetSql = "SELECT SUM(`payBetting`) AS `payBetting` FROM (
+          ({$aBetSql}) UNION ALL ({$aBet_hisSql}) 
+        ) AS a ";
         $payRecharges = DB::select($aSql)[0];
         $payBet = DB::select($aBetSql)[0];
         $payDrawing = DB::select($aDrawingSql)[0];

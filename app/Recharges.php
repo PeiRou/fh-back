@@ -76,11 +76,11 @@ class Recharges extends Model
     }
 
     public static function getOnlineMemberToday($date){
-        $aSql = "SELECT COUNT(`re`.`userId`) AS `count` FROM 
-                  (SELECT `userId` FROM `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId` 
-                    WHERE `users`.`testFlag` = 0 AND `recharges`.`payType` = 'onlinePayment' AND `recharges`.`status` = 2 
-                    AND `recharges`.`created_at` >= :startTime 
-                    AND `recharges`.`created_at` <= :endTime 
+        $aSql = "SELECT COUNT(`re`.`userId`) AS `count` FROM
+                  (SELECT `userId` FROM `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId`
+                    WHERE `users`.`testFlag` = 0 AND `recharges`.`payType` = 'onlinePayment' AND `recharges`.`status` = 2
+                    AND `recharges`.`created_at` >= :startTime
+                    AND `recharges`.`created_at` <= :endTime
                     GROUP BY `recharges`.`userId`) AS `re`";
         $aArray = [
             'startTime' => $date,
@@ -88,13 +88,40 @@ class Recharges extends Model
         ];
         return DB::select($aSql,$aArray)[0]->count;
     }
-
+    //12-20 备用
+//    public static function getOnlineMemberToday($date){
+//        $aSql = "SELECT COUNT(`re`.`userId`) AS `count` FROM
+//                  (SELECT `userId` FROM `recharges`
+//                    WHERE `testFlag` = 0 AND `recharges`.`payType` = 'onlinePayment' AND `recharges`.`status` = 2
+//                    AND `recharges`.`created_at` >= :startTime
+//                    AND `recharges`.`created_at` <= :endTime
+//                    GROUP BY `recharges`.`userId`) AS `re`";
+//        $aArray = [
+//            'startTime' => $date,
+//            'endTime' => $date.' 23:59:59'
+//        ];
+//        return DB::select($aSql,$aArray)[0]->count;
+//    }
+    //12-20 备用
+//    public static function getOfflineMemberToday($date){
+//        $aSql = "SELECT COUNT(`re`.`userId`) AS `count` FROM
+//                  (SELECT `userId` FROM `recharges`
+//                    WHERE `testFlag` = 0 AND `recharges`.`payType` IN('alipay','bankTransfer','cft','weixin') AND `recharges`.`status` = 2
+//                    AND `recharges`.`created_at` >= :startTime
+//                    AND `recharges`.`created_at` <= :endTime
+//                    GROUP BY `recharges`.`userId`) AS `re`";
+//        $aArray = [
+//            'startTime' => $date,
+//            'endTime' => $date.' 23:59:59'
+//        ];
+//        return DB::select($aSql,$aArray)[0]->count;
+//    }
     public static function getOfflineMemberToday($date){
-        $aSql = "SELECT COUNT(`re`.`userId`) AS `count` FROM 
-                  (SELECT `userId` FROM `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId` 
-                    WHERE `users`.`testFlag` = 0 AND `recharges`.`payType` IN('alipay','bankTransfer','cft','weixin') AND `recharges`.`status` = 2 
-                    AND `recharges`.`created_at` >= :startTime 
-                    AND `recharges`.`created_at` <= :endTime 
+        $aSql = "SELECT COUNT(`re`.`userId`) AS `count` FROM
+                  (SELECT `userId` FROM `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId`
+                    WHERE `users`.`testFlag` = 0 AND `recharges`.`payType` IN('alipay','bankTransfer','cft','weixin') AND `recharges`.`status` = 2
+                    AND `recharges`.`created_at` >= :startTime
+                    AND `recharges`.`created_at` <= :endTime
                     GROUP BY `recharges`.`userId`) AS `re`";
         $aArray = [
             'startTime' => $date,
