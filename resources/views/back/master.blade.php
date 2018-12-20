@@ -152,20 +152,20 @@
             </ul>
         </li>
         @endif
-        @if($hasPermission->hasPermission('charts') == "has")
-            <li id="menu-chartsManage" class="nav-item"><a href="javascript:void(0)">
-                    <span><img src="/back/old/images/leftico01.png"></span>
-                    图表统计</a>
-                <ul>
-                    @if($hasPermission->hasPermission('charts.gameBunko') == "has")
-                        <li id="menu-chartsManage-gameBunko"><a href="{{ route('charts.gameBunko') }}"><cite></cite><span>盈亏统计</span></a></li>
-                    @endif
-                    @if($hasPermission->hasPermission('charts.recharges') == "has")
-                        <li id="menu-chartsManage-recharges"><a href="{{ route('charts.recharges') }}"><cite></cite><span>充值统计</span></a></li>
-                    @endif
-                </ul>
-            </li>
-        @endif
+        {{--@if($hasPermission->hasPermission('charts') == "has")--}}
+            {{--<li id="menu-chartsManage" class="nav-item"><a href="javascript:void(0)">--}}
+                    {{--<span><img src="/back/old/images/leftico01.png"></span>--}}
+                    {{--图表统计</a>--}}
+                {{--<ul>--}}
+                    {{--@if($hasPermission->hasPermission('charts.gameBunko') == "has")--}}
+                        {{--<li id="menu-chartsManage-gameBunko"><a href="{{ route('charts.gameBunko') }}"><cite></cite><span>盈亏统计</span></a></li>--}}
+                    {{--@endif--}}
+                    {{--@if($hasPermission->hasPermission('charts.recharges') == "has")--}}
+                        {{--<li id="menu-chartsManage-recharges"><a href="{{ route('charts.recharges') }}"><cite></cite><span>充值统计</span></a></li>--}}
+                    {{--@endif--}}
+                {{--</ul>--}}
+            {{--</li>--}}
+        {{--@endif--}}
         @if($hasPermission->hasPermission('bet') == "has")
         <li id="menu-betManage" class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>

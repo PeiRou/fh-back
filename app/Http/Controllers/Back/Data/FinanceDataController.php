@@ -344,10 +344,7 @@ class FinanceDataController extends Controller
                 return '<span class="red-text" onclick="copyText(this)" style="font-size: 12pt;">'.$drawing->dr_amount.'</span>';
             })
             ->editColumn('bank_info',function ($drawing){
-                if(empty($drawing->user_bank_name))
-                    return '<font color="red">无当下提款信息</font><br><div style="text-align: center">姓名：<span onclick="copyText(this)">'.(empty($drawing->dr_fullName)?$drawing->user_fullName:$drawing->dr_fullName).'</span>></br>银行：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_name)?$drawing->user_bank_name:$drawing->dr_bank_name).'</span><br>账号：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_num)?$drawing->user_bank_num:$drawing->dr_bank_num).'</span><br>地址：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_addr)?$drawing->user_bank_addr:$drawing->dr_bank_addr).'</span></div>';
-                else
-                    return '<div style="text-align: center">姓名：<span onclick="copyText(this)">'.(empty($drawing->dr_fullName)?$drawing->user_fullName:$drawing->dr_fullName).'</span></br>银行：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_name)?$drawing->user_bank_name:$drawing->dr_bank_name).'</span><br>账号：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_num)?$drawing->user_bank_num:$drawing->dr_bank_num).'</span><br>地址：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_addr)?$drawing->user_bank_addr:$drawing->dr_bank_addr).'</span></div>';
+                return '<div style="text-align: center">姓名：<span onclick="copyText(this)">'.(empty($drawing->dr_fullName)?$drawing->user_fullName:$drawing->dr_fullName).'</span></br>银行：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_name)?$drawing->user_bank_name:$drawing->dr_bank_name).'</span><br>账号：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_num)?$drawing->user_bank_num:$drawing->dr_bank_num).'</span><br>地址：<span onclick="copyText(this)">'.(empty($drawing->dr_bank_addr)?$drawing->user_bank_addr:$drawing->dr_bank_addr).'</span></div>';
             })
             ->editColumn('liushui',function ($drawing){
                 return '-';

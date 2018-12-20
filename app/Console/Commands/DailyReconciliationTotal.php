@@ -42,12 +42,21 @@ class DailyReconciliationTotal extends Command
         $daytstrot = strtotime($date);
 
         /*在线支付*/
-        $onlinePaymentsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount'
+       /* $onlinePaymentsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount'
 FROM(SELECT B.id AS 'id',B.rechName AS 'rechName',A.amount AS 'amount',A.rebate_or_fee AS 'rebate_or_fee',A.updated_at AS 'updated_at',A.status AS 'status'
 FROM(select username,pay_online_id,payType,amount,rebate_or_fee,updated_at,status from recharges where username = (select username from users where testFlag = '0' and recharges.username = users.username) and payType = 'onlinePayment' and status ='2' and updated_at BETWEEN ? AND ? ) AS A
 INNER JOIN (select id ,rechName from pay_online_new where rechType ='onlinePayment') AS B ON A.pay_online_id = B.id) AS C
-GROUP BY rechName";
+GROUP BY rechName";*/
+        $onlinePaymentsql = "SELECT  id,shou_info AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount' FROM(
+select username,pay_online_id AS 'id',shou_info,payType,amount,rebate_or_fee,updated_at,status from recharges 
+ where username = (select username from users where testFlag = '0' and recharges.username = users.username) and payType = 'onlinePayment' and status ='2' and updated_at  BETWEEN ? AND ? )AS A GROUP BY id";
         $onlinePayment = DB::select($onlinePaymentsql,[$date.' 00:00:00',$date.' 23:59:59']);
+        foreach ($onlinePayment as $k=>$v){
+            unset($v->id);
+            $snum = strrpos($v->rechname,">")+1;
+            $restr = substr($v->rechname,$snum);
+            $v->rechname = $restr;
+        }
 
         /*银行汇款*/
         $bankTransfersql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount'
