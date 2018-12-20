@@ -451,9 +451,9 @@ class BetDataController extends Controller
                 $betHisCount = BetHis::userBetSearchCount($request, $user);
             }
             if(empty($aBetSql) && !empty($aBetHisSql)){
-                $aSql = $aBetHisSql;
+                $aSql = $aBetHisSql.' ORDER BY bet_created_at DESC,bet_bet_id DESC ';
             }elseif(empty($aBetHisSql) && !empty($aBetSql)){
-                $aSql = $aBetSql;
+                $aSql = $aBetSql.' ORDER BY bet_created_at DESC,bet_bet_id DESC ';
             }else{
                 $aSql = $aBetSql . ' UNION ALL ' . $aBetHisSql .' ORDER BY bet_created_at DESC,bet_bet_id DESC';
             }

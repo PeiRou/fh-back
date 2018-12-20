@@ -48,6 +48,7 @@
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
                     </div>
+                    <span style="color:#ff392b;">（当前记录仅供参考，真实数据请查询对应游戏后台）</span>
                 </div>
             </div>
         </div>
