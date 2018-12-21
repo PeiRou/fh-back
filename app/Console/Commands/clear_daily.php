@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
-class clear_data extends Command
+class clear_daily extends Command
 {
 
     protected $signature = 'clear_daily';
