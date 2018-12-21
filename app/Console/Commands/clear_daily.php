@@ -36,6 +36,9 @@ class clear_data extends Command
      */
     public function handle()
     {
+        $time = date('Y-m-d H:i:s',strtotime("-5 hours"));
+        $sql = "DELETE FROM users WHERE testFlag = 1 AND created_at<='{$time}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
         //---将 杀率 的ID重置
         $this->resetId('excel_game');
         //---将 长龙 的ID重置
