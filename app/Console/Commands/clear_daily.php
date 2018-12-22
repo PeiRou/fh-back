@@ -37,7 +37,7 @@ class clear_daily extends Command
     public function handle()
     {
         $time = date('Y-m-d H:i:s',strtotime("-5 hours"));
-        $sql = "DELETE FROM users WHERE testFlag = 1 AND created_at<='{$time}' LIMIT 1000";
+        $sql = "DELETE FROM users WHERE testFlag = 1 AND created_at<='{$time}'";
         $res = DB::connection('mysql::write')->statement($sql);
         //---将 杀率 的ID重置
         $this->resetId('excel_game');
