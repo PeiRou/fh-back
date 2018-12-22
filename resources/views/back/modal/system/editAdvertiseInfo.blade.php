@@ -1,7 +1,18 @@
-<link rel="stylesheet" href="{{ asset('back/vendor/ueditor/themes/default/css/umeditor.css') }}">
-<script src="{{ asset('back/vendor/ueditor/umeditor.config.js') }}"></script>
-<script src="{{ asset('back/vendor/ueditor/umeditor.min.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('back/vendor/ueditor/themes/default/css/ueditor.css') }}">
+<script src="{{ asset('back/vendor/ueditor/ueditor.config.js') }}"></script>
+<script src="{{ asset('back/vendor/ueditor/ueditor.all.js') }}"></script>
 <script src="{{ asset('back/vendor/ueditor/lang/zh-cn/zh-cn.js') }}"></script>
+<style>
+    .edui-popup-content{
+        z-index: 9999999999999999999999;
+    }
+    #edui251{
+        z-index: 999999999!important;
+    }
+    .jconfirm{
+        z-index: 666;
+    }
+</style>
 <form id="addRoleForm" class="ui form" action="{{ route('ac.ad.editAdvertiseInfo') }}">
 
     @foreach($aData as $kData => $iData)
@@ -15,7 +26,10 @@
                     <input type="hidden" name="{{ $iData->js_key }}" data-id="{{ $iData->id }}" value="{{ $iData->js_value }}"/>
                     <img src="{{ $iData->js_value }}" style="margin-top: 10px;">
                 @elseif($iData->type == 3)
-                    <textarea name="{{ $iData->js_key }}" data-id="{{ $iData->id }}" id="{{ $iData->js_key }}">{{ $iData->js_value }}</textarea>
+                    <script id="{{ $iData->js_key }}" name="{{ $iData->js_key }}" type="text/plain">
+                        {!! htmlspecialchars_decode($iData->js_value) !!}
+                    </script>
+{{--                    <textarea name="{{ $iData->js_key }}" data-id="{{ $iData->id }}" id="{{ $iData->js_key }}">{{ $iData->js_value }}</textarea>--}}
                 @endif
             </div>
         </div>
@@ -32,15 +46,20 @@
 </form>
 
 <script>
+
     $(function () {
         @foreach($aData as $kData => $iData)
             @if($iData->type == 3)
-                window.um = UM.getEditor('{{ $iData->js_key }}',{
-                    initialFrameWidth: null,
-                    // imageUrl:'/back/vendor/ueditor/php/imageUp.php',
-                    // imagePath:'/back/vendor/ueditor/php/',
-                    // imageFieldName:'upload/'
-                });
+                var ue = UE.getEditor('{{ $iData->js_key }}',{
+            initialFrameHeight : 320
+        });
+                {{--window.um = UM.getEditor('{{ $iData->js_key }}',{--}}
+                    {{--initialFrameWidth: null,--}}
+                    {{--// imageUrl:'/back/vendor/ueditor/php/imageUp.php',--}}
+                    {{--// imagePath:'/back/vendor/ueditor/php/',--}}
+                    {{--// imageFieldName:'upload/'--}}
+                {{--});--}}
+                var lang = ue.getOpt('lang');
             @endif
         @endforeach
 
@@ -58,10 +77,13 @@
             e.preventDefault();
             var $form = $(e.target),
                 fv = $form.data('formValidation');
+            var data = $form.serialize();
+
+
             $.ajax({
                 url: $form.attr('action'),
                 type: 'POST',
-                data: $form.serialize(),
+                data: data,
                 success: function (result) {
                     if(result.status == true){
                         jc.close();
