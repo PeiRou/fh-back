@@ -10,7 +10,7 @@
         z-index: 999999999!important;
     }
     .jconfirm{
-        z-index: 666;
+        z-index: 1000;
     }
 </style>
 <form id="addRoleForm" class="ui form" action="{{ route('ac.ad.editAdvertiseInfo') }}">
