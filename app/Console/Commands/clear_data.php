@@ -36,7 +36,6 @@ class clear_data extends Command
      */
     public function handle()
     {
-
         $redis = Redis::connection();
         $redis->select(5);
         $keyEx = 'clearing';
