@@ -1,7 +1,7 @@
-<link rel="stylesheet" href="{{ asset('back/vendor/ueditor/themes/default/css/ueditor.css') }}">
-<script src="{{ asset('back/vendor/ueditor/ueditor.config.js') }}"></script>
-<script src="{{ asset('back/vendor/ueditor/ueditor.all.js') }}"></script>
-<script src="{{ asset('back/vendor/ueditor/lang/zh-cn/zh-cn.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('back/vendor/ueditor2/themes/default/css/ueditor.css') }}">
+<script src="{{ asset('back/vendor/ueditor2/ueditor.config.js') }}"></script>
+<script src="{{ asset('back/vendor/ueditor2/ueditor.all.js') }}"></script>
+<script src="{{ asset('back/vendor/ueditor2/lang/zh-cn/zh-cn.js') }}"></script>
 <style>
     .edui-popup-content{
         z-index: 9999999999999999999999;
