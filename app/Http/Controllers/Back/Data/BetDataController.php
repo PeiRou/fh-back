@@ -112,7 +112,7 @@ class BetDataController extends Controller
         $markSix = $request->input('markSix');
 //        $start = $request->input('start');
 //        $length = $request->input('length');
-        $Sql = 'select users.username as users_username,game.game_name as game_game_name,bet.color as bet_color,bet.issue as bet_issue,bet.bet_money as bet_bet_money,bet.game_id as bet_game_id,bet.playcate_name as bet_playcate_name,bet.play_name as bet_play_name,bet.play_odds as bet_play_odds,bet.agnet_odds as bet_agnet_odds,bet.agent_rebate as bet_agent_rebate,bet.bunko as bet_bunko,bet.order_id as bet_order_id,bet.created_at as bet_created_at,bet.platform as bet_platform,bet.bet_info as bet_bet_info,bet.status from bet LEFT JOIN game ON bet.game_id = game.game_id LEFT JOIN users ON bet.user_id = users.id WHERE 1 = 1 ';
+        $Sql = 'select users.username as users_username,game.game_name as game_game_name,bet.color as bet_color,bet.issue as bet_issue,bet.bet_money as bet_bet_money,bet.game_id as bet_game_id,bet.playcate_name as bet_playcate_name,bet.play_name as bet_play_name,bet.play_odds as bet_play_odds,bet.agnet_odds as bet_agnet_odds,bet.agent_rebate as bet_agent_rebate,bet.bunko as bet_bunko,bet.order_id as bet_order_id,bet.created_at as bet_created_at,bet.platform as bet_platform,bet.nn_view_money as bet_nn_view_money,bet.bet_info as bet_bet_info,bet.status from bet LEFT JOIN game ON bet.game_id = game.game_id LEFT JOIN users ON bet.user_id = users.id WHERE 1 = 1 ';
         $betSql = "";
         switch ($status){
             case 1: //未结
@@ -546,12 +546,16 @@ class BetDataController extends Controller
                 }
             })->where(function ($query) use($status){
                 if($status && isset($status)){
-                    if($status == 'weijiesuan'){
-                        $query->where('bunko',0);
-                    } else if($status == 'jiesuan'){
-                        $query->where('bunko','!=',0);
-                    } else {
-                        $query->where('bunko',-0.01);
+                    switch ($status){
+                        case 1: //未结
+                            $query->where('status',0);
+                            break;
+                        case 2: //已结
+                            $query->where('status',1);
+                            break;
+                        case 3: //撤单
+                            $query->where('status',2);
+                            break;
                     }
                 }
             })
