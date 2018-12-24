@@ -897,7 +897,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $issue = $request->get('issue');
         $orderNum = $request->get('orderNum');
 
-        $Sql = 'select bet.bet_id as bet_bet_id,bet.play_rebate as bet_play_rebate,bet.order_id as bet_order_id,game.game_name as g_game_name,bet.color as bet_color,bet.issue as bet_issue,bet.playcate_id as bet_playcate_id,bet.play_id as bet_play_id,bet.bet_money as bet_bet_money,bet.bunko as bet_bunko,bet.created_at as bet_created_at,bet.play_odds as bet_play_odds,bet.playcate_name as bet_playcate_name,bet.play_name as bet_play_name,bet.platform as bet_platform,bet.game_id as bet_game_id,bet.freeze_money as bet_freeze_money,bet.nn_view_money as bet_nn_view_money,bet.bet_info as bet_bet_info from bet LEFT JOIN game ON bet.game_id = game.game_id WHERE 1 = 1 ';
+        $Sql = 'select bet.bet_id as bet_bet_id,bet.play_rebate as bet_play_rebate,bet.order_id as bet_order_id,game.game_name as g_game_name,bet.color as bet_color,bet.issue as bet_issue,bet.playcate_id as bet_playcate_id,bet.play_id as bet_play_id,bet.bet_money as bet_bet_money,bet.bunko as bet_bunko,bet.created_at as bet_created_at,bet.play_odds as bet_play_odds,bet.playcate_name as bet_playcate_name,bet.play_name as bet_play_name,bet.platform as bet_platform,bet.game_id as bet_game_id,bet.freeze_money as bet_freeze_money,bet.nn_view_money as bet_nn_view_money,bet.bet_info as bet_bet_info,bet.status from bet LEFT JOIN game ON bet.game_id = game.game_id WHERE 1 = 1 ';
         $betSql = "";
         if(count($games) > 0){
             $games = implode(",",$games);
@@ -905,13 +905,13 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         }
         switch ($status){
             case 1: //未结
-                $betSql .= " AND bet.bunko =0";
+                $betSql .= " AND bet.status = 0 ";
                 break;
             case 2: //已结
-                $betSql .= " AND bet.bunko !=0 AND bet.bet_money != bet.bunko ";
+                $betSql .= " AND bet.status = 1 ";
                 break;
             case 3: //撤单
-                $betSql .= " AND bet.bet_money = bet.bunko ";
+                $betSql .= " AND bet.status = 2 ";
                 break;
         }
         if(isset($issue) && isset($issue)){
@@ -944,13 +944,13 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         }
         switch ($status){
             case 1: //未结
-                $betSql .= " AND bet.bunko =0";
+                $betSql .= " AND bet.status = 0 ";
                 break;
             case 2: //已结
-                $betSql .= " AND bet.bunko !=0 AND bet.bet_money != bet.bunko ";
+                $betSql .= " AND bet.status = 1 ";
                 break;
             case 3: //撤单
-                $betSql .= " AND bet.bet_money = bet.bunko ";
+                $betSql .= " AND bet.status = 2 ";
                 break;
         }
         if(isset($issue) && isset($issue)){

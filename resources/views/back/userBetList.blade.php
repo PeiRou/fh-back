@@ -300,8 +300,10 @@
                                 if(data.bet_bunko > 0){
                                     var tmpBet_bet_money = intVal(data.bet_bunko)>0?intVal(data.bet_bet_money):0;
                                     lastMoney = (parseFloat(intVal(data.bet_bunko) - tmpBet_bet_money)).toFixed(3);
-                                    if(lastMoney == 0){
+                                    if(lastMoney == 0 && data.status == 2){
                                         txt = '<span class=\'tiny-blue-text\'>已撤单</span>';
+                                    }else if(lastMoney == 0 && data.status == 1){
+                                        txt = '<span class=\'tiny-blue-text\'>和局</span>';
                                     }else {
                                         txt = "<span class='blue-text'><b>" + lastMoney + "</b></span>";
                                     }
