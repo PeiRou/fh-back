@@ -21,11 +21,6 @@ class BaseRepository
         $this->request = $request;
         $this->id = $id;
         $this->data = $data;
-//        if(class_exists($response)){
-//            $class = new \ReflectionClass($response);
-//            if($class->getName() == 'Illuminate\Http\JsonResponse')
-//                $this->response = $response->getContent();
-//        }
         $this->action();
     }
     public function action(){
@@ -44,8 +39,18 @@ class BaseRepository
     private function getUserName($id){
         return \App\Users::where('id', $id)->value('username');
     }
+    private function getUser($id){
+        if(empty($this->users[$id]))
+            $this->users[$id] = \App\Users::where('id', $id)->first();
+        return $this->users[$id];
+    }
     private function getAgentName($a_id){
         return \App\Agent::where('a_id',$a_id)->value('account');
+    }
+    private function getGeneralAgent($id){
+        if(empty($this->GeneralAgent[$id]))
+            $this->GeneralAgent[$id] = \App\GeneralAgent::where('ga_id', $id)->first();
+        return $this->GeneralAgent[$id];
     }
     private function getAccountName($sa_id){
         return \App\SubAccount::where('sa_id',$sa_id)->value('account');
@@ -74,7 +79,7 @@ class BaseRepository
     }
     //改变用户金额
     private function acAdChangeUserMoney(){
-        $this->param['action'] = '修改会员('.$this->getUserName($this->request->uid).')金额：'.$this->request->money;
+        $this->param['action'] = '修改会员('.$this->getUserName($this->request->uid).')金额:'.$this->request->money;
     }
     //修改会员资料
     private function acAdEditUser(){
@@ -82,7 +87,8 @@ class BaseRepository
     }
     //更换代理
     private function acAdUserChangeAgent(){
-        $this->param['action'] = '更换会员('.$this->getUserName($this->request->uid).')代理为'.$this->getAgentName($this->request->agent);
+        $this->param['action'] = '更换会员('.$this->getUser($this->request->uid)->username.')代理为:'.$this->getAgentName($this->request->agent);
+        $this->param['action'] .= ',更换前为:'.$this->getAgentName($this->getUser($this->request->uid)->agent);
     }
     //删除代理
     private function mAgentDel(){
@@ -91,6 +97,17 @@ class BaseRepository
     //删除子账号
     private function acAdDelSubAccount(){
         $this->param['action'] = '删除子账号('.$this->getAccountName($this->request->id).')';
+    }
+    //会员更换真实姓名
+    private function acAdUserChangeFullName(){
+        $this->param['action'] = '更换会员('.$this->getUser($this->request->uid)->username.')真实姓名为:'.$this->request->fullName;
+        $this->param['action'] .= ',更换前为:'.$this->getUser($this->request->uid)->fullName;
+    }
+    //添加代理
+    private function acAdAddAgent(){
+        $this->param['action'] = '添加代理('.$this->request->account.'),上级总代('.$this->getGeneralAgent($this->request->gagent)->account.')';
+        $this->param['action'] .= ',代理模式('.\App\Agent::$agentModelStatus[$this->request->modelStatus].')';
+        $this->param['action'] .= ',代理名称('.$this->request->name.')';
     }
 
 }

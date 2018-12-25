@@ -38,6 +38,8 @@ function createTable(columns) {
                 d.startTime = $('#startTime').val();
                 d.endTime = $('#endTime').val();
                 d.action = $('#action').val();
+                d.startHour = $('#startHour').val();
+                d.endHour = $('#endHour').val();
             }
         },
         columns: columns,
@@ -134,4 +136,16 @@ $(function () {
         },
         text: text
     });
+    for (var i = 0; i < 24; i++){
+        $('#startHour').append('<option value="'+i+'">'+i+'点</option>');
+    }
+    $('#startHour').change(function(){
+        $('#endHour').html('<option value="">时间</option>');
+        var startHour = $('#startHour').val();
+        if(startHour){
+            for (var i = startHour; i < 24; i++){
+                $('#endHour').append('<option value="'+i+'">'+i+'点</option>');
+            }
+        }
+    })
 });

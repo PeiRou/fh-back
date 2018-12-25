@@ -41,7 +41,7 @@ class AddLogHandle
         $jsonEncode = json_encode($redisData);
         $redis->setex($key, 60 * 60 * 2,$jsonEncode);
         $redis->setex($timeOutKey, (60 * 60 * 24), time());
-        if($username !== 'admin') {
+//        if($username !== 'admin') {
             $routeData = LogHandle::getTypeAction(Route::currentRouteName());
             $params = $request->all();
             $ip = realIp();
@@ -67,7 +67,7 @@ class AddLogHandle
                 //修改日志失败
                 \Log::info(print_r($e->getPrevious(), 1));
             }
-        }
+//        }
         $response = $next($request);
         return $response;
     }

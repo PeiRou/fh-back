@@ -139,6 +139,9 @@ class LogDataController extends Controller
             if(isset($param['action']) && array_key_exists('action',$param)){
                 $sql->where('log_handle.action','like','%'.$param['action'].'%');
             }
+            if(isset($param['startHour'], $param['endHour'])){
+                $sql->whereBetween(DB::raw('DATE_FORMAT(log_handle.create_at, \'%H:%i:%s\')'), [sprintf("%02d",$param['startHour']).':00:00',  sprintf("%02d",$param['endHour']).':59:59']);
+            }
         });
         $logHandleCount =  $logHandleSql->count();
         $logHandle = $logHandleSql->select('log_handle.id','log_handle.user_id','log_handle.username','log_handle.type_name','log_handle.ip','permissions_auth.auth_name as paction','log_handle.action as action','log_handle.create_at','log_handle.param')

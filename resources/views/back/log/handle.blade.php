@@ -27,7 +27,17 @@
                         </div>
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="username" placeholder="用户账户">
+                        <select class="ui dropdown" id="startHour" style='height:32px !important'>
+                            <option value="">时间</option>
+                        </select>
+                    </div>-
+                    <div class="one wide field">
+                        <select class="ui dropdown" id="endHour" style='height:32px !important'>
+                            <option value="">时间</option>
+                        </select>
+                    </div>
+                    <div class="one wide field">
+                        <input type="text" id="username" placeholder="操作人名称">
                     </div>
                     <div class="one wide field">
                         <select class="ui dropdown" id="type_id" style='height:32px !important'>
