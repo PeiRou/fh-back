@@ -148,7 +148,7 @@ class LogDataController extends Controller
             ->editColumn('action',function ($logHandle){
                 $str = $logHandle->action;
                 if(!empty(json_decode($logHandle->param))){
-                    $str .= " 使用参数： ".$logHandle->param;
+                    $str .= " 使用参数： ".json_encode(json_decode($logHandle->param),JSON_UNESCAPED_UNICODE);
                 }
                 return $str;
 
