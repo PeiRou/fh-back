@@ -459,26 +459,30 @@ class SrcMemberController extends Controller
         }
 
         $odds = Agent::returnUserOdds($agent);
-        if($agent == 2){
-            $update = User::where('id',$uid)
-                ->update([
-                    'agent'=>$agent,
-                    'testFlag' => 2,
-                    'promoter' => 0,
-                    'user_odds' => $odds['user_odds'],
-                    'agent_odds' => $odds['agent_odds'],
-                    'user_odds_level' => $odds['user_odds_level'],
-                ]);
-        } else if($agent == 3){
-            $update = User::where('id',$uid)
-                ->update([
-                    'agent'=>$agent,
-                    'testFlag' => 1,
-                    'promoter' => 0,
-                    'user_odds' => $odds['user_odds'],
-                    'agent_odds' => $odds['agent_odds'],
-                    'user_odds_level' => $odds['user_odds_level'],
-                ]);
+        if($agent == 2 || $agent == 3){
+            return response()->json([
+                'status'=>false,
+                'msg'=>'不可修改为测试用户，请重新添加！'
+            ]);
+//            $update = User::where('id',$uid)
+//                ->update([
+//                    'agent'=>$agent,
+//                    'testFlag' => 2,
+//                    'promoter' => 0,
+//                    'user_odds' => $odds['user_odds'],
+//                    'agent_odds' => $odds['agent_odds'],
+//                    'user_odds_level' => $odds['user_odds_level'],
+//                ]);
+//        } else if($agent == 3){
+//            $update = User::where('id',$uid)
+//                ->update([
+//                    'agent'=>$agent,
+//                    'testFlag' => 1,
+//                    'promoter' => 0,
+//                    'user_odds' => $odds['user_odds'],
+//                    'agent_odds' => $odds['agent_odds'],
+//                    'user_odds_level' => $odds['user_odds_level'],
+//                ]);
         } else {
             $aArray = [
                 'agent'=>$agent,
