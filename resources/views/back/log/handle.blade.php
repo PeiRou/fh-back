@@ -38,6 +38,9 @@
                         </select>
                     </div>
                     <div class="one wide field">
+                        <input type="text" id="action" placeholder="事件搜索">
+                    </div>
+                    <div class="one wide field">
                         <input type="text" id="ip" placeholder="操作IP">
                     </div>
                     <div class="one wide field">

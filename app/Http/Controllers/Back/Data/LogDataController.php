@@ -136,6 +136,9 @@ class LogDataController extends Controller
             if(isset($param['endTime']) && array_key_exists('endTime',$param)){
                 $sql->where('log_handle.create_at','<=',$param['endTime'] . ' 23:59:59');
             }
+            if(isset($param['action']) && array_key_exists('action',$param)){
+                $sql->where('log_handle.action','like','%'.$param['action'].'%');
+            }
         });
         $logHandleCount =  $logHandleSql->count();
         $logHandle = $logHandleSql->select('log_handle.id','log_handle.user_id','log_handle.username','log_handle.type_name','log_handle.ip','permissions_auth.auth_name as paction','log_handle.action as action','log_handle.create_at','log_handle.param')

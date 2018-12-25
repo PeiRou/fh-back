@@ -37,6 +37,7 @@ function createTable(columns) {
                 d.ip = $('#ip').val();
                 d.startTime = $('#startTime').val();
                 d.endTime = $('#endTime').val();
+                d.action = $('#action').val();
             }
         },
         columns: columns,
@@ -96,6 +97,7 @@ $(function () {
         $('#ip').val('');
         $('#startTime').val('');
         $('#endTime').val('');
+        $('#action').val('');
 
         dataTable.destroy();
         // 列改变了，需要清空table
