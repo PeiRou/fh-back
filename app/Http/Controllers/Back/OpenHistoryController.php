@@ -450,6 +450,13 @@ class OpenHistoryController extends Controller
         $end_time = $request->get('end_time');
         $open_time = $request->get('open_time');
 
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'addlhc:'.$issue;
+        if($redis->exists($key)){
+            return ['status' => false,'msg' => '请勿重复点击!'];
+        }
+        $redis->setex($key,60,time());
         $findIssue = DB::table('game_lhc')->where('issue',$issue)->count();
         if($findIssue == 0){
             $insert = DB::table('game_lhc')->insert([
