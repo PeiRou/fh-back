@@ -450,6 +450,13 @@ class SrcMemberController extends Controller
     {
         $uid = $request->input('uid');
         $agent = $request->input('agent');
+        $check = User::where('id',$uid)->first();
+        if(isset($check->agent) && $check->agent==2){
+            return response()->json([
+                'status'=>false,
+                'msg'=>'测试用户不可修改代理！'
+            ]);
+        }
 
         $odds = Agent::returnUserOdds($agent);
         if($agent == 2){
@@ -505,6 +512,14 @@ class SrcMemberController extends Controller
     {
         $uid = $request->input('uid');
         $fullName = $request->input('fullName');
+        //真名匹配
+        $pattern = '/^[\x{4e00}-\x{9fa5}]+$/u';
+        $matches = preg_match($pattern, $fullName);
+        if(!$matches)
+            return response()->json([
+                'status' => false ,
+                'msg'  => '请输入中文姓名！'
+            ]);
         $update = User::where('id',$uid)
             ->update([
                 'fullName'=>$fullName
