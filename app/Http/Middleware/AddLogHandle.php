@@ -54,7 +54,7 @@ class AddLogHandle
                 'type_name' => $routeData['type_name'],
                 'route' => $routeData['route'],
                 'action' => $routeData['action'],
-                'param' => json_encode($params),
+                'param' => json_encode($params, JSON_UNESCAPED_UNICODE),
                 'create_at' => date('Y-m-d H:i:s'),
             ];
             if (!$id = DB::table('log_handle')->insertGetId($data)) {
