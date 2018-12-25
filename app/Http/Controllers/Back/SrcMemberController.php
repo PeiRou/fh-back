@@ -548,20 +548,43 @@ class SrcMemberController extends Controller
             $bank = $bank->name;
         }else
             $bank = '';
-        $data = collect([
-            'status'=>$request->input('status'),
-            'bank_id'=>$bank_id,
-            'bank_name'=>$bank,
-            'bank_num'=>$request->input('bank_num'),
-            'bank_addr'=>$request->input('bank_addr'),
-            'mobile'=>$request->input('mobile'),
-            'qq'=>$request->input('qq'),
-            'email'=>$request->input('email'),
-            'wechat'=>$request->input('wechat'),
-            'editodds'=>$request->input('editodds'),
-            'content'=>$request->input('content'),
-            'rechLevel'=>$request->input('levels'),
-        ]);
+        $writeData = array();
+        //会员状态
+        if(!empty($request->input('status')))
+            $writeData['status'] = $request->input('status');
+        //开户银行
+        if(!empty($bank)){
+            $writeData['bank_id'] = $bank_id;
+            $writeData['bank_name'] = $bank;
+        }
+        //银行卡号
+        if(!empty($request->input('bank_num')))
+            $writeData['bank_num'] = $request->input('bank_num');
+        //支行地址
+        if(!empty($request->input('bank_addr')))
+            $writeData['bank_addr'] = $request->input('bank_addr');
+        //手机号码
+        if(!empty($request->input('mobile')))
+            $writeData['mobile'] = $request->input('mobile');
+        //qq
+        if(!empty($request->input('qq')))
+            $writeData['qq'] = $request->input('qq');
+        //email
+        if(!empty($request->input('email')))
+            $writeData['email'] = $request->input('email');
+        //微信
+        if(!empty($request->input('wechat')))
+            $writeData['wechat'] = $request->input('wechat');
+        //editodds
+        if(!empty($request->input('editodds')))
+            $writeData['editodds'] = $request->input('editodds');
+        //备注
+        if(!empty($request->input('content')))
+            $writeData['content'] = $request->input('content');
+        //充值层级
+        if(!empty($request->input('levels')))
+            $writeData['rechLevel'] = $request->input('levels');
+        $data = collect($writeData);
         if(!empty($password)){
             $data->put('password',Hash::make(md5($password)));
         }
