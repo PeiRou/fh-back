@@ -115,29 +115,29 @@ class BaseRepository
     function acAdEditUserData(){
         $user = \App\Users::where('id', $this->request->uid)->first();
         if(isset($this->request->status))
-            $this->param['action'] .= ',状态（'.Users::$status[$user->status].'）';
+            $this->param['action'] .= '状态（'.Users::$status[$user->status].'）。';
         if(isset($this->request->password))
-            $this->param['action'] .= ',密码（'.$user->password.'）';
+            $this->param['action'] .= '密码（'.$user->password.'）。';
         if(isset($this->request->bank))
-            $this->param['action'] .= ',开户银行（'.$user->bank_name.'）';
+            $this->param['action'] .= '开户银行（'.$user->bank_name.'）。';
         if(isset($this->request->bank_num))
-            $this->param['action'] .= ',银行卡号（'.$user->bank_num.'）';
+            $this->param['action'] .= '银行卡号（'.$user->bank_num.'）。';
         if(isset($this->request->bank_addr))
-            $this->param['action'] .= ',支行地址（'.$user->bank_addr.'）';
+            $this->param['action'] .= '支行地址（'.$user->bank_addr.'）。';
         if(isset($this->request->mobile))
-            $this->param['action'] .= ',手机号码（'.$user->mobile.'）';
+            $this->param['action'] .= '手机号码（'.$user->mobile.'）。';
         if(isset($this->request->qq))
-            $this->param['action'] .= ',qq（'.$user->qq.'）';
+            $this->param['action'] .= 'qq（'.$user->qq.'）。';
         if(isset($this->request->email))
-            $this->param['action'] .= ',email（'.$user->email.'）';
+            $this->param['action'] .= 'email（'.$user->email.'）。';
         if(isset($this->request->wechat))
-            $this->param['action'] .= ',微信（'.$user->wechat.'）';
+            $this->param['action'] .= '微信（'.$user->wechat.'）。';
         if(isset($this->request->fundPwd))
-            $this->param['action'] .= ',提款密码（'.$user->fundPwd.'）';
+            $this->param['action'] .= '提款密码（'.$user->fundPwd.'）。';
         if(isset($this->request->levels))
-            $this->param['action'] .= ',层级（'.$this->getLevel($user->rechLevel)->name.'）';
+            $this->param['action'] .= '层级（'.$this->getLevel($user->rechLevel)->name.'）。';
         if(isset($this->request->content))
-            $this->param['action'] .= ',备注（'.$this->request->content.'）';
+            $this->param['action'] .= '备注（'.$this->request->content.'）。';
         $this->param['action'] .= '</br>';
     }
     //更换代理
