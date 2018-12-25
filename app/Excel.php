@@ -214,8 +214,8 @@ class Excel
     }
     //计算是否开杀
     public function kill_count($table,$issue,$gameId,$opencode){
-        $killopennum = DB::table($table)->select('excel_opennum')->where('issue',$issue)->first();
-        $is_killopen = DB::table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win')->where('game_id',$gameId)->first();
+        $killopennum = DB::connection('mysql::write')->table($table)->select('excel_opennum')->where('issue',$issue)->first();
+        $is_killopen = DB::connection('mysql::write')->table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win')->where('game_id',$gameId)->first();
         $opennum = '';
         if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1)&&!empty($is_killopen->count_date)){
             $total = $is_killopen->bet_lose + $is_killopen->bet_win;
@@ -240,8 +240,8 @@ class Excel
     public function getNeedKillIssue($table,$status=0){
         if(empty($table))
             return false;
-        $today = date('Y-m-d H:i:s',time()+9);
-        $tmp = DB::select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=".$status.") and is_open=0 and bunko=0 and excel_num=".$status);
+        $today = date('Y-m-d H:i:s',time()+7);
+        $tmp = DB::connection('mysql::write')->select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=".$status.") and is_open=0 and bunko=0 and excel_num=".$status);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -252,7 +252,7 @@ class Excel
     public function getNeedKillBase($gameId){
         if(empty($gameId))
             return false;
-        $tmp = DB::select("SELECT excel_num FROM excel_base WHERE game_id = ".$gameId);
+        $tmp = DB::connection('mysql::write')->select("SELECT excel_num FROM excel_base WHERE game_id = ".$gameId);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
