@@ -9,6 +9,7 @@
 namespace App\Repository\HandleLog;
 use App\Http\Services\FactoryService;
 use App\LogHandle;
+use App\Users;
 
 class BaseRepository
 {
@@ -31,6 +32,16 @@ class BaseRepository
             $this->$funcName();
         $this->update();
     }
+    public function actionAfter(){
+        $funcName = preg_replace_callback('/([\.]+([a-z]{1}))/i',function($matches){
+            return strtoupper($matches[2]);
+        },$this->request->route()->getName());
+        $funcName = $funcName.'After';
+        if(method_exists($this, $funcName)) {
+            $this->$funcName();
+            $this->update();
+        }
+    }
     private function update(){
         if(!empty($this->param) && is_array($this->param)){
             LogHandle::where('id', $this->id)->update($this->param);
@@ -44,6 +55,11 @@ class BaseRepository
             $this->users[$id] = \App\Users::where('id', $id)->first();
         return $this->users[$id];
     }
+    private function getBank($id){
+        if(empty($this->bank[$id]))
+            $this->bank[$id] = \App\Banks::where('bank_id', $id)->first();
+        return $this->bank[$id];
+    }
     private function getAgentName($a_id){
         return \App\Agent::where('a_id',$a_id)->value('account');
     }
@@ -51,6 +67,11 @@ class BaseRepository
         if(empty($this->GeneralAgent[$id]))
             $this->GeneralAgent[$id] = \App\GeneralAgent::where('ga_id', $id)->first();
         return $this->GeneralAgent[$id];
+    }
+    private function getLevel($id){
+        if(empty($this->Level[$id]))
+            $this->Level[$id] = \App\Levels::where('value', $id)->first();
+        return $this->Level[$id];
     }
     private function getAccountName($sa_id){
         return \App\SubAccount::where('sa_id',$sa_id)->value('account');
@@ -83,7 +104,41 @@ class BaseRepository
     }
     //修改会员资料
     private function acAdEditUser(){
-        $this->param['action'] = '修改会员资料('.$this->request->account.')';
+        $this->param['action'] = '修改会员资料('.$this->request->account.')</br>';
+        $this->param['action'] .= '修改前:';
+        $this->acAdEditUserData();
+    }
+    private function acAdEditUserAfter(){
+        $this->param['action'] .= '修改后:';
+        $this->acAdEditUserData();
+    }
+    function acAdEditUserData(){
+        $user = \App\Users::where('id', $this->request->uid)->first();
+        if(isset($this->request->status))
+            $this->param['action'] .= ',状态（'.Users::$status[$user->status].'）';
+        if(isset($this->request->password))
+            $this->param['action'] .= ',密码（'.$user->password.'）';
+        if(isset($this->request->bank))
+            $this->param['action'] .= ',开户银行（'.$user->bank_name.'）';
+        if(isset($this->request->bank_num))
+            $this->param['action'] .= ',银行卡号（'.$user->bank_num.'）';
+        if(isset($this->request->bank_addr))
+            $this->param['action'] .= ',支行地址（'.$user->bank_addr.'）';
+        if(isset($this->request->mobile))
+            $this->param['action'] .= ',手机号码（'.$user->mobile.'）';
+        if(isset($this->request->qq))
+            $this->param['action'] .= ',qq（'.$user->qq.'）';
+        if(isset($this->request->email))
+            $this->param['action'] .= ',email（'.$user->email.'）';
+        if(isset($this->request->wechat))
+            $this->param['action'] .= ',微信（'.$user->wechat.'）';
+        if(isset($this->request->fundPwd))
+            $this->param['action'] .= ',提款密码（'.$user->fundPwd.'）';
+        if(isset($this->request->levels))
+            $this->param['action'] .= ',层级（'.$this->getLevel($user->rechLevel)->name.'）';
+        if(isset($this->request->content))
+            $this->param['action'] .= ',备注（'.$this->request->content.'）';
+        $this->param['action'] .= '</br>';
     }
     //更换代理
     private function acAdUserChangeAgent(){

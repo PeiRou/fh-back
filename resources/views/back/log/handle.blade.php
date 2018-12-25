@@ -26,12 +26,12 @@
                             <input type="text" id="endTime" value="{{date("Y-m-d")}}" placeholder="结束时间">
                         </div>
                     </div>
-                    <div class="one wide field">
+                    <div class="one wide field" data-tooltip="根据每天的时间段查询，例：1点-5点" data-position="right center" data-inverted="">
                         <select class="ui dropdown" id="startHour" style='height:32px !important'>
                             <option value="">时间</option>
                         </select>
                     </div>-
-                    <div class="one wide field">
+                    <div class="one wide field" data-tooltip="根据每天的时间段查询，例：1点-5点" data-position="right center" data-inverted="">
                         <select class="ui dropdown" id="endHour" style='height:32px !important'>
                             <option value="">时间</option>
                         </select>
@@ -47,7 +47,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="one wide field">
+                    <div class="one wide field" >
                         <input type="text" id="action" placeholder="事件搜索">
                     </div>
                     <div class="one wide field">

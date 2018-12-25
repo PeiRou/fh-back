@@ -100,7 +100,8 @@ $(function () {
         $('#startTime').val('');
         $('#endTime').val('');
         $('#action').val('');
-
+        $('#endHour').html('<option value="">时间</option>');
+        $('#startHour').val('');
         dataTable.destroy();
         // 列改变了，需要清空table
         $("#capitalDetailsTable").empty();
