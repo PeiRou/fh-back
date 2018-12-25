@@ -121,7 +121,7 @@ class New_XYLHC
                 DB::table('excel_bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
             }
             if($bunko == 1){
-                $tmp = DB::connection('mysql::write')->select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
+                $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)
                     $excBunko = $value->sumBunko;
                 \Log::info('幸运六合彩 :'.$openCode.' => '.$excBunko);
