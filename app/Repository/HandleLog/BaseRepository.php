@@ -101,7 +101,21 @@ class BaseRepository
     //改变用户金额
     private function acAdChangeUserMoney(){
         $this->param['action'] = '修改会员('.$this->getUserName($this->request->uid).')金额:'.$this->request->money;
+        $this->param['action'] .= '</br>';
+        $this->param['action'] .= '修改前:';
+        $this->acAdChangeUserMoneyData();
     }
+    //改变用户金额后
+    private function acAdChangeUserMoneyAfter(){
+        $this->param['action'] .= '修改后:';
+        $this->acAdChangeUserMoneyData();
+    }
+    private function acAdChangeUserMoneyData(){
+        $user = \App\Users::where('id', $this->request->uid)->first();
+        $this->param['action'] .= '余额（'.$user->money.'）。';
+        $this->param['action'] .= '</br>';
+    }
+
     //修改会员资料
     private function acAdEditUser(){
         $this->param['action'] = '修改会员资料('.$this->request->account.')</br>';
@@ -156,7 +170,8 @@ class BaseRepository
     //会员更换真实姓名
     private function acAdUserChangeFullName(){
         $this->param['action'] = '更换会员('.$this->getUser($this->request->uid)->username.')真实姓名为:'.$this->request->fullName;
-        $this->param['action'] .= ',更换前为:'.$this->getUser($this->request->uid)->fullName;
+        $this->param['action'] .= '</br>更换前为:'.$this->getUser($this->request->uid)->fullName;
+        $this->param['action'] .= '</br>';
     }
     //添加代理
     private function acAdAddAgent(){
@@ -164,5 +179,8 @@ class BaseRepository
         $this->param['action'] .= ',代理模式('.\App\Agent::$agentModelStatus[$this->request->modelStatus].')';
         $this->param['action'] .= ',代理名称('.$this->request->name.')';
     }
-
+    //踢下线
+    private function acAdGetOutUser(){
+        $this->param['action'] = '踢下线('.$this->getUser($this->request->id)->username.')';
+    }
 }
