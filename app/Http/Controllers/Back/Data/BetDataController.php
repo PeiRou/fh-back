@@ -442,6 +442,8 @@ class BetDataController extends Controller
             $aBetHisSql = '';
             $betCount = 0;
             $betHisCount = 0;
+            if(empty($end))
+                $end = $start;
             if(strtotime($end) >= strtotime(date('Y-m-d',strtotime('-1 day')))){
                 $aBetSql = Bets::userBetSearch($request,$user);
                 $betCount = Bets::userBetSearchCount($request,$user);
