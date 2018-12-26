@@ -3,6 +3,7 @@
 @section('title','充值记录')
 
 @section('content')
+    @inject('hasPermission','App\Http\Proxy\CheckPermission')
     <style>
         #rechargeRecordTable{
             white-space: nowrap;
@@ -36,7 +37,9 @@
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('rechargeRecordTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="excelRecharges()">导出充值</span>
+            @if($hasPermission->hasPermission('ac.ad.exportExcel.userRecharges') == 'has')
+                <span onclick="excelRecharges()">导出充值</span>
+            @endif
         </div>
     </div>
     <div class="table-content">

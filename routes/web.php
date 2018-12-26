@@ -232,7 +232,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/drawingRecord', 'Back\Data\FinanceDataController@drawingRecord');
     Route::get('/back/datatables/freezeRecord', 'Back\Data\FinanceDataController@freezeRecord');  //用户冻结记录-表格数据
     Route::get('/back/datatables/capitalDetails', 'Back\Data\FinanceDataController@capitalDetails'); //资金明细-表格数据
-    Route::get('/back/datatables/memberReconciliation', 'Back\Data\FinanceDataController@memberReconciliation');  //会员对账执行
+    Route::get('/back/datatables/memberReconciliation', 'Back\Data\FinanceDataController@memberReconciliation')->name('m.user.memberReconciliation');  //会员对账执行
     Route::get('/back/datatables/agentReconciliation', 'Back\Data\FinanceDataController@agentReconciliation');
     Route::get('/back/datatables/reportGagent', 'Back\Data\ReportDataController@Gagent');   //报表管理-总代
     Route::get('/back/datatables/reportAgent', 'Back\Data\ReportDataController@Agent');     //报表管理-代理
@@ -329,8 +329,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/editAgent', 'Back\SrcMemberController@editAgent')->middleware('add-log-handle')->name('ac.ad.editAgent');//修改代理账号
     Route::post('/action/admin/delAgent/{id}', 'Back\SrcMemberController@delAgent')->middleware(['check-permission','add-log-handle'])->name('m.agent.del');//删除代理账号
     Route::post('/action/admin/changeAgentMoney', 'Back\SrcMemberController@changeAgentMoney')->middleware('add-log-handle')->name('ac.ad.changeAgentMoney');//修改代理金额
-    Route::get('/action/admin/passAgent/{id}', 'Back\SrcMemberController@passAgent')->middleware('add-log-handle')->name('ac.ad.changeAgentMoney');//代理审核通过
-    Route::get('/action/admin/errorAgent/{id}', 'Back\SrcMemberController@errorAgent')->middleware('add-log-handle')->name('ac.ad.changeAgentMoney');//代理审核驳回
+    Route::get('/action/admin/passAgent/{id}', 'Back\SrcMemberController@passAgent')->middleware('add-log-handle')->name('ac.ad.checkAgent');//代理审核通过
+    Route::get('/action/admin/errorAgent/{id}', 'Back\SrcMemberController@errorAgent')->middleware('add-log-handle')->name('ac.ad.checkAgent');//代理审核驳回
     Route::post('/action/admin/selectAgentOdds', 'Back\SrcMemberController@selectAgentOdds');//根据代理上级获取赔率
 
     Route::post('/action/admin/addUser', 'Back\SrcMemberController@addUser')->middleware('add-log-handle')->name('ac.ad.addUser');//添加会员
@@ -552,11 +552,11 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/addUser', 'Back\Ajax\ModalController@addUser')->middleware('check-permission')->name('m.user.add');
     Route::get('/back/modal/userChangeAgent/{id}', 'Back\Ajax\ModalController@userChangeAgent')->middleware('check-permission')->name('m.user.changeAgent');
     Route::get('/back/modal/userChangeFullName/{id}', 'Back\Ajax\ModalController@userChangeFullName')->middleware('check-permission')->name('m.user.editTrueName');
-    Route::get('/back/modal/viewUserInfo/{id}', 'Back\Ajax\ModalController@viewUserInfo')->middleware('check-permission')->name('m.user.viewDetails');
+    Route::get('/back/modal/viewUserInfo/{id}', 'Back\Ajax\ModalController@viewUserInfo')->middleware('check-permission')->name('m.user.viewUserInfo');
     Route::get('/back/modal/editUserInfo/{id}', 'Back\Ajax\ModalController@editUserInfo')->middleware('check-permission')->name('m.user.edit');         //修改会员资料
     Route::get('/back/modal/viewUserContent/{id}', 'Back\Ajax\ModalController@viewUserContent')->middleware('check-permission')->name('m.user.viewDetails');
     Route::get('/back/modal/changeUserMoney/{id}', 'Back\Ajax\ModalController@changeUserMoney')->middleware('check-permission')->name('m.user.changeBalance');      //修改会员馀额
-    Route::get('/back/modal/userCapitalHistory/{id}', 'Back\Ajax\ModalController@userCapitalHistory')->middleware('check-permission')->name('m.user.viewDetails');
+    Route::get('/back/modal/userCapitalHistory/{id}', 'Back\Ajax\ModalController@userCapitalHistory')->middleware('check-permission')->name('m.user.CapitalHistory');
     Route::get('/back/modal/addNotice', 'Back\Ajax\ModalController@addNotice');     //公告管理-添加公告
     Route::get('/back/modal/editNotice/{id}', 'Back\Ajax\ModalController@editNotice');     //公告管理-修改公告
     Route::get('/back/modal/addSendMessage', 'Back\Ajax\ModalController@addSendMessage');
@@ -630,7 +630,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editAgentSettleDomain/{id}', 'Back\Ajax\ModalController@editAgentSettleDomain'); //修改代理专属域名
     Route::get('/back/modal/gameAgentOddsAdd', 'Back\Ajax\ModalController@gameAgentOddsAdd'); //添加代理赔率-模板
     Route::get('/back/modal/gameAgentOddsEdit/{id}', 'Back\Ajax\ModalController@gameAgentOddsEdit'); //修改代理赔率-模板
-    Route::get('/back/modal/gameAgentOddsLook/{level}', 'Back\Ajax\ModalController@gameAgentOddsLook'); //代理赔率查看-模板
+    Route::get('/back/modal/gameAgentOddsLook/{level}', 'Back\Ajax\ModalController@gameAgentOddsLook')->middleware('check-permission')->name('ac.ad.gameAgentOddsLook'); //代理赔率查看-模板
     Route::get('/back/modal/gameAgentOddsSet/{agentId}', 'Back\Ajax\ModalController@gameAgentOddsSet'); //代理赔率设置-模板
     Route::get('/back/modal/editGameApi', 'Back\Ajax\ModalController@editGameApi'); //添加编辑平台接口页面
 

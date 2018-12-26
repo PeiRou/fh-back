@@ -3,6 +3,7 @@
 @section('title','提款记录')
 
 @section('content')
+    @inject('hasPermission','App\Http\Proxy\CheckPermission')
     <style>
         .red {
             color: #ff6470 !important;
@@ -25,7 +26,9 @@
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('drawingRecordTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="addSubAccount()">导出记录</span>
+            @if($hasPermission->hasPermission('ac.ad.exportExcel.userDrawing') == 'has')
+                <span onclick="addSubAccount()">导出记录</span>
+            @endif
         </div>
     </div>
     <div class="table-content">

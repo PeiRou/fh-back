@@ -3,6 +3,7 @@
 @section('title','消息推送')
 
 @section('content')
+    @inject('hasPermission','App\Http\Proxy\CheckPermission')
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>消息推送
@@ -10,9 +11,12 @@
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('MessageSendTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="batchDelSendMessage()">批量删除</span>
-            <span onclick="addSendMessage()">添加消息推送</span>
-
+            @if($hasPermission->hasPermission('ac.ad.delSendMessage') == 'has')
+                <span onclick="batchDelSendMessage()">批量删除</span>
+            @endif
+            @if($hasPermission->hasPermission('ac.ad.addSendMessage') == 'has')
+                <span onclick="addSendMessage()">添加消息推送</span>
+            @endif
         </div>
     </div>
     <div class="table-content">

@@ -396,9 +396,18 @@ class FinanceDataController extends Controller
                     if($recharge->re_status == 2 || $recharge->re_status == 3){
                         return "<span class='light-gary-text'>通过 | 驳回</span>";
                     } else if($recharge->re_status == 4) {
-                        return '<span class="hover-black" onclick="errorOnlinePay(\''.$recharge->rid.'\')">驳回</span>';
+                        if(in_array('ac.ad.passOnlineRecharge',$this->permissionArray))
+                            return '<span class="hover-black" onclick="errorOnlinePay(\''.$recharge->rid.'\')">驳回</span>';
+                        return '';
                     } else {
-                        return '<span class="hover-black" onclick="pass(\''.$recharge->rid.'\')">通过</span> | <span class="hover-black" onclick="error(\''.$recharge->rid.'\')">驳回</span>';
+                        $str = '';
+                        if(in_array('ac.ad.passRecharge',$this->permissionArray))
+                            $str .= '<span class="hover-black" onclick="pass(\''.$recharge->rid.'\')">通过</span>';
+                        if(in_array('ac.ad.addRechargeError',$this->permissionArray))
+                            $str .= '| <span class="hover-black" onclick="error(\''.$recharge->rid.'\')">驳回</span>';
+                        return $str;
+//                        return '<span class="hover-black" onclick="pass(\''.$recharge->rid.'\')">通过</span>
+//                                | <span class="hover-black" onclick="error(\''.$recharge->rid.'\')">驳回</span>';
                     }
                 }
             })
@@ -602,7 +611,14 @@ class FinanceDataController extends Controller
                     foreach ($aPayOnlineNew as $iPayOnlineNew)
                         if(in_array($drawing->levels,explode(',',$iPayOnlineNew['levels'])))
                             $iHtml .= ' <span class="hover-black" onclick="dispensing(\''.$drawing->dr_id.'\',\''.$iPayOnlineNew['id'].'\',\''.$iPayOnlineNew['rechName'].'\')">'.$iPayOnlineNew['rechName'].'</span> |';
-                    return '<span class="hover-black" onclick="pass(\''.$drawing->dr_id.'\')">通过</span> | <span class="hover-black" onclick="error(\''.$drawing->dr_id.'\')">驳回</span><br/>'.rtrim($iHtml,'|');
+                    $str = '';
+                    if(in_array('ac.ad.passDrawing',$this->permissionArray))
+                        $str .= '<span class="hover-black" onclick="pass(\''.$drawing->dr_id.'\')">通过</span>';
+                    if(in_array('ac.ad.addDrawingError',$this->permissionArray))
+                        $str .= '| <span class="hover-black" onclick="error(\''.$drawing->dr_id.'\')">驳回</span><br/>';
+                    return rtrim($str, '|').rtrim($iHtml,'|');
+//                    return '<span class="hover-black" onclick="pass(\''.$drawing->dr_id.'\')">通过</span>
+//                            | <span class="hover-black" onclick="error(\''.$drawing->dr_id.'\')">驳回</span><br/>'.rtrim($iHtml,'|');
                 }
             })
             ->rawColumns(['rechLevel','amount','username','bank_info','status','control','ip_info','total_bet'])

@@ -46,15 +46,16 @@ $(function () {
                     return rate+'%';
                 }},
             {data:'updated_at'},
-            {data:function (data) {
-                    litxt = "";
-                    if(data.is_open==1)          //----关闭
-                        litxt = litxt + "<li onclick='closeKill("+data.excel_base_idx+")'><span class='status-3'>关闭</span></li>";
-                    else if(data.is_open==0)
-                        litxt = litxt + "<li onclick='openKill("+data.excel_base_idx+")'><span class='status-1'>开启</span></li>";
-                    litxt = litxt + "<li onclick='setKill("+data.excel_base_idx+")'>修改</li>";
-                    return "<ul class='control-menu'>" + litxt + "</ul>";
-                }},
+            {data:'control'},
+            // {data:function (data) {
+            //         litxt = "";
+            //         if(data.is_open==1)          //----关闭
+            //             litxt = litxt + "<li onclick='closeKill("+data.excel_base_idx+")'><span class='status-3'>关闭</span></li>";
+            //         else if(data.is_open==0)
+            //             litxt = litxt + "<li onclick='openKill("+data.excel_base_idx+")'><span class='status-1'>开启</span></li>";
+            //         litxt = litxt + "<li onclick='setKill("+data.excel_base_idx+")'>修改</li>";
+            //         return "<ul class='control-menu'>" + litxt + "</ul>";
+            //     }},
         ],
         language: {
             "zeroRecords": "暂无数据",

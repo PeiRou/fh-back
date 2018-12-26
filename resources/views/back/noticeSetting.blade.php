@@ -1,6 +1,7 @@
 @extends('back.master')
 @section('title','公告设置')
 @section('content')
+    @inject('hasPermission','App\Http\Proxy\CheckPermission')
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>公告设置
@@ -8,8 +9,12 @@
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('noticeTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="addNotice()">添加公告</span>
-            <span onclick="setSort()">排序</span>
+            @if($hasPermission->hasPermission('ac.ad.addNotice') == 'has')
+                <span onclick="addNotice()">添加公告</span>
+            @endif
+            @if($hasPermission->hasPermission('ac.ad.setNoticeOrder') == 'has')
+                <span onclick="setSort()">排序</span>
+            @endif
         </div>
     </div>
     <div class="table-content">

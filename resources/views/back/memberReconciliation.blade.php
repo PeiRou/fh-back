@@ -40,6 +40,7 @@
 @section('title','会员对账')
 
 @section('content')
+    @inject('hasPermission','App\Http\Proxy\CheckPermission')
     <div id="user" value="{{Session::get('account')}}"/>
     <div class="content-top">
         <div class="breadcrumb">
@@ -123,7 +124,11 @@
                     @if(isset($v->todayprofitloss) && $v->todayprofitloss != '0.00')<td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|todayprofitlossitem|{{$v->phonyfitloss}}|{{$v->phonyfitloss}}')">{{$v->phonyfitloss}}</span></td>@else<td>0.00</td>@endif
                     <td>{{$v->memberquota}}</td>
                     <td>{{$v->operation_account}}</td>
-                    <td><ul class="control-menu"><li  onclick="refreshExcel('{{$v->daytime}}')">重新执行</li></ul></td></tr>
+                    <td>
+                    @if($hasPermission->hasPermission('m.user.memberReconciliation') == 'has')
+                        <ul class="control-menu"><li  onclick="refreshExcel('{{$v->daytime}}')">重新执行</li></ul>
+                    @endif
+                    </td></tr>
             @endforeach
             </tbody>
         </table>

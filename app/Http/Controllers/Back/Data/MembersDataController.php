@@ -80,7 +80,9 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 {
                     return '系统默认账号无法修改';
                 } else {
-                    return '<span class="edit-link" onclick="edit(\''.$allGeneralAgent->ga_id.'\')"><i class="iconfont">&#xe602;</i> 修改</span>';
+                    if(in_array('m.gAgent.edit',$this->permissionArray))
+                        return '<span class="edit-link" onclick="edit(\''.$allGeneralAgent->ga_id.'\')"><i class="iconfont">&#xe602;</i> 修改</span>';
+                    return '';
                 }
             })
             ->rawColumns(['online','account','agent','members','balance','status','control'])
@@ -207,13 +209,61 @@ GROUP BY g.ga_id LIMIT $start,$length";
                     else
                         return "系统默认-无法操作";
                 }else if($allAgent->status == 0){
-                    return  "<ul class='control-menu'>
-                        <li onclick='pass(". $allAgent->a_id .")'>通过</li>
-                        <li onclick='error(". $allAgent->a_id .")'>驳回</li>
-                        <ul>";
-
+                    if(in_array('ac.ad.checkAgent',$this->permissionArray))
+                        return  "<ul class='control-menu'>
+                            <li onclick='pass(". $allAgent->a_id .")'>通过</li>
+                            <li onclick='error(". $allAgent->a_id .")'>驳回</li>
+                            <ul>";
+                    return '';
                 }else {
-
+                    $str = "<ul class='control-menu'>";
+                    if(in_array('m.agent.edit',$this->permissionArray))
+                        $str .= "<li onclick='edit(\"$allAgent->a_id\")'>修改</li>";
+                    if(in_array('m.agent.viewDetails',$this->permissionArray))
+                        $str .= "<li onclick='viewInfo(\"$allAgent->a_id\")'>详情</li>";
+                    if(in_array('m.agent.editMoney',$this->permissionArray))
+                        $str .= "<li onclick='changeAgentMoney(\"$allAgent->a_id\")'>修改余额</li>";
+                    if(env('TEST',0) == 1){
+                        if(in_array('m.agent.capitalDetails',$this->permissionArray))
+                            $str .= "<li onclick='capital(\"$allAgent->a_id\")'>资金明细</li>";
+                    }
+                    $gd = "<li>更多操作
+                        <ul>";
+                    $j = false;
+                    if($allAgent->modelStatus == 1) {
+                        $agentLevel = empty($allAgent->odds_level) ? 1 : $allAgent->odds_level;
+                        if(in_array('ac.ad.gameAgentOddsLook',$this->permissionArray)) {
+                            $gd .= "<li onclick='panSetting(\"$agentLevel\")'>盘口设定</li>";
+                            $j = true;
+                        }
+                    }else if($allAgent->modelStatus == 3){
+                        if(in_array('ac.ad.gameAgentOddsLook',$this->permissionArray)) {
+                            $gd .= "<li onclick='panSettingOne(\"$allAgent->a_id\")'>盘口设定</li>";
+                            $j = true;
+                        }
+                    }
+                    if(env('TEST',0) == 1) {
+                        if ($allAgent->modelStatus == 1){
+                            if(in_array('m.agent.add',$this->permissionArray)) {
+                                $gd .= "<li onclick='addAgent(\"$allAgent->a_id\")'>添加子代理</li>";
+                                $j = true;
+                            }
+                        }
+                    }
+                    if(in_array('member.exportMember',$this->permissionArray)) {
+                        $gd .= "<li onclick='exportMember(\"$allAgent->a_id\",\"$allAgent->account\")'>导出会员</li>";
+                        $j = true;
+                    }
+//                    $gd .= "<li onclick='visitMember(\"$allAgent->a_id\",\"$allAgent->account\")'>回访会员</li>";
+                    if(in_array('m.agent.del',$this->permissionArray)) {
+                        $gd .= "<li class='red-hover' onclick='del(\"$allAgent->a_id\",\"$allAgent->account\")'>删除代理</li>";
+                        $j = true;
+                    }
+                    $gd .= "</ul>
+                        </li>";
+                    if($j) $str .= $gd;
+                    $str .= "</ul>";
+                    return $str;
                     $html = "<ul class='control-menu'>
                         <li onclick='edit(\"$allAgent->a_id\")'>修改</li>
                         <li onclick='viewInfo(\"$allAgent->a_id\")'>详情</li>
@@ -511,22 +561,60 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 }
             })
             ->editColumn('control',function ($users){
-                return "<ul class='control-menu'>
-                        <li onclick='edit(\"$users->uid\")'>修改</li>
-                        <li onclick='changeUserMoney(\"$users->uid\")'>余额变更</li>
-                        <li><a href='/back/control/userManage/userBetList/$users->uid' target='_blank'>注单明细</a></li>
-                        <li onclick='userCapital(\"$users->uid\")'>资金明细</li>
-                        <li>更多操作
-                        <ul>
-                        <li onclick='viewInfo(\"$users->uid\")'>查看详情</li>
-                        <li onclick='changeFullName(\"$users->uid\")'>修改姓名</li>
-                        <!-- <li>盘口设定</li>
-                        <li>交易设定</li> -->
-                        <li onclick='changeAgent(\"$users->uid\",\"$users->user_username\")'>更换代理</li>
-                        <li class='red-hover' onclick='delUser(\"$users->uid\",\"$users->user_username\")'>删除会员</li>
-                        </ul>
-                        </li>
-                        </ul>";
+                $str = "<ul class='control-menu'>";
+                if(in_array('m.user.edit',$this->permissionArray))
+                    $str .= "<li onclick='edit(".$users->uid.")'>修改</li>";
+                if(in_array('m.user.changeBalance',$this->permissionArray))
+                    $str .= "<li onclick='changeUserMoney(\"$users->uid\")'>余额变更</li>";
+                if(in_array('m.user.viewDetails',$this->permissionArray))
+                    $str .= "<li><a href='/back/control/userManage/userBetList/$users->uid' target='_blank'>注单明细</a></li>";
+                if(in_array('m.user.CapitalHistory',$this->permissionArray))
+                    $str .= "<li onclick='userCapital(\"$users->uid\")'>资金明细</li>";
+
+                $gd =  '<li>更多操作
+                        <ul>';
+                $j = false;
+                if(in_array('m.user.viewUserInfo',$this->permissionArray)) {
+                    $gd .= "<li onclick='viewInfo(\"$users->uid\")'>查看详情</li>";
+                    $j = true;
+                }
+                if(in_array('m.user.editTrueName',$this->permissionArray)) {
+                    $gd .= "<li onclick='changeFullName(\"$users->uid\")'>修改姓名</li>";
+                    $j = true;
+                }
+                if(in_array('m.user.changeAgent',$this->permissionArray)) {
+                    $gd .= "<li onclick='changeAgent(\"$users->uid\",\"$users->user_username\")'>更换代理</li>";
+                    $j = true;
+                }
+                if(in_array('m.user.delUser',$this->permissionArray)) {
+                    $gd .= "<li class='red-hover' onclick='delUser(\"$users->uid\",\"$users->user_username\")'>删除会员</li>";
+                    $j = true;
+                }
+                $gd .= '</ul>
+                        </li>';
+                if($j) $str .= $gd;
+
+
+                $str .= "</ul>";
+                return $str;
+
+
+//                return "<ul class='control-menu'>
+//                        <li onclick='edit(\"$users->uid\")'>修改</li>
+//                        <li onclick='changeUserMoney(\"$users->uid\")'>余额变更</li>
+//                        <li><a href='/back/control/userManage/userBetList/$users->uid' target='_blank'>注单明细</a></li>
+//                        <li onclick='userCapital(\"$users->uid\")'>资金明细</li>
+//                        <li>更多操作
+//                        <ul>
+//                        <li onclick='viewInfo(\"$users->uid\")'>查看详情</li>
+//                        <li onclick='changeFullName(\"$users->uid\")'>修改姓名</li>
+//                        <!-- <li>盘口设定</li>
+//                        <li>交易设定</li> -->
+//                        <li onclick='changeAgent(\"$users->uid\",\"$users->user_username\")'>更换代理</li>
+//                        <li class='red-hover' onclick='delUser(\"$users->uid\",\"$users->user_username\")'>删除会员</li>
+//                        </ul>
+//                        </li>
+//                        </ul>";
             })
             ->rawColumns(['online','user','balance','status','control','created_at','updated_at','content','rechLevel','saveMoneyCount','drawMoneyCount'])
             ->setTotalRecords($usersCount[0]->count)
@@ -787,9 +875,17 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 {
                     return '系统默认账号无法修改';
                 } else {
-                    return '<span class="edit-link" onclick="edit(\''.$subAccounts->sa_id.'\')"><i class="iconfont">&#xe602;</i> 修改</span>
-                          | <span class="edit-link" onclick="google(\''.$subAccounts->sa_id.'\')"><i class="iconfont">&#xe6a9;</i> Google双重验证</span>
-                          | <span class="edit-link" onclick="del(\''.$subAccounts->sa_id.'\',\''.$subAccounts->account.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
+                    $str = "";
+                    if(in_array('m.subAccount.edit',$this->permissionArray))
+                        $str .= '<span class="edit-link" onclick="edit(\''.$subAccounts->sa_id.'\')"><i class="iconfont">&#xe602;</i> 修改</span>';
+                    if(in_array('m.subAccount.googleOTP',$this->permissionArray))
+                        $str .= ' | <span class="edit-link" onclick="google(\''.$subAccounts->sa_id.'\')"><i class="iconfont">&#xe6a9;</i> Google双重验证</span>';
+                    if(in_array('ac.ad.delSubAccount',$this->permissionArray))
+                        $str .= ' | <span class="edit-link" onclick="del(\''.$subAccounts->sa_id.'\',\''.$subAccounts->account.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
+                    return $str;
+//                    return '<span class="edit-link" onclick="edit(\''.$subAccounts->sa_id.'\')"><i class="iconfont">&#xe602;</i> 修改</span>
+//                          | <span class="edit-link" onclick="google(\''.$subAccounts->sa_id.'\')"><i class="iconfont">&#xe6a9;</i> Google双重验证</span>
+//                          | <span class="edit-link" onclick="del(\''.$subAccounts->sa_id.'\',\''.$subAccounts->account.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
                 }
             })
             ->rawColumns(['online','status','control'])
@@ -871,7 +967,9 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 }
             })
             ->editColumn('control',function ($user){
-                return '<span class="edit-link" onclick="getOut(\''.$user->id.'\',\''.$user->username.'\')"><i class="iconfont">&#xeab6;</i> 踢下线</span>';
+                if(in_array('ac.ad.getOutUser',$this->permissionArray))
+                    return '<span class="edit-link" onclick="getOut(\''.$user->id.'\',\''.$user->username.'\')"><i class="iconfont">&#xeab6;</i> 踢下线</span>';
+                return '';
             })
             ->rawColumns(['account','online','status','login_client','control','login_ip_info','login_ip','money'])
             ->setTotalRecords($userCount)

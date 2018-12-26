@@ -23,10 +23,16 @@
         @endif
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('userTable')"><i class="iconfont">&#xe61d;</i></span>
+            @if($hasPermission->hasPermission('member.exportUser'))
             <span onclick="exportUser()">导出用户数据</span>
+            @endif
             {{--<span onclick="">更新邮箱</span>--}}
+            @if($hasPermission->hasPermission('member.returnVisit.view'))
             <span onclick="returnVisit()">回访用户</span>
+            @endif
+            @if($hasPermission->hasPermission('m.user.add'))
             <span onclick="addUser()">添加会员</span>
+            @endif
         </div>
     </div>
     <div class="table-content">

@@ -3,6 +3,7 @@
 @section('title','子账号')
 
 @section('content')
+    @inject('hasPermission','App\Http\Proxy\CheckPermission')
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>子账号
@@ -10,7 +11,9 @@
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('subAccountTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="addSubAccount()">添加子账号</span>
+            @if($hasPermission->hasPermission('m.subAccount.add') == 'has')
+                <span onclick="addSubAccount()">添加子账号</span>
+            @endif
         </div>
     </div>
     <div class="table-content">

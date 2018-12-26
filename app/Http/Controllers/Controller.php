@@ -10,4 +10,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+
+    public function __get($value){
+        if('permissionArray' == $value){
+            $getAccountPermission = \Illuminate\Support\Facades\Session::get('account_permission');
+            $this->permissionArray = explode(',',$getAccountPermission);
+            return $this->permissionArray;
+        }
+    }
 }

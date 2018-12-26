@@ -54,18 +54,28 @@ class GameDataController extends Controller
                 }
             })
             ->editColumn('control',function ($games){
-                if($games->fengpan == 1){
-                    $fengpan = '<span class="edit-link" onclick="fengpan(\''.$games->g_id.'\',\'0\',\''.$games->game_name.'\')"><i class="iconfont">&#xe657;</i> 封盘</span>';
-                } else {
-                    $fengpan = '<span class="edit-link" onclick="fengpan(\''.$games->g_id.'\',\'1\',\''.$games->game_name.'\')"><i class="iconfont">&#xe652;</i> 开盘</span>';
+                $fengpan = '';
+                $status = '';
+                $seting = '';
+                if(in_array('ac.ad.changeGameFengPan',$this->permissionArray)) {
+                    if ($games->fengpan == 1) {
+                        $fengpan = '| <span class="edit-link" onclick="fengpan(\'' . $games->g_id . '\',\'0\',\'' . $games->game_name . '\')"><i class="iconfont">&#xe657;</i> 封盘</span>';
+                    } else {
+                        $fengpan = '| <span class="edit-link" onclick="fengpan(\'' . $games->g_id . '\',\'1\',\'' . $games->game_name . '\')"><i class="iconfont">&#xe652;</i> 开盘</span>';
+                    }
+                }
+                if(in_array('ac.ad.changeGameStatus',$this->permissionArray)) {
+                    if ($games->status == 1) {
+                        $status = '| <span class="edit-link" onclick="status(\'' . $games->g_id . '\',\'0\',\'' . $games->game_name . '\')"><i class="iconfont">&#xe601;</i> 停用</span>';
+                    } else {
+                        $status = '| <span class="edit-link" onclick="status(\'' . $games->g_id . '\',\'1\',\'' . $games->game_name . '\')"><i class="iconfont">&#xe652;</i> 开启</span>';
+                    }
+                }
+                if(in_array('ac.ad.editGameSetting',$this->permissionArray)) {
+                    $seting = '<span class="edit-link" onclick="setting(\''.$games->g_id.'\')"><i class="iconfont">&#xe64c;</i> 设置</span>';
                 }
 
-                if($games->status == 1){
-                    $status = '<span class="edit-link" onclick="status(\''.$games->g_id.'\',\'0\',\''.$games->game_name.'\')"><i class="iconfont">&#xe601;</i> 停用</span>';
-                } else {
-                    $status = '<span class="edit-link" onclick="status(\''.$games->g_id.'\',\'1\',\''.$games->game_name.'\')"><i class="iconfont">&#xe652;</i> 开启</span>';
-                }
-                return '<span class="edit-link" onclick="setting(\''.$games->g_id.'\')"><i class="iconfont">&#xe64c;</i> 设置</span> | '.$fengpan.' | '.$status;
+                return $seting.$fengpan.$status;
             })
             ->rawColumns(['holiday_start','holiday_end','fengpan','status','control','order'])
             ->make(true);
@@ -106,6 +116,24 @@ class GameDataController extends Controller
             ->editColumn('kill_rate',function ($games){
                 return floatval($games->kill_rate);
             })
+            ->editColumn('control',function ($iData){
+                $str = "";
+                if(in_array('game.killStatus',$this->permissionArray)) {
+                    if ($iData->is_open == 1) {         //----关闭
+                        $str = $str . "<li onclick='closeKill(" . $iData->excel_base_idx . ")'><span class='status-3'>关闭</span></li>";
+                    } else if ($iData->is_open == 0) {
+                        $str = $str . "<li onclick='openKill(" . $iData->excel_base_idx . ")'><span class='status-1'>开启</span></li>";
+                    }
+                }
+
+                if(in_array('game.killEdit',$this->permissionArray)) {
+                    $str = $str . "<li onclick='setKill(" . $iData->excel_base_idx . ")'>修改</li>";
+                }
+                return "<ul class='control-menu'>" . $str . "</ul>";
+//                return '<span class="edit-link" onclick="edit(\''.$iData->id.'\')"><i class="iconfont">&#xe64c;</i> 修改 </span> |
+//                        <span class="edit-link" onclick="look(\''.$iData->level.'\')">当前赔率查看 </span>';
+            })
+            ->rawColumns(['control'])
             ->make(true);
     }
 
@@ -114,8 +142,14 @@ class GameDataController extends Controller
         $aData = AgentOddsSetting::get();
         return DataTables::of($aData)
             ->editColumn('control',function ($iData){
-                return '<span class="edit-link" onclick="edit(\''.$iData->id.'\')"><i class="iconfont">&#xe64c;</i> 修改 </span> | 
-                        <span class="edit-link" onclick="look(\''.$iData->level.'\')">当前赔率查看 </span>';
+                $str = '';
+                if(in_array('ac.ad.gameAgentOddsEdit',$this->permissionArray)) {
+                    $str .= '<span class="edit-link" onclick="edit(\''.$iData->id.'\')"><i class="iconfont">&#xe64c;</i> 修改 </span> |';
+                }
+                $str .= '<span class="edit-link" onclick="look(\''.$iData->level.'\')">当前赔率查看 </span>';
+                return $str;
+//                return '<span class="edit-link" onclick="edit(\''.$iData->id.'\')"><i class="iconfont">&#xe64c;</i> 修改 </span> |
+//                        <span class="edit-link" onclick="look(\''.$iData->level.'\')">当前赔率查看 </span>';
             })
             ->rawColumns(['control'])
             ->make(true);

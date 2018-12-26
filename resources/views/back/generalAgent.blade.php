@@ -3,13 +3,17 @@
 @section('title','总代理')
 
 @section('content')
+    @inject('hasPermission','App\Http\Proxy\CheckPermission')
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>总代理
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
         <div class="content-top-buttons">
-            <span onclick="addGeneralAgent()">添加总代理</span>
+            @if($hasPermission->hasPermission('m.gAgent.add') == 'has')
+                <span onclick="addGeneralAgent()">添加总代理</span>
+            @endif
+
         </div>
     </div>
     <div class="table-content">

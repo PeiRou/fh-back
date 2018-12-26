@@ -37,8 +37,16 @@ class NoticeDataController extends Controller
                 return "<input type='text' value='".$notice->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$notice->id."' name='sortId[]'>";
             })
             ->editColumn('control',function ($notice){
-                return '<span class="edit-link" onclick="edit(\''.$notice->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> |
-                        <span class="edit-link" onclick="del(\''.$notice->id.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
+                $str = '';
+                if(in_array('ac.ad.editNotice',$this->permissionArray)) {
+                    $str .= '<span class="edit-link" onclick="edit(\''.$notice->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span>';
+                }
+                if(in_array('ac.ad.delNoticeSetting',$this->permissionArray)) {
+                    $str .= '<span class="edit-link" onclick="del(\''.$notice->id.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
+                }
+                return trim($str, '|');
+//                return '<span class="edit-link" onclick="edit(\''.$notice->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> |
+//                        <span class="edit-link" onclick="del(\''.$notice->id.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
             })
             ->rawColumns(['control','sort'])
             ->make(true);
@@ -113,7 +121,10 @@ class NoticeDataController extends Controller
                 }
             })
             ->editColumn('control',function ($MessagePush){
-                return '<span class="edit-link" onclick="del(\''.$MessagePush->id.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
+                if(in_array('ac.ad.delSendMessage',$this->permissionArray)) {
+                    return '<span class="edit-link" onclick="del(\''.$MessagePush->id.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
+                }
+                return '';
             })
             ->rawColumns(['control'])
             ->make(true);
