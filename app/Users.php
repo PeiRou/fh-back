@@ -9,6 +9,11 @@ class Users extends Model
 {
     protected $table = 'users';
     protected $primaryKey = 'id';
+    public static $status = [
+        1 => '正常',
+        2 => '冻结',
+        3 => '停用',
+    ];
 
     public static function exportUserData($aParam){
         $aSql = "SELECT `users`.`bank_name`,`users`.`content`,`users`.`bank_num`,`users`.`bank_addr`,`users`.`wechat`,`users`.`username`,`users`.`fullName`,`users`.`email`,`users`.`mobile`,`users`.`created_at`,`users`.`saveMoneyCount`,`users`.`lastLoginTime`,`re`.`sumReAmount`,`re`.`sumReAmountAd`,`dr`.`sumDrAmount`,`dr`.`sumDrAmountAd` FROM `users` 

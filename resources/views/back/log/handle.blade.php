@@ -26,8 +26,18 @@
                             <input type="text" id="endTime" value="{{date("Y-m-d")}}" placeholder="结束时间">
                         </div>
                     </div>
+                    <div class="one wide field" data-tooltip="根据每天的时间段查询，例：1点-5点" data-position="right center" data-inverted="">
+                        <select class="ui dropdown" id="startHour" style='height:32px !important'>
+                            <option value="">时间</option>
+                        </select>
+                    </div>-
+                    <div class="one wide field" data-tooltip="根据每天的时间段查询，例：1点-5点" data-position="right center" data-inverted="">
+                        <select class="ui dropdown" id="endHour" style='height:32px !important'>
+                            <option value="">时间</option>
+                        </select>
+                    </div>
                     <div class="one wide field">
-                        <input type="text" id="username" placeholder="用户账户">
+                        <input type="text" id="username" placeholder="操作人名称">
                     </div>
                     <div class="one wide field">
                         <select class="ui dropdown" id="type_id" style='height:32px !important'>
@@ -36,6 +46,9 @@
                                 <option value="{{ $routeList['type_id'] }}">{{ $routeList['type_name'] }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="one wide field" >
+                        <input type="text" id="action" placeholder="事件搜索">
                     </div>
                     <div class="one wide field">
                         <input type="text" id="ip" placeholder="操作IP">

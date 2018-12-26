@@ -19,6 +19,7 @@ class ApiController extends Controller
                 {
                     $query->where('account','like',"%$q%")->orWhere('name','like',"%$q%");
                 }
+                $query->whereNotIn('a_id',[2,3]);
             })
             ->get();
         $data = [];
@@ -52,7 +53,7 @@ class ApiController extends Controller
                 }else{
                     $query->where('a_id','<=',3);
                 }
-
+                $query->whereNotIn('a_id',[2,3]);
             })
             ->get();
         $data = [];

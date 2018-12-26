@@ -45,7 +45,7 @@ class New_Paoma
     {
         $table = 'game_paoma';
         $gameName = '跑马';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $exeIssue = $excelModel->getNeedKillIssue($table,2);
@@ -107,10 +107,10 @@ class New_Paoma
             $win = $this->exc_play($openCode,$gameId);
             $bunko = $excel->bunko($win,$gameId,$issue,true);
             if($bunko == 1){
-                $tmp = DB::connection('mysql::write')->select("SELECT sum(case when bunko >0 then bunko-bet_money else bunko end) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
+                $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)
                     $excBunko = $value->sumBunko;
-                \Log::info('跑马 :'.$excBunko);
+                \Log::info('跑马 :'.$openCode.' => '.$excBunko);
                 $dataExcGame['game_id'] = $gameId;
                 $dataExcGame['issue'] = $issue;
                 $dataExcGame['opennum'] = $openCode;

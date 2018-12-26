@@ -37,6 +37,9 @@ function createTable(columns) {
                 d.ip = $('#ip').val();
                 d.startTime = $('#startTime').val();
                 d.endTime = $('#endTime').val();
+                d.action = $('#action').val();
+                d.startHour = $('#startHour').val();
+                d.endHour = $('#endHour').val();
             }
         },
         columns: columns,
@@ -96,7 +99,9 @@ $(function () {
         $('#ip').val('');
         $('#startTime').val('');
         $('#endTime').val('');
-
+        $('#action').val('');
+        $('#endHour').html('<option value="">时间</option>');
+        $('#startHour').val('');
         dataTable.destroy();
         // 列改变了，需要清空table
         $("#capitalDetailsTable").empty();
@@ -132,4 +137,16 @@ $(function () {
         },
         text: text
     });
+    for (var i = 0; i < 24; i++){
+        $('#startHour').append('<option value="'+i+'">'+i+'点</option>');
+    }
+    $('#startHour').change(function(){
+        $('#endHour').html('<option value="">时间</option>');
+        var startHour = $('#startHour').val();
+        if(startHour){
+            for (var i = startHour; i < 24; i++){
+                $('#endHour').append('<option value="'+i+'">'+i+'点</option>');
+            }
+        }
+    })
 });

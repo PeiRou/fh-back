@@ -54,7 +54,7 @@ class AddLogHandle
                 'type_name' => $routeData['type_name'],
                 'route' => $routeData['route'],
                 'action' => $routeData['action'],
-                'param' => json_encode($params),
+                'param' => json_encode($params, JSON_UNESCAPED_UNICODE),
                 'create_at' => date('Y-m-d H:i:s'),
             ];
             if (!$id = DB::table('log_handle')->insertGetId($data)) {
@@ -62,13 +62,14 @@ class AddLogHandle
             }
             //细化操作日志
             try{
-                new \App\Repository\HandleLog\BaseRepository($request, $id, $data);
+                $request->HandleLogInstance = new \App\Repository\HandleLog\BaseRepository($request, $id, $data);
             }catch (\Exception $e){
                 //修改日志失败
                 \Log::info(print_r($e->getPrevious(), 1));
             }
         }
         $response = $next($request);
+        isset($request->HandleLogInstance) && $request->HandleLogInstance->actionAfter();//请求完记录日志
         return $response;
     }
 

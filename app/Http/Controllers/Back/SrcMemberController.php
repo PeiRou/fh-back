@@ -450,28 +450,39 @@ class SrcMemberController extends Controller
     {
         $uid = $request->input('uid');
         $agent = $request->input('agent');
+        $check = User::where('id',$uid)->first();
+        if(isset($check->agent) && $check->agent==2){
+            return response()->json([
+                'status'=>false,
+                'msg'=>'测试用户不可修改代理！'
+            ]);
+        }
 
         $odds = Agent::returnUserOdds($agent);
-        if($agent == 2){
-            $update = User::where('id',$uid)
-                ->update([
-                    'agent'=>$agent,
-                    'testFlag' => 2,
-                    'promoter' => 0,
-                    'user_odds' => $odds['user_odds'],
-                    'agent_odds' => $odds['agent_odds'],
-                    'user_odds_level' => $odds['user_odds_level'],
-                ]);
-        } else if($agent == 3){
-            $update = User::where('id',$uid)
-                ->update([
-                    'agent'=>$agent,
-                    'testFlag' => 1,
-                    'promoter' => 0,
-                    'user_odds' => $odds['user_odds'],
-                    'agent_odds' => $odds['agent_odds'],
-                    'user_odds_level' => $odds['user_odds_level'],
-                ]);
+        if($agent == 2 || $agent == 3){
+            return response()->json([
+                'status'=>false,
+                'msg'=>'不可修改为测试用户，请重新添加！'
+            ]);
+//            $update = User::where('id',$uid)
+//                ->update([
+//                    'agent'=>$agent,
+//                    'testFlag' => 2,
+//                    'promoter' => 0,
+//                    'user_odds' => $odds['user_odds'],
+//                    'agent_odds' => $odds['agent_odds'],
+//                    'user_odds_level' => $odds['user_odds_level'],
+//                ]);
+//        } else if($agent == 3){
+//            $update = User::where('id',$uid)
+//                ->update([
+//                    'agent'=>$agent,
+//                    'testFlag' => 1,
+//                    'promoter' => 0,
+//                    'user_odds' => $odds['user_odds'],
+//                    'agent_odds' => $odds['agent_odds'],
+//                    'user_odds_level' => $odds['user_odds_level'],
+//                ]);
         } else {
             $aArray = [
                 'agent'=>$agent,
@@ -505,6 +516,14 @@ class SrcMemberController extends Controller
     {
         $uid = $request->input('uid');
         $fullName = $request->input('fullName');
+        //真名匹配
+        $pattern = '/^[\x{4e00}-\x{9fa5}]+$/u';
+        $matches = preg_match($pattern, $fullName);
+        if(!$matches)
+            return response()->json([
+                'status' => false ,
+                'msg'  => '请输入中文姓名！'
+            ]);
         $update = User::where('id',$uid)
             ->update([
                 'fullName'=>$fullName
@@ -533,20 +552,43 @@ class SrcMemberController extends Controller
             $bank = $bank->name;
         }else
             $bank = '';
-        $data = collect([
-            'status'=>$request->input('status'),
-            'bank_id'=>$bank_id,
-            'bank_name'=>$bank,
-            'bank_num'=>$request->input('bank_num'),
-            'bank_addr'=>$request->input('bank_addr'),
-            'mobile'=>$request->input('mobile'),
-            'qq'=>$request->input('qq'),
-            'email'=>$request->input('email'),
-            'wechat'=>$request->input('wechat'),
-            'editodds'=>$request->input('editodds'),
-            'content'=>$request->input('content'),
-            'rechLevel'=>$request->input('levels'),
-        ]);
+        $writeData = array();
+        //会员状态
+        if(!empty($request->input('status')))
+            $writeData['status'] = $request->input('status');
+        //开户银行
+        if(!empty($bank)){
+            $writeData['bank_id'] = $bank_id;
+            $writeData['bank_name'] = $bank;
+        }
+        //银行卡号
+        if(!empty($request->input('bank_num')))
+            $writeData['bank_num'] = $request->input('bank_num');
+        //支行地址
+        if(!empty($request->input('bank_addr')))
+            $writeData['bank_addr'] = $request->input('bank_addr');
+        //手机号码
+        if(!empty($request->input('mobile')))
+            $writeData['mobile'] = $request->input('mobile');
+        //qq
+        if(!empty($request->input('qq')))
+            $writeData['qq'] = $request->input('qq');
+        //email
+        if(!empty($request->input('email')))
+            $writeData['email'] = $request->input('email');
+        //微信
+        if(!empty($request->input('wechat')))
+            $writeData['wechat'] = $request->input('wechat');
+        //editodds
+        if(!empty($request->input('editodds')))
+            $writeData['editodds'] = $request->input('editodds');
+        //备注
+        if(!empty($request->input('content')))
+            $writeData['content'] = $request->input('content');
+        //充值层级
+        if(!empty($request->input('levels')))
+            $writeData['rechLevel'] = $request->input('levels');
+        $data = collect($writeData);
         if(!empty($password)){
             $data->put('password',Hash::make(md5($password)));
         }

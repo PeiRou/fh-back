@@ -520,8 +520,8 @@ GROUP BY g.ga_id LIMIT $start,$length";
                         <ul>
                         <li onclick='viewInfo(\"$users->uid\")'>查看详情</li>
                         <li onclick='changeFullName(\"$users->uid\")'>修改姓名</li>
-                        <li>盘口设定</li>
-                        <li>交易设定</li>
+                        <!-- <li>盘口设定</li>
+                        <li>交易设定</li> -->
                         <li onclick='changeAgent(\"$users->uid\",\"$users->user_username\")'>更换代理</li>
                         <li class='red-hover' onclick='delUser(\"$users->uid\",\"$users->user_username\")'>删除会员</li>
                         </ul>
