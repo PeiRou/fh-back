@@ -21,6 +21,7 @@ class BetHis extends Model
         $orderNum = $request->get('orderNum');
 
         $Sql = 'select bet_his.bet_id as bet_bet_id,bet_his.play_rebate as bet_play_rebate,bet_his.order_id as bet_order_id,game.game_name as g_game_name,bet_his.color as bet_color,bet_his.issue as bet_issue,bet_his.playcate_id as bet_playcate_id,bet_his.play_id as bet_play_id,bet_his.bet_money as bet_bet_money,bet_his.bunko as bet_bunko,bet_his.created_at as bet_created_at,bet_his.play_odds as bet_play_odds,bet_his.playcate_name as bet_playcate_name,bet_his.play_name as bet_play_name,bet_his.platform as bet_platform,bet_his.game_id as bet_game_id,bet_his.freeze_money as bet_freeze_money,bet_his.nn_view_money as bet_nn_view_money,bet_his.bet_info as bet_bet_info,bet_his.status from bet_his LEFT JOIN game ON bet_his.game_id = game.game_id WHERE 1 = 1 ';
+
         $betSql = "";
         if(count($games) > 0){
             $games = implode(",",$games);
