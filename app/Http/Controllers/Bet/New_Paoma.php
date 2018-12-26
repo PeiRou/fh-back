@@ -45,7 +45,7 @@ class New_Paoma
     {
         $table = 'game_paoma';
         $gameName = '跑马';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $exeIssue = $excelModel->getNeedKillIssue($table,2);

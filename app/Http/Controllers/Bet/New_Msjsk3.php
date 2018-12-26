@@ -31,7 +31,7 @@ class New_Msjsk3
     {
         $table = 'game_msjsk3';
         $gameName = '秒速快3';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $exeIssue = $excelModel->getNeedKillIssue($table,2);

@@ -46,7 +46,7 @@ class New_XYLHC
     {
         $table = 'game_xylhc';
         $gameName = '幸运六合彩';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
 
         if($betCount > 0){
             $excelModel = new Excel();

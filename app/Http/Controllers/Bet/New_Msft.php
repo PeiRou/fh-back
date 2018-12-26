@@ -45,7 +45,7 @@ class New_Msft
     {
         $table = 'game_msft';
         $gameName = '秒速飞艇';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $exeIssue = $excelModel->getNeedKillIssue($table,2);
