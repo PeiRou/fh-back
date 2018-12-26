@@ -12,14 +12,20 @@ class ApiController extends Controller
 {
     public function agents(Request $request)
     {
-        $q = $request->get('q');
+        $res['q'] = $request->get('q');
+        $res['type'] = $request->get('type');
         $allAgent = Agent::select()
-            ->where(function ($query) use($q){
+            ->where(function ($query) use($res){
+                $q = $res['q'];
+                $type = $res['type'];
                 if(isset($q))
                 {
                     $query->where('account','like',"%$q%")->orWhere('name','like',"%$q%");
                 }
-                $query->whereNotIn('a_id',[2,3]);
+                if($type=='ins')
+                    $query->whereNotIn('a_id',[3]);
+                else
+                    $query->whereNotIn('a_id',[2,3]);
             })
             ->get();
         $data = [];

@@ -48,7 +48,8 @@
                 dataType: 'json',//数据类型
                 data: function(params){
                     return {
-                        q: params.term//此处是最终传递给API的参数
+                        q: params.term,//此处是最终传递给API的参数
+                        type: "ins"//此处是最终传递给API的参数
                     }
                 },
                 results : function(data){ return data;}//返回的结果s
