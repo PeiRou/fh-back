@@ -79,8 +79,8 @@
                 <th><span class="tips-icon"><i data-tooltip="手动和自动提款成功的总和" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 取款金额</th>
                 <th>笔数</th>
                 <th>投注金额</th>
-                <th>赢利投注金额</th>
                 <th>中奖金额</th>
+                <th>赢利投注金额</th>
                 <th>活动金额</th>
                 <th>充值优惠/手续费</th>
                 <th>代理退水金额</th>
@@ -97,8 +97,8 @@
                 <th id="drawing_money"></th>
                 <th id="bet_count"></th>
                 <th id="bet_money"></th>
-                <th id="bet_amount"></th>
                 <th id="win_amount"></th>
+                <th id="bet_amount"></th>
                 <th id="activity_money"></th>
                 <th id="handling_fee"></th>
                 <th id="return_amount"></th>

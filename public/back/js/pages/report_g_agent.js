@@ -81,8 +81,8 @@ $(function () {
             {data:'memberCount'},             //会员数
             {data:'bet_count'},              //笔数
             {data:'bet_money'},             //投注金额
-            {data:'bet_amount'},             //赢利投注金额
             {data:'win_amount'},             //中奖金额
+            {data:'bet_amount'},             //赢利投注金额
             {data:'activity_money'},
             {data:'handling_fee'},
             {data:'return_amount'},         //代理退水金额

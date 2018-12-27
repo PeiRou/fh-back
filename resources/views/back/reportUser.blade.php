@@ -94,11 +94,11 @@
                 <th><span class="tips-icon"><i data-tooltip="手动和自动提款成功的总和" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 取款金额</th>
                 <th>笔数</th>
                 <th>投注金额</th>
-                <th>赢利投注金额</th>
                 <th>中奖金额</th>
+                <th>赢利投注金额</th>
                 <th>活动金额</th>
                 <th>充值优惠/手续费</th>
-                <th><span class="tips-icon"><i data-tooltip="投注金额 - 中奖金额" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 会员输赢(不含退水)</th>
+                <th><span class="tips-icon"><i data-tooltip="投注金额 - 中奖金额(小于零为平台赢，大于零位会员赢)" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 会员输赢(不含退水)</th>
                 <th><span class="tips-icon"><i data-tooltip="单笔投注金额 * 退水比例" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际退水</th>
                 <th><span class="tips-icon"><i data-tooltip="会员输赢 - 活动金额 - (充值优惠和手续费)" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际输赢(含退水)</th>
             </tr>
@@ -112,8 +112,8 @@
                 <th id="drawing_money"></th>
                 <th id="bet_count"></th>
                 <th id="bet_money"></th>
-                <th id="bet_amount"></th>
                 <th id="win_amount"></th>
+                <th id="bet_amount"></th>
                 <th id="activity_money"></th>
                 <th id="handling_fee"></th>
                 <th id="bet_bunko"></th>

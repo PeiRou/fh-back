@@ -88,8 +88,8 @@ $(function () {
                     return '<a href="/back/control/userManage/userBetList/'+data.user_id+'" target="_blank">'+data.bet_count+'</a>';
                 }},
             {data:'bet_money'},             //投注金额
-            {data:'bet_amount'},             //赢利投注金额
             {data:'win_amount'},             //中奖金额
+            {data:'bet_amount'},             //赢利投注金额
             {data:'activity_money'},
             {data:'handling_fee'},
             {data:'bet_bunko'},             //会员输赢（不包括退水）

@@ -84,8 +84,8 @@ $(function () {
             {data:'drawing_money'},
             {data:'bet_count'},              //笔数
             {data:'bet_money'},             //投注金额
-            {data:'bet_amount'},             //赢利投注金额
             {data:'win_amount'},             //中奖金额
+            {data:'bet_amount'},             //赢利投注金额
             {data:'activity_money'},           //活动
             {data:'handling_fee'},       //充值手续费
             {data:'return_amount'},         //代理退水金额
