@@ -38,7 +38,60 @@ class DailyReconciliationTotal extends Command
      */
     public function handle()
     {
+        if(!empty($this->argument('dayTime')) && $this->argument('dayTime') == "insert"){  //定时任务搭配执行--只取会员余额和未结算的金额
+            $date = date('Y-m-d',strtotime('-1 day'));
+            $daytstrot = strtotime($date);
+
+            /*今日会员馀额*/
+            $useramountsql = "SELECT SUM(A.money) AS 'amount' FROM (select id,money from users where testFlag = '0') AS A";
+            $useramount =  DB::select($useramountsql);
+            /*昨日会员馀额*/
+            $memberquotaydaysql = "SELECT memberquota FROM totalreport WHERE daytstrot = ".strtotime("-1day",$daytstrot);
+            $memberquotayday = DB::select($memberquotaydaysql);
+
+            $data[$date] = [
+                'onlinePayment' => [],
+                'bankTransfer' => [],
+                'alipay'=> [],
+                'weixin' => [],
+                'cft' => [],
+                'adminAddMoney_reissue' => [],
+                'adminAddMoney_pluscolor' => [],
+                'adminAddMoney_other' => [],
+                'adminAddMoney' => [],
+                'draw' => [],
+                'capital' => [],
+                'bunko' => [],
+                'todayprofitloss' => [],
+                'todayprofitlossitem' => [],
+            ];
+            $serdata =  serialize($data);
+
+            $datatotalreport['daytstrot']=$daytstrot;
+            $datatotalreport['daytime']=$date;
+            $datatotalreport['data']=$serdata;
+            $datatotalreport['memberquota']=$useramount[0]->amount;
+            $datatotalreport['created_at']=date('Y-m-d H:i:s');
+            $datatotalreport['updated_at']=date('Y-m-d H:i:s');
+            $datatotalreport['memberquotayday']=empty($memberquotayday[0]->memberquota)?0:$memberquotayday[0]->memberquota;
+            $datatotalreport['unsetamount']=0.00;
+            $datatotalreport['unsetamountnum']=NULL;
+            try{
+                DB::table('totalreport')->insert([$datatotalreport]);
+            } catch (\Exception $exception){
+                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                $this->error('insert to totalreport error');
+            }
+            \Log::info('memberquota: '.$datatotalreport['memberquota']);
+            \Log::info('memberquotayday: '.$datatotalreport['memberquotayday']);
+            $this->info('insert to totalreport successfully');
+            \Log::info('系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
+
+            die;
+        }
+
         $date = empty($this->argument('dayTime'))?date('Y-m-d',strtotime('-1 day')):date('Y-m-d',strtotime(date($this->argument('dayTime'))));
+        $dateaddone =date('Y-m-d',strtotime($date.'+1 day'));
         $daytstrot = strtotime($date);
 
         /*在线支付*/
@@ -139,25 +192,7 @@ INNER JOIN (select type, case capital.type when 't04' then '返利/手续费' wh
 GROUP BY rechName";
         $capital = DB::select($capitalsql,[$date.' 00:00:00',$date.' 23:59:59']);
 //        $capital = array_merge($echarges,$capital);
-
-        /*注单当日实际总输赢
-        $bunkosql = "SELECT LEFT(updated_at,10) AS date,SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money
-ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) 
-END) AS amount
-FROM bet WHERE 1 AND testFlag ='0' AND 	updated_at BETWEEN ? AND ? ";
-        $bunko = DB::select($bunkosql,[$date.' 00:00:00',$date.' 23:59:59']);*/
-        /*今日实际输赢--扣除 活动金额 和 红包金额 和 入款优惠 得出的会员总输赢
-        foreach ($capital as $k=>$v){
-            if($v ->rechname == '活动') {
-                $bunko[0]->amount += $v ->amount;
-            }
-            if($v ->rechname == '抢到红包') {
-                $bunko[0]->amount += $v ->amount;
-            }
-            if($v ->rechname == '返利/手续费') {
-                $bunko[0]->amount += $v ->amount;
-            }
-        }*/
+        \Log::info('$capital: '.json_encode($capital));
 
         /*今日盈亏*/
         //to1（充值）--已包含后台加钱
@@ -171,64 +206,97 @@ FROM(select to_user,type,money,updated_at from capital where to_user = (select i
 INNER JOIN (select type, case capital.type when 't04' then '返利/手续费' when 't05' then '下注' when 't06' then '重新开奖[中奖金额]' when 't07' then '重新开奖[退水金额]' when 't08' then '活动' when 't09' then '奖金' when 't10' then '代理结算佣金' when 't11' then '代理佣金提现' when 't12' then '代理佣金提现失败退回' when 't13' then '抢到红包' when 't14' then '退水' when 't15' then '提现' when 't16' then '撤单' when 't17' then '提现失败' when 't18' then '后台加钱' when 't19' then '后台扣钱' when 't23' then '棋牌上分' when 't24' then '棋牌下分' when 't25' then '冻结提现金额' when 't26' then '解冻金额' when 't27' then '冻结金额' when 't28' then '推广人佣金' when 't29' then '冻结[退水金额]' end as 'rechName' from capital WHERE type in ('t04','t08','t13','t14','t23','t24')  GROUP BY type)AS B ON A.type = B.type) AS C
 GROUP BY rechName";
         $capitallittle = DB::select($capitallittlesql,[$date.' 00:00:00',$date.' 23:59:59']);
-        //会员输赢（含退水）
-        $bunkofactsql = "SELECT '会员输赢（含退水）' AS 'rechname',SUM(A.amount-A.back_money) AS amount FROM(
+        $today = date('Y-m-d');
+        $today ='2018-12-21';
+        $yesterday = date('Y-m-d',strtotime('-1 day'));
+        //会员输赢（含退水）---amount会员输赢（不含退水）/ back_money(退水)
+        if($date == $today || $date == $yesterday){
+            $bunkofactsql = "SELECT '会员输赢（含退水）' AS 'rechname',SUM(A.amount+A.back_money) AS amount FROM(
 SELECT SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money
 ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) 
 END) AS amount ,SUM(bet.bet_money * bet.play_rebate) AS back_money
-FROM bet WHERE 1 AND testFlag ='0' AND updated_at BETWEEN ? AND ? ) AS A";
+FROM bet WHERE 1 AND testFlag =0 AND status = 1 AND updated_at BETWEEN ? AND ? ) AS A";
+        }else{
+            $bunkofactsql = "SELECT '会员输赢（含退水）' AS 'rechname',SUM(A.amount+A.back_money) AS amount FROM(
+SELECT SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money
+ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) 
+END) AS amount ,SUM(bet_his.bet_money * bet_his.play_rebate) AS back_money
+FROM bet_his WHERE 1 AND testFlag =0 AND updated_at BETWEEN ? AND ? ) AS A";
+        }
         $bunkofact = DB::select($bunkofactsql,[$date.' 00:00:00',$date.' 23:59:59']);
 
-        $bunkofactlogsql = "SELECT '会员输赢（含退水）' AS 'rechname',SUM(A.amount-A.back_money) AS amount FROM(
-SELECT SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money
-ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) 
-END) AS amount ,SUM(bet.bet_money * bet.play_rebate) AS back_money
-FROM bet WHERE 1 AND testFlag ='0' AND updated_at BETWEEN ? AND ? ) AS A";
-        $bunkofactlog = DB::select($bunkofactlogsql,[$date.' 00:00:00',date('Y-m-d H:i:s')]);
-        \Log::info('会员输赢（含退水）'.date('Y-m-d H:i:s').'的值  '.json_encode($bunkofactlog));
-        //未结算
-        $nowtime = date('Y-m-d H',strtotime('-1 day')); //搭配定时任务的执行时间为 00时
-        $executtime = date('Y-m-d H',strtotime($date));
-        if($nowtime == $executtime){  //定时任务时间与输入执行日期一致
-            \Log::info('「会员对帐」功能定时任务执行了。');
-            $unsettlementsql= "SELECT '未结算' AS 'rechname',SUM(CASE WHEN game_id IN(90,91) THEN freeze_money+bet_money ELSE bet_money END) AS amount
-FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ? AND ?";
-            $unsettlement = DB::select($unsettlementsql,[$date.' 00:00:00',date('Y-m-d H:i:s')]);
-
-            $unsettlementlogsql = "SELECT * FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ? AND ?";
-            $unsettlementlog = DB::select($unsettlementlogsql,[$date.' 00:00:00',date('Y-m-d H:i:s')]);
-            \Log::info('未结算执行加总的语法: '."SELECT '未结算' AS 'rechname',SUM(CASE WHEN game_id IN(90,91) THEN freeze_money+bet_money ELSE bet_money END) AS amount FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ".$date." 00:00:00 AND ".date('Y-m-d H:i:s'));
-            \Log::info('未结算执行捞数据的语法: '."SELECT * FROM bet WHERE 1 AND testFlag ='0' AND bunko= '0' AND updated_at BETWEEN ".$date." 00:00:00 AND ".date('Y-m-d H:i:s'));
-            \Log::info(json_encode($unsettlementlog));
-        }else{
-           /*//试算，有点问题
+        /*//未结算试算，有点问题
            $datetom = date('Y-m-d',strtotime($date."+1 days"));
            $unsettlementsql= "SELECT '未结算' AS 'rechname',SUM(A.amount+A.bunko) AS amount
 FROM( SELECT SUM(CASE WHEN game_id IN(90,91) THEN `freeze_money` ELSE `bet_money` END) AS amount,
 SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) END) AS bunko
 FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_at BETWEEN ? AND ?) AS A";
             $unsettlement = DB::select($unsettlementsql,[$date.' 00:00:00',$date.' 23:59:59',$datetom.' 00:00:00',$datetom.' 23:59:59']);*/
-            \Log::info('「会员对帐」功能重新执行按钮执行了。');
-            $val = 0.00;
-            $unsettlementsql = "SELECT data FROM totalreport WHERE daytstrot = ".strtotime($date);
-            $unsettlement = DB::select($unsettlementsql);
-            \Log::info('执行的语法: '.$unsettlementsql);
-            $dataunsettlement = unserialize($unsettlement[0]->data)[$date];
-            if(isset($dataunsettlement['todayprofitlossitem'])){
-                \Log::info('捞到今日盈亏的数据: '.json_encode($dataunsettlement['todayprofitlossitem']));
-                foreach ($dataunsettlement['todayprofitlossitem'] as $k=>$v){
-                    if($v->rechname == "未结算"){
-                        $val =  $v->amount;
+        /*未结算*/
+        $val = 0.00;
+        if(empty($this->argument('dayTime'))){            //系统执行
+            /*未结算金额*/
+            $unsettlementsql= "SELECT SUM(CASE WHEN game_id IN(90,91) THEN freeze_money+bet_money ELSE bet_money END) AS amount FROM bet WHERE 1 AND testFlag ='0' AND created_at BETWEEN ? AND ? AND updated_at BETWEEN ? AND ?";
+            $unsettlement = DB::select($unsettlementsql,[$date.' 00:00:00',$date.' 23:59:59',$dateaddone.' 00:00:00',$dateaddone.' 23:59:59']);
+
+            $unsetamountsql = "SELECT unsetamount FROM totalreport WHERE daytstrot = ".strtotime($date);
+            $unsetamount = DB::select($unsetamountsql);
+            if(empty($unsetamount)){
+                $this->info('不该进来这段的！表示定时任务没有设定 php artisan Member:DailyReconTotal insert');
+            }
+            $val = empty($unsettlement[0]->amount)?$val:$unsettlement[0]->amount;
+
+            /*未结算bet_id*/
+            $unsettlementidsql= "SELECT bet_id FROM bet WHERE 1 AND testFlag ='0' AND created_at BETWEEN ? AND ? AND updated_at BETWEEN ? AND ?";
+            $unsettlementid = DB::select($unsettlementidsql,[$date.' 00:00:00',$date.' 23:59:59',$dateaddone.' 00:00:00',$dateaddone.' 23:59:59']);
+            if(empty($unsettlementid)){
+                $unsettlementidstr=NULL;
+            }else{
+                $unsettlementidstr='';
+                foreach ($unsettlementid as $k=>$v){
+                    $unsettlementidstr .=$v->bet_id.',';
+                }
+                $unsettlementidstr=substr($unsettlementidstr,0,-1);
+            }
+
+        }else{                                            //「重新执行」按钮执行
+            $unsetamountsql = "SELECT unsetamount FROM totalreport WHERE daytstrot = ".strtotime($date);
+            $unsetamount = DB::select($unsetamountsql);
+            if(empty($unsetamount)){
+                $this->info('没有'.$date.'的这笔资料可以重新执行');
+            }else if(!empty($unsetamount) && $unsetamount[0]->unsetamount != "0.00"){
+                $val = $unsetamount[0]->unsetamount;
+            }else{
+                $unsettlementsql = "SELECT data FROM totalreport WHERE daytstrot = ".strtotime($date);
+                $unsettlement = DB::select($unsettlementsql);
+                \Log::info('执行的语法: '.$unsettlementsql);
+                $dataunsettlement = unserialize($unsettlement[0]->data)[$date];
+                if(isset($dataunsettlement['todayprofitlossitem'])){
+                    \Log::info('捞到今日盈亏的数据: '.json_encode($dataunsettlement['todayprofitlossitem']));
+                    foreach ($dataunsettlement['todayprofitlossitem'] as $k=>$v){
+                        if($v->rechname == "未结算"){
+                            $val = empty($v->amount)?$val:$v->amount;
+                        }
                     }
                 }
+                $updateunsetamount['unsetamount'] = $val;
+                try{
+                    DB::table('totalreport')
+                        ->where('daytstrot', $daytstrot)
+                        ->update($updateunsetamount);
+                } catch (\Exception $exception){
+                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                    $this->error('update to totalreport error');
+                }
+                $this->info('「重新执行」按钮执行并自动更新 新栏位`unsetamount` 的值为 '.$val);
             }
-            $unsettlement =[
-                (object)[
-                    "rechname" => "未结算",
-                    "amount" => $val
-                ]
-            ];
         }
+        $unsettlement =[
+            (object)[
+                "rechname" => "未结算",
+                "amount" => $val
+            ]
+        ];
         \Log::info('未结算 最后处理好的值 '.json_encode($unsettlement));
 
         $merge1 = array_merge($echarges,$capitallittle);
@@ -236,22 +304,25 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
         $merge3 = array_merge($merge2,$unsettlement);
         $todayprofitlossitem = array_merge($merge3,$draw);
         $profitlosstal = 0;
+        $actuallywinlose = $bunkofact[0]->amount;  //今日实际输赢（含退水）= 会员输赢（含退水）+ 红包金额 + 返利/手续费 + 活动金额
         foreach ($todayprofitlossitem as $k=>$v){
             if($v ->rechname == '充值') {
                 $profitlosstal += $v ->amount;
             }
             if($v ->rechname == '返利/手续费') {
                 $profitlosstal += $v ->amount;
+                $actuallywinlose += $v ->amount;
             }
             if($v ->rechname == '活动') {
                 $profitlosstal += $v ->amount;
+                $actuallywinlose += $v ->amount;
             }
             if($v ->rechname == '抢到红包') {
                 $profitlosstal += $v ->amount;
+                $actuallywinlose += $v ->amount;
             }
-            if($v ->rechname == '退水') {
-                $profitlosstal += $v ->amount;
-            }
+            /*if($v ->rechname == '退水') {
+            }*/
             if($v ->rechname == '棋牌上分') {
                 $profitlosstal -= $v ->amount;
             }
@@ -281,6 +352,12 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                 "amount" => $profitlosstal,
             ]
         ];
+        $actuallywinlosearay =[
+            (object)[
+                "rechname" => "今日实际输赢（含退水）",
+                "amount" => $actuallywinlose
+            ]
+        ];
 
         $data[$date] = [
             'onlinePayment' => $this->arrayunset($onlinePayment),
@@ -294,7 +371,7 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
             'adminAddMoney' => $this->arrayunset($adminAddMoney),
             'draw' => $this->arrayunset($draw),
             'capital' => $this->arrayunset($capital),
-            'bunko' => $bunkofact,
+            'bunko' => $actuallywinlosearay,
             'todayprofitloss' => $todayprofitloss,
             'todayprofitlossitem' => $todayprofitlossitem,
         ];
@@ -309,6 +386,9 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
 
             if (!empty($ispresence)){
                 $datatotalreport['operation_account']='系统';
+                $datatotalreport['unsetamount']=$val;
+                $datatotalreport['unsetamountnum']=$unsettlementidstr;
+
                 try{
                     DB::table('totalreport')
                         ->where('daytstrot', $daytstrot)
@@ -317,23 +397,34 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                     $this->error('update to totalreport error');
                 }
-                $this->info('update to totalreport successfully');
+                $this->info('system update to totalreport successfully');
                 \Log::info('系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
             }else{
                 /*今日会员馀额*/
                 $useramountsql = "SELECT SUM(A.money) AS 'amount' FROM (select id,money from users where testFlag = '0') AS A";
                 $useramount =  DB::select($useramountsql);
-                foreach ($useramount as $k=>$v){
-                    $memberquota=$v->amount;
-                }
+                $useramountstr = $useramount[0]->amount;
                 /*昨日会员馀额*/
                 $memberquotaydaysql = "SELECT memberquota FROM totalreport WHERE daytstrot = ".strtotime("-1day",$daytstrot);
                 $memberquotayday = DB::select($memberquotaydaysql);
-
+                $memberquotaydaystr = empty($memberquotayday[0]->memberquota)?0:$memberquotayday[0]->memberquota;
+                /*未结算金额*/
+                $unsettlementsql= "SELECT SUM(CASE WHEN game_id IN(90,91) THEN freeze_money+bet_money ELSE bet_money END) AS amount FROM bet WHERE 1 AND testFlag ='0' AND created_at BETWEEN ? AND ? AND updated_at BETWEEN ? AND ?";
+                $unsettlement = DB::select($unsettlementsql,[$date.' 00:00:00',$date.' 23:59:59',$dateaddone.' 00:00:00',$dateaddone.' 23:59:59']);
+                $unsettlementstr =$unsettlement[0]->amount;
+                /*未结算bet_id*/
+                $unsettlementidsql= "SELECT bet_id FROM bet WHERE 1 AND testFlag ='0' AND created_at BETWEEN ? AND ? AND updated_at BETWEEN ? AND ?";
+                $unsettlementid = DB::select($unsettlementidsql,[$date.' 00:00:00',$date.' 23:59:59',$dateaddone.' 00:00:00',$dateaddone.' 23:59:59']);
+                $unsettlementidstr='';
+                foreach ($unsettlementid as $k=>$v){
+                    $unsettlementidstr .=$v->bet_id.',';
+                }
+                $unsettlementidstr=substr($unsettlementidstr,0,-1);
+/*
                 $datatotalreport['daytstrot']=$daytstrot;
                 $datatotalreport['daytime']=$date;
-                $datatotalreport['memberquota']=$memberquota;
-                $datatotalreport['memberquotayday']=empty($memberquotayday[0]->memberquota)?0:$memberquotayday[0]->memberquota;
+                $datatotalreport['memberquota']=$useramountstr;
+                $datatotalreport['memberquotayday']=$memberquotaydaystr;
                 $datatotalreport['created_at']=date('Y-m-d H:i:s');
                 try{
                     DB::table('totalreport')->insert([$datatotalreport]);
@@ -344,8 +435,13 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                 \Log::info('data: '.$datatotalreport['data']);
                 \Log::info('memberquota: '.$datatotalreport['memberquota']);
                 \Log::info('memberquotayday: '.$datatotalreport['memberquotayday']);
-                $this->info('insert to totalreport successfully');
                 \Log::info('系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
+*/
+                $this->info('不该进来这段的！表示定时任务没有设定 php artisan Member:DailyReconTotal insert');
+                $this->info('**********************************************************************************');
+                $this->info("INSERT INTO totalreport (`daytstrot`,`daytime`,`data`,`memberquota`,`operation_account`,`created_at`,`updated_at`,`memberquotayday`,`unsetamount`,`unsetamountnum`) 
+                              VALUES ('".$daytstrot."','".$date."','".$serdata."','".$useramountstr."','系统','".date('Y-m-d H:i:s')."','".date('Y-m-d H:i:s')."','".$memberquotaydaystr."'),'".$unsettlementstr."','".$unsettlementidstr."'");
+                $this->info('**********************************************************************************');
             }
         }else{
             $datatotalreport['data']=$serdata;
@@ -361,14 +457,18 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                 $this->error('update to totalreport error');
             }
             \Log::info('操作人：'.$this->argument('user').'  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
-            $this->info('update to totalreport successfully');
+            $this->info($this->argument('user').' update to totalreport successfully');
         }
     }
 
     private function arrayunset($array){
         foreach ($array as $k=>$v){
-            if($v->amount <= 0)
+            if($v->amount == 0){
                 unset($array[$k]);
+            }
+            if($v->amount < 0){
+                $v->amount=-($v->amount);
+            }
         }
         return $array;
     }

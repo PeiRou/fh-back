@@ -124,24 +124,20 @@
                     @if(isset($v->todayprofitloss) && $v->todayprofitloss != '0.00')<td><span OnMouseOver="this.style.fontWeight='bold'" OnMouseOut="this.style.fontWeight=''" style="color:red" class="edit-link" onclick="searchclick('{{$v->daytime}}|todayprofitlossitem|{{$v->phonyfitloss}}|{{$v->phonyfitloss}}')">{{$v->phonyfitloss}}</span></td>@else<td>0.00</td>@endif
                     <td>{{$v->memberquota}}</td>
                     <td>{{$v->operation_account}}</td>
-                    <td>
-                    @if($hasPermission->hasPermission('m.user.memberReconciliation') == 'has')
-                        <ul class="control-menu"><li  onclick="refreshExcel('{{$v->daytime}}')">重新执行</li></ul>
-                    @endif
-                    </td></tr>
+                    <td><ul class="control-menu"><li  onclick="refreshExcel('{{$v->daytime}}')">重新执行</li></ul></td></tr>
             @endforeach
             </tbody>
         </table>
         <div  style="padding-top:1rem;" >
             1、统计每个会员(仅正式会员)的资金情况，再进行总计。<br>
-            2、每天0点01分后自动进行前一天数据的统计。<br>
+            2、每天0点01分后自动纪录「今日会员馀额」数据，并在每天4点后自动进行前一天数据的统计。<br>
             3、算法：<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             资金明细 = 返利/手续费 + 下注 + 重新开奖[中奖金额] + 重新开奖[退水金额] + 活动金额 + 红包金额 + 提款 + 撤单 + 提现失败 + 后台加钱 + 后台扣钱 + 棋牌上分 + 棋牌下分 + 推广人佣金。<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            今日实际输赢（含退水）= 会员输赢（含退水）。<br>
+            今日实际输赢（含退水）= 会员输赢（含退水）+ 红包金额 + 返利/手续费 + 活动金额。<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            今日盈亏 = 充值（在线充值、线下充值、后台加钱）+ 返利/手续费 + 活动金额 + 棋牌下分 + 退水 + 红包金额 + 会员输赢（含退水）- 提款（自动出款、手动出款、后台扣钱）- 棋牌上分 - 未结算的。<br>
+            今日盈亏 = 充值（在线充值、线下充值、后台加钱）+ 返利/手续费 + 活动金额 + 棋牌下分 + 红包金额 + 会员输赢（含退水）- 提款（自动出款、手动出款、后台扣钱）- 棋牌上分 - 未结算的。<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             今日会员余额 = 昨天会员余额 + 今日盈亏。<br>
             4、重新执行按钮只重新计算当天的数据，并且不会更新昨日会员余额以及未结算金额。<br>

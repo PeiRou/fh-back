@@ -164,7 +164,7 @@ class ModalController extends Controller
             }
             $phonyfitloss ='0.00';
             if(isset($strarray[3]) && $strarray[1]=="todayprofitlossitem"){ //for回圈不含未结算   为平帐用的条件--（平帐总数-for回圈不含未结算的总数）
-                $profitlosstal= 0;$totle=[];
+                $profitlosstal= 0;
                 $todayprofitlossitem=$data;
                 foreach ($todayprofitlossitem as $k=>$v){
                     if($v ->rechname == '充值') {
@@ -179,9 +179,6 @@ class ModalController extends Controller
                     if($v ->rechname == '抢到红包') {
                         $profitlosstal += $v ->amount;
                     }
-                    if($v ->rechname == '退水') {
-                        $profitlosstal += $v ->amount;
-                    }
                     if($v ->rechname == '棋牌上分') {
                         $profitlosstal -= $v ->amount;
                     }
@@ -190,6 +187,9 @@ class ModalController extends Controller
                     }
                     if($v ->rechname == '会员输赢（含退水）') {
                         $profitlosstal += $v ->amount;
+                    }
+                    if($v ->rechname == '未结算') {
+                        $profitlosstal -= $v ->amount;
                     }
                     //提款
                     if($v ->rechname == '自动出款') {
@@ -213,11 +213,15 @@ class ModalController extends Controller
             foreach($data as $k=>$v){
                 $amount = isset($v->amount)?$v->amount:'0';
                 $giftamount = isset($v->giftamount)?'赠送'.$v->giftamount:'';
-                if($v->rechname == '未结算'){ //为平帐用的条件
+                /*if($v->rechname == '未结算'){ //为平帐用的条件
                     $str .="<div id=\"v\">$v->rechname</br><p>$giftamount   总计$phonyfitloss</p></div>";
                 }else{
                     $str .="<div id=\"v\">$v->rechname</br><p>$giftamount   总计$amount</p></div>";
-                }
+                }*/
+                $str .="<div id=\"v\">$v->rechname</br><p>$giftamount   总计$amount</p></div>";
+            }
+            if(isset($strarray[3]) && $strarray[1]=="todayprofitlossitem"){
+                $str .="<div id=\"v\">坏帐</br><p>总计$phonyfitloss</p></div>";
             }
             $str .="</td></tr></tbody>
             </table></div>";
