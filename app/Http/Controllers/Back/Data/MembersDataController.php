@@ -568,8 +568,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                     $str .= "<li onclick='changeUserMoney(\"$users->uid\")'>余额变更</li>";
                 if(in_array('m.user.viewDetails',$this->permissionArray))
                     $str .= "<li><a href='/back/control/userManage/userBetList/$users->uid' target='_blank'>注单明细</a></li>";
-                if(in_array('m.user.CapitalHistory',$this->permissionArray))
-                    $str .= "<li onclick='userCapital(\"$users->uid\")'>资金明细</li>";
+                $str .= "<li onclick='userCapital(\"$users->uid\")'>资金明细</li>";
 
                 $gd =  '<li>更多操作
                         <ul>';
