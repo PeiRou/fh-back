@@ -82,6 +82,7 @@ $(function () {
             {data:'bet_count'},              //笔数
             {data:'bet_money'},             //投注金额
             {data:'bet_amount'},             //赢利投注金额
+            {data:'win_amount'},             //中奖金额
             {data:'activity_money'},
             {data:'handling_fee'},
             {data:'return_amount'},         //代理退水金额
@@ -149,6 +150,7 @@ $(function () {
                 $('#bet_count').text(data.bet_count);
                 $('#bet_money').text(data.bet_money);
                 $('#bet_amount').text(data.bet_amount);
+                $('#win_amount').text(data.win_amount);
                 $('#activity_money').text(data.activity_money);
                 $('#handling_fee').text(data.handling_fee);
                 $('#bet_bunko').text(data.bet_bunko);
@@ -168,6 +170,7 @@ $(function () {
         $('#bet_count').text('');
         $('#bet_money').text('');
         $('#bet_amount').text('');
+        $('#win_amount').text('');
         $('#activity_money').text('');
         $('#handling_fee').text('');
         $('#bet_bunko').text('');

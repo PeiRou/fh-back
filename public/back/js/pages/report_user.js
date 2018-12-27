@@ -89,6 +89,7 @@ $(function () {
                 }},
             {data:'bet_money'},             //投注金额
             {data:'bet_amount'},             //赢利投注金额
+            {data:'win_amount'},             //中奖金额
             {data:'activity_money'},
             {data:'handling_fee'},
             {data:'bet_bunko'},             //会员输赢（不包括退水）
@@ -162,6 +163,7 @@ $(function () {
                 $('#activity_money').text(data.activity_money);
                 $('#handling_fee').text(data.handling_fee);
                 $('#bet_bunko').text(data.bet_bunko);
+                $('#win_amount').text(data.win_amount);
                 $('#fact_return_amount').text(data.fact_return_amount);
                 $('#fact_bet_bunko').text(data.fact_bet_bunko);
             }

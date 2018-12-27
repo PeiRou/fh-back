@@ -53,6 +53,9 @@ class ReportDataController extends Controller
             ->editColumn('fact_return_amount', function ($aData){
                 return round($aData->fact_return_amount,2);
             })
+            ->editColumn('win_amount', function ($aData){
+                return round($aData->bet_money + $aData->bet_bunko,2);
+            })
             ->setTotalRecords($aDataCount)
             ->skipPaging()
             ->make(true);
@@ -87,6 +90,7 @@ class ReportDataController extends Controller
             'handling_fee' => empty($aData->handling_fee)?'':$aData->handling_fee,
             'bet_bunko' => empty($aData->bet_bunko)?'':$aData->bet_bunko,
             'fact_return_amount' => empty($aData->fact_return_amount)?'':round($aData->fact_return_amount,2),
+            'win_amount' => empty($aData->bet_money)?'':round($aData->bet_money + $aData->bet_bunko,2),
             'return_amount' => empty($aData->return_amount)?'':$aData->return_amount,
             'fact_bet_bunko' => empty($aData->bet_bunko)?'':round($aData->bet_bunko + $activity_money + $handling_fee,3),
         ]);
@@ -115,6 +119,9 @@ class ReportDataController extends Controller
                 $activity_money = empty($aData->activity_money)?0:$aData->activity_money;
                 $handling_fee = empty($aData->handling_fee)?0:$aData->handling_fee;
                 return $aData->bet_bunko + $activity_money + $handling_fee;
+            })
+            ->editColumn('win_amount', function ($aData){
+                return round($aData->bet_money + $aData->bet_bunko,2);
             })
             ->editColumn('fact_return_amount', function ($aData){
                 return round($aData->fact_return_amount,2);
@@ -147,6 +154,7 @@ class ReportDataController extends Controller
             'bet_count' => empty($aData->bet_count)?'':$aData->bet_count,
             'bet_money' => empty($aData->bet_money)?'':$aData->bet_money,
             'bet_amount' => empty($aData->bet_amount)?'':$aData->bet_amount,
+            'win_amount' => empty($aData->bet_money)?'':round($aData->bet_money + $aData->bet_bunko,2),
             'activity_money' => empty($aData->activity_money)?'':$aData->activity_money,
             'handling_fee' => empty($aData->handling_fee)?'':$aData->handling_fee,
             'bet_bunko' => empty($aData->bet_bunko)?'':$aData->bet_bunko,
@@ -183,6 +191,9 @@ class ReportDataController extends Controller
             ->editColumn('fact_return_amount', function ($aData){
                 return round($aData->fact_return_amount,2);
             })
+            ->editColumn('win_amount', function ($aData){
+                return round($aData->bet_money + $aData->bet_bunko,2);
+            })
             ->setTotalRecords($aDataCount)
             ->skipPaging()
             ->make(true);
@@ -214,6 +225,7 @@ class ReportDataController extends Controller
             'activity_money' => empty($aData->activity_money)?'':$aData->activity_money,
             'handling_fee' => empty($aData->handling_fee)?'':$aData->handling_fee,
             'bet_bunko' => empty($aData->bet_bunko)?'':$aData->bet_bunko,
+            'win_amount' => empty($aData->bet_money)?'':round($aData->bet_money + $aData->bet_bunko,2),
             'fact_return_amount' => empty($aData->fact_return_amount)?'':round($aData->fact_return_amount,2),
             'fact_bet_bunko' => empty($aData->bet_bunko)?'':round($aData->bet_bunko + $activity_money + $handling_fee,2),
         ]);
