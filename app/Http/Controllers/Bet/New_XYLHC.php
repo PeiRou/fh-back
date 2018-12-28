@@ -1985,10 +1985,23 @@ class New_XYLHC
 
                 //连肖连尾-----开始
                 $lxlw_playCate = 176; //分类ID
-                $lxlw_2lx_plays = ['鼠'=>3761,'牛'=>3762,'虎'=>3763,'兔'=>3764,'龙'=>3765,'蛇'=>3766,'马'=>3767,'羊'=>3768,'猴'=>3769,'鸡'=>3770,'狗'=>3771,'猪'=>3772];
-                $lxlw_3lx_plays = ['鼠'=>3773,'牛'=>3774,'虎'=>3775,'兔'=>3776,'龙'=>3777,'蛇'=>3778,'马'=>3779,'羊'=>3780,'猴'=>3781,'鸡'=>3782,'狗'=>3783,'猪'=>3784];
-                $lxlw_4lx_plays = ['鼠'=>3785,'牛'=>3786,'虎'=>3787,'兔'=>3788,'龙'=>3789,'蛇'=>3790,'马'=>3791,'羊'=>3792,'猴'=>3793,'鸡'=>3794,'狗'=>3795,'猪'=>3796];
-                $lxlw_5lx_plays = ['鼠'=>3797,'牛'=>3798,'虎'=>3799,'兔'=>3800,'龙'=>3801,'蛇'=>3802,'马'=>3803,'羊'=>3804,'猴'=>3805,'鸡'=>3806,'狗'=>3807,'猪'=>3808];
+                $uniqueSX = array_unique($openSX);
+                //二连肖
+                $lx2_ids = [];
+                $get2LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连肖%')->where('bunko','=',0.00)->get();
+                foreach ($get2LX as $item) {
+                    $userBetInfoSX = explode(',',$item->bet_info);
+                    $bi = array_intersect($uniqueSX, $userBetInfoSX);
+                    if(count($bi) == 2){
+                        $lx2_ids[] = $item->bet_id;
+                    }
+                }
+                $ids_lx2 = implode(',', $lx2_ids);
+                if($ids_lx2){
+                    $sql_lx2 = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lx2)"; //中奖的SQL语句
+                } else {
+                    $sql_lx2 = 0;
+                }
                 //连肖连尾-----结束
 
 
@@ -2017,6 +2030,15 @@ class New_XYLHC
                         if($zx_sql !== 0){
                             $run5 = DB::connection('mysql::write')->statement($zx_sql);
                             if($run5 == 1){
+                                $bunko_index++;
+                            }
+                        } else {
+                            $bunko_index++;
+                        }
+
+                        if($sql_lx2 !== 0){
+                            $run6 = DB::connection('mysql::write')->statement($sql_lx2);
+                            if($run6 == 1){
                                 $bunko_index++;
                             }
                         } else {
