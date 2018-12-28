@@ -1994,6 +1994,7 @@ class New_XYLHC
                     $bi = array_intersect($uniqueSX, $userBetInfoSX);
                     if(count($bi) == 2){
                         $lx2_ids[] = $item->bet_id;
+                        \Log::info($item->bet_id);
                     }
                 }
                 $ids_lx2 = implode(',', $lx2_ids);
