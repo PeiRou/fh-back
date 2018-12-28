@@ -1990,8 +1990,10 @@ class New_XYLHC
                 //二连肖
                 $lx2_ids = [];
                 $get2LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连肖%')->where('bunko','=',0.00)->get();
+                \Log::info($uniqueSX);
                 foreach ($get2LX as $item) {
                     $userBetInfoSX = explode(',',$item->bet_info);
+                    \Log::info($userBetInfoSX);
                     $bi = array_intersect($uniqueSX, $userBetInfoSX);
                     if(count($bi) == 2){
                         $lx2_ids[] = $item->bet_id;
