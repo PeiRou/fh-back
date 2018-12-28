@@ -1963,6 +1963,7 @@ class New_XYLHC
                 $sx4 = $this->LHC_SX->shengxiao($arrOpenCode[3]);
                 $sx5 = $this->LHC_SX->shengxiao($arrOpenCode[4]);
                 $sx6 = $this->LHC_SX->shengxiao($arrOpenCode[5]);
+                $sx7 = $this->LHC_SX->shengxiao($arrOpenCode[6]);
                 $openSX = [$sx1,$sx2,$sx3,$sx4,$sx5,$sx6];
                 $countOpen = array_count_values($openSX);
                 $zx_sql = "UPDATE ".$table." SET bunko = CASE play_id ";
@@ -1985,7 +1986,7 @@ class New_XYLHC
 
                 //连肖连尾-----开始
                 $lxlw_playCate = 176; //分类ID
-                $uniqueSX = array_unique($openSX);
+                $uniqueSX = array_unique([$sx1,$sx2,$sx3,$sx4,$sx5,$sx6,$sx7]);
                 //二连肖
                 $lx2_ids = [];
                 $get2LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连肖%')->where('bunko','=',0.00)->get();
