@@ -438,20 +438,20 @@ class BetDataController extends Controller
         $user = DB::table('users')->where('username',$username)->first();
 
         if($user){
-            $aBetSql = '';
-            $aBetHisSql = '';
-            $betCount = 0;
-            $betHisCount = 0;
-            if(empty($end))
-                $end = $start;
-            if(strtotime($end) >= strtotime(date('Y-m-d',strtotime('-1 day')))){
+//            $aBetSql = '';
+//            $aBetHisSql = '';
+//            $betCount = 0;
+//            $betHisCount = 0;
+//            if(empty($end))
+//                $end = $start;
+//            if(strtotime($end) >= strtotime(date('Y-m-d',strtotime('-1 day')))){
                 $aBetSql = Bets::userBetSearch($request,$user);
                 $betCount = Bets::userBetSearchCount($request,$user);
-            }
-            if(strtotime($start) < strtotime(date('Y-m-d',strtotime('-2 day')))) {
+//            }
+//            if(strtotime($start) < strtotime(date('Y-m-d',strtotime('-2 day')))) {
                 $aBetHisSql = BetHis::userBetSearch($request, $user);
                 $betHisCount = BetHis::userBetSearchCount($request, $user);
-            }
+//            }
             if(empty($aBetSql) && !empty($aBetHisSql)){
                 $aSql = $aBetHisSql.' ORDER BY bet_created_at DESC,bet_bet_id DESC ';
             }elseif(empty($aBetHisSql) && !empty($aBetSql)){
