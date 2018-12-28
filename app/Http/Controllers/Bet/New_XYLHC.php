@@ -1988,23 +1988,47 @@ class New_XYLHC
                 $lxlw_playCate = 176; //分类ID
                 $uniqueSX = array_unique([$sx1,$sx2,$sx3,$sx4,$sx5,$sx6,$sx7]);
                 //二连肖
-                $lx2_ids = [];
+                $lx_ids = [];
                 $get2LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连肖%')->where('bunko','=',0.00)->get();
-                \Log::info($uniqueSX);
                 foreach ($get2LX as $item) {
                     $userBetInfoSX = explode(',',$item->bet_info);
-                    \Log::info($userBetInfoSX);
                     $bi = array_intersect($uniqueSX, $userBetInfoSX);
                     if(count($bi) == 2){
-                        $lx2_ids[] = $item->bet_id;
-                        \Log::info($item->bet_id);
+                        $lx_ids[] = $item->bet_id;
                     }
                 }
-                $ids_lx2 = implode(',', $lx2_ids);
-                if($ids_lx2){
-                    $sql_lx2 = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lx2)"; //中奖的SQL语句
+                //三连肖
+                $get3LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%三连肖%')->where('bunko','=',0.00)->get();
+                foreach ($get3LX as $item) {
+                    $userBetInfoSX_3 = explode(',',$item->bet_info);
+                    $bi = array_intersect($uniqueSX, $userBetInfoSX_3);
+                    if(count($bi) == 3){
+                        $lx_ids[] = $item->bet_id;
+                    }
+                }
+                //四连肖
+                $get4LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%四连肖%')->where('bunko','=',0.00)->get();
+                foreach ($get4LX as $item) {
+                    $userBetInfoSX_4 = explode(',',$item->bet_info);
+                    $bi = array_intersect($uniqueSX, $userBetInfoSX_4);
+                    if(count($bi) == 4){
+                        $lx_ids[] = $item->bet_id;
+                    }
+                }
+                //五连肖
+                $get5LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%五连肖%')->where('bunko','=',0.00)->get();
+                foreach ($get5LX as $item) {
+                    $userBetInfoSX_5 = explode(',',$item->bet_info);
+                    $bi = array_intersect($uniqueSX, $userBetInfoSX_5);
+                    if(count($bi) == 5){
+                        $lx_ids[] = $item->bet_id;
+                    }
+                }
+                $ids_lx = implode(',', $lx_ids);
+                if($ids_lx){
+                    $sql_lx = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lx)"; //中奖的SQL语句
                 } else {
-                    $sql_lx2 = 0;
+                    $sql_lx = 0;
                 }
                 //连肖连尾-----结束
 
@@ -2040,8 +2064,8 @@ class New_XYLHC
                             $bunko_index++;
                         }
 
-                        if($sql_lx2 !== 0){
-                            $run6 = DB::connection('mysql::write')->statement($sql_lx2);
+                        if($sql_lx !== 0){
+                            $run6 = DB::connection('mysql::write')->statement($sql_lx);
                             if($run6 == 1){
                                 $bunko_index++;
                             }
