@@ -2030,6 +2030,32 @@ class New_XYLHC
                 } else {
                     $sql_lx = 0;
                 }
+
+                //连尾
+                $wei1 = $this->LHC_SX->wei($arrOpenCode[0]);
+                $wei2 = $this->LHC_SX->wei($arrOpenCode[1]);
+                $wei3 = $this->LHC_SX->wei($arrOpenCode[2]);
+                $wei4 = $this->LHC_SX->wei($arrOpenCode[3]);
+                $wei5 = $this->LHC_SX->wei($arrOpenCode[4]);
+                $wei6 = $this->LHC_SX->wei($arrOpenCode[5]);
+                $wei7 = $this->LHC_SX->wei($arrOpenCode[6]);
+                $uniqueWei = array_unique([$wei1,$wei2,$wei3,$wei4,$wei5,$wei6,$wei7]);
+                $lw_ids = [];
+                //二连尾
+                $get2LW = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连尾%')->where('bunko','=',0.00)->get();
+                foreach ($get2LW as $item) {
+                    $userBetInfoWei = explode(',',$item->bet_info);
+                    $bi = array_intersect($uniqueWei, $userBetInfoWei);
+                    if(count($bi) == 2){
+                        $lw_ids[] = $item->bet_id;
+                    }
+                }
+                $ids_lw = implode(',', $lw_ids);
+                if($ids_lw){
+                    $sql_lw = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lw)"; //中奖的SQL语句
+                } else {
+                    $sql_lw = 0;
+                }
                 //连肖连尾-----结束
 
 
@@ -2067,6 +2093,15 @@ class New_XYLHC
                         if($sql_lx !== 0){
                             $run6 = DB::connection('mysql::write')->statement($sql_lx);
                             if($run6 == 1){
+                                $bunko_index++;
+                            }
+                        } else {
+                            $bunko_index++;
+                        }
+
+                        if($sql_lw !== 0){
+                            $run7 = DB::connection('mysql::write')->statement($sql_lw);
+                            if($run7 == 1){
                                 $bunko_index++;
                             }
                         } else {
