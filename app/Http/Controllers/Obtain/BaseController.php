@@ -15,6 +15,10 @@ class BaseController extends Controller
     //处理后的接受参数
     protected $aParam;
 
+    private $encryptedPublic = '';
+
+    private $decryptedPublic = '';
+
     //code参数
     protected $code = [
         0 => 'OK',
