@@ -1989,7 +1989,7 @@ class New_XYLHC
                 $uniqueSX = array_unique([$sx1,$sx2,$sx3,$sx4,$sx5,$sx6,$sx7]);
                 //二连肖
                 $lx_ids = [];
-                $get2LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连肖%')->where('bunko','=',0.00)->get();
+                $get2LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%二连肖%')->where('bunko','=',0.00)->get();
                 foreach ($get2LX as $item) {
                     $userBetInfoSX = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueSX, $userBetInfoSX);
@@ -1998,7 +1998,7 @@ class New_XYLHC
                     }
                 }
                 //三连肖
-                $get3LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%三连肖%')->where('bunko','=',0.00)->get();
+                $get3LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%三连肖%')->where('bunko','=',0.00)->get();
                 foreach ($get3LX as $item) {
                     $userBetInfoSX_3 = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueSX, $userBetInfoSX_3);
@@ -2007,7 +2007,7 @@ class New_XYLHC
                     }
                 }
                 //四连肖
-                $get4LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%四连肖%')->where('bunko','=',0.00)->get();
+                $get4LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%四连肖%')->where('bunko','=',0.00)->get();
                 foreach ($get4LX as $item) {
                     $userBetInfoSX_4 = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueSX, $userBetInfoSX_4);
@@ -2016,7 +2016,7 @@ class New_XYLHC
                     }
                 }
                 //五连肖
-                $get5LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%五连肖%')->where('bunko','=',0.00)->get();
+                $get5LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%五连肖%')->where('bunko','=',0.00)->get();
                 foreach ($get5LX as $item) {
                     $userBetInfoSX_5 = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueSX, $userBetInfoSX_5);
@@ -2042,7 +2042,7 @@ class New_XYLHC
                 $uniqueWei = array_unique([$wei1,$wei2,$wei3,$wei4,$wei5,$wei6,$wei7]);
                 $lw_ids = [];
                 //二连尾
-                $get2LW = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连尾%')->where('bunko','=',0.00)->get();
+                $get2LW = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%二连尾%')->where('bunko','=',0.00)->get();
                 foreach ($get2LW as $item) {
                     $userBetInfoWei = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueWei, $userBetInfoWei);
@@ -2050,6 +2050,34 @@ class New_XYLHC
                         $lw_ids[] = $item->bet_id;
                     }
                 }
+                //三连尾
+                $get3LW = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%三连尾%')->where('bunko','=',0.00)->get();
+                foreach ($get3LW as $item) {
+                    $userBetInfoWei_3 = explode(',',$item->bet_info);
+                    $bi = array_intersect($uniqueWei, $userBetInfoWei_3);
+                    if(count($bi) == 3){
+                        $lw_ids[] = $item->bet_id;
+                    }
+                }
+                //四连尾
+                $get4LW = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%四连尾%')->where('bunko','=',0.00)->get();
+                foreach ($get4LW as $item) {
+                    $userBetInfoWei_4 = explode(',',$item->bet_info);
+                    $bi = array_intersect($uniqueWei, $userBetInfoWei_4);
+                    if(count($bi) == 4){
+                        $lw_ids[] = $item->bet_id;
+                    }
+                }
+                //五连尾
+                $get5LW = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%五连尾%')->where('bunko','=',0.00)->get();
+                foreach ($get5LW as $item) {
+                    $userBetInfoWei_5 = explode(',',$item->bet_info);
+                    $bi = array_intersect($uniqueWei, $userBetInfoWei_5);
+                    if(count($bi) == 5){
+                        $lw_ids[] = $item->bet_id;
+                    }
+                }
+
                 $ids_lw = implode(',', $lw_ids);
                 if($ids_lw){
                     $sql_lw = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lw)"; //中奖的SQL语句
