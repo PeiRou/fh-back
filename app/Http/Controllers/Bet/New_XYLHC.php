@@ -1910,7 +1910,7 @@ class New_XYLHC
             if(!empty($sql_bets))
                 $run = DB::statement($sql);
 
-            if($run == 1){
+            if(isset($run) && $run == 1){
                 //自选不中------开始
                 $zxbz_playCate = 175; //特码分类ID
                 $zxbz_ids = [];
