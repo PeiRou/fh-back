@@ -440,7 +440,7 @@ class OpenHistoryController extends Controller
     private function notTen($num){
         $num = (int)$num;
         if($num<10)
-            $num = '0'.(string)$num;
+            $num = (int)$num;
         return $num;
     }
 
