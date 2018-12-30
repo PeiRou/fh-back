@@ -207,7 +207,6 @@ INNER JOIN (select type, case capital.type when 't04' then '返利/手续费' wh
 GROUP BY rechName";
         $capitallittle = DB::select($capitallittlesql,[$date.' 00:00:00',$date.' 23:59:59']);
         $today = date('Y-m-d');
-        $today ='2018-12-21';
         $yesterday = date('Y-m-d',strtotime('-1 day'));
         //会员输赢（含退水）---amount会员输赢（不含退水）/ back_money(退水)
         if($date == $today || $date == $yesterday){
