@@ -10,6 +10,7 @@ namespace App\Repository\HandleLog;
 use App\Http\Services\FactoryService;
 use App\LogHandle;
 use App\Users;
+use Illuminate\Support\Facades\DB;
 
 class BaseRepository
 {
@@ -183,4 +184,31 @@ class BaseRepository
     private function acAdGetOutUser(){
         $this->param['action'] = '踢下线('.$this->getUser($this->request->id)->username.')';
     }
+    //修改在线支付配置
+    private function acAdNewEditPayOnline(){
+        $this->param['action'] = '修改在线支付配置</br>';
+        $this->param['action'] .= '修改前：';
+        $this->acAdNewEditPayOnlineData();
+    }
+    private function acAdNewEditPayOnlineAfter(){
+        $this->param['action'] .= '修改后：';
+        $this->acAdNewEditPayOnlineData();
+    }
+    private function acAdNewEditPayOnlineData(){
+        $res = DB::table('pay_online_new')->find($this->request->id);
+        $this->param['action'] .= '支付类型（'.$res->rechName.'）'
+            . '不可见地区（'.$res->lockArea.'）'
+            . '支付名称（'.$res->payeeName.'）'
+            . '商户号（'.$res->apiId.'）<br/>';
+    }
+    //添加在线支付配置
+    private function acAdNewAddPayOnline(){
+        $iPayTypeNew = DB::table('pay_type_new')->where('id',$this->request->payType)->first();
+        $this->param['action'] = '添加在线支付配置</br>';
+        $this->param['action'] .= '支付类型（'.$iPayTypeNew->rechName.'）'
+            . '不可见地区（'.implode(',', $this->request->lockArea).'）'
+            . '支付名称（'.$this->request->payeeName.'）'
+            . '商户号（'.$this->request->apiId.'）<br/>';
+    }
+
 }
