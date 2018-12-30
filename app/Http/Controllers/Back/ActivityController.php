@@ -170,6 +170,10 @@ class ActivityController extends Controller
         }
         $data['content'] = json_encode($content);
         $data['total_money'] = $params['total_money'];
+        unset($data['award']);
+        unset($data['num']);
+        unset($data['ranking']);
+        unset($data['bonus']);
         if(ActivityCondition::insert($data)){
             return response()->json([
                 'status'=>true,
