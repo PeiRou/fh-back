@@ -609,4 +609,14 @@ class Excel
         }
         return $html;
     }
+    //开奖阻止
+    public function stopIng($code,$issue,$redis){
+        usleep(rand(10000,200000));
+        $key = $code.'ing:'.$issue;
+        if($redis->exists($key)){
+            return 'ing';
+        }
+        $redis->setex($key,60,'ing');
+        $redis->set($this->code.':needopen','');
+    }
 }
