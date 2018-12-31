@@ -616,7 +616,7 @@ class Excel
         if($redis->exists($key)){
             return 'ing';
         }
-        $redis->setex($key,60,'ing');
+        $redis->setex($key,5,'ing');
         $redis->set($code.':needopen','');
     }
 }
