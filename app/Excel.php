@@ -311,9 +311,10 @@ class Excel
     //取得官方开奖
     public function getGuanIssueNum($needOpenIssue,$type){
         $key = $type.'?issue='.$needOpenIssue;
-        if(Storage::disk('guanOpen')->exists($key))
+        $date = date('Y-m-d H:i:s');
+        if(Storage::disk('guanOpen')->exists($key) || Storage::disk('guanOpen')->get($key)==$date)
             return '';
-        Storage::disk('guanOpen')->put($key,'1');
+        Storage::disk('guanOpen')->put($key,$date);
         $url = Config::get('website.guanIssueServerUrl').$key;
         $res = json_decode(file_get_contents($url), true);
         Storage::disk('guanOpen')->delete($key);
