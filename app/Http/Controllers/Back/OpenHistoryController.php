@@ -1042,7 +1042,8 @@ class OpenHistoryController extends Controller
         $result2 = Users::where('id', $iBet->user_id)->increment('money', $money);
         $result3 = Bets::where('order_id',$orderId)->update([
             'bunko' =>  DB::raw("bet_money"),
-            'nn_view_money' => 0
+            'nn_view_money' => 0,
+            'status' => 2
         ]);
 
         if($result1 && $result2 && $result3){
@@ -1137,6 +1138,9 @@ class OpenHistoryController extends Controller
                         ];
                     }
                 }
+                Bets::where('issue', $issue)->where('game_id', $gameInfo->game_id)->update([
+                    'status' => 2
+                ]);
                 Capital::insert($aCapital);
                 Capital::insert($aCapitalBack);
             }
