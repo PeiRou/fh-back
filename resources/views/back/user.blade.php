@@ -33,6 +33,9 @@
             @if($hasPermission->hasPermission('m.user.add'))
             <span onclick="addUser()">添加会员</span>
             @endif
+            @if($hasPermission->hasPermission('m.user.addMoneyAllUser'))
+                <span onclick="addMoneyAllUser()">批量修改余额</span>
+            @endif
         </div>
     </div>
     <div class="table-content">
