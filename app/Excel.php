@@ -312,7 +312,7 @@ class Excel
     public function getGuanIssueNum($needOpenIssue,$type){
         $key = $type.'?issue='.$needOpenIssue;
         $date = date('Y-m-d H:i:s');
-        if(Storage::disk('guanOpen')->exists($key) || Storage::disk('guanOpen')->get($key)==$date)
+        if(Storage::disk('guanOpen')->exists($key))
             return '';
         Storage::disk('guanOpen')->put($key,$date);
         $url = Config::get('website.guanIssueServerUrl').$key;
