@@ -114,7 +114,7 @@ class Swoole extends Command
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             \Log::info('this commands not fund :'.$data['thread']);
         }
-        if($this->num[$id]>=61)
+        if($this->num[$id]>=59)
             $this->serv->clearTimer($id);
     }
     private function setId($id){
