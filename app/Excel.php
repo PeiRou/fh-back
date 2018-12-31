@@ -617,6 +617,6 @@ class Excel
             return 'ing';
         }
         $redis->setex($key,60,'ing');
-        $redis->set($this->code.':needopen','');
+        $redis->set($code.':needopen','');
     }
 }
