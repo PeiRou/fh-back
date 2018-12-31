@@ -158,6 +158,7 @@ class SrcMemberController extends Controller
             $agent->modelStatus = empty($modelStatus)?0:$modelStatus;
             $insert = $agent->save();
         }catch (\exception $e){
+            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
             $insert = 0;
         }
         if($insert == 1){
