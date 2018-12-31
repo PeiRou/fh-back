@@ -89,7 +89,7 @@ class Swoole extends Command
         $this->ws->on('request', function ($serv) {
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
 
-            $this->timer = $this->serv->tick(500, function($id) use ($data){
+            $this->timer = $this->serv->tick(1000, function($id) use ($data){
                 //设置ID计数器
                 $this->setId($id);
                 //开始计数器
@@ -109,17 +109,12 @@ class Swoole extends Command
         if(!isset($data['thread']) || empty($data['thread']))
             $this->serv->clearTimer($id);
         try{
-            $key = $data['thread'];
-            $date = date('Y-m-d H:i:s');
-            if(Storage::disk('guanOpen')->exists($key) && Storage::disk('guanOpen')->get($key)==$date)
-                return '';
-            Storage::disk('guanOpen')->put($key,$date);
             Artisan::call($data['thread']);
         }catch (\exception $exception){
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             \Log::info('this commands not fund :'.$data['thread']);
         }
-        if($this->num[$id]>=122)
+        if($this->num[$id]>=61)
             $this->serv->clearTimer($id);
     }
     private function setId($id){
