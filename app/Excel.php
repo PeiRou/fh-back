@@ -6,6 +6,7 @@ use App\Events\BackPusherEvent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 
 class Excel
 {
@@ -309,8 +310,13 @@ class Excel
     }
     //取得官方开奖
     public function getGuanIssueNum($needOpenIssue,$type){
-        $url = Config::get('website.guanIssueServerUrl').$type.'?issue='.$needOpenIssue;
+        $key = $type.'?issue='.$needOpenIssue;
+        if(Storage::disk('guanOpen')->exists($key))
+            return '';
+        Storage::disk('guanOpen')->put($key,'1');
+        $url = Config::get('website.guanIssueServerUrl').$key;
         $res = json_decode(file_get_contents($url), true);
+        Storage::disk('guanOpen')->delete($key);
         return $res;
     }
     //取得目前未开奖奖期
