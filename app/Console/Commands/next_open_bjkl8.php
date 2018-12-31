@@ -105,8 +105,8 @@ class next_open_bjkl8 extends Command
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
             }
-//            $key = $this->code.'ing:'.$res->issue;
-//            $redis->setex($key,2,'ing');
+            $key = $this->code.'ing:'.$res->issue;
+            $redis->setex($key,2,'ing');
         } catch (\Exception $exception) {
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }

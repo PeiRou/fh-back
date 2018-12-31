@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Bet\Clong;
 
 class next_open_pcdd extends Command
@@ -105,10 +106,12 @@ class next_open_pcdd extends Command
                     \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
             }
-//            $key = $this->code.'ing:'.$res->issue;
-//            $redis->setex($key,2,'ing');
+            $key = $this->code.'ing:'.$res->issue;
+            $redis->setex($key,2,'ing');
         } catch (\Exception $exception) {
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+        }finally{
+            Storage::disk('guanOpen')->put($this->signature);
         }
     }
 }
