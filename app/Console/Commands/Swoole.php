@@ -110,9 +110,10 @@ class Swoole extends Command
             $this->serv->clearTimer($id);
         try{
             $key = $data['thread'];
-            if(Storage::disk('guanOpen')->exists($key))
+            $date = date('Y-m-d H:i:s');
+            if(Storage::disk('guanOpen')->exists($key) && Storage::disk('guanOpen')->get($key)==$date)
                 return '';
-            Storage::disk('guanOpen')->put($key,'1');
+            Storage::disk('guanOpen')->put($key,$date);
             Artisan::call($data['thread']);
         }catch (\exception $exception){
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());

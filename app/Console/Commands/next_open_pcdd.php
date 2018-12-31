@@ -111,7 +111,8 @@ class next_open_pcdd extends Command
         } catch (\Exception $exception) {
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }finally{
-            Storage::disk('guanOpen')->delete($this->signature);
+            if(Storage::disk('guanOpen')->exists($key) && Storage::disk('guanOpen')->get($key) != date('Y-m-d H:i:s'))
+                Storage::disk('guanOpen')->delete($this->signature);
         }
     }
 }
