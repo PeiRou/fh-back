@@ -67,6 +67,7 @@ class next_open_gsk3 extends Command
             $redis->set('gsk3:gapnum',$gapnum);
             return 'Fail';
         }else{
+            usleep(rand(50000,200000));
             //阻止進行中
             $key = $this->code.'ing:'.$res->issue;
             if($redis->exists($key)){
