@@ -37,7 +37,7 @@ class clear_bjkl8 extends Command
     public function handle()
     {
 
-        $res = DB::table('game_bjkl8')->get();
+        $res = DB::table('game_bjkl8')->whereBetween('updated_at', ['2018-12-30 00:00:00', '2018-12-31 23:59:59'])->get();
         foreach ($res as $k =>$v){
             $len = strlen($v->opennum);
             if($len>=60)
