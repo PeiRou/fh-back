@@ -48,6 +48,11 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'guanOpen' => [
+            'driver' => 'local',
+            'root' => storage_path('guanOpen'),
+        ],
+
         'static' => [
             'driver' => 'local',
             'root' => public_path('static'),
