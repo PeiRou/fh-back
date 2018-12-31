@@ -608,7 +608,6 @@ class Excel
     }
     //开奖阻止
     public function stopIng($code,$issue,$redis){
-        usleep(rand(100000,1000000));
         $key = $code.'ing:'.$issue;
         if($redis->exists($key)){
             return 'ing';
