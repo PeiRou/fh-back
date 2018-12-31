@@ -40,7 +40,7 @@ class clear_bjkl8 extends Command
         $res = DB::table('game_bjkl8')->whereBetween('opentime', ['2018-12-30 00:00:00', '2018-12-31 23:59:59'])->get();
         foreach ($res as $k =>$v){
             $len = strlen($v->opennum);
-            if($len>=60)
+            if($len==59)
                 continue;
             $tmp = substr($v->opennum,0,59);
             DB::table('game_bjkl8')->where('id',$v->id)->update(['opennum'=>$tmp]);
