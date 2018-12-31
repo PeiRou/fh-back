@@ -374,3 +374,7 @@ function edit(id) {
     var url = '/back/modal/editUserInfo/'+id;
     Cmodal('修改会员资料','30%',url,true,'editUserForm');
 }
+function addMoneyAllUser(){
+    var url = '/back/modal/addMoneyAllUser/';
+    Cmodal('批量添加会员','22%',url,true,'changeUserMoneyForm');
+}
