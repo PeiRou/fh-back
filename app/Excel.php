@@ -583,6 +583,8 @@ class Excel
             }else{
                 //检查不是当期需要追号的开奖
                 $res = $this->getNeedMinIssue($table);     //在从旧的需要开奖的奖期查起
+                if($res->issue == $needOpenIssue)
+                    return 'no have';
                 $needOpenIssue = $res->issue;
                 $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
                 if(!isset($html['issue'])){
