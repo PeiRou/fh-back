@@ -2,39 +2,31 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\AgentOdds;
 use App\Http\Controllers\Common\AgentLevelOdds;
 use App\Play;
 use App\Http\Controllers\Controller;
 use App\PlayAgentSet;
-use App\SystemSetting;
-use Illuminate\Support\Facades\DB;
 
 class GameAgentTableController extends Controller
 {
-    public function gameTable($gameId,$level){
+    public function gameTable($gameId,$agentId){
         $data = Play::where('gameId',$gameId)->get();
         $filter = $this->getFilterArray($gameId);
         $fromDBOdds = collect([]);
         $fromDBRebate = collect([]);
 
         $AgentLevelOdds = new AgentLevelOdds();
-        $platformOdds = SystemSetting::getValueByRemark1('agent_odds_basis');
-        $aAgentOdds = DB::table('agent_odds_setting')->where('level', '<=', $level)->orderBy('level', 'asc')->get();
-        $aArrayOdds = [];
-        foreach ($aAgentOdds as $iAgentOdds) {
-            $aArrayOdds[$iAgentOdds->level] = $iAgentOdds->odds;
-        }
+        $gameCategoryId = $AgentLevelOdds->getGameCategoryId($gameId);
+        $iAgentOdds = AgentOdds::getOddsByAgentAndCategory($agentId,$gameCategoryId);
 
         foreach ($data as $item){
-            $oddsLength = $AgentLevelOdds->getDecimalNumber($item->odds);
             foreach ($filter as $i){
                 if($item->odds_tag == $i)
                 {
-                    $fromDBOdds->put($item->odds_tag,$AgentLevelOdds->getAgentOdds($platformOdds, $aArrayOdds, $item->odds, $oddsLength));
+                    $fromDBOdds->put($item->odds_tag,$AgentLevelOdds->getAgentOdds($item->odds,$iAgentOdds->odds));
                 }
-            }
-            foreach ($filter as $s){
-                if($item->rebate_tag == $s){
+                if($item->rebate_tag == $i){
                     $fromDBRebate->put($item->rebate_tag,$item->rebate);
                 }
             }

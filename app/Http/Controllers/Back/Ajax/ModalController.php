@@ -277,14 +277,17 @@ class ModalController extends Controller
     public function addAgent($agentId)
     {
         $allGeneralAgent = GeneralAgent::all();
-        $aBasisOdds = SystemSetting::getValueByRemark1('agent_odds_basis');
-        if(empty($agentId)) {
-            $aAgentOdds = [];
-            $iAgent = [];
-        }else{
-            $oddsLevel = Agent::where('a_id',$agentId)->value('odds_level');
-            $oddsLevel = empty($oddsLevel)?0:$oddsLevel;
-            $aAgentOdds = AgentOddsSetting::where('level','>=',$oddsLevel)->where('odds','<=',$aBasisOdds)->orderBy('level','asc')->get();
+        $aAgentOdds = [];
+        $iAgent = [];
+        if(!empty($agentId)) {
+            $oddsLevel = Agent::select('agent_odds_setting.*','game_odds_category.title')->where('agent.a_id',$agentId)
+                ->join('agent_odds','agent_odds.agent_id','=','agent.a_id')
+                ->join('game_odds_category','game_odds_category.id','=','agent_odds.odds_category_id')
+                ->join('agent_odds_setting','agent_odds_setting.id','=','agent_odds.odds_id')->get();
+            foreach ($oddsLevel as $key => $value){
+                $aAgentOdds[$key] = $value;
+                $aAgentOdds[$key]->info = AgentOddsSetting::where('odds_category_id','=',$value->odds_category_id)->where('odds','>=',$value->odds)->orderBy('odds','asc')->get();
+            }
             $iAgent = Agent::find($agentId);
         }
         $agentModelStatus = Agent::$agentModelStatus;
@@ -292,7 +295,6 @@ class ModalController extends Controller
             ->with('info',$allGeneralAgent)
             ->with('agentId',$agentId)
             ->with('aAgentOdds',$aAgentOdds)
-            ->with('aBasisOdds',$aBasisOdds)
             ->with('iAgent',$iAgent)
             ->with('agentModelStatus',$agentModelStatus);
     }
@@ -1086,10 +1088,11 @@ class ModalController extends Controller
     }
 
     //查看代理赔率-模板
-    public function gameAgentOddsLook($level){
+    public function gameAgentOddsLook($agentId){
         $gameData = json_decode(Storage::disk('local')->get('gameData.php'),true);
         $game = Games::all();
-        return view('back.modal.game.handicapSetting',compact('gameData','game','level'));
+        $modelStatus = 1;
+        return view('back.modal.game.handicapSetting',compact('gameData','game','agentId','modelStatus'));
     }
 
     //代理赔率设置-模板
@@ -1097,7 +1100,8 @@ class ModalController extends Controller
         $gameData = json_decode(Storage::disk('local')->get('gameData.php'),true);
         $game = Games::all();
         $iAgent = Agent::where('a_id',$agentId)->first();
-        return view('back.modal.game.handicapSetting',compact('gameData','game','iAgent'));
+        $modelStatus = 3;
+        return view('back.modal.game.handicapSetting',compact('gameData','game','iAgent','modelStatus'));
     }
 
     //添加游戏接口配置

@@ -71,7 +71,6 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('tradeSetting', 'Back\SrcViewController@tradeSetting')->name('game.tradeSetting'); //交易设定
         Route::get('handicapSetting', 'Back\SrcViewController@handicapSetting')->name('game.handicapSetting'); //盘口设定
         Route::get('killSetting', 'Back\SrcViewController@killSetting')->name('game.killSetting'); //杀率设定
-        Route::get('agentOdds', 'Back\SrcViewController@agentOdds')->name('game.agentOdds'); //代理赔率设定
     });
 
 //开奖管理
@@ -673,7 +672,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/tables/114', 'Back\GameTableController@gameTable114'); //秒速七星彩
 
     //不同层级的代理赔率
-    Route::get('/game/agent/tables/{gameId}/{level}', 'Back\GameAgentTableController@gameTable');
+    Route::get('/game/agent/tables/{gameId}/{agentId}', 'Back\GameAgentTableController@gameTable');
     Route::get('/game/agent/tables/set/{gameId}/{agentId}', 'Back\GameAgentTableController@gameTableSet');
 
     //交易设定表格

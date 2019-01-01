@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Back;
 
 use App\Agent;
+use App\AgentOdds;
 use App\AgentOddsSetting;
 use App\Capital;
 use App\Drawing;
+use App\GameOddsCategory;
 use App\GeneralAgent;
 use App\Recharges;
 use App\SubAccount;
@@ -132,12 +134,6 @@ class SrcMemberController extends Controller
             $superior_agent = 0;
         else {
             $iAgent = Agent::where('a_id', $agentId)->first();
-            if ($iAgent->odds_level > $odds_level) {
-                return response()->json([
-                    'status' => false,
-                    'msg' => '此代理赔率过高'
-                ]);
-            }
             $superior_agent = $iAgent->superior_agent;
             if (empty($superior_agent)) {
                 $superior_agent = $agentId;
@@ -145,27 +141,57 @@ class SrcMemberController extends Controller
                 $superior_agent .= ',' . $agentId;
             }
         }
-
+        $dateTime = date('Y-m-d H:i:s');
+        $oddsArray = [];
+        $modelStatus = empty($modelStatus)?0:$modelStatus;
+        DB::beginTransaction();
         try {
-            $agent = new Agent();
-            $agent->gagent_id = $gagent;
-            $agent->account = $account;
-            $agent->name = $name;
-            $agent->password = Hash::make($password);
-            $agent->editodds = $editOdds;
-            $agent->superior_agent = $superior_agent;
-            $agent->odds_level = $odds_level;
-            $agent->modelStatus = empty($modelStatus)?0:$modelStatus;
-            $insert = $agent->save();
-        }catch (\exception $e){
-            $insert = 0;
-        }
-        if($insert == 1){
+            $agentArray = [
+                'gagent_id' => $gagent,
+                'account' => $account,
+                'name' => $name,
+                'password' => Hash::make($password),
+                'editodds' => empty($editOdds)?0:$editOdds,
+                'superior_agent' => $superior_agent,
+                'modelStatus' => $modelStatus,
+                'created_at' => $dateTime,
+                'updated_at' => $dateTime,
+            ];
+            $agentId = Agent::insertGetId($agentArray);
+            if($modelStatus == 1) {
+                if (empty($odds_level)) {
+                    $aOddsCategory = GameOddsCategory::getAgentOddsId();
+                    foreach ($aOddsCategory as $iOddsCategory) {
+                        $oddsArray[] = [
+                            'agent_id' => $agentId,
+                            'odds_id' => $iOddsCategory->set_id,
+                            'odds_category_id' => $iOddsCategory->id,
+                            'created_at' => $dateTime,
+                            'updated_at' => $dateTime,
+                        ];
+                    }
+                } else {
+                    $agentOddsSetting = AgentOddsSetting::getArrayIdData();
+                    foreach ($odds_level as $value) {
+                        $oddsArray[] = [
+                            'agent_id' => $agentId,
+                            'odds_id' => $value,
+                            'odds_category_id' => $agentOddsSetting[$value]->odds_category_id,
+                            'created_at' => $dateTime,
+                            'updated_at' => $dateTime,
+                        ];
+                    }
+                }
+            }
+
+            AgentOdds::insert($oddsArray);
+            DB::commit();
             return response()->json([
                 'status'=>true,
                 'msg'=>'添加成功'
             ]);
-        } else {
+        }catch (\exception $e){
+            DB::rollback();
             return response()->json([
                 'status'=>false,
                 'msg'=>'暂时无法添加，请稍后重试'
@@ -332,6 +358,7 @@ class SrcMemberController extends Controller
         try {
             if(!empty($aAgentSql))  DB::update($aAgentSql);
             Agent::where('a_id', $id)->delete();
+            AgentOdds::where('agent_id', $id)->delete();
             //处理本代理下的会员
             Users::where('agent',$id)->update(['agent_odds' => null,'agent' => 1]);
             if(!empty($aUserSql))   DB::update($aUserSql);
@@ -487,8 +514,8 @@ class SrcMemberController extends Controller
             $aArray = [
                 'agent'=>$agent,
                 'testFlag' => 0,
-                'user_odds' => $odds['user_odds'],
                 'agent_odds' => $odds['agent_odds'],
+                'user_odds' => NULL,
                 'user_odds_level' => $odds['user_odds_level'],
             ];
             $iAgent = Agent::where('a_id',$agent)->first();

@@ -11,19 +11,20 @@
         </div>
     </div>
     @if(env('TEST',0) == 1)
-    @if(!empty($aAgentOdds) && $iAgent->modelStatus == 1)
-    <div class="field">
-        <label>代理赔率(平台基本赔率为<span style="color: red;">{{$aBasisOdds}}</span>)</label>
-        <div class="ui input icon">
-            <select class="ui fluid dropdown" name="odds_level" id="odds_level">
-                <option value="">请选择代理赔率</option>
-                @foreach($aAgentOdds as $kAgentOdds => $iAgentOdds)
-                    <option value="{{ $iAgentOdds->level }}">{{ $iAgentOdds->odds }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-    @endif
+        @if(!empty($aAgentOdds) && $iAgent->modelStatus == 1)
+            @foreach($aAgentOdds as $iAgentOdds)
+            <div class="field">
+                <label>{{ $iAgentOdds->title }}提成</label>
+                <div class="ui input icon">
+                    <select class="ui fluid dropdown" name="odds_level[]" id="odds_level">
+                        @foreach($iAgentOdds->info as $iInfo)
+                            <option value="{{ $iInfo->id }}">{{ $iInfo->odds }} % (获取提成差{{ round($iInfo->odds - $iAgentOdds->odds,1) }} %)</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            @endforeach
+        @endif
     @endif
     @if(env('TEST',0) == 1)
     @if(empty($aAgentOdds) || empty($agentId))
@@ -59,6 +60,7 @@
             <input type="text" name="name" id="name"/>
         </div>
     </div>
+    @if(!empty($iAgent) && $iAgent->modelStatus == 3)
     <div class="field">
         <label>开启赔率修改权限</label>
         <div class="ui input icon">
@@ -68,6 +70,7 @@
             </select>
         </div>
     </div>
+    @endif
     @if(!empty($agentId))
         <input type="hidden" name="agentId" value="{{ $agentId }}">
     @endif

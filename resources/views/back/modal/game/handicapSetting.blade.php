@@ -122,9 +122,9 @@
             $('.sub-item ul li').removeClass('active');
             var dataTag = $(this).attr('data-tag');
             var dataId = $(this).attr('data-id');
-            @if(!empty($level))
-                var url = "/game/agent/tables/"+dataId+"/{{ $level }}";
-            @elseif(!empty($iAgent))
+            @if($modelStatus == 1)
+                var url = "/game/agent/tables/"+dataId+"/{{ $agentId }}";
+            @elseif($modelStatus == 3)
                 var url = "/game/agent/tables/set/"+dataId+"/{{ $iAgent->a_id }}";
             @else
                 var url = '';

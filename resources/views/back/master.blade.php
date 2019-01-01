@@ -214,9 +214,6 @@
                 @if($hasPermission->hasPermission('game.killSetting') == "has")
                 <li id="menu-gameManage-killSetting"><a href="{{ route('game.killSetting') }}"><cite></cite><span>杀率设定</span></a></li>
                 @endif
-                @if($hasPermission->hasPermission('game.agentOdds') == "has" && env('TEST',0) == 1)
-                <li id="menu-gameManage-agentOdds"><a href="{{ route('game.agentOdds') }}"><cite></cite><span>代理赔率设定</span></a></li>
-                @endif
             </ul>
         </li>
         @endif

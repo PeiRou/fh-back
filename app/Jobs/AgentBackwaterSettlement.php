@@ -93,7 +93,7 @@ class AgentBackwaterSettlement implements ShouldQueue
                         'type' => 't28',
                         'game_id' => $this->gameId,
                         'issue' => $this->issue,
-                        'money' => $iData['money'],
+                        'money' => $iAgent->balance + $iData['money'],
                         'balance' => $iAgent->balance,
                         'game_name' =>$gameName,
                         'created_at' =>$time,

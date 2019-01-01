@@ -233,7 +233,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                     if($allAgent->modelStatus == 1) {
                         $agentLevel = empty($allAgent->odds_level) ? 1 : $allAgent->odds_level;
                         if(in_array('ac.ad.gameAgentOddsLook',$this->permissionArray)) {
-                            $gd .= "<li onclick='panSetting(\"$agentLevel\")'>盘口设定</li>";
+                            $gd .= "<li onclick='panSetting(\"$allAgent->a_id\")'>盘口设定</li>";
                             $j = true;
                         }
                     }else if($allAgent->modelStatus == 3){
