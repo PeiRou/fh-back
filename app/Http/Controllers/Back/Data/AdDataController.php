@@ -69,7 +69,13 @@ class AdDataController extends Controller
                 return  $aType[$aData->type];
             })
             ->editColumn('status',function ($aData) use($advertiseStatus){
-                return  $advertiseStatus[$aData->status];
+//                return  $advertiseStatus[$aData->status];
+                if($aData->status == 0)
+                {
+                    return '<span class="power-off"><i class="iconfont">&#xe676;</i> 关闭</span>';
+                } else {
+                    return '<span class="power-on"><i class="iconfont">&#xe676;</i> 开启</span>';
+                }
             })
             ->editColumn('sort', function ($aData){
                 return "<input type='text' value='".$aData->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$aData->id."' name='sortId[]'>";
@@ -86,11 +92,16 @@ class AdDataController extends Controller
                 }
                 return '-';
             })
-            ->editColumn('control',function ($data) {
-                return '<span class="edit-link" style="color:#4183c4" onclick="edit('.$data->id.')">修改</span> | 
-                        <span class="edit-link" style="color:#4183c4" onclick="del('.$data->id.')">删除</span>';
+            ->editColumn('control',function ($aData) {
+                if($aData->status==1)
+                    $txt = '<span class="edit-link" style="color:#d42020" onclick="closeAd('.$aData->id.')">关闭</span> |';
+                else
+                    $txt = '<span class="edit-link" style="color:#37cc21" onclick="openAd('.$aData->id.')">开启</span> |';
+                $txt .= '<span class="edit-link" style="color:#4183c4" onclick="edit('.$aData->id.')">修改</span> | 
+                        <span class="edit-link" style="color:#4183c4" onclick="del('.$aData->id.')">删除</span>';
+                return $txt;
             })
-            ->rawColumns(['control','sort','content'])
+            ->rawColumns(['status','control','sort','content'])
             ->make(true);
     }
 }

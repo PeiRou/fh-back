@@ -365,6 +365,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/delAdvertise', 'Back\AdSystemSettingController@delAdvertise')->middleware('add-log-handle')->name('ac.ad.delAdvertise');//删除广告位
     Route::post('/action/admin/getAdvertiseKey', 'Back\AdSystemSettingController@getAdvertiseKey')->middleware('add-log-handle')->name('ac.ad.getAdvertiseKey');//获取广告位栏位
     Route::post('/action/admin/addAdvertiseInfo', 'Back\AdSystemSettingController@addAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.addAdvertiseInfo');//添加广告位内容
+    Route::post('/action/admin/closeAdvertiseInfo', 'Back\AdSystemSettingController@closeAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.editAdvertiseInfo');//修改广告位内容-关闭
+    Route::post('/action/admin/openAdvertiseInfo', 'Back\AdSystemSettingController@openAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.editAdvertiseInfo');//修改广告位内容-开启
     Route::post('/action/admin/editAdvertiseInfo', 'Back\AdSystemSettingController@editAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.editAdvertiseInfo');//修改广告位内容
     Route::post('/action/admin/sortAdvertiseInfo', 'Back\AdSystemSettingController@sortAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.sortAdvertiseInfo');//排序广告位内容
     Route::post('/action/admin/delAdvertiseInfo', 'Back\AdSystemSettingController@delAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.delAdvertiseInfo');//删除广告位内容
