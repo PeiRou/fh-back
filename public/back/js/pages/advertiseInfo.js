@@ -124,7 +124,7 @@ function edit(id) {
 
 function del(id) {
     jc = $.confirm({
-        title: '确定要删除吗？',
+        title: '确定要删除吗1？',
         theme: 'material',
         type: 'red',
         boxWidth:'25%',
@@ -136,6 +136,86 @@ function del(id) {
                 action: function(){
                     $.ajax({
                         url:'/action/admin/delAdvertiseInfo',
+                        type:'post',
+                        dataType:'json',
+                        data:{id:id},
+                        success:function (data) {
+                            if(data.status == true){
+                                dataTable.ajax.reload(null,false)
+                            }else{
+                                alert(data.msg);
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
+
+function closeAd(id) {
+    jc = $.confirm({
+        title: '确定要关闭吗？',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '请确认您的操作',
+        buttons: {
+            confirm: {
+                text:'确定',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/action/admin/closeAdvertiseInfo',
+                        type:'post',
+                        dataType:'json',
+                        data:{id:id},
+                        success:function (data) {
+                            if(data.status == true){
+                                dataTable.ajax.reload(null,false)
+                            }else{
+                                alert(data.msg);
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
+
+function openAd(id) {
+    jc = $.confirm({
+        title: '确定要开启吗？',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '请确认您的操作',
+        buttons: {
+            confirm: {
+                text:'确定',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/action/admin/openAdvertiseInfo',
                         type:'post',
                         dataType:'json',
                         data:{id:id},

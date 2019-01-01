@@ -179,6 +179,10 @@ function checkRecharge() {
             success:function (data) {
                 if(data.status === true){
                     $('#onlineUserCount').html(data.onlineUser);
+                    $('#onlineUserCountPC').html(data.onlineUserPC);
+                    $('#onlineUserCountM').html(data.onlineUserM);
+                    $('#onlineUserCountIOS').html(data.onlineUserIOS);
+                    $('#onlineUserCountAND').html(data.onlineUserAND);
                     $('#onlineAdminCount').html(data.onlineAdmin);
                     $('#feedbackCount').html(data.feedbackCount);
                     if(data.feedbackCount > 0){

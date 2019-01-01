@@ -280,6 +280,7 @@ class AdSystemSettingController extends Controller
             ]);
         }catch (\Exception $e){
             DB::rollback();
+            \Log::info($e->getMessage());
             return response()->json([
                 'status' => false,
                 'msg' => '修改失败，请稍后再试！'
@@ -313,6 +314,46 @@ class AdSystemSettingController extends Controller
         DB::beginTransaction();
         $result1 = DB::table('advertise_info')->where('id',$aParam['id'])->delete();
         $result2 = DB::table('advertise_value')->where('info_id',$aParam['id'])->delete();
+        if($result1 && $result2){
+            DB::commit();
+            return response()->json([
+                'status' => true
+            ]);
+        }
+        DB::rollback();
+        return response()->json([
+            'status' => false,
+            'msg' => '删除失败，请稍后再试！'
+        ]);
+    }
+
+    //关闭广告位内容
+    public function closeAdvertiseInfo(Request $request){
+        $aParam = $request->all();
+        $date = date('Y-m-d H:i:s');
+        DB::beginTransaction();
+        $result1 = DB::table('advertise_info')->where('id',$aParam['id'])->update(['status' => 0, 'updated_at' => $date]);
+        $result2 = DB::table('advertise_value')->where('info_id',$aParam['id'])->update(['status' => 0, 'updated_at' => $date]);
+        if($result1 && $result2){
+            DB::commit();
+            return response()->json([
+                'status' => true
+            ]);
+        }
+        DB::rollback();
+        return response()->json([
+            'status' => false,
+            'msg' => '删除失败，请稍后再试！'
+        ]);
+    }
+
+    //开启广告位内容
+    public function openAdvertiseInfo(Request $request){
+        $aParam = $request->all();
+        $date = date('Y-m-d H:i:s');
+        DB::beginTransaction();
+        $result1 = DB::table('advertise_info')->where('id',$aParam['id'])->update(['status' => 1, 'updated_at' => $date]);
+        $result2 = DB::table('advertise_value')->where('info_id',$aParam['id'])->update(['status' => 1, 'updated_at' => $date]);
         if($result1 && $result2){
             DB::commit();
             return response()->json([

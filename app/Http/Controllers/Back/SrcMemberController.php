@@ -13,10 +13,12 @@ use App\Recharges;
 use App\SubAccount;
 use App\User;
 use App\Users;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 
@@ -183,7 +185,6 @@ class SrcMemberController extends Controller
                     }
                 }
             }
-
             AgentOdds::insert($oddsArray);
             DB::commit();
             return response()->json([
@@ -192,6 +193,7 @@ class SrcMemberController extends Controller
             ]);
         }catch (\exception $e){
             DB::rollback();
+            Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
             return response()->json([
                 'status'=>false,
                 'msg'=>'暂时无法添加，请稍后重试'
@@ -780,6 +782,154 @@ class SrcMemberController extends Controller
                 'msg'=>'同一个用户同资金61秒内无法重复操作，请稍后再试！'
             ]);
         }
+    }
+
+    //批量变更余额
+    public function addMoneyAllUser (Request $request)
+    {
+        if (!isset($request->level, $request->admin_add_money, $request->beizhu, $request->money) || !$request->money) {
+            return response()->json([
+                'status'=>false,
+                'msg'=>'参数错误！'
+            ]);
+        }
+        $request->capitalType = 't18';
+        //如果是扣钱判断所有的用户余额够不够
+        if ($request->money < 0){
+            if (users::where(function($sql) use ($request) {
+                if(isset($request->level))
+                    $sql->where('rechLevel', $request->level);
+
+            })->where('money', '<', abs($request->money))
+                ->count()){
+                return response()->json([
+                    'status'=>false,
+                    'msg'=>'有会员余额不足！'
+                ]);
+            }
+            $request->capitalType = 't19';
+        }
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'addAllMoney'.Session::get('account');
+        if (!$redis->exists($key)) {
+            $redis->setex($key,5,'on');
+            $users = Users::where(function ($sql) use ($request) {
+                if(isset($request->level))
+                    $sql->where('rechLevel', $request->level);
+
+            })->get();
+            if(count($users)) {
+                if ($this->addUsersMoney($users, $request))
+                    return response()->json([
+                        'status' => true,
+                        'msg' => 'ok'
+                    ]);
+            }
+            else {
+                return response()->json([
+                    'status' => false,
+                    'msg' => '该层级下暂无会员！'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status'=>false,
+                'msg'=>'5秒内无法重复操作，请稍后再试！'
+            ]);
+        }
+
+    }
+
+    public function addUsersMoney ($users, Request $request)
+    {
+        $level = DB::table('level')->pluck('name', 'value')->toArray();
+        DB::beginTransaction();
+        try {
+            $Capital = [];
+            $Recharges = [];
+            $Drawing = [];
+            foreach ($users as $k => $v){
+                $Capital[] = [
+                    'to_user' => $v->id,
+                    'user_type' => 'user',
+                    'order_id' => $this->randOrder('C'),
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'type' => $request->capitalType,
+                    'money' => $request->money,
+                    'balance' => $v->money + $request->money,
+                    'operation_id' => Session::get('account_id'),
+                    'content' => $request->beizhu,
+                    'rechargesType' => $request->admin_add_money,
+
+                ];
+                if($request->money > 0) {
+                    $Recharges[] = [
+                        'userId' => $v->id,
+                        'username' => $v->username,
+                        'orderNum' => payOrderNumber(),
+                        'payType' => 'adminAddMoney',
+                        'amount' => $request->money,
+                        'balance' => $v->money + $request->money,
+                        'shou_info' => "后台加钱：" . $request->beizhu,
+                        'msg' => $request->beizhu,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'status' => 2,
+                        'addMoney' => 1,
+                        'process_date' => date('Y-m-d H:i:s'),
+                        'operation_id' => Session::get('account_id'),
+                        'operation_account' => Session::get('account'),
+                        'admin_add_money' => $request->admin_add_money,
+                        'fullName' => $v->fullName,
+                        'testFlag' => $v->testFlag,
+                        'level_name' => $level[$v->rechLevel]
+                    ];
+                }else{
+                    $Drawing[] = [
+                        'user_id' => $v->id,
+                        'username' => $v->username,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'balance' => $v->money + $request->money,
+                        'total_bet' => 0,
+                        'operation_id' => Session::get('account_id'),
+                        'operation_account' => Session::get('account'),
+                        'process_date' => date('Y-m-d H:i:s'),
+                        'order_id' => $this->orderNumber(),
+                        'amount' => 0-$request->money,
+                        'ip' => '-',
+                        'ip_info' => '-',
+                        'draw_type' => 2,
+                        'status' => 2,
+                        'platform' => 1,
+                        'msg' => $request->beizhu,
+                        'fullName' => $v->fullName,
+                        'testFlag' => $v->testFlag,
+                        'level_name' => $level[$v->rechLevel],
+                        'DrawTimes' => $v->DrawTimes
+                    ];
+                }
+                $v->money = $v->money + $request->money;
+                if(!$v->save())
+                    throw new \Exception('');
+            }
+            if(count($Drawing))
+                if(!Drawing::insert($Drawing))
+                    throw new \Exception('');
+            if(count($Recharges))
+                if(!Recharges::insert($Recharges))
+                    throw new \Exception('');
+            if(Capital::insert($Capital)){
+                DB::commit();
+                return true;
+            }
+        } catch (\Exception $e) {
+
+        }
+        DB::rollback();
+        return false;
     }
 
     function orderNumber(){

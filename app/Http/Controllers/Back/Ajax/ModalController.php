@@ -421,6 +421,12 @@ class ModalController extends Controller
         $aContent = DB::select($aContentsql);
         return view('back.modal.member.changeUserMoney',compact('user','aRechargesType','aContent'));
     }
+    //批量修改用户余额
+    public function addMoneyAllUser(){
+        $levelArr = Levels::select('name','value')->where('status',1)->get();
+        $aRechargesType = Recharges::$rechargesType;
+        return view('back.modal.member.addMoneyAllUser',compact('aRechargesType','levelArr'));
+    }
     // 下拉菜单获取加钱类型
     public function userMoneyType($type = ""){
         if($type){

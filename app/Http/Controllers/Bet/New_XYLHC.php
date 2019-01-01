@@ -2086,6 +2086,10 @@ class New_XYLHC
                 }
                 //连肖连尾-----结束
 
+                //连码-----开始
+                $lm_playCate = 177; //分类ID
+                //连码-----结束
+
 
                 if(!empty($sql_bets_lose)){
                     $run2 = DB::connection('mysql::write')->statement($sql_lose);

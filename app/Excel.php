@@ -6,6 +6,7 @@ use App\Events\BackPusherEvent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 
 class Excel
 {
@@ -309,7 +310,8 @@ class Excel
     }
     //取得官方开奖
     public function getGuanIssueNum($needOpenIssue,$type){
-        $url = Config::get('website.guanIssueServerUrl').$type.'?issue='.$needOpenIssue;
+        $key = $type.'?issue='.$needOpenIssue;
+        $url = Config::get('website.guanIssueServerUrl').$key;
         $res = json_decode(file_get_contents($url), true);
         return $res;
     }
@@ -581,6 +583,8 @@ class Excel
             }else{
                 //检查不是当期需要追号的开奖
                 $res = $this->getNeedMinIssue($table);     //在从旧的需要开奖的奖期查起
+                if($res->issue == $needOpenIssue)
+                    return 'no have';
                 $needOpenIssue = $res->issue;
                 $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
                 if(!isset($html['issue'])){
@@ -601,5 +605,14 @@ class Excel
             $html['needOpenIssue'] = $needOpenIssue;
         }
         return $html;
+    }
+    //开奖阻止
+    public function stopIng($code,$issue,$redis){
+        $key = $code.'ing:'.$issue;
+        if($redis->exists($key)){
+            return 'ing';
+        }
+        $redis->setex($key,5,'ing');
+        $redis->set($code.':needopen','');
     }
 }

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/vendor/confirm/dist/jquery-confirm.min.css">
     <link rel="stylesheet" href="/vendor/dataTables/DataTables-1.10.16/css/dataTables.semanticui.min.css">
     <link rel="stylesheet" href="/vendor/contextJs/context.standalone.css">
+    <link rel="stylesheet" href="/vendor/Hui-iconfont/iconfont.min.css">
     <link rel="stylesheet" href="/back/css/core.css">
     @yield('page-css')
     <script src="/js/jquery.min.js"></script>
@@ -39,9 +40,13 @@
     </div>
     <div class="nav-user-info">
         <ul style="margin-top: 20px;">
-            <li onclick="javascript:(location.href='/back/control/userManage/sub_account')">当前子帐号在线人数：<span id="onlineAdminCount">0</span></li>
-            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')">当前在线人数：<span id="onlineUserCount">0</span></li>
-            <li onclick="javascript:(location.href='/back/control/systemManage/feedback')" id="feedbackContent">今天未回复反馈：<span id="feedbackCount">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/userManage/sub_account')"><i data-tooltip="当前在线子帐号人数" data-position="bottom center" data-inverted class="Hui-iconfont">&#xe62d;</i>：<span id="onlineAdminCount">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')"><i data-tooltip="在线会员总人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe62b;</i>：<span id="onlineUserCount">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')"><i data-tooltip="在线PC人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe64f;</i>：<span id="onlineUserCountPC">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')"><i data-tooltip="在线H5人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe696;</i>：<span id="onlineUserCountM">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')"><i data-tooltip="在线苹果人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe64a;</i>：<span id="onlineUserCountIOS">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')"><i data-tooltip="在线安卓人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe6a2;</i>：<span id="onlineUserCountAND">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/systemManage/feedback')" id="feedbackContent"><i data-tooltip="今天未回复反馈" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe70c;</i>：<span id="feedbackCount">0</span></li>
             {{--<li>修改密码</li>--}}
             <li onclick="logout()">退出</li>
         </ul>

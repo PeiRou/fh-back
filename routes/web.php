@@ -337,6 +337,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/userChangeFullName', 'Back\SrcMemberController@userChangeFullName')->middleware('add-log-handle')->name('ac.ad.userChangeFullName');//会员更换真实姓名
     Route::post('/action/admin/editUser', 'Back\SrcMemberController@editUser')->middleware('add-log-handle')->name('ac.ad.editUser');//修改会员资料
     Route::post('/action/admin/changeUserMoney', 'Back\SrcMemberController@changeUserMoney')->middleware('add-log-handle')->name('ac.ad.changeUserMoney');//修改会员余额
+    Route::post('/action/admin/addMoneyAllUser', 'Back\SrcMemberController@addMoneyAllUser')->middleware('add-log-handle')->name('m.user.addMoneyAllUser');//批量修改会员余额
     Route::post('/action/admin/delUser/{id}', 'Back\SrcMemberController@delUser')->middleware(['check-permission','add-log-handle'])->name('m.user.delUser');//删除会员账号
     Route::post('/action/admin/editUserLevels', 'Back\SrcMemberController@editUserLevels')->middleware('add-log-handle')->name('ac.ad.editUserLevels');//删除会员层级
     Route::post('/action/admin/editRechUserLevels', 'Back\SrcMemberController@editRechUserLevels')->middleware('add-log-handle')->name('ac.ad.editRechUserLevels');//修改存款会员层级
@@ -363,6 +364,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/delAdvertise', 'Back\AdSystemSettingController@delAdvertise')->middleware('add-log-handle')->name('ac.ad.delAdvertise');//删除广告位
     Route::post('/action/admin/getAdvertiseKey', 'Back\AdSystemSettingController@getAdvertiseKey')->middleware('add-log-handle')->name('ac.ad.getAdvertiseKey');//获取广告位栏位
     Route::post('/action/admin/addAdvertiseInfo', 'Back\AdSystemSettingController@addAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.addAdvertiseInfo');//添加广告位内容
+    Route::post('/action/admin/closeAdvertiseInfo', 'Back\AdSystemSettingController@closeAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.editAdvertiseInfo');//修改广告位内容-关闭
+    Route::post('/action/admin/openAdvertiseInfo', 'Back\AdSystemSettingController@openAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.editAdvertiseInfo');//修改广告位内容-开启
     Route::post('/action/admin/editAdvertiseInfo', 'Back\AdSystemSettingController@editAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.editAdvertiseInfo');//修改广告位内容
     Route::post('/action/admin/sortAdvertiseInfo', 'Back\AdSystemSettingController@sortAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.sortAdvertiseInfo');//排序广告位内容
     Route::post('/action/admin/delAdvertiseInfo', 'Back\AdSystemSettingController@delAdvertiseInfo')->middleware('add-log-handle')->name('ac.ad.delAdvertiseInfo');//删除广告位内容
@@ -555,6 +558,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editUserInfo/{id}', 'Back\Ajax\ModalController@editUserInfo')->middleware('check-permission')->name('m.user.edit');         //修改会员资料
     Route::get('/back/modal/viewUserContent/{id}', 'Back\Ajax\ModalController@viewUserContent')->middleware('check-permission')->name('m.user.viewDetails');
     Route::get('/back/modal/changeUserMoney/{id}', 'Back\Ajax\ModalController@changeUserMoney')->middleware('check-permission')->name('m.user.changeBalance');      //修改会员馀额
+    Route::get('/back/modal/addMoneyAllUser', 'Back\Ajax\ModalController@addMoneyAllUser')->middleware('check-permission')->name('m.user.addMoneyAllUser');      //批量修改会员馀额
     Route::get('/back/modal/userCapitalHistory/{id}', 'Back\Ajax\ModalController@userCapitalHistory')->middleware('check-permission')->name('m.user.CapitalHistory');
     Route::get('/back/modal/addNotice', 'Back\Ajax\ModalController@addNotice');     //公告管理-添加公告
     Route::get('/back/modal/editNotice/{id}', 'Back\Ajax\ModalController@editNotice');     //公告管理-修改公告

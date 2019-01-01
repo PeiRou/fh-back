@@ -951,18 +951,14 @@ GROUP BY g.ga_id LIMIT $start,$length";
             ->editColumn('login_client',function ($user){
                 if($user->login_client == 1){
                     return "<i class='iconfont'>&#xe696;</i> PC端";
-                }
-                if($user->login_client == 2){
-                    return "<i class='iconfont'>&#xe686;</i> 移动端";
-                }
-                if($user->login_client == 3){
-                    return "<i class='iconfont'>&#xe686;</i> iOS";
-                }
-                if($user->login_client == 4){
-                    return "<i class='iconfont'>&#xe686;</i> Android";
-                }
-                if($user->login_client == 5){
-                    return " 其它";
+                } else if($user->login_client == 2){
+                    return "<i class='iconfont'>&#xe686;</i> H5端";
+                } else if($user->login_client == 3){
+                    return "<i class='Hui-iconfont'>&#xe64a;</i> IOS";
+                } else if($user->login_client == 4){
+                    return "<i class='Hui-iconfont'>&#xe6a2;</i> Android";
+                } else {
+                    return "<i class='Hui-iconfont'>&#xe69c;</i> 其它";
                 }
             })
             ->editColumn('control',function ($user){
