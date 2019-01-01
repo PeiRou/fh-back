@@ -956,10 +956,10 @@ GROUP BY g.ga_id LIMIT $start,$length";
                     return "<i class='iconfont'>&#xe686;</i> 移动端";
                 }
                 if($user->login_client == 3){
-                    return "<i class='iconfont'>&#xe686;</i> iOS";
+                    return "<i class='Hui-iconfont'>&#xe64a;</i> iOS";
                 }
                 if($user->login_client == 4){
-                    return "<i class='iconfont'>&#xe686;</i> Android";
+                    return "<i class='Hui-iconfont'>&#xe6a2;</i> Android";
                 }
                 if($user->login_client == 5){
                     return " 其它";

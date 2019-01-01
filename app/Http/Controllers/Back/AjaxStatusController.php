@@ -47,7 +47,11 @@ class AjaxStatusController extends Controller
 
             $redis->select(6);           //前台
             $keys = $redis->keys('urtime:'.'*');
-            $onlineUserCount = 0;
+            $onlineUserCount = 0;                   //会员在线人数
+            $onlineUserCount_and = 0;               //安卓-会员在线人数
+            $onlineUserCount_pc = 0;                //PC-会员在线人数
+            $onlineUserCount_ios = 0;               //IOS-会员在线人数
+            $onlineUserCount_m = 0;                 //M-会员在线人数
             foreach ($keys as $item){
                 $redis->select(6);           //前台
                 $redisUser = $redis->get($item);
@@ -63,6 +67,20 @@ class AjaxStatusController extends Controller
                     $redisUser = (array)json_decode($redisUser,true);
                     if(!empty($redisUser))
                         if($redisUser['testFlag']==0){
+                            switch (@$redisUser['platform']){
+                                case 1:
+                                    $onlineUserCount_pc ++;
+                                    break;
+                                case 3:
+                                    $onlineUserCount_ios ++;
+                                    break;
+                                case 4:
+                                    $onlineUserCount_and ++;
+                                    break;
+                                default:
+                                    $onlineUserCount_m ++;
+                                    break;
+                            }
                             $onlineUserCount++;
                         }
                 }
@@ -78,6 +96,10 @@ class AjaxStatusController extends Controller
                 'count' => $getCount,
                 'drawCount' => $getDrawCount,
                 'onlineUser' => $onlineUserCount,
+                'onlineUserPC' => $onlineUserCount_pc,
+                'onlineUserM' => $onlineUserCount_m,
+                'onlineUserIOS' => $onlineUserCount_ios,
+                'onlineUserAND' => $onlineUserCount_and,
                 'onlineAdmin' => $onlineAdminCount,
                 'feedbackCount' => $feedbackCount
             ]);
