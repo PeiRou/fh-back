@@ -422,7 +422,7 @@ class SrcMemberController extends Controller
         $user->fullName = $fullName;
         $user->testFlag = $testFlag;
         $user->agent_odds = $odds['agent_odds'];
-        $user->user_odds = $odds['user_odds'];
+        $user->user_odds = NULL;
         $user->user_odds_level = $odds['user_odds_level'];
         $user->promoter = $promoter;
         $insert = $user->save();
