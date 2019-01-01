@@ -70,15 +70,13 @@ class BetDataController extends Controller
                 if($bet->bet_platform == 1){
                     return "<i class='iconfont'>&#xe696;</i> PC端";
                 } else if($bet->bet_platform == 2){
-                    return "<i class='iconfont'>&#xe686;</i> 移动端";
+                    return "<i class='iconfont'>&#xe686;</i> H5端";
                 } else if($bet->bet_platform == 3){
-                    return "<i class='iconfont'>&#xe686;</i> IOS";
+                    return "<i class='Hui-iconfont'>&#xe64a;</i> IOS";
                 } else if($bet->bet_platform == 4){
-                    return "<i class='iconfont'>&#xe686;</i> Android";
-                } else if($bet->bet_platform == 5){
-                    return "<i class='iconfont'>&#xe686;</i> 其它";
-                }  else {
-                    return "--";
+                    return "<i class='Hui-iconfont'>&#xe6a2;</i> Android";
+                } else {
+                    return "<i class='Hui-iconfont'>&#xe69c;</i> 其它";
                 }
             })
             ->editColumn('control',function ($bet){
@@ -255,7 +253,7 @@ class BetDataController extends Controller
                     $v->bet_agnet_odds,//代理赔率/比
                     $v->bet_agent_rebate == '' ? '--' : $v->bet_agent_rebate, //代理返水/比
                     $money, //会员输赢
-                    ($v->bet_platform == 1 ? 'PC端' : ($v->bet_platform == 2 ? '移动端' : '--'))//终端
+                    ($v->bet_platform == 1 ? 'PC端' : ($v->bet_platform == 2 ? 'H5端' : ($v->bet_platform == 3 ? 'IOS' : ($v->bet_platform == 4 ? 'Android' : '--'))))//终端
                 ];
                 mb_convert_variables('GBK', 'UTF-8', $rowData);
                 fputcsv($fp, $rowData);
@@ -324,15 +322,13 @@ class BetDataController extends Controller
                 if($bet->bet_platform == 1){
                     return "<i class='iconfont'>&#xe696;</i> PC端";
                 } else if($bet->bet_platform == 2){
-                    return "<i class='iconfont'>&#xe686;</i> 移动端";
+                    return "<i class='iconfont'>&#xe686;</i> H5端";
                 } else if($bet->bet_platform == 3){
-                    return "<i class='iconfont'>&#xe686;</i> IOS";
+                    return "<i class='Hui-iconfont'>&#xe64a;</i> IOS";
                 } else if($bet->bet_platform == 4){
-                    return "<i class='iconfont'>&#xe686;</i> Android";
-                } else if($bet->bet_platform == 5){
-                    return "<i class='iconfont'>&#xe686;</i> 其它";
-                }  else {
-                    return "--";
+                    return "<i class='Hui-iconfont'>&#xe6a2;</i> Android";
+                } else {
+                    return "<i class='Hui-iconfont'>&#xe69c;</i> 其它";
                 }
             })
             ->editColumn('control',function ($bet){
@@ -487,15 +483,13 @@ class BetDataController extends Controller
                     if($bet->bet_platform == 1){
                         return "<i class='iconfont'>&#xe696;</i> PC端";
                     } else if($bet->bet_platform == 2){
-                        return "<i class='iconfont'>&#xe686;</i> 移动端";
+                        return "<i class='iconfont'>&#xe686;</i> H5端";
                     } else if($bet->bet_platform == 3){
-                        return "<i class='iconfont'>&#xe686;</i> IOS";
+                        return "<i class='Hui-iconfont'>&#xe64a;</i> IOS";
                     } else if($bet->bet_platform == 4){
-                        return "<i class='iconfont'>&#xe686;</i> Android";
-                    } else if($bet->bet_platform == 5){
-                        return "<i class='iconfont'>&#xe686;</i> 其它";
+                        return "<i class='Hui-iconfont'>&#xe6a2;</i> Android";
                     } else {
-                        return "--";
+                        return "<i class='Hui-iconfont'>&#xe69c;</i> 其它";
                     }
                 })
                 ->editColumn('none1',function ($bet){
