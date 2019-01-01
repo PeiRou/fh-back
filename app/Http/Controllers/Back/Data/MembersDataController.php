@@ -949,13 +949,13 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 return "<span class='".$redClass."'><i class='iconfont'>&#xe627;</i> $user->login_ip_info  <span  class=\"refreshIp\"  onclick='refreshIp({$user->id},\"{$user->login_ip}\", this)' >刷新</span></span>";
             })
             ->editColumn('login_client',function ($user){
-                if($user->bet_platform == 1){
+                if($user->login_client == 1){
                     return "<i class='iconfont'>&#xe696;</i> PC端";
-                } else if($user->bet_platform == 2){
+                } else if($user->login_client == 2){
                     return "<i class='iconfont'>&#xe686;</i> H5端";
-                } else if($user->bet_platform == 3){
+                } else if($user->login_client == 3){
                     return "<i class='Hui-iconfont'>&#xe64a;</i> IOS";
-                } else if($user->bet_platform == 4){
+                } else if($user->login_client == 4){
                     return "<i class='Hui-iconfont'>&#xe6a2;</i> Android";
                 } else {
                     return "<i class='Hui-iconfont'>&#xe69c;</i> 其它";
