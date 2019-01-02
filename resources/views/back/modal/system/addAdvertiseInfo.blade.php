@@ -1,7 +1,22 @@
-<link rel="stylesheet" href="{{ asset('back/vendor/ueditor/themes/default/css/umeditor.css') }}">
-<script src="{{ asset('back/vendor/ueditor/umeditor.config.js') }}"></script>
-<script src="{{ asset('back/vendor/ueditor/umeditor.min.js') }}"></script>
-<script src="{{ asset('back/vendor/ueditor/lang/zh-cn/zh-cn.js') }}"></script>
+{{--<link rel="stylesheet" href="{{ asset('back/vendor/ueditor/themes/default/css/umeditor.css') }}">--}}
+{{--<script src="{{ asset('back/vendor/ueditor/umeditor.config.js') }}"></script>--}}
+{{--<script src="{{ asset('back/vendor/ueditor/umeditor.min.js') }}"></script>--}}
+{{--<script src="{{ asset('back/vendor/ueditor/lang/zh-cn/zh-cn.js') }}"></script>--}}
+<link rel="stylesheet" href="{{ asset('back/vendor/ueditor2/themes/default/css/ueditor.css') }}">
+<script src="{{ asset('back/vendor/ueditor2/ueditor.config.js') }}"></script>
+<script src="{{ asset('back/vendor/ueditor2/ueditor.all.js') }}"></script>
+<script src="{{ asset('back/vendor/ueditor2/lang/zh-cn/zh-cn.js') }}"></script>
+<style>
+    .edui-popup-content{
+        z-index: 9999999999999999999999;
+    }
+    #edui251{
+        z-index: 999999999!important;
+    }
+    .jconfirm{
+        z-index: 1000;
+    }
+</style>
 <form id="addRoleForm" class="ui form" action="{{ route('ac.ad.addAdvertiseInfo') }}">
 
     <div class="field" style="margin-top: 10px;">
@@ -70,7 +85,8 @@
                         }else if(result[i].type == 2){
                             html += '<input onchange="getBase64(this)" type="file" name="pic[]"/><input type="hidden" name="'+result[i].js_key+'"/>';
                         }else if(result[i].type == 3){
-                            html += '<textarea type="text" name="'+result[i].js_key+'" id="'+result[i].js_key+'"></textarea>';
+                            // html += '<textarea type="text" name="'+result[i].js_key+'" id="'+result[i].js_key+'"></textarea>';
+                            html += '<script id="'+result[i].js_key+'" name="'+result[i].js_key+'" type="text/plain"><\/script>';
                             array.push(result[i].js_key);
                         }
                         html += '</div></div>';
@@ -112,8 +128,11 @@
     function getEditor(array) {
         if(array.length !== 0) {
             for(var i = 0;i < array.length;i++){
-                window.um = UM.getEditor(array[i], {
-                    initialFrameWidth: null
+                // window.um = UM.getEditor(array[i], {
+                //     initialFrameWidth: null
+                // });
+                var ue = UE.getEditor(array[i],{
+                    initialFrameHeight : 320
                 });
             }
         }
