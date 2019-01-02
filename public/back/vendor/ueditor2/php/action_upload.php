@@ -6,6 +6,7 @@
  * Time: 上午10:17
  */
 include "Uploader.class.php";
+include "UploaderImg.class.php";
 
 /* 上传配置 */
 $base64 = "upload";
@@ -48,7 +49,7 @@ switch (htmlspecialchars($_GET['action'])) {
 }
 
 /* 生成上传实例对象并完成上传 */
-$up = new Uploader($fieldName, $config, $base64);
+$up = new UploaderImg($fieldName, $config, $base64);
 
 /**
  * 得到上传文件所对应的各个参数,数组结构

@@ -32,7 +32,6 @@
       if(_this.searchableElement.has($(event.target)).length === 0)
         _this.hide();
     });
-
     this.input.on('keydown', function(event){
       event.stopPropagation();
       if(event.which === 13){         //enter
@@ -48,6 +47,9 @@
       }
     }).on('keyup', function(event){
       if(event.which != 13 && event.which != 27 && event.which != 38 && event.which != 40)
+        _this.filter();
+    }).on('input',function(event){
+        event.stopPropagation();
         _this.filter();
     })
   }
