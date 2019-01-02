@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\BetHis;
 use App\Bets;
 use App\Capital;
 use App\Drawing;
@@ -40,7 +41,10 @@ class MemberStatementDaily implements ShouldQueue
         //获取用户,代理,总代
         $aUser = Users::betMemberReportData();
         //获取投注
-        $aBet = Bets::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        if(strtotime($this->aDateTime) >= strtotime(date('Y-m-d',strtotime('-1 day'))))
+            $aBet = Bets::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        else
+            $aBet = BetHis::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取充值金额
         $aRecharges = Recharges::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取提款金额

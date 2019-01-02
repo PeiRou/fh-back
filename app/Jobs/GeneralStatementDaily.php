@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\AgentBackwater;
+use App\BetHis;
 use App\Bets;
 use App\Capital;
 use App\Drawing;
@@ -41,7 +42,10 @@ class GeneralStatementDaily implements ShouldQueue
         //获取代理,总代
         $aAgent = GeneralAgent::betGeneralReportData();
         //获取投注
-        $aBet = Bets::betGeneralReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        if(strtotime($this->aDateTime) >= strtotime(date('Y-m-d',strtotime('-1 day'))))
+            $aBet = Bets::betGeneralReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        else
+            $aBet = BetHis::betGeneralReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取充值金额
         $aRecharges = Recharges::betGeneralReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取提款金额
