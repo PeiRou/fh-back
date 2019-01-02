@@ -217,7 +217,7 @@ class AdSystemSettingController extends Controller
                     $aArray[] = [
                         'info_id' => $result1,
                         'key_id' => $iData->id,
-                        'js_value' => $iParam,
+                        'js_value' => empty($iParam)?'':$iParam,
                         'status' => 1,
                         'created_at' => $date,
                         'updated_at' => $date,
@@ -263,11 +263,12 @@ class AdSystemSettingController extends Controller
                     }
                 }
             }
+
             $aValueData = DB::table('advertise_value')->where('info_id', $iInfo->id)->get();
             foreach ($aValueData as $kValue => $iValue) {
                 foreach ($aArray as $kArray => $iArray) {
                     if ($iArray['info_id'] = $iValue->info_id && $iArray['key_id'] == $iValue->key_id) {
-                        $aArray[$kValue]['id'] = $iValue->id;
+                        $aArray[$kArray]['id'] = $iValue->id;
                     }
                 }
             }
