@@ -60,8 +60,7 @@ class next_issue_paoma extends Command
 
         $New_nextIssue = $nextIssue+1;
         if(substr($New_nextIssue,-3)=='986'){
-            $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
-            $New_nextIssue = date("Ymd",strtotime($nextDay)).'001';
+            $New_nextIssue = date("ymd",strtotime($openTime)).'001';
         }
 
         $redis->set('paoma:nextIssue',(int)$New_nextIssue);

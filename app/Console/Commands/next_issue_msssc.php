@@ -60,8 +60,7 @@ class next_issue_msssc extends Command
 
         $New_nextIssue = $nextIssue+1;
         if(substr($New_nextIssue,-4)=='1106'){
-            $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
-            $New_nextIssue = date("Ymd",strtotime($nextDay)).'0001';
+            $New_nextIssue = date("ymd",strtotime($openTime)).'0001';
         }
 
         $redis->set('msssc:nextIssue',(int)$New_nextIssue);

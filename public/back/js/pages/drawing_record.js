@@ -163,6 +163,11 @@ function getTotalDrawing() {
     var killTest = $('#killTestUser:checked').val();
     var draw_type = $('#draw_type').val();
     var dateType = $('#bao_time').val();
+
+    var account_type = $('#account_type').val();
+    var rechLevel = $('#rechLevel').val();
+    var amount_min = $('#amount-min').val();
+    var amount_max = $('#amount-max').val();
     $.ajax({
         url:'/action/drawing/totalDrawing',
         type:'post',
@@ -174,7 +179,11 @@ function getTotalDrawing() {
             account_param : account_param,
             killTest : killTest,
             draw_type : draw_type,
-            dateType : dateType
+            dateType : dateType,
+            account_type : account_type,
+            rechLevel : rechLevel,
+            amount_min : amount_min,
+            amount_max : amount_max
         },
         success:function (data) {
             $('#drawingTotal').html(data.total)
