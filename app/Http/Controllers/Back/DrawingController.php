@@ -287,11 +287,6 @@ class DrawingController extends Controller
         //提款总额统计
         $sql = DB::table('drawing')
             ->leftJoin('users','drawing.user_id', '=', 'users.id')
-            ->where(function ($q) use ($account_param){
-                if(isset($account_param) && $account_param){
-                    $q->where('users.username',$account_param);
-                }
-            })
             ->where(function ($q) use ($killTest){
                 if(isset($killTest) && $killTest){
                     $q->where('users.testFlag',0);
@@ -311,6 +306,23 @@ class DrawingController extends Controller
                     }
                 } else {
                     $q->where('drawing.status',2);
+                }
+            })
+            ->where(function($sql) use($request){
+                if(isset($request->account_type, $request->account_param) && $request->account_param){
+                    if($request->account_type == 'account')
+                        $sql->where('drawing.username',$request->account_param);
+                    if($request->account_type == 'orderNum')
+                        $sql->where('drawing.order_id',$request->account_param);
+                    if($request->account_type == 'operation_account')
+                        $sql->where('drawing.operation_account',$request->account_param);
+                    if($request->account_type == 'amount')
+                        $sql->where('drawing.amount',$request->account_param);
+                }
+                if(isset($request->account_type) && $request->account_type == 'amount_fw'){
+                    if(($min = (int) $request->get('amount_min')) && ($max = (int) $request->get('amount_max'))){
+                        $sql->whereBetween('drawing.amount',[$min, $max]);
+                    }
                 }
             })
             ->whereBetween('drawing.'.$dateName,[$startDate.' 00:00:00', $endDate.' 23:59:59']);
