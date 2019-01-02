@@ -55,7 +55,7 @@ class clear_data extends Command
 //        $res = DB::connection('mysql::write')->statement($sql);
 //        echo 'table bet :'.$res.PHP_EOL;
         if(!$redis->exists('canClear')){
-            $res = DB::table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
+            $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
             $redis->setex('canClear',3600,'on');
             if(empty($res)){
                 $time = strtotime(date('Y-m-d 23:59:59')) - time();
