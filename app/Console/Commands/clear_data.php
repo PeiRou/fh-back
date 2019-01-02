@@ -40,7 +40,7 @@ class clear_data extends Command
         $redis->select(5);
         $keyEx = 'clearing';
         if($redis->exists($keyEx)){
-            echo "ing";
+            echo "ing...";
             return "";
         }
         $redis->setex($keyEx,3,'on');
@@ -55,7 +55,7 @@ class clear_data extends Command
 //        $res = DB::connection('mysql::write')->statement($sql);
 //        echo 'table bet :'.$res.PHP_EOL;
         if(!$redis->exists('canClear')){
-            $res = DB::table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
+            $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
             $redis->setex('canClear',3600,'on');
             if(empty($res)){
                 $time = strtotime(date('Y-m-d 23:59:59')) - time();
@@ -64,6 +64,8 @@ class clear_data extends Command
                 return '';
             }
         }
+        \Log::info('clear ing ....');
+        \Log::info("clear Date1:".$clearDate1."clear Date31:".$clearDate31."clear Date62:".$clearDate62);
         //清-投注表
         try {
             $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
