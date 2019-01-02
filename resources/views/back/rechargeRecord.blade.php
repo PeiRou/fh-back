@@ -112,7 +112,7 @@
                     <div class="one wide field"  style="width:6%!important;">
                         <select class="ui dropdown" id="dateType" style='height:32px !important' >
                             <option value="">时间类型</option>
-                            <option value="1">报表时间</option>
+                            <option selected="selected" value="1">报表时间</option>
                             <option value="2">添加时间</option>
                         </select>
                     </div>
