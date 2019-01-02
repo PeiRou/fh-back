@@ -57,8 +57,7 @@ class next_issue_xylhc extends Command
         $New_nextIssue = $nextIssue+1;
 
         if(substr($New_nextIssue,-3)=='240'){
-            $dateIssue = substr($nextIssue,strlen($nextIssue)-4);
-            $New_nextIssue = date("Ymd",strtotime($dateIssue)+86400).'001';
+            $New_nextIssue = date("ymd",strtotime($openTime)).'001';
         }
 
         $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(270)->toDateTimeString();

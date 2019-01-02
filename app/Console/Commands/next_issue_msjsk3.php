@@ -60,8 +60,7 @@ class next_issue_msjsk3 extends Command
 
         $New_nextIssue = $nextIssue+1;
         if(substr($New_nextIssue,-4)=='1441'){
-            $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
-            $New_nextIssue = date("Ymd",strtotime($nextDay)).'0001';
+            $New_nextIssue = date("Ymd",strtotime($openTime)).'0001';
         }
 
         $redis->set('msjsk3:nextIssue',(int)$New_nextIssue);
