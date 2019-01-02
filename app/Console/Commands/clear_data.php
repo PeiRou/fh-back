@@ -40,7 +40,7 @@ class clear_data extends Command
         $redis->select(5);
         $keyEx = 'clearing';
         if($redis->exists($keyEx)){
-            echo "ing";
+            echo "ing...";
             return "";
         }
         $redis->setex($keyEx,3,'on');
