@@ -104,6 +104,12 @@
                     </select>
                 </div>
                 <div class="one wide field">
+                    <select class="ui dropdown" id="statusTime" style='height:32px !important'>
+                        <option selected="selected" value="1">结算时间</option>
+                        <option value="2">下单时间</option>
+                    </select>
+                </div>
+                <div class="one wide field">
                     <input type="text" id="username" value="{{ $getUserInfo->username }}" placeholder="会员账号">
                     <input type="hidden" id="userid" value="{{ $userId }}">
                 </div>
@@ -264,6 +270,7 @@
                     d.endTime = $('#endTime').val();
                     d.issue = $('#issue').val();
                     d.orderNum = $('#orderNum').val();
+                    d.statusTime = $('#statusTime').val();
                 },
                 error:function (data) {
 
@@ -398,11 +405,12 @@
         var token = '{{ csrf_token() }}';
         var issue = $('#issue').val();
         var orderNum = $('#orderNum').val();
+        var statusTime = $('#statusTime').val();
         $.ajax({
             url:'/action/userBetList/total',
             type:'post',
             dataType:'json',
-            data:{username:username,date:date,startTime:startTime,endTime:endTime,_token:token,issue:issue,orderNum:orderNum},
+            data:{username:username,date:date,startTime:startTime,endTime:endTime,_token:token,issue:issue,orderNum:orderNum,statusTime:statusTime},
             success:function (data) {
                 var winTotal = data[0]['winTotal'];
                 var betTotal = data[0]['betTotal'];

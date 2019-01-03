@@ -86,7 +86,7 @@
                 <th>代理退水金额</th>
                 <th><span class="tips-icon"><i data-tooltip="投注金额 - 中奖金额(小于零为平台赢，大于零为会员赢)" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 会员输赢(不含退水)</th>
                 <th><span class="tips-icon"><i data-tooltip="单笔投注金额 * 退水比例" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际退水</th>
-                <th><span class="tips-icon"><i data-tooltip="会员输赢 - 活动金额 - (充值优惠和手续费)" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际输赢(含退水)</th>
+                <th><span class="tips-icon"><i data-tooltip="会员输赢 + 活动金额 + (充值优惠和手续费) + 实际退水" data-position="top center" data-inverted class="iconfont">&#xe61e;</i></span> 实际输赢(含退水)</th>
             </tr>
             </thead>
             <tfoot>
