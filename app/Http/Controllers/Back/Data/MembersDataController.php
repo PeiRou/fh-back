@@ -15,6 +15,7 @@ use App\Recharges;
 use App\Roles;
 use App\SubAccount;
 use App\User;
+use App\Users;
 use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -424,59 +425,64 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $start = empty($request->get('start'))?0:$request->get('start');
         $length = empty($request->get('length'))?50:$request->get('length');
 
-        $sql = ' FROM (select id ,agent,testFlag,users.bank_num AS user_bank_num,users.mobile as user_mobile,users.qq as user_qq,users.promoter as user_promoter ,users.id as uid,users.rechLevel as user_rechLevel,users.created_at as user_created_at,users.updated_at as user_updated_at,users.username as user_username,users.email as user_email,users.fullName as user_fullName,users.money as user_money,users.status as user_status,users.PayTimes as user_PayTimes,users.DrawTimes as user_DrawTimes,users.saveMoneyCount as user_saveMoneyCount,users.drawMoneyCount as user_drawMoneyCount,users.lastLoginTime as user_lastLoginTime,users.content as user_content from users ) u_fileds 
-            left Join (SELECT name as level_name,value FROM level) lv on u_fileds.user_rechLevel = lv.value 
-            left Join (SELECT a_id,account as ag_account,gagent_id FROM agent) ag on u_fileds.agent = ag.a_id  
-            left Join users as p_Users on p_Users.id = u_fileds.user_promoter  
-            where 1 and u_fileds.testFlag in(0,2) ';
+        $sql1 = 'select id,agent,testFlag,users.bank_num AS user_bank_num,users.mobile as user_mobile,users.qq as user_qq,users.promoter as user_promoter ,users.id as uid,users.rechLevel as user_rechLevel,users.created_at as user_created_at,users.updated_at as user_updated_at,users.username as user_username,users.email as user_email,users.fullName as user_fullName,users.money as user_money,users.status as user_status,users.PayTimes as user_PayTimes,users.DrawTimes as user_DrawTimes,users.saveMoneyCount as user_saveMoneyCount,users.drawMoneyCount as user_drawMoneyCount,users.lastLoginTime as user_lastLoginTime,users.content as user_content 
+                        from users ';
+
+        $where = ' where 1 and testFlag in(0,2) ';
         if(isset($bank) && $bank){
             $userArr = DB::table('user_bank')->where('cardNo',$bank)->pluck('user_id')->toArray();
             $or = '';
             if($userArr){
                 $or = ' OR uid IN( '. implode(',',$userArr) .' )';
             }
-            $sql .= ' AND ( user_bank_num = "' . $bank .'"'. $or . ' ) ';
+            $where .= ' AND ( bank_num = "' . $bank .'"'. $or . ' ) ';
         }
         if(isset($status) && $status){
-            $sql .=' and u_fileds.user_status = ' .$status;
+            $where .=' and status = ' .$status;
         }
         if(isset($gaid) && $gaid>0){
-            $sql .= ' and ag.gagent_id = '.$gaid;
+            $aAgentId = Agent::getAgentIdArrayByGId($gaid);
+            $where .= ' and agent in('.implode(',',$aAgentId).') ';
         }
         if(isset($aid) && $aid>0){
-            $sql .= ' and u_fileds.agent = '.$aid;
+            $where .= ' and agent = '.$aid;
         }
         if(isset($agent) && $agent){
-            $sql .= ' and u_fileds.agent = '.$agent;
+            $where .= ' and agent = '.$agent;
         }
         if(isset($rechLevel) && $rechLevel != ''){
-            $sql .= ' and u_fileds.user_rechLevel = '. $rechLevel;
+            $where .= ' and rechLevel = '. $rechLevel;
         }
         if(isset($account) && $account){
-            $sql .= " AND (u_fileds.user_username = '".$account ."'";
-            $sql .= " OR u_fileds.user_email = '".$account ."'";
-            $sql .= " OR u_fileds.user_fullName = '".$account ."')";
+            $where .= " AND (username = '".$account ."'";
+            $where .= " OR email = '".$account ."'";
+            $where .= " OR fullName = '".$account ."')";
         }
         if(isset($mobile) && $mobile){
-            $sql .= " AND u_fileds.user_mobile = '".$mobile."'";
+            $where .= " AND mobile = '".$mobile."'";
         }
         if(isset($qq) && $qq){
-            $sql .= " AND u_fileds.user_qq = '".$qq."'";
+            $where .= " AND qq = '".$qq."'";
         }
         if(isset($minMoney) && $minMoney ){
-            $sql .= ' AND u_fileds.user_money >= '.$minMoney;
+            $where .= ' AND money >= '.$minMoney;
         }
         if(isset($maxMoney) && $maxMoney ){
-            $sql .= ' AND u_fileds.user_money <= '.$maxMoney;
+            $where .= ' AND money <= '.$maxMoney;
         }
         if(isset($promoter) && $promoter ){
-            $sql .= ' AND p_Users.username = \''.$promoter.'\'';
+            $userId = Users::where('username',$promoter)->value('id');
+            $where .= ' AND promoter = \''.$userId.'\'';
         }
         if(isset($noLoginDays) && $noLoginDays ){
-            $sql .= ' AND u_fileds.user_lastLoginTime <= "'.date('Y-m-d 23:59:59',strtotime('-'.$noLoginDays.' day')).'"';
+            $where .= ' AND lastLoginTime <= "'.date('Y-m-d 23:59:59',strtotime('-'.$noLoginDays.' day')).'"';
         }
-        $users = DB::select('select u_fileds.*,lv.*,ag.*,p_Users.username as pusername,p_Users.fullName as pfullName  '.$sql.'  ORDER BY id desc '.'LIMIT '.$start.','.$length);
-        $usersCount = DB::select('select count(u_fileds.id) AS count '.$sql);
+        $sql = ' FROM ( '.$sql1.$where.'  ORDER BY id desc '.'LIMIT '.$start.','.$length.') u_fileds ';
+        $sql .= 'left Join (SELECT name as level_name,value FROM level) lv on u_fileds.user_rechLevel = lv.value 
+            left Join (SELECT a_id,account as ag_account,gagent_id FROM agent) ag on u_fileds.agent = ag.a_id  
+            left Join users as p_Users on p_Users.id = u_fileds.user_promoter ';
+        $users = DB::select('select u_fileds.*,lv.*,ag.*,p_Users.username as pusername,p_Users.fullName as pfullName  '.$sql);
+        $usersCount = DB::select('select count(id) AS count from users '.$where);
         return DataTables::of($users)
             ->editColumn('online',function ($users) {
                 $redis = Redis::connection();

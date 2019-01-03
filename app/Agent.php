@@ -130,4 +130,14 @@ class Agent extends Model
         $aArray = ['agentId' => $agentId];
         return DB::select($aSql,$aArray);
     }
+
+    //获取代理id数组
+    public static function getAgentIdArrayByGId($gId){
+        $aData = self::select('a_id')->where('gagent_id',$gId)->get();
+        $aArray = [];
+        foreach ($aData as $iData){
+            $aArray[] = $iData->a_id;
+        }
+        return $aArray;
+    }
 }
