@@ -224,8 +224,9 @@ class SrcViewController extends Controller
         return view('back.subAccount');
     }
     //在线会员
-    public function onlineUser()
+    public function onlineUser(Request $request)
     {
+        Session::put('platform',$request->get('platform'));
         return view('back.onlineUser');
     }
 

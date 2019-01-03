@@ -899,6 +899,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
 
         $start = $request->get('start');
         $length = $request->get('length');
+        $platform = Session::get('platform');
         $redis = Redis::connection();
         $redis->select(6);
         $keys = $redis->keys('urtime:'.'*');
@@ -906,6 +907,8 @@ GROUP BY g.ga_id LIMIT $start,$length";
         foreach ($keys as $item){
             $redisUser = $redis->get($item);
             $redisUser = (array)json_decode($redisUser,true);
+            if($platform>0 && $platform != $redisUser['platform'])
+                continue;
             $onlineUser[] = $redisUser['user_id'];
         }
         $user = User::select()
