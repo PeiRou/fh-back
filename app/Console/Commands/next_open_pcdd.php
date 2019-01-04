@@ -80,7 +80,7 @@ class next_open_pcdd extends Command
         try {
             //官方彩种获取开号
             $html = $excel->checkOpenGuan($table,$needOpenIssue,$this->code,$gapnum,$redis_gapnum,$redis);
-            $needOpenIssue = $html['needOpenIssue'];
+            $needOpenIssue = isset($html['needOpenIssue'])?$html['needOpenIssue']:$needOpenIssue;
             //清除昨天长龙，在录第一期的时候清掉
             if (substr($openTime,-8) == '09:05:00') {
                 DB::table('clong_kaijian2')->where('lotteryid', $this->gameId)->delete();

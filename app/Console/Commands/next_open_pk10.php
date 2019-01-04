@@ -79,7 +79,7 @@ class next_open_pk10 extends Command
         try {
             //官方彩种获取开号
             $html = $excel->checkOpenGuan($table,$needOpenIssue,'bjpk10',$gapnum,$redis_gapnum,$redis);
-            $needOpenIssue = $html['needOpenIssue'];
+            $needOpenIssue = isset($html['needOpenIssue'])?$html['needOpenIssue']:$needOpenIssue;
             //清除昨天长龙，在录第一期的时候清掉
             if (substr($openTime,-8) == '09:07:30') {
                 DB::table('clong_kaijian1')->where('lotteryid', $this->gameId)->delete();

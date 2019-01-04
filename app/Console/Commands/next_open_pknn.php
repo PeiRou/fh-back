@@ -79,7 +79,7 @@ class next_open_pknn extends Command
         try {
             //官方彩种获取开号
             $html = $excel->checkOpenGuan($table,$needOpenIssue,$this->code,$gapnum,$redis_gapnum,$redis);
-            $needOpenIssue = $html['needOpenIssue'];
+            $needOpenIssue = isset($html['needOpenIssue'])?$html['needOpenIssue']:$needOpenIssue;
             if (isset($html['issue']) && $redis_issue !== $html['issue']) {
                 try {
                     $up = DB::table($table)->where('issue', $html['issue'])

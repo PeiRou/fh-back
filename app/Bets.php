@@ -229,7 +229,7 @@ class Bets extends Model
                   SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bet_money` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bet_money` ELSE 0 END) END) AS `sumWinbet`,
                   SUM(CASE WHEN `game_id` IN(90,91) THEN `nn_view_money` ELSE (CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE `bunko` END) END) AS `sumBunko`,
                   SUM(`bet_money` * `play_rebate`) AS `back_money` 
-                  FROM `bet` WHERE 1 AND `testFlag` IN(0,2)";
+                  FROM `bet` WHERE 1 AND `testFlag` IN(0,2) AND `bet`.`status` = 1 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `updated_at` >= :startTime";
@@ -248,7 +248,7 @@ class Bets extends Model
                   SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bet_money` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bet_money` ELSE 0 END) END) AS `sumWinbet`,
                   SUM(CASE WHEN `game_id` IN(90,91) THEN `nn_view_money` ELSE (CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE `bunko` END) END) AS `sumBunko`,
                   SUM(`bet_money` * `play_rebate`) AS `back_money` 
-                  FROM `bet` WHERE 1 AND `testFlag` IN(0,2)";
+                  FROM `bet` WHERE 1 AND `testFlag` IN(0,2) AND `bet`.`status` = 1 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `updated_at` >= :startTime";
@@ -269,7 +269,7 @@ class Bets extends Model
                   SUM(`bet_money` * `play_rebate`) AS `back_money`  
                   FROM `bet` 
                   JOIN `users` ON `users`.`id` = `bet`.`user_id`
-                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 ";
+                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`status` = 1 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `bet`.`updated_at` >= :startTime";
@@ -290,7 +290,7 @@ class Bets extends Model
                   SUM(`bet_money` * `play_rebate`) AS `back_money` 
                   FROM `bet` 
                   JOIN `users` ON `users`.`id` = `bet`.`user_id`
-                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`bunko` != 0 ";
+                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`bunko` != 0  AND `bet`.`status` = 1 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `bet`.`updated_at` >= :startTime";
@@ -313,7 +313,7 @@ class Bets extends Model
                   FROM `bet` 
                   JOIN `users` ON `users`.`id` = `bet`.`user_id`
                   JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
-                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`bunko` != 0";
+                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`bunko` != 0 AND `bet`.`status` = 1 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `bet`.`updated_at` >= :startTime";
@@ -336,7 +336,7 @@ class Bets extends Model
                   FROM `bet` 
                   JOIN `users` ON `users`.`id` = `bet`.`user_id`
                   JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
-                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`bunko` != 0 ";
+                  WHERE `bet`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet`.`bunko` != 0  AND `bet`.`status` = 1 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `bet`.`updated_at` >= :startTime";
@@ -359,7 +359,7 @@ sum(cp.sumActivity) AS activity_money,sum(cp.sumRecharge_fee) AS handling_fee,'0
 sum(ag_back.money) AS return_amount,
 sum(b.fact_return_amount) AS fact_return_amount";
         $where = "";
-        $whereB = "";
+        $whereB = " and status = 1 ";
         $whereU = "";
         $whereCp = "";
         $whereAg = "";
@@ -371,12 +371,12 @@ sum(b.fact_return_amount) AS fact_return_amount";
             $where .= " and zd.account = '".$aParam['account']."'";
         }
         if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam)){
-            $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereB .= " and updated_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereAg .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
-            $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereB .= " and updated_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereAg .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
         }
@@ -457,7 +457,7 @@ sum(b.fact_return_amount) AS fact_return_amount";
             sum(ag_back.money) AS return_amount,
             sum(b.fact_return_amount) AS fact_return_amount";
         $where = "";
-        $whereB = "";
+        $whereB = " and status = 1 ";
         $whereU = "";
         $whereCp = "";
         $whereAg = "";
@@ -469,12 +469,12 @@ sum(b.fact_return_amount) AS fact_return_amount";
             $where .= " and zd.account = '".$aParam['account']."'";
         }
         if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam)){
-            $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereB .= " and updated_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereAg .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
-            $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereB .= " and updated_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereAg .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
         }
@@ -502,7 +502,7 @@ sum(b.fact_return_amount) AS fact_return_amount";
                     sum(b.bet_amount) AS bet_amount,sum(b.bet_bunko) AS bet_bunko,sum(b.fact_bet_bunko) AS fact_bet_bunko, 
                     '0.00' AS odds_amount,sum(ag_back.money) AS return_amount,sum(b.fact_return_amount) AS fact_return_amount,";
         $where = "";
-        $whereB = "";
+        $whereB = " and status = 1 ";
         $whereU = "";
         $whereCp = "";
         $whereDr = "";
@@ -522,14 +522,14 @@ sum(b.fact_return_amount) AS fact_return_amount";
             $where .= " and ag.gagent_id = ".$aParam['general_id'];
         }
         if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam)){
-            $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereB .= " and updated_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereAg .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
-            $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereB .= " and updated_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
@@ -621,7 +621,7 @@ sum(b.fact_return_amount) AS fact_return_amount";
                     sum(b.bet_amount) AS bet_amount,sum(b.bet_bunko) AS bet_bunko,sum(b.fact_bet_bunko) AS fact_bet_bunko, 
                     '0.00' AS odds_amount,sum(ag_back.money) AS return_amount,sum(b.fact_return_amount) AS fact_return_amount,";
         $where = "";
-        $whereB = "";
+        $whereB = " and status = 1 ";
         $whereU = "";
         $whereCp = "";
         $whereDr = "";
@@ -641,14 +641,14 @@ sum(b.fact_return_amount) AS fact_return_amount";
             $where .= " and ag.gagent_id = ".$aParam['general_id'];
         }
         if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam)){
-            $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereB .= " and updated_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereAg .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
-            $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereB .= " and updated_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
@@ -682,7 +682,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
 sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as bet_bunko,
 '0.00' AS odds_amount,'0.00' AS return_amount,sum(b.bet_money * b.play_rebate) AS fact_return_amount, ";
         $where = "";
-        $whereB = "";
+        $whereB = " and status = 1 ";
         $whereU = "";
         $whereCp = "";
         $whereDr = "";
@@ -697,13 +697,13 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $where .= " and u.username = '".$aParam['account']."'";
         }
         if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam)){
-            $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereB .= " and updated_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
-            $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereB .= " and updated_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
@@ -823,7 +823,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $aSql1 = "SELECT sum(b.bet_count) as bet_count,sum(b.bet_money) as bet_money,sum(b.bet_amount) as bet_amount,sum(b.fact_bet_bunko) as fact_bet_bunko,sum(b.bet_bunko) as bet_bunko,
                 '0.00' AS odds_amount,'0.00' AS return_amount,sum(b.fact_return_amount) AS fact_return_amount, ";
         $where = "";
-        $whereB = "";
+        $whereB = " and status = 1 ";
         $whereU = "";
         $whereCp = "";
         $whereDr = "";
@@ -838,13 +838,13 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $where .= " and u.username = '".$aParam['account']."'";
         }
         if(isset($aParam['timeStart']) && array_key_exists('timeStart',$aParam)){
-            $whereB .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
+            $whereB .= " and updated_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereCp .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereDr .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
             $whereRe .= " and created_at >= '".date("Y-m-d 00:00:00",strtotime($aParam['timeStart']))."'";
         }
         if(isset($aParam['timeEnd']) && array_key_exists('timeEnd',$aParam)){
-            $whereB .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
+            $whereB .= " and updated_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereCp .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereDr .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
             $whereRe .= " and created_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['timeEnd']))."'";
@@ -896,6 +896,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $end = $request->get('endTime');
         $issue = $request->get('issue');
         $orderNum = $request->get('orderNum');
+        $statusTime = $request->get('statusTime');
 
         $Sql = 'select bet.bet_id as bet_bet_id,bet.play_rebate as bet_play_rebate,bet.order_id as bet_order_id,game.game_name as g_game_name,bet.color as bet_color,bet.issue as bet_issue,bet.playcate_id as bet_playcate_id,bet.play_id as bet_play_id,bet.bet_money as bet_bet_money,bet.bunko as bet_bunko,bet.created_at as bet_created_at,bet.play_odds as bet_play_odds,bet.playcate_name as bet_playcate_name,bet.play_name as bet_play_name,bet.platform as bet_platform,bet.game_id as bet_game_id,bet.freeze_money as bet_freeze_money,bet.nn_view_money as bet_nn_view_money,bet.bet_info as bet_bet_info,bet.status from bet LEFT JOIN game ON bet.game_id = game.game_id WHERE 1 = 1 ';
         $betSql = "";
@@ -920,8 +921,14 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         if(isset($orderNum) && isset($orderNum)){
             $betSql .= " AND bet.order_id ='".$orderNum."'";
         }
-        if(isset($start) && isset($end)){
-            $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
+        if($statusTime == 1){
+            if (isset($start) && isset($end)) {
+                $betSql .= " AND bet.updated_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
+            }
+        }elseif($statusTime == 2) {
+            if (isset($start) && isset($end)) {
+                $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
+            }
         }
         $betSql .= " AND bet.user_id =".$user->id;
         return $Sql.$betSql;
@@ -936,6 +943,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $end = $request->get('endTime');
         $issue = $request->get('issue');
         $orderNum = $request->get('orderNum');
+        $statusTime = $request->get('statusTime');
 
         $betSql = "";
         if(count($games) > 0){
@@ -959,8 +967,14 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         if(isset($orderNum) && isset($orderNum)){
             $betSql .= " AND bet.order_id ='".$orderNum."'";
         }
-        if(isset($start) && isset($end)){
-            $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
+        if($statusTime == 1){
+            if (isset($start) && isset($end)) {
+                $betSql .= " AND bet.updated_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
+            }
+        }elseif($statusTime == 2) {
+            if (isset($start) && isset($end)) {
+                $betSql .= " AND bet.created_at BETWEEN '{$start} 00:00:00' and '{$end} 23:59:59' ";
+            }
         }
         $betSql .= " AND bet.user_id =".$user->id;
 
@@ -974,7 +988,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
                   COUNT(DISTINCT(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `user_id` ELSE NULL END) ELSE(CASE WHEN `bunko` >0 THEN `user_id` ELSE NULL END) END)) AS `countWinBunkoMember`,
                   SUM(CASE WHEN `game_id` IN (90,91) THEN `nn_view_money` ELSE(CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE `bunko` END)END) AS `sumBunko`,
                   `game_id` ,`user_id` 
-                  FROM `bet` WHERE 1 AND `testFlag` = 0 AND `updated_at` >= :startTime AND `updated_at` <= :endTime GROUP BY `game_id`,`user_id`";
+                  FROM `bet` WHERE 1 AND `testFlag` = 0 AND `updated_at` >= :startTime AND `updated_at` <= :endTime AND status = 1 GROUP BY `game_id`,`user_id`";
         $aArray = [
             'startTime' => $startTime,
             'endTime' => $endTime
@@ -984,7 +998,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
 
     public static function todayReportBet($aParam){
         $sql1 = "SELECT g.game_name,g.status,g.game_id, `b`.`sumMoney`, `b`.`countBets`,`b`.`countMember`, `b`.`sumWinBunko`, `b`.`countWinBunkoBet`,`b`.`countWinBunkoMember`, (CASE WHEN `b`.`sumBunko` IS NULL THEN 0 ELSE `b`.`sumBunko` END) AS `sumBunko` FROM `game` AS g ";
-        $whereBet = "";
+        $whereBet = " and status = 1 ";
         $where = "";
         $join = ' LEFT ';
         if(isset($aParam['killZeroBetGame']) && $aParam['killZeroBetGame']){        //过滤零投注彩种
@@ -1025,8 +1039,13 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $bet_his->where('user_id', $param->userId);
         }
         if(isset($param->startTime, $param->endTime)){
-            $bet->whereBetween('created_at',[$param->startTime.' 00:00:00', $param->endTime.' 23:59:59']);
-            $bet_his->whereBetween('created_at',[$param->startTime.' 00:00:00', $param->endTime.' 23:59:59']);
+            if($param->statusTime == 1){
+                $bet->whereBetween('updated_at', [$param->startTime . ' 00:00:00', $param->endTime . ' 23:59:59']);
+                $bet_his->whereBetween('updated_at', [$param->startTime . ' 00:00:00', $param->endTime . ' 23:59:59']);
+            }elseif($param->statusTime == 2) {
+                $bet->whereBetween('created_at', [$param->startTime . ' 00:00:00', $param->endTime . ' 23:59:59']);
+                $bet_his->whereBetween('created_at', [$param->startTime . ' 00:00:00', $param->endTime . ' 23:59:59']);
+            }
         }
         $bet->unionAll($bet_his);
         $sql = $bet->toSql();

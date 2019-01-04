@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\BetHis;
 use App\Bets;
 use App\Games;
 use App\ReportBet;
@@ -39,7 +40,10 @@ class BetStatementDaily implements ShouldQueue
 
         try {
             //获取投注
-            $aBet = Bets::getReportBet($this->aDateTime,$this->aDateTime.' 23:59:59');
+            if(strtotime($this->aDateTime) >= strtotime(date('Y-m-d',strtotime('-1 day'))))
+                $aBet = Bets::getReportBet($this->aDateTime,$this->aDateTime.' 23:59:59');
+            else
+                $aBet = BetHis::getReportBet($this->aDateTime,$this->aDateTime.' 23:59:59');
 
             $aArray = [];
             $dateTime = date('Y-m-d H:i:s');

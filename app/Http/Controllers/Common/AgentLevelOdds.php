@@ -22,7 +22,7 @@ class AgentLevelOdds
 //        if(!empty($aArrayOdds[$i])) {
 //            $odds = $this->getAgentOdds($aArrayOdds[$i-1], $aArrayOdds, $odds, $length, $i);
 //        }
-        return round($odds*(1-$agentOdds/100),3);
+        return $this->interceptingDecimals($odds*(1-$agentOdds/100),3);
     }
 
     //获取当前层级赔率
