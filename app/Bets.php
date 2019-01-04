@@ -27,18 +27,18 @@ class Bets extends Model
         $aSql = Bets::select(DB::raw("users.username,bet.user_id,bet.order_id,bet.created_at,bet.status,bet.bet_money as money,bet.bet_balance as balance,bet.issue,bet.game_id,game.game_name,concat(bet.playcate_name,concat('-',bet.play_name)) as playcate_name,'' as agent,bet.color as agent_id,bet.bet_info as content,'' as content1,bet.freeze_money,bet.unfreeze_money,bet.nn_view_money,bet.bunko as c_money,bet.bet_id,'' as rechargesType"))
             ->where(function ($sql) use ($param) {
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
-                    $sql->whereBetween('bet.updated_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
+                    $sql->whereBetween('bet.created_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
                 }else{
                     if (isset($param['time_point']) && array_key_exists('time_point', $param)) {
                         if ($param['time_point'] == 'today') {
                             $time = date('Y-m-d');
-                            $sql->whereBetween('bet.updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $sql->whereBetween('bet.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         } elseif ($param['time_point'] == 'yesterday') {
                             $time = date('Y-m-d', strtotime('- 1 day', time()));
-                            $sql->whereBetween('bet.updated_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
+                            $sql->whereBetween('bet.created_at', [$time . ' 00:00:00', $time . ' 23:59:59']);
                         } else {
                             $time = date('Y-m-d', strtotime('- 2 day', time()));
-                            $sql->where('bet.updated_at', '<=', $time . '23:59:59');
+                            $sql->where('bet.created_at', '<=', $time . '23:59:59');
                         }
                     }
                 }

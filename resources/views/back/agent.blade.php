@@ -39,7 +39,7 @@
                         <input type="text" id="name">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="day" placeholder="未登录天数">
+                        <input type="text" id="day" oninput = "value=value.replace(/[^\d|\.]/g,'')" placeholder="未登录天数">
                     </div>
                     <div class="one wide field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>

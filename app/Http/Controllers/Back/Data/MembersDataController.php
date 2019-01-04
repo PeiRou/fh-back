@@ -673,15 +673,15 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $aDrawingSql = "SELECT SUM(`amount`) AS `payDrawing` FROM `drawing` WHERE status = 2 AND `user_id` = $id ";
         if(isset($param['startTime']) && array_key_exists('startTime', $param)){
             $aSql .= " AND `updated_at` >= '".$param['startTime']."'";
-            $aBetSql .= " AND `updated_at` >= '".$param['startTime']."'";
-            $aBet_hisSql .= " AND `updated_at` >= '".$param['startTime']."'";
+            $aBetSql .= " AND `created_at` >= '".$param['startTime']."'";
+            $aBet_hisSql .= " AND `created_at` >= '".$param['startTime']."'";
             $aDrawingSql .= " AND `updated_at` >= '".$param['startTime']."'";
         }
         if(isset($param['endTime']) && array_key_exists('endTime', $param)){
             $aSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
-            $aBetSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
+            $aBetSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
             $aDrawingSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
-            $aBet_hisSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
+            $aBet_hisSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
         }
         $aBetSql = "SELECT SUM(`payBetting`) AS `payBetting` FROM (
           ({$aBetSql}) UNION ALL ({$aBet_hisSql}) 

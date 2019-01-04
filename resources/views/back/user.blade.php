@@ -71,7 +71,7 @@
                         <input type="text" id="account" placeholder="账号/邮箱/名称">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="mobile" oninput = " value=value.replace(/[^\d|\.]/g,'')"  placeholder="手机">
+                        <input type="text" id="mobile" oninput = "value=value.replace(/[^\d|\.]/g,'')"  placeholder="手机">
                     </div>
                     <div class="one wide field">
                         <input type="text" id="qq" oninput = " value=value.replace(/[^\d|\.]/g,'')"  placeholder="QQ">
