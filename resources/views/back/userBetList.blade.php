@@ -136,7 +136,7 @@
                     </div>
                 </div>
                 <div class="one wide field">
-                    <input type="text" id="minMoney" placeholder="下注最小金额">
+                    <input type="text" id="minMoney"  oninput = "clearNoNum(this)" placeholder="下注最小金额">
                 </div>
                 <div class="one wide field">
                     <input type="text" id="maxMoney" placeholder="输赢起始">
@@ -484,6 +484,14 @@
     $("#selectAll").click(function () {
         $(".list :checkbox").prop("checked", true);
     });
+    function clearNoNum(obj){
+        obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+        obj.value = obj.value.replace(/^\./g,"");  //验证第一个字符是数字而不是.
+        obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的.
+        obj.value = obj.value.replace(".","$#$")
+            .replace(/\./g,"")
+            .replace("$#$",".");
+    }
 </script>
 </body>
 </html>
