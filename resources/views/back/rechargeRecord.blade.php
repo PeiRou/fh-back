@@ -101,7 +101,7 @@
                         {{--<input type="text" id="" placeholder="昵称">--}}
                     {{--</div>--}}
                     <div class="one wide field"  style="width:5.5%!important;">
-                        <input type="text" id="amount" placeholder="交易金额">
+                        <input type="text" id="amount" oninput = "clearNoNum(this)"  placeholder="交易金额">
                     </div>
                     <div class="one wide field">
                         <input type="text" id="fullName" placeholder="认证姓名">

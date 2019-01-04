@@ -47,11 +47,11 @@
                         </div>
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="minBunko" placeholder="最小实际输赢">
+                        <input type="text" id="minBunko" oninput = "clearNoNum(this)" placeholder="最小实际输赢">
                     </div>
                     <div style="line-height: 32px;">-</div>
                     <div class="one wide field">
-                        <input type="text" id="maxBunko" placeholder="最大实际输赢">
+                        <input type="text" id="maxBunko" oninput = "clearNoNum(this)" placeholder="最大实际输赢">
                     </div>
                     <div class="one wide field" style="width: 4.2%!important;">
                         <a class="fluid ui mini blue button" id="btnToday">今天</a>
