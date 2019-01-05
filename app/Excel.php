@@ -582,20 +582,20 @@ class Excel
                 return 'no have';
             }else{
                 //检查不是当期需要追号的开奖
-                $res = $this->getNeedMinIssue($table);     //在从旧的需要开奖的奖期查起
-                if($res->issue == $needOpenIssue)
-                    return 'no have';
-                $needOpenIssue = $res->issue;
-                $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
-                if(!isset($html['issue'])){
-                    $res = $this->getNeedAarrayIssue($table);     //在从旧的需要开奖的奖期查起
-                    for($i=0; $i<count($res); $i++){
-                        $needOpenIssue = $res[$i]->issue;
-                        $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
-                        if(isset($html['issue']))
-                            $i = count($res);
-                    }
+//                $res = $this->getNeedMinIssue($table);     //在从旧的需要开奖的奖期查起
+//                if($res->issue == $needOpenIssue)
+//                    return 'no have';
+//                $needOpenIssue = $res->issue;
+//                $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
+//                if(!isset($html['issue'])){
+                $res = $this->getNeedAarrayIssue($table);     //在从旧的需要开奖的奖期查起
+                for($i=0; $i<count($res); $i++){
+                    $needOpenIssue = $res[$i]->issue;
+                    $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
+                    if(isset($html['issue']))
+                        $i = count($res);
                 }
+//                }
             }
         }
         if(isset($html['issue']))
