@@ -312,7 +312,15 @@ class Excel
     public function getGuanIssueNum($needOpenIssue,$type){
         $key = $type.'?issue='.$needOpenIssue;
         $url = Config::get('website.guanIssueServerUrl').$key;
-        $res = json_decode(file_get_contents($url), true);
+//        $res = json_decode(file_get_contents($url), true);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 2);
+        $tmpInfo = curl_exec($curl);
+        curl_close($curl);
+        $res = json_decode($tmpInfo,true);
         return $res;
     }
     //取得目前未开奖奖期
