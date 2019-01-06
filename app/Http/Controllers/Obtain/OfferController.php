@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Obtain;
 
-/**
- * 收到总后台的报价信息
- */
+use Illuminate\Support\Facades\DB;
 
 class OfferController extends BaseController
 {
