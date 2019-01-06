@@ -35,7 +35,7 @@ class ISSUE_SEED_MSNN extends Command
             //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
         }
         if($checkUpdate->msnn == $curDate){
-            \Log::info(date('Y-m-d').'期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -43,10 +43,10 @@ class ISSUE_SEED_MSNN extends Command
                     'msnn' => $curDate
                 ]);
                 if($update == 1){
-                    \Log::info(date('Y-m-d').'已更新');
+                    writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
                 }
             } else {
-                \Log::info('error');
+                writeLog('ISSUE_SEED', 'error');
             }
         }
     }

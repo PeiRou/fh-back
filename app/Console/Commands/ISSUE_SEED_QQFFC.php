@@ -38,7 +38,7 @@ class ISSUE_SEED_QQFFC extends Command
             //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
         }
         if($checkUpdate->qqffc == $curDate){
-            \Log::info(date('Y-m-d').'期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -46,10 +46,10 @@ class ISSUE_SEED_QQFFC extends Command
                     'qqffc' => $curDate
                 ]);
                 if($update !== 1){
-                    \Log::info('error');
+                    writeLog('ISSUE_SEED', 'error');
                 }
             } else {
-                \Log::info('error');
+                writeLog('ISSUE_SEED', 'error');
             }
         }
     }

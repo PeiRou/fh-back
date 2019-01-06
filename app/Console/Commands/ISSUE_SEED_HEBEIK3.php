@@ -36,7 +36,7 @@ class ISSUE_SEED_HEBEIK3 extends Command
         }
 
         if($checkUpdate->hebeik3 == $curDate){
-            \Log::info(date('Y-m-d').'河北快3期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'河北快3期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -44,10 +44,10 @@ class ISSUE_SEED_HEBEIK3 extends Command
                     'hebeik3' => $curDate
                 ]);
                 if($update !== 1){
-                    \Log::info('河北快3error');
+                    writeLog('ISSUE_SEED', '河北快3error');
                 }
             } else {
-                \Log::info('河北快3error');
+                writeLog('ISSUE_SEED', '河北快3error');
             }
         }
     }

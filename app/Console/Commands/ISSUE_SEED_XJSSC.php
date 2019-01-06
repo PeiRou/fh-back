@@ -33,7 +33,7 @@ class ISSUE_SEED_XJSSC extends Command
         }
 
         if($checkUpdate->xjssc == $curDate){
-            \Log::info(date('Y-m-d').'新疆时时彩期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'新疆时时彩期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -41,10 +41,10 @@ class ISSUE_SEED_XJSSC extends Command
                     'xjssc' => $curDate
                 ]);
                 if($update !== 1){
-                    \Log::info('新疆时时彩error');
+                    writeLog('ISSUE_SEED', '新疆时时彩error');
                 }
             } else {
-                \Log::info('新疆时时彩error');
+                writeLog('ISSUE_SEED', '新疆时时彩error');
             }
         }
     }

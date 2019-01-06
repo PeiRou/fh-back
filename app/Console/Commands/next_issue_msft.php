@@ -41,7 +41,6 @@ class next_issue_msft extends Command
      */
     public function handle()
     {
-        writeLog('msft', '测试');
         $table = 'game_msft';
         $excel = new Excel();
         $res = $excel->getNextBetIssue($table);

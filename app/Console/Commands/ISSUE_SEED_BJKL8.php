@@ -34,7 +34,7 @@ class ISSUE_SEED_BJKL8 extends Command
             //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
         }
         if($checkUpdate->bjkl8 == $curDate){
-            writeLog('bjkl8', date('Y-m-d').'期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -42,10 +42,10 @@ class ISSUE_SEED_BJKL8 extends Command
                     'bjkl8' => $curDate
                 ]);
                 if($update == 1){
-                    writeLog('bjkl8', date('Y-m-d').'已更新');
+                    writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
                 }
             } else {
-                writeLog('bjkl8', 'error');
+                writeLog('ISSUE_SEED', 'error');
             }
         }
     }

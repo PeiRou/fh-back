@@ -116,7 +116,7 @@ class new_msft extends Command
                 $this->clong->setKaijian('msft',1,$opencode);
                 $this->clong->setKaijian('msft',2,$opencode);
             } catch (\Exception $exception){
-                writeLog('msft', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('game/msft', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
 //                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             }
         }

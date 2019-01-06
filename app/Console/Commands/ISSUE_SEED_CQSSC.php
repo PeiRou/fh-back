@@ -57,7 +57,7 @@ class ISSUE_SEED_CQSSC extends Command
         $lastDate = date('Y-m-d 23:59:59');
         $sql .= "('$lastIssue','$lastDate'),";
         if($checkUpdate->cqssc == $curDate){
-            \Log::info(date('Y-m-d').'期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -65,10 +65,10 @@ class ISSUE_SEED_CQSSC extends Command
                     'cqssc' => $curDate
                 ]);
                 if($update == 1){
-                    \Log::info(date('Y-m-d').'已更新');
+                    writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
                 }
             } else {
-                \Log::info('error');
+                writeLog('ISSUE_SEED', 'error');
             }
         }
     }

@@ -24,9 +24,11 @@ class KYUtils
             return;
         }
         if (is_string($msg)) {
-            \Log::info($msg);
+//            \Log::info($msg);
+            writeLog('ky', $msg);
         } else {
-            \Log::info(json_encode($msg));
+//            \Log::info(json_encode($msg));
+            writeLog('ky', json_encode($msg));
         }
     }
 

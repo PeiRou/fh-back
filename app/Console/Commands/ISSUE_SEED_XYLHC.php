@@ -47,12 +47,12 @@ class ISSUE_SEED_XYLHC extends Command
                     if($delClong1 == 1){
                         $delClong2 = DB::table('clong_kaijian2')->where('lotteryid',85)->delete();
                         if($delClong2 == 1){
-                            \Log::info(date('Y-m-d').'已更新');
+                            writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
                         }
                     }
                 }
             } else {
-                \Log::info('error');
+                writeLog('ISSUE_SEED', 'error');
             }
         }
     }

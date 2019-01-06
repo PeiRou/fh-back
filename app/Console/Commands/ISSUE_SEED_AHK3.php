@@ -27,7 +27,7 @@ class ISSUE_SEED_AHK3 extends Command
                 $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
                 $curDate = date('Ymd', strtotime('+ 1 day', time()));
             }else if($curDate < $checkUpdate->ahk3)
-                writeLog('ahk3', $curDate.'安徽快3期数已存在');
+                writeLog('game/ahk3', $curDate.'安徽快3期数已存在');
             else
                 $issueDate = date('Y-m-d',time());
         }else{
@@ -52,8 +52,7 @@ class ISSUE_SEED_AHK3 extends Command
         }
 
         if($checkUpdate->ahk3 == $curDate){
-            writeLog('ahk3', date('Y-m-d').'安徽快3期数已存在');
-//            \Log::info(date('Y-m-d').'安徽快3期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'安徽快3期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -61,12 +60,10 @@ class ISSUE_SEED_AHK3 extends Command
                     'ahk3' => $curDate
                 ]);
                 if($update !== 1){
-//                    \Log::info('安徽快3error');
-                    writeLog('ahk3', '安徽快3error');
+                    writeLog('ISSUE_SEED', '安徽快3error');
                 }
             } else {
-                writeLog('ahk3', '安徽快3error');
-//                \Log::info('安徽快3error');
+                writeLog('ISSUE_SEED', '安徽快3error');
             }
         }
     }

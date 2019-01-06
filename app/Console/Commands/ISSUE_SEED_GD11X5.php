@@ -31,7 +31,7 @@ class ISSUE_SEED_GD11X5 extends Command
             $sql .= "('$issue','$timeUp'),";
         }
         if($checkUpdate->gd11x5 == $curDate){
-            \Log::info(date('Y-m-d').'广东11选5已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'广东11选5已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -39,10 +39,10 @@ class ISSUE_SEED_GD11X5 extends Command
                     'gd11x5' => $curDate
                 ]);
                 if($update !== 1){
-                    \Log::info('广东11选5error');
+                    writeLog('ISSUE_SEED', '广东11选5error');
                 }
             } else {
-                \Log::info('广东11选5error');
+                writeLog('ISSUE_SEED', '广东11选5error');
             }
         }
     }

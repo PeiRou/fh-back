@@ -36,7 +36,7 @@ class ISSUE_SEED_GXK3 extends Command
         }
 
         if($checkUpdate->gxk3 == $curDate){
-            \Log::info(date('Y-m-d').'广西快3期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'广西快3期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -44,10 +44,10 @@ class ISSUE_SEED_GXK3 extends Command
                     'gxk3' => $curDate
                 ]);
                 if($update !== 1){
-                    \Log::info('广西快3error');
+                    writeLog('ISSUE_SEED', '广西快3error');
                 }
             } else {
-                \Log::info('广西快3error');
+                writeLog('ISSUE_SEED', '广西快3error');
             }
         }
     }

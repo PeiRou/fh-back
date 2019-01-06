@@ -28,7 +28,7 @@ class ISSUE_SEED_MSJSK3 extends Command
                 $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
                 $curDate = date('Ymd', strtotime('+ 1 day', time()));
             }else if($curDate < $checkUpdate->msjsk3)
-                \Log::info($curDate.'秒速快3期数已存在');
+                writeLog('ISSUE_SEED', $curDate.'秒速快3期数已存在');
             else
                 $issueDate = date('Y-m-d',time());
         }else{
@@ -56,7 +56,7 @@ class ISSUE_SEED_MSJSK3 extends Command
             //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
         }
         if($checkUpdate->msjsk3 == $curDate){
-            \Log::info(date('Y-m-d').'期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -64,10 +64,10 @@ class ISSUE_SEED_MSJSK3 extends Command
                     'msjsk3' => $curDate
                 ]);
                 if($update !== 1){
-                    \Log::info('error');
+                    writeLog('ISSUE_SEED', 'error');
                 }
             } else {
-                \Log::info('error');
+                writeLog('ISSUE_SEED', 'error');
             }
         }
     }

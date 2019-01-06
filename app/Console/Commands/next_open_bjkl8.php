@@ -102,13 +102,13 @@ class next_open_bjkl8 extends Command
                         $this->clong->setKaijian('bjkl8', 2, $html['nums']);
                     }
                 } catch (\Exception $exception) {
-                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                    writeLog('next_open', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
             }
             $key = $this->code.'ing:'.$res->issue;
             $redis->setex($key,2,'ing');
         } catch (\Exception $exception) {
-            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            writeLog('next_open', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
     }
 }

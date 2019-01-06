@@ -36,7 +36,7 @@ class ISSUE_SEED_GSK3 extends Command
         }
 
         if($checkUpdate->gsk3 == $curDate){
-            \Log::info(date('Y-m-d').'甘肃快3期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'甘肃快3期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -44,10 +44,10 @@ class ISSUE_SEED_GSK3 extends Command
                     'gsk3' => $curDate
                 ]);
                 if($update !== 1){
-                    \Log::info('甘肃快3error');
+                    writeLog('ISSUE_SEED', '甘肃快3error');
                 }
             } else {
-                \Log::info('甘肃快3error');
+                writeLog('ISSUE_SEED', '甘肃快3error');
             }
         }
     }
