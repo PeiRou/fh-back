@@ -35,7 +35,7 @@ class OfferController extends BaseController
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
-        if(DB::table('offer')->where('order_id', $data['order_id']))
+        if(DB::table('offer')->where('order_id', $data['order_id'])->count())
             return $this->returnAction([
                 'code' => 0,
                 'msg' => $this->code[0],
