@@ -14,6 +14,11 @@ class Games extends Model
         return self::select('game_id','game_name')->where('status','=',1)->get();
     }
 
+    //获取游戏数据
+    public static function getGameAllData(){
+        return self::select('game_id','game_name','mode','code','status')->get();
+    }
+
     //各个彩种is_open状态
     public static $gameIsOpen = [
         '0' => '未开奖',
