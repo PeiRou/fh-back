@@ -42,7 +42,6 @@ class BUNKO_ahk3 extends Command
      */
     public function handle()
     {
-        writeLog('game/ahk3', '测试');
         $table = 'game_ahk3';
         $excel = new Excel();
         $get = $excel->getNeedBunkoIssue($table);
