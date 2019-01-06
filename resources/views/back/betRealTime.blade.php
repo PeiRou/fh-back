@@ -31,7 +31,7 @@
                         <input type="text" id="username" placeholder="账号">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="minMoney" placeholder="下注最小金额">
+                        <input type="text" id="minMoney" oninput = "clearNoNum(this)"  placeholder="下注最小金额">
                     </div>
 
                     <div class="one wide field">

@@ -36,7 +36,7 @@ class ISSUE_SEED_JSK3 extends Command
         }
 
         if($checkUpdate->jsk3 == $curDate){
-            \Log::info(date('Y-m-d').'江苏骰宝期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'江苏骰宝期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -44,10 +44,10 @@ class ISSUE_SEED_JSK3 extends Command
                     'jsk3' => $curDate
                 ]);
                 if($update !== 1){
-                    \Log::info('江苏骰宝error');
+                    writeLog('ISSUE_SEED', '江苏骰宝error');
                 }
             } else {
-                \Log::info('江苏骰宝error');
+                writeLog('ISSUE_SEED', '江苏骰宝error');
             }
         }
     }

@@ -312,7 +312,15 @@ class Excel
     public function getGuanIssueNum($needOpenIssue,$type){
         $key = $type.'?issue='.$needOpenIssue;
         $url = Config::get('website.guanIssueServerUrl').$key;
-        $res = json_decode(file_get_contents($url), true);
+//        $res = json_decode(file_get_contents($url), true);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 2);
+        $tmpInfo = curl_exec($curl);
+        curl_close($curl);
+        $res = json_decode($tmpInfo,true);
         return $res;
     }
     //取得目前未开奖奖期
@@ -582,20 +590,20 @@ class Excel
                 return 'no have';
             }else{
                 //检查不是当期需要追号的开奖
-                $res = $this->getNeedMinIssue($table);     //在从旧的需要开奖的奖期查起
-                if($res->issue == $needOpenIssue)
-                    return 'no have';
-                $needOpenIssue = $res->issue;
-                $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
-                if(!isset($html['issue'])){
-                    $res = $this->getNeedAarrayIssue($table);     //在从旧的需要开奖的奖期查起
-                    for($i=0; $i<count($res); $i++){
-                        $needOpenIssue = $res[$i]->issue;
-                        $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
-                        if(isset($html['issue']))
-                            $i = count($res);
-                    }
+//                $res = $this->getNeedMinIssue($table);     //在从旧的需要开奖的奖期查起
+//                if($res->issue == $needOpenIssue)
+//                    return 'no have';
+//                $needOpenIssue = $res->issue;
+//                $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
+//                if(!isset($html['issue'])){
+                $res = $this->getNeedAarrayIssue($table);     //在从旧的需要开奖的奖期查起
+                for($i=0; $i<count($res); $i++){
+                    $needOpenIssue = $res[$i]->issue;
+                    $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
+                    if(isset($html['issue']))
+                        $i = count($res);
                 }
+//                }
             }
         }
         if(isset($html['issue']))

@@ -107,11 +107,11 @@ class next_open_msssc extends Command
                         $this->clong->setKaijian('msssc',2,$opencode);
                     }
                 } catch (\Exception $exception) {
-                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                    writeLog('next_open', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
             }
         } catch (\Exception $exception) {
-            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            writeLog('next_open', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
     }
 }

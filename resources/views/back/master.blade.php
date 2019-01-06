@@ -42,10 +42,10 @@
         <ul style="margin-top: 20px;">
             <li onclick="javascript:(location.href='/back/control/userManage/sub_account')"><i data-tooltip="当前在线子帐号人数" data-position="bottom center" data-inverted class="Hui-iconfont">&#xe62d;</i>：<span id="onlineAdminCount">0</span></li>
             <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')"><i data-tooltip="在线会员总人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe62b;</i>：<span id="onlineUserCount">0</span></li>
-            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')"><i data-tooltip="在线PC人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe64f;</i>：<span id="onlineUserCountPC">0</span></li>
-            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')"><i data-tooltip="在线H5人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe696;</i>：<span id="onlineUserCountM">0</span></li>
-            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')"><i data-tooltip="在线苹果人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe64a;</i>：<span id="onlineUserCountIOS">0</span></li>
-            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser')"><i data-tooltip="在线安卓人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe6a2;</i>：<span id="onlineUserCountAND">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser?platform=1')"><i data-tooltip="在线PC人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe64f;</i>：<span id="onlineUserCountPC">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser?platform=2')"><i data-tooltip="在线H5人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe696;</i>：<span id="onlineUserCountM">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser?platform=3')"><i data-tooltip="在线苹果人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe64a;</i>：<span id="onlineUserCountIOS">0</span></li>
+            <li onclick="javascript:(location.href='/back/control/userManage/onlineUser?platform=4')"><i data-tooltip="在线安卓人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe6a2;</i>：<span id="onlineUserCountAND">0</span></li>
             <li onclick="javascript:(location.href='/back/control/systemManage/feedback')" id="feedbackContent"><i data-tooltip="今天未回复反馈" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe70c;</i>：<span id="feedbackCount">0</span></li>
             {{--<li>修改密码</li>--}}
             <li onclick="logout()">退出</li>
@@ -520,6 +520,14 @@
             c[data[k]] = data[k];
         }
         return true;
+    }
+    function clearNoNum(obj){
+        obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+        obj.value = obj.value.replace(/^\./g,"");  //验证第一个字符是数字而不是.
+        obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的.
+        obj.value = obj.value.replace(".","$#$")
+            .replace(/\./g,"")
+            .replace("$#$",".");
     }
 </script>
 </body>

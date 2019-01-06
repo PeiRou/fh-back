@@ -50,7 +50,7 @@ class ISSUE_SEED_CQXYNC extends Command
         }
 
         if($checkUpdate->cqxync == $curDate){
-            \Log::info(date('Y-m-d').'重庆幸运农场期数已存在');
+            writeLog('ISSUE_SEED', date('Y-m-d').'重庆幸运农场期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
@@ -58,10 +58,10 @@ class ISSUE_SEED_CQXYNC extends Command
                     'cqxync' => $curDate
                 ]);
                 if($update !== 1){
-                    \Log::info('重庆幸运农场error');
+                    writeLog('ISSUE_SEED', '重庆幸运农场error');
                 }
             } else {
-                \Log::info('重庆幸运农场error');
+                writeLog('ISSUE_SEED', '重庆幸运农场error');
             }
         }
     }

@@ -465,10 +465,10 @@ GROUP BY g.ga_id LIMIT $start,$length";
             $where .= " AND qq = '".$qq."'";
         }
         if(isset($minMoney) && $minMoney ){
-            $where .= ' AND money >= '.$minMoney;
+            $where .= ' AND money >= '.(float)$minMoney;
         }
         if(isset($maxMoney) && $maxMoney ){
-            $where .= ' AND money <= '.$maxMoney;
+            $where .= ' AND money <= '.(float)$maxMoney;
         }
         if(isset($promoter) && $promoter ){
             $userId = Users::where('username',$promoter)->value('id');
@@ -673,15 +673,15 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $aDrawingSql = "SELECT SUM(`amount`) AS `payDrawing` FROM `drawing` WHERE status = 2 AND `user_id` = $id ";
         if(isset($param['startTime']) && array_key_exists('startTime', $param)){
             $aSql .= " AND `updated_at` >= '".$param['startTime']."'";
-            $aBetSql .= " AND `updated_at` >= '".$param['startTime']."'";
-            $aBet_hisSql .= " AND `updated_at` >= '".$param['startTime']."'";
+            $aBetSql .= " AND `created_at` >= '".$param['startTime']."'";
+            $aBet_hisSql .= " AND `created_at` >= '".$param['startTime']."'";
             $aDrawingSql .= " AND `updated_at` >= '".$param['startTime']."'";
         }
         if(isset($param['endTime']) && array_key_exists('endTime', $param)){
             $aSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
-            $aBetSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
+            $aBetSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
             $aDrawingSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
-            $aBet_hisSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
+            $aBet_hisSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
         }
         $aBetSql = "SELECT SUM(`payBetting`) AS `payBetting` FROM (
           ({$aBetSql}) UNION ALL ({$aBet_hisSql}) 
@@ -905,6 +905,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
 
         $start = $request->get('start');
         $length = $request->get('length');
+        $platform = Session::get('platform');
         $redis = Redis::connection();
         $redis->select(6);
         $keys = $redis->keys('urtime:'.'*');
@@ -912,6 +913,8 @@ GROUP BY g.ga_id LIMIT $start,$length";
         foreach ($keys as $item){
             $redisUser = $redis->get($item);
             $redisUser = (array)json_decode($redisUser,true);
+            if($platform>0 && $platform != $redisUser['platform'])
+                continue;
             $onlineUser[] = $redisUser['user_id'];
         }
         $user = User::select()

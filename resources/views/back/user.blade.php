@@ -71,26 +71,26 @@
                         <input type="text" id="account" placeholder="账号/邮箱/名称">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="mobile" placeholder="手机">
+                        <input type="text" id="mobile" oninput = " value=value.replace(/[^\d]/g,'')"  placeholder="手机">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="qq" placeholder="QQ">
+                        <input type="text" id="qq" oninput = " value=value.replace(/[^\d]/g,'')"  placeholder="QQ">
                     </div>
                     <div class="one wide field" style="width:9%!important;">
-                        <input type="text" id="bank" placeholder="银行卡">
+                        <input type="text" id="bank" oninput = " value=value.replace(/[^\d]/g,'')"  placeholder="银行卡">
                     </div>
                     <div style="line-height: 32px;">用户余额</div>
                     <div class="one wide field">
-                        <input type="text" id="minMoney" placeholder="最小金额">
+                        <input type="text" id="minMoney" oninput = "clearNoNum(this)" placeholder="最小金额">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="maxMoney" placeholder="最大金额">
+                        <input type="text" id="maxMoney" oninput = "clearNoNum(this)" placeholder="最大金额">
                     </div>
                     <div class="one wide field">
                         <input type="text" id="promoter" placeholder="推广人账号" value="{{ $promoter }}">
                     </div>
                     <div class="one wide field">
-                        <input type="text" id="noLoginDays" placeholder="未登录天数">
+                        <input type="text" id="noLoginDays" oninput = " value=value.replace(/[^\d]/g,'')"  placeholder="未登录天数">
                     </div>
                     <input type="hidden" id="aid" value="{{$aid}}">
                     <input type="hidden" id="gaid" value="{{$gaid}}">

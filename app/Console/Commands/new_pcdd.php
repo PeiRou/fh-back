@@ -103,11 +103,11 @@ class new_pcdd extends Command
                         $this->clong->setKaijian('pcdd',2,$html[0]['nums']);
                     }
                 } catch (\Exception $exception){
-                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                    writeLog('game/pcdd', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 }
             }
         } catch (\Exception $exception){
-            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            writeLog('game/pcdd', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
     }
 }
