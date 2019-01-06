@@ -336,6 +336,21 @@ if(!function_exists('p')){
         }
     }
 }
+//记录日志 可以指定文件夹
+if(!function_exists('writeLog')) {
+    function writeLog($path = '', ...$args)
+    {
+        try {
+            $log = new \Monolog\Logger('back');
+            $log->pushHandler(new \Monolog\Handler\StreamHandler(storage_path('logs/' . $path . '/' . date('Y-m-d')), \Monolog\Logger::DEBUG));
+            $log->info(...$args);
+        } catch (\Exception $e) {
+            \Log::info('日志记录失败：' . $e->getMessage());
+        }
+
+    }
+}
+
 //获取队列真实名
 if(!function_exists('setQueueRealName')){
     function setQueueRealName($queue){

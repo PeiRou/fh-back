@@ -48,6 +48,7 @@ class new_msft extends Command
      */
     public function handle()
     {
+        writeLog('msft', '测试');
         $getFile    = Storage::disk('gameTime')->get('msft.json');
         $data       = json_decode($getFile,true);
         $nowTime    = date('H:i:s');
@@ -116,7 +117,8 @@ class new_msft extends Command
                 $this->clong->setKaijian('msft',1,$opencode);
                 $this->clong->setKaijian('msft',2,$opencode);
             } catch (\Exception $exception){
-                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('msft', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+//                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             }
         }
     }

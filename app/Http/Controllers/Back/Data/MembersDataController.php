@@ -465,10 +465,10 @@ GROUP BY g.ga_id LIMIT $start,$length";
             $where .= " AND qq = '".$qq."'";
         }
         if(isset($minMoney) && $minMoney ){
-            $where .= ' AND money >= '.$minMoney;
+            $where .= ' AND money >= '.(float)$minMoney;
         }
         if(isset($maxMoney) && $maxMoney ){
-            $where .= ' AND money <= '.$maxMoney;
+            $where .= ' AND money <= '.(float)$maxMoney;
         }
         if(isset($promoter) && $promoter ){
             $userId = Users::where('username',$promoter)->value('id');
