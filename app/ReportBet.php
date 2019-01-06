@@ -16,7 +16,7 @@ class ReportBet extends Model
         }
         $aSql = "SELECT `game`.game_name,`game`.status,`game`.game_id,
                   `report`.countMember,`report`.countWinBunkoMember,
-                  `report`.sumMoney,`report`.countBets,`report`.sumWinBunko,`report`.countWinBunkoBet,
+                  `report`.sumMoney,`report`.countBets,`report`.sumWinBunko,`report`.countWinBunkoBet,0 AS `rebate`,
                   (CASE WHEN `report`.`sumBunko` IS NULL THEN 0 ELSE `report`.`sumBunko` END) AS `sumBunko` 
                   FROM `game`
                   ".$iJoin." (

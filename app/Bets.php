@@ -997,7 +997,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
     }
 
     public static function todayReportBet($aParam){
-        $sql1 = "SELECT g.game_name,g.status,g.game_id, `b`.`sumMoney`, `b`.`countBets`,`b`.`countMember`, `b`.`sumWinBunko`, `b`.`countWinBunkoBet`,`b`.`countWinBunkoMember`, (CASE WHEN `b`.`sumBunko` IS NULL THEN 0 ELSE `b`.`sumBunko` END) AS `sumBunko` FROM `game` AS g ";
+        $sql1 = "SELECT g.game_name,g.status,g.game_id,0 AS `rebate`,`b`.`sumMoney`, `b`.`countBets`,`b`.`countMember`, `b`.`sumWinBunko`, `b`.`countWinBunkoBet`,`b`.`countWinBunkoMember`, (CASE WHEN `b`.`sumBunko` IS NULL THEN 0 ELSE `b`.`sumBunko` END) AS `sumBunko` FROM `game` AS g ";
         $whereBet = " and status = 1 ";
         $where = "";
         $join = ' LEFT ';

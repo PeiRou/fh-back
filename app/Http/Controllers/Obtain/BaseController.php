@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Obtain;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class BaseController extends Controller
 {

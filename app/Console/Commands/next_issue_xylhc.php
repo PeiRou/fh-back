@@ -56,7 +56,7 @@ class next_issue_xylhc extends Command
         $openTime = $res->opentime;
         $New_nextIssue = $nextIssue+1;
 
-        if(substr($New_nextIssue,-3)=='240'){
+        if(substr($New_nextIssue,-3)=='241'){
             $New_nextIssue = date("ymd",strtotime($openTime)).'001';
         }
 
