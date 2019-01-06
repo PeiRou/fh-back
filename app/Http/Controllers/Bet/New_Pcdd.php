@@ -30,7 +30,7 @@ class New_Pcdd
             if($bunko == 1){
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
-                    \Log::info($gameName . $issue . "结算出错");
+                    writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }
             }
         }
@@ -38,7 +38,7 @@ class New_Pcdd
             'bunko' => 1
         ]);
         if ($update !== 1) {
-            \Log::info($gameName . $issue . "结算not Finshed");
+            writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
         }else{
             $agentJob = new AgentBackwaterJob($gameId,$issue);
             $agentJob->addQueue();

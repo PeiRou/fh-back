@@ -53,7 +53,7 @@ class OrderController extends Controller
                 $user->save();
                 return response()->json(['code'=>1],200);
             }catch (\Exception $exception) {
-                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 return  response()->json(['code'=>-1],200);
             }
         }

@@ -467,7 +467,7 @@ class SaveGameOddsController extends Controller
             return ['status' => true];
         }catch (\Exception $e){
             DB::rollback();
-            Log::info($e->getMessage());
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
             return ['status' => false];
         }
     }

@@ -414,7 +414,7 @@ class ActivityController extends Controller
                     ]);
                 }catch (\Exception $e){
                     DB::rollback();
-                    Log::info($e->getMessage());
+                    writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
                     return response()->json([
                         'status'=>false,
                         'msg'=>'审核失败'

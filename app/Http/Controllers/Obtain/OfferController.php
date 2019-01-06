@@ -35,6 +35,13 @@ class OfferController extends BaseController
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
+        if(DB::table('offer')->where('order_id', $data['order_id']))
+            return $this->returnAction([
+                'code' => 0,
+                'msg' => $this->code[0],
+                'order_id' => $aParam['order_id'],
+                'money' => (float)$aParam['money'],
+            ]);
         if(DB::table('offer')->insert($data))
             return $this->returnAction([
                 'code' => 0,

@@ -50,13 +50,13 @@ class New_LHC
             try{
                 $bunko = $this->BUNKO($openCode,$win,$gameId,$issue);
             }catch (\exception $exception){
-                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
             }
             if($bunko == 1){
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
-                    \Log::info($gameName . $issue . "结算出错");
+                    writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }
             }
         }
@@ -64,7 +64,7 @@ class New_LHC
             'bunko' => 1
         ]);
         if ($update !== 1) {
-            \Log::info($gameName . $issue . "结算not Finshed");
+            writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
         }else{
             $agentJob = new AgentBackwaterJob($gameId,$issue);
             $agentJob->addQueue();

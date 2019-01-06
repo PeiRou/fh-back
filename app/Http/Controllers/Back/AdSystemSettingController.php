@@ -281,7 +281,7 @@ class AdSystemSettingController extends Controller
             ]);
         }catch (\Exception $e){
             DB::rollback();
-            \Log::info($e->getMessage());
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
             return response()->json([
                 'status' => false,
                 'msg' => '修改失败，请稍后再试！'

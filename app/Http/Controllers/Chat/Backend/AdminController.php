@@ -26,7 +26,7 @@ class AdminController extends Controller
                     'data' => $admins,
                 ));
             }catch (\Exception $exception) {
-                Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 return response()->json(array(
                     'status' => 1,
                     'message' => '数据获取失败',
@@ -65,7 +65,7 @@ class AdminController extends Controller
                     'message' => '添加成功',
                 ));
             }catch (\Exception $exception) {
-                Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 return response()->json(array(
                     'status' => 1,
                     'message' => '添加失败',
@@ -119,7 +119,7 @@ class AdminController extends Controller
                     'message' => '修改成功',
                 ));
             }catch (\Exception $exception) {
-                Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 return response()->json(array(
                     'status' => 1,
                     'message' => '修改失败',
@@ -144,7 +144,7 @@ class AdminController extends Controller
                     'message' => '删除成功',
                 ));
             }catch (\Exception $exception) {
-                Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 return response()->json(array(
                     'status' => 1,
                     'message' => '删除失败',

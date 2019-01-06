@@ -193,7 +193,7 @@ class SrcMemberController extends Controller
             ]);
         }catch (\exception $e){
             DB::rollback();
-            Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
             return response()->json([
                 'status'=>false,
                 'msg'=>'暂时无法添加，请稍后重试'
@@ -767,7 +767,7 @@ class SrcMemberController extends Controller
                     }
 
                 } else {
-                    \Log::info('资金操作失败 order_id:'.$capital->order_id.' type:'.$capital->type.' sa_id:'.$capital->operation_id.' sa_name:'.$loginAccountName);
+                    writeLog('error', '资金操作失败 order_id:'.$capital->order_id.' type:'.$capital->type.' sa_id:'.$capital->operation_id.' sa_name:'.$loginAccountName);
                     return response()->json([
                         'status'=>false,
                         'msg'=>'资金操作失败，请稍后再试！'

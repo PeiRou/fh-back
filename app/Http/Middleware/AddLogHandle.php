@@ -65,7 +65,7 @@ class AddLogHandle
                 $request->HandleLogInstance = new \App\Repository\HandleLog\BaseRepository($request, $id, $data);
             }catch (\Exception $e){
                 //修改日志失败
-                \Log::info(print_r($e->getPrevious(), 1));
+                writeLog('error', print_r($e->getPrevious(), 1));
             }
         }
         $response = $next($request);
