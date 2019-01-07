@@ -342,7 +342,7 @@ if(!function_exists('writeLog')) {
     {
         try {
             $log = new \Monolog\Logger('back');
-            $log->pushHandler(new \Monolog\Handler\StreamHandler(storage_path('logs/' . $path . '/' . date('Y-m-d')), \Monolog\Logger::DEBUG));
+            $log->pushHandler(new \Monolog\Handler\StreamHandler(storage_path('logs/' . $path . '/' . date('Y-m-d').'.log'), \Monolog\Logger::DEBUG));
             $log->info(...$args);
         } catch (\Exception $e) {
             \Log::info('日志记录失败：' . $e->getMessage());

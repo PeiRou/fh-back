@@ -559,6 +559,7 @@ function editLevels(uid,nowLevel,rid) {
 
 function copyText(e) {
     $(e).addClass('red');
+    $(e).css({"color":"#ff6470"});
     copyToClipboard(e);
 }
 
