@@ -221,8 +221,8 @@ class FinanceDataController extends Controller
         $killTestUser = $request->get('killTestUser');
         $payType = $request->get('recharge_type'); //自动收款
         $recharges_id = $request->get('recharges_id');
-        $startTime = $request->get('startTime');
-        $endTime = $request->get('endTime');
+        $startTime = date('Y-m-d', strtotime($request->get('startTime')));
+        $endTime = date('Y-m-d', strtotime($request->get('endTime')));
         $account_type = $request->get('account_type');
         $account_param = $request->get('account_param');
         $status = $request->get('status');
