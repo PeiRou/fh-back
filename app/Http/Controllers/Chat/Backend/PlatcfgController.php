@@ -25,7 +25,7 @@ class PlatcfgController extends Controller
                     'data' => $itmes,
                 ));
             }catch (\Exception $exception) {
-                Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 return response()->json(array(
                     'status' => 1,
                     'message' => '数据获取失败',
@@ -62,7 +62,7 @@ class PlatcfgController extends Controller
                     'message' => '保存成功',
                 ));
             }catch (\Exception $exception) {
-                Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 return response()->json(array(
                     'status' => 1,
                     'message' => '保存失败',

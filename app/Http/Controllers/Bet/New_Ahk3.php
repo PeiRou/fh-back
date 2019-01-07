@@ -35,7 +35,7 @@ class New_Ahk3
             if($bunko == 1){
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
-                    \Log::info($gameName . $issue . "结算出错");
+                    writeLog('New_Ahk3', $gameName . $issue . "结算出错");
                 }
             }
         }
@@ -43,7 +43,7 @@ class New_Ahk3
             'bunko' => 1
         ]);
         if ($update !== 1) {
-            \Log::info($gameName . $issue . "结算not Finshed");
+            writeLog('New_Ahk3', $gameName . $issue . "结算not Finshed");
         }else{
             $agentJob = new AgentBackwaterJob($gameId,$issue);
             $agentJob->addQueue();

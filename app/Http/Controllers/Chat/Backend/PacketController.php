@@ -31,7 +31,7 @@ class PacketController extends Controller
                     'data' => $itmes,
                 ));
             }catch (\Exception $exception) {
-                Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 return response()->json(array(
                     'status' => 1,
                     'message' => '数据获取失败',
@@ -85,7 +85,7 @@ class PacketController extends Controller
                     'message' => '发红包成功',
                 ));
             }catch (\Exception $exception) {
-                Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 return response()->json(array(
                     'status' => 1,
                     'message' => '发红包失败',
@@ -136,7 +136,7 @@ class PacketController extends Controller
                     'message' => '关闭红包成功',
                 ));
             }catch (\Exception $exception) {
-                Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 return response()->json(array(
                     'status' => 1,
                     'message' => '关闭红包失败',
@@ -164,7 +164,7 @@ class PacketController extends Controller
                     'message' => '关闭红包成功',
                 ));
             }catch (\Exception $exception) {
-                Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 return response()->json(array(
                     'status' => 1,
                     'message' => '关闭红包失败',

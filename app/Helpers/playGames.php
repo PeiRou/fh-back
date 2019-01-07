@@ -347,7 +347,6 @@ if(!function_exists('writeLog')) {
         } catch (\Exception $e) {
             \Log::info('日志记录失败：' . $e->getMessage());
         }
-
     }
 }
 

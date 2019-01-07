@@ -1158,7 +1158,7 @@ class OpenHistoryController extends Controller
             DB::commit();
             return ['status' => true,'mag' => '操作成功'];
         }catch(\Exception $e){
-            Log::info($e->getMessage());
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
             DB::rollback();
             if(!in_array($type,['msnn']))
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 12]);
@@ -1302,7 +1302,7 @@ class OpenHistoryController extends Controller
         }catch(\Exception $e){
             DB::rollback();
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 9]);
-            Log::info($e->getMessage());
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
             return ['status' => false,'msg' => '冻结失败'];
         }
     }
@@ -1403,7 +1403,7 @@ class OpenHistoryController extends Controller
         }catch(\Exception $e){
             DB::rollback();
             DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 10]);
-            Log::info($e->getMessage());
+            writeLog('error', $e->getMessage());
             return ['status' => false,'msg' => '撤单失败'];
         }
         if(in_array($type,['lhc']))

@@ -55,7 +55,7 @@ class New_Paoma
                     'excel_num' => 3
                 ]);
                 if($update == 1) {
-                    \Log::Info('msssc killing...');
+                    writeLog('New_Bet', 'msssc killing...');
                     $this->excel($openCode, $exeBase, $issue, $gameId, $table);
                 }
             }
@@ -66,7 +66,7 @@ class New_Paoma
                 if($bunko == 1){
                     $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                     if($updateUserMoney == 1){
-                        \Log::info($gameName . $issue . "结算出错");
+                        writeLog('New_Bet', $gameName . $issue . "结算出错");
                     }
                 }
             }
@@ -76,14 +76,14 @@ class New_Paoma
                 'excel_num' => 1
             ]);
             if ($update !== 1) {
-                \Log::info($gameName . $issue . "杀率not Finshed");
+                writeLog('New_Bet', $gameName . $issue . "杀率not Finshed");
             }
         }else{
             $update = DB::table($table)->where('id',$id)->update([
                 'bunko' => 1
             ]);
             if ($update !== 1) {
-                \Log::info($gameName . $issue . "结算not Finshed");
+                writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
             }else{
                 $agentJob = new AgentBackwaterJob($gameId,$issue);
                 $agentJob->addQueue();
@@ -110,7 +110,7 @@ class New_Paoma
                 $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)
                     $excBunko = $value->sumBunko;
-                \Log::info('跑马 :'.$openCode.' => '.$excBunko);
+                writeLog('New_Bet', '跑马 :'.$openCode.' => '.$excBunko);
                 $dataExcGame['game_id'] = $gameId;
                 $dataExcGame['issue'] = $issue;
                 $dataExcGame['opennum'] = $openCode;
@@ -126,7 +126,7 @@ class New_Paoma
         $tmp = DB::select($aSql);
         foreach ($tmp as&$value)
             $openCode = $value->opennum;
-        \Log::Info($table.':'.$openCode);
+        writeLog('New_Bet', $table.':'.$openCode);
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
         DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
         DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->where('game_id',$gameId)->delete();
