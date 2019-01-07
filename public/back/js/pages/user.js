@@ -8,11 +8,11 @@ $(function () {
     $(document).keyup(function(event){
         if(event.keyCode == 13){
             dataTable1.ajax.reload();
-            getTotalMoney();
+            // getTotalMoney();
         }
     });
 
-    getTotalMoney();
+    // getTotalMoney();
 
     dataTable1 = $('#userTable').DataTable({
         searching: false,
@@ -86,7 +86,7 @@ $(function () {
     
     $('#btn_search').on('click',function () {
         dataTable1.ajax.reload();
-        getTotalMoney();
+        // getTotalMoney();
     });
     // $('#reset').on('click',function () {
     //     $('#status').val("");

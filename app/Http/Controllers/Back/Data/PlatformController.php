@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Back\Data;
 
 use App\Http\Proxy\GetDate;
 use App\PlatformDeposit;
-use App\PlatformSettlement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
@@ -12,43 +11,70 @@ use Yajra\DataTables\DataTables;
 class PlatformController extends Controller
 {
     //平台费用结算-表格数据
-    public function settlement(Request $request){
-        $params = $request->post();
-        $data = PlatformSettlement::where(function ($sql) use ($params) {
-            if(isset($params['status']) && array_key_exists('status',$params)){
-                $sql->where('status','=',$params);
-            }
-            if(isset($params['monthTime']) && array_key_exists('monthTime',$params)){
-                $date = new GetDate();
-                $monthTime = $date->GetTheSpecifiedDate($params['monthTime']);
-                $sql->whereBetween('date',[$monthTime['start'],$monthTime['end']]);
-            }else{
-                if(isset($params['startTime']) && array_key_exists('startTime',$params)){
-                    $sql->where('date','>=',$params['startTime'] . '-01');
-                }
-                if(isset($params['endTime']) && array_key_exists('endTime',$params)){
-                    $sql->where('date','<=',$params['endTime'] . '-01');
-                }
-            }
-        })->orderBy('created_at','desc')->get();
-        $aPlatformStatus = PlatformSettlement::$PlatformStatus;
-        return DataTables::of($data)
-            ->editColumn('date',function ($data) {
-                return substr($data->date,0,7);
+    public function settlement(Request $request)
+    {
+        $model = \App\Offer::class;
+        $res = $model::where(function ($sql) use ($request) {
+            if(isset($request->status))
+                $sql->where('status', $request->status);
+            if(isset($request->startTime, $request->endTime))
+                $sql->whereBetween('created_at', [$request->startTime . '-00 00:00:00', $request->endTime . '-00 00:00:00']);
+        });
+        $count = $res->count();
+        $res = $res->skip($request->start)->take($request->length)->orderBy('created_at', 'desc')->get();
+        return DataTables::of($res)
+            ->editColumn('status',function ($val) use ($model) {
+                return  $model::$status[$val->status];
             })
-            ->editColumn('status',function ($data) use ($aPlatformStatus) {
-                return  $aPlatformStatus[$data->status];
+            ->editColumn('paystatus',function ($val) use ($model) {
+                return  $model::$paystatus[$val->paystatus];
             })
-            ->editColumn('control',function ($data) {
-                $html = '';
-                if($data->status == 1){
-                    $html .= '<span class="edit-link red" onclick="pay('.$data->id.')"> 付款 </span>';
-                }
-                return  $html;
+            ->editColumn('control',function ($val) {
+
             })
-            ->rawColumns(['control'])
+            ->rawColumns(['control', 'paystatus'])
+            ->setTotalRecords($count)
+            ->skipPaging()
             ->make(true);
     }
+    //平台费用结算-表格数据
+//    public function settlement(Request $request){
+//        $params = $request->post();
+//        $data = PlatformSettlement::where(function ($sql) use ($params) {
+//            if(isset($params['status']) && array_key_exists('status',$params)){
+//                $sql->where('status','=',$params);
+//            }
+//            if(isset($params['monthTime']) && array_key_exists('monthTime',$params)){
+//                $date = new GetDate();
+//                $monthTime = $date->GetTheSpecifiedDate($params['monthTime']);
+//                $sql->whereBetween('date',[$monthTime['start'],$monthTime['end']]);
+//            }else{
+//                if(isset($params['startTime']) && array_key_exists('startTime',$params)){
+//                    $sql->where('date','>=',$params['startTime'] . '-01');
+//                }
+//                if(isset($params['endTime']) && array_key_exists('endTime',$params)){
+//                    $sql->where('date','<=',$params['endTime'] . '-01');
+//                }
+//            }
+//        })->orderBy('created_at','desc')->get();
+//        $aPlatformStatus = PlatformSettlement::$PlatformStatus;
+//        return DataTables::of($data)
+//            ->editColumn('date',function ($data) {
+//                return substr($data->date,0,7);
+//            })
+//            ->editColumn('status',function ($data) use ($aPlatformStatus) {
+//                return  $aPlatformStatus[$data->status];
+//            })
+//            ->editColumn('control',function ($data) {
+//                $html = '';
+//                if($data->status == 1){
+//                    $html .= '<span class="edit-link red" onclick="pay('.$data->id.')"> 付款 </span>';
+//                }
+//                return  $html;
+//            })
+//            ->rawColumns(['control'])
+//            ->make(true);
+//    }
 
     //付款记录-表格数据
     public function record(Request $request){
