@@ -433,7 +433,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
             $userArr = DB::table('user_bank')->where('cardNo',$bank)->pluck('user_id')->toArray();
             $or = '';
             if($userArr){
-                $or = ' OR uid IN( '. implode(',',$userArr) .' )';
+                $or = ' OR id IN( '. implode(',',$userArr) .' )';
             }
             $where .= ' AND ( bank_num = "' . $bank .'"'. $or . ' ) ';
         }
@@ -482,6 +482,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
             left Join (SELECT a_id,account as ag_account,gagent_id FROM agent) ag on u_fileds.agent = ag.a_id  
             left Join users as p_Users on p_Users.id = u_fileds.user_promoter ';
         $users = DB::select('select u_fileds.*,lv.*,ag.*,p_Users.username as pusername,p_Users.fullName as pfullName  '.$sql);
+//        var_dump('select u_fileds.*,lv.*,ag.*,p_Users.username as pusername,p_Users.fullName as pfullName  '.$sql);die();
         $usersCount = DB::select('select count(id) AS count from users '.$where);
         return DataTables::of($users)
             ->editColumn('online',function ($users) {
