@@ -267,9 +267,9 @@ class FinanceDataController extends Controller
                 $where .= " and recharges.sysPayOrder = '".$account_param."'";
             }
         }
-        $dateTypeName = 'process_date';
+        $dateTypeName = 'updated_at';
         if(isset($dateType) && $dateType == 1){//报表时间
-            $dateTypeName = 'process_date';
+            $dateTypeName = 'updated_at';
         }else if(isset($dateType) && $dateType == 2){
             $dateTypeName = 'created_at';
         }
