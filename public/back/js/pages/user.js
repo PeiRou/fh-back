@@ -38,6 +38,11 @@ $(function () {
                 d.noLoginDays = $('#noLoginDays').val();
                 d.aid = $('#aid').val();                //代理id
                 d.gaid = $('#gaid').val();                //总代id
+                d.killTestUser = $('#killTestUser:checked').val();
+            },
+            dataSrc:function (e){
+                $('#moneyTotal').html(e.TotalMoney)
+                return e.data;
             }
         },
         columns: [
@@ -98,13 +103,16 @@ $(function () {
 });
 
 function getTotalMoney() {
+    var data = {
+        killTestUser : $('#killTestUser:checked').val()
+    }
     $.ajax({
         url:'/action/userMoney/totalUserMoney',
         type:'post',
         dataType:'json',
-        data:{},
+        data:data,
         success:function (data) {
-            $('#moneyTotal').html(data.total)
+            // $('#moneyTotal').html(data.total)
         }
     });
 }

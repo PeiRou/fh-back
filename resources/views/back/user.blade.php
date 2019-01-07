@@ -8,6 +8,12 @@
             <b>位置：</b>会员
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
+        <div class="select-test-user">
+            <label>
+                <input type="checkbox" value="1" id="killTestUser" checked>
+                过滤测试用户
+            </label>
+        </div>
         @inject('hasPermission','App\Http\Proxy\CheckPermission')
         @if($hasPermission->hasPermission('m.user.userTotal') == "has")
         <div class="pay-total-crumb">
@@ -160,8 +166,9 @@
         $('.tips-info').click(function(){
             $.dialog({
                 title: '说明：',
-                content: '余额总计只包含正式用户余额' +
-                '<br/>注：dl02（测试账号代理）、dl03（试玩账号代理）将不包含在内'
+                content:'会员余额总计为当前搜索条件下的会员的余额总计！'
+                // content: '余额总计只包含正式用户余额' +
+                // '<br/>注：dl02（测试账号代理）、dl03（试玩账号代理）将不包含在内'
             });
         });
     </script>
