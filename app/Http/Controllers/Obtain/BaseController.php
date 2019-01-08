@@ -36,7 +36,6 @@ class BaseController extends Controller
 
     //接受主体
     public function callback($action){
-
         $this->aParam = json_decode($this->rsaPublicDecrypt(file_get_contents('php://input')),true);
         if(empty($this->aParam))
             echo $this->returnAction([

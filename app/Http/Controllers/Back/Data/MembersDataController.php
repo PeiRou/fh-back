@@ -420,6 +420,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $maxMoney = $request->get('maxMoney');
         $promoter = $request->get('promoter');
         $noLoginDays = $request->get('noLoginDays');
+        $killTestUser = $request->get('killTestUser');
         $aid = $request->get('aid');    //代理id
         $gaid = $request->get('gaid');    //总代id
         $start = empty($request->get('start'))?0:$request->get('start');
@@ -428,7 +429,13 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $sql1 = 'select id,agent,testFlag,users.bank_num AS user_bank_num,users.mobile as user_mobile,users.qq as user_qq,users.promoter as user_promoter ,users.id as uid,users.rechLevel as user_rechLevel,users.created_at as user_created_at,users.updated_at as user_updated_at,users.username as user_username,users.email as user_email,users.fullName as user_fullName,users.money as user_money,users.status as user_status,users.PayTimes as user_PayTimes,users.DrawTimes as user_DrawTimes,users.saveMoneyCount as user_saveMoneyCount,users.drawMoneyCount as user_drawMoneyCount,users.lastLoginTime as user_lastLoginTime,users.content as user_content 
                         from users ';
 
-        $where = ' where 1 and testFlag in(0,2) ';
+        $where = ' where 1 ';
+
+        if(isset($killTestUser) && $killTestUser){
+            $where .= ' and users.testFlag = 0 ';
+        }else{
+            $where .= ' and users.testFlag in (0,2) ';
+        }
         if(isset($bank) && $bank){
             $userArr = DB::table('user_bank')->where('cardNo',$bank)->pluck('user_id')->toArray();
             $or = '';
@@ -484,7 +491,9 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $users = DB::select('select u_fileds.*,lv.*,ag.*,p_Users.username as pusername,p_Users.fullName as pfullName  '.$sql);
 //        var_dump('select u_fileds.*,lv.*,ag.*,p_Users.username as pusername,p_Users.fullName as pfullName  '.$sql);die();
         $usersCount = DB::select('select count(id) AS count from users '.$where);
+        $TotalMoney = DB::select('select SUM(money) AS money from users '.$where);
         return DataTables::of($users)
+            ->with('TotalMoney',$TotalMoney[0]->money ?? 0)
             ->editColumn('online',function ($users) {
                 $redis = Redis::connection();
                 $redis->select(2);

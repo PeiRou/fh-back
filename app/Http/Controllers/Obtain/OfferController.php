@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 
 class OfferController extends BaseController
 {
+    public $table = 'offer';
+
     //执行方法
     public function doAction ($aParam)
     {
@@ -22,7 +24,7 @@ class OfferController extends BaseController
     //新增一条报价
     public function add ($aParam)
     {
-        if(!isset($aParam['order_id'], $aParam['money']))
+        if(!isset($aParam['order_id']))
             return $this->returnAction([
                 'code' => 1,
                 'msg' => $this->code[1],
@@ -31,23 +33,25 @@ class OfferController extends BaseController
             'order_id' => addslashes($aParam['order_id']),
             'money' => (float)$aParam['money'],
             'status' => 0,
+            'type' => (int)$aParam['money'],
+            'typestr' => addslashes($aParam['typestr']),
             'content' => addslashes($aParam['content'] ?? ''),
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s', strtotime($aParam['created_at'])),
+            'updated_at' => date('Y-m-d H:i:s', strtotime($aParam['updated_at'])),
         ];
-        if(DB::table('offer')->where('order_id', $data['order_id'])->count())
+        if(DB::table($this->table)->where('order_id', $data['order_id'])->count()) {
+            DB::table($this->table)->where('order_id', $data['order_id'])->update($data);
             return $this->returnAction([
                 'code' => 0,
                 'msg' => $this->code[0],
                 'order_id' => $aParam['order_id'],
-                'money' => (float)$aParam['money'],
             ]);
-        if(DB::table('offer')->insert($data))
+        }
+        if(DB::table($this->table)->insert($data))
             return $this->returnAction([
                 'code' => 0,
                 'msg' => $this->code[0],
                 'order_id' => $aParam['order_id'],
-                'money' => (float)$aParam['money'],
             ]);
         return $this->returnAction([
             'code' => 5,
@@ -63,12 +67,11 @@ class OfferController extends BaseController
                 'code' => 1,
                 'msg' => $this->code[1],
             ]);
-        if (DB::table('offer')->where('order_id', $aParam['order_id'])->update(['status' => $aParam['status']]))
+        if (DB::table($this->table)->where('order_id', $aParam['order_id'])->update(['status' => $aParam['status']]))
             return $this->returnAction([
                 'code' => 0,
                 'msg' => $this->code[0],
                 'order_id' => $aParam['order_id'],
-                'status' => $aParam['status']
             ]);
         return $this->returnAction([
             'code' => 5,

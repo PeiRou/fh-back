@@ -1,6 +1,6 @@
 @extends('back.master')
 
-@section('title','代理结算报表')
+@section('title','平台费用结算')
 
 @section('content')
     <style>
@@ -10,12 +10,12 @@
     </style>
     <div class="content-top">
         <div class="breadcrumb">
-            <b>位置：</b>代理结算报表
+            <b>位置：</b>平台费用结算
         </div>
-        <div class="content-top-buttons">
-            <span class="refresh-nav-btn" onclick="refreshTable('capitalDetailsTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="settlement()">手动结算</span>
-        </div>
+        {{--<div class="content-top-buttons">--}}
+            {{--<span class="refresh-nav-btn" onclick="refreshTable('capitalDetailsTable')"><i class="iconfont">&#xe61d;</i></span>--}}
+            {{--<span onclick="settlement()">手动结算</span>--}}
+        {{--</div>--}}
     </div>
     <div class="table-content">
         <div class="table-quick-bar">
@@ -33,14 +33,14 @@
                     <div class="ui calendar" id="rangestart" style="width: 108px;">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
-                            <input type="text" id="timeStart" value="{{ date('Y-m',strtotime("-1 month")) }}" placeholder="">
+                            <input type="text" id="timeStart" value="{{ date('Y-m') }}" placeholder="">
                         </div>
                     </div>
                     <div style="line-height: 32px;">-</div>
                     <div class="ui calendar" id="rangeend" style="width: 108px;">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
-                            <input type="text" id="timeEnd" value="{{ date('Y-m') }}" placeholder="">
+                            <input type="text" id="timeEnd" value="{{ date('Y-m',strtotime("+1 month")) }}" placeholder="">
                         </div>
                     </div>
                     <div class="one wide field button-1">
@@ -66,20 +66,7 @@
         </div>
         <table id="capitalDetailsTable" class="ui small table" cellspacing="0" width="100%">
             <thead>
-            <tr>
-                <th>月份</th>
-                <th>报表盈亏</th>
-                <th>抽成比</th>
-                <th>平台费用</th>
-                <th>其它费用</th>
-                <th>证书费用(https)</th>
-                <th>总费用</th>
-                <th>已付费用</th>
-                <th>未付费用</th>
-                <th>备注</th>
-                <th>状态</th>
-                <th>操作</th>
-            </tr>
+
             </thead>
         </table>
     </div>
