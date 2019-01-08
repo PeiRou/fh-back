@@ -358,7 +358,7 @@ class FinanceDataController extends Controller
                 }
             })
             ->editColumn('amount',function ($recharge){
-                return "<b class='red-text'>$recharge->re_amount</b>";
+                return "<b class='red-text' onclick='copyText(this)'>$recharge->re_amount</b>";
             })
             ->editColumn('operation_account',function ($recharge){
                 if($recharge->re_operation_account == ""){
