@@ -333,7 +333,7 @@ class MemberController extends Controller
         $todayTime = date('Y-m-d');
         Excel::create('【'.$todayTime.'】导出用户数据-[代理：'.$name.']',function ($excel) use ($aData,$todayTime){
             $excel->sheet('【'.$todayTime.'】导出用户数据', function($sheet) use ($aData,$todayTime){
-                $sheet->appendRow(['用户账号','用户姓名','用户邮箱','用户手机','开户银行','银行卡号','支行地址','微信','新增时间','未登录时间','是否存款','存款金额记录','后台加钱记录','取款金额记录','后台扣钱记录','备注信息']);
+                $sheet->appendRow(['用户账号','用户姓名','用户邮箱','用户手机','开户银行','银行卡号','支行地址','新增时间','微信','未登录时间','是否存款','存款金额记录','后台加钱记录','取款金额记录','后台扣钱记录','备注信息']);
                 $sheetHeight = [
                     1 => 20,
                 ];
