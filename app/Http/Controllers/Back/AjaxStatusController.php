@@ -101,7 +101,8 @@ class AjaxStatusController extends Controller
                 'onlineUserIOS' => $onlineUserCount_ios,
                 'onlineUserAND' => $onlineUserCount_and,
                 'onlineAdmin' => $onlineAdminCount,
-                'feedbackCount' => $feedbackCount
+                'feedbackCount' => $feedbackCount,
+//                'offerCount' => \App\Repository\OfferRepository::offerCount(),//快到期的平台费用数量 数据表还没更新 暂时注释
             ]);
         }else{
             Session::flush();

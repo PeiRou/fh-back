@@ -38,6 +38,8 @@ $(function () {
             {data:'typestr',title:'费用类型'},
             {data:'content',title:'备注'},
             {data:'created_at',title:'时间'},
+            {data:'overstayed',title:'支付到期时间'},
+            {data:'control',title:'操作'},
         ],
         columnDefs: [ {
             "targets": 3,

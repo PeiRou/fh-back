@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class BaseController extends Controller
 {
+
     //平台公钥
     private $publicKey;
 
@@ -37,7 +38,6 @@ class BaseController extends Controller
     //接受主体
     public function callback($action){
         $this->aParam = json_decode($this->rsaPublicDecrypt(file_get_contents('php://input')),true);
-        writeLog('test', '', $this->aParam);
         if(empty($this->aParam))
             echo $this->returnAction([
                 'code' => 1,

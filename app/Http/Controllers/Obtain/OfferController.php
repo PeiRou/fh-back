@@ -38,6 +38,7 @@ class OfferController extends BaseController
             'content' => addslashes($aParam['content'] ?? ''),
             'created_at' => date('Y-m-d H:i:s', strtotime($aParam['created_at'])),
             'updated_at' => date('Y-m-d H:i:s', strtotime($aParam['updated_at'])),
+            'overstayed' => date('Y-m-d H:i:s', strtotime($aParam['overstayed'])),
         ];
         if(DB::table($this->table)->where('order_id', $data['order_id'])->count()) {
             DB::table($this->table)->where('order_id', $data['order_id'])->update($data);

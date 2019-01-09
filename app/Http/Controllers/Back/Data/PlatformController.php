@@ -29,10 +29,26 @@ class PlatformController extends Controller
             ->editColumn('paystatus',function ($val) use ($model) {
                 return  $model::$paystatus[$val->paystatus];
             })
-            ->editColumn('control',function ($val) {
-
+            ->editColumn('overstayed',function ($val) {
+                if($val['status'] !== 2){
+                    $outTime = strtotime($val['overstayed']) - time();
+                    $date = $outTime > 0 ? \App\Repository\OfferRepository::time_tran($outTime) : '到期';
+                    $date = "({$date})";
+                    $outTime <= (60 * 60 * 24 * 7) && $date = "<span class='red-text'>{$date}</span>";
+                    return empty($val['overstayed']) ? '-' : $val['overstayed']."{$date}";
+                }
+                return $val['overstayed'];
             })
-            ->rawColumns(['control', 'paystatus'])
+
+            ->editColumn('control',function ($val) {
+                $str = '<ul class="control-menu">';
+
+                if($val['status'] !== 2)
+                    $str .= '<li onclick="edit(100439)">支付</li>';
+                $str .= '</ul>';
+                return $str;
+            })
+            ->rawColumns(['control', 'paystatus', 'overstayed'])
             ->setTotalRecords($count)
             ->skipPaging()
             ->make(true);

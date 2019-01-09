@@ -76,15 +76,19 @@ GROUP BY g.ga_id LIMIT $start,$length";
                     return '<span class="status-3"><i class="iconfont">&#xe672;</i> 停用</span>';
                 }
             })
-            ->editColumn('control',function ($allGeneralAgent){
+            ->editColumn('control',function ($allGeneralAgent) use ($request){
+                $str = '';
                 if($allGeneralAgent->usertype == 8888)
                 {
-                    return '系统默认账号无法修改';
+                    $str .= '系统默认账号无法修改';
                 } else {
                     if(in_array('m.gAgent.edit',$this->permissionArray))
-                        return '<span class="edit-link" onclick="edit(\''.$allGeneralAgent->ga_id.'\')"><i class="iconfont">&#xe602;</i> 修改</span>';
-                    return '';
+                        $str .= '<span class="edit-link" onclick="edit(\''.$allGeneralAgent->ga_id.'\')"><i class="iconfont">&#xe602;</i> 修改</span>';
                 }
+                if(in_array('member.exportGAgentMember',$this->permissionArray)) {
+                    $str .= '|<span class="edit-link" onclick="exportMember(\''.$allGeneralAgent->ga_id.'\',\''.$allGeneralAgent->account.'\')"><i class="iconfont"></i> 导出会员</span>';
+                }
+                return $str;
             })
             ->rawColumns(['online','account','agent','members','balance','status','control'])
             ->setTotalRecords($agentCount[0]->count)

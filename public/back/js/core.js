@@ -185,6 +185,7 @@ function checkRecharge() {
                     $('#onlineUserCountAND').html(data.onlineUserAND);
                     $('#onlineAdminCount').html(data.onlineAdmin);
                     $('#feedbackCount').html(data.feedbackCount);
+                    $('#offerCount').html(data.offerCount || 0);
                     if(data.feedbackCount > 0){
                         $('#feedbackContent').css('color','red');
                     }

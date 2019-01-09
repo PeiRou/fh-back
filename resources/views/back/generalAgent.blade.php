@@ -28,7 +28,7 @@
                 <th>状态</th>
                 <th>新增时间</th>
                 <th>最后活动时间</th>
-                <th width="10%">操作</th>
+                <th width="12%">操作</th>
             </tr>
             </thead>
         </table>

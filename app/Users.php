@@ -42,6 +42,11 @@ WHERE `users`.`testFlag` = 0 ";
             $aSql .= " AND `users`.`agent` = :agent ";
             $aArray['agent'] = $aParam['agentId'];
         }
+        if(isset($aParam['inAgentId']) && array_key_exists('inAgentId',$aParam)){
+            $aParam['inAgentId'] = implode(',', $aParam['inAgentId']);
+            $aSql .= " AND `users`.`agent` IN(".$aParam['inAgentId'].") ";
+            $aArray['inAgentId'] = $aParam['inAgentId'];
+        }
         if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam)){
             $aSql .= " AND `users`.`created_at` >= :startTime ";
             $aArray['startTime'] = $aParam['startTime'];
