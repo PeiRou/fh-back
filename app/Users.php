@@ -19,7 +19,7 @@ class Users extends Model
         $aSql = "SELECT `users`.`bank_name`,`users`.`content`,`users`.`bank_num`,`users`.`bank_addr`,`users`.`wechat`,`users`.`username`,`users`.`fullName`,`users`.`email`,`users`.`mobile`,`users`.`created_at`,`users`.`saveMoneyCount`,`users`.`lastLoginTime`,`re`.`sumReAmount`,`re`.`sumReAmountAd`,`dr`.`sumDrAmount`,`dr`.`sumDrAmountAd` FROM `users` 
 LEFT JOIN (SELECT SUM(CASE WHEN `payType` != 'adminAddMoney' THEN `amount` ELSE 0 END) AS sumReAmount,SUM(CASE WHEN `payType` = 'adminAddMoney' THEN `amount` ELSE 0 END) AS sumReAmountAd,`userId` FROM `recharges` WHERE `status` = 2 GROUP BY `userId`) AS `re` ON `re`.`userId` = `users`.`id` 
 LEFT JOIN (SELECT SUM(CASE WHEN `draw_type` != 2 THEN `amount` ELSE 0 END ) AS sumDrAmount,SUM(CASE WHEN `draw_type` = 2 THEN `amount` ELSE 0 END ) AS sumDrAmountAd,`user_id` FROM `drawing` WHERE `status` = 2 GROUP BY `user_id`) AS `dr` ON `dr`.`user_id` = `users`.`id` 
-WHERE `users`.`testFlag` = 0 ";
+WHERE 1 ";
         $aArray = [];
         if(isset($aParam['login_type']) && array_key_exists('login_type',$aParam)){
             if($aParam['login_type'] == 1){
@@ -47,6 +47,13 @@ WHERE `users`.`testFlag` = 0 ";
             $aSql .= " AND `users`.`agent` IN(".$aParam['inAgentId'].") ";
             $aArray['inAgentId'] = $aParam['inAgentId'];
         }
+        if(isset($aParam['inTestFlag']) && array_key_exists('inTestFlag',$aParam)) {
+            $aParam['inTestFlag'] = implode(',', $aParam['inTestFlag']);
+            $aSql .= " AND `users`.`testFlag` IN({$aParam['inTestFlag']}) ";
+            $aArray['inTestFlag'] = $aParam['inTestFlag'];
+        } else {
+            $aSql .= " AND `users`.`testFlag` = 0 ";
+        }
         if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam)){
             $aSql .= " AND `users`.`created_at` >= :startTime ";
             $aArray['startTime'] = $aParam['startTime'];
@@ -67,6 +74,7 @@ WHERE `users`.`testFlag` = 0 ";
             $aSql .= " AND `re`.`sumReAmount` = :amount ";
             $aArray['amount'] = $aParam['amount'];
         }
+
         $aSql .= " ORDER BY `users`.`lastLoginTime` DESC";
         return DB::select($aSql,$aArray);
     }

@@ -278,7 +278,7 @@ class MemberController extends Controller
         $inAgentId = Agent::where('gagent_id', $GagentId)->pluck('a_id')->toArray();
         if(empty($inAgentId))
             return redirect('/back/control/userManage/general_agent')->with('message', '该条件下没有会员');
-        $aData = Users::exportUserData(['inAgentId'=>$inAgentId]);
+        $aData = Users::exportUserData(['inAgentId'=>$inAgentId, 'inTestFlag' => [0, 2]]);
         if(empty($aData))
             return redirect('/back/control/userManage/general_agent')->with('message', '该条件下没有会员');
         $todayTime = date('Y-m-d');
