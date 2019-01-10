@@ -487,8 +487,16 @@ class FinanceDataController extends Controller
                     }
                 }
                 if(isset($account_type) && $account_type == 'amount_fw'){
-                    if(($min = (int) $request->get('amount_min')) && ($max = $request->get('amount_max'))){
-                        $q->whereBetween('drawing.amount',[$min, $max]);
+//                    if(($min = (int) $request->get('amount_min')) && ($max = $request->get('amount_max'))){
+//                        $q->whereBetween('drawing.amount',[$min, $max]);
+//                    }
+                    $min = (int) $request->get('amount_min');
+                    if(!empty($min)){
+                        $q->where('drawing.amount','>=',$min);
+                    }
+                    $max = (int) $request->get('amount_max');
+                    if(!empty($max)){
+                        $q->where('drawing.amount','<=',$max);
                     }
                 }
             })
