@@ -68,15 +68,11 @@ class OfferController extends BaseController
                 'code' => 1,
                 'msg' => $this->code[1],
             ]);
-        if (DB::table($this->table)->where('order_id', $aParam['order_id'])->update(['status' => $aParam['status']]))
-            return $this->returnAction([
-                'code' => 0,
-                'msg' => $this->code[0],
-                'order_id' => $aParam['order_id'],
-            ]);
+        $res = DB::table($this->table)->where('order_id', $aParam['order_id'])->update(['status' => $aParam['status']]);
         return $this->returnAction([
-            'code' => 5,
-            'msg' => 'error',
+            'code' => 0,
+            'msg' => $res ? $this->code[0] : '成功，状态没有改变',
+            'order_id' => $aParam['order_id'],
         ]);
     }
 

