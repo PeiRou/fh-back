@@ -491,11 +491,11 @@ class FinanceDataController extends Controller
 //                        $q->whereBetween('drawing.amount',[$min, $max]);
 //                    }
                     $min = (int) $request->get('amount_min');
-                    if(isset($min)){
+                    if(!empty($min)){
                         $q->where('drawing.amount','>=',$min);
                     }
-                    $max = $request->get('amount_max');
-                    if(isset($min)){
+                    $max = (int) $request->get('amount_max');
+                    if(!empty($max)){
                         $q->where('drawing.amount','<=',$max);
                     }
                 }
