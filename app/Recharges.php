@@ -210,4 +210,16 @@ class Recharges extends Model
 
         return DB::select($sql1);
     }
+
+    //获取今日首冲人数
+    public static function todayRechargesUser ()
+    {
+        return \App\Users::leftJoin('recharges as r', 'r.userId', 'users.id')
+            ->where('users.testFlag',0)
+            ->where('users.PayTimes',1)
+            ->where('r.payType', '<>', 'adminAddMoney')
+            ->where('r.status',2)
+            ->whereDate('r.created_at',date('Y-m-d'))->count();
+    }
+
 }
