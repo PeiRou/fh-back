@@ -492,7 +492,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
             $where .= ' AND lastLoginTime <= "'.date('Y-m-d 23:59:59',strtotime('-'.$noLoginDays.' day')).'"';
         }
 
-        $sql = ' FROM ( '.$sql1.$where.'  ORDER BY id desc '.'LIMIT '.$start.','.$length.') u_fileds ';
+        $sql = ' FROM ( '.$sql1.$where.'  ORDER BY id desc,rechLevel asc  '.'LIMIT '.$start.','.$length.') u_fileds ';
         $sql .= 'left Join (SELECT name as level_name,value FROM level) lv on u_fileds.user_rechLevel = lv.value 
             left Join (SELECT a_id,account as ag_account,gagent_id FROM agent) ag on u_fileds.agent = ag.a_id  
             left Join users as p_Users on p_Users.id = u_fileds.user_promoter 
