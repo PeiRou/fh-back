@@ -516,7 +516,7 @@ class FinanceDataController extends Controller
             ->orderBy('drawing.created_at','desc')->orderBy('drawing.id','desc');
         $drawingCount = $drawingSQL->count();
         $drawing = $drawingSQL->skip($start)->take($length)->get();
-        $aPayOnlineNew = PayOnlineNew::select('levels','rechName','id')->where('payCode','DF')->where('status',1)->get()->toArray();
+        $aPayOnlineNew = PayOnlineNew::select('levels','rechName','id','min_money','max_money')->where('payCode','DF')->where('status',1)->get()->toArray();
         return DataTables::of($drawing)
             ->editColumn('created_at',function ($drawing){
                 return date('m/d H:i',strtotime($drawing->dr_created_at));
@@ -619,7 +619,7 @@ class FinanceDataController extends Controller
                     foreach ($aPayOnlineNew as $iPayOnlineNew)
                         if(in_array($drawing->levels,explode(',',$iPayOnlineNew['levels']))) {
                             //不在金额范围内就不显示
-                            if ($drawing->dr_amount >= $iPayOnlineNew->min_money && $drawing->dr_amount <= $iPayOnlineNew->max_money)
+                            if ($drawing->dr_amount >= $iPayOnlineNew['min_money'] && $drawing->dr_amount <= $iPayOnlineNew['max_money'])
                                 $iHtml .= ' <span class="hover-black" onclick="dispensing(\'' . $drawing->dr_id . '\',\'' . $iPayOnlineNew['id'] . '\',\'' . $iPayOnlineNew['rechName'] . '\')">' . $iPayOnlineNew['rechName'] . '</span> |';
                         }
                     $str = '';
