@@ -9,9 +9,13 @@ class VG extends Base{
     public function getBet()
     {
         $tableName = 'jq_'.strtolower($this->repo->gameInfo->alias).'_bet';
-        $id = \Illuminate\Support\Facades\DB::table($tableName)->orderBy('id','desc')->value('GameID');
-        $res = $this->repo->gamerecordid();
-        p($res, 1);
+        $this->repo->param['id'] = \Illuminate\Support\Facades\DB::table($tableName)->orderBy('id','desc')->value('GameID');
+        if(empty($res = $this->repo->gamerecordid()))
+            return $this->show(500, '超时！');
+        if ($res['state'] === 0) {
+            return $this->repo->createData($res['value']);
+        }
+        return $this->show($res['state'] ?? 14, 'error');
     }
 
 }

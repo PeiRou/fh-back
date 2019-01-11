@@ -14,10 +14,17 @@ class VGRepository extends BaseRepository
     //格式化数据  插入数据库
     public function createData($data){
         $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
-        $table = DB::table($tableName);
+        $table = \Illuminate\Support\Facades\DB::table($tableName);
         $arr = [];
         foreach ($data as $v){
-
+            $arr[] = [
+                'GameID' => $v['id'],   //游戏代码
+                'Accounts' => str_replace($this->Config['agent'].'_','',$v['username']),  //玩家账号
+                'AllBet' => $v['validbetamount'],//总下注
+                'Profit' => $v['money'],       //盈利
+                'GameStartTime' => $v['begintime'],//游戏开始时间
+                'GameEndTime' => $v['endtime'],  //游戏结束时间
+            ];
         }
         $this->insertDB($arr, $table);
     }
@@ -44,8 +51,6 @@ class VGRepository extends BaseRepository
 
     public function createConfig ()
     {
-        $this->ConfigPrefix = 'test';
-
         $this->url = $this->Config[$this->ConfigPrefix.'url'];
         $this->channel = $this->Config[$this->ConfigPrefix.'channel'];
         $this->agent = $this->Config[$this->ConfigPrefix.'agent'];
