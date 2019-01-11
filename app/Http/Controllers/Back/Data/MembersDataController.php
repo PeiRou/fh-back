@@ -434,7 +434,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                         from users ';
 
         $where = ' where 1 ';
-
+        $order = '';
         if(isset($killTestUser) && $killTestUser){
             $where .= ' and users.testFlag = 0 ';
         }else{
@@ -477,21 +477,27 @@ GROUP BY g.ga_id LIMIT $start,$length";
         }
         if(isset($minMoney) && $minMoney ){
             $where .= ' AND money >= '.(float)$minMoney;
+            $order .= 'u_fileds.user_money desc,';
         }
         if(isset($maxMoney) && $maxMoney ){
             $where .= ' AND money <= '.(float)$maxMoney;
+            $order .= 'u_fileds.user_money desc,';
         }
         if(isset($promoter) && $promoter ){
             $userId = Users::where('username',$promoter)->value('id');
             $where .= ' AND promoter = \''.$userId.'\'';
         }
         if(isset($noLoginDays)){
+            $order .= 'u_fileds.user_lastLoginTime desc,';
             $where .= ' AND lastLoginTime <= "'.date('Y-m-d 23:59:59',strtotime('-'.$noLoginDays.' day')).'"';
         }
+
         $sql = ' FROM ( '.$sql1.$where.'  ORDER BY id desc '.'LIMIT '.$start.','.$length.') u_fileds ';
         $sql .= 'left Join (SELECT name as level_name,value FROM level) lv on u_fileds.user_rechLevel = lv.value 
             left Join (SELECT a_id,account as ag_account,gagent_id FROM agent) ag on u_fileds.agent = ag.a_id  
-            left Join users as p_Users on p_Users.id = u_fileds.user_promoter ';
+            left Join users as p_Users on p_Users.id = u_fileds.user_promoter 
+             		ORDER BY
+		                user_rechLevel asc,'.$order.' u_fileds.id desc ';
         $users = DB::select('select u_fileds.*,lv.*,ag.*,p_Users.username as pusername,p_Users.fullName as pfullName  '.$sql);
 //        var_dump('select u_fileds.*,lv.*,ag.*,p_Users.username as pusername,p_Users.fullName as pfullName  '.$sql);die();
         $usersCount = DB::select('select count(id) AS count from users '.$where);
