@@ -8,6 +8,12 @@ use App\GamesApiConfig;
 use Illuminate\Support\Facades\DB;
 
 class PrivodeController extends Controller{
+    public function test ()
+    {
+            //删除三天以前的
+        $tableName = 'jq_vg_bet';
+        $res = $this->action(18, 'getBet');
+    }
     public function getBet(){
         $list = GamesApi::getQpList();
         foreach ($list as $k=>$v){

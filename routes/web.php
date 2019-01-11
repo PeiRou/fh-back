@@ -1,4 +1,5 @@
 <?php
+Route::get('/test', 'GamesApi\Card\PrivodeController@test');
 Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/', 'Back\SrcViewController@index');
 

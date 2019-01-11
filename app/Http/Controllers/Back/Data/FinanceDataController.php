@@ -617,8 +617,11 @@ class FinanceDataController extends Controller
                 } else {
                     $iHtml = '';
                     foreach ($aPayOnlineNew as $iPayOnlineNew)
-                        if(in_array($drawing->levels,explode(',',$iPayOnlineNew['levels'])))
-                            $iHtml .= ' <span class="hover-black" onclick="dispensing(\''.$drawing->dr_id.'\',\''.$iPayOnlineNew['id'].'\',\''.$iPayOnlineNew['rechName'].'\')">'.$iPayOnlineNew['rechName'].'</span> |';
+                        if(in_array($drawing->levels,explode(',',$iPayOnlineNew['levels']))) {
+                            //不在金额范围内就不显示
+                            if ($drawing['dr_amount'] >= $iPayOnlineNew['min_money'] && $drawing['dr_amount'] <= $iPayOnlineNew['max_money'])
+                                $iHtml .= ' <span class="hover-black" onclick="dispensing(\'' . $drawing->dr_id . '\',\'' . $iPayOnlineNew['id'] . '\',\'' . $iPayOnlineNew['rechName'] . '\')">' . $iPayOnlineNew['rechName'] . '</span> |';
+                        }
                     $str = '';
                     if(in_array('ac.ad.passDrawing',$this->permissionArray))
                         $str .= '<span class="hover-black" onclick="pass(\''.$drawing->dr_id.'\')">通过</span>';
