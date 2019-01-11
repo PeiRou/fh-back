@@ -214,12 +214,12 @@ class Recharges extends Model
     //获取今日首冲人数
     public static function todayRechargesUser ()
     {
-        return \App\Users::leftJoin('recharges as r', 'r.userId', 'users.id')
-            ->where('users.testFlag',0)
-            ->where('users.PayTimes',1)
-            ->where('r.payType', '<>', 'adminAddMoney')
-            ->where('r.status',2)
-            ->whereDate('r.created_at',date('Y-m-d'))->count();
+        return (DB::select("select count(firstTime) as count from (select min(created_at) as firstTime from recharges 
+                where status = 2
+                and payType <> 'adminAddMoney'
+                and testFlag = 0
+                GROUP BY userId 
+                HAVING date(firstTime) = date(now())) as a")[0]->count) ?? 0;
     }
 
 }
