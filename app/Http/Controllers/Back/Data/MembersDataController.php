@@ -485,7 +485,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
             $userId = Users::where('username',$promoter)->value('id');
             $where .= ' AND promoter = \''.$userId.'\'';
         }
-        if(isset($noLoginDays) && $noLoginDays ){
+        if(isset($noLoginDays)){
             $where .= ' AND lastLoginTime <= "'.date('Y-m-d 23:59:59',strtotime('-'.$noLoginDays.' day')).'"';
         }
         $sql = ' FROM ( '.$sql1.$where.'  ORDER BY id desc '.'LIMIT '.$start.','.$length.') u_fileds ';
