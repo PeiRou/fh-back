@@ -39,7 +39,7 @@ class ExportExcelController extends Controller
 //
         $cellData = [
 //            ['订单日期','处理日期','会员','余额','订单号','付款方式','交易金额','操作人','收款信息','入款信息','状态'],
-            ['订单时间','处理日期','会员','订单号','交易金额','操作人','收款信息','状态'],
+            ['订单时间','处理日期','会员','真实姓名','余额','订单号','付款方式','交易金额','返利/手续费','操作人','收款信息','入款信息','状态'],
         ];
 //        $exportRecharges = DB::table('recharges')
 //            ->leftJoin('users','recharges.userId','=','users.id')
@@ -66,10 +66,15 @@ class ExportExcelController extends Controller
                 date('m/d H:i',strtotime($item->created_at)),
                 empty($item->process_date)?'--':date('m/d H:i',strtotime($item->process_date)),
                 $item->username,
+                $item->fullName,
+                $item->balance,
                 $item->orderNum,
+                \App\Recharges::$payType[$item->payType] ?? '--',
                 $item->amount,
+                $item->rebate_or_fee,
                 $item->operation_account,
                 $item->shou_info,
+                str_replace('<br>',' ',$item->ru_info),
                 $re_status,
             ];
         }
@@ -95,10 +100,10 @@ class ExportExcelController extends Controller
                     1 => 20,
                 ];
                 foreach ($aData as $kData => $iData){
-                    if($iData->dr_draw_type)
-                        $ipInfo = '-';
-                    else
-                        $ipInfo = $iData->dr_ip;
+//                    if($iData->dr_draw_type)
+//                        $ipInfo = '-';
+//                    else
+                        $ipInfo = $iData->dr_ip.$iData->ip_info;
                     if($iData->dr_platform == 1)
                         $platform = '电脑端';
                     elseif($iData->dr_platform == 2)

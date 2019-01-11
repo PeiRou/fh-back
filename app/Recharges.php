@@ -15,6 +15,16 @@ class Recharges extends Model
         '3' => '其他'
     ];
 
+    public static $payType = [
+        'onlinePayment' => '在线支付',
+        'bankTransfer' => '银行汇款',
+        'weixin' => '微信转账',
+        'alipay' => '支付宝转账',
+        'cft' => '财付通转账',
+        'adminAddMoney' => '后台加钱',
+    ];
+
+
     public static function getDailyStatistics($dayTime){
         return self::select(DB::raw("'userId','SUM(amount) AS amountSum','COUNT(id) AS idCount'"))->where('status',2)
             ->whereBetween('created_at',[$dayTime,$dayTime.' 23:59:59'])
@@ -206,7 +216,7 @@ class Recharges extends Model
                 $whereStaus = ' and recharges.status in (1,2,3,4)';
             }
         }
-        $sql1 = 'SELECT recharges.created_at, recharges.process_date, users.username as username,recharges.orderNum as orderNum,recharges.amount as amount,recharges.operation_account as operation_account,recharges.shou_info as shou_info,recharges.status as re_status '.$sql.$where .$whereStaus. ' order by recharges.created_at desc ';
+        $sql1 = 'SELECT users.fullName,recharges.level_name,recharges.balance,recharges.payType,recharges.rebate_or_fee,recharges.ru_info,recharges.created_at, recharges.process_date, users.username as username,recharges.orderNum as orderNum,recharges.amount as amount,recharges.operation_account as operation_account,recharges.shou_info as shou_info,recharges.status as re_status '.$sql.$where .$whereStaus. ' order by recharges.created_at desc ';
 
         return DB::select($sql1);
     }
