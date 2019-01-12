@@ -55,6 +55,7 @@
                             <option value="alipay">支付宝支付</option>
                             <option value="weixin">微信支付</option>
                             <option value="cft">财付通</option>
+                            <option value="ysf">云闪付</option>
                             <option value="adminAddMoney">后台加钱</option>
                         </select>
                     </div>
