@@ -316,7 +316,7 @@ class Excel
         if($redis->exists($key)){
             return '';
         }
-        $redis->setex($key,5,'ing');
+        $redis->setex($key,3,'ing');
         $url = Config::get('website.guanIssueServerUrl').$key;
 //        $res = json_decode(file_get_contents($url), true);
         $curl = curl_init();
