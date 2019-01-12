@@ -14,6 +14,7 @@ use App\CapitalAgent;
 use App\Drawing;
 use App\Feedback;
 use App\FeedbackMessage;
+use App\GameOddsCategory;
 use App\Games;
 use App\GeneralAgent;
 use App\Levels;
@@ -289,6 +290,12 @@ class ModalController extends Controller
                 $aAgentOdds[$key]->info = AgentOddsSetting::where('odds_category_id','=',$value->odds_category_id)->where('odds','>=',$value->odds)->orderBy('odds','asc')->get();
             }
             $iAgent = Agent::find($agentId);
+        }else{
+            $oddsLevel = GameOddsCategory::select('id as odds_category_id','title')->get();
+            foreach ($oddsLevel as $key => $value){
+                $aAgentOdds[$key] = $value;
+                $aAgentOdds[$key]->info = AgentOddsSetting::where('odds_category_id','=',$value->odds_category_id)->orderBy('odds','asc')->get();
+            }
         }
         $agentModelStatus = Agent::$agentModelStatus;
         return view('back.modal.member.addAgent')

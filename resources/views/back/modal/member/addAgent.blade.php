@@ -11,36 +11,30 @@
         </div>
     </div>
     @if(env('TEST',0) == 1)
-        @if(!empty($aAgentOdds) && $iAgent->modelStatus == 1)
-            @foreach($aAgentOdds as $iAgentOdds)
-            <div class="field">
-                <label>{{ $iAgentOdds->title }}提成</label>
-                <div class="ui input icon">
-                    <select class="ui fluid dropdown" name="odds_level[]" id="odds_level">
-                        @foreach($iAgentOdds->info as $iInfo)
-                            <option value="{{ $iInfo->id }}">{{ $iInfo->odds }} % (获取提成差{{ round($iInfo->odds - $iAgentOdds->odds,1) }} %)</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            @endforeach
-        @endif
-    @endif
-    @if(env('TEST',0) == 1)
-    @if(empty($aAgentOdds) || empty($agentId))
         <div class="field">
             <label>代理模式</label>
             <div class="ui input icon">
-                <select class="ui fluid dropdown" name="modelStatus" id="modelStatus">
+                <select class="ui fluid dropdown" name="modelStatus" id="modelStatus" onchange="modelStatusChange()">
                     @foreach($agentModelStatus as $kAgentModelStatus => $iAgentModelStatus)
                         <option value="{{ $kAgentModelStatus }}">{{ $iAgentModelStatus }}</option>
                     @endforeach
                 </select>
             </div>
         </div>
-    @else
-        <input type="hidden" name="modelStatus" value="{{ $iAgent->modelStatus }}">
-    @endif
+        <div id="commission" style="display: none;margin-bottom: 10px;">
+            @foreach($aAgentOdds as $iAgentOdds)
+            <div class="field">
+                <label>{{ $iAgentOdds->title }}提成</label>
+                <div class="ui input icon">
+                    <select class="ui fluid dropdown" name="odds_level[]" id="odds_level">
+                        @foreach($iAgentOdds->info as $iInfo)
+                            <option value="{{ $iInfo->id }}">{{ $iInfo->odds }} %</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            @endforeach
+        </div>
     @endif
     <div class="field">
         <label>代理账号</label>
@@ -154,4 +148,14 @@
             }
         });
     });
+
+    function modelStatusChange() {
+        var modelStatus =  $('#modelStatus').val();
+        console.log(modelStatus);
+        if(modelStatus == 1){
+            $('#commission').show();
+        }else{
+            $('#commission').hide();
+        }
+    }
 </script>
