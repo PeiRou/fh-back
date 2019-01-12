@@ -173,7 +173,7 @@
                 <th>收款信息</th>
                 <th>入款信息</th>
                 <th>状态</th>
-                <th>操作</th>
+                <th style="padding: 0 20px;">操作</th>
             </tr>
             </thead>
             <tfoot>
