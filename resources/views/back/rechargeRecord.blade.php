@@ -6,7 +6,8 @@
     @inject('hasPermission','App\Http\Proxy\CheckPermission')
     <style>
         #rechargeRecordTable{
-            white-space: nowrap;
+            /*white-space: nowrap;*/
+            white-space: normal;
         }
         .ui.form .fields .wide.field {
             padding-left: .1em;
