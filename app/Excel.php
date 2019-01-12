@@ -314,9 +314,9 @@ class Excel
         $redis = Redis::connection();
         $redis->select(5);
         if($redis->exists($key)){
-            return 'ing';
+            return '';
         }
-        $redis->setex($key,3,'ing');
+        $redis->setex($key,5,'ing');
         $url = Config::get('website.guanIssueServerUrl').$key;
 //        $res = json_decode(file_get_contents($url), true);
         $curl = curl_init();
