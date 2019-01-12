@@ -318,7 +318,6 @@ class Excel
         }
         $redis->setex($key,3,'ing');
         $url = Config::get('website.guanIssueServerUrl').$key;
-//        $res = json_decode(file_get_contents($url), true);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
