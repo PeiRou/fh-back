@@ -22,7 +22,7 @@ class ISSUE_SEED_PCDD extends Command
         $timeUp = date('Y-m-d 09:00:00');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $lastDay = Carbon::now()->addDay(-1)->toDateTimeString();
-        $checkLastIssue = DB::table('game_pcdd')->where('is_open',1)->whereDate('opentime',date('Y-m-d',strtotime($lastDay)))->orderBy('issue','desc')->first();
+        $checkLastIssue = DB::table('game_pcdd')->select(DB::raw('MAX(id) as maxid'),'issue')->whereDate('opentime',date('Y-m-d',strtotime($lastDay)))->orderBy('issue','desc')->first();
         $lastIssue = $checkLastIssue->issue;
         //$lastIssue = '907087';
 
