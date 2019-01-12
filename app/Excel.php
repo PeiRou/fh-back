@@ -311,6 +311,12 @@ class Excel
     //取得官方开奖
     public function getGuanIssueNum($needOpenIssue,$type){
         $key = $type.'?issue='.$needOpenIssue;
+        $redis = Redis::connection();
+        $redis->select(5);
+        if($redis->exists($key)){
+            return 'ing';
+        }
+        $redis->setex($key,3,'ing');
         $url = Config::get('website.guanIssueServerUrl').$key;
 //        $res = json_decode(file_get_contents($url), true);
         $curl = curl_init();
