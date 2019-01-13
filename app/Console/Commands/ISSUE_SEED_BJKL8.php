@@ -21,8 +21,7 @@ class ISSUE_SEED_BJKL8 extends Command
         $curDate = date('ymd');
         $timeUp = date('Y-m-d 09:00:00');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
-        $lastDay = Carbon::now()->addDay(-1)->toDateTimeString();
-        $checkLastIssue = DB::table('game_bjkl8')->select(DB::raw('MAX(id) as maxid'),'issue')->whereDate('opentime',date('Y-m-d',strtotime($lastDay)))->first();
+        $checkLastIssue = DB::table('game_bjkl8')->select(DB::raw('MAX(id) as maxid'),'issue')->where('opentime',date('Y-m-d 23:55:00',strtotime('-1 days')))->first();
         $lastIssue = $checkLastIssue->issue;
 //        $lastIssue = '687326';
 
