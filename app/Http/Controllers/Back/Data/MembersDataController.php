@@ -247,14 +247,18 @@ GROUP BY g.ga_id LIMIT $start,$length";
                             $j = true;
                         }
                     }
-//                    if(env('TEST',0) == 1) {
-//                        if ($allAgent->modelStatus == 1){
+                    if(env('TEST',0) == 1) {
+                        if ($allAgent->modelStatus == 1){
+                            if(in_array('m.agent.add',$this->permissionArray)) {
+                                $gd .= "<li onclick='changeAgentOdds(\"$allAgent->a_id\")'>修改盘口</li>";
+                                $j = true;
+                            }
 //                            if(in_array('m.agent.add',$this->permissionArray)) {
 //                                $gd .= "<li onclick='addAgent(\"$allAgent->a_id\")'>添加子代理</li>";
 //                                $j = true;
 //                            }
-//                        }
-//                    }
+                        }
+                    }
                     if(in_array('member.exportMember',$this->permissionArray)) {
                         $gd .= "<li onclick='exportMember(\"$allAgent->a_id\",\"$allAgent->account\")'>导出会员</li>";
                         $j = true;

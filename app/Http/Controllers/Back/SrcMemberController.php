@@ -322,6 +322,39 @@ class SrcMemberController extends Controller
 
         }
     }
+    //修改代理盘口
+    public function changeAgentOdds(Request $request){
+        $aParam = $request->input();
+        $agentOddsSetting = AgentOddsSetting::getArrayIdData();
+        $dateTime = date('Y-m-d H:i:s');
+        $oddsArray = [];
+        foreach ($aParam['odds_level'] as $value) {
+            $oddsArray[] = [
+                'agent_id' => $aParam['agent_id'],
+                'odds_id' => $value,
+                'odds_category_id' => $agentOddsSetting[$value]->odds_category_id,
+                'created_at' => $dateTime,
+                'updated_at' => $dateTime,
+            ];
+        }
+        DB::beginTransaction();
+        try{
+            AgentOdds::where('agent_id',$aParam['agent_id'])->delete();
+            AgentOdds::insert($oddsArray);
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'msg' => '修改成功'
+            ]);
+        }catch (\Exception $exception){
+            DB::rollback();
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            return response()->json([
+                'status' => false,
+                'msg' => '暂时无法添加，请稍后重试'
+            ]);
+        }
+    }
     //删除代理账号
     public function delAgent($id)
     {

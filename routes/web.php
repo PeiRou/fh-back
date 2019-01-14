@@ -329,6 +329,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/editAgent', 'Back\SrcMemberController@editAgent')->middleware('add-log-handle')->name('ac.ad.editAgent');//修改代理账号
     Route::post('/action/admin/delAgent/{id}', 'Back\SrcMemberController@delAgent')->middleware(['check-permission','add-log-handle'])->name('m.agent.del');//删除代理账号
     Route::post('/action/admin/changeAgentMoney', 'Back\SrcMemberController@changeAgentMoney')->middleware('add-log-handle')->name('ac.ad.changeAgentMoney');//修改代理金额
+    Route::post('/action/admin/changeAgentOdds', 'Back\SrcMemberController@changeAgentOdds')->middleware('add-log-handle')->name('ac.ad.changeAgentOdds');//修改代理盘口
     Route::get('/action/admin/passAgent/{id}', 'Back\SrcMemberController@passAgent')->middleware('add-log-handle')->name('ac.ad.checkAgent');//代理审核通过
     Route::get('/action/admin/errorAgent/{id}', 'Back\SrcMemberController@errorAgent')->middleware('add-log-handle')->name('ac.ad.checkAgent');//代理审核驳回
     Route::post('/action/admin/selectAgentOdds', 'Back\SrcMemberController@selectAgentOdds');//根据代理上级获取赔率
@@ -545,7 +546,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/reconciliationInfo/{id}', 'Back\Ajax\ModalController@reconciliationInfo')->name('m.member.reconciliation');  //会员对帐详情
     Route::get('/back/modal/addGeneralAgent', 'Back\Ajax\ModalController@addGeneralAgent')->middleware('check-permission')->name('m.gAgent.add');
     Route::get('/back/modal/editGeneralAgent/{id}', 'Back\Ajax\ModalController@editGeneralAgent')->middleware('check-permission')->name('m.gAgent.edit');
-    Route::get('/back/modal/addAgent/{agentId}', 'Back\Ajax\ModalController@addAgent')->middleware('check-permission')->name('m.agent.add');
+    Route::get('/back/modal/addAgent/{agentId}', 'Back\Ajax\ModalController@addAgent')->middleware('check-permission')->name('m.agent.add');  //添加代理
+    Route::get('/back/modal/changeAgentOdds/{agentId}', 'Back\Ajax\ModalController@changeAgentOdds')->middleware('check-permission')->name('m.agent.changeAgentOdds');  //修改代理赔率
     Route::get('/back/modal/editAgent/{id}', 'Back\Ajax\ModalController@editAgent')->middleware('check-permission')->name('m.agent.edit');
     Route::get('/back/modal/agentInfo/{id}', 'Back\Ajax\ModalController@agentInfo')->middleware('check-permission')->name('m.agent.viewDetails');
     Route::get('/back/modal/agentContent/{id}', 'Back\Ajax\ModalController@agentContent')->middleware('check-permission')->name('m.agent.viewDetails');

@@ -6,6 +6,7 @@ use App\Activity;
 use App\ActivityCondition;
 use App\ActivityPrize;
 use App\Agent;
+use App\AgentOdds;
 use App\AgentOddsSetting;
 use App\Article;
 use App\Banks;
@@ -304,6 +305,21 @@ class ModalController extends Controller
             ->with('aAgentOdds',$aAgentOdds)
             ->with('iAgent',$iAgent)
             ->with('agentModelStatus',$agentModelStatus);
+    }
+    //修改代理盘口
+    public function changeAgentOdds($agentId){
+        $aAgentOdds = [];
+        $oddsLevel = GameOddsCategory::select('id as odds_category_id','title')->get();
+        foreach ($oddsLevel as $key => $value){
+            $aAgentOdds[$key] = $value;
+            $aAgentOdds[$key]->info = AgentOddsSetting::where('odds_category_id','=',$value->odds_category_id)->orderBy('odds','asc')->get();
+        }
+        $aOdds = AgentOdds::where('agent_id',$agentId)->get();
+        $aOddsArray = [];
+        foreach ($aOdds as $iOdds){
+            $aOddsArray[$iOdds->odds_category_id] = $iOdds->odds_id;
+        }
+        return view('back.modal.member.changeAgentOdds',compact('aAgentOdds','agentId','aOddsArray'));
     }
     //修改代理
     public function editAgent($id)
