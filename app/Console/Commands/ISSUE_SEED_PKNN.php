@@ -22,7 +22,7 @@ class ISSUE_SEED_PKNN extends Command
         $timeUp = date('Y-m-d 09:02:30');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $checkLastIssue = DB::table('game_pknn')->select(DB::raw('MAX(id) as maxid'),'issue')->where('opentime',date('Y-m-d 23:57:30',strtotime('-1 days')))->first();
-        $lastIssue = $checkLastIssue->issue;
+        $lastIssue = @$checkLastIssue->issue;
 //       $lastIssue = '687326';
         if(empty($lastIssue))
             writeLog('ISSUE_SEED', date('Y-m-d').$this->signature.'期数不可为0');
