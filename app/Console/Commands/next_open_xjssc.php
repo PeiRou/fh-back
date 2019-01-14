@@ -71,7 +71,7 @@ class next_open_xjssc extends Command
             return 'Fail';
         }else{
             //阻止進行中
-            $excel->stopIng($this->code,$res->issue,$redis);
+            if($excel->stopIng($this->code,$res->issue,$redis))                return 'ing';
         }
         //當期獎期
         $needOpenIssue = $res->issue;
