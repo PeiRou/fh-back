@@ -623,9 +623,10 @@ class Excel
     public function stopIng($code,$issue,$redis){
         $key = $code.'ing:'.$issue;
         if($redis->exists($key)){
-            return 'ing';
+            return 1;
         }
         $redis->setex($key,5,'ing');
         $redis->set($code.':needopen','');
+        return 0;
     }
 }
