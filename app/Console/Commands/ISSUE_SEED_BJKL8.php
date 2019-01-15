@@ -24,8 +24,11 @@ class ISSUE_SEED_BJKL8 extends Command
         $checkLastIssue = DB::table('game_bjkl8')->select(DB::raw('MAX(id) as maxid'),'issue')->where('opentime',date('Y-m-d 23:55:00',strtotime('-1 days')))->first();
         $lastIssue = @$checkLastIssue->issue;
 //        $lastIssue = '687326';
-        if(empty($lastIssue))
+        if(empty($lastIssue)){
             writeLog('ISSUE_SEED', date('Y-m-d').$this->signature.'期数不可为0');
+            echo '期数不可为0';
+            return '';
+        }
         $sql = "INSERT INTO game_bjkl8 (issue,opentime) VALUES ";
         for($i=1;$i<=179;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(5);
