@@ -362,7 +362,7 @@ class Excel
         $yesterday = date('Y-m-d H:i:s',strtotime('-1 day'));
         $res = DB::connection('mysql::write')->select("SELECT issue,opentime FROM {$table} WHERE is_open=0 and opentime >='".$yesterday."' and opentime <='".$today."'");
         if(empty($res))
-            return false;
+            return array();
         return $res;
     }
     //取得目前开盘奖期
