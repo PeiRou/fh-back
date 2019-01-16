@@ -22,9 +22,13 @@ class ISSUE_SEED_PCDD extends Command
         $timeUp = date('Y-m-d 09:00:00');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $checkLastIssue = DB::table('game_pcdd')->select(DB::raw('MAX(id) as maxid'),'issue')->where('opentime',date('Y-m-d 23:55:00',strtotime('-1 days')))->first();
-        $lastIssue = $checkLastIssue->issue;
+        $lastIssue = @$checkLastIssue->issue;
         //$lastIssue = '907087';
-
+        if(empty($lastIssue)){
+            writeLog('ISSUE_SEED', date('Y-m-d').$this->signature.'期数不可为0');
+            echo '期数不可为0';
+            return '';
+        }
         $sql = "INSERT INTO game_pcdd (issue,opentime) VALUES ";
         for($i=1;$i<=179;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(5);
