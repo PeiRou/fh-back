@@ -138,7 +138,7 @@
                 </tr>
                 </thead>
                 <tbody id="NumList">
-                @if(isset($conditionInfo->content))
+                @if(isset($conditionInfo->content) && $conditionInfo->type == 3)
                     @foreach($conditionInfo->content as $content)
                         <td class="checkMoney">
                             <input type="text" class="_money" name="min_money[]" oninput="clearNoNum(this)" value="{{ $content['min_money'] }}">
