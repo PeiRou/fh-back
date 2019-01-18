@@ -9,6 +9,7 @@
         display: flex;
         align-items: center;
     }
+
 </style>
 <form id="editPayOnlineForm" class="ui mini form" action="{{ url('/action/admin/new/editPayOnline') }}">
     <div class="field">
@@ -317,5 +318,11 @@
                 }
             });
         });
+
+        $('.searchable-select').on('click',function(){
+            var marginTop = $('.searchable-select-items>.selected').index() * $('.searchable-select-items>.searchable-select-item').innerHeight();
+            $('.searchable-scroll').scrollTop(marginTop);
+        })
+
     });
 </script>

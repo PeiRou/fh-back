@@ -296,6 +296,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/agentSettle/domain', 'Back\Data\AgentSettleController@domain'); //代理专属域名
     Route::get('/back/datatables/activity/lists', 'Back\Data\ActivityController@lists'); //活动列表-表格数据
     Route::get('/back/datatables/activity/condition', 'Back\Data\ActivityController@condition'); //活动条件-表格数据
+    Route::get('/back/datatables/activity/activityHongbaoList', 'Back\Data\ActivityController@activityHongbaoList'); //红包活动-红包数据
+
     Route::get('/back/datatables/activity/prize', 'Back\Data\ActivityController@prize'); //奖品配置-表格数据
     Route::get('/back/datatables/activity/review', 'Back\Data\ActivityController@review'); //派奖审核-表格数据
     Route::get('/back/datatables/activity/daily', 'Back\Data\ActivityController@daily'); //每日数据统计-表格数据
@@ -389,6 +391,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/activity/editActivity', 'Back\ActivityController@editActivity')->middleware('add-log-handle')->name('ac.ad.activity.editActivity'); //活动列表-修改活动
     Route::post('/action/admin/activity/onOffActivity', 'Back\ActivityController@onOffActivity')->middleware('add-log-handle')->name('ac.ad.activity.onOffActivity'); //活动列表-开启关闭
     Route::post('/action/admin/activity/addCondition', 'Back\ActivityController@addCondition')->middleware('add-log-handle')->name('ac.ad.activity.addCondition'); //活动条件-新增条件
+    Route::post('/action/admin/activity/addActivityCondition', 'Back\ActivityController@addActivityCondition')->middleware('add-log-handle'); //活动红包-新增红包
+    Route::post('/action/admin/activity/delActivityCondition', 'Back\ActivityController@delActivityCondition')->middleware('add-log-handle'); //活动红包-删除红包
     Route::post('/action/admin/activity/editCondition', 'Back\ActivityController@editCondition')->middleware('add-log-handle')->name('ac.ad.activity.editCondition'); //活动条件-修改条件
     Route::post('/action/admin/activity/delCondition', 'Back\ActivityController@delCondition')->middleware('add-log-handle')->name('ac.ad.activity.delCondition'); //活动条件-删除条件
     Route::post('/action/admin/activity/addPrize', 'Back\ActivityController@addPrize')->middleware('add-log-handle')->name('ac.ad.activity.addPrize'); //奖品配置-新增奖品
@@ -624,7 +628,10 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/addActivityList', 'Back\Ajax\ModalController@addActivityList'); //增加活动-模板
     Route::get('/back/modal/editActivityList/{id}', 'Back\Ajax\ModalController@editActivityList'); //修改活动-模板
     Route::get('/back/modal/addActivityCondition', 'Back\Ajax\ModalController@addActivityCondition'); //增加活动条件-模板
-    Route::get('/back/modal/editActivityCondition/{id}', 'Back\Ajax\ModalController@editActivityCondition'); //修改活动条件-模板
+    Route::get('/back/modal/addActivityHongbaoProbability', 'Back\Ajax\ModalController@addActivityHongbaoProbability'); //增加活动红包-模板
+    Route::get('/back/modal/editActivityHongbaoProbability/{id}', 'Back\Ajax\ModalController@editActivityHongbaoProbability'); //修改活动红包-模板
+    Route::get('/back/modal/activityHongbaoProbability/{id}', 'Back\Ajax\ModalController@activityHongbaoProbability')->where([ 'id' => '[\d]+','activity_id' => '[\d]+']); //编辑红包-单页面
+    Route::get('/back/modal/editActivityCondition/{id}/{activity_id}', 'Back\Ajax\ModalController@editActivityCondition'); //修改活动条件-模板
     Route::get('/back/modal/addActivityPrize', 'Back\Ajax\ModalController@addActivityPrize'); //增加奖品配置-模板
     Route::get('/back/modal/editActivityPrize/{id}', 'Back\Ajax\ModalController@editActivityPrize'); //修改奖品配置-模板
     Route::get('/back/modal/editPromotionReport/{id}','Back\Ajax\ModalController@editPromotionReport'); //修改推广就算报表-模板

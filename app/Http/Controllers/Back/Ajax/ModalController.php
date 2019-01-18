@@ -1039,17 +1039,45 @@ class ModalController extends Controller
 
     //增加活动条件-模板
     public function addActivityCondition(){
-        $activityLists = Activity::select('id','name')->orderBy('sort','asc')->get();
+        $activityLists = Activity::select('id','name','type')->orderBy('sort','asc')->get();
         $prizeLists = ActivityPrize::select('id','name','quantity')->get();
         return view('back.modal.activity.addActivityCondition',compact('activityLists','prizeLists'));
     }
 
     //修改活动条件-模板
-    public function editActivityCondition($id){
-        $activityLists = Activity::select('id','name')->orderBy('sort','asc')->get();
-        $prizeLists = ActivityPrize::select('id','name','quantity')->get();
-        $conditionInfo = ActivityCondition::getDetailInfoOne($id);
-        return view('back.modal.activity.editActivityCondition',compact('activityLists','prizeLists','conditionInfo'));
+    public function editActivityCondition($id, $activity_id){
+        $data = [
+            'activity_id' => $activity_id,
+            'activityLists' => Activity::select('id','name')->orderBy('sort','asc')->get(),
+            'prizeLists' => ActivityPrize::select('id','name','quantity')->get()
+        ];
+//        if($activity_id == 3){
+//            $data['conditionInfoHongbao'] = \App\ActivityConditionHongbao::getDetailInfoOne($id);
+//        } else {
+            $data['conditionInfo'] = ActivityCondition::getDetailInfoOne($id);
+//        }
+        return view('back.modal.activity.editActivityCondition',$data);
+    }
+
+    //编辑红包-单页面
+    public function activityHongbaoProbability($id)
+    {
+
+        return view('back.modal.activity.activityHongbaoProbability', compact('id'));
+    }
+
+    //新增红包-模板
+    public function addActivityHongbaoProbability ()
+    {
+        $level = DB::table('level')->get();
+        return view('back.modal.activity.addActivityHongbaoProbability', compact('level'));
+    }
+    //编辑红包-模板
+    public function editActivityHongbaoProbability ($id)
+    {
+        $data = \App\ActivityHongbaoProbability::where('id', $id)->first();
+        $level = DB::table('level')->get();
+        return view('back.modal.activity.addActivityHongbaoProbability', compact('level','data'));
     }
 
     //增加奖品配置-模板

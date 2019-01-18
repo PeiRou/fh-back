@@ -53,8 +53,8 @@
 </div>
 
 <script>
-    var _id = {{ $id }};
-    var activity_id = {{ $activity_id }};
+    {{--var _id = {{ $id }};--}}
+    var activity_id = {{ $id }};
     var dataTable;
     $(function () {
         var columns = [
@@ -81,9 +81,7 @@
                     url:'/back/datatables/activity/activityHongbaoList',
                     type:'get',
                     data:function (d) {
-                        d.id = _id;
                         d.activity_id = activity_id
-                        console.log(d);
                     }
                 },
                 columns: columns,
@@ -167,7 +165,6 @@
                             type:'post',
                             dataType:'json',
                             data:{
-                                id:id,
                                 activity_id:activity_id
                             },
                             success:function (data) {

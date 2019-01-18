@@ -14,8 +14,6 @@ class ActivityConditionHongbao extends Model
         'money' => 'required|numeric',
         'total_money1' => 'required|numeric',
 //        'bet' => 'required|integer',
-        'start_activity' => 'required',
-        'end_activity' => 'required',
     ];
 
     //获取详情
@@ -23,17 +21,17 @@ class ActivityConditionHongbao extends Model
         $data = self::where('id','=',$id)->first();
         return $data;
     }
-
-    public static function getConditionSql ($param)
-    {
-        return "SELECT  
-				`activity_condition_hongbao`.`activity_id`, 
-				`activity_condition_hongbao`.`id`,
-				1 AS `day`,
-				`activity_condition_hongbao`.`money`,
-				`activity_condition_hongbao`.`bet`,
-				`activity_condition_hongbao`.`total_money`
-			FROM `activity_condition_hongbao`";
-    }
+//
+//    public static function getConditionSql ($param)
+//    {
+//        return "SELECT
+//				`activity_condition_hongbao`.`activity_id`,
+//				`activity_condition_hongbao`.`id`,
+//				1 AS `day`,
+//				`activity_condition_hongbao`.`money`,
+//				`activity_condition_hongbao`.`bet`,
+//				`activity_condition_hongbao`.`total_money`
+//			FROM `activity_condition_hongbao`";
+//    }
 
 }

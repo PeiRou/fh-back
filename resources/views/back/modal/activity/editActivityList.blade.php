@@ -10,6 +10,9 @@
     .in-block{
         display: inline-block;
     }
+    .tow{
+        display: none;
+    }
 </style>
 <form id="editArticleForm" class="ui form" action="{{ url('/action/admin/activity/editActivity') }}">
     <div class="field">
@@ -34,11 +37,27 @@
             </div>
         </div>
     </div>
+    <div class="field tow">
+        <label>活动时间段</label>
+        <div class="ui calendar in-block" id="" style="width: 108px;">
+            <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input type="text" name="start_activity" id="start_activity" value="{{ $activityInfo->start_activity }}" placeholder="">
+            </div>
+        </div>
+        <span> - </span>
+        <div class="ui calendar in-block" id="" style="width: 108px;">
+            <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input type="text" name="end_activity" id="end_activity" value="{{ $activityInfo->end_activity }}" placeholder="">
+            </div>
+        </div>
+    </div>
     <div class="field">
         <label>活动类型</label>
         <select class="ui dropdown" name="type" id="status" style='height:32px !important'>
             @foreach($activityType as $key => $value)
-                <option @if($key == $activityInfo->type) @endif value="{{ $key }}">{{ $value }}</option>
+                <option @if($key == $activityInfo->type) selected @endif value="{{ $key }}">{{ $value }}</option>
             @endforeach
         </select>
     </div>
@@ -120,6 +139,25 @@ $(function () {
             am: 'AM',
             pm: 'PM'
         }
+    });
+    $('#status').change(function(){
+        if($(this).val() == 3) {
+            $('.tow').show();
+        }else {
+            $('.tow').hide();
+        }
+    })
+    if($('#status').val() == 3)
+        $('.tow').show();
+    laydate.render({
+        elem: '#start_activity' //指定元素
+        ,type:'time'
+        ,format:'HH:mm:ss'
+    });
+    laydate.render({
+        elem: '#end_activity' //指定元素
+        ,type:'time'
+        ,format:'HH:mm:ss'
     });
 })
 </script>

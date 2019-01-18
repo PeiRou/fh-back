@@ -14,6 +14,7 @@ class Activity extends Model
     public static $activityType = [
         '1' => '每天登陆活动',
         '2' => '连续性活动',
+        '3' => '红包活动'
     ];
 
     //活动状态
