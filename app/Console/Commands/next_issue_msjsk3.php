@@ -60,7 +60,8 @@ class next_issue_msjsk3 extends Command
 
         $New_nextIssue = $nextIssue+1;
         if(substr($New_nextIssue,-4)=='1441'){
-            $New_nextIssue = date("Ymd",strtotime($openTime)).'0001';
+            //只有秒速快3特例，他的跨日是當日00:00，所以用計算後的開獎日期去算明天第一期
+            $New_nextIssue = date("Ymd",strtotime($nextIssueLotteryTime)).'0001';
         }
 
         $redis->set('msjsk3:nextIssue',(int)$New_nextIssue);

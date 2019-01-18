@@ -729,20 +729,30 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 $aBets = '';
                 $aBetHisCount = 0;
                 $aBetsCount = 0;
-                if(strtotime($param['endTime']) >= strtotime(date('Y-m-d',strtotime('-1 day')))){
+                if(strtotime($param['startTime']) >= strtotime(date('Y-m-d',strtotime('-1 day')))){
+                    $aBets = Bets::AssemblyFundDetails($param);
+                    $aBetsCount = $aBets->count();
+                }else{
                     $aBetHis = BetHis::AssemblyFundDetails($param);
                     $aBetHisCount = $aBetHis->count();
                 }
-                if(strtotime($param['startTime']) < strtotime(date('Y-m-d',strtotime('-2 day')))) {
-                    $aBets = Bets::AssemblyFundDetails($param);
-                    $aBetsCount = $aBets->count();
+                if(strtotime($param['endTime']) < strtotime(date('Y-m-d',strtotime('-1 day')))) {
+                    if(empty($aBetHis)){
+                        $aBetHis = BetHis::AssemblyFundDetails($param);
+                        $aBetHisCount = $aBetHis->count();
+                    }
+                }else{
+                    if(empty($aBets)){
+                        $aBets = Bets::AssemblyFundDetails($param);
+                        $aBetsCount = $aBets->count();
+                    }
                 }
                 if(empty($aBetHis) && !empty($aBets)){
-                    $capital = $aBets->skip($start)->take($length)->get();
+                    $capital = $aBets->skip($start)->take($length)->orderBy('created_at','desc')->orderBy('bet_id','desc')->get();
                 }elseif(empty($aBets) && !empty($aBetHis)){
-                    $capital = $aBetHis->skip($start)->take($length)->get();
+                    $capital = $aBetHis->skip($start)->take($length)->orderBy('created_at','desc')->orderBy('bet_id','desc')->get();
                 }else{
-                    $capital = $aBets->union($aBetHis)->orderBy('created_at','desc')->skip($start)->take($length)->get();
+                    $capital = $aBets->union($aBetHis)->orderBy('created_at','desc')->orderBy('bet_id','desc')->skip($start)->take($length)->get();
                 }
                 $capitalCount = $aBetHisCount + $aBetsCount;
 //                $capital = Bets::AssemblyFundDetails($param);
