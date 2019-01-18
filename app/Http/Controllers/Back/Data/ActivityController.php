@@ -52,7 +52,7 @@ class ActivityController extends Controller
     public function condition(Request $request){
 
         $params = $request->all();
-        $datas = ActivityCondition::select('activity_condition.activity_id','activity_condition.id','activity_condition.day','activity_condition.money','activity_condition.bet','activity_condition.total_money','activity.name')
+        $datas = ActivityCondition::select('activity.type','activity_condition.activity_id','activity_condition.id','activity_condition.day','activity_condition.money','activity_condition.bet','activity_condition.total_money','activity.name')
             ->where(function ($sql) use ($params){
                 if(isset($params['activity_id']) && array_key_exists('activity_id',$params)){
                     return $sql->where('activity_id','=',$params['activity_id']);
@@ -65,7 +65,16 @@ class ActivityController extends Controller
 //        $datas = ActivityCondition::condition($request);
         return DataTables::of($datas)
             ->editColumn('day',function ($datas){
-                return '第'.$datas->day.'天';
+                return $datas->type == 3 ? ' - ' : '第'.$datas->day.'天';
+            })
+            ->editColumn('money', function($datas){
+                return $datas->type == 3 ? ' - ' : $datas->money;
+            })
+            ->editColumn('bet', function($datas){
+                return $datas->type == 3 ? ' - ' : $datas->bet;
+            })
+            ->editColumn('total_money', function($datas){
+                return $datas->type == 3 ? $datas->total_money.'('.$datas->money.')' : $datas->total_money;
             })
             ->editColumn('control',function ($datas) {
                 $html = '';

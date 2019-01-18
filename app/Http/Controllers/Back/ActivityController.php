@@ -190,6 +190,21 @@ class ActivityController extends Controller
             if(!isset($request->min_money[$k], $request->max_money[$k], $request->times[$k])){
                 continue;
             }
+            if($request->min_money[$k] > $request->max_money[$k]){
+                return response()->json([
+                    'status'=> false,
+                    'msg'=> '最小金额大于最大金额'
+                ]);
+            }
+            foreach ($param as $kk=>$vv){
+                //每个最大最小金额不能在其它的金额范围内 不然不能计算
+                if($request->min_money[$k] >= $vv['min_money'] && $request->min_money[$k] <= $vv['max_money'] || $request->max_money[$k] >= $vv['min_money'] && $request->max_money[$k] <= $vv['max_money']){
+                    return response()->json([
+                        'status'=> false,
+                        'msg'=> '金额范围不能包含其它金额范围'
+                    ]);
+                }
+            }
             $param[] = [
                 'min_money' => (float)$request->min_money[$k],
                 'max_money' => (float)$request->max_money[$k],
@@ -203,7 +218,7 @@ class ActivityController extends Controller
             ]);
         $arr = [
             'activity_id' => (int)$request->activity_id,
-            'money' => (float)$request->money,
+//            'money' => (float)$request->money,
             'total_money' => (float)$request->total_money1,
 //            'times' => (int)$request->times,
             'updated_at' => date('Y-m-d H:i:s'),
@@ -218,11 +233,16 @@ class ActivityController extends Controller
                     'status'=>true,
                     'msg'=>'修改成功'
                 ]);
-        } elseif (($arr['created_at'] = date('Y-m-d H:i:s')) && \App\ActivityCondition::insert($arr)) {
-            return response()->json([
-                'status'=>true,
-                'msg'=>'新增成功'
-            ]);
+        } else  {
+            $arr['created_at'] = date('Y-m-d H:i:s');
+            $arr['money'] = $arr['total_money'];
+
+            if(\App\ActivityCondition::insert($arr)){
+                return response()->json([
+                    'status'=>true,
+                    'msg'=>'新增成功'
+                ]);
+            }
         }
         return response()->json([
             'status'=>false,
@@ -301,8 +321,9 @@ class ActivityController extends Controller
 
     //活动条件-修改条件
     public function editCondition(Request $request){
-        if(isset($request->activity_id) && $request->activity_id == 3)
-            return $this->addConditionHongbao($request);
+        if(isset($request->activity_id))
+            if(\App\Activity::where('id', (int)$request->activity_id)->value('type') == 3)
+                return $this->addConditionHongbao($request);
         $params = $request->post();
         $data = $this->getAdmin($params);
         $validator = Validator::make($request->post(),ActivityCondition::$role);
@@ -368,30 +389,31 @@ class ActivityController extends Controller
             ]);
         }
     }
-    public function delConditionHongbao(Request $request)
-    {
-        if(!isset($request->id))
-            return response()->json(['status'=>false, 'msg'=>'修改参数错误']);
-        if(\App\ActivityConditionHongbao::where('id','=',(int)$request->id)->delete()){
-            return response()->json([
-                'status'=>true,
-                'msg'=>'删除成功'
-            ]);
-        }else{
-            return response()->json([
-                'status'=>false,
-                'msg'=>'删除失败'
-            ]);
-        }
-    }
+//    public function delConditionHongbao(Request $request)
+//    {
+//        if(!isset($request->id))
+//            return response()->json(['status'=>false, 'msg'=>'修改参数错误']);
+//        if(\App\ActivityConditionHongbao::where('id','=',(int)$request->id)->delete()){
+//            return response()->json([
+//                'status'=>true,
+//                'msg'=>'删除成功'
+//            ]);
+//        }else{
+//            return response()->json([
+//                'status'=>false,
+//                'msg'=>'删除失败'
+//            ]);
+//        }
+//    }
     //活动条件-删除条件
     public function delCondition(Request $request){
-        if(isset($request->activity_id) && $request->activity_id == 3)
-            return $this->delConditionHongbao($request);
+//        if(isset($request->activity_id))
+//            if(\App\Activity::where('id', (int)$request->activity_id)->value('type') == 3)
+//                return $this->delConditionHongbao($request);
         $params = $request->post();
         $params = $this->getAdmin($params);
         if(!isset($params['id']) && !array_key_exists('id',$params)){
-            return response()->json(['status'=>false, 'msg'=>'修改参数错误']);
+            return response()->json(['status'=>false, 'msg'=>'参数错误']);
         }
         if(ActivityCondition::where('id','=',$params['id'])->delete()){
             return response()->json([
