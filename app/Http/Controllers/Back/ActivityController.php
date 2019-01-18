@@ -283,7 +283,7 @@ class ActivityController extends Controller
             'admin_name' => $data['admin_name'],
             'admin_account' => $data['admin_account'],
             'updated_at' => $data['updated_at'],
-            'updated_at' => data('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
             'content' => $data['content'],
         ];
         if(ActivityCondition::insert($arr)){
