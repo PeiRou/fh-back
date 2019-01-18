@@ -46,6 +46,7 @@ class ActivityController extends Controller
         if(isset($params['end_time']) && array_key_exists('end_time',$params)){
             $data['end_time'] = $params['end_time'] . ' 23:59:59';
         }
+        $data['start_activity'] = $data['end_activity'] = '';
         if(isset($params['type']) && array_key_exists('type',$params)){
             $data['type'] = $params['type'];
             if ($data['type'] == 3) {//红包活动
