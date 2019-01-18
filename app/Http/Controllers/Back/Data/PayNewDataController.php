@@ -130,7 +130,7 @@ class PayNewDataController extends Controller
                 return $payAlipay->payee;
             })
             ->editColumn('qrCode', function ($payAlipay){
-                return "<img style='width: 100px;' src='$payAlipay->qrCode'>";
+                return "<img style='width: 100px;' src='".(empty($payAlipay->qrCodeBase64) ? $payAlipay->qrCode : $payAlipay->qrCodeBase64)."'>";
             })
             ->editColumn('status', function ($payAlipay){
                 if($payAlipay->status == 1){
@@ -181,7 +181,8 @@ class PayNewDataController extends Controller
                 return $payWechat->payee;
             })
             ->editColumn('qrCode', function ($payWechat){
-                return "<img style='width: 100px;' src='$payWechat->qrCode'>";
+//                return "<img style='width: 100px;' src='$payWechat->qrCode'>";
+                return "<img style='width: 100px;' src='".(empty($payWechat->qrCodeBase64) ? $payWechat->qrCode : $payWechat->qrCodeBase64)."'>";
             })
             ->editColumn('status', function ($payWechat){
                 if($payWechat->status == 1){
@@ -232,7 +233,8 @@ class PayNewDataController extends Controller
                 return $payCft->payee;
             })
             ->editColumn('qrCode', function ($payCft){
-                return "<img style='width: 100px;' src='$payCft->qrCode'>";
+//                return "<img style='width: 100px;' src='$payCft->qrCode'>";
+                return "<img style='width: 100px;' src='".(empty($payCft->qrCodeBase64) ? $payCft->qrCode : $payCft->qrCodeBase64)."'>";
             })
             ->editColumn('status', function ($payCft){
                 if($payCft->status == 1){
@@ -282,7 +284,8 @@ class PayNewDataController extends Controller
                 return $payYsf->payee;
             })
             ->editColumn('qrCode', function ($payYsf){
-                return "<img style='width: 100px;' src='$payYsf->qrCode'>";
+//                return "<img style='width: 100px;' src='$payYsf->qrCode'>";
+                return "<img style='width: 100px;' src='".(empty($payYsf->qrCodeBase64) ? $payYsf->qrCode : $payYsf->qrCodeBase64)."'>";
             })
             ->editColumn('status', function ($payYsf){
                 if($payYsf->status == 1){
