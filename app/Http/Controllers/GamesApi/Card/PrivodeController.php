@@ -21,7 +21,7 @@ class PrivodeController extends Controller{
         foreach ($list as $k=>$v){
             //删除三天以前的
             $tableName = 'jq_'.strtolower($v->alias).'_bet';
-            DB::table($tableName)->where('GameStartTime', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 3))->delete();
+//            DB::table($tableName)->where('GameStartTime', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 3))->delete();
             $res = $this->action($v->g_id, 'getBet');
             if(isset($res['code']) && $res['code'] != 0)
                 echo $v->name.'更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
