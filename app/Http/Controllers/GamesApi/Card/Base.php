@@ -59,8 +59,8 @@ class Base
             $this->repo->createData($data);
             $this->addTime = $this->addTime + (1000 * $this->intervals * 60);
             $redis->setex($key, 60 * 60, $this->addTime);
-            writeLog('huifu', $this->addTime);
         }
+        writeLog('huifu', $this->addTime);
         writeLog('huifu', $res['msg'] ?? 'error');
 
         return $this->show($res['code'] ?? 500, $res['msg'] ?? 'error');
