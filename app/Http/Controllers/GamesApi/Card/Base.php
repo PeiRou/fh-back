@@ -47,7 +47,7 @@ class Base
             $redis->setex($key, 60 * 60, strtotime('2018-12-19 00:00:00') * 1000);
         $this->addTime = $redis->get($key);
 
-        if($this->addTime >= strtotime('2018-12-22 01:00:00') * 1000){
+        if($this->addTime >= strtotime('2018-12-22 05:00:00') * 1000){
             return true;
         }
         $this->repo->param['s'] = 6;
