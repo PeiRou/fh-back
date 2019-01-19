@@ -53,6 +53,7 @@ class Base
             if($this->addTime >= strtotime('2018-12-22 00:00:00') * 1000){
                 return true;
             }
+            sleep(2);
             return $this->getHistoryBet();
         }
         writeLog('huifu', $res['msg'] ?? 'error');
