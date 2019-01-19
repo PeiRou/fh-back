@@ -39,6 +39,7 @@ class Base
     //
     public function getHistoryBet()
     {
+        sleep(4);
         if(empty($this->addTime))
             $this->addTime = strtotime('2018-12-19 00:00:00') * 1000;
         $this->repo->param['s'] = 6;
@@ -53,7 +54,7 @@ class Base
             if($this->addTime >= strtotime('2018-12-22 00:00:00') * 1000){
                 return true;
             }
-            sleep(2);
+
             return $this->getHistoryBet();
         }
         writeLog('huifu', $res['msg'] ?? 'error');
