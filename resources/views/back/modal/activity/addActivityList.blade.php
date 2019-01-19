@@ -10,6 +10,9 @@
     .in-block{
         display: inline-block;
     }
+    .tow{
+        display: none;
+    }
 </style>
 <form id="editArticleForm" class="ui form" action="{{ url('/action/admin/activity/addActivity') }}">
     <div class="field">
@@ -31,6 +34,22 @@
             <div class="ui input left icon">
                 <i class="calendar icon"></i>
                 <input type="text" name="end_time" id="end_time" value="" placeholder="">
+            </div>
+        </div>
+    </div>
+    <div class="field tow">
+        <label>活动时间段</label>
+        <div class="ui calendar in-block" id="" style="width: 108px;">
+            <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input type="text" name="start_activity" id="start_activity" value="" placeholder="">
+            </div>
+        </div>
+        <span> - </span>
+        <div class="ui calendar in-block" id="" style="width: 108px;">
+            <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input type="text" name="end_activity" id="end_activity" value="" placeholder="">
             </div>
         </div>
     </div>
@@ -120,5 +139,23 @@ $(function () {
             pm: 'PM'
         }
     });
+    $('#status').change(function(){
+        if($(this).val() == 3) {
+            $('.tow').show();
+        }else {
+            $('.tow').hide();
+        }
+    })
+    laydate.render({
+        elem: '#start_activity' //指定元素
+        ,type:'time'
+        ,format:'HH:mm:ss'
+    });
+    laydate.render({
+        elem: '#end_activity' //指定元素
+        ,type:'time'
+        ,format:'HH:mm:ss'
+    });
+
 })
 </script>

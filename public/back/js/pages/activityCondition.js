@@ -1,7 +1,12 @@
 var dataTable;
-
+var layer,laydate;
 $(function () {
-    
+    layui.use('layer', function(){
+        layer = layui.layer;
+    });
+    layui.use('laydate', function(){
+        laydate = layui.laydate;
+    });
     $('#menu-activityManage').addClass('nav-show');
     $('#menu-activityManage-condition').addClass('active');
 
@@ -124,13 +129,13 @@ function add() {
     });
 }
 
-function edit(id) {
+function edit(id,activity_id) {
     jc1 = $.confirm({
         theme: 'material',
         title: '修改活动',
         closeIcon:true,
         boxWidth:'25%',
-        content: 'url:/back/modal/editActivityCondition/'+id,
+        content: 'url:/back/modal/editActivityCondition/'+id+'/'+activity_id,
         buttons: {
             formSubmit: {
                 text:'确定提交',
@@ -147,7 +152,7 @@ function edit(id) {
     });
 }
 
-function del(id,name) {
+function del(id,name,activity_id) {
     jc = $.confirm({
         title: '确定要删除【'+ name +'】吗？',
         theme: 'material',
@@ -163,7 +168,10 @@ function del(id,name) {
                         url:'/action/admin/activity/delCondition',
                         type:'post',
                         dataType:'json',
-                        data:{id:id},
+                        data:{
+                            id:id,
+                            activity_id:activity_id
+                        },
                         success:function (data) {
                             if(data.status == true){
                                 $('#capitalDetailsTable').DataTable().ajax.reload(null,false);
@@ -186,3 +194,4 @@ function del(id,name) {
         }
     });
 }
+

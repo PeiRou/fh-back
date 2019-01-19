@@ -1,7 +1,12 @@
 var dataTable;
-
+var layer,laydate;
 $(function () {
-    
+    layui.use('layer', function(){
+        layer = layui.layer;
+    });
+    layui.use('laydate', function(){
+        laydate = layui.laydate;
+    });
     $('#menu-activityManage').addClass('nav-show');
     $('#menu-activityManage-list').addClass('active');
 
@@ -189,5 +194,14 @@ function editStatus(id) {
                 text:'取消'
             }
         }
+    });
+}
+
+function editHongbao(id){
+    openIndex = layer.open({
+        type: 2,
+        content: '/back/modal/activityHongbaoProbability/'+id,
+        area: ['90%', '90%'],
+        maxmin: true,
     });
 }

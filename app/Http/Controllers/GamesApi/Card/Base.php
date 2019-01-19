@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\GamesApi\Card;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class Base
 {
@@ -34,6 +35,34 @@ class Base
             $data = $res['data']['list'];
             return $this->repo->createData($data);
         }
+        return $this->show($res['code'] ?? 500, $res['msg'] ?? 'error');
+    }
+    //
+    public function getHistoryBet()
+    {
+        $redis = Redis::connection();
+        $redis->select(13);
+        $key = 'laqu_';
+        if(!$redis->exists($key))
+            $redis->setex($key, 60 * 60, strtotime('2018-12-19 00:00:00') * 1000);
+        $this->addTime = $redis->get($key);
+
+        if($this->addTime >= strtotime('2018-12-22 00:00:00') * 1000){
+            return true;
+        }
+        $this->repo->param['s'] = 6;
+        $this->repo->param['startTime'] = $this->addTime;
+        $this->repo->param['endTime'] = $this->addTime + (1000 * $this->intervals * 60);
+        $res = $this->repo->createReqData();
+        if(isset($res['code']) && $res['code'] == 0 ){
+            $data = $res['data']['list'];
+            $this->repo->createData($data);
+            $this->addTime = $this->addTime + (1000 * $this->intervals * 60);
+            $redis->setex($key, 60 * 60, $this->addTime);
+        }
+        writeLog('huifu', $this->addTime);
+        writeLog('huifu', $res['msg'] ?? 'error');
+
         return $this->show($res['code'] ?? 500, $res['msg'] ?? 'error');
     }
 

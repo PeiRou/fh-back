@@ -3,6 +3,12 @@
 @section('title','活动条件')
 
 @section('content')
+    <style>
+        .layui-layer-msg, .layui-laydate{
+            z-index: 999999999999!important;
+        }
+
+    </style>
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>活动条件
@@ -52,5 +58,9 @@
 @section('page-js')
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
+    <script src="/vendor/layui/layui.js"></script>
+    <link rel="stylesheet" href="/vendor/layui/css/layui.css">
+
+
     <script src="/back/js/pages/activityCondition.js"></script>
 @endsection

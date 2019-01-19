@@ -3,6 +3,11 @@
 @section('title','活动列表')
 
 @section('content')
+    <style>
+        .layui-layer-msg, .layui-laydate{
+            z-index: 999999999999!important;
+        }
+    </style>
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>活动列表
@@ -35,4 +40,6 @@
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
     <script src="/back/js/pages/activityList.js"></script>
+    <script src="/vendor/layui/layui.js"></script>
+    <link rel="stylesheet" href="/vendor/layui/css/layui.css">
 @endsection

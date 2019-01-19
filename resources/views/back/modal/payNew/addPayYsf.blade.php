@@ -56,10 +56,19 @@
         </div>
     </div>
 
+    {{--<div class="field">--}}
+        {{--<label>二维码图片</label>--}}
+        {{--<div class="ui input icon">--}}
+            {{--<input type="text" name="qrCode"  placeholder=""/>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+
     <div class="field">
         <label>二维码图片</label>
         <div class="ui input icon">
-            <input type="text" name="qrCode"  placeholder=""/>
+            {{--<input type="text" name="qrCode"  placeholder=""/>--}}
+            <textarea style="display: none" id="qrCodeBase64" name="qrCodeBase64"></textarea>
+            <input type="file" id="file">
         </div>
     </div>
 
@@ -151,7 +160,7 @@
     .select2-search__field{border: none !important;}
     .select2-container{z-index: 9999999999 !important;}
 </style>
-
+<script src="/back/js/pages/pay_online_common.js"></script>
 <script>
     $(function () {
         $('.ui.checkbox').checkbox();
@@ -180,13 +189,13 @@
                             }
                         }
                     },
-                    qrCode:{
-                        validators: {
-                            notEmpty: {
-                                message: '二维码地址必须填写'
-                            }
-                        }
-                    },
+                    // qrCode:{
+                    //     validators: {
+                    //         notEmpty: {
+                    //             message: '二维码地址必须填写'
+                    //         }
+                    //     }
+                    // },
                     remark:{
                         validators: {
                             notEmpty: {

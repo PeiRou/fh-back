@@ -18,6 +18,8 @@ class SrcPayNewController extends Controller{
 
     public $str = "/\s|　/";
 
+    private $qrCode = 'p_'; //二维码保存的文件前缀
+
     //添加在线支付配置
     public function addPayOnline(Request $request){
         $aParam = $request->all();
@@ -378,8 +380,14 @@ class SrcPayNewController extends Controller{
         $payOnline->remark = $remark;
         $payOnline->remark2 = $remark2;
         $payOnline->checkType = $checkType;
+        $payOnline->qrCodeBase64 = $request->qrCodeBase64 ?? '';
         $save = $payOnline->save();
         if($save == 1){
+            if(!empty($payOnline->qrCodeBase64)){
+                preg_match("/:image\/(.*);base64/", $payOnline->qrCodeBase64, $arr);
+                $payOnline->qrCode = $payOnline->payCode.'/'.$this->qrCode.$payOnline->id.date('YmdHis').'.'.($arr[1] ?? 'png');
+                $payOnline->save();
+            }
             return response()->json([
                 'status' => true
             ]);
@@ -419,24 +427,29 @@ class SrcPayNewController extends Controller{
         } else {
             $new_levels = '0';
         }
-
+        $data = [
+            'lockArea' => $new_lockArea,
+            'payee' => $payee,
+            'payeeName' => $payeeName,
+            'checkType' => $checkType,
+            'qrCode' => $qrCode,
+            'remark' => $remark,
+            'remark2' => $remark2,
+            'pageDesc' => $pageDesc,
+            'min_money' => $min_money,
+            'max_money' => $max_money,
+            'rebate_or_fee' => $rebate_or_fee,
+            'status' => $status,
+            'levels' => $new_levels,
+            'sort' => $sort
+        ];
+        $data['qrCodeBase64'] = $request->qrCodeBase64 ?? '';
+        if(!empty($data['qrCodeBase64'])){
+            preg_match("/:image\/(.*);base64/", $data['qrCodeBase64'], $arr);
+            $data['qrCode'] = PayOnlineNew::where('id',$id)->value('payCode').'/'.$this->qrCode.$id.date('YmdHis').'.'.($arr[1] ?? 'png');
+        }
         $update = PayOnlineNew::where('id',$id)
-            ->update([
-                'lockArea' => $new_lockArea,
-                'payee' => $payee,
-                'payeeName' => $payeeName,
-                'checkType' => $checkType,
-                'qrCode' => $qrCode,
-                'remark' => $remark,
-                'remark2' => $remark2,
-                'pageDesc' => $pageDesc,
-                'min_money' => $min_money,
-                'max_money' => $max_money,
-                'rebate_or_fee' => $rebate_or_fee,
-                'status' => $status,
-                'levels' => $new_levels,
-                'sort' => $sort
-            ]);
+            ->update($data);
         if($update == 1){
             return response()->json([
                 'status' => true
@@ -493,8 +506,14 @@ class SrcPayNewController extends Controller{
         $payOnline->remark = $remark;
         $payOnline->remark2 = $remark2;
         $payOnline->checkType = $checkType;
+        $payOnline->qrCodeBase64 = $request->qrCodeBase64 ?? '';
         $save = $payOnline->save();
         if($save == 1){
+            if(!empty($payOnline->qrCodeBase64)){
+                preg_match("/:image\/(.*);base64/", $payOnline->qrCodeBase64, $arr);
+                $payOnline->qrCode = $payOnline->payCode.'/'.$this->qrCode.$payOnline->id.date('YmdHis').'.'.($arr[1] ?? 'png');
+                $payOnline->save();
+            }
             return response()->json([
                 'status' => true
             ]);
@@ -534,24 +553,29 @@ class SrcPayNewController extends Controller{
         } else {
             $new_levels = '0';
         }
-
+        $data = [
+            'lockArea' => $new_lockArea,
+            'payee' => $payee,
+            'payeeName' => $payeeName,
+            'checkType' => $checkType,
+            'qrCode' => $qrCode,
+            'remark' => $remark,
+            'remark2' => $remark2,
+            'pageDesc' => $pageDesc,
+            'min_money' => $min_money,
+            'max_money' => $max_money,
+            'rebate_or_fee' => $rebate_or_fee,
+            'status' => $status,
+            'levels' => $new_levels,
+            'sort' => $sort
+        ];
+        $data['qrCodeBase64'] = $request->qrCodeBase64 ?? '';
+        if(!empty($data['qrCodeBase64'])){
+            preg_match("/:image\/(.*);base64/", $data['qrCodeBase64'], $arr);
+            $data['qrCode'] = PayOnlineNew::where('id',$id)->value('payCode').'/'.$this->qrCode.$id.date('YmdHis').'.'.($arr[1] ?? 'png');
+        }
         $update = PayOnlineNew::where('id',$id)
-            ->update([
-                'lockArea' => $new_lockArea,
-                'payee' => $payee,
-                'payeeName' => $payeeName,
-                'checkType' => $checkType,
-                'qrCode' => $qrCode,
-                'remark' => $remark,
-                'remark2' => $remark2,
-                'pageDesc' => $pageDesc,
-                'min_money' => $min_money,
-                'max_money' => $max_money,
-                'rebate_or_fee' => $rebate_or_fee,
-                'status' => $status,
-                'levels' => $new_levels,
-                'sort' => $sort
-            ]);
+            ->update($data);
         if($update == 1){
             return response()->json([
                 'status' => true
@@ -608,8 +632,14 @@ class SrcPayNewController extends Controller{
         $payOnline->remark = $remark;
         $payOnline->remark2 = $remark2;
         $payOnline->checkType = $checkType;
+        $payOnline->qrCodeBase64 = $request->qrCodeBase64 ?? '';
         $save = $payOnline->save();
         if($save == 1){
+            if(!empty($payOnline->qrCodeBase64)){
+                preg_match("/:image\/(.*);base64/", $payOnline->qrCodeBase64, $arr);
+                $payOnline->qrCode = $payOnline->payCode.'/'.$this->qrCode.$payOnline->id.date('YmdHis').'.'.($arr[1] ?? 'png');
+                $payOnline->save();
+            }
             return response()->json([
                 'status' => true
             ]);
@@ -649,24 +679,30 @@ class SrcPayNewController extends Controller{
         } else {
             $new_levels = '0';
         }
+        $data = [
+            'lockArea' => $new_lockArea,
+            'payee' => $payee,
+            'payeeName' => $payeeName,
+            'checkType' => $checkType,
+            'qrCode' => $qrCode,
+            'remark' => $remark,
+            'remark2' => $remark2,
+            'pageDesc' => $pageDesc,
+            'min_money' => $min_money,
+            'max_money' => $max_money,
+            'rebate_or_fee' => $rebate_or_fee,
+            'status' => $status,
+            'levels' => $new_levels,
+            'sort' => $sort
+        ];
+        $data['qrCodeBase64'] = $request->qrCodeBase64 ?? '';
+        if(!empty($data['qrCodeBase64'])){
+            preg_match("/:image\/(.*);base64/", $data['qrCodeBase64'], $arr);
+            $data['qrCode'] = PayOnlineNew::where('id',$id)->value('payCode').'/'.$this->qrCode.$id.date('YmdHis').'.'.($arr[1] ?? 'png');
+        }
 
         $update = PayOnlineNew::where('id',$id)
-            ->update([
-                'lockArea' => $new_lockArea,
-                'payee' => $payee,
-                'payeeName' => $payeeName,
-                'checkType' => $checkType,
-                'qrCode' => $qrCode,
-                'remark' => $remark,
-                'remark2' => $remark2,
-                'pageDesc' => $pageDesc,
-                'min_money' => $min_money,
-                'max_money' => $max_money,
-                'rebate_or_fee' => $rebate_or_fee,
-                'status' => $status,
-                'levels' => $new_levels,
-                'sort' => $sort
-            ]);
+            ->update($data);
         if($update == 1){
             return response()->json([
                 'status' => true
@@ -722,8 +758,14 @@ class SrcPayNewController extends Controller{
         $payOnline->remark = $remark;
         $payOnline->remark2 = $remark2;
         $payOnline->checkType = $checkType;
+        $payOnline->qrCodeBase64 = $request->qrCodeBase64 ?? '';
         $save = $payOnline->save();
         if($save == 1){
+            if(!empty($payOnline->qrCodeBase64)){
+                preg_match("/:image\/(.*);base64/", $payOnline->qrCodeBase64, $arr);
+                $payOnline->qrCode = $payOnline->payCode.'/'.$this->qrCode.$payOnline->id.date('YmdHis').'.'.($arr[1] ?? 'png');
+                $payOnline->save();
+            }
             return response()->json([
                 'status' => true
             ]);
@@ -764,24 +806,29 @@ class SrcPayNewController extends Controller{
         } else {
             $new_levels = '0';
         }
-
+        $data = [
+            'lockArea' => $new_lockArea,
+            'payee' => $payee,
+            'payeeName' => $payeeName,
+            'checkType' => $checkType,
+            'qrCode' => $qrCode,
+            'remark' => $remark,
+            'remark2' => $remark2,
+            'pageDesc' => $pageDesc,
+            'min_money' => $min_money,
+            'max_money' => $max_money,
+            'rebate_or_fee' => $rebate_or_fee,
+            'status' => $status,
+            'levels' => $new_levels,
+            'sort' => $sort
+        ];
+        $data['qrCodeBase64'] = $request->qrCodeBase64 ?? '';
+        if(!empty($data['qrCodeBase64'])){
+            preg_match("/:image\/(.*);base64/", $data['qrCodeBase64'], $arr);
+            $data['qrCode'] = PayOnlineNew::where('id',$id)->value('payCode').'/'.$this->qrCode.$id.date('YmdHis').'.'.($arr[1] ?? 'png');
+        }
         $update = PayOnlineNew::where('id',$id)
-            ->update([
-                'lockArea' => $new_lockArea,
-                'payee' => $payee,
-                'payeeName' => $payeeName,
-                'checkType' => $checkType,
-                'qrCode' => $qrCode,
-                'remark' => $remark,
-                'remark2' => $remark2,
-                'pageDesc' => $pageDesc,
-                'min_money' => $min_money,
-                'max_money' => $max_money,
-                'rebate_or_fee' => $rebate_or_fee,
-                'status' => $status,
-                'levels' => $new_levels,
-                'sort' => $sort
-            ]);
+            ->update($data);
         if($update == 1){
             return response()->json([
                 'status' => true

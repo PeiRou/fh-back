@@ -27,7 +27,10 @@ class ActivityController extends Controller
                 return  $activityStatus[$datas->status];
             })
             ->editColumn('start_time',function ($datas){
-                return  str_replace('-','/',substr($datas->start_time,0,10)) . ' - ' . str_replace('-','/',substr($datas->end_time,0,10));
+                $str = str_replace('-','/',substr($datas->start_time,0,10)) . ' - ' . str_replace('-','/',substr($datas->end_time,0,10));
+                if($datas->type == 3)
+                    $str .= '<br />'.$datas->start_activity.' - '.$datas->end_activity;
+                return  $str;
             })
             ->editColumn('control',function ($datas) {
                 $html = '';
@@ -37,16 +40,19 @@ class ActivityController extends Controller
                     $html .= '<span class="edit-link" onclick="editStatus('.$datas->id.')"> 开启 </span>';
                 }
                 $html .= ' | <span class="edit-link" onclick="edit('.$datas->id.')"> 修改 </span>';
+                if($datas->type == 3)
+                    $html .= " | <span class=\"edit-link\" onclick=\"editHongbao({$datas->id})\">编辑红包</span>";
                 return  $html;
             })
-            ->rawColumns(['control'])
+            ->rawColumns(['control', 'start_time'])
             ->make(true);
     }
 
     //活动条件-表格数据
     public function condition(Request $request){
+
         $params = $request->all();
-        $datas = ActivityCondition::select('activity_condition.activity_id','activity_condition.id','activity_condition.day','activity_condition.money','activity_condition.bet','activity_condition.total_money','activity.name')
+        $datas = ActivityCondition::select('activity.type','activity_condition.activity_id','activity_condition.id','activity_condition.day','activity_condition.money','activity_condition.bet','activity_condition.total_money','activity.name')
             ->where(function ($sql) use ($params){
                 if(isset($params['activity_id']) && array_key_exists('activity_id',$params)){
                     return $sql->where('activity_id','=',$params['activity_id']);
@@ -54,16 +60,64 @@ class ActivityController extends Controller
             })
             ->join('activity','activity.id','=','activity_condition.activity_id')
             ->orderBy('activity_condition.activity_id','asc')->orderBy('activity_condition.day','asc')->get();
+
+//
+//        $datas = ActivityCondition::condition($request);
         return DataTables::of($datas)
             ->editColumn('day',function ($datas){
-                return '第'.$datas->day.'天';
+                return $datas->type == 3 ? ' - ' : '第'.$datas->day.'天';
+            })
+            ->editColumn('money', function($datas){
+                return $datas->type == 3 ? ' - ' : $datas->money;
+            })
+            ->editColumn('bet', function($datas){
+                return $datas->type == 3 ? ' - ' : $datas->bet;
+            })
+            ->editColumn('total_money', function($datas){
+                return $datas->type == 3 ? $datas->total_money.'('.$datas->money.')' : $datas->total_money;
             })
             ->editColumn('control',function ($datas) {
-                $html = '<span class="edit-link" onclick="edit('.$datas->id.')"> 修改 </span>';
-                $html .= ' | <span class="edit-link red" onclick="del('.$datas->id.',\''.$datas->name.'的第'.$datas->day.'天\')"> 删除 </span>';
+                $html = '';
+                $html .= '<span class="edit-link" onclick="edit('.$datas->id.','.$datas->activity_id.')"> 修改 </span>';
+                $html .= ' | <span class="edit-link red" onclick="del('.$datas->id.',\''.$datas->name.'的第'.$datas->day.'天\','.$datas->activity_id.')"> 删除 </span>';
+
                 return  $html;
             })
             ->rawColumns(['control'])
+            ->make(true);
+    }
+
+    //
+    public function activityHongbaoList(Request $request)
+    {
+        $model = \App\ActivityHongbaoProbability::class;
+        $res = $model::
+            select('activity_hongbao_probability.*', 'level.name as levelName', 'activity.name as aName')
+            ->leftJoin('level', 'activity_hongbao_probability.level_id', 'level.value')
+            ->leftJoin('activity', 'activity_hongbao_probability.activity_id', 'activity.id')
+            ->orderBy('id','desc')
+            ->where(function ($sql) use ($request) {
+                if(isset($request->activity_id))
+                    $sql->where('activity_id', $request->activity_id);
+            })
+            ->get();
+
+        return DataTables::of($res)
+            ->editColumn('is_default',function ($datas) {
+                return $datas->is_default == 1 ? '<span class="on-line-point"></span>' : '<span class="off-line-point"></span>';
+            })
+            ->editColumn('control',function ($datas) {
+                $html = '<span class="edit-link" onclick="edit('.$datas->id.')"> 修改 </span>';
+                $html .= ' | <span class="edit-link red" onclick="del('.$datas->id.',\''.$datas->name.'\')"> 删除 </span>';
+                return  $html;
+            })
+            ->editColumn('level_id',function ($datas) {
+                return $datas->levelName;
+            })
+            ->editColumn('activity_id',function ($datas) {
+                return $datas->aName;
+            })
+            ->rawColumns(['control', 'is_default'])
             ->make(true);
     }
 
