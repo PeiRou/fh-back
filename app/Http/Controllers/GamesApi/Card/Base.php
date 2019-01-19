@@ -60,6 +60,11 @@ class Base
             $this->addTime = $this->addTime + (1000 * 60 * 60);
             $redis->setex($key, 60 * 60, $this->addTime);
         }
+        if(isset($res['code']) && $res['code'] == 16){
+            $this->addTime = $this->addTime + (1000 * 60 * 60);
+            $redis->setex($key, 60 * 60, $this->addTime);
+        }
+
         writeLog('huifu', $this->addTime);
         writeLog('huifu', $res['msg'] ?? 'error');
 
