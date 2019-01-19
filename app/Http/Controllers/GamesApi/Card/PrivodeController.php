@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\DB;
 class PrivodeController extends Controller{
     public function test ()
     {
-            //删除三天以前的
-        $tableName = 'jq_vg_bet';
-        $res = $this->action(18, 'getBet');
+        $res = $this->action(15, 'getHistoryBet');
+        if(isset($res['code']) && $res['code'] != 0)
+            echo '更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
     }
     public function getBet(){
         $list = GamesApi::getQpList();

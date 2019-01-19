@@ -36,6 +36,28 @@ class Base
         }
         return $this->show($res['code'] ?? 500, $res['msg'] ?? 'error');
     }
+    //
+    public function getHistoryBet()
+    {
+        if(empty($this->addTime))
+            $this->addTime = strtotime('2018-12-19 00:00:00') * 1000;
+        $this->repo->param['s'] = 6;
+        $this->repo->param['startTime'] = $this->addTime;
+        $this->repo->param['endTime'] = $this->addTime + (1000 * $this->intervals * 60);
+        $res = $this->repo->createReqData();
+        if(isset($res['code']) && $res['code'] == 0 ){
+            $data = $res['data']['list'];
+            $this->repo->createData($data);
+            $this->addTime = $this->addTime + (1000 * $this->intervals * 60);
+            writeLog('huifu', $this->addTime);
+            if($this->addTime >= strtotime('2018-12-22 00:00:00') * 1000){
+                return true;
+            }
+            return $this->getHistoryBet();
+        }
+        writeLog('huifu', $res['msg'] ?? 'error');
+        return $this->show($res['code'] ?? 500, $res['msg'] ?? 'error');
+    }
 
     protected function show($code = '', $msg = '', $data = []){
         $data = [
