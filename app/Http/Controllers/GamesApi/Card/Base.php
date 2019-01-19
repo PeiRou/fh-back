@@ -46,6 +46,10 @@ class Base
         if(!$redis->exists($key))
             $redis->setex($key, 60 * 60, strtotime('2018-12-19 00:00:00') * 1000);
         $this->addTime = $redis->get($key);
+
+        if($this->addTime >= strtotime('2018-12-22 00:00:00') * 1000){
+            return true;
+        }
         $this->repo->param['s'] = 6;
         $this->repo->param['startTime'] = $this->addTime;
         $this->repo->param['endTime'] = $this->addTime + (1000 * $this->intervals * 60);
@@ -56,9 +60,6 @@ class Base
             $this->addTime = $this->addTime + (1000 * $this->intervals * 60);
             $redis->setex($key, 60 * 60, $this->addTime);
             writeLog('huifu', $this->addTime);
-            if($this->addTime >= strtotime('2018-12-22 00:00:00') * 1000){
-                return true;
-            }
         }
         writeLog('huifu', $res['msg'] ?? 'error');
 
