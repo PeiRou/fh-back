@@ -393,6 +393,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/activity/addCondition', 'Back\ActivityController@addCondition')->middleware('add-log-handle')->name('ac.ad.activity.addCondition'); //活动条件-新增条件
     Route::post('/action/admin/activity/addActivityCondition', 'Back\ActivityController@addActivityCondition')->middleware('add-log-handle'); //活动红包-新增红包
     Route::post('/action/admin/activity/delActivityCondition', 'Back\ActivityController@delActivityCondition')->middleware('add-log-handle'); //活动红包-删除红包
+    Route::post('/action/admin/activity/addConditionMoney', 'Back\ActivityController@addConditionMoney')->middleware('add-log-handle'); //活动条件-添加红包金额
     Route::post('/action/admin/activity/editCondition', 'Back\ActivityController@editCondition')->middleware('add-log-handle')->name('ac.ad.activity.editCondition'); //活动条件-修改条件
     Route::post('/action/admin/activity/delCondition', 'Back\ActivityController@delCondition')->middleware('add-log-handle')->name('ac.ad.activity.delCondition'); //活动条件-删除条件
     Route::post('/action/admin/activity/addPrize', 'Back\ActivityController@addPrize')->middleware('add-log-handle')->name('ac.ad.activity.addPrize'); //奖品配置-新增奖品
