@@ -692,9 +692,9 @@ class ActivityController extends Controller
                 ->select('activity_send.*', 'activity.type')
                 ->leftJoin('activity', 'activity.id', 'activity_send.activity_id')
                 ->first();
-            if(strpos($actSned->prize_name,'元')>0 || ($actSned->type == 3 && (int)$actSned->prize_name > 0)) {
+            if(strpos($actSned->prize_name,'元')>0 || ($actSned->type == 3 && (float)$actSned->prize_name > 0)) {
                 $actAmount = (float)substr($actSned->prize_name,0,-1);
-                $actSned->type == 3 && $actAmount = (int)$actSned->prize_name;
+                $actSned->type == 3 && $actAmount = (float)$actSned->prize_name;
                 try{
                     $userInfo = DB::connection('mysql::write')->table('users')->select('money')->where('id', $actSned->user_id)->first();
                     User::where('id',$actSned->user_id)
