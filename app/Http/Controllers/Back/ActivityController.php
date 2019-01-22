@@ -688,6 +688,14 @@ class ActivityController extends Controller
         DB::beginTransaction();
         if(ActivitySend::where('id','=',$params['id'])->update($data)){
             Session::put('act_send',$params['id']);
+            //如果是审核不通过就不需要后面的添加用户金额了
+            if($data['status'] == 3){
+                DB::commit();
+                return response()->json([
+                    'status'=>true,
+                    'msg'=>'审核成功'
+                ]);
+            }
             $actSned = ActivitySend::where('activity_send.id','=',$params['id'])
                 ->select('activity_send.*', 'activity.type')
                 ->leftJoin('activity', 'activity.id', 'activity_send.activity_id')
