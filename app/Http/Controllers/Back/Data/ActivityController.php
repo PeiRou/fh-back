@@ -164,7 +164,9 @@ class ActivityController extends Controller
             ->leftJoin('activity_prize','activity_prize.id','=','activity_send.prize_id');
         $datasCount = $datasSql->count();
         $datas = $datasSql->select('activity.type','activity_send.*','users.fullname','users.rechLevel as lv','level.name as levelname','activity_prize.type as pType','activity_prize.quantity as pQuantity')
-            ->orderBy('activity_send.created_at','desc')->skip($params['start'])->take($params['length'])->get();
+            ->orderBy('activity_send.created_at','desc')
+            ->orderBy('activity_send.id','desc')
+            ->skip($params['start'])->take($params['length'])->get();
         $filterMoney = $datasSql->whereIn('activity_send.status',[4,5])->sum(DB::raw('case 
                                                                                 when activity.type = 3 then
                                                                                 `activity_send`.prize_name
