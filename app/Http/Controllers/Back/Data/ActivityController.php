@@ -204,6 +204,8 @@ class ActivityController extends Controller
             ->editColumn('status',function ($datas) use ($sendStatus){
                 if($datas->pQuantity == 0 && $datas->pType == 2)
                     return $sendStatus[4];
+                if($datas->prize_id == 0 && $datas->type !== 3 && $datas->pType == 2)
+                    return $sendStatus[4];
                 return  $sendStatus[$datas->status];
             })
             ->editColumn('admin_account',function ($datas){
@@ -221,7 +223,8 @@ class ActivityController extends Controller
             ->editColumn('control',function ($datas) {
                 $html = '<span class="edit-link" onclick="jumpHref(\''.$datas->user_id.'\')"> 注单明细 </span>';
                 if(($datas->status == 2) && (($datas->pQuantity != 0) || ($datas->pType != 2))) {
-                    $html .= ' | <span class="edit-link" onclick="editStatus(' . $datas->id . ',1,\'驳回\')"> 驳回 </span> | <span class="edit-link" onclick="editStatus(' . $datas->id . ',2,\'通过\')"> 通过 </span>';
+                    if(($datas->prize_id !== 0 && $datas->type !== 3) || $datas->type == 3)
+                        $html .= ' | <span class="edit-link" onclick="editStatus(' . $datas->id . ',1,\'驳回\')"> 驳回 </span> | <span class="edit-link" onclick="editStatus(' . $datas->id . ',2,\'通过\')"> 通过 </span>';
                 }
                 return  $html;
             })
