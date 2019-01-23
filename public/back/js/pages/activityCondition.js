@@ -194,4 +194,34 @@ function del(id,name,activity_id) {
         }
     });
 }
-
+function addMoney(id){
+    layer.prompt({title: '请输入金额', formType: 0}, function(pass, index){
+        var lading = layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
+        $.ajax({
+            url:'/action/admin/activity/addConditionMoney',
+            data:{
+                id:id,
+                money:pass
+            },
+            type:'post',
+            dataType:'json',
+            success:function(e){
+                layer.close(lading);
+                if(e.code == 0){
+                    $('#capitalDetailsTable').DataTable().ajax.reload(null,false);
+                }else{
+                    Calert(e.msg,'red')
+                }
+            },
+            error:function (e) {
+                if(e.status == 403)
+                {
+                    Calert('您没有此项权限！无法继续！','red')
+                }
+            }
+        })
+        layer.close(index);
+    });
+}

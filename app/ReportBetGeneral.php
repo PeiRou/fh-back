@@ -95,13 +95,13 @@ class ReportBetGeneral extends Model
         return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']))[0]->count;
     }
 
-    public static function reportQuerySum($aParam){
+    public static function reportQuerySum($aParam, $group = 1){
         $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
                   '' AS `recharges_money`,'' AS `drawing_money`,'' AS `activity_money`,'' AS `handling_fee`,
                   SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
                   SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,1 AS `link`
                   FROM `report_bet_general` WHERE 1 ";
-        $result = self::conditionalConnection($aSql,$aParam);
+        $result = self::conditionalConnection($aSql,$aParam, $group);
         $aSql = $result['aSql'];
         $bSql = "SELECT COUNT(DISTINCT(`user_id`)) AS `member_count`,1 AS `link` FROM `report_bet_member` WHERE 1 ";
         $bParam = [

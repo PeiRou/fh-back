@@ -162,6 +162,30 @@ class ActivityController extends Controller
             ]);
         }
     }
+
+    public function addConditionMoney(Request $request)
+    {
+        $request->money = (float)$request->money;
+        if(!isset($request->id) || $request->money <= 0){
+            return show(1, '参数错误');
+        }
+        $key = 'activity_hongbao_money_'.date('Ymd_').(int)$request->id;
+        $redis = Redis::connection();
+        $redis->select(14);
+        $money = $redis->get($key);
+        $money = (float)$money + $request->money;
+        \App\ActivityCondition::where(function($sql) use($request){
+            $sql->where('id', (int)$request->id);
+        })->update([
+            'money'=>$money,
+            'total_money' => DB::raw('total_money+'.$request->money)
+        ]);
+        //数据库修改失败没关系  要redis修改成功 抢红包后会将redis的金额更新到数据库
+        if($redis->set($key, $money))
+            return show(0);
+        return show(1, 'error');
+    }
+
     public function addConditionHongbao(Request $request)
     {
         $data = $this->getAdmin([]);
@@ -433,11 +457,11 @@ class ActivityController extends Controller
             'level_id' => (int)$request->level_id,
             'activity_id' => (int)$request->activity_id
         ];
-        if($model::where($where)->count())
-            return response()->json([
-                'status'=>false,
-                'msg'=>'此层级下已有红包'
-            ]);
+//        if($model::where($where)->count())
+//            return response()->json([
+//                'status'=>false,
+//                'msg'=>'此层级下已有红包'
+//            ]);
         DB::beginTransaction();
         try{
             $data['is_default'] == 1 && $model::clearDefault($request);
@@ -460,15 +484,15 @@ class ActivityController extends Controller
 
     private function addActivityCondition_edit($data, Request $request){
         $model = \App\ActivityHongbaoProbability::class;
-        if($model::where(function ($sql) use ($data, $request) {
-            $sql->where('level_id', (int)$data['level_id']);
-            $sql->where('activity_id', (int)$data['activity_id']);
-            $sql->where('id', '<>',(int)$request->id);
-        })->count())
-            return response()->json([
-                'status'=>false,
-                'msg'=>'此层级下已有红包'
-            ]);
+//        if($model::where(function ($sql) use ($data, $request) {
+//            $sql->where('level_id', (int)$data['level_id']);
+//            $sql->where('activity_id', (int)$data['activity_id']);
+//            $sql->where('id', '<>',(int)$request->id);
+//        })->count())
+//            return response()->json([
+//                'status'=>false,
+//                'msg'=>'此层级下已有红包'
+//            ]);
         DB::beginTransaction();
         try {
             $data['is_default'] == 1 && $model::clearDefault($request);
@@ -661,12 +685,24 @@ class ActivityController extends Controller
             }
         }
         $data['status'] = $status;
+        DB::beginTransaction();
         if(ActivitySend::where('id','=',$params['id'])->update($data)){
             Session::put('act_send',$params['id']);
-            $actSned = ActivitySend::where('id','=',$params['id'])->first();
-            if(strpos($actSned->prize_name,'元')>0) {
+            //如果是审核不通过就不需要后面的添加用户金额了
+            if($data['status'] == 3){
+                DB::commit();
+                return response()->json([
+                    'status'=>true,
+                    'msg'=>'审核成功'
+                ]);
+            }
+            $actSned = ActivitySend::where('activity_send.id','=',$params['id'])
+                ->select('activity_send.*', 'activity.type')
+                ->leftJoin('activity', 'activity.id', 'activity_send.activity_id')
+                ->first();
+            if(strpos($actSned->prize_name,'元')>0 || ($actSned->type == 3 && (float)$actSned->prize_name > 0)) {
                 $actAmount = (float)substr($actSned->prize_name,0,-1);
-                DB::beginTransaction();
+                $actSned->type == 3 && $actAmount = (float)$actSned->prize_name;
                 try{
                     $userInfo = DB::connection('mysql::write')->table('users')->select('money')->where('id', $actSned->user_id)->first();
                     User::where('id',$actSned->user_id)
@@ -695,11 +731,13 @@ class ActivityController extends Controller
                     ]);
                 }
             }
+            DB::rollback();
             return response()->json([
                 'status'=>false,
                 'msg'=>'审核失败'
             ]);
         }else{
+            DB::rollback();
             return response()->json([
                 'status'=>false,
                 'msg'=>'审核失败'

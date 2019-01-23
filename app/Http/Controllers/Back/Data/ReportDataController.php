@@ -71,7 +71,7 @@ class ReportDataController extends Controller
             $aData = Bets::GagentTodaySUM($aParam);
         }else {
             if (isset($aParam['game_id']) && array_key_exists('game_id', $aParam))
-                $aData = ReportBetGeneral::reportQuerySum($aParam);
+                $aData = ReportBetGeneral::reportQuerySum($aParam, 0);
             else
                 $aData = ReportGeneral::reportQuerySum($aParam);
         }

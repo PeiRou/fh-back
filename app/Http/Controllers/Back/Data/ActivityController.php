@@ -10,6 +10,7 @@ use App\ActivityStatistics;
 use App\StatisticsData;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class ActivityController extends Controller
@@ -80,6 +81,8 @@ class ActivityController extends Controller
                 $html = '';
                 $html .= '<span class="edit-link" onclick="edit('.$datas->id.','.$datas->activity_id.')"> 修改 </span>';
                 $html .= ' | <span class="edit-link red" onclick="del('.$datas->id.',\''.$datas->name.'的第'.$datas->day.'天\','.$datas->activity_id.')"> 删除 </span>';
+                if($datas->type == 3)
+                    $html .= ' | <span class="edit-link" onclick="addMoney('.$datas->id.','.$datas->activity_id.')"> 添加奖金 </span>';
 
                 return  $html;
             })
@@ -141,7 +144,8 @@ class ActivityController extends Controller
     //派奖审核-表格数据
     public function review(Request $request){
         $params = $request->all();
-        $datasSql = ActivitySend::where(function ($sql) use ($params){
+        $datasSql = ActivitySend::
+        where(function ($sql) use ($params){
             if(isset($params['status']) && array_key_exists('status',$params)){
                 $sql->where('activity_send.status','=',$params['status']);
             }
@@ -156,11 +160,20 @@ class ActivityController extends Controller
         })
             ->join('users','users.id','=','activity_send.user_id')
             ->join('level','level.value','=','users.rechLevel')
-            ->join('activity_prize','activity_prize.id','=','activity_send.prize_id');
+            ->join('activity', 'activity.id', 'activity_send.activity_id')
+            ->leftJoin('activity_prize','activity_prize.id','=','activity_send.prize_id');
         $datasCount = $datasSql->count();
-        $datas = $datasSql->select('activity_send.*','users.fullname','users.rechLevel as lv','level.name as levelname','activity_prize.type as pType','activity_prize.quantity as pQuantity')
-            ->orderBy('activity_send.created_at','desc')->skip($params['start'])->take($params['length'])->get();
-        $filterMoney = $datasSql->whereIn('activity_send.status',[4,5])->sum('activity_prize.quantity');
+        $datas = $datasSql->select('activity.type','activity_send.*','users.fullname','users.rechLevel as lv','level.name as levelname','activity_prize.type as pType','activity_prize.quantity as pQuantity')
+            ->orderBy('activity_send.created_at','desc')
+            ->orderBy('activity_send.id','desc')
+            ->skip($params['start'])->take($params['length'])->get();
+        $filterMoney = $datasSql->whereIn('activity_send.status',[4,5])->sum(DB::raw('case 
+                                                                                when activity.type = 3 then
+                                                                                `activity_send`.prize_name
+                                                                                else
+                                                                                `activity_prize`.`quantity`
+                                                                                end'));
+        preg_match('/[\d]*\.{0,1}[\d]{0,2}/',$filterMoney * 1,$arr);
         $sendStatus = ActivitySend::$activityStatus;
         return DataTables::of($datas)
             ->editColumn('user_account',function ($datas) {
@@ -172,6 +185,9 @@ class ActivityController extends Controller
             })
             ->editColumn('created_at',function ($datas) {
                 return  str_replace('-','/',substr($datas->created_at,0,16));
+            })
+            ->editColumn('prize_name',function ($datas) {
+                return  $datas->type == 3 ? '金额（'.$datas->prize_name.'）' : $datas->prize_name;
             })
             ->editColumn('status',function ($datas) use ($sendStatus){
                 if($datas->pQuantity == 0 && $datas->pType == 2)
@@ -200,7 +216,7 @@ class ActivityController extends Controller
             ->rawColumns(['control','user_account'])
             ->setTotalRecords($datasCount)
             ->skipPaging()
-            ->with('filterMoney',$filterMoney)
+            ->with('filterMoney',$arr[0] ?? 0)
             ->make(true);
     }
 
