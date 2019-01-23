@@ -528,6 +528,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/action/admin/exportExcel/userDrawing','Back\ExportExcelController@exportExcelForDrawing')->name('ac.ad.exportExcel.userDrawing'); //导出充值数据为Excel文件
     Route::post('/action/admin/gamesApi/edit','Back\GamesApiController@edit')->name('ac.ad.GamesApi.edit'); //平台接口编辑
     Route::post('/action/admin/gamesApi/del','Back\GamesApiController@del')->name('ac.ad.GamesApi.del'); //平台接口删除
+    Route::get('/action/admin/gamesApi/sort','Back\GamesApiController@sort'); //平台接口排序
     Route::post('/action/admin/gamesApi/editParameter','Back\GamesApiController@editParameter')->name('ac.ad.GamesApi.editParameter'); //平台接口参数修改
 
 
