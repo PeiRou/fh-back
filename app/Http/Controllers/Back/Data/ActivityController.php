@@ -167,7 +167,7 @@ class ActivityController extends Controller
             ->join('users','users.id','=','activity_send.user_id')
             ->join('level','level.value','=','users.rechLevel')
             ->join('activity', 'activity.id', 'activity_send.activity_id')
-            ->leftJoin('activity_prize','activity_prize.id','=','activity_send.prize_id');
+            ->join('activity_prize','activity_prize.id','=','activity_send.prize_id');
         $datasCount = $datasSql->count();
         $datas = $datasSql->select('activity.type','activity_send.*','users.fullname','users.rechLevel as lv','level.name as levelname','activity_prize.type as pType','activity_prize.quantity as pQuantity')
             ->orderBy('activity_send.created_at','desc')
@@ -193,7 +193,13 @@ class ActivityController extends Controller
                 return  str_replace('-','/',substr($datas->created_at,0,16));
             })
             ->editColumn('prize_name',function ($datas) {
-                return  $datas->type == 3 ? '金额（'.$datas->prize_name.'）' : $datas->prize_name;
+                if($datas->type == 3){
+                    if($datas->prize_name == 0)
+                        return '谢谢惠顾';
+                    if($datas->prize_name > 0)
+                        return '金额（'.$datas->prize_name.'）';
+                }
+                return $datas->prize_name;
             })
             ->editColumn('status',function ($datas) use ($sendStatus){
                 if($datas->pQuantity == 0 && $datas->pType == 2)
