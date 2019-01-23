@@ -185,7 +185,6 @@ class ReportDataController extends Controller
                 $aDataCount = ReportMember::reportQueryCount($aParam);
             }
         }
-
         return DataTables::of($aData)
             ->editColumn('fact_bet_bunko', function ($aData){
                 $activity_money = empty($aData->activity_money)?0:$aData->activity_money;
@@ -217,12 +216,12 @@ class ReportDataController extends Controller
             else
                 $aData = ReportMember::reportQuerySum($aParam);
         }
-
         $activity_money = empty($aData->activity_money)?0.00:$aData->activity_money;
         $handling_fee = empty($aData->handling_fee)?0.00:$aData->handling_fee;
         $fact_return_amount = empty($aData->fact_return_amount)?0:$aData->fact_return_amount;
-
         return response()->json([
+            'count_user' => $aData->count_user ?? 0,
+            'count_agent' => $aData->count_agent ?? 0,
             'recharges_money' => empty($aData->recharges_money)?'':$aData->recharges_money,
             'drawing_money' => empty($aData->drawing_money)?'':$aData->drawing_money,
             'bet_count' => empty($aData->bet_count)?'':$aData->bet_count,
@@ -266,6 +265,9 @@ class ReportDataController extends Controller
             })
             ->editColumn('rebate', function (){
                 return 0;
+            })
+            ->editColumn('countWinBunkoBetNum', function ($aBet){
+                return empty($aBet->countWinBunkoBet)?0:$aBet->countWinBunkoBet;
             })
             ->editColumn('countWinBunkoBet', function ($aBet){
                 $countWinBunkoBet = empty($aBet->countWinBunkoBet)?0:$aBet->countWinBunkoBet;
@@ -410,7 +412,7 @@ class ReportDataController extends Controller
         });
         $totalTable = clone $table;
         $count = $table->count();
-        $totalArr = $totalTable->select(DB::raw('SUM(`bet_count`) AS `BetCountSum`,SUM(`up_money`) AS totalUp,SUM(`down_money`) AS totaldown, SUM(`bet_money`) AS `betMoney`, SUM(`bet_bunko`) AS betBunko'))->first();
+        $totalArr = $totalTable->select(DB::raw('COUNT(distinct `user_id`) AS `count_user` ,SUM(`bet_count`) AS `BetCountSum`,SUM(`up_money`) AS totalUp,SUM(`down_money`) AS totaldown, SUM(`bet_money`) AS `betMoney`, SUM(`bet_bunko`) AS betBunko'))->first();
         $res = $table->skip($request->start ?? 0)->take($request->length ?? 100)->get();
         return DataTables::of($res)
             ->setTotalRecords($count)
@@ -431,6 +433,7 @@ class ReportDataController extends Controller
         $sqlCount =  'SELECT COUNT(`Accounts`) AS `count` FROM ( '.implode(' UNION ALL ', $repo->sqlArr).' ) AS b';
         $resCount = DB::select($sqlCount)[0]->count;
         $totalArr = [
+            'count_user' => $Total->count_user ?? 0,
             'betMoney' => $Total->BetSum ?? 0,
             'betBunko' => $Total->ProfitSum ?? 0,
             'BetCountSum' => $Total->BetCountSum ?? 0,

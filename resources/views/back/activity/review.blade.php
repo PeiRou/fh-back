@@ -25,6 +25,14 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="one wide field">
+                        <select class="ui dropdown" id="type" style='height:32px !important'>
+                            <option value="">活动类型</option>
+                            @foreach(\App\Activity::$activityType as $key => $val)
+                                <option value="{{ $key }}">{{ $val }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="one wide field" style="width: 9% !important;">
                         <input type="text" id="user_account" placeholder="会员账号">
                     </div>

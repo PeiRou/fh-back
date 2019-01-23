@@ -65,7 +65,11 @@ class ReportBetMember extends Model
     }
 
     public static function reportQuerySum($aParam){
-        $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
+        $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,
+                  COUNT(distinct `user_id`) AS count_user,
+                  COUNT(distinct `agent_id`) AS count_agent,
+                  SUM(`bet_count`) AS `bet_count`,
+                  SUM(`bet_money`) AS `bet_money`,
                   '' AS `recharges_money`,'' AS `drawing_money`,'' AS `activity_money`,'' AS `handling_fee`,
                   SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`
                   FROM `report_bet_member` WHERE 1 ";

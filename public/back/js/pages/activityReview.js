@@ -19,6 +19,7 @@ $(function () {
                 d.status = $('#status').val();
                 d.user_account = $('#user_account').val();
                 d.time = $('#endTime').val();
+                d.type = $('#type').val();
             },
             dataSrc:function (json) {
                 memberTotal(json.filterMoney);
@@ -68,8 +69,8 @@ $(function () {
         $('#status').val('');
         $('#user_account').val('');
         $('#endTime').val('');
+        $('#type').val('');
         dataTable.ajax.reload();
-
     });
 
 

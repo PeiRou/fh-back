@@ -69,7 +69,7 @@
             <tfoot>
             <tr>
                 <th>总计：</th>
-                <th></th>
+                <th id="count_user"></th>
                 <th></th>
                 <th id="BetCountSum"></th>
                 <th id="betMoney"></th>

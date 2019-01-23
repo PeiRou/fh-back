@@ -106,8 +106,8 @@
             <tfoot>
             <tr>
                 <th>总计</th>
-                <th></th>
-                <th></th>
+                <th id="count_user"></th>
+                <th id="count_agent"></th>
                 <th id="recharges_money"></th>
                 <th id="drawing_money"></th>
                 <th id="bet_count"></th>

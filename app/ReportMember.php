@@ -69,9 +69,13 @@ class ReportMember extends Model
     }
 
     public static function reportQuerySum($aParam){
-        $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
+        $aSql = "SELECT SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,
+                  COUNT(distinct `user_id`) AS count_user,
+                  COUNT(distinct `agent_account`) AS count_agent,
+                  SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,
                   SUM(`recharges_money`) AS `recharges_money`,SUM(`drawing_money`) AS `drawing_money`,SUM(`activity_money`) AS `activity_money`,
-                  SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`
+                  SUM(`handling_fee`) AS `handling_fee`,SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
+                  SUM(`fact_return_amount`) as fact_return_amount
                   FROM `report_member` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam,0);
         return DB::select($result['aSql'],$result['aArray'])[0];

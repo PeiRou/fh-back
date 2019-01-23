@@ -820,7 +820,11 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
     }
 
     public static function UserTodaySum($aParam){
-        $aSql1 = "SELECT sum(b.bet_count) as bet_count,sum(b.bet_money) as bet_money,sum(b.bet_amount) as bet_amount,sum(b.fact_bet_bunko) as fact_bet_bunko,sum(b.bet_bunko) as bet_bunko,
+        $aSql1 = "SELECT sum(b.bet_count) as bet_count,
+                COUNT(distinct b.user_id) AS count_user,
+                COUNT(distinct agent) AS count_agent,
+                sum(b.bet_money) as bet_money,sum(b.bet_amount) as bet_amount,
+                sum(b.fact_bet_bunko) as fact_bet_bunko,sum(b.bet_bunko) as bet_bunko,
                 '0.00' AS odds_amount,'0.00' AS return_amount,sum(b.fact_return_amount) AS fact_return_amount, ";
         $where = "";
         $whereB = " and status = 1 ";

@@ -124,7 +124,7 @@ $(function () {
                 .column( 6 )
                 .data()
                 .reduce( function (a, b,c) {
-                    return parseFloat((intVal(a) + intVal(data[c].countWinBunkoBet)).toFixed(2));
+                    return parseFloat((intVal(a) + intVal(data[c].countWinBunkoBetNum)).toFixed(2));
                 }, 0 );
             var Total7 = api
                 .column( 7 )
