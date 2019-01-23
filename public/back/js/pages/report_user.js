@@ -155,6 +155,8 @@ $(function () {
                 chkTest : $('#chkTest').prop('checked')?$('#chkTest').val():''
             },
             success:function (data) {
+                $('#count_user').text(data.count_user);
+                $('#count_agent').text(data.count_agent);
                 $('#recharges_money').text(data.recharges_money);
                 $('#drawing_money').text(data.drawing_money);
                 $('#bet_count').text(data.bet_count);

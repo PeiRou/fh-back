@@ -117,6 +117,9 @@ class ActivityController extends Controller
             ->editColumn('level_id',function ($datas) {
                 return $datas->levelName;
             })
+            ->editColumn('probability',function ($datas) {
+                return ($datas->probability * 1) . '%';
+            })
             ->editColumn('activity_id',function ($datas) {
                 return $datas->aName;
             })
@@ -156,6 +159,9 @@ class ActivityController extends Controller
                 $sql->wherebetween('activity_send.created_at',[$params['time'] . ' 00:00:00',$params['time'] . ' 23:59:59']);
             }else{
                 $sql->wherebetween('activity_send.created_at',[date('Y-m-d 00:00:00'),date('Y-m-d 23:59:59')]);
+            }
+            if(isset($params['type']) && array_key_exists('type',$params)){
+                $sql->where('activity.type','=',$params['type']);
             }
         })
             ->join('users','users.id','=','activity_send.user_id')

@@ -40,6 +40,7 @@
         <div class="breadcrumb">
             <b>位置：</b>活动条件
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="parent.layer.close(parent.openIndex)">返回</button>
+            <span style="margin-left: 50px">同层级概率之和为100%</span>
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="dataTable.ajax.reload(null,false);"><i class="iconfont"></i></span>
