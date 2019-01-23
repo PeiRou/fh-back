@@ -167,7 +167,7 @@ class ActivityController extends Controller
             ->join('users','users.id','=','activity_send.user_id')
             ->join('level','level.value','=','users.rechLevel')
             ->join('activity', 'activity.id', 'activity_send.activity_id')
-            ->join('activity_prize','activity_prize.id','=','activity_send.prize_id');
+            ->leftJoin('activity_prize','activity_prize.id','=','activity_send.prize_id');
         $datasCount = $datasSql->count();
         $datas = $datasSql->select('activity.type','activity_send.*','users.fullname','users.rechLevel as lv','level.name as levelname','activity_prize.type as pType','activity_prize.quantity as pQuantity')
             ->orderBy('activity_send.created_at','desc')
