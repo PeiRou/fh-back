@@ -1187,8 +1187,12 @@ class ModalController extends Controller
         ];
         $baseController = new SendController($aArray);
         $aPay = $baseController->sendParameter('pay/pay/index');
-        if($aPay['code'] == 0){
-            $aPay = $aPay['data'];
+        if(!empty($aPay)) {
+            if ($aPay['code'] == 0) {
+                $aPay = $aPay['data'];
+            }
+        }else{
+            $aPay = [];
         }
         return view('back.modal.platform.settleOffer',compact('iInfo','aPay'));
     }
