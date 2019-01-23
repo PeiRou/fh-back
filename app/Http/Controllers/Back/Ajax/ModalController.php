@@ -18,8 +18,11 @@ use App\FeedbackMessage;
 use App\GameOddsCategory;
 use App\Games;
 use App\GeneralAgent;
+use App\Http\Controllers\Obtain\BaseController;
+use App\Http\Controllers\Obtain\SendController;
 use App\Levels;
 use App\Notices;
+use App\Offer;
 use App\PayOnline;
 use App\PayOnlineNew;
 use App\PayType;
@@ -1173,5 +1176,20 @@ class ModalController extends Controller
         $GamesApi = new GamesApi();
         $statusArr = $GamesApi->statusArr;
         return view('back.gamesApi.list.editGameApi', compact('g_id', 'paramArr', 'data', 'statusArr'));
+    }
+
+    //后台支付页面
+    public function payPlatformSettleOffer($id){
+        $iInfo = Offer::where('id',$id)->first();
+        $aArray = [
+            'platform_id' => SystemSetting::getValueByRemark1('payment_platform_id'),
+            'timestamp' => time(),
+        ];
+        $baseController = new SendController($aArray);
+        $aPay = $baseController->sendParameter('pay/pay/index');
+        if($aPay['code'] == 0){
+            $aPay = $aPay['data'];
+        }
+        return view('back.modal.platform.settleOffer',compact('iInfo','aPay'));
     }
 }
