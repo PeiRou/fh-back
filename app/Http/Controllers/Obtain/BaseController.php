@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Obtain;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\CurlService;
 use Illuminate\Support\Facades\Log;
 
 class BaseController extends Controller
@@ -27,6 +28,8 @@ class BaseController extends Controller
         1 => '参数解析错误',
         2 => '签名错误',
         3 => '方法不存在',
+        4 => '该订单不存在',
+        5 => '订单修改失败',
     ];
 
     public function __construct()

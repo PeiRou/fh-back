@@ -138,19 +138,19 @@ function settlement() {
     });
 }
 
-function edit(id) {
+function edit(id,title) {
     jc = $.confirm({
         theme: 'material',
-        title: '代理结算审核修改',
+        title: '平台支付费用',
         closeIcon:true,
-        boxWidth:'46%',
-        content: 'url:/back/modal/editAgentSettleReport/'+id,
+        boxWidth:'25%',
+        content: 'url:/back/modal/payPlatformSettleOffer/'+id,
         buttons: {
             formSubmit: {
-                text:'确定修改',
+                text:'支付',
                 btnClass: 'btn-blue',
                 action: function () {
-                    var form = this.$content.find('#editArticleForm').data('formValidation').validate().isValid();
+                    var form = this.$content.find('#addBankForm').data('formValidation').validate().isValid();
                     if(!form){
                         return false;
                     }

@@ -530,6 +530,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/gamesApi/del','Back\GamesApiController@del')->name('ac.ad.GamesApi.del'); //平台接口删除
     Route::post('/action/admin/gamesApi/editParameter','Back\GamesApiController@editParameter')->name('ac.ad.GamesApi.editParameter'); //平台接口参数修改
 
+
+    Route::post('/action/admin/platform/pay', 'Back\PlatformController@pay')->middleware('add-log-handle')->name('ac.ad.platform.pay');//平台费用支付
+
 //Modal
     Route::get('/back/modal/alert', 'Back\Ajax\ModalController@alert'); //添加权限
     Route::get('/back/modal/addPermission', 'Back\Ajax\ModalController@addPermission'); //添加权限
@@ -648,6 +651,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/gameAgentOddsLook/{level}', 'Back\Ajax\ModalController@gameAgentOddsLook')->middleware('check-permission')->name('ac.ad.gameAgentOddsLook'); //代理赔率查看-模板
     Route::get('/back/modal/gameAgentOddsSet/{agentId}', 'Back\Ajax\ModalController@gameAgentOddsSet'); //代理赔率设置-模板
     Route::get('/back/modal/editGameApi', 'Back\Ajax\ModalController@editGameApi'); //添加编辑平台接口页面
+    Route::get('/back/modal/payPlatformSettleOffer/{id}', 'Back\Ajax\ModalController@payPlatformSettleOffer')->middleware('check-permission')->name('ac.ad.payPlatformSettleOffer'); //后台支付页面
 
 
 

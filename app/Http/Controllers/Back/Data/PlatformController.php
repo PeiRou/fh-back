@@ -44,7 +44,7 @@ class PlatformController extends Controller
                 $str = '<ul class="control-menu">';
 
                 if($val['status'] !== 2)
-                    $str .= '<li onclick="edit(100439)">支付</li>';
+                    $str .= '<li onclick="edit(\''.$val->id.'\',\''.$val->typestr.'\')">支付</li>';
                 $str .= '</ul>';
                 return $str;
             })
