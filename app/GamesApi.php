@@ -115,7 +115,7 @@ class GamesApi extends Model
     }
     //获取棋牌报表的总计
     public static function card_betInfoTotal($request, $sqlArr){
-        $sql = 'SELECT SUM(distinct `Accounts`) AS `count_user`, SUM(`upMoney`) AS totalUp,SUM(`downMoney`) AS totalDown, SUM(`betCount`) AS `BetCountSum`, SUM(`AllBet`) AS `BetSum`, SUM(`Profit`) AS `ProfitSum` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` LIMIT 1 ';
+        $sql = 'SELECT COUNT(distinct `Accounts`) AS `count_user`, SUM(`upMoney`) AS totalUp,SUM(`downMoney`) AS totalDown, SUM(`betCount`) AS `BetCountSum`, SUM(`AllBet`) AS `BetSum`, SUM(`Profit`) AS `ProfitSum` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` LIMIT 1 ';
         return DB::select($sql)[0];
     }
     //获取棋牌的数据
