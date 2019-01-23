@@ -68,7 +68,7 @@ $(function () {
             },
             dataSrc:function (e) {
                 $('#BetCountSum').html(e.totalArr.BetCountSum);
-                $('#count_user').html(e.totalArr.count_user);
+                // $('#count_user').html(e.totalArr.count_user);
                 $('#betMoney').html(e.totalArr.betMoney);
                 $('#betBunko').html(e.totalArr.betBunko);
                 $('#upMoney').html(e.totalArr.totalUp || '0.00');
