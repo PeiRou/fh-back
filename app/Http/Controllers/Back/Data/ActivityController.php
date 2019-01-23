@@ -204,7 +204,7 @@ class ActivityController extends Controller
             ->editColumn('status',function ($datas) use ($sendStatus){
                 if($datas->pQuantity == 0 && $datas->pType == 2)
                     return $sendStatus[4];
-                if($datas->prize_id == 0 && $datas->type !== 3 && $datas->pType == 2)
+                if($datas->prize_id == 0 && $datas->type !== 3)
                     return $sendStatus[4];
                 return  $sendStatus[$datas->status];
             })
