@@ -79,6 +79,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunMSJSK3' => [
             'App\Listeners\RunMSJSK3EventListener',
         ],
+        'App\Events\RunQQFFC' => [
+            'App\Listeners\RunQQFFCEventListener',
+        ],
         'App\Events\OpenMsscEvent' => [
             'App\Listeners\OpenMsscEventListener',
         ],
