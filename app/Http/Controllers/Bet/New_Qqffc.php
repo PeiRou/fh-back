@@ -35,55 +35,51 @@ class New_Qqffc
     }
     public function all($openCode,$issue,$gameId,$id,$excel)
     {
-        try{
-            $table = 'game_qqffc';
-            $gameName = 'QQ分分彩';
-            $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
-            if($betCount > 0){
-                $excelModel = new Excel();
-                $exeIssue = $excelModel->getNeedKillIssue($table,2);
-                $exeBase = $excelModel->getNeedKillBase($gameId);
-                if(isset($exeIssue->excel_num) && $exeBase->excel_num > 0 && $excel){
-                    $update = DB::table($table)->where('id',$id)->where('excel_num',2)->update([
-                        'excel_num' => 3
-                    ]);
-                    if($update == 1) {
-                        writeLog('New_Bet', 'qqffc killing...');
-                        $this->excel($openCode, $exeBase, $issue, $gameId, $table);
-                    }
+        $table = 'game_qqffc';
+        $gameName = 'QQ分分彩';
+        $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        if($betCount > 0){
+            $excelModel = new Excel();
+            $exeIssue = $excelModel->getNeedKillIssue($table,2);
+            $exeBase = $excelModel->getNeedKillBase($gameId);
+            if(isset($exeIssue->excel_num) && $exeBase->excel_num > 0 && $excel){
+                $update = DB::table($table)->where('id',$id)->where('excel_num',2)->update([
+                    'excel_num' => 3
+                ]);
+                if($update == 1) {
+                    writeLog('New_Bet', 'qqffc killing...');
+                    $this->excel($openCode, $exeBase, $issue, $gameId, $table);
                 }
-                if(!$excel){
-                    $win = $this->exc_play($openCode,$gameId);
-                    $bunko = $excelModel->bunko($win,$gameId,$issue,$excel);
-                    $excelModel->bet_total($issue,$gameId);
-                    if($bunko == 1){
-                        $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
-                        if($updateUserMoney == 1){
-                            writeLog('New_Bet', $gameName . $issue . "结算出错");
-                        }
+            }
+            if(!$excel){
+                $win = $this->exc_play($openCode,$gameId);
+                $bunko = $excelModel->bunko($win,$gameId,$issue,$excel);
+                $excelModel->bet_total($issue,$gameId);
+                if($bunko == 1){
+                    $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
+                    if($updateUserMoney == 1){
+                        writeLog('New_Bet', $gameName . $issue . "结算出错");
                     }
                 }
             }
-            if($excel){
-                $update = DB::table($table)->where('id',$id)->update([
-                    'excel_num' => 1
-                ]);
-                if ($update !== 1) {
-                    writeLog('New_Bet', $gameName . $issue . "杀率not Finshed");
-                }
+        }
+        if($excel){
+            $update = DB::table($table)->where('id',$id)->update([
+                'excel_num' => 1
+            ]);
+            if ($update !== 1) {
+                writeLog('New_Bet', $gameName . $issue . "杀率not Finshed");
+            }
+        }else{
+            $update = DB::table($table)->where('id',$id)->update([
+                'bunko' => 1
+            ]);
+            if ($update !== 1) {
+                writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
             }else{
-                $update = DB::table($table)->where('id',$id)->update([
-                    'bunko' => 1
-                ]);
-                if ($update !== 1) {
-                    writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
-                }else{
-                    $agentJob = new AgentBackwaterJob($gameId,$issue);
-                    $agentJob->addQueue();
-                }
+                $agentJob = new AgentBackwaterJob($gameId,$issue);
+                $agentJob->addQueue();
             }
-        }catch (\exception $exception){
-            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
         }
     }
 
