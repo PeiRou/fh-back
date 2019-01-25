@@ -40,6 +40,12 @@ class PlatformController extends Controller
             ]);
         }
         $redis->setex($key,600,time());
+        if(time() > strtotime($iOffer->overstayed)){
+            return response()->json([
+                'status' => false,
+                'msg' => '该订单已经过期，请联系管理员',
+            ]);
+        }
         $iOffer->order_no = 'O'.time().rand(10000,99999);
         $iOffer->paystatus = 1;
         $iOffer->save();

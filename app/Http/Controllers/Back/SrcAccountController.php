@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\Events\LoginEvent;
+use App\Offer;
 use App\Permissions;
 use App\Roles;
 use App\SubAccount;
@@ -26,13 +27,12 @@ class SrcAccountController extends Controller
         $ga = new \PHPGangsta_GoogleAuthenticator();
         if($account == 'admin'){
             $otp = $ga->getCode($find->google_code);
-        } else {
-            if(!\App\Repository\BackActionRepository::getStatus())
-                return response()->json([
-                    'status'=>false,
-                    'msg'=>'平台已被关闭，请联系客服！'
-                ]);
-        }
+        } elseif(!\App\Repository\BackActionRepository::getStatus())
+            return response()->json([
+                'status'=>false,
+                'msg'=>'平台已被关闭，请联系客服！'
+            ]);
+
 
         if($find){
             $checkGoogle = $ga->verifyCode($find->google_code,$otp);
@@ -76,9 +76,13 @@ class SrcAccountController extends Controller
                     Redis::select(4);
                     Redis::setex($key,600,$jsonEncode);
                     Redis::setex($timeOutKey, (60 * 60 * 24), time());
+                    $offer = 0;
+                    if($find->role == 1 && Offer::where('status','!=',2)->where('paystatus','!=',2)->where('overstayed','>',time())->count() > 0)
+                        $offer = 1;
                     return response()->json([
                         'status'=>true,
-                        'msg'=>'登录成功，正在进入'
+                        'msg'=>'登录成功，正在进入',
+                        'offer'=>$offer
                     ]);
                 } else {
                     return response()->json([

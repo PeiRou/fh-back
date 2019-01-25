@@ -53,4 +53,7 @@
 
 @section('page-js')
     <script src="/back/js/pages/dash.js"></script>
+    <script>
+        promptToll({{ $offer }});
+    </script>
 @endsection

@@ -48,7 +48,8 @@ function login() {
             if(result.status === false){
                 alert(result.msg || "系统错误");
             } else {
-                location.href = '/back/control/dash';
+                // location.href = '/back/control/dash';
+                location.href = '/back/control/dash?offer='+result.offer;
             }
         },
         error: function(result) {

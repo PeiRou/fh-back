@@ -71,11 +71,17 @@ class SrcViewController extends Controller
     }
 
     //控制台
-    public function Dash()
+    public function Dash(Request $request)
     {
+
         if($sa_id = Session::get('account_id')){
+            $aParam = $request->input();
+            if(empty($aParam['offer']))
+                $offer = 0;
+            else
+                $offer = $aParam['offer'];
             $accountInfo = DB::table('sub_account')->where('sa_id', $sa_id)->first();
-            return view('back.dash', compact('accountInfo'));
+            return view('back.dash', compact('accountInfo','offer'));
         }else{
             return view('back.O_adminLogin');
         }

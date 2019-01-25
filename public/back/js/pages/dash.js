@@ -118,3 +118,8 @@ function add(content,thisValue,url,type) {
         }
     });
 }
+
+function promptToll(offer) {
+    if(offer == 1)
+        Calert('您有未缴纳的平台费用,未您的正常使用,请及时缴纳.谢谢.','red');
+}
