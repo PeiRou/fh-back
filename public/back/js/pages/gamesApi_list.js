@@ -31,6 +31,7 @@ $(function () {
                 return e.status == 1 ? '开启' : '关闭';
                 }},
             {data: 'created_at'},
+            {data: 'sort'},
             {data: function(e){
                 var  str = '<ul class="control-menu">';
                 var open = '<span class="status-1">开启</span>';
@@ -205,4 +206,33 @@ function del(id) {
             }
         }
     });
+
+}
+function sort(){
+    var data = [];
+    $('.sort').each(function(k, i){
+        data.push({
+            g_id:$(i).attr('data-id'),
+            val:$(i).val()
+        });
+    });
+    $.ajax({
+        url:'/action/admin/gamesApi/sort',
+        data:{
+            sort:data
+        },
+        dataType:'json',
+        type:'get',
+        success:function(e){
+            if(e.code == 0){
+                dataTable.ajax.reload(null,false)
+            }else{
+                Calert(e.msg,'red')
+            }
+        }
+    })
+    console.log(data);
+    // $('input[name="sort"]').each(function(i){
+    //     console.log('asd');
+    // });
 }

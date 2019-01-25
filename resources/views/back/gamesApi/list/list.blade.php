@@ -12,11 +12,17 @@
             background: rgba(200, 77, 65, 1);
             color: #fff;
         }
+        .sort{
+            text-align: center;
+        }
     </style>
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>游戏列表
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
+        </div>
+        <div class="content-top-buttons">
+            <span onclick="sort()">排序</span>
         </div>
         <div class="content-top-buttons">
             <?php if(Session::get('account') === 'admin'){ ?>
@@ -39,11 +45,13 @@
                 <th>描述</th>
                 <th>状态</th>
                 <th>创建时间</th>
+                <th>排序</th>
                 <th>操作</th>
             </tr>
             </thead>
         </table>
     </div>
+
 @endsection
 
 @section('page-js')

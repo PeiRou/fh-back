@@ -401,6 +401,7 @@ class Excel
                 return $this->opennum_pk10();
                 break;
             case 'game_msssc':
+            case 'game_qqffc':
                 return $this->opennum_ssc();
                 break;
             case 'game_msqxc':

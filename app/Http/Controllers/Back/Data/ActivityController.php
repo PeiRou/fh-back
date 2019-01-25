@@ -193,10 +193,18 @@ class ActivityController extends Controller
                 return  str_replace('-','/',substr($datas->created_at,0,16));
             })
             ->editColumn('prize_name',function ($datas) {
-                return  $datas->type == 3 ? '金额（'.$datas->prize_name.'）' : $datas->prize_name;
+                if($datas->type == 3){
+                    if($datas->prize_name == 0)
+                        return '谢谢惠顾';
+                    if($datas->prize_name > 0)
+                        return '金额（'.$datas->prize_name.'）';
+                }
+                return $datas->prize_name;
             })
             ->editColumn('status',function ($datas) use ($sendStatus){
                 if($datas->pQuantity == 0 && $datas->pType == 2)
+                    return $sendStatus[4];
+                if($datas->prize_id == 0 && $datas->type !== 3)
                     return $sendStatus[4];
                 return  $sendStatus[$datas->status];
             })
@@ -215,7 +223,8 @@ class ActivityController extends Controller
             ->editColumn('control',function ($datas) {
                 $html = '<span class="edit-link" onclick="jumpHref(\''.$datas->user_id.'\')"> 注单明细 </span>';
                 if(($datas->status == 2) && (($datas->pQuantity != 0) || ($datas->pType != 2))) {
-                    $html .= ' | <span class="edit-link" onclick="editStatus(' . $datas->id . ',1,\'驳回\')"> 驳回 </span> | <span class="edit-link" onclick="editStatus(' . $datas->id . ',2,\'通过\')"> 通过 </span>';
+                    if(($datas->prize_id !== 0 && $datas->type !== 3) || $datas->type == 3)
+                        $html .= ' | <span class="edit-link" onclick="editStatus(' . $datas->id . ',1,\'驳回\')"> 驳回 </span> | <span class="edit-link" onclick="editStatus(' . $datas->id . ',2,\'通过\')"> 通过 </span>';
                 }
                 return  $html;
             })

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\GamesApiConfig;
 use App\GamesApi;
@@ -130,6 +131,7 @@ class GamesApiController extends Controller
         $resCount = $GamesApi->count();
         $res = $GamesApi
             ->skip($start)->take($length)
+            ->orderBy('sort', 'asc')
             ->orderBy('g_id', 'desc')
             ->get();
         $statusArr = $GamesApi->statusArr;
@@ -137,7 +139,12 @@ class GamesApiController extends Controller
             ->editColumn('type_id',function ($res) use ($statusArr){
                 return $statusArr[$res->type_id] ?? '';
             })
+            ->editColumn('sort',function ($res) use ($statusArr){
+                $sort = $res->sort ?? 99;
+                return '<input type="text" class="sort" data-id="'.$res->g_id.'" style="width: 30px; height:20px;" oninput="this.value=value.replace(/[^\d]/g,\'\')"  value="'.$sort.'">';
+            })
             ->setTotalRecords($resCount)
+            ->rawColumns(['sort'])
             ->skipPaging()
             ->make();
     }
@@ -162,6 +169,31 @@ class GamesApiController extends Controller
             return show(0);
         }
         return show(3, 'error');
+    }
+
+    //排序
+    public function sort (Request $request)
+    {
+        $arr = [];
+        $str = [];
+        foreach ($request->sort as $k=>$v){
+            if(isset($v['g_id'], $v['val'])){
+                array_push($arr, "when g_id = {$v['g_id']} then {$v['val']}");
+                array_push($str, $v['g_id']);
+            }
+        }
+        if(count($arr)){
+            $sql = "
+                update games_api set 
+                sort = 
+                case 
+                    ".implode('   ',$arr)."
+                end
+                where g_id in(".implode(',', $str).")
+            ";
+            DB::select($sql);
+        }
+        return show(0);
     }
 
 }

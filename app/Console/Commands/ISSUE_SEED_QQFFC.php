@@ -19,8 +19,25 @@ class ISSUE_SEED_QQFFC extends Command
     public function handle()
     {
         $curDate = date('Ymd');
-        $timeUp = Carbon::parse(date('Y-m-d 23:59:00'))->addDay(-1)->toDateTimeString();
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
+        $timeUp = ' 23:59:00';
+        $checkUpdate = DB::table('issue_seed')->select('qqffc')->where('id',1)->first();
+        $issueDate = '';
+        if(isset($checkUpdate->qqffc)) {
+            if($curDate == $checkUpdate->qqffc) {
+                $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
+                $curDate = date('Ymd', strtotime('+ 1 day', time()));
+            }else if($curDate < $checkUpdate->qqffc)
+                writeLog('ISSUE_SEED', $curDate.'QQ分分彩期数已存在');
+            else
+                $issueDate = date('Y-m-d',time());
+        }else{
+            $issueDate = date('Y-m-d',time());
+        }
+        echo $issueDate;
+        if(empty($issueDate))
+            return '';
+        $timeUp = $issueDate . $timeUp;
+        $timeUp = Carbon::parse($timeUp)->addDay(-1)->toDateTimeString();
         $sql = "INSERT INTO game_qqffc (issue,opentime) VALUES ";
         for($i=1;$i<=1440;$i++){
             $timeUp = Carbon::parse($timeUp)->addSeconds(60);
