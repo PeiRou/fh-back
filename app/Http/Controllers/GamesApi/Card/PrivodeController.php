@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\DB;
 class PrivodeController extends Controller{
     public function test ()
     {
-        writeLog('text', 'asdada');
+        writeLog('test', 'asdada');
+        return 'test';
 //        ini_set('memory_limit','1024M');
 //        set_time_limit(0);
 //        $res = $this->action(15, 'getHistoryBet');
