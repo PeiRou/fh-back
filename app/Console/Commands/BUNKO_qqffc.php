@@ -3,16 +3,16 @@
 namespace App\Console\Commands;
 
 use App\Excel;
-use App\Events\RunMSJSK3;
+use App\Events\RunQQFFC;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
-class BUNKO_msjsk3 extends Command
+class BUNKO_qqffc extends Command
 {
-    protected $gameId = 86;
+    protected $gameId = 113;
 
-    protected $signature = 'BUNKO_msjsk3';
+    protected $signature = 'BUNKO_qqffc';
 
     protected $description = '秒速江苏快3-定时结算';
 
@@ -23,7 +23,7 @@ class BUNKO_msjsk3 extends Command
 
     public function handle()
     {
-        $table = 'game_msjsk3';
+        $table = 'game_qqffc';
         $excel = new Excel();
         $get = $excel->getNeedBunkoIssue($table);
         if ($get) {
@@ -39,7 +39,7 @@ class BUNKO_msjsk3 extends Command
                 'bunko' => 2
             ]);
             if($update)
-                event(new RunMSJSK3($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
+                event(new RunQQFFC($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
         }
     }
 }
