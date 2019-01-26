@@ -1962,7 +1962,7 @@ class New_XYLHC
                     $ids_he[] = $v;
                 }
                 $ids_he = implode(',', $ids_he);
-                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `bet_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
+                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `play_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
             }else
                 $sql_he = '';
             if(!empty($sql_bets))
