@@ -66,7 +66,7 @@ class New_XYLHC
             if(!$excel){
                 $resData = $this->exc_play($openCode,$gameId);
                 $win = @$resData['win'];
-                $ids_he = @$resData['ids_he'];
+                $ids_he = isset($resData['ids_he'])?$resData['ids_he']:array();
                 try {
                     $bunko = $this->BUNKO($openCode, $win, $gameId, $issue, $ids_he, $excel);
                 }catch (\exception $exception){
@@ -117,7 +117,7 @@ class New_XYLHC
             }
             $resData = $this->exc_play($openCode,$gameId);
             $win = @$resData['win'];
-            $ids_he = @$resData['ids_he'];
+            $ids_he = isset($resData['ids_he'])?$resData['ids_he']:array();
             $bunko = 0;
             try{
                 $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,$ids_he,true);
