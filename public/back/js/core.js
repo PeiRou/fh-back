@@ -280,6 +280,13 @@ function Calert(content,color,type) {
         }
     });
 }
+if($.fn && typeof $.fn == 'object') {
+    $.fn.dataTable.ext.errMode = function (settings, tn, msg) {
+//打印msg，和tn来判断，进了这个方法都是ajax走了error才会到这里来
+        console.log(msg);
+        Calert('超时，请刷新试试');
+    }
+}
 
 function loader(d) {
     if(d === true){
