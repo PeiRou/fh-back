@@ -2149,10 +2149,12 @@ class New_XYLHC
                 //连码-----结束
 
 
-                if(!empty($sql_he))
+                if(!empty($sql_he)){
+                    \Log::info($sql_he);
                     $runhe = DB::connection('mysql::write')->statement($sql_he);
                     if($runhe == 1)
                         $bunko_index++;
+                }
                 if(!empty($sql_bets_lose)){
                     $run2 = DB::connection('mysql::write')->statement($sql_lose);
                     if($run2 == 1){
