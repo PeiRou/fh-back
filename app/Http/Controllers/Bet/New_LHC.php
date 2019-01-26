@@ -26,12 +26,11 @@ class New_LHC
         $this->LHC_SX = $LHC_SX;
     }
 
-
-    public function all($openCode,$issue,$gameId,$id)
-    {
+    private function exc_play($openCode,$gameId){
         $win = collect([]);
+        $ids_he = collect([]);
         $this->TM($openCode,$gameId,$win);
-        $this->LM($openCode,$gameId,$win);
+        $this->LM($openCode,$gameId,$win,$ids_he);
         $this->SB($openCode,$gameId,$win);
         $this->TX($openCode,$gameId,$win);
         $this->TMTWS($openCode,$gameId,$win);
@@ -41,14 +40,22 @@ class New_LHC
         $this->PTYXWS($openCode,$gameId,$win);
         $this->ZONGXIAO($openCode,$gameId,$win);
         $this->ZMT($openCode,$gameId,$win);
+        return array('win'=>$win,'ids_he'=>$ids_he);
+    }
+
+    public function all($openCode,$issue,$gameId,$id)
+    {
         $table = 'game_lhc';
         $gameName = '六合彩';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $bunko = 0;
+            $resData = $this->exc_play($openCode,$gameId);
+            $win = @$resData['win'];
+            $he = isset($resData['ids_he'])?$resData['ids_he']:array();
             try{
-                $bunko = $this->BUNKO($openCode,$win,$gameId,$issue);
+                $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,$he);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
@@ -474,7 +481,7 @@ class New_LHC
     }
     
     //两面
-    public function LM($openCode,$gameId,$win)
+    public function LM($openCode,$gameId,$win,$ids_he)
     {
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
         $lm_playCate = 65; //特码分类ID
@@ -494,8 +501,7 @@ class New_LHC
                 $winCode = $gameId.$lm_playCate.$playId;
                 $win->push($winCode);
             }
-        }
-        if($tm <= 24){
+        }else if($tm <= 24){
             $playId = 1458;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
@@ -514,11 +520,17 @@ class New_LHC
             $playId = 1460;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
-        }
-        if($tm%2 != 0 && $tm != 49){
+        }else if($tm%2 != 0 && $tm != 49){
             $playId = 1459;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
+        }else{  //和局退本金
+            $playId = 1459;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 1460;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }
         //特码合数大小
         $tmBL = str_pad($tm,2,"0",STR_PAD_LEFT); //十位补零
@@ -528,21 +540,33 @@ class New_LHC
             $playId = 1461;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
-        }
-        if($TMHS <= 6 && $tmBL != 49){ //特合小
+        }else if($TMHS <= 6 && $tmBL != 49){ //特合小
             $playId = 1462;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
+        }else{  //和局退本金
+            $playId = 1461;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 1462;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }
         if($TMHS%2 == 0){ // 双
             $playId = 1464;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
-        }
-        if($TMHS%2 != 0 && $tmBL != 49){
+        }else if($TMHS%2 != 0 && $tmBL != 49){
             $playId = 1463;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
+        }else{  //和局退本金
+            $playId = 1463;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 1464;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }
         //特天肖 地肖
         $TTX = $this->LHC_SX->shengxiao($tm);
@@ -586,11 +610,17 @@ class New_LHC
             $playId = 1465;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
-        }
-        if($TW <= 4 && $tmBL != 49){
+        }else if($TW <= 4 && $tmBL != 49){
             $playId = 1466;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
+        }else{  //和局退本金
+            $playId = 1465;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 1466;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }
         //总和大小
         if($ZH >= 175){ //大
@@ -1796,7 +1826,7 @@ class New_LHC
     }
 
     //投注结算
-    function BUNKO($openCode,$win,$gameId,$issue)
+    private function BUNKO($openCode,$win,$gameId,$issue,$he)
     {
         $bunko_index = 0;
 
@@ -1812,16 +1842,39 @@ class New_LHC
         if($getUserBets){
             $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
             $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
+            $sql_he = "UPDATE bet SET bunko = CASE "; //和局的SQL语句
 
             $ids = implode(',', $id);
+            $ids_lose = $ids;
+            $sql_bets = '';
+            $sql_bets_lose = '';
+            $sql_bets_he = '';
             foreach ($getUserBets as $item){
                 $bunko = ($item->bet_money * $item->play_odds) + ($item->bet_money * $item->play_rebate);
                 $bunko_lose = (0-$item->bet_money) + ($item->bet_money * $item->play_rebate);
-                $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                $bunko_he = $item->bet_money * 1;
+                $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                $sql_bets_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
             }
-            $sql .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $sql_lose .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            if(count($he)>0) {
+                $ids_he = [];
+                $tmpids = explode(',',$ids);
+                $tmpids_lose = $tmpids;
+                foreach ($he as $k=>$v){
+                    $ids_he[] = $v;
+                    unset($tmpids[$v]);
+                    $tmpids_lose[] = $v;
+                }
+                $ids = implode(',', $tmpids);
+                $ids_lose = implode(',', $tmpids_lose);
+                $ids_he = implode(',', $ids_he);
+                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `play_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
+            }else
+                $sql_he = '';
+            $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids_lose) AND `issue` = $issue AND `game_id` = $gameId";
+            if(!empty($sql_bets))
             $run = DB::statement($sql);
 
             if($run == 1){
@@ -1898,34 +1951,41 @@ class New_LHC
 
                 //正肖-----结束
 
-                $run2 = DB::connection('mysql::write')->statement($sql_lose);
-                if($run2 == 1){
-                    $bunko_index++;
-                    if($sql_zxb !== 0){
-                        $run3 = DB::connection('mysql::write')->statement($sql_zxb);
-                        if($run3 == 1){
+                if(!empty($sql_he)){
+                    $runhe = DB::connection('mysql::write')->statement($sql_he);
+                    if($runhe == 1)
+                        $bunko_index++;
+                }
+                if(!empty($sql_bets_lose)){
+                    $run2 = DB::connection('mysql::write')->statement($sql_lose);
+                    if($run2 == 1){
+                        $bunko_index++;
+                        if($sql_zxb !== 0){
+                            $run3 = DB::connection('mysql::write')->statement($sql_zxb);
+                            if($run3 == 1){
+                                $bunko_index++;
+                            }
+                        } else {
                             $bunko_index++;
                         }
-                    } else {
-                        $bunko_index++;
-                    }
 
-                    if($sql_hexiao !== 0){
-                        $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
-                        if($run4 == 1){
+                        if($sql_hexiao !== 0){
+                            $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
+                            if($run4 == 1){
+                                $bunko_index++;
+                            }
+                        } else {
                             $bunko_index++;
                         }
-                    } else {
-                        $bunko_index++;
-                    }
 
-                    if($zx_sql !== 0){
-                        $run5 = DB::connection('mysql::write')->statement($zx_sql);
-                        if($run5 == 1){
+                        if($zx_sql !== 0){
+                            $run5 = DB::connection('mysql::write')->statement($zx_sql);
+                            if($run5 == 1){
+                                $bunko_index++;
+                            }
+                        } else {
                             $bunko_index++;
                         }
-                    } else {
-                        $bunko_index++;
                     }
                 }
             }

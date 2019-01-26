@@ -1899,7 +1899,7 @@ class New_XYLHC
     }
 
     //投注结算
-    function BUNKO($openCode,$win,$gameId,$issue,$he,$excel=false)
+    private function BUNKO($openCode,$win,$gameId,$issue,$he,$excel=false)
     {
         $bunko_index = 0;
 
@@ -1955,7 +1955,6 @@ class New_XYLHC
                 $sql_he = '';
             $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
             $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids_lose) AND `issue` = $issue AND `game_id` = $gameId";
-            \Log::info($sql_lose);
             if(!empty($sql_bets))
                 $run = DB::statement($sql);
 
@@ -2141,7 +2140,6 @@ class New_XYLHC
 
 
                 if(!empty($sql_he)){
-                    \Log::info($sql_he);
                     $runhe = DB::connection('mysql::write')->statement($sql_he);
                     if($runhe == 1)
                         $bunko_index++;
