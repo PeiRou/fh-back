@@ -1953,18 +1953,20 @@ class New_XYLHC
                 $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
                 $sql_bets_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
             }
-            $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
             if(count($he)>0) {
-                \Log::info($he);
                 $ids_he = [];
+                $tmpids = explode(',',$ids);
                 foreach ($he as $k=>$v){
                     $ids_he[] = $v;
+                    unset($tmpids[$v]);
                 }
+                $ids = implode(',', $tmpids);
                 $ids_he = implode(',', $ids_he);
                 $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `play_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
             }else
                 $sql_he = '';
+            $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
             if(!empty($sql_bets))
                 $run = DB::statement($sql);
 
