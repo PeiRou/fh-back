@@ -74,7 +74,7 @@ class New_XYLHC
                     DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
                 }
                 $excelModel->bet_total($issue,$gameId);
-                if($bunko == 1){
+                if(isset($bunko) && $bunko == 1){
                     $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                     if($updateUserMoney == 1){
                         writeLog('New_Bet', $gameName . $issue . "结算出错");
