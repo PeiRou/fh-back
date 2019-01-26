@@ -1942,6 +1942,7 @@ class New_XYLHC
             $sql_he = "UPDATE ".$table." SET bunko = CASE "; //和局的SQL语句
 
             $ids = implode(',', $id);
+            $ids_lose = $ids;
             $sql_bets = '';
             $sql_bets_lose = '';
             $sql_bets_he = '';
@@ -1956,17 +1957,20 @@ class New_XYLHC
             if(count($he)>0) {
                 $ids_he = [];
                 $tmpids = explode(',',$ids);
+                $tmpids_lose = $tmpids;
                 foreach ($he as $k=>$v){
                     $ids_he[] = $v;
                     unset($tmpids[$v]);
+                    $tmpids_lose[] = $v;
                 }
                 $ids = implode(',', $tmpids);
+                $ids_lose = implode(',', $tmpids_lose);
                 $ids_he = implode(',', $ids_he);
                 $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `play_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
             }else
                 $sql_he = '';
             $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids_lose) AND `issue` = $issue AND `game_id` = $gameId";
             \Log::info($sql_lose);
             if(!empty($sql_bets))
                 $run = DB::statement($sql);
