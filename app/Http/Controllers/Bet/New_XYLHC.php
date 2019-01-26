@@ -66,9 +66,9 @@ class New_XYLHC
             if(!$excel){
                 $resData = $this->exc_play($openCode,$gameId);
                 $win = @$resData['win'];
-                $ids_he = isset($resData['ids_he'])?$resData['ids_he']:array();
+                $he = isset($resData['ids_he'])?$resData['ids_he']:array();
                 try {
-                    $bunko = $this->BUNKO($openCode, $win, $gameId, $issue, $ids_he, $excel);
+                    $bunko = $this->BUNKO($openCode, $win, $gameId, $issue, $he, $excel);
                 }catch (\exception $exception){
                     writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                     DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
@@ -117,10 +117,10 @@ class New_XYLHC
             }
             $resData = $this->exc_play($openCode,$gameId);
             $win = @$resData['win'];
-            $ids_he = isset($resData['ids_he'])?$resData['ids_he']:array();
+            $he = isset($resData['ids_he'])?$resData['ids_he']:array();
             $bunko = 0;
             try{
-                $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,$ids_he,true);
+                $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,$he,true);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 DB::table('excel_bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
@@ -1915,7 +1915,7 @@ class New_XYLHC
     }
 
     //投注结算
-    function BUNKO($openCode,$win,$gameId,$issue,$ids_he,$excel=false)
+    function BUNKO($openCode,$win,$gameId,$issue,$he,$excel=false)
     {
         $bunko_index = 0;
 
@@ -1955,10 +1955,10 @@ class New_XYLHC
             }
             $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
             $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            if(count($ids_he)>0) {
-                \Log::info($ids_he);
+            if(count($he)>0) {
+                \Log::info($he);
                 $ids_he = [];
-                foreach ($ids_he as $k=>$v){
+                foreach ($he as $k=>$v){
                     $ids_he[] = $v;
                 }
                 $ids_he = implode(',', $ids_he);
