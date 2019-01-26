@@ -514,6 +514,13 @@ class New_LHC
                 $winCode = $gameId.$lm_playCate.$playId;
                 $win->push($winCode);
             }
+        }else{  //和局退本金
+            $playId = 1457;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 1458;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }
         //特码单双
         if($tm%2 == 0){ // 双

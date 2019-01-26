@@ -587,6 +587,13 @@ class New_XYLHC
                 $winCode = $gameId.$lm_playCate.$playId;
                 $win->push($winCode);
             }
+        }else{  //和局退本金
+            $playId = 3565;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 3566;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }
         //特码单双
         if($tm%2 == 0){ // 双
