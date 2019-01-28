@@ -1390,8 +1390,10 @@ class OpenHistoryController extends Controller
                 $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['niuniu' => $opennum]);
             }
-            if(!in_array($type,['lhc']))
+            if(!in_array($type,['lhc','xylhc']))
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue', $issue)->update(['is_open' => 1, 'bunko' => 0, 'opennum' => $number]);
+            if(in_array($type,['xylhc']))
+                $this->reOpenXylhc($number, $issue);
             if(in_array($type,['pk10','bjkl8'])){
                 $gameInfo = Games::where('code',Games::$aCodeBindingGame[$type])->first();
                 $this->renewLotteryOperating($issue,Games::$aCodeBindingGame[$type],$gameInfo,$number);
@@ -1554,6 +1556,40 @@ class OpenHistoryController extends Controller
         ]);
         $iInfo = DB::table('game_lhc')->where('issue',$issue)->first();
         event(new RunLHC($openNum,$issue,70,$iInfo->id));
+    }
+
+    //幸运六合彩
+    public function reOpenXylhc($Number,$issue){
+        $openNum = $Number['n1'].','.$Number['n2'].','.$Number['n3'].','.$Number['n4'].','.$Number['n5'].','.$Number['n6'].','.$Number['n7'];
+        $totalNum = (int)$Number['n1']+(int)$Number['n2']+(int)$Number['n3']+(int)$Number['n4']+(int)$Number['n5']+(int)$Number['n6']+(int)$Number['n7'];
+
+        DB::table('game_xylhc')->where('issue',$issue)->update([
+            'n1' => $Number['n1'],
+            'n2' => $Number['n2'],
+            'n3' => $Number['n3'],
+            'n4' => $Number['n4'],
+            'n5' => $Number['n5'],
+            'n6' => $Number['n6'],
+            'n7' => $Number['n7'],
+            'n1_sb' => $this->LHC->sebo($Number['n1']),
+            'n2_sb' => $this->LHC->sebo($Number['n2']),
+            'n3_sb' => $this->LHC->sebo($Number['n3']),
+            'n4_sb' => $this->LHC->sebo($Number['n4']),
+            'n5_sb' => $this->LHC->sebo($Number['n5']),
+            'n6_sb' => $this->LHC->sebo($Number['n6']),
+            'n7_sb' => $this->LHC->sebo($Number['n7']),
+            'n1_sx' => $this->LHC->shengxiao($Number['n1']),
+            'n2_sx' => $this->LHC->shengxiao($Number['n2']),
+            'n3_sx' => $this->LHC->shengxiao($Number['n3']),
+            'n4_sx' => $this->LHC->shengxiao($Number['n4']),
+            'n5_sx' => $this->LHC->shengxiao($Number['n5']),
+            'n6_sx' => $this->LHC->shengxiao($Number['n6']),
+            'n7_sx' => $this->LHC->shengxiao($Number['n7']),
+            'open_num' => $openNum,
+            'total_num' => $totalNum,
+            'bunko' => 2,
+            'is_open' => 1,
+        ]);
     }
 
 }
