@@ -427,7 +427,7 @@ class New_Qqffc
         $num5 = $arrOpenCode[4];
         $num_total = $num1+$num2+$num3+$num4+$num5;
         if($num_total >= 23){ //总和大
-            $playId = 2334;
+            $playId = 4963;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }

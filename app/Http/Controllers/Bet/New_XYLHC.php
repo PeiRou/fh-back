@@ -28,8 +28,9 @@ class New_XYLHC
     }
     private function exc_play($openCode,$gameId){
         $win = collect([]);
+        $ids_he = collect([]);
         $this->TM($openCode,$gameId,$win);
-        $this->LM($openCode,$gameId,$win);
+        $this->LM($openCode,$gameId,$win,$ids_he);
         $this->SB($openCode,$gameId,$win);
         $this->TX($openCode,$gameId,$win);
         $this->TMTWS($openCode,$gameId,$win);
@@ -39,7 +40,7 @@ class New_XYLHC
         $this->PTYXWS($openCode,$gameId,$win);
         $this->ZONGXIAO($openCode,$gameId,$win);
         $this->ZMT($openCode,$gameId,$win);
-        return $win;
+        return array('win'=>$win,'ids_he'=>$ids_he);
     }
 
     public function all($openCode,$issue,$gameId,$id,$excel)
@@ -63,15 +64,17 @@ class New_XYLHC
                 }
             }
             if(!$excel){
-                $win = $this->exc_play($openCode,$gameId);
+                $resData = $this->exc_play($openCode,$gameId);
+                $win = @$resData['win'];
+                $he = isset($resData['ids_he'])?$resData['ids_he']:array();
                 try {
-                    $bunko = $this->BUNKO($openCode, $win, $gameId, $issue, $excel);
+                    $bunko = $this->BUNKO($openCode, $win, $gameId, $issue, $he, $excel);
                 }catch (\exception $exception){
                     writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                     DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
                 }
                 $excelModel->bet_total($issue,$gameId);
-                if($bunko == 1){
+                if(isset($bunko) && $bunko == 1){
                     $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                     if($updateUserMoney == 1){
                         writeLog('New_Bet', $gameName . $issue . "结算出错");
@@ -112,10 +115,12 @@ class New_XYLHC
                 $openCode = $excel->opennum($table);
                 DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
             }
-            $win = $this->exc_play($openCode,$gameId);
+            $resData = $this->exc_play($openCode,$gameId);
+            $win = @$resData['win'];
+            $he = isset($resData['ids_he'])?$resData['ids_he']:array();
             $bunko = 0;
             try{
-                $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,true);
+                $bunko = $this->BUNKO($openCode,$win,$gameId,$issue,$he,true);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 DB::table('excel_bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
@@ -549,7 +554,7 @@ class New_XYLHC
     }
 
     //两面
-    public function LM($openCode,$gameId,$win)
+    public function LM($openCode,$gameId,$win,$ids_he)
     {
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
         $lm_playCate = 163; //特码分类ID
@@ -569,8 +574,7 @@ class New_XYLHC
                 $winCode = $gameId.$lm_playCate.$playId;
                 $win->push($winCode);
             }
-        }
-        if($tm <= 24){
+        }else if($tm <= 24){
             $playId = 3566;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
@@ -583,17 +587,30 @@ class New_XYLHC
                 $winCode = $gameId.$lm_playCate.$playId;
                 $win->push($winCode);
             }
+        }else{  //和局退本金
+            $playId = 3565;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 3566;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }
         //特码单双
         if($tm%2 == 0){ // 双
             $playId = 3568;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
-        }
-        if($tm%2 != 0 && $tm != 49){
+        }else if($tm%2 != 0 && $tm != 49){
             $playId = 3567;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
+        }else{  //和局退本金
+            $playId = 3567;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 3568;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }
         //特码合数大小
         $tmBL = str_pad($tm,2,"0",STR_PAD_LEFT); //十位补零
@@ -603,21 +620,33 @@ class New_XYLHC
             $playId = 3569;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
-        }
-        if($TMHS <= 6 && $tmBL != 49){ //特合小
+        }else if($TMHS <= 6 && $tmBL != 49){ //特合小
             $playId = 3570;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
+        }else{  //和局退本金
+            $playId = 3569;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 3570;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }
         if($TMHS%2 == 0){ // 双
             $playId = 3572;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
-        }
-        if($TMHS%2 != 0 && $tmBL != 49){
+        }else if($TMHS%2 != 0 && $tmBL != 49){
             $playId = 3571;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
+        }else{  //和局退本金
+            $playId = 3571;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 3572;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }
         //特天肖 地肖
         $TTX = $this->LHC_SX->shengxiao($tm);
@@ -661,11 +690,17 @@ class New_XYLHC
             $playId = 3573;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
-        }
-        if($TW <= 4 && $tmBL != 49){
+        }else if($TW <= 4 && $tmBL != 49){
             $playId = 3574;
             $winCode = $gameId.$lm_playCate.$playId;
             $win->push($winCode);
+        }else{  //和局退本金
+            $playId = 3573;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 3574;
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }
         //总和大小
         if($ZH >= 175){ //大
@@ -1871,7 +1906,7 @@ class New_XYLHC
     }
 
     //投注结算
-    function BUNKO($openCode,$win,$gameId,$issue,$excel=false)
+    private function BUNKO($openCode,$win,$gameId,$issue,$he,$excel=false)
     {
         $bunko_index = 0;
 
@@ -1895,18 +1930,38 @@ class New_XYLHC
         if($getUserBets){
             $sql = "UPDATE ".$table." SET bunko = CASE "; //中奖的SQL语句
             $sql_lose = "UPDATE ".$table." SET bunko = CASE "; //未中奖的SQL语句
+            $sql_he = "UPDATE ".$table." SET bunko = CASE "; //和局的SQL语句
 
             $ids = implode(',', $id);
+            $ids_lose = $ids;
             $sql_bets = '';
             $sql_bets_lose = '';
+            $sql_bets_he = '';
             foreach ($getUserBets as $item){
                 $bunko = ($item->bet_money * $item->play_odds) + ($item->bet_money * $item->play_rebate);
                 $bunko_lose = (0-$item->bet_money) + ($item->bet_money * $item->play_rebate);
+                $bunko_he = $item->bet_money * 1;
                 $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                 $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                $sql_bets_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
             }
+            if(count($he)>0) {
+                $ids_he = [];
+                $tmpids = explode(',',$ids);
+                $tmpids_lose = $tmpids;
+                foreach ($he as $k=>$v){
+                    $ids_he[] = $v;
+                    unset($tmpids[$v]);
+                    $tmpids_lose[] = $v;
+                }
+                $ids = implode(',', $tmpids);
+                $ids_lose = implode(',', $tmpids_lose);
+                $ids_he = implode(',', $ids_he);
+                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `play_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
+            }else
+                $sql_he = '';
             $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids_lose) AND `issue` = $issue AND `game_id` = $gameId";
             if(!empty($sql_bets))
                 $run = DB::statement($sql);
 
@@ -2091,6 +2146,11 @@ class New_XYLHC
                 //连码-----结束
 
 
+                if(!empty($sql_he)){
+                    $runhe = DB::connection('mysql::write')->statement($sql_he);
+                    if($runhe == 1)
+                        $bunko_index++;
+                }
                 if(!empty($sql_bets_lose)){
                     $run2 = DB::connection('mysql::write')->statement($sql_lose);
                     if($run2 == 1){
