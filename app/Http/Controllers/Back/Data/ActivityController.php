@@ -111,7 +111,7 @@ class ActivityController extends Controller
             })
             ->editColumn('control',function ($datas) {
                 $html = '<span class="edit-link" onclick="edit('.$datas->id.')"> 修改 </span>';
-                $html .= ' | <span class="edit-link red" onclick="del('.$datas->id.',\''.$datas->name.'\')"> 删除 </span>';
+                $html .= ' | <span class="edit-link red" onclick="del('.$datas->id.')"> 删除 </span>';
                 return  $html;
             })
             ->editColumn('level_id',function ($datas) {

@@ -457,11 +457,11 @@ class ActivityController extends Controller
             'level_id' => (int)$request->level_id,
             'activity_id' => (int)$request->activity_id
         ];
-//        if($model::where($where)->count())
-//            return response()->json([
-//                'status'=>false,
-//                'msg'=>'此层级下已有红包'
-//            ]);
+        if($model::where($where)->count())
+            return response()->json([
+                'status'=>false,
+                'msg'=>'此层级下已有红包'
+            ]);
         DB::beginTransaction();
         try{
             $data['is_default'] == 1 && $model::clearDefault($request);
@@ -484,15 +484,15 @@ class ActivityController extends Controller
 
     private function addActivityCondition_edit($data, Request $request){
         $model = \App\ActivityHongbaoProbability::class;
-//        if($model::where(function ($sql) use ($data, $request) {
-//            $sql->where('level_id', (int)$data['level_id']);
-//            $sql->where('activity_id', (int)$data['activity_id']);
-//            $sql->where('id', '<>',(int)$request->id);
-//        })->count())
-//            return response()->json([
-//                'status'=>false,
-//                'msg'=>'此层级下已有红包'
-//            ]);
+        if($model::where(function ($sql) use ($data, $request) {
+            $sql->where('level_id', (int)$data['level_id']);
+            $sql->where('activity_id', (int)$data['activity_id']);
+            $sql->where('id', '<>',(int)$request->id);
+        })->count())
+            return response()->json([
+                'status'=>false,
+                'msg'=>'此层级下已有红包'
+            ]);
         DB::beginTransaction();
         try {
             $data['is_default'] == 1 && $model::clearDefault($request);
