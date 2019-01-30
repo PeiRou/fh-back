@@ -1057,6 +1057,7 @@ class ModalController extends Controller
 //        if($activity_id == 3){
 //            $data['conditionInfoHongbao'] = \App\ActivityConditionHongbao::getDetailInfoOne($id);
 //        } else {
+        list($data['t1'], $data['t2']) = explode(' ',date('Y-m-d H:i:s'));
             $data['conditionInfo'] = ActivityCondition::getDetailInfoOne($id);
 //        }
         return view('back.modal.activity.editActivityCondition',$data);

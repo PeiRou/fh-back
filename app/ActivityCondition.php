@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ActivityCondition extends Model
 {
@@ -24,7 +25,7 @@ class ActivityCondition extends Model
     //获取详情
     public static function getDetailInfoOne($id){
         $data = self::
-            select('activity_condition.*', 'activity.type')
+            select('activity_condition.*', 'activity.type',DB::raw('date(start_time) as start_time'), DB::raw('date(end_time) as end_time'), 'start_activity', 'end_activity')
             ->where('activity_condition.id','=',$id)
             ->leftJoin('activity', 'activity.id', 'activity_condition.activity_id')
             ->first();
