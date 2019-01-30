@@ -109,6 +109,7 @@ class Swoole extends Command
         if(!isset($data['thread']) || empty($data['thread']))
             $this->serv->clearTimer($id);
         try{
+            DB::disconnect();
             Artisan::call($data['thread']);
         }catch (\exception $exception){
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
