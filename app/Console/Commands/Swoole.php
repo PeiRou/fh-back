@@ -109,9 +109,10 @@ class Swoole extends Command
         if(!isset($data['thread']) || empty($data['thread']))
             $this->serv->clearTimer($id);
         try{
+            DB::disconnect();
             Artisan::call($data['thread']);
         }catch (\exception $exception){
-            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            \Log::info($exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             \Log::info('this commands not fund :'.$data['thread']);
         }
         if($this->num[$id]>=59)

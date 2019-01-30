@@ -155,6 +155,9 @@
                 @if($hasPermission->hasPermission('report.register') == "has")
                     <li id="menu-reportManage-register"><a href="{{ route('report.register') }}"><cite></cite><span>注册报表</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('report.recharge') == "has")
+                    <li id="menu-reportManage-recharge"><a href="{{ route('report.recharge') }}"><cite></cite><span>首充报表</span></a></li>
+                @endif
             </ul>
         </li>
         @endif

@@ -140,4 +140,9 @@ class Agent extends Model
         }
         return $aArray;
     }
+
+    //获得注册代理数
+    public static function getRegisteredCount($date){
+        return self::where('created_at','>=',$date)->where('created_at','<=',$date.' 23:59:59')->count();
+    }
 }
