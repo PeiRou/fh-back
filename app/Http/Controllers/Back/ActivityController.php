@@ -209,6 +209,12 @@ class ActivityController extends Controller
                 'msg'=> '抽奖设置参数不能为空'
             ]);
         }
+        if($request->total_money1 > 9999999999){
+            return response()->json([
+                'status'=> false,
+                'msg'=> '总金额太大了'
+            ]);
+        }
         $param = [];
         foreach ($request->min_money as $k => $v) {
             if(!isset($request->min_money[$k], $request->max_money[$k], $request->times[$k])){

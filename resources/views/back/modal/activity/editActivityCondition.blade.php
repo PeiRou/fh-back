@@ -50,7 +50,7 @@
         <div class="field">
             <label>充值金额</label>
             <div class="ui input icon">
-                <input type="text" name="money" value="{{ $conditionInfo->money ?? $conditionInfoHongbao->money ?? null }}"/>
+                <input type="text"  name="money" value="{{ $conditionInfo->money ?? $conditionInfoHongbao->money ?? null }}"/>
             </div>
         </div>
         <div class="field">
@@ -113,7 +113,7 @@
         <div class="field">
             <label>活动总金额</label>
             <div class="ui input icon">
-                <input type="text" name="total_money1" value="{{ $conditionInfo->total_money ?? null }}"/>
+                <input type="text" readonly name="total_money1" value="{{ $conditionInfo->total_money ?? null }}"/>
             </div>
         </div>
         {{--<div class="field">--}}
