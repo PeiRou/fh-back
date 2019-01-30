@@ -270,4 +270,8 @@ WHERE 1 ";
         $aSql .= $endStr;
         return $aSql;
     }
+
+    public static function getRegisteredCount($date){
+        return self::where('created_at','>=',$date)->where('created_at','<=',$date.' 23:59:59')->count();
+    }
 }

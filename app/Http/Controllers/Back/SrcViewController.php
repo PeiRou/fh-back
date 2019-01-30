@@ -713,6 +713,10 @@ class SrcViewController extends Controller
         }
         return view('back.reportBrowse',compact('aArray'));
     }
+    //首充报表
+    public function reportRecharge(){
+        return view('back.reportRecharge');
+    }
 
     //图表统计
     //盈亏统计

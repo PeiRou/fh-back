@@ -13,6 +13,7 @@ use App\ReportBetGeneral;
 use App\ReportBetMember;
 use App\ReportGeneral;
 use App\ReportMember;
+use App\ReportRecharge;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -375,6 +376,28 @@ class ReportDataController extends Controller
                 'data' => []
         ]);
     }
+
+    //报表管理-注册报表
+    public function Recharge(Request $request){
+        $aParam = $request->input();
+        $aData = ReportRecharge::getReportRechargeData($aParam);
+        $aDataCount = ReportRecharge::getReportRechargeCount($aParam);
+        return DataTables::of($aData)
+            ->setTotalRecords($aDataCount)
+            ->skipPaging()
+            ->make(true);
+    }
+
+    //
+    public function RechargeTotal(Request $request){
+        $aParam = $request->input();
+        $aData = ReportRecharge::getReportRechargeTotal($aParam);
+        return response()->json([
+            'status' => true,
+            'data' => $aData[0]
+        ]);
+    }
+
     //重新获取棋牌投注报表
     public function getCard(Request $request){
         $iDate = date('Y-m-d',strtotime($request->date ?? '-1 day'));

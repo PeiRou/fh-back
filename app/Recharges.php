@@ -232,4 +232,34 @@ class Recharges extends Model
                 HAVING date(firstTime) = date(now())) as a")[0]->count) ?? 0;
     }
 
+    //获取首充用户
+    public static function getFirstChargeUsersCount($date){
+        return self::where('recharges.updated_at','>=',$date)->where('recharges.updated_at','<=',$date.' 23:59:59')
+            ->where('recharges.status',2)->where('users.PayTimes',1)
+            ->join('users','users.id','=','recharges.userId')->count();
+    }
+
+    //获取第二次充值用户
+    public static function getSecondChargeUsersCount($date){
+        return self::where('recharges.updated_at','>=',$date)->where('recharges.updated_at','<=',$date.' 23:59:59')
+            ->where('recharges.status',2)->where('users.PayTimes',2)
+            ->join('users','users.id','=','recharges.userId')->count();
+    }
+
+    //获取当前注册充值人数
+    public static function getCurrentChargeUsersCount($date){
+        return self::where('recharges.updated_at','>=',$date)->where('recharges.updated_at','<=',$date.' 23:59:59')
+            ->where('recharges.status',2)->where('users.PayTimes',1)
+            ->where('users.created_at','>=',$date)->where('users.created_at','<=',$date.' 23:59:59')
+            ->join('users','users.id','=','recharges.userId')->count();
+    }
+
+    //获取当前注册充值金额
+    public static function getCurrentChargeUsersMoney($date){
+        return self::where('recharges.updated_at','>=',$date)->where('recharges.updated_at','<=',$date.' 23:59:59')
+            ->where('recharges.status',2)->where('users.PayTimes',1)
+            ->where('users.created_at','>=',$date)->where('users.created_at','<=',$date.' 23:59:59')
+            ->join('users','users.id','=','recharges.userId')->sum('recharges.amount');
+    }
+
 }
