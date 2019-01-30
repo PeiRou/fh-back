@@ -59,6 +59,7 @@
             <tr>
                 <th>会员</th>
                 <th>奖品名称</th>
+                <th data-tooltip="领红包时的充值金额（当天）/ 领红包次数（当天）" data-position="top center" data-inverted="" >充值金额/红包次数</th>
                 <th>创建时间</th>
                 <th>所属活动</th>
                 <th>状态</th>

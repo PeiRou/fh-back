@@ -46,13 +46,13 @@
             @endif
         @endforeach
     </div>
-    <div class="field">
-        <label>充值金额</label>
-        <div class="ui input icon">
-            <input type="text" name="money" value="{{ $conditionInfo->money ?? $conditionInfoHongbao->money ?? null }}"/>
-        </div>
-    </div>
     <div class="one">
+        <div class="field">
+            <label>充值金额</label>
+            <div class="ui input icon">
+                <input type="text" name="money" value="{{ $conditionInfo->money ?? $conditionInfoHongbao->money ?? null }}"/>
+            </div>
+        </div>
         <div class="field">
             <label>打码量</label>
             <div class="ui input icon">

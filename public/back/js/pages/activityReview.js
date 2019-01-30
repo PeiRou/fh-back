@@ -32,6 +32,7 @@ $(function () {
         columns: [
             {data:'user_account'},
             {data:'prize_name'},
+            {data:'validate'},
             {data:'created_at'},
             {data:'activity_name'},
             {data:'status'},

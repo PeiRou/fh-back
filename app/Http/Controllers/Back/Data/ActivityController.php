@@ -192,6 +192,11 @@ class ActivityController extends Controller
             ->editColumn('created_at',function ($datas) {
                 return  str_replace('-','/',substr($datas->created_at,0,16));
             })
+            ->editColumn('validate',function ($datas) {
+                if($datas->type == 3){
+                    return  $datas->recharges.'/'.$datas->times;
+                }
+            })
             ->editColumn('prize_name',function ($datas) {
                 if($datas->type == 3){
                     if($datas->prize_name == 0)
