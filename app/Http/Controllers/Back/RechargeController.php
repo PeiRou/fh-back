@@ -221,7 +221,15 @@ class RechargeController extends Controller
         $endDate = $request->get('endDate');
         $killTest = $request->get('killTest');
         $account = $request->get('account');
+        $dateType = $request->get('dateType');//时间类型
 
+
+        $dateTypeName = 'recharges.updated_at';
+        if(isset($dateType) && $dateType == 1){//报表时间
+            $dateTypeName = 'recharges.updated_at';
+        }else if(isset($dateType) && $dateType == 2){
+            $dateTypeName = 'recharges.created_at';
+        }
         //今日线上总数
         $onlinePayToday = DB::table('recharges')
             ->leftJoin('users','recharges.userId', '=', 'users.id')
@@ -230,7 +238,7 @@ class RechargeController extends Controller
                     $q->where('users.testFlag',0);
                 }
             })
-            ->where('recharges.payType','onlinePayment')->where('recharges.status',2)->whereDate('recharges.created_at',date('Y-m-d'))->sum('recharges.amount');
+            ->where('recharges.payType','onlinePayment')->where('recharges.status',2)->whereDate($dateTypeName,date('Y-m-d'))->sum('recharges.amount');
         //今日线下总数
         $offlinePayToday = DB::table('recharges')
             ->leftJoin('users','recharges.userId', '=', 'users.id')

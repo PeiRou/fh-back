@@ -233,11 +233,12 @@ function getTotalRecharge() {
     var endDate = $('#endTime').val();
     var killTest = $('#killTestUser:checked').val();
     var account = $('#account_param').val();
+    var dateType = $('#dateType').val();
     $.ajax({
         url:'/action/recharge/totalRecharge',
         type:'post',
         dataType:'json',
-        data:{rechType:rechType,payOnlineId:payOnlineId,startDate:startDate,endDate:endDate,killTest:killTest,account:account},
+        data:{rechType:rechType,payOnlineId:payOnlineId,startDate:startDate,endDate:endDate,killTest:killTest,account:account,dateType:dateType},
         success:function (data) {
             setTimeout(function () {
                 $('#onlinePayToday').removeClass('loading-gif');
