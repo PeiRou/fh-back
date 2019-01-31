@@ -64,7 +64,7 @@ class ExportExcelController extends Controller
             }
             $cellData[] = [
                 date('m/d H:i',strtotime($item->created_at)),
-                empty($item->process_date)?'--':date('m/d H:i',strtotime($item->process_date)),
+                empty($item->updated_at)?'--':date('m/d H:i',strtotime($item->updated_at)),
                 $item->username,
                 $item->fullName,
                 $item->balance,

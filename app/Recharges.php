@@ -216,7 +216,7 @@ class Recharges extends Model
                 $whereStaus = ' and recharges.status in (1,2,3,4)';
             }
         }
-        $sql1 = 'SELECT users.fullName,recharges.level_name,recharges.balance,recharges.payType,recharges.rebate_or_fee,recharges.ru_info,recharges.created_at, recharges.process_date, users.username as username,recharges.orderNum as orderNum,recharges.amount as amount,recharges.operation_account as operation_account,recharges.shou_info as shou_info,recharges.status as re_status '.$sql.$where .$whereStaus. ' order by recharges.created_at desc ';
+        $sql1 = 'SELECT users.fullName,recharges.level_name,recharges.balance,recharges.payType,recharges.rebate_or_fee,recharges.ru_info,recharges.created_at, recharges.updated_at, users.username as username,recharges.orderNum as orderNum,recharges.amount as amount,recharges.operation_account as operation_account,recharges.shou_info as shou_info,recharges.status as re_status '.$sql.$where .$whereStaus. ' order by recharges.created_at desc ';
 
         return DB::select($sql1);
     }
