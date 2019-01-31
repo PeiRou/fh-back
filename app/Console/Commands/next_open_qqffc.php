@@ -6,40 +6,24 @@ use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use App\Http\Controllers\Bet\Clong;
 
 class next_open_qqffc extends Command
 {
     protected  $code = 'qqffc';
     protected  $gameId = 113;
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    protected  $clong;
+
     protected $signature = 'next_open_qqffc';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'QQ分分彩-定時開號';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(Clong $clong)
     {
+        $this->clong = $clong;
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         $table = 'game_qqffc';
