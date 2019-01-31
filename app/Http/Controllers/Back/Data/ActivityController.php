@@ -111,7 +111,7 @@ class ActivityController extends Controller
             })
             ->editColumn('control',function ($datas) {
                 $html = '<span class="edit-link" onclick="edit('.$datas->id.')"> 修改 </span>';
-                $html .= ' | <span class="edit-link red" onclick="del('.$datas->id.',\''.$datas->name.'\')"> 删除 </span>';
+                $html .= ' | <span class="edit-link red" onclick="del('.$datas->id.')"> 删除 </span>';
                 return  $html;
             })
             ->editColumn('level_id',function ($datas) {
@@ -179,7 +179,15 @@ class ActivityController extends Controller
                                                                                 else
                                                                                 `activity_prize`.`quantity`
                                                                                 end'));
+        $hbMoney = $datasSql->whereIn('activity_send.status',[4,5])->sum(DB::raw('case 
+                                                                                when activity.type = 3 then
+                                                                                `activity_send`.prize_name
+                                                                                else
+                                                                                null
+                                                                                end'));
+
         preg_match('/[\d]*\.{0,1}[\d]{0,2}/',$filterMoney * 1,$arr);
+        preg_match('/[\d]*\.{0,1}[\d]{0,2}/',$hbMoney * 1,$arr1);
         $sendStatus = ActivitySend::$activityStatus;
         return DataTables::of($datas)
             ->editColumn('user_account',function ($datas) {
@@ -191,6 +199,11 @@ class ActivityController extends Controller
             })
             ->editColumn('created_at',function ($datas) {
                 return  str_replace('-','/',substr($datas->created_at,0,16));
+            })
+            ->editColumn('validate',function ($datas) {
+                if($datas->type == 3){
+                    return  $datas->recharges.'/'.$datas->times;
+                }
             })
             ->editColumn('prize_name',function ($datas) {
                 if($datas->type == 3){
@@ -231,7 +244,10 @@ class ActivityController extends Controller
             ->rawColumns(['control','user_account'])
             ->setTotalRecords($datasCount)
             ->skipPaging()
-            ->with('filterMoney',$arr[0] ?? 0)
+            ->with([
+                'filterMoney' => $arr[0],
+                'hbMoney' => $arr1[0]
+            ])
             ->make(true);
     }
 

@@ -50,7 +50,11 @@
                     </div>
                 </div>
             </div>
+
             <div class="total-nums">
+                <i class="iconfont" data-tooltip="只包含审核通过的红包活动的金额" data-position="left center" data-inverted="" style="color: #717171"></i>
+                审核通过的红包金额：<span style="font-size: 13pt;" id="hbMoney">0</span>
+                <i class="iconfont" data-tooltip="所有审核通过的活动金额" data-position="left center" data-inverted="" style="color: #717171"></i>
                 审核通过的中奖金额：<span style="font-size: 13pt;" id="filterMoney">0</span>
             </div>
         </div>
@@ -59,6 +63,7 @@
             <tr>
                 <th>会员</th>
                 <th>奖品名称</th>
+                <th data-tooltip="抢红包时的充值金额（当天）/ 抢红包次数（当天）" data-position="top center" data-inverted="" >充值金额/红包次数</th>
                 <th>创建时间</th>
                 <th>所属活动</th>
                 <th>状态</th>

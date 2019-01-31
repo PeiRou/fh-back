@@ -23,6 +23,7 @@ $(function () {
             },
             dataSrc:function (json) {
                 memberTotal(json.filterMoney);
+                $('#hbMoney').html(json.hbMoney);
                 for ( var i=0, ien=json.data.length ; i<ien ; i++ ) {
                     json.data[i][0] = '<a href="/message/'+json.data[i][0]+'>View message</a>';
                 }
@@ -32,6 +33,7 @@ $(function () {
         columns: [
             {data:'user_account'},
             {data:'prize_name'},
+            {data:'validate'},
             {data:'created_at'},
             {data:'activity_name'},
             {data:'status'},

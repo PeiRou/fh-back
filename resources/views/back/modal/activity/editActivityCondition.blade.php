@@ -46,13 +46,13 @@
             @endif
         @endforeach
     </div>
-    <div class="field">
-        <label>充值金额</label>
-        <div class="ui input icon">
-            <input type="text" name="money" value="{{ $conditionInfo->money ?? $conditionInfoHongbao->money ?? null }}"/>
-        </div>
-    </div>
     <div class="one">
+        <div class="field">
+            <label>充值金额</label>
+            <div class="ui input icon">
+                <input type="text"  name="money" value="{{ $conditionInfo->money ?? $conditionInfoHongbao->money ?? null }}"/>
+            </div>
+        </div>
         <div class="field">
             <label>打码量</label>
             <div class="ui input icon">
@@ -113,7 +113,11 @@
         <div class="field">
             <label>活动总金额</label>
             <div class="ui input icon">
-                <input type="text" name="total_money1" value="{{ $conditionInfo->total_money ?? null }}"/>
+                <input type="text"
+                       @if($t1 >= $conditionInfo->start_time && $t1 <= $conditionInfo->end_time && $t2 >= $conditionInfo->start_activity && $t2 <= $conditionInfo->end_activity)
+                       readonly
+                       @endif
+                       name="total_money1" value="{{ $conditionInfo->total_money ?? null }}"/>
             </div>
         </div>
         {{--<div class="field">--}}

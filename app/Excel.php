@@ -445,8 +445,58 @@ class Excel
             $tmpArray1[] = $v;
         return implode(',',$tmpArray1);
     }
-    private function opennum_ssc(){
-        return rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9);
+    private function opennum_ssc($num=0){
+        $arrNumber = [rand(0,9),rand(0,9),rand(0,9),rand(0,9),rand(0,9)];
+        $number = implode(',',$arrNumber);
+        switch ($num){
+            case 2:
+                shuffle($arrNumber);
+                $number = implode(',',$arrNumber);
+                break;
+            case 3:
+                $rd_limit = rand(0,4);
+                $arrNumber[$rd_limit] = rand(0,9);
+                shuffle($arrNumber);
+                $number = implode(',',$arrNumber);
+                break;
+            case 4:
+                $rd_limit = rand(0,4);
+                $arrNumber[$rd_limit] = rand(0,9);
+                shuffle($arrNumber);
+                $rd_limit = rand(0,4);
+                $arrNumber[$rd_limit] = rand(0,9);
+                shuffle($arrNumber);
+                $number = implode(',',$arrNumber);
+                break;
+            case 5:
+                $rd_limit = rand(0,4);
+                $arrNumber[$rd_limit] = rand(0,9);
+                shuffle($arrNumber);
+                $rd_limit = rand(0,4);
+                $arrNumber[$rd_limit] = rand(0,9);
+                shuffle($arrNumber);
+                $rd_limit = rand(0,4);
+                $arrNumber[$rd_limit] = rand(0,9);
+                shuffle($arrNumber);
+                $number = implode(',',$arrNumber);
+                break;
+            case 6:
+                $rd_limit = rand(0,4);
+                $arrNumber[$rd_limit] = rand(0,9);
+                shuffle($arrNumber);
+                $rd_limit = rand(0,4);
+                $arrNumber[$rd_limit] = rand(0,9);
+                shuffle($arrNumber);
+                $rd_limit = rand(0,4);
+                $arrNumber[$rd_limit] = rand(0,9);
+                shuffle($arrNumber);
+                $rd_limit = rand(0,4);
+                $arrNumber[$rd_limit] = rand(0,9);
+                shuffle($arrNumber);
+                $number = implode(',',$arrNumber);
+                break;
+        }
+        return $number;
     }
     private function opennum_qxc(){
         return rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9);

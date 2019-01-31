@@ -181,7 +181,7 @@ class ActivityController extends Controller
             'total_money' => DB::raw('total_money+'.$request->money)
         ]);
         //数据库修改失败没关系  要redis修改成功 抢红包后会将redis的金额更新到数据库
-        if($redis->set($key, $money))
+        if($redis->setex($key, 24*60*60, $money))
             return show(0);
         return show(1, 'error');
     }
@@ -207,6 +207,12 @@ class ActivityController extends Controller
             return response()->json([
                 'status'=> false,
                 'msg'=> '抽奖设置参数不能为空'
+            ]);
+        }
+        if($request->total_money1 > 9999999999){
+            return response()->json([
+                'status'=> false,
+                'msg'=> '总金额太大了'
             ]);
         }
         $param = [];
@@ -252,11 +258,23 @@ class ActivityController extends Controller
             'content' => json_encode($param, JSON_UNESCAPED_UNICODE)
         ];
         if (isset($request->id)) {
-            if(\App\ActivityCondition::where('id', $request->id)->update($arr))
+            $total_money = \App\ActivityCondition::where('id', $request->id)->value('total_money');
+            if(\App\ActivityCondition::where('id', $request->id)->update($arr)){
+                //总金额改变的话更新redis剩余金额
+                if((float)$total_money !== $arr['total_money']){
+                    $key = 'activity_hongbao_money_'.date('Ymd_').(int)$request->id;
+                    $redis = Redis::connection();
+                    $redis->select(14);
+                    $redis->setex($key, 24*60*60, $arr['total_money']);
+                    \App\ActivityCondition::where('id', $request->id)->update(['money' => $arr['total_money']]);
+                }
+
+
                 return response()->json([
                     'status'=>true,
                     'msg'=>'修改成功'
                 ]);
+            }
         } else  {
             $arr['created_at'] = date('Y-m-d H:i:s');
             $arr['money'] = $arr['total_money'];
@@ -439,6 +457,16 @@ class ActivityController extends Controller
         if(!isset($params['id']) && !array_key_exists('id',$params)){
             return response()->json(['status'=>false, 'msg'=>'参数错误']);
         }
+        $model = ActivityCondition::select(DB::raw('date(start_time) as start_time'), DB::raw('date(end_time) as end_time'), 'start_activity', 'end_activity')
+            ->leftjoin('activity', 'activity.id', 'activity_condition.activity_id')
+            ->where('activity_condition.id', $params['id'])->first();
+        list($t1, $t2) = explode(' ',date('Y-m-d H:i:s'));
+        if($t1 >= $model->start_time && $t1 <= $model->end_time && $t2 >= $model->start_activity && $t2 <= $model->end_activity){
+            return response()->json([
+                'status'=>false,
+                'msg'=>'活动时间内请勿随意删除'
+            ]);
+        }
         if(ActivityCondition::where('id','=',$params['id'])->delete()){
             return response()->json([
                 'status'=>true,
@@ -457,11 +485,11 @@ class ActivityController extends Controller
             'level_id' => (int)$request->level_id,
             'activity_id' => (int)$request->activity_id
         ];
-//        if($model::where($where)->count())
-//            return response()->json([
-//                'status'=>false,
-//                'msg'=>'此层级下已有红包'
-//            ]);
+        if($model::where($where)->count())
+            return response()->json([
+                'status'=>false,
+                'msg'=>'此层级下已有红包'
+            ]);
         DB::beginTransaction();
         try{
             $data['is_default'] == 1 && $model::clearDefault($request);
@@ -484,15 +512,15 @@ class ActivityController extends Controller
 
     private function addActivityCondition_edit($data, Request $request){
         $model = \App\ActivityHongbaoProbability::class;
-//        if($model::where(function ($sql) use ($data, $request) {
-//            $sql->where('level_id', (int)$data['level_id']);
-//            $sql->where('activity_id', (int)$data['activity_id']);
-//            $sql->where('id', '<>',(int)$request->id);
-//        })->count())
-//            return response()->json([
-//                'status'=>false,
-//                'msg'=>'此层级下已有红包'
-//            ]);
+        if($model::where(function ($sql) use ($data, $request) {
+            $sql->where('level_id', (int)$data['level_id']);
+            $sql->where('activity_id', (int)$data['activity_id']);
+            $sql->where('id', '<>',(int)$request->id);
+        })->count())
+            return response()->json([
+                'status'=>false,
+                'msg'=>'此层级下已有红包'
+            ]);
         DB::beginTransaction();
         try {
             $data['is_default'] == 1 && $model::clearDefault($request);

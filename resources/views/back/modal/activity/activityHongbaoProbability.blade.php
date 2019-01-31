@@ -166,7 +166,7 @@
                             type:'post',
                             dataType:'json',
                             data:{
-                                activity_id:activity_id
+                                id:id
                             },
                             success:function (data) {
                                 if(data.status == true){
