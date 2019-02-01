@@ -35,6 +35,7 @@
                         <li data-tag="first" data-id="65">北京快乐8</li>
                         <li data-tag="first" data-id="21">广东十一选五</li>
                         <li data-tag="first" data-id="66">PC蛋蛋</li>
+                        <li data-tag="first" data-id="113">QQ分分彩</li>
                     </ul>
                 </div>
                 <div id="first_content"></div>

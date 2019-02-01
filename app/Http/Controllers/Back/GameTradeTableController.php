@@ -606,4 +606,23 @@ class GameTradeTableController extends Controller
         }
         return view('back.gameTradeTables.70')->with('mm',$fromDB->all());
     }
+
+    //qq分分彩
+    public function gameTradeTable113(){
+        $data = Play::where('gameId',113)->get();
+        $filter = ['GAME113_1D5_min','GAME113_1D5_max','GAME113_1D5_turnMax','GAME113_BAOZI_min','GAME113_BAOZI_max','GAME113_BAOZI_turnMax','GAME113_DBZ_min','GAME113_DBZ_max','GAME113_DBZ_turnMax','GAME113_DXDSLHH_min','GAME113_DXDSLHH_max','GAME113_DXDSLHH_turnMax','GAME113_SHUNZI_min','GAME113_SHUNZI_max','GAME113_SHUNZI_turnMax'];
+        $fromDB = collect([]);
+        foreach ($data as $item) {
+            foreach ($filter as $i) {
+                if ($item->min_tag == $i) {
+                    $fromDB->put($item->min_tag, $item->minMoney);
+                }elseif($item->max_tag == $i){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }elseif($item->turnMax_tag == $i){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.113')->with('mm',$fromDB->all());
+    }
 }

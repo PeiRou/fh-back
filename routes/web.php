@@ -723,6 +723,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/trade/tables/85','Back\GameTradeTableController@gameTradeTable85'); //幸运六合彩
     Route::get('/game/trade/tables/30','Back\GameTradeTableController@gameTradeTable30'); //福彩3d
     Route::get('/game/trade/tables/70','Back\GameTradeTableController@gameTradeTable70'); //六合彩
+    Route::get('/game/trade/tables/113','Back\GameTradeTableController@gameTradeTable113'); //QQ分分彩
 
     //保存游戏赔率表格数据
     Route::post('/game/table/save/bjpk10', 'Back\GameTables\SaveGameOddsController@bjpk10');
@@ -782,6 +783,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/trade/table/save/xylhc','Back\GameTradeTables\SaveGameTradeController@xylhc'); //保存幸运六合彩
     Route::post('/game/trade/table/save/fc3d','Back\GameTradeTables\SaveGameTradeController@fc3d'); //保存福彩3d
     Route::post('/game/trade/table/save/lhc','Back\GameTradeTables\SaveGameTradeController@lhc'); //保存六合彩
+    Route::post('/game/trade/table/save/qqffc','Back\GameTradeTables\SaveGameTradeController@qqffc'); //保存QQ分分彩
 
 //error
     Route::get('/error/403', function () {

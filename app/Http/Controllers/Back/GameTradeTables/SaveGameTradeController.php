@@ -146,6 +146,11 @@ class SaveGameTradeController extends Controller
         return $this->updateBatch($data,30);
     }
 
+    public function qqffc(Request $request){
+        $data = $request->all();
+        return $this->updateBatch($data,113);
+    }
+
 
     function updateBatch($data,$id){
         $sqlMinMoney = "UPDATE play SET minMoney = CASE ";
