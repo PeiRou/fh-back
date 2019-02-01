@@ -642,7 +642,7 @@ class New_Qqffc
                 $win->push($winCode);
                 break;
             case 8:
-                $playId = 4963;
+                $playId = 4978;
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
                 break;
