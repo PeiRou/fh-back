@@ -285,7 +285,7 @@ class FinanceDataController extends Controller
         if(isset($payType) && $payType){
             $where .= " and recharges.payType = '".$payType."'";
         }else{
-            $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
+            $where .= " and recharges.payType <> 'adminAddMoney'";
         }
         if(empty($findUserId) && empty($account_param)){
             if(isset($status) && $status){
