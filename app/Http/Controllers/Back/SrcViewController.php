@@ -652,6 +652,17 @@ class SrcViewController extends Controller
         return view($this->viewArr[$data['cat']],compact('data'));
         return view('back.open.xylhc',compact('data'));
     }
+    //qq分分彩
+    public function openManage_qqffc()
+    {
+        $data = [
+            'title' => 'qq分分彩',
+            'activeName' => 'menu-openManage-qqffc',
+            'type' => 'qqffc',
+            'cat' => 'ssc' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
     
     //报表管理
     //总代理报表
