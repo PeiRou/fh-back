@@ -282,7 +282,11 @@ class FinanceDataController extends Controller
         if(empty($startTime) && empty($endTime))
             $where .= " and recharges.updated_at = now() ";
 //        $whereStaus = '';
-
+        if(isset($payType) && $payType){
+            $where .= " and recharges.payType = '".$payType."'";
+        }else{
+            $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
+        }
         if(empty($findUserId) && empty($account_param)){
             if(isset($status) && $status){
                 $whereStaus = ' and recharges.status = '.$status;
@@ -290,11 +294,6 @@ class FinanceDataController extends Controller
             }else{
                 $whereStaus = ' and recharges.status in (1,2,3)';
                 Session::put('recharge_report_status',2);
-            }
-            if(isset($payType) && $payType){
-                $where .= " and recharges.payType = '".$payType."'";
-            }else{
-                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
             }
             if(isset($recharges_id) && $recharges_id > 0 ){
                 $where .= " and recharges.admin_add_money = ".$recharges_id."";
