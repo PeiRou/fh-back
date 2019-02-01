@@ -36,7 +36,7 @@ class New_XYLHC
         $this->TMTWS($openCode,$gameId,$win);
         $this->ZM($openCode,$gameId,$win);
         $this->WX($openCode,$gameId,$win);
-        $this->QSB($openCode,$gameId,$win);
+        $this->QSB($openCode,$gameId,$win,$ids_he);
         $this->PTYXWS($openCode,$gameId,$win);
         $this->ZONGXIAO($openCode,$gameId,$win);
         $this->ZMT($openCode,$gameId,$win);
@@ -1097,7 +1097,7 @@ class New_XYLHC
     }
 
     //七色波
-    public function QSB($openCode,$gameId,$win)
+    public function QSB($openCode,$gameId,$win,$ids_he)
     {
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
         $qsb_playCate = 173; //特码分类ID
@@ -1177,18 +1177,20 @@ class New_XYLHC
         } else {
             $greenTotal = 0;
         }
-        if($zmys_blue == 3 && $zmys_green == 3 && $tmsb == 'R'){ //和局
+        if(($zmys_blue == 3 && $zmys_green == 3 && $tmsb == 'R') || ($zmys_blue == 3 && $zmys_red == 3 && $tmsb == 'G') ||($zmys_green == 3 && $zmys_red == 3 && $tmsb == 'B')){ //和局
             $playId = 3744;
             $winCode = $gameId.$qsb_playCate.$playId;
             $win->push($winCode);
-        } else if ($zmys_blue == 3 && $zmys_red == 3 && $tmsb == 'G'){//和局
-            $playId = 3744;
+            //和局退本金
+            $playId = 3741;
             $winCode = $gameId.$qsb_playCate.$playId;
-            $win->push($winCode);
-        } else if ($zmys_green == 3 && $zmys_red == 3 && $tmsb == 'B'){//和局
-            $playId = 3744;
+            $ids_he->push($winCode);
+            $playId = 3742;
             $winCode = $gameId.$qsb_playCate.$playId;
-            $win->push($winCode);
+            $ids_he->push($winCode);
+            $playId = 3743;
+            $winCode = $gameId.$qsb_playCate.$playId;
+            $ids_he->push($winCode);
         } else {
             if ($redTotal>$blueTotal&$redTotal>$greenTotal){ //红
                 $playId = 3741;
