@@ -9,19 +9,27 @@ use Illuminate\Support\Facades\DB;
 
 class New_Cqxync
 {
-    public function all($openCode,$issue,$gameId,$id)
+    private function exc_play($openCode,$gameId)
     {
         $win = collect([]);
-        $this->LM($openCode,$gameId,$win);
+        $ids_he = collect([]);
+        $this->LM($openCode,$gameId,$win,$ids_he);
         $this->ZM($openCode,$gameId,$win);
+        return array('win'=>$win,'ids_he'=>$ids_he);
+    }
+    public function all($openCode,$issue,$gameId,$id)
+    {
         $table = 'game_cqxync';
         $gameName = '重庆幸运农场';
         $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $bunko = 0;
+            $resData = $this->exc_play($openCode,$gameId);
+            $win = @$resData['win'];
+            $he = isset($resData['ids_he'])?$resData['ids_he']:array();
             try{
-                $bunko = $this->bunko($win,$gameId,$issue,$openCode);
+                $bunko = $this->bunko($win,$gameId,$issue,$openCode,$he);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
@@ -45,7 +53,7 @@ class New_Cqxync
     }
 
     //两面部分结算
-    private function LM($openCode,$gameId,$win){
+    private function LM($openCode,$gameId,$win,$ids_he){
         $arrOpenCode = explode(',',$openCode);
         $playCate = 42;
         $num1 = (int)$arrOpenCode[0];
@@ -66,15 +74,19 @@ class New_Cqxync
         $beiArr = [4,8,12,16,20]; //北
 
         //总和大小-Start
-        if($numsTotal == 84){ //总和等于84视为和局
-
+        if($numsTotal == 84){ //总和等于84视为和局  //和局退本金
+            $playId = 931;
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = 932;
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
         }
         if($numsTotal >= 85 && $numsTotal <= 132){ //总和大
             $playId = 931;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        if($numsTotal >= 36 && $numsTotal <= 83){ //总和小
+        }else if($numsTotal >= 36 && $numsTotal <= 83){ //总和小
             $playId = 932;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
@@ -1697,7 +1709,7 @@ class New_Cqxync
         }
     }
 
-    private function bunko($win,$gameId,$issue,$openCode){
+    private function bunko($win,$gameId,$issue,$openCode,$he){
         $bunko_index = 0;
         $openCodeArr = explode(',',$openCode);
         $id = [];
@@ -1705,21 +1717,44 @@ class New_Cqxync
             $id[] = $v;
         }
         $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        $sql_upd = "UPDATE bet SET bunko = CASE ";
-        $sql_upd_lose = "UPDATE bet SET bunko = CASE ";
-        $ids = implode(',', $id);
-        $sql = "";
-        $sql_lose = "";
-        foreach ($getUserBets as $item){
-            $bunko = $item->bet_money * $item->play_odds;
-            $bunko_lose = 0-$item->bet_money;
-            $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-            $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-        }
-        $sql_upd .= $sql. "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $sql_upd_lose .= $sql_lose. "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $run = !empty($sql)?DB::statement($sql_upd):0;
-        if($run == 1){
+        if($getUserBets){
+            $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
+            $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
+            $sql_he = "UPDATE bet SET bunko = CASE "; //和局的SQL语句
+
+            $ids = implode(',', $id);
+            $ids_lose = $ids;
+            $sql_bets = '';
+            $sql_bets_lose = '';
+            $sql_bets_he = '';
+            foreach ($getUserBets as $item){
+                $bunko = $item->bet_money * $item->play_odds;
+                $bunko_lose = 0-$item->bet_money;
+                    $bunko_he = $item->bet_money * 1;
+                    $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                    $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                    $sql_bets_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
+            }
+            if(count($he)>0) {
+                $ids_he = [];
+                $tmpids = explode(',',$ids);
+                $tmpids_lose = $tmpids;
+                foreach ($he as $k=>$v){
+                    $ids_he[] = $v;
+                    unset($tmpids[$v]);
+                    $tmpids_lose[] = $v;
+                }
+                $ids = implode(',', $tmpids);
+                $ids_lose = implode(',', $tmpids_lose);
+                $ids_he = implode(',', $ids_he);
+                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `play_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
+            }else
+                $sql_he = '';
+            $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids_lose) AND `issue` = $issue AND `game_id` = $gameId";
+            if(!empty($sql_bets))
+                $run = DB::statement($sql);
+            if(isset($run) && $run == 1){
             //连码- Start
             $lm_playCate = 52; //连码分类ID
             $lm_ids = [];
@@ -1785,22 +1820,28 @@ class New_Cqxync
             }
             //连码- End
 
-            if(!empty($sql_lose)){
-                $run2 = DB::connection('mysql::write')->statement($sql_upd_lose);
-                if($run2 == 1)
-                    $bunko_index++;
-            }
-            if($sql_lm !== 0){
-                $run3 = DB::connection('mysql::write')->statement($sql_lm);
-                if($run3 == 1){
+                if(!empty($sql_he)){
+                    $runhe = DB::connection('mysql::write')->statement($sql_he);
+                    if($runhe == 1)
+                        $bunko_index++;
+                }
+                if(!empty($sql_bets_lose)){
+                    $run2 = DB::connection('mysql::write')->statement($sql_lose);
+                    if($run2 == 1)
+                        $bunko_index++;
+                }
+                if($sql_lm !== 0){
+                    $run3 = DB::connection('mysql::write')->statement($sql_lm);
+                    if($run3 == 1){
+                        $bunko_index++;
+                    }
+                } else {
                     $bunko_index++;
                 }
-            } else {
-                $bunko_index++;
-            }
 
-            if($bunko_index !== 0){
-                return 1;
+                if($bunko_index !== 0){
+                    return 1;
+                }
             }
         }
     }
