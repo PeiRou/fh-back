@@ -39,33 +39,33 @@
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">大、小、单、双、龙、虎、和</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_DXDSLHH_min" value="{{ $mm['GAME113_DXDSLHH_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_DXDSLHH_max" value="{{ $mm['GAME113_DXDSLHH_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_DXDSLHH_turnMax" value="{{ $mm['GAME113_DXDSLHH_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_DXDSLHH_min" value="{{ $mm['GAME113_DXDSLHH_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_DXDSLHH_max" value="{{ $mm['GAME113_DXDSLHH_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_DXDSLHH_turnMax" value="{{ $mm['GAME113_DXDSLHH_turnMax'] }}"></td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">单号1～5</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_1D5_min" value="{{ $mm['GAME113_1D5_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_1D5_max" value="{{ $mm['GAME113_1D5_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_1D5_turnMax" value="{{ $mm['GAME113_1D5_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_1D5_min" value="{{ $mm['GAME113_1D5_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_1D5_max" value="{{ $mm['GAME113_1D5_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_1D5_turnMax" value="{{ $mm['GAME113_1D5_turnMax'] }}"></td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">豹子</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_BAOZI_min" value="{{ $mm['GAME113_BAOZI_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_BAOZI_max" value="{{ $mm['GAME113_BAOZI_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_BAOZI_turnMax" value="{{ $mm['GAME113_BAOZI_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_BAOZI_min" value="{{ $mm['GAME113_BAOZI_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_BAOZI_max" value="{{ $mm['GAME113_BAOZI_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_BAOZI_turnMax" value="{{ $mm['GAME113_BAOZI_turnMax'] }}"></td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">顺子</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_SHUNZI_min" value="{{ $mm['GAME113_SHUNZI_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_SHUNZI_max" value="{{ $mm['GAME113_SHUNZI_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_SHUNZI_turnMax" value="{{ $mm['GAME113_SHUNZI_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_SHUNZI_min" value="{{ $mm['GAME113_SHUNZI_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_SHUNZI_max" value="{{ $mm['GAME113_SHUNZI_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_SHUNZI_turnMax" value="{{ $mm['GAME113_SHUNZI_turnMax'] }}"></td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">对子、半顺、杂六</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_DBZ_min" value="{{ $mm['GAME113_DBZ_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_DBZ_max" value="{{ $mm['GAME113_DBZ_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME1_DBZ_turnMax" value="{{ $mm['GAME113_DBZ_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_DBZ_min" value="{{ $mm['GAME113_DBZ_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_DBZ_max" value="{{ $mm['GAME113_DBZ_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME113_DBZ_turnMax" value="{{ $mm['GAME113_DBZ_turnMax'] }}"></td>
         </tr>
         </tbody>
     </table>
