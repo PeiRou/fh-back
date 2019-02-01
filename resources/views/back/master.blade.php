@@ -297,6 +297,9 @@
                 @if($hasPermission->hasPermission('historyLottery.gsk3') == "has")
                     <li id="menu-openManage-gsk3"><a href="{{ route('historyLottery.gsk3') }}"><cite></cite><span>甘肃快3</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('historyLottery.qqffc') == "has")
+                    <li id="menu-openManage-qqffc"><a href="{{ route('historyLottery.qqffc') }}"><cite></cite><span>qq分分彩</span></a></li>
+                @endif
             </ul>
         </li>
         @endif

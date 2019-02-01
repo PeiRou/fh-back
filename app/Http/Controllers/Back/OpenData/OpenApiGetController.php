@@ -124,6 +124,23 @@ class OpenApiGetController extends Controller
             'n5' => (int)$arrCode[4],
         ];
     }
+
+    //qq分分彩
+    public function qqffc($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+        ];
+    }
+
     //重庆幸运农场
     public function xync($aJson,$issue){
         $arrCode = '';
