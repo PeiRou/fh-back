@@ -1069,27 +1069,27 @@ class New_XYLHC
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
         $wx_playCate = 170; //特码分类ID
         $tm = $arrOpenCode[6]; //特码号码
-        if($tm == 4 || $tm == 5 || $tm == 18 || $tm == 19 || $tm == 26 || $tm == 27 || $tm == 34 || $tm == 35 || $tm == 48 || $tm == 49){ //金
+        if($tm == 5 || $tm == 6 || $tm == 19 || $tm == 20 || $tm == 27 || $tm == 28 || $tm == 35 || $tm == 36 || $tm == 49){ //金
             $playId = 3702;
             $winCode = $gameId.$wx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 1 || $tm == 8 || $tm == 9 || $tm == 16 || $tm == 17 || $tm == 30 || $tm == 31 || $tm == 38 || $tm == 39 || $tm == 46 || $tm == 47){ //木
+        if($tm == 1 || $tm == 2 || $tm == 9 || $tm == 10 || $tm == 17 || $tm == 18 || $tm == 31 || $tm == 32 || $tm == 39 || $tm == 40 || $tm == 47 || $tm == 48){ //木
             $playId = 3703;
             $winCode = $gameId.$wx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 6 || $tm == 7 || $tm == 14 || $tm == 15 || $tm == 22 || $tm == 23 || $tm == 36 || $tm == 37 || $tm == 44 || $tm == 45){ //水
+        if($tm == 7 || $tm == 8 || $tm == 15 || $tm == 16 || $tm == 23 || $tm == 24 || $tm == 37 || $tm == 38 || $tm == 45 || $tm == 46){ //水
             $playId = 3704;
             $winCode = $gameId.$wx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 2 || $tm == 3 || $tm == 10 || $tm == 11 || $tm == 24 || $tm == 25 || $tm == 32 || $tm == 33 || $tm == 40 || $tm == 41){ //火
+        if($tm == 3 || $tm == 4 || $tm == 11 || $tm == 12 || $tm == 25 || $tm == 26 || $tm == 33 || $tm == 34 || $tm == 41 || $tm == 42){ //火
             $playId = 3705;
             $winCode = $gameId.$wx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 12 || $tm == 13 || $tm == 20 || $tm == 21 || $tm == 28 || $tm == 29 || $tm == 42 || $tm == 43){ //土
+        if($tm == 13 || $tm == 14 || $tm == 21 || $tm == 22 || $tm == 29 || $tm == 30 || $tm == 43 || $tm == 44){ //土
             $playId = 3706;
             $winCode = $gameId.$wx_playCate.$playId;
             $win->push($winCode);
