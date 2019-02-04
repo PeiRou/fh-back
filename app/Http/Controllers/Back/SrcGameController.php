@@ -25,6 +25,10 @@ class SrcGameController extends Controller
         $holiday_start = $request->input('holiday_start');
         $holiday_end = $request->input('holiday_end');
         $order = $request->input('order');
+        $time = explode(' ', $holiday_start);
+        $holiday_start = date('Y-m-d H:i:s', strtotime($time[0].' '.$time[1]));
+        $time = explode(' ', $holiday_end);
+        $holiday_end = date('Y-m-d H:i:s', strtotime($time[0].' '.$time[1]));
 
         if(isset($g_id) && $g_id){
             $update = Games::where('g_id',$g_id)

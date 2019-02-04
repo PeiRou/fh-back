@@ -3,6 +3,12 @@
 @section('title','游戏设定')
 
 @section('content')
+    <style>
+        .jconfirm-content{
+            overflow: hidden!important;
+            overflow-y: scroll!important;
+        }
+    </style>
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>游戏设定

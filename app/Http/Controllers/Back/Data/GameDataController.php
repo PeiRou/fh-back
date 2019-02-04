@@ -18,14 +18,14 @@ class GameDataController extends Controller
         return DataTables::of($games)
             ->editColumn('holiday_start',function ($games){
                 if(isset($games->holiday_start) && $games->holiday_start){
-                    return "<span class=\"gary-text\">".date('Y-m-d',strtotime($games->holiday_start))."</span>";
+                    return "<span class=\"gary-text\">".$games->holiday_start."</span>";
                 } else {
                     return "<span class=\"gary-text\">未设置</span>";
                 }
             })
             ->editColumn('holiday_end',function ($games){
                 if(isset($games->holiday_end) && $games->holiday_end){
-                    return "<span class=\"gary-text\">".date('Y-m-d',strtotime($games->holiday_end))."</span>";
+                    return "<span class=\"gary-text\">".$games->holiday_end."</span>";
                 } else {
                     return "<span class=\"gary-text\">未设置</span>";
                 }
