@@ -868,62 +868,62 @@ class New_XYLHC
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
         $tx_playCate = 165; //特码分类ID
         $tm = $arrOpenCode[6]; //特码号码
-        if($tm == 6 || $tm == 18 || $tm == 30 || $tm == 42){ //蛇
+        if($tm == 7 || $tm == 19 || $tm == 31 || $tm == 43){ //蛇
             $playId = 3621;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 5 || $tm == 17 || $tm == 29 || $tm == 41){ //马
+        if($tm == 6 || $tm == 18 || $tm == 30 || $tm == 42){ //马
             $playId = 3622;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 4 || $tm == 16 || $tm == 28 || $tm == 40){ //羊
+        if($tm == 5 || $tm == 17 || $tm == 29 || $tm == 41){ //羊
             $playId = 3623;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 3 || $tm == 15 || $tm == 27 || $tm == 39){ //猴
+        if($tm == 4 || $tm == 16 || $tm == 28 || $tm == 40){ //猴
             $playId = 3624;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 2 || $tm == 14 || $tm == 26 || $tm == 38){ //鸡
+        if($tm == 3 || $tm == 15 || $tm == 27 || $tm == 39){ //鸡
             $playId = 3625;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 1 || $tm == 13 || $tm == 25 || $tm == 37 || $tm == 49){ //狗
+        if($tm == 2 || $tm == 14 || $tm == 26 || $tm == 38){ //狗
             $playId = 3626;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 12 || $tm == 24 || $tm == 36 || $tm == 48){ //猪
+        if($tm == 1 || $tm == 13 || $tm == 25 || $tm == 37 || $tm == 49){ //猪
             $playId = 3627;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 11 || $tm == 23 || $tm == 35 || $tm == 47){ // 鼠
+        if($tm == 12 || $tm == 24 || $tm == 36 || $tm == 48){ // 鼠
             $playId = 3616;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 10 || $tm == 22 || $tm == 34 || $tm == 46){ //牛
+        if($tm == 11 || $tm == 23 || $tm == 35 || $tm == 47){ //牛
             $playId = 3617;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 9 || $tm == 21 || $tm == 33 || $tm == 45){ //虎
+        if($tm == 10 || $tm == 22 || $tm == 34 || $tm == 46){ //虎
             $playId = 3618;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 8 || $tm == 20 || $tm == 32 || $tm == 44){ //兔
+        if($tm == 9 || $tm == 21 || $tm == 33 || $tm == 45){ //兔
             $playId = 3619;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
-        if($tm == 7 || $tm == 19 || $tm == 31 || $tm == 43){ //龙
+        if($tm == 8 || $tm == 20 || $tm == 32 || $tm == 44){ //龙
             $playId = 3620;
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
