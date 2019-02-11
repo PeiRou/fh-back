@@ -90,6 +90,16 @@
                 </div>
                 <div id="five_content"></div>
             </div>
+            <div class="ui tab segment" data-tab="six" style="margin-bottom: 70px;">
+                <div class="sub-item">
+                    <ul>
+                        <li data-tag="six" data-id="801">快乐赛车</li>
+                        <li data-tag="six" data-id="802">快乐飞艇</li>
+                        <li data-tag="six" data-id="803">快乐时时彩</li>
+                    </ul>
+                </div>
+                <div id="six_content"></div>
+            </div>
         </div>
     </div>
 @endsection
