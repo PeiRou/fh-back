@@ -24,6 +24,7 @@
                 <a class="item" data-tab="three">幸运彩</a>
                 <a class="item" data-tab="four">福彩3D</a>
                 <a class="item" data-tab="five">六合彩</a>
+                <a class="item" data-tab="six">快乐彩</a>
             </div>
             <div class="ui tab segment active" data-tab="first" style="margin-bottom: 70px;">
                 <div class="sub-item">
