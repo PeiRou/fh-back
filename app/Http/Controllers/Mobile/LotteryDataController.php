@@ -91,9 +91,9 @@ class LotteryDataController extends Controller
         $mssc_endTime = Carbon::parse($mssc->opentime)->addSeconds('60')->toDateTimeString();
         //北京赛车
         $bjpk10 = DB::table('game_bjpk10')->where('is_open',1)->orderBy('opentime','desc')->first();
-        if(strtotime(date('H:i:s',strtotime($bjpk10->opentime))) == strtotime("23:57:30")){
-            $bjpk10_lotteryTime = date('Y-m-d',strtotime('+1 day',strtotime($bjpk10->opentime)))." 09:07:30";
-            $bjpk10_endTime = date('Y-m-d',strtotime('+1 day',strtotime($bjpk10->opentime)))." 09:07:00";
+        if(strtotime(date('H:i:s',strtotime($bjpk10->opentime))) == strtotime("23:50:00")){
+            $bjpk10_lotteryTime = date('Y-m-d',strtotime('+1 day',strtotime($bjpk10->opentime)))." 09:10:30";
+            $bjpk10_endTime = date('Y-m-d',strtotime('+1 day',strtotime($bjpk10->opentime)))." 09:10:00";
         } else {
             $bjpk10_lotteryTime = Carbon::parse($bjpk10->opentime)->addSeconds('300')->toDateTimeString();
             $bjpk10_endTime = Carbon::parse($bjpk10->opentime)->addSeconds('270')->toDateTimeString();
