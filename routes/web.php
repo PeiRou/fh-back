@@ -757,6 +757,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/table/save/txffc', 'Back\GameTables\SaveGameOddsController@txffc'); // 腾讯分分彩
     Route::post('/game/table/save/qqffc', 'Back\GameTables\SaveGameOddsController@qqffc'); // QQ分分彩
     Route::post('/game/table/save/msqxc', 'Back\GameTables\SaveGameOddsController@msqxc'); // 秒速七星彩
+    Route::post('/game/table/save/klsc', 'Back\GameTables\SaveGameOddsController@klsc'); // 快乐赛车
+    Route::post('/game/table/save/klft', 'Back\GameTables\SaveGameOddsController@klft'); // 快乐飞艇
+    Route::post('/game/table/save/klssc', 'Back\GameTables\SaveGameOddsController@klssc'); // 快乐时时彩
 
     //保存设置的代理赔率表
     Route::post('/game/table/agent/odds/save/{gameId}/{agentId}', 'Back\GameTables\SaveGameOddsController@agentOddsAgent')->middleware(['check-permission','add-log-handle'])->name('game.agent.agentOddsAgent');

@@ -179,6 +179,24 @@ class SaveGameOddsController extends Controller
         return $this->updateBatch($data,86);
     }
 
+    public function klsc(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,801);
+    }
+
+    public function klft(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,802);
+    }
+
+    public function klssc(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,803);
+    }
+
     function updateBatch($data,$id)
     {
         $sqlOdds = "UPDATE play SET odds = CASE ";
