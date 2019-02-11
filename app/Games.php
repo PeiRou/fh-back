@@ -65,6 +65,9 @@ class Games extends Model
         'gsk3' => 'gsk3',       //甘肃快3
         'qqffc' => 'qqffc',       //QQ分分彩
         'msqxc' => 'msqxc',       //秒速七星彩
+        'ksssc' => 'ksssc',       //快速时时彩
+        'ksft' => 'ksft',       //快速飞艇
+        'kssc' => 'kssc',       //快速赛车
     ];
 
     public static $aCodeBindingGame = [

@@ -663,6 +663,39 @@ class SrcViewController extends Controller
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }
+    //快速时时彩
+    public function openManage_ksssc()
+    {
+        $data = [
+            'title' => '快速时时彩',
+            'activeName' => 'menu-openManage-ksssc',
+            'type' => 'ksssc',
+            'cat' => 'ssc' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //快速飞艇
+    public function openManage_ksft()
+    {
+        $data = [
+            'title' => '快速飞艇',
+            'activeName' => 'menu-openManage-ksft',
+            'type' => 'ksft',
+            'cat' => 'sc' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //快速赛车
+    public function openManage_kssc()
+    {
+        $data = [
+            'title' => '快速赛车',
+            'activeName' => 'menu-openManage-kssc',
+            'type' => 'kssc',
+            'cat' => 'sc' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
     
     //报表管理
     //总代理报表
