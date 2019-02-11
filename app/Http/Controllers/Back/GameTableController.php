@@ -390,6 +390,27 @@ class GameTableController extends Controller
         return $this->OddsAndRebate($data,$filter,80);
     }
 
+    public function gameTable801()
+    {
+        $data = Play::where('gameId',801)->get();
+        $filter = ['GYD_odds','GYD_rebate','GYX_odds','GYX_rebate','GYDan_odds','GYDan_rebate','GYS_odds','GYS_rebate','341819_odds','341819_rebate','561617_odds','561617_rebate','781415_odds','781415_rebate','9101213_odds','9101213_rebate','11_odds','11_rebate','1_10_odds','1_10_rebate','2face_odds','2face_rebate'];
+        return $this->OddsAndRebate($data,$filter,801);
+    }
+
+    public function gameTable802()
+    {
+        $data = Play::where('gameId',802)->get();
+        $filter = ['GYD_odds','GYD_rebate','GYX_odds','GYX_rebate','GYDan_odds','GYDan_rebate','GYS_odds','GYS_rebate','341819_odds','341819_rebate','561617_odds','561617_rebate','781415_odds','781415_rebate','9101213_odds','9101213_rebate','11_odds','11_rebate','1_10_odds','1_10_rebate','2face_odds','2face_rebate'];
+        return $this->OddsAndRebate($data,$filter,802);
+    }
+
+    public function gameTable803()
+    {
+        $data = Play::where('gameId',803)->get();
+        $filter = ['1_5_odds','1_5_rebate','2face_odds','2face_rebate','longhu_odds','longhu_rebate','he_odds','he_rebate','q3z3h3_baozi_odds','q3z3h3_baozi_rebate','q3z3h3_shunzi_odds','q3z3h3_shunzi_rebate','q3z3h3_duizi_odds','q3z3h3_duizi_rebate','q3z3h3_banshun_odds','q3z3h3_banshun_rebate','q3z3h3_zaliu_odds','q3z3h3_zaliu_rebate'];
+        return $this->OddsAndRebate($data,$filter,803);
+    }
+
     public function gameTable82()
     {
         $data = Play::where('gameId',82)->get();
