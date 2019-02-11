@@ -1,5 +1,5 @@
 <!-- 快乐飞艇 -->
-<form id="game802Form" action="{{ url('/game/table/save/klft') }}">
+<form id="game802Form" action="{{ url('/game/table/save/ksft') }}">
     <table align="center" class="ui celled small table">
         <tbody>
         <tr class="firstRow">
