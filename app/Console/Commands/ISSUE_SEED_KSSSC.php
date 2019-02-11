@@ -19,8 +19,24 @@ class ISSUE_SEED_KSSSC extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = date('Y-m-d 07:29:30');
+        $timeUp = date(' 07:25:00');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
+        $issueDate = '';
+        if(isset($checkUpdate->ksssc)) {
+            if($curDate == $checkUpdate->ksssc) {
+                $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
+                $curDate = date('ymd', strtotime('+ 1 day', time()));
+            }else if($curDate < $checkUpdate->ksssc)
+                writeLog('ISSUE_SEED', $curDate.$this->description.'期数已存在');
+            else
+                $issueDate = date('Y-m-d',time());
+        }else{
+            $issueDate = date('Y-m-d',time());
+        }
+        echo $issueDate;
+        if(empty($issueDate))
+            return '';
+        $timeUp = $issueDate . $timeUp;
         $sql = "INSERT INTO game_ksssc (issue,opentime) VALUES ";
         for($i=1;$i<=276;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(5);
