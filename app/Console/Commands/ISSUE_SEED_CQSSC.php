@@ -32,7 +32,7 @@ class ISSUE_SEED_CQSSC extends Command
             $sql .= "('$issue','$timeUp_Lingcheng'),";
         }
         for($i=10;$i<=59;$i++){
-            $timeUp_baitian = Carbon::parse($timeUp_baitian)->addMinutes(10);
+            $timeUp_baitian = Carbon::parse($timeUp_baitian)->addMinutes(20);
             if(strlen($i) == 1){
                 $i = '00'.$i;
             }
