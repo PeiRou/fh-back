@@ -34,7 +34,7 @@ class ISSUE_SEED_KSSSC extends Command
             $sql .= "('$issue','$timeUp'),";
             //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
         }
-        if($checkUpdate->kssc == $curDate){
+        if($checkUpdate->ksssc == $curDate){
             writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
