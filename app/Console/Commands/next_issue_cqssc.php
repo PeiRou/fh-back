@@ -56,7 +56,7 @@ class next_issue_cqssc extends Command
         $openTime = (string)$res->opentime;
         $issuenum = substr($nextIssue,-3);
 
-        $nextIssueTime = (int)$nextIssue+1;
+        $nextIssueTime = (int)$issuenum+1;
         if((int)$nextIssueTime == 10){
             $nextIssueEndTime = date('Y-m-d 07:29:20');
             $nextIssueLotteryTime = date('Y-m-d 07:30:00');
