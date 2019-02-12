@@ -57,11 +57,11 @@ class next_issue_pk10 extends Command
 
         if(substr($openTime,-8) == '23:57:30'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
-            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:07:00';
-            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:07:30';
+            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:09:30';
+            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:10:00';
         } else {
-            $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(270)->toDateTimeString();
-            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
+            $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(1170)->toDateTimeString();
+            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(20)->toDateTimeString();
         }
         $redis->set('pk10:nextIssue',(int)$nextIssue+1);
         $redis->set('pk10:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
