@@ -86,6 +86,7 @@ class GameDataController extends Controller
         $games = DB::table('excel_base')
             ->select(DB::raw('excel_base.*,game.game_name'))
             ->leftJoin('game', 'excel_base.game_id', '=', 'game.game_id')
+            ->where('is_user', 1)
             ->get();
         return DataTables::of($games)
             ->editColumn('bet_money',function ($games){     //今日总投注
