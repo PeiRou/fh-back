@@ -80,9 +80,9 @@ class Games extends Model
         //快3类
         'k3' => ['jsk3','ahk3','gxk3','hbk3','msjsk3','hebeik3','gzk3','gsk3'],
         //时时彩
-        'ssc' => ['jsssc','cqssc','tjssc','xjssc','qqffc'],
+        'ssc' => ['jsssc','cqssc','tjssc','xjssc','qqffc','ksssc'],
         //赛车
-        'sc' => ['jspk10','pk10','jsft','xyft','paoma','jspk10'],
+        'sc' => ['jspk10','pk10','jsft','xyft','paoma','jspk10','ksft','kssc'],
         //幸运农场 快乐十分
         'xync' => ['gdkl10','xync'],
         //广东11选5
