@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_GD11X5 extends Command
 {
     protected $signature = 'ISSUE_SEED_GD11X5';
-    protected $description = '广东11选5-奖期';
+    protected $description = '广东11选5-奖期-42';
 
     public function __construct()
     {
@@ -19,11 +19,11 @@ class ISSUE_SEED_GD11X5 extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = date('Y-m-d 09:00:00');
+        $timeUp = date('Y-m-d 09:10:00');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_gd11x5 (issue,opentime) VALUES ";
-        for($i=1;$i<=84;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
+        for($i=1;$i<=42;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
             if(strlen($i) == 1){
                 $i = '0'.$i;
             }
