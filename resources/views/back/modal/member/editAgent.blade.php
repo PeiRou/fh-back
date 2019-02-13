@@ -105,15 +105,15 @@
                 <input type="text" name="password" placeholder="留空视为不修改"/>
             </div>
         </div>
-        <div class="field">
-            <label>开启赔率修改权限</label>
-            <div class="ui input icon">
-                <select class="ui fluid dropdown" name="editodds" style="height: 32px !important;">
-                    <option @if($info->editodds == 0) selected @endif value="0">关闭</option>
-                    <option @if($info->editodds == 1) selected @endif value="1">开启</option>
-                </select>
-            </div>
-        </div>
+        {{--<div class="field">--}}
+            {{--<label>开启赔率修改权限</label>--}}
+            {{--<div class="ui input icon">--}}
+                {{--<select class="ui fluid dropdown" name="editodds" style="height: 32px !important;">--}}
+                    {{--<option @if($info->editodds == 0) selected @endif value="0">关闭</option>--}}
+                    {{--<option @if($info->editodds == 1) selected @endif value="1">开启</option>--}}
+                {{--</select>--}}
+            {{--</div>--}}
+        {{--</div>--}}
     </div>
 
     <div class="field">

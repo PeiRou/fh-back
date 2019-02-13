@@ -70,7 +70,7 @@
                 <th>模式</th>
                 @endif
                 <th>状态</th>
-                <th>修改赔率</th>
+                {{--<th>修改赔率</th>--}}
                 <th>新增时间</th>
                 <th>最后活动时间</th>
                 <th>未登录</th>
@@ -97,7 +97,7 @@
             {data:'model'},
                 @endif
             {data:'status'},
-            {data:'editOdds'},
+            // {data:'editOdds'},
             {data:'created_at'},
             {data:'updated_at'},
             {data:'login'},
