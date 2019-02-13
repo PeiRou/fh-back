@@ -56,14 +56,14 @@ class next_issue_gxk3 extends Command
         $openTime = $res->opentime;
 
         $New_nextIssue = $nextIssue+1;
-        if(substr($openTime,-8) == '22:27:00'){
+        if(substr($openTime,-8) == '22:30:00'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
             $New_nextIssue = date("ymd",strtotime($nextDay)).'001';                         //奖期
-            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:35:00';
-            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:37:00';
+            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:28:00';
+            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:30:00';
         } else {
-            $nextIssueEndTime = Carbon::parse($openTime)->addMinute(8)->toDateTimeString();
-            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(10)->toDateTimeString();
+            $nextIssueEndTime = Carbon::parse($openTime)->addMinute(18)->toDateTimeString();
+            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(20)->toDateTimeString();
         }
 
         $redis->set('gxk3:nextIssue',(int)$New_nextIssue);
