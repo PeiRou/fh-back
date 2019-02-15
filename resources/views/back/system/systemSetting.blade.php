@@ -170,6 +170,26 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="oneday_reg_user_num" data-c="一天一个IP能注册多少用户" class="edit-link">修改</td>
             </tr>
+
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">一个IP每天可注册次数（0表示不限制）</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->ip_reg_user_num }}" data-id-input="ip_reg_user_num"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="ip_reg_user_num" data-c="一个IP每小时可注册次数（0表示不限制）" class="edit-link">修改</td>
+            </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">一个IP每小时可登录用户数（0表示不限制）</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->ip_login_user_num }}" data-id-input="ip_login_user_num"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="ip_login_user_num" data-c="一个IP每小时可登录用户数（0表示不限制）" class="edit-link">修改</td>
+            </tr>
+
             <tr>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;">注册IP黑名单，多个使用（;）隔开</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">

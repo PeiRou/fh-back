@@ -10,35 +10,14 @@ use Illuminate\Support\Facades\Redis;
 class next_issue_gsk3 extends Command
 {
     protected  $code = 'gsk3';
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'next_issue_gsk3';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = '甘肃快3-產下一期開盤';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         $table = 'game_gsk3';
@@ -59,11 +38,12 @@ class next_issue_gsk3 extends Command
         if(substr($openTime,-8) == '22:00:00'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
             $New_nextIssue = date("ymd",strtotime($nextDay)).'001';                         //奖期
-            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 10:08:00';
-            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 10:10:00';
+            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 10:18:00';
+            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 10:20:00';
         } else {
-            $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(490)->toDateTimeString();
-            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(10)->toDateTimeString();
+//            $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(490)->toDateTimeString();
+            $nextIssueEndTime = Carbon::parse($openTime)->addMinute(18)->toDateTimeString();
+            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(20)->toDateTimeString();
         }
 
         $redis->set('gsk3:nextIssue',(int)$New_nextIssue);

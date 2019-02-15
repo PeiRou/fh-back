@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_GZK3 extends Command
 {
     protected $signature = 'ISSUE_SEED_GZK3';
-    protected $description = '贵州快3期数生成-78';
+    protected $description = '贵州快3期数生成-39';
 
     public function __construct()
     {
@@ -19,11 +19,11 @@ class ISSUE_SEED_GZK3 extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = date('09:00:00');
+        $timeUp = date('09:10:00');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_gzk3 (issue,opentime) VALUES ";
-        for($i=1;$i<=78;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
+        for($i=1;$i<=39;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
             if(strlen($i) == 1){
                 $i = '00'.$i;
             }

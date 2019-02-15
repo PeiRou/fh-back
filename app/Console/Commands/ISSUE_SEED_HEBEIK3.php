@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_HEBEIK3 extends Command
 {
     protected $signature = 'ISSUE_SEED_HEBEIK3';
-    protected $description = '河北快3期数生成-81';
+    protected $description = '河北快3期数生成-41';
 
     public function __construct()
     {
@@ -22,8 +22,8 @@ class ISSUE_SEED_HEBEIK3 extends Command
         $timeUp = date('08:30:00');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_hebeik3 (issue,opentime) VALUES ";
-        for($i=1;$i<=81;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
+        for($i=1;$i<=41;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
             if(strlen($i) == 1){
                 $i = '00'.$i;
             }
