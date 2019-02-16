@@ -328,7 +328,9 @@ function Cmodal(title,boxWidth,url,needValidate,valiForm) {
             formSubmit: formSubmit
         },
         contentLoaded: function(data, status, xhr){
-            $('.jconfirm-content').css('overflow','hidden');
+            $('.jconfirm-content').css({'overflow':'hidden',"word-wrap":"break-word"});
+            $('.jconfirm-box-container').css({"width":"100vw"})
+
             if(data.status == 403)
             {
                 this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
