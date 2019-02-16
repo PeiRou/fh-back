@@ -13,36 +13,15 @@ class next_open_xylhc extends Command
     protected  $code = 'xylhc';
     protected  $gameId = 85;
     protected $LHC;
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'next_open_xylhc';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = '幸运六合彩-定時開號';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct(LHC_SX $LHC)
     {
         $this->LHC = $LHC;
         parent::__construct();
     }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
+    
     public function handle()
     {
         $table = 'game_xylhc';
@@ -84,6 +63,11 @@ class next_open_xylhc extends Command
         $opencode = empty($opennum)?$res->opencode:$opennum;
 
         try {
+            //清除昨天长龙，在录第一期的时候清掉
+            if(substr($needOpenIssue,-3)=='001'){
+                DB::table('clong_kaijian1')->where('lotteryid',$this->gameId)->delete();
+                DB::table('clong_kaijian2')->where('lotteryid',$this->gameId)->delete();
+            }
             if ($redis_issue !== $needOpenIssue) {
                 try {
                     $openNum = explode(',',$opencode);

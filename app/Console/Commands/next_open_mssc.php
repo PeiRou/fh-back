@@ -83,6 +83,8 @@ class next_open_mssc extends Command
         $opennum = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
         //---kill end
         $opencode = empty($opennum)?$res->opencode:$opennum;
+        if(empty($opencode))
+            return 'Fail';
 
         //处理秒速牛牛
         $niuniu = $this->exePK10nn($opencode);

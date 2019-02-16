@@ -27,6 +27,9 @@
             'cqxync' => array('id'=>61,'type'=>'xync'),    //重庆幸运农场
             'gd11x5' => array('id'=>21,'type'=>'SEX5'),    //广东11选5
             'gdklsf' => array('id'=>60,'type'=>'xync'),    //广东快乐十分
+            'wxsc' => array('id'=>801,'type'=>'car'),     //无限赛车
+            'wxft' => array('id'=>802,'type'=>'car'),     //无限飞艇
+            'wxssc' => array('id'=>803,'type'=>'ssc'),    //无限时时彩
         );
         //开奖第一行
         private $clong_kaijian1 = array(

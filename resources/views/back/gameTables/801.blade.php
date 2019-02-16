@@ -1,9 +1,9 @@
 <!-- 快乐赛车 -->
-<form id="game801Form" action="{{ url('/game/table/save/kssc') }}">
+<form id="game801Form" action="{{ url('/game/table/save/wxsc') }}">
     <table align="center" class="ui celled small table">
         <tbody>
         <tr class="firstRow">
-            <td valign="middle" rowspan="1" colspan="4" align="center" class="blue-title-table">快速赛车</td>
+            <td valign="middle" rowspan="1" colspan="4" align="center" class="blue-title-table">无限赛车</td>
         </tr>
         <tr class="firstRow">
             <td valign="middle" rowspan="1" colspan="2" align="center" class="blue-title-table" style="font-size: 13px;padding: 4px !important;">种类</td>

@@ -47,7 +47,7 @@ return [
         ],
 
         'log' => [
-            'driver' => 'log',
+            'driver' => 'null',
         ],
 
         'null' => [

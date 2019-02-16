@@ -65,9 +65,9 @@ class Games extends Model
         'gsk3' => 'gsk3',       //甘肃快3
         'qqffc' => 'qqffc',       //QQ分分彩
         'msqxc' => 'msqxc',       //秒速七星彩
-        'ksssc' => 'ksssc',       //快速时时彩
-        'ksft' => 'ksft',       //快速飞艇
-        'kssc' => 'kssc',       //快速赛车
+        'wxssc' => 'wxssc',       //无限时时彩
+        'wxft' => 'wxft',       //无限飞艇
+        'wxsc' => 'wxsc',       //无限赛车
     ];
 
     public static $aCodeBindingGame = [
@@ -80,9 +80,9 @@ class Games extends Model
         //快3类
         'k3' => ['jsk3','ahk3','gxk3','hbk3','msjsk3','hebeik3','gzk3','gsk3'],
         //时时彩
-        'ssc' => ['jsssc','cqssc','tjssc','xjssc','qqffc','ksssc'],
+        'ssc' => ['jsssc','cqssc','tjssc','xjssc','qqffc','wxssc'],
         //赛车
-        'sc' => ['jspk10','pk10','jsft','xyft','paoma','jspk10','ksft','kssc'],
+        'sc' => ['jspk10','pk10','jsft','xyft','paoma','jspk10','wxsc','wxft'],
         //幸运农场 快乐十分
         'xync' => ['gdkl10','xync'],
         //广东11选5
@@ -127,5 +127,8 @@ class Games extends Model
         112 => 'txffc',
         113 => 'qqffc',
         114 => 'msqxc',
+        801 => 'wxsc',
+        802 => 'wxft',
+        803 => 'wxssc',
     ];
 }

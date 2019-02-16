@@ -11,35 +11,14 @@ class next_open_msjsk3 extends Command
 {
     protected  $code = 'msjsk3';
     protected  $gameId = 86;
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'next_open_msjsk3';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = '秒速快三-定時開號';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         $table = 'game_msjsk3';
@@ -80,7 +59,8 @@ class next_open_msjsk3 extends Command
         $opennum = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
         //---kill end
         $opencode = empty($opennum)?$res->opencode:$opennum;
-
+        if(empty($opencode))
+            return 'Fail';
         try {
             if ($redis_issue !== $needOpenIssue) {
                 try {

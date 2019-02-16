@@ -97,6 +97,15 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunGdklsf' => [
             'App\Listeners\RunGdklsfEventListener',
         ],
+        'App\Events\RunWxsc' => [
+            'App\Listeners\RunWxscEventListener',
+        ],
+        'App\Events\RunWxft' => [
+            'App\Listeners\RunWxftEventListener',
+        ],
+        'App\Events\RunWxssc' => [
+            'App\Listeners\RunWxsscEventListener',
+        ],
         'App\Events\BackPusherEvent' => [
             'App\Listeners\BackPusherEventListener',
         ],

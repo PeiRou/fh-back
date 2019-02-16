@@ -83,6 +83,8 @@ class next_open_msssc extends Command
         $opennum = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
         //---kill end
         $opencode = empty($opennum)?$res->opencode:$opennum;
+        if(empty($opencode))
+            return 'Fail';
 
         //清除昨天长龙，在录第一期的时候清掉
         if($issuenum=='0001'){

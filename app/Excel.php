@@ -175,9 +175,10 @@ class Excel
     }
     //计算当日总输赢
     public function bet_total($issue,$gameId){
-        $exceBase = DB::table('excel_base')->select('excel_base_idx','count_date')->where('game_id',$gameId)->first();
+        $exceBase = DB::table('excel_base')->select('excel_base_idx','count_date','is_user')->where('game_id',$gameId)->first();
         if(empty($exceBase))
             return false;
+        $dataUnity = [];
         if(empty($exceBase->count_date) || $exceBase->count_date!=date("Y-m-d")){
             $todaystart = date("Y-m-d 00:00:00");
             $todayend = date("Y-m-d 23:59:59");
@@ -192,6 +193,11 @@ class Excel
                 $data['bet_money'] = $todayBet->sumBet_money;
                 $data['bet_win'] = $todayBet->sumBunkoWin;
                 $data['bet_lose'] = abs($todayBet->sumBunkoLose);
+                if(isset($exceBase->is_user) && $exceBase->is_user == 0){   //增加统一杀率，如果是此栏位为0时，为统一控制杀率
+                    $dataUnity['bet_money'] = $todayBet->sumBet_money;
+                    $dataUnity['bet_win'] = $todayBet->sumBunkoWin;
+                    $dataUnity['bet_lose'] = abs($todayBet->sumBunkoLose);
+                }
             }
         }else{
             $where = " and issue = '{$issue}' ";
@@ -204,9 +210,20 @@ class Excel
                 $data['bet_money'] = DB::raw('bet_money + '.$excBunko->sumBet_money);
                 $data['bet_win'] = DB::raw('bet_win + '.$excBunko->sumBunkoWin);
                 $data['bet_lose'] = DB::raw('bet_lose + '.abs($excBunko->sumBunkoLose));
+                if(isset($exceBase->is_user) && $exceBase->is_user == 0){   //增加统一杀率，如果是此栏位为0时，为统一控制杀率
+                    $dataUnity['bet_money'] = $excBunko->sumBet_money;
+                    $dataUnity['bet_win'] = $excBunko->sumBunkoWin;
+                    $dataUnity['bet_lose'] = abs($excBunko->sumBunkoLose);
+                }
             }
         }
         DB::table('excel_base')->where('excel_base_idx', $exceBase->excel_base_idx)->update($data);
+        \Log::info($exceBase->is_user);
+        if($exceBase->is_user == 0){    //增加统一杀率，如果是此栏位为0时，为统一控制杀率
+            \Log::info('setWinIssueNum');
+            $dataUnity['game'] = $gameId;
+            $this->setWinIssueNum($dataUnity);
+        }
     }
     private function countAllLoseWin($gameId,$where=''){
         $strSql = "SELECT sum(bet_money) as sumBet_money,sum(case when bunko >0 then bunko-bet_money else 0 end) as sumBunkoWin,sum(case when bunko < 0 then bunko else 0 end) as sumBunkoLose FROM bet WHERE game_id = '{$gameId}' and testFlag = 0 ".$where;
@@ -216,9 +233,10 @@ class Excel
     //计算是否开杀
     public function kill_count($table,$issue,$gameId,$opencode){
         $killopennum = DB::connection('mysql::write')->table($table)->select('excel_opennum')->where('issue',$issue)->first();
-        $is_killopen = DB::connection('mysql::write')->table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win')->where('game_id',$gameId)->first();
+        $is_killopen = DB::connection('mysql::write')->table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win','is_user')->where('game_id',$gameId)->first();
         $opennum = '';
-        if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1)&&!empty($is_killopen->count_date)){
+
+        if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1)&&!empty($is_killopen->count_date) && $is_killopen->is_user){
             $total = $is_killopen->bet_lose + $is_killopen->bet_win;
             if($total>0)
                 $lose_losewin_rate = $is_killopen->is_open?(($is_killopen->bet_lose-$is_killopen->bet_win)/$total):0;
@@ -229,6 +247,8 @@ class Excel
             \Log::info($table.':输赢比 '.$lose_losewin_rate);
             \Log::info($table.' 获取KILL开奖'.$issue.'--'.$opennum);
             \Log::info($table.' 获取origin开奖'.$issue.'--'.$opencode);
+        }else if(isset($is_killopen->is_user) && $is_killopen->is_user == 0){//增加统一杀率，如果是此栏位为0时，为统一控制杀率
+            $opennum = $this->opennum($table,$is_killopen->is_user,$issue);
         }
         return $opennum;
     }
@@ -242,7 +262,8 @@ class Excel
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time()+9);
-        $tmp = DB::connection('mysql::write')->select("SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=".$status.") and is_open=0 and bunko=0 and excel_num=".$status);
+        $sql = "SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=".$status.") and is_open=0 and bunko=0 and excel_num=".$status;
+        $tmp = DB::connection('mysql::write')->select($sql);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -253,7 +274,7 @@ class Excel
     public function getNeedKillBase($gameId){
         if(empty($gameId))
             return false;
-        $tmp = DB::connection('mysql::write')->select("SELECT excel_num FROM excel_base WHERE game_id = ".$gameId);
+        $tmp = DB::connection('mysql::write')->select("SELECT excel_num,is_user FROM excel_base WHERE game_id = ".$gameId);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -308,6 +329,91 @@ class Excel
             $res = $value;
         return $res;
     }
+    //取得统一杀率开奖
+    public function getZiYingIssueNum($api='',$needOpenIssue=''){
+        $key = $api.'?issue='.$needOpenIssue;
+        $redis = Redis::connection();
+        $redis->select(5);
+        if($redis->exists($key)){
+            return '';
+        }
+        $redis->setex($key,3,'ing');
+        $url = Config::get('website.guanIssueServerUrl').'ziyingIssue/'.$key;
+        \Log::info($url);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 2);
+        $tmpInfo = curl_exec($curl);
+        curl_close($curl);
+        $res = json_decode($tmpInfo,true);
+        return $res;
+    }
+    //取得统一杀率试算开号
+    private function getKillIssueNum($api,$needOpenIssue,$num){
+        $key = $api.'?issue='.$needOpenIssue.'&num='.$num.'&logo='.env('logo','');
+        $redis = Redis::connection();
+        $redis->select(5);
+        if($redis->exists($key)){
+            return '';
+        }
+        $redis->setex($key,3,'ing');
+        $url = Config::get('website.guanIssueServerUrl').'getBunko/'.$key;
+        \Log::info('getKillIssueNum');
+        \Log::info($url);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 2);
+        $tmpInfo = curl_exec($curl);
+        curl_close($curl);
+        $res = json_decode($tmpInfo,true);
+        return $res;
+    }
+    //对统一杀率传试算比值
+    public function setKillIssueNum($game,$needOpenIssue,$num,$opencode,$win){
+        if(!isset($this->kill_lottery[$game]))
+            return '';
+        $key = $this->kill_lottery[$game]['api'];
+        $params['issue'] = $needOpenIssue;
+        $params['num'] = $num;
+        $params['logo'] = env('logo','');
+        $params['open'] = $opencode;
+        $params['win'] = $win;
+        $url = Config::get('website.guanIssueServerUrl').'setBunko/'.$key;
+        \Log::info($url);
+        \Log::info($params);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 2);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+        $tmpInfo = curl_exec($curl);
+        curl_close($curl);
+        $res = json_decode($tmpInfo,true);
+        return $res;
+    }
+    //对统一杀率传当期输赢
+    private function setWinIssueNum($params){
+        $url = Config::get('website.guanIssueServerUrl').'setLastBunko';
+        \Log::info($url);
+        \Log::info($params);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 2);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+        $tmpInfo = curl_exec($curl);
+        curl_close($curl);
+        $res = json_decode($tmpInfo,true);
+        return $res;
+    }
     //取得官方开奖
     public function getGuanIssueNum($needOpenIssue,$type){
         $key = $type.'?issue='.$needOpenIssue;
@@ -317,7 +423,7 @@ class Excel
             return '';
         }
         $redis->setex($key,3,'ing');
-        $url = Config::get('website.guanIssueServerUrl').$key;
+        $url = Config::get('website.guanIssueServerUrl').'guanIssue/'.$key;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -390,38 +496,66 @@ class Excel
         return $res;
     }
     //根据类别回传开奖格式
-    public function opennum($type){
-        switch ($type){
-            case 'game_msjsk3':
-                return $this->opennum_k3();
-                break;
-            case 'game_paoma':
-            case 'game_msft':
-            case 'game_mssc':
-                return $this->opennum_pk10();
-                break;
-            case 'game_msssc':
-            case 'game_qqffc':
-                return $this->opennum_ssc();
-                break;
-            case 'game_msqxc':
-                return $this->opennum_qxc();
-                break;
-            case 'game_cqxync':
-                return $this->opennum_xync();
-                break;
-            case 'game_gdklsf':
-                return $this->opennum_xync();
-                break;
-            case 'game_bjkl8':
-                return $this->opennum_kl8();
-            case 'game_xylhc':
-                return $this->opennum_lhc();
-                break;
+    public function opennum($game,$is_user=1,$needOpenIssue='',$num=0){
+        if($is_user){
+            switch ($game){
+                case 'game_msjsk3':
+                    return $this->opennum_k3();
+                    break;
+                case 'game_paoma':
+                case 'game_msft':
+                case 'game_mssc':
+                    return $this->opennum_pk10();
+                    break;
+                case 'game_msssc':
+                case 'game_qqffc':
+                    return $this->opennum_ssc();
+                    break;
+                case 'game_msqxc':
+                    return $this->opennum_qxc();
+                    break;
+                case 'game_cqxync':
+                    return $this->opennum_xync();
+                    break;
+                case 'game_gdklsf':
+                    return $this->opennum_xync();
+                    break;
+                case 'game_bjkl8':
+                    return $this->opennum_kl8();
+                case 'game_xylhc':
+                    return $this->opennum_lhc();
+                    break;
 
+            }
+        }else if(isset($this->kill_lottery[$game])){
+            $api = $this->kill_lottery[$game]['api'];
+            if($num>0){
+                $res = $this->getKillIssueNum($api,$needOpenIssue,$num);
+                \Log::info('getKillIssueNum');
+                \Log::info($res);
+                return isset($res['data'])?$res['data']:'';
+            }else{
+                if(empty($api)||empty($needOpenIssue))
+                    return '';
+                $res = $this->getZiYingIssueNum($api,$needOpenIssue);
+                \Log::info('getZiYingIssueNum');
+                \Log::info($res);
+                return isset($res['opennum'])?$res['opennum']:'';
+            }
         }
-        return false;
+        return '';
     }
+
+    private $kill_lottery = array(
+        'game_mssc' => array('id'=>80,'api'=>'wxsc'),     //秒速赛车
+        'game_msft' => array('id'=>82,'api'=>'wxsc'),     //秒速飞艇
+        'game_msssc' => array('id'=>81,'api'=>'wxsc'),     //秒速时时彩
+        'game_msjsk3' => array('id'=>86,'api'=>'msjsk3'),     //秒速快三
+        'game_wxsc' => array('id'=>801,'api'=>'wxsc'),     //无限赛车
+        'game_wxft' => array('id'=>802,'api'=>'wxft'),     //无限飞艇
+        'game_wxssc' => array('id'=>803,'api'=>'wxssc'),    //无限时时彩
+    );
+
     private function opennum_pk10(){
         $tmpArray = [0=>1,1=>2,2=>3,3=>4,4=>5,5=>6,6=>7,7=>8,8=>9,9=>10];
         for ($i=0;$i<10;$i++){
@@ -646,12 +780,6 @@ class Excel
                 return 'no have';
             }else{
                 //检查不是当期需要追号的开奖
-//                $res = $this->getNeedMinIssue($table);     //在从旧的需要开奖的奖期查起
-//                if($res->issue == $needOpenIssue)
-//                    return 'no have';
-//                $needOpenIssue = $res->issue;
-//                $html = $this->getGuanIssueNum($needOpenIssue,$code);       //获取官方号码
-//                if(!isset($html['issue'])){
                 $res = $this->getNeedAarrayIssue($table);     //在从旧的需要开奖的奖期查起
                 for($i=0; $i<count($res); $i++){
                     $needOpenIssue = $res[$i]->issue;
@@ -659,7 +787,6 @@ class Excel
                     if(isset($html['issue']))
                         $i = count($res);
                 }
-//                }
             }
         }
         if(isset($html['issue']))

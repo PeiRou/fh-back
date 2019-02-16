@@ -24,7 +24,7 @@
                 <a class="item" data-tab="three">幸运彩</a>
                 <a class="item" data-tab="four">福彩3D</a>
                 <a class="item" data-tab="five">六合彩</a>
-                <a class="item" data-tab="six">快速彩</a>
+                <a class="item" data-tab="six">无限彩</a>
             </div>
             <div class="ui tab segment active" data-tab="first" style="margin-bottom: 70px;">
                 <div class="sub-item">
@@ -93,9 +93,9 @@
             <div class="ui tab segment" data-tab="six" style="margin-bottom: 70px;">
                 <div class="sub-item">
                     <ul>
-                        <li data-tag="six" data-id="801">快速赛车</li>
-                        <li data-tag="six" data-id="802">快速飞艇</li>
-                        <li data-tag="six" data-id="803">快速时时彩</li>
+                        <li data-tag="six" data-id="801">无限赛车</li>
+                        <li data-tag="six" data-id="802">无限飞艇</li>
+                        <li data-tag="six" data-id="803">无限时时彩</li>
                     </ul>
                 </div>
                 <div id="six_content"></div>
