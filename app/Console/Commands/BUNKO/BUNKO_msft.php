@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\BUNKO;
 
 use App\Excel;
 use App\Events\RunMstf;
