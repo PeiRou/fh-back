@@ -25,7 +25,7 @@ class next_open_ksssc extends Command
      *
      * @var string
      */
-    protected $description = '无限时时彩-定時開號';
+    protected $description = '快速时时彩-定時開號';
 
     /**
      * Create a new command instance.

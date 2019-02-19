@@ -12,7 +12,7 @@ class KILL_ksssc extends Command
 {
     protected $gameId = 803;
     protected $signature = 'KILL_ksssc';
-    protected $description = '无限时时彩-定时杀率';
+    protected $description = '快速时时彩-定时杀率';
 
     public function __construct()
     {

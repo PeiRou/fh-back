@@ -12,7 +12,7 @@ class BUNKO_ksft extends Command
 {
     protected $gameId = 802;
     protected $signature = 'BUNKO_ksft';
-    protected $description = '无限飞艇-定时结算';
+    protected $description = '快速飞艇-定时结算';
 
     public function __construct()
     {

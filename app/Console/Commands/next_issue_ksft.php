@@ -22,7 +22,7 @@ class next_issue_ksft extends Command
      *
      * @var string
      */
-    protected $description = '无限飞艇-產下一期開盤';
+    protected $description = '快速飞艇-產下一期開盤';
 
     /**
      * Create a new command instance.
