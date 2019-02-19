@@ -1,5 +1,5 @@
 <!-- 快乐赛车 -->
-<form id="game801Form" action="{{ url('/game/table/save/wxsc') }}">
+<form id="game801Form" action="{{ url('/game/table/save/kssc') }}">
     <table align="center" class="ui celled small table">
         <tbody>
         <tr class="firstRow">

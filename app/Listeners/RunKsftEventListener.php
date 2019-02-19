@@ -2,22 +2,22 @@
 
 namespace App\Listeners;
 
-use App\Events\RunWxft;
-use App\Http\Controllers\Bet\New_Wxft;
+use App\Events\RunKsft;
+use App\Http\Controllers\Bet\New_Ksft;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RunWxftEventListener
+class RunKsftEventListener
 {
-    public $wxft;
+    public $ksft;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(New_Wxft $wxft)
+    public function __construct(New_Ksft $ksft)
     {
-        $this->wxft = $wxft;
+        $this->ksft = $ksft;
     }
 
     /**
@@ -26,9 +26,9 @@ class RunWxftEventListener
      * @param  RunMstf  $event
      * @return int
      */
-    public function handle(RunWxft $event)
+    public function handle(RunKsft $event)
     {
-        $up = $this->wxft->all($event->openCode,$event->openIssue,$event->gameId,$event->id,$event->excel);
+        $up = $this->ksft->all($event->openCode,$event->openIssue,$event->gameId,$event->id,$event->excel);
         return $up;
     }
 }

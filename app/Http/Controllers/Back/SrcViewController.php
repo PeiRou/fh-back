@@ -664,34 +664,34 @@ class SrcViewController extends Controller
         return view($this->viewArr[$data['cat']],compact('data'));
     }
     //无限时时彩
-    public function openManage_wxssc()
+    public function openManage_ksssc()
     {
         $data = [
             'title' => '无限时时彩',
-            'activeName' => 'menu-openManage-wxssc',
-            'type' => 'wxssc',
+            'activeName' => 'menu-openManage-ksssc',
+            'type' => 'ksssc',
             'cat' => 'ssc' //游戏类别
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }
     //无限飞艇
-    public function openManage_wxft()
+    public function openManage_ksft()
     {
         $data = [
             'title' => '无限飞艇',
-            'activeName' => 'menu-openManage-wxft',
-            'type' => 'wxft',
+            'activeName' => 'menu-openManage-ksft',
+            'type' => 'ksft',
             'cat' => 'sc' //游戏类别
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }
     //无限赛车
-    public function openManage_wxsc()
+    public function openManage_kssc()
     {
         $data = [
             'title' => '无限赛车',
-            'activeName' => 'menu-openManage-wxsc',
-            'type' => 'wxsc',
+            'activeName' => 'menu-openManage-kssc',
+            'type' => 'kssc',
             'cat' => 'sc' //游戏类别
         ];
         return view($this->viewArr[$data['cat']],compact('data'));

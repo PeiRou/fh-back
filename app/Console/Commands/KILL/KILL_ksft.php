@@ -3,15 +3,15 @@
 namespace App\Console\Commands\KILL;
 
 use App\Excel;
-use App\Events\RunWxft;
+use App\Events\RunKsft;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
-class KILL_wxft extends Command
+class KILL_ksft extends Command
 {
     protected $gameId = 802;
-    protected $signature = 'KILL_wxft';
+    protected $signature = 'KILL_ksft';
     protected $description = '无限飞艇-定时杀率';
 
     public function __construct()
@@ -21,7 +21,7 @@ class KILL_wxft extends Command
 
     public function handle()
     {
-        $table = 'game_wxft';
+        $table = 'game_ksft';
         $excel = new Excel();
         $get = $excel->getNeedKillIssue($table);
         $exeBase = $excel->getKillBase($this->gameId);
@@ -41,7 +41,7 @@ class KILL_wxft extends Command
                     'excel_num' => 2
                 ]);
                 if($update)
-                    event(new RunWxft($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
+                    event(new RunKsft($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
             }
         }
     }

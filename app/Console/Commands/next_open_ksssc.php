@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\Bet\Clong;
 
-class next_open_wxssc extends Command
+class next_open_ksssc extends Command
 {
-    protected  $code = 'wxssc';
+    protected  $code = 'ksssc';
     protected  $gameId = 803;
     protected  $clong;
     /**
@@ -18,7 +18,7 @@ class next_open_wxssc extends Command
      *
      * @var string
      */
-    protected $signature = 'next_open_wxssc';
+    protected $signature = 'next_open_ksssc';
 
     /**
      * The console command description.
@@ -45,15 +45,15 @@ class next_open_wxssc extends Command
      */
     public function handle()
     {
-        $table = 'game_wxssc';
+        $table = 'game_ksssc';
 
         $redis = Redis::connection();
         $redis->select(0);
-        $redis_issue = $redis->get('wxssc:issue');
+        $redis_issue = $redis->get('ksssc:issue');
         $redis_needopen = $redis->exists($this->code.':needopen')?$redis->get($this->code.':needopen'):'';
-        $redis_next_issue = $redis->get('wxssc:nextIssue');
+        $redis_next_issue = $redis->get('ksssc:nextIssue');
         //在redis上的差距
-        $redis_gapnum = $redis->get('wxssc:gapnum');
+        $redis_gapnum = $redis->get('ksssc:gapnum');
         //在現在實際的差距
         $gapnum = $redis_next_issue-$redis_issue;
 
@@ -66,7 +66,7 @@ class next_open_wxssc extends Command
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
             $redis->set($this->code.':needopen','on');
-            $redis->set('wxssc:gapnum',$gapnum);
+            $redis->set('ksssc:gapnum',$gapnum);
             return 'Fail';
         }else{
             //阻止進行中
@@ -103,11 +103,11 @@ class next_open_wxssc extends Command
                             'opennum'=> $opencode
                         ]);
                     if ($up == 1 && $needOpenIssue == ($redis_next_issue-1)) {
-                        $key = 'wxssc:issue';
+                        $key = 'ksssc:issue';
                         $redis->set($key, $needOpenIssue);
-                        $redis->set('wxssc:gapnum',$gapnum);
-                        $this->clong->setKaijian('wxssc',1,$opencode);
-                        $this->clong->setKaijian('wxssc',2,$opencode);
+                        $redis->set('ksssc:gapnum',$gapnum);
+                        $this->clong->setKaijian('ksssc',1,$opencode);
+                        $this->clong->setKaijian('ksssc',2,$opencode);
                     }
                 } catch (\Exception $exception) {
                     writeLog('next_open', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());

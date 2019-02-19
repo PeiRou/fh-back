@@ -3,15 +3,15 @@
 namespace App\Console\Commands\KILL;
 
 use App\Excel;
-use App\Events\RunWxssc;
+use App\Events\RunKsssc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
-class KILL_wxssc extends Command
+class KILL_ksssc extends Command
 {
     protected $gameId = 803;
-    protected $signature = 'KILL_wxssc';
+    protected $signature = 'KILL_ksssc';
     protected $description = '无限时时彩-定时杀率';
 
     public function __construct()
@@ -21,7 +21,7 @@ class KILL_wxssc extends Command
 
     public function handle()
     {
-        $table = 'game_wxssc';
+        $table = 'game_ksssc';
         $excel = new Excel();
         $get = $excel->getNeedKillIssue($table);
         $exeBase = $excel->getKillBase($this->gameId);
@@ -41,7 +41,7 @@ class KILL_wxssc extends Command
                     'excel_num' => 2
                 ]);
                 if($update)
-                    event(new RunWxssc($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
+                    event(new RunKsssc($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
             }
         }
     }

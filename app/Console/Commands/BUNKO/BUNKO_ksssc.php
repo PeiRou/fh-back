@@ -3,16 +3,16 @@
 namespace App\Console\Commands\BUNKO;
 
 use App\Excel;
-use App\Events\RunWxsc;
+use App\Events\RunKsssc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
-class BUNKO_wxsc extends Command
+class BUNKO_ksssc extends Command
 {
-    protected $gameId = 801;
-    protected $signature = 'BUNKO_wxsc';
-    protected $description = '无限赛车-定时结算';
+    protected $gameId = 803;
+    protected $signature = 'BUNKO_ksssc';
+    protected $description = '无限时时彩-定时结算';
 
     public function __construct()
     {
@@ -21,7 +21,7 @@ class BUNKO_wxsc extends Command
 
     public function handle()
     {
-        $table = 'game_wxsc';
+        $table = 'game_ksssc';
         $excel = new Excel();
         $get = $excel->getNeedBunkoIssue($table);
         if ($get) {
@@ -37,7 +37,7 @@ class BUNKO_wxsc extends Command
                 'bunko' => 2
             ]);
             if($update)
-                event(new RunWxsc($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
+                event(new RunKsssc($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
         }
     }
 }

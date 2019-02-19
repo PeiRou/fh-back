@@ -6,9 +6,9 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class ISSUE_SEED_WXSSC extends Command
+class ISSUE_SEED_KSSSC extends Command
 {
-    protected $signature = 'ISSUE_SEED_WXSSC';
+    protected $signature = 'ISSUE_SEED_KSSSC';
     protected $description = '无限时时彩期数生成-276';
 
     public function __construct()
@@ -22,11 +22,11 @@ class ISSUE_SEED_WXSSC extends Command
         $timeUp = date(' 07:25:45');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $issueDate = '';
-        if(isset($checkUpdate->wxssc)) {
-            if($curDate == $checkUpdate->wxssc) {
+        if(isset($checkUpdate->ksssc)) {
+            if($curDate == $checkUpdate->ksssc) {
                 $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
                 $curDate = date('ymd', strtotime('+ 1 day', time()));
-            }else if($curDate < $checkUpdate->wxssc)
+            }else if($curDate < $checkUpdate->ksssc)
                 writeLog('ISSUE_SEED', $curDate.$this->description.'期数已存在');
             else
                 $issueDate = date('Y-m-d',time());
@@ -37,7 +37,7 @@ class ISSUE_SEED_WXSSC extends Command
         if(empty($issueDate))
             return '';
         $timeUp = $issueDate . $timeUp;
-        $sql = "INSERT INTO game_wxssc (issue,opentime) VALUES ";
+        $sql = "INSERT INTO game_ksssc (issue,opentime) VALUES ";
         for($i=1;$i<=276;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(5);
             if(strlen($i) == 1){
@@ -50,13 +50,13 @@ class ISSUE_SEED_WXSSC extends Command
             $sql .= "('$issue','$timeUp'),";
             //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
         }
-        if($checkUpdate->wxssc == $curDate){
+        if($checkUpdate->ksssc == $curDate){
             writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
                 $update = DB::table('issue_seed')->where('id',1)->update([
-                    'wxssc' => $curDate
+                    'ksssc' => $curDate
                 ]);
                 if($update == 1){
                     writeLog('ISSUE_SEED', date('Y-m-d').'已更新');

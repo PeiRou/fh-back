@@ -302,14 +302,14 @@
                 @endif
 
 
-                @if($hasPermission->hasPermission('historyLottery.wxssc') == "has")
-                    <li id="menu-openManage-wxssc"><a href="{{ route('historyLottery.wxssc') }}"><cite></cite><span>无限时时彩</span></a></li>
+                @if($hasPermission->hasPermission('historyLottery.ksssc') == "has")
+                    <li id="menu-openManage-ksssc"><a href="{{ route('historyLottery.ksssc') }}"><cite></cite><span>无限时时彩</span></a></li>
                 @endif
-                @if($hasPermission->hasPermission('historyLottery.wxft') == "has")
-                    <li id="menu-openManage-wxft"><a href="{{ route('historyLottery.wxft') }}"><cite></cite><span>无限飞艇</span></a></li>
+                @if($hasPermission->hasPermission('historyLottery.ksft') == "has")
+                    <li id="menu-openManage-ksft"><a href="{{ route('historyLottery.ksft') }}"><cite></cite><span>无限飞艇</span></a></li>
                 @endif
-                @if($hasPermission->hasPermission('historyLottery.wxsc') == "has")
-                    <li id="menu-openManage-wxsc"><a href="{{ route('historyLottery.wxsc') }}"><cite></cite><span>无限赛车</span></a></li>
+                @if($hasPermission->hasPermission('historyLottery.kssc') == "has")
+                    <li id="menu-openManage-kssc"><a href="{{ route('historyLottery.kssc') }}"><cite></cite><span>无限赛车</span></a></li>
                 @endif
 
             </ul>

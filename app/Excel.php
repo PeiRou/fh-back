@@ -547,13 +547,13 @@ class Excel
     }
 
     private $kill_lottery = array(
-        'game_mssc' => array('id'=>80,'api'=>'wxsc'),     //秒速赛车
-        'game_msft' => array('id'=>82,'api'=>'wxsc'),     //秒速飞艇
-        'game_msssc' => array('id'=>81,'api'=>'wxsc'),     //秒速时时彩
+        'game_mssc' => array('id'=>80,'api'=>'kssc'),     //秒速赛车
+        'game_msft' => array('id'=>82,'api'=>'kssc'),     //秒速飞艇
+        'game_msssc' => array('id'=>81,'api'=>'kssc'),     //秒速时时彩
         'game_msjsk3' => array('id'=>86,'api'=>'msjsk3'),     //秒速快三
-        'game_wxsc' => array('id'=>801,'api'=>'wxsc'),     //无限赛车
-        'game_wxft' => array('id'=>802,'api'=>'wxft'),     //无限飞艇
-        'game_wxssc' => array('id'=>803,'api'=>'wxssc'),    //无限时时彩
+        'game_kssc' => array('id'=>801,'api'=>'kssc'),     //无限赛车
+        'game_ksft' => array('id'=>802,'api'=>'ksft'),     //无限飞艇
+        'game_ksssc' => array('id'=>803,'api'=>'ksssc'),    //无限时时彩
     );
 
     private function opennum_pk10(){

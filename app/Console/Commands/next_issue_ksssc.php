@@ -7,15 +7,15 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
 
-class next_issue_wxssc extends Command
+class next_issue_ksssc extends Command
 {
-    protected  $code = 'wxssc';
+    protected  $code = 'ksssc';
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'next_issue_wxssc';
+    protected $signature = 'next_issue_ksssc';
 
     /**
      * The console command description.
@@ -41,14 +41,14 @@ class next_issue_wxssc extends Command
      */
     public function handle()
     {
-        $table = 'game_wxssc';
+        $table = 'game_ksssc';
         $excel = new Excel();
         $res = $excel->getNextBetIssue($table);
         if(!$res)
             return 'Fail';
         $redis = Redis::connection();
         $redis->select(0);
-        $beforeLotteryTime = $redis->get('wxssc:nextIssueLotteryTime');
+        $beforeLotteryTime = $redis->get('ksssc:nextIssueLotteryTime');
         if($beforeLotteryTime>time())
             return 'no need';
         //下一期獎期
@@ -63,9 +63,9 @@ class next_issue_wxssc extends Command
             $New_nextIssue = date("ymd",strtotime($openTime)).'0001';
         }
 
-        $redis->set('wxssc:nextIssue',(int)$New_nextIssue);
-        $redis->set('wxssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-        $redis->set('wxssc:nextIssueEndTime',strtotime($nextIssueEndTime));
+        $redis->set('ksssc:nextIssue',(int)$New_nextIssue);
+        $redis->set('ksssc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+        $redis->set('ksssc:nextIssueEndTime',strtotime($nextIssueEndTime));
         return 'Ok';
     }
 }

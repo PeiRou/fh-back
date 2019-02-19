@@ -179,19 +179,19 @@ class SaveGameOddsController extends Controller
         return $this->updateBatch($data,86);
     }
 
-    public function wxsc(Request $request)
+    public function kssc(Request $request)
     {
         $data = $request->all();
         return $this->updateBatch($data,801);
     }
 
-    public function wxft(Request $request)
+    public function ksft(Request $request)
     {
         $data = $request->all();
         return $this->updateBatch($data,802);
     }
 
-    public function wxssc(Request $request)
+    public function ksssc(Request $request)
     {
         $data = $request->all();
         return $this->updateBatch($data,803);

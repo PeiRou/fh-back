@@ -3,15 +3,15 @@
 namespace App\Console\Commands\BUNKO;
 
 use App\Excel;
-use App\Events\RunWxft;
+use App\Events\RunKsft;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
-class BUNKO_wxft extends Command
+class BUNKO_ksft extends Command
 {
     protected $gameId = 802;
-    protected $signature = 'BUNKO_wxft';
+    protected $signature = 'BUNKO_ksft';
     protected $description = '无限飞艇-定时结算';
 
     public function __construct()
@@ -21,7 +21,7 @@ class BUNKO_wxft extends Command
 
     public function handle()
     {
-        $table = 'game_wxft';
+        $table = 'game_ksft';
         $excel = new Excel();
         $get = $excel->getNeedBunkoIssue($table);
         if ($get) {
@@ -37,7 +37,7 @@ class BUNKO_wxft extends Command
                 'bunko' => 2
             ]);
             if($update)
-                event(new RunWxft($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
+                event(new RunKsft($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
         }
     }
 }

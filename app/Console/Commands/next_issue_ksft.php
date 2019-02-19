@@ -7,22 +7,22 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
 
-class next_issue_wxsc extends Command
+class next_issue_ksft extends Command
 {
-    protected  $code = 'wxsc';
+    protected  $code = 'ksft';
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'next_issue_wxsc';
+    protected $signature = 'next_issue_ksft';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '无限赛车-產下一期開盤';
+    protected $description = '无限飞艇-產下一期開盤';
 
     /**
      * Create a new command instance.
@@ -41,14 +41,14 @@ class next_issue_wxsc extends Command
      */
     public function handle()
     {
-        $table = 'game_wxsc';
+        $table = 'game_ksft';
         $excel = new Excel();
         $res = $excel->getNextBetIssue($table);
         if(!$res)
             return 'Fail';
         $redis = Redis::connection();
         $redis->select(0);
-        $beforeLotteryTime = $redis->get('wxsc:nextIssueLotteryTime');
+        $beforeLotteryTime = $redis->get('ksft:nextIssueLotteryTime');
         if($beforeLotteryTime>time())
             return 'no need';
         //下一期獎期
@@ -59,13 +59,13 @@ class next_issue_wxsc extends Command
         $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
 
         $New_nextIssue = $nextIssue+1;
-        if(substr($New_nextIssue,-3)=='277'){
-            $New_nextIssue = date("ymd",strtotime($openTime)).'001';
+        if(substr($New_nextIssue,-4)=='1106'){
+            $New_nextIssue = date("ymd",strtotime($openTime)).'0001';
         }
 
-        $redis->set('wxsc:nextIssue',(int)$New_nextIssue);
-        $redis->set('wxsc:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
-        $redis->set('wxsc:nextIssueEndTime',strtotime($nextIssueEndTime));
+        $redis->set('ksft:nextIssue',(int)$New_nextIssue);
+        $redis->set('ksft:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));
+        $redis->set('ksft:nextIssueEndTime',strtotime($nextIssueEndTime));
         return 'Ok';
     }
 }

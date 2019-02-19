@@ -8,52 +8,31 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\Bet\Clong;
 
-class next_open_wxft extends Command
+class next_open_kssc extends Command
 {
-    protected  $code = 'wxft';
-    protected  $gameId = 802;
+    protected  $code = 'kssc';
+    protected  $gameId = 801;
     protected  $clong;
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'next_open_wxft';
+    protected $signature = 'next_open_kssc';
+    protected $description = '无限赛车-定時開號';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = '秒速飞艇-定時開號';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct(Clong $clong)
     {
         $this->clong = $clong;
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
-        $table = 'game_wxft';
+        $table = 'game_kssc';
 
         $redis = Redis::connection();
         $redis->select(0);
-        $redis_issue = $redis->get('wxft:issue');
+        $redis_issue = $redis->get('kssc:issue');
         $redis_needopen = $redis->exists($this->code.':needopen')?$redis->get($this->code.':needopen'):'';
-        $redis_next_issue = $redis->get('wxft:nextIssue');
+        $redis_next_issue = $redis->get('kssc:nextIssue');
         //在redis上的差距
-        $redis_gapnum = $redis->get('wxft:gapnum');
+        $redis_gapnum = $redis->get('kssc:gapnum');
         //在現在實際的差距
         $gapnum = $redis_next_issue-$redis_issue;
 
@@ -66,7 +45,7 @@ class next_open_wxft extends Command
         //如果數據庫已經查不到需要追朔的獎期，則停止追朔
         if(empty($res)){
             $redis->set($this->code.':needopen','on');
-            $redis->set('wxft:gapnum',$gapnum);
+            $redis->set('kssc:gapnum',$gapnum);
             return 'Fail';
         }else{
             //阻止進行中
@@ -77,7 +56,8 @@ class next_open_wxft extends Command
         $needOpenIssue = $res->issue;
         $openTime = $res->opentime;
         $issuenum = substr($needOpenIssue,-3);
-        $res->opencode = $excel->opennum($table);
+//        $res->opencode = $excel->opennum($table);
+        $res->opencode = "";
 
         //---kill start
         $opennum = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
@@ -103,11 +83,11 @@ class next_open_wxft extends Command
                             'opennum'=> $opencode
                         ]);
                     if ($up == 1 && $needOpenIssue == ($redis_next_issue-1)) {
-                        $key = 'wxft:issue';
+                        $key = 'kssc:issue';
                         $redis->set($key, $needOpenIssue);
-                        $redis->set('wxft:gapnum',$gapnum);
-                        $this->clong->setKaijian('wxft',1,$opencode);
-                        $this->clong->setKaijian('wxft',2,$opencode);
+                        $redis->set('kssc:gapnum',$gapnum);
+                        $this->clong->setKaijian('kssc',1,$opencode);
+                        $this->clong->setKaijian('kssc',2,$opencode);
                     }
                 } catch (\Exception $exception) {
                     writeLog('next_open', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());

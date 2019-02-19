@@ -12,7 +12,7 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Wxssc
+class New_Ksssc
 {
     private function exc_play($openCode,$gameId){
         $win = collect([]);
@@ -34,7 +34,7 @@ class New_Wxssc
     }
     public function all($openCode,$issue,$gameId,$id,$excel)
     {
-        $table = 'game_wxssc';
+        $table = 'game_ksssc';
         $gameName = '无限时时彩';
         $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
@@ -46,7 +46,7 @@ class New_Wxssc
                     'excel_num' => 3
                 ]);
                 if($update == 1) {
-                    writeLog('New_Bet', 'wxssc killing...');
+                    writeLog('New_Bet', 'ksssc killing...');
                     $this->excel($openCode, $exeBase, $issue, $gameId, $table);
                 }
             }
