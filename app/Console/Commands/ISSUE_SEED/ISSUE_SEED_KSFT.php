@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_KSFT extends Command
 {
     protected $signature = 'ISSUE_SEED_KSFT';
-    protected $description = '无限飞艇期数生成-276';
+    protected $description = '快速飞艇期数生成-276';
 
     public function __construct()
     {

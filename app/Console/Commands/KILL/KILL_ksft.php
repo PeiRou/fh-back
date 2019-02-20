@@ -12,7 +12,7 @@ class KILL_ksft extends Command
 {
     protected $gameId = 802;
     protected $signature = 'KILL_ksft';
-    protected $description = '无限飞艇-定时杀率';
+    protected $description = '快速飞艇-定时杀率';
 
     public function __construct()
     {

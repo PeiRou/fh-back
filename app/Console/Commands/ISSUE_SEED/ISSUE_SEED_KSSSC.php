@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_KSSSC extends Command
 {
     protected $signature = 'ISSUE_SEED_KSSSC';
-    protected $description = '无限时时彩期数生成-276';
+    protected $description = '快速时时彩期数生成-276';
 
     public function __construct()
     {

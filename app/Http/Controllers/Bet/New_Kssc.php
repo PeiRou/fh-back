@@ -43,7 +43,7 @@ class New_Kssc
     public function all($openCode,$issue,$gameId,$id,$excel)
     {
         $table = 'game_kssc';
-        $gameName = '无限赛车';
+        $gameName = '快速赛车';
         $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
