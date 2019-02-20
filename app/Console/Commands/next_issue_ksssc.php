@@ -22,7 +22,7 @@ class next_issue_ksssc extends Command
      *
      * @var string
      */
-    protected $description = '无限时时彩-產下一期開盤';
+    protected $description = '快速时时彩-產下一期開盤';
 
     /**
      * Create a new command instance.

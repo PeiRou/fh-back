@@ -27,9 +27,9 @@
             'cqxync' => array('id'=>61,'type'=>'xync'),    //重庆幸运农场
             'gd11x5' => array('id'=>21,'type'=>'SEX5'),    //广东11选5
             'gdklsf' => array('id'=>60,'type'=>'xync'),    //广东快乐十分
-            'kssc' => array('id'=>801,'type'=>'car'),     //无限赛车
-            'ksft' => array('id'=>802,'type'=>'car'),     //无限飞艇
-            'ksssc' => array('id'=>803,'type'=>'ssc'),    //无限时时彩
+            'kssc' => array('id'=>801,'type'=>'car'),     //快速赛车
+            'ksft' => array('id'=>802,'type'=>'car'),     //快速飞艇
+            'ksssc' => array('id'=>803,'type'=>'ssc'),    //快速时时彩
         );
         //开奖第一行
         private $clong_kaijian1 = array(

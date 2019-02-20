@@ -103,9 +103,9 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('lhc', 'Back\SrcViewController@openManage_xglhc')->name('historyLottery.xglhc'); //六合彩
         Route::get('xylhc', 'Back\SrcViewController@openManage_xylhc')->name('historyLottery.xylhc'); //幸运六合彩
         Route::get('qqffc', 'Back\SrcViewController@openManage_qqffc')->name('historyLottery.qqffc'); //qq分分彩
-        Route::get('ksssc', 'Back\SrcViewController@openManage_ksssc')->name('historyLottery.ksssc'); //无限时时彩
-        Route::get('ksft', 'Back\SrcViewController@openManage_ksft')->name('historyLottery.ksft'); //无限飞艇
-        Route::get('kssc', 'Back\SrcViewController@openManage_kssc')->name('historyLottery.kssc'); //无限赛车
+        Route::get('ksssc', 'Back\SrcViewController@openManage_ksssc')->name('historyLottery.ksssc'); //快速时时彩
+        Route::get('ksft', 'Back\SrcViewController@openManage_ksft')->name('historyLottery.ksft'); //快速飞艇
+        Route::get('kssc', 'Back\SrcViewController@openManage_kssc')->name('historyLottery.kssc'); //快速赛车
     });
 
 //系统管理
@@ -698,9 +698,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/tables/112', 'Back\GameTableController@gameTable112'); //腾讯分分彩
     Route::get('/game/tables/113', 'Back\GameTableController@gameTable113'); //QQ分分彩
     Route::get('/game/tables/114', 'Back\GameTableController@gameTable114'); //秒速七星彩
-    Route::get('/game/tables/801', 'Back\GameTableController@gameTable801'); //无限赛车
-    Route::get('/game/tables/802', 'Back\GameTableController@gameTable802'); //无限飞艇
-    Route::get('/game/tables/803', 'Back\GameTableController@gameTable803'); //无限时时彩
+    Route::get('/game/tables/801', 'Back\GameTableController@gameTable801'); //快速赛车
+    Route::get('/game/tables/802', 'Back\GameTableController@gameTable802'); //快速飞艇
+    Route::get('/game/tables/803', 'Back\GameTableController@gameTable803'); //快速时时彩
 
     //不同层级的代理赔率
     Route::get('/game/agent/tables/{gameId}/{agentId}', 'Back\GameAgentTableController@gameTable');
@@ -760,9 +760,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/table/save/txffc', 'Back\GameTables\SaveGameOddsController@txffc'); // 腾讯分分彩
     Route::post('/game/table/save/qqffc', 'Back\GameTables\SaveGameOddsController@qqffc'); // QQ分分彩
     Route::post('/game/table/save/msqxc', 'Back\GameTables\SaveGameOddsController@msqxc'); // 秒速七星彩
-    Route::post('/game/table/save/kssc', 'Back\GameTables\SaveGameOddsController@kssc'); // 无限赛车
-    Route::post('/game/table/save/ksft', 'Back\GameTables\SaveGameOddsController@ksft'); // 无限飞艇
-    Route::post('/game/table/save/ksssc', 'Back\GameTables\SaveGameOddsController@ksssc'); // 无限时时彩
+    Route::post('/game/table/save/kssc', 'Back\GameTables\SaveGameOddsController@kssc'); // 快速赛车
+    Route::post('/game/table/save/ksft', 'Back\GameTables\SaveGameOddsController@ksft'); // 快速飞艇
+    Route::post('/game/table/save/ksssc', 'Back\GameTables\SaveGameOddsController@ksssc'); // 快速时时彩
 
     //保存设置的代理赔率表
     Route::post('/game/table/agent/odds/save/{gameId}/{agentId}', 'Back\GameTables\SaveGameOddsController@agentOddsAgent')->middleware(['check-permission','add-log-handle'])->name('game.agent.agentOddsAgent');

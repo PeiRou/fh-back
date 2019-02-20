@@ -14,7 +14,7 @@ class next_open_kssc extends Command
     protected  $gameId = 801;
     protected  $clong;
     protected $signature = 'next_open_kssc';
-    protected $description = '无限赛车-定時開號';
+    protected $description = '快速赛车-定時開號';
 
     public function __construct(Clong $clong)
     {
