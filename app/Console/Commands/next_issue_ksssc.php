@@ -59,8 +59,8 @@ class next_issue_ksssc extends Command
         $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
 
         $New_nextIssue = $nextIssue+1;
-        if(substr($New_nextIssue,-4)=='1106'){
-            $New_nextIssue = date("ymd",strtotime($openTime)).'0001';
+        if(substr($New_nextIssue,-3)=='277'){
+            $New_nextIssue = date("ymd",strtotime($openTime)).'001';
         }
 
         $redis->set('ksssc:nextIssue',(int)$New_nextIssue);
