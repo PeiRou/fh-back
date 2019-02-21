@@ -64,8 +64,8 @@ class clear_data extends Command
                 return '';
             }
         }
-        \Log::info('clear ing ....');
-        \Log::info("clear Date1:".$clearDate1."clear Date31:".$clearDate31."clear Date62:".$clearDate62);
+        \Log::channel('clear')->info('clear ing ....');
+        \Log::channel('clear')->info("clear Date1:".$clearDate1."clear Date31:".$clearDate31."clear Date62:".$clearDate62);
         //清-投注表
         try {
             $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
