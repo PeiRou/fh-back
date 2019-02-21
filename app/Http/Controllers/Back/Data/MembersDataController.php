@@ -950,7 +950,8 @@ GROUP BY g.ga_id LIMIT $start,$length";
             $redisUser = (array)json_decode($redisUser,true);
             if($platform>0 && $platform != $redisUser['platform'])
                 continue;
-            $onlineUser[] = $redisUser['user_id'];
+            if(isset($redisUser['user_id']))
+                $onlineUser[] = $redisUser['user_id'];
         }
         $user = User::select()
             ->whereIn('id',$onlineUser)->where('testFlag',0)->skip($start)->take($length)->get();
