@@ -95,7 +95,6 @@ class New_Ksft
             return false;
         $excel = new Excel();
         for($i=1;$i<= (int)$exeBase->excel_num;$i++){
-            $openCode = $excel->opennum($table,$exeBase->is_user,$issue,$i);
             if($i==1){
                 $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
                 if(empty($exeBet))
@@ -103,6 +102,7 @@ class New_Ksft
             }else{
                 DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
             }
+            $openCode = $excel->opennum($table,$exeBase->is_user,$issue,$i);
             $win = $this->exc_play($openCode,$gameId);
             $bunko = $excel->bunko($win,$gameId,$issue,true);
             if($bunko == 1){
