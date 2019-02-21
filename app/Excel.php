@@ -241,10 +241,10 @@ class Excel
             else
                 $lose_losewin_rate = 0;
             $opennum = $lose_losewin_rate>$is_killopen->kill_rate?'':$killopennum->excel_opennum;
-            \Log::channel('serfKill')->info($table.':杀率设置'.json_encode($is_killopen));
-            \Log::channel('serfKill')->info($table.':输赢比 '.$lose_losewin_rate);
-            \Log::channel('serfKill')->info($table.' 获取KILL开奖'.$issue.'--'.$opennum);
-            \Log::channel('serfKill')->info($table.' 获取origin开奖'.$issue.'--'.$opencode);
+            writeLog('serfKill',$table.':杀率设置'.json_encode($is_killopen));
+            writeLog('serfKill',$table.':输赢比 '.$lose_losewin_rate);
+            writeLog('serfKill',$table.' 获取KILL开奖'.$issue.'--'.$opennum);
+            writeLog('serfKill',$table.' 获取origin开奖'.$issue.'--'.$opencode);
         }else if(isset($is_killopen->is_user) && $is_killopen->is_user == 0){//增加统一杀率，如果是此栏位为0时，为统一控制杀率
             $opennum = $this->opennum($table,$is_killopen->is_user,$issue);
         }
