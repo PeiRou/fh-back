@@ -59,11 +59,11 @@ class next_issue_gdklsf extends Command
         if(substr($openTime,-8) =='23:00:00'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
             $New_nextIssue = date('Ymd',strtotime($nextDay)).'001';
-            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:08:00';
-            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:10:00';
+            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:18:00';
+            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:20:00';
         } else {
-            $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(510)->toDateTimeString();
-            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(10)->toDateTimeString();
+            $nextIssueEndTime = Carbon::parse($openTime)->addMinutes(18)->toDateTimeString();
+            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(20)->toDateTimeString();
         }
         $redis->set('gdklsf:nextIssue',(int)$New_nextIssue);
         $redis->set('gdklsf:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));

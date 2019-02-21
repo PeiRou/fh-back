@@ -22,8 +22,8 @@ class ISSUE_SEED_GDKLSF extends Command
         $timeUp = date('Y-m-d 09:00:00');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_gdklsf (issue,opentime) VALUES ";
-        for($i=1;$i<=84;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
+        for($i=1;$i<=42;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
             if(strlen($i) == 1){
                 $i = '00'.$i;
             }
