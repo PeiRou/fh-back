@@ -339,7 +339,6 @@ class Excel
         }
         $redis->setex($key,3,'ing');
         $url = Config::get('website.guanIssueServerUrl').'ziyingIssue/'.$key;
-        writeLog('sameKill',$url);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -348,6 +347,7 @@ class Excel
         $tmpInfo = curl_exec($curl);
         curl_close($curl);
         $res = json_decode($tmpInfo,true);
+        writeLog('sameKill','getZiYingIssueNum - '.'url:'.$url.' res:'.json_encode($res));
         return $res;
     }
     //取得统一杀率试算开号
@@ -360,8 +360,6 @@ class Excel
         }
         $redis->setex($key,3,'ing');
         $url = Config::get('website.guanIssueServerUrl').'getBunko/'.$key;
-        writeLog('sameKill','getKillIssueNum');
-        writeLog('sameKill',$url);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -370,6 +368,7 @@ class Excel
         $tmpInfo = curl_exec($curl);
         curl_close($curl);
         $res = json_decode($tmpInfo,true);
+        writeLog('sameKill','getKillIssueNum - '.'url:'.$url.' res:'.json_encode($res));
         return $res;
     }
     //对统一杀率传试算比值
@@ -383,8 +382,6 @@ class Excel
         $params['open'] = $opencode;
         $params['win'] = $win;
         $url = Config::get('website.guanIssueServerUrl').'setBunko/'.$key;
-        writeLog('sameKill',$url);
-        writeLog('sameKill',$params);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -395,6 +392,7 @@ class Excel
         $tmpInfo = curl_exec($curl);
         curl_close($curl);
         $res = json_decode($tmpInfo,true);
+        writeLog('sameKill','setKillIssueNum - '.'url:'.$url.' post:'.json_encode($params).' res:'.json_encode($res));
         return $res;
     }
     //对统一杀率传当期输赢
@@ -531,15 +529,11 @@ class Excel
             $api = $this->kill_lottery[$game]['api'];
             if($num>0){
                 $res = $this->getKillIssueNum($api,$needOpenIssue,$num);
-                writeLog('sameKill','getKillIssueNum');
-                writeLog('sameKill',$res);
                 return isset($res['data'])?$res['data']:'';
             }else{
                 if(empty($api)||empty($needOpenIssue))
                     return '';
                 $res = $this->getZiYingIssueNum($api,$needOpenIssue);
-                writeLog('sameKill','getZiYingIssueNum');
-                writeLog('sameKill',$res);
                 return isset($res['opennum'])?$res['opennum']:'';
             }
         }
@@ -547,9 +541,9 @@ class Excel
     }
 
     private $kill_lottery = array(
-        'game_mssc' => array('id'=>80,'api'=>'kssc'),     //秒速赛车
-        'game_msft' => array('id'=>82,'api'=>'kssc'),     //秒速飞艇
-        'game_msssc' => array('id'=>81,'api'=>'kssc'),     //秒速时时彩
+        'game_mssc' => array('id'=>80,'api'=>'mssc'),     //秒速赛车
+        'game_msft' => array('id'=>82,'api'=>'msft'),     //秒速飞艇
+        'game_msssc' => array('id'=>81,'api'=>'msssc'),     //秒速时时彩
         'game_paoma' => array('id'=>99,'api'=>'paoma'),     //香港跑马
         'game_xylhc' => array('id'=>85,'api'=>'xylhc'),     //幸运六合彩
         'game_msjsk3' => array('id'=>86,'api'=>'msjsk3'),     //秒速快三
