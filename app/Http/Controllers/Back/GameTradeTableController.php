@@ -625,4 +625,82 @@ class GameTradeTableController extends Controller
         }
         return view('back.gameTradeTables.113')->with('mm',$fromDB->all());
     }
+
+    //快速赛车
+    public function gameTradeTable801()
+    {
+        $data = Play::where('gameId',801)->get();
+        $filter = ['GAME801_1D10_min','GAME801_1D10_max','GAME801_1D10_turnMax','GAME801_GYZH_min','GAME801_GYZH_max','GAME801_GYZH_turnMax','GAME801_GYDXDS_turnMax','GAME801_GYDXDS_min','GAME801_GYDXDS_max','GAME801_DXDSLH_min','GAME801_DXDSLH_max','GAME801_DXDSLH_turnMax'];
+        $fromDB = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->min_tag == $i){
+                    $fromDB->put($item->min_tag,$item->minMoney);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->max_tag == $s){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }
+            }
+            foreach ($filter as $x){
+                if($item->turnMax_tag == $x){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.801')->with('mm',$fromDB->all());
+    }
+
+    //快速飞艇
+    public function gameTradeTable802()
+    {
+        $data = Play::where('gameId',802)->get();
+        $filter = ['GAME802_1D10_min','GAME802_1D10_max','GAME802_1D10_turnMax','GAME802_GYZH_min','GAME802_GYZH_max','GAME802_GYZH_turnMax','GAME802_GYDXDS_turnMax','GAME802_GYDXDS_min','GAME802_GYDXDS_max','GAME802_DXDSLH_min','GAME802_DXDSLH_max','GAME802_DXDSLH_turnMax'];
+        $fromDB = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->min_tag == $i){
+                    $fromDB->put($item->min_tag,$item->minMoney);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->max_tag == $s){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }
+            }
+            foreach ($filter as $x){
+                if($item->turnMax_tag == $x){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.802')->with('mm',$fromDB->all());
+    }
+
+    //快速时时彩
+    public function gameTradeTable803()
+    {
+        $data = Play::where('gameId',803)->get();
+        $filter = ['GAME803_DXDSLHH_min','GAME803_DXDSLHH_max','GAME803_DXDSLHH_turnMax','GAME803_1D5_min','GAME803_1D5_max','GAME803_1D5_turnMax','GAME803_BAOZI_min','GAME803_BAOZI_max','GAME803_BAOZI_turnMax','GAME803_SHUNZI_min','GAME803_SHUNZI_max','GAME803_SHUNZI_turnMax','GAME803_DBZ_min','GAME803_DBZ_max','GAME803_DBZ_turnMax'];
+        $fromDB = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->min_tag == $i){
+                    $fromDB->put($item->min_tag,$item->minMoney);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->max_tag == $s){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }
+            }
+            foreach ($filter as $x){
+                if($item->turnMax_tag == $x){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.803')->with('mm',$fromDB->all());
+    }
 }

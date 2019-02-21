@@ -23,7 +23,7 @@
         padding: 5px !important;
     }
 </style>
-<form id="game81Form" action="{{ url('/game/trade/table/save/msssc') }}">
+<form id="game803Form" action="{{ url('/game/trade/table/save/ksssc') }}">
     <table align="center" class="ui celled small table selectable">
         <tbody>
         <tr class="firstRow">
@@ -34,38 +34,38 @@
         </tr>
         <tr>
             <td align="center" rowspan="1" colspan="4" class="table-title">
-                秒速时时彩
+                快速时时彩
             </td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">大、小、单、双、龙、虎、和</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_DXDSLHH_min" value="{{ $mm['GAME81_DXDSLHH_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_DXDSLHH_max" value="{{ $mm['GAME81_DXDSLHH_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_DXDSLHH_turnMax" value="{{ $mm['GAME81_DXDSLHH_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_DXDSLHH_min" value="{{ $mm['GAME803_DXDSLHH_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_DXDSLHH_max" value="{{ $mm['GAME803_DXDSLHH_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_DXDSLHH_turnMax" value="{{ $mm['GAME803_DXDSLHH_turnMax'] }}"></td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">单号1～5</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_1D5_min" value="{{ $mm['GAME81_1D5_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_1D5_max" value="{{ $mm['GAME81_1D5_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_1D5_turnMax" value="{{ $mm['GAME81_1D5_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_1D5_min" value="{{ $mm['GAME803_1D5_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_1D5_max" value="{{ $mm['GAME803_1D5_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_1D5_turnMax" value="{{ $mm['GAME803_1D5_turnMax'] }}"></td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">豹子</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_BAOZI_min" value="{{ $mm['GAME81_BAOZI_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_BAOZI_max" value="{{ $mm['GAME81_BAOZI_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_BAOZI_turnMax" value="{{ $mm['GAME81_BAOZI_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_BAOZI_min" value="{{ $mm['GAME803_BAOZI_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_BAOZI_max" value="{{ $mm['GAME803_BAOZI_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_BAOZI_turnMax" value="{{ $mm['GAME803_BAOZI_turnMax'] }}"></td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">顺子</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_SHUNZI_min" value="{{ $mm['GAME81_SHUNZI_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_SHUNZI_max" value="{{ $mm['GAME81_SHUNZI_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_SHUNZI_turnMax" value="{{ $mm['GAME81_SHUNZI_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_SHUNZI_min" value="{{ $mm['GAME803_SHUNZI_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_SHUNZI_max" value="{{ $mm['GAME803_SHUNZI_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_SHUNZI_turnMax" value="{{ $mm['GAME803_SHUNZI_turnMax'] }}"></td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">对子、半顺、杂六</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_DBZ_min" value="{{ $mm['GAME81_DBZ_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_DBZ_max" value="{{ $mm['GAME81_DBZ_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME81_DBZ_turnMax" value="{{ $mm['GAME81_DBZ_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_DBZ_min" value="{{ $mm['GAME803_DBZ_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_DBZ_max" value="{{ $mm['GAME803_DBZ_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME803_DBZ_turnMax" value="{{ $mm['GAME803_DBZ_turnMax'] }}"></td>
         </tr>
         </tbody>
     </table>
@@ -74,7 +74,7 @@
     </div>
 </form>
 <script>
-    $('#game81Form').formValidation({
+    $('#game803Form').formValidation({
         framework: 'semantic',
         icon: {
             valid: 'checkmark icon',
