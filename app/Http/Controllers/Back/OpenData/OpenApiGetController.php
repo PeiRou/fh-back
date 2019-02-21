@@ -33,7 +33,10 @@ class OpenApiGetController extends Controller
         }
 
         $excelModel = new Excel();
-        $openCode = $excelModel->opennum('game_'.Games::$aCodeGameName[$type]);
+        if(in_array($type,['kssc','ksssc','ksft']))
+            $openCode = $excelModel->opennum('game_'.Games::$aCodeGameName[$type],0,$issue);
+        else
+            $openCode = $excelModel->opennum('game_'.Games::$aCodeGameName[$type]);
         if(empty($openCode)) return [
             'code' => 200,
             'status' => false,
@@ -106,6 +109,64 @@ class OpenApiGetController extends Controller
             'n1' => (int)$arrCode[0],
             'n2' => (int)$arrCode[1],
             'n3' => (int)$arrCode[2],
+        ];
+    }
+
+    //快速赛车
+    public function kssc($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+            'n8' => (int)$arrCode[7],
+            'n9' => (int)$arrCode[8],
+            'n10' => (int)$arrCode[9],
+        ];
+    }
+
+    //快速时时彩
+    public function ksssc($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+        ];
+    }
+
+    //快速飞艇
+    public function ksft($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+            'n8' => (int)$arrCode[7],
+            'n9' => (int)$arrCode[8],
+            'n10' => (int)$arrCode[9],
         ];
     }
 
