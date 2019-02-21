@@ -218,9 +218,9 @@ class Excel
             }
         }
         DB::table('excel_base')->where('excel_base_idx', $exceBase->excel_base_idx)->update($data);
-        \Log::channel('sameKill')->info($exceBase->is_user);
+        writeLog('sameKill',$exceBase->is_user);
         if($exceBase->is_user == 0){    //增加统一杀率，如果是此栏位为0时，为统一控制杀率
-            \Log::channel('sameKill')->info('setWinIssueNum');
+            writeLog('sameKill','setWinIssueNum');
             $dataUnity['game'] = $gameId;
             $this->setWinIssueNum($dataUnity);
         }
@@ -339,7 +339,7 @@ class Excel
         }
         $redis->setex($key,3,'ing');
         $url = Config::get('website.guanIssueServerUrl').'ziyingIssue/'.$key;
-        \Log::channel('sameKill')->info($url);
+        writeLog('sameKill',$url);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -360,8 +360,8 @@ class Excel
         }
         $redis->setex($key,3,'ing');
         $url = Config::get('website.guanIssueServerUrl').'getBunko/'.$key;
-        \Log::channel('sameKill')->info('getKillIssueNum');
-        \Log::channel('sameKill')->info($url);
+        writeLog('sameKill','getKillIssueNum');
+        writeLog('sameKill',$url);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -383,8 +383,8 @@ class Excel
         $params['open'] = $opencode;
         $params['win'] = $win;
         $url = Config::get('website.guanIssueServerUrl').'setBunko/'.$key;
-        \Log::channel('sameKill')->info($url);
-        \Log::channel('sameKill')->info($params);
+        writeLog('sameKill',$url);
+        writeLog('sameKill',$params);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -400,8 +400,8 @@ class Excel
     //对统一杀率传当期输赢
     private function setWinIssueNum($params){
         $url = Config::get('website.guanIssueServerUrl').'setLastBunko';
-        \Log::channel('sameKill')->info($url);
-        \Log::channel('sameKill')->info($params);
+        writeLog('sameKill',$url);
+        writeLog('sameKill',$params);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -531,15 +531,15 @@ class Excel
             $api = $this->kill_lottery[$game]['api'];
             if($num>0){
                 $res = $this->getKillIssueNum($api,$needOpenIssue,$num);
-                \Log::channel('sameKill')->info('getKillIssueNum');
-                \Log::channel('sameKill')->info($res);
+                writeLog('sameKill','getKillIssueNum');
+                writeLog('sameKill',$res);
                 return isset($res['data'])?$res['data']:'';
             }else{
                 if(empty($api)||empty($needOpenIssue))
                     return '';
                 $res = $this->getZiYingIssueNum($api,$needOpenIssue);
-                \Log::channel('sameKill')->info('getZiYingIssueNum');
-                \Log::channel('sameKill')->info($res);
+                writeLog('sameKill','getZiYingIssueNum');
+                writeLog('sameKill',$res);
                 return isset($res['opennum'])?$res['opennum']:'';
             }
         }
