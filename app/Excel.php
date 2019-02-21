@@ -218,9 +218,7 @@ class Excel
             }
         }
         DB::table('excel_base')->where('excel_base_idx', $exceBase->excel_base_idx)->update($data);
-        writeLog('sameKill',$exceBase->is_user);
         if($exceBase->is_user == 0){    //增加统一杀率，如果是此栏位为0时，为统一控制杀率
-            writeLog('sameKill','setWinIssueNum');
             $dataUnity['game'] = $gameId;
             $this->setWinIssueNum($dataUnity);
         }
@@ -398,8 +396,7 @@ class Excel
     //对统一杀率传当期输赢
     private function setWinIssueNum($params){
         $url = Config::get('website.guanIssueServerUrl').'setLastBunko';
-        writeLog('sameKill',$url);
-        writeLog('sameKill',$params);
+        writeLog('sameKill','setWinIssueNum - '.'url:'.$url);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
