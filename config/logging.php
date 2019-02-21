@@ -44,9 +44,15 @@ return [
             'level' => 'debug',
         ],
 
-        'wwwpost' => [
+        'serfKill' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/laravel-wwwpost.log'),
+            'path' => storage_path('logs/laravel-serfKill.log'),
+            'level' => 'debug',
+        ],
+
+        'sameKill' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/laravel-sameKill.log'),
             'level' => 'debug',
         ],
 
