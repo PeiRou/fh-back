@@ -6,16 +6,19 @@ use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use App\Http\Controllers\Bet\Clong;
 
 class next_open_twxyft extends Command
 {
     protected  $code = 'twxyft';
     protected  $gameId = 804;
+    protected  $clong;
     protected $signature = 'next_open_twxyft';
     protected $description = '台湾幸运飞艇-定時開號';
 
-    public function __construct()
+    public function __construct(Clong $clong)
     {
+        $this->clong = $clong;
         parent::__construct();
     }
 
@@ -61,6 +64,12 @@ class next_open_twxyft extends Command
         $opencode = empty($opennum)?$res->opencode:$opennum;
         if(empty($opencode))
             return 'Fail';
+
+        //清除昨天长龙，在录第一期的时候清掉
+        if($issuenum=='001'){
+            DB::table('clong_kaijian1')->where('lotteryid',$this->gameId)->delete();
+            DB::table('clong_kaijian2')->where('lotteryid',$this->gameId)->delete();
+        }
         try {
             if ($redis_issue !== $needOpenIssue) {
                 try {
@@ -76,6 +85,8 @@ class next_open_twxyft extends Command
                         $key = 'twxyft:issue';
                         $redis->set($key, $needOpenIssue);
                         $redis->set('twxyft:gapnum',$gapnum);
+                        $this->clong->setKaijian('twxyft',1,$opencode);
+                        $this->clong->setKaijian('twxyft',2,$opencode);
                     }
                 } catch (\Exception $exception) {
                     writeLog('next_open', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
