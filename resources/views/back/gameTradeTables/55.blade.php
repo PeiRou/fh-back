@@ -23,7 +23,7 @@
         padding: 5px !important;
     }
 </style>
-<form id="game82Form" action="{{ url('/game/trade/table/save/msft') }}">
+<form id="game55Form" action="{{ url('/game/trade/table/save/xyft') }}">
     <table align="center" class="ui celled small table selectable">
         <tbody>
         <tr class="firstRow">
@@ -34,32 +34,32 @@
         </tr>
         <tr>
             <td align="center" rowspan="1" colspan="4" class="table-title">
-                秒速飞艇
+                幸运飞艇
             </td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">大、小、单、双、龙、虎</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_DXDSLH_min" value="{{ $mm['GAME82_DXDSLH_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_DXDSLH_max" value="{{ $mm['GAME82_DXDSLH_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_DXDSLH_turnMax" value="{{ $mm['GAME82_DXDSLH_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_DXDSLH_min" value="{{ $mm['GAME55_DXDSLH_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_DXDSLH_max" value="{{ $mm['GAME55_DXDSLH_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_DXDSLH_turnMax" value="{{ $mm['GAME55_DXDSLH_turnMax'] }}"></td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">单号1～10</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_1D10_min" value="{{ $mm['GAME82_1D10_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_1D10_max" value="{{ $mm['GAME82_1D10_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_1D10_turnMax" value="{{ $mm['GAME82_1D10_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_1D10_min" value="{{ $mm['GAME55_1D10_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_1D10_max" value="{{ $mm['GAME55_1D10_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_1D10_turnMax" value="{{ $mm['GAME55_1D10_turnMax'] }}"></td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">冠亚组合</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_GYZH_min" value="{{ $mm['GAME82_GYZH_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_GYZH_max" value="{{ $mm['GAME82_GYZH_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_GYZH_turnMax" value="{{ $mm['GAME82_GYZH_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_GYZH_min" value="{{ $mm['GAME55_GYZH_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_GYZH_max" value="{{ $mm['GAME55_GYZH_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_GYZH_turnMax" value="{{ $mm['GAME55_GYZH_turnMax'] }}"></td>
         </tr>
         <tr>
             <td width="190" valign="top" class="small-padding">冠亚大、小、单、双</td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_GYDXDS_min" value="{{ $mm['GAME82_GYDXDS_min'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_GYDXDS_max" value="{{ $mm['GAME82_GYDXDS_max'] }}"></td>
-            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME82_GYDXDS_turnMax" value="{{ $mm['GAME82_GYDXDS_turnMax'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_GYDXDS_min" value="{{ $mm['GAME55_GYDXDS_min'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_GYDXDS_max" value="{{ $mm['GAME55_GYDXDS_max'] }}"></td>
+            <td width="190" valign="top" class="small-padding"><input type="text" name="GAME55_GYDXDS_turnMax" value="{{ $mm['GAME55_GYDXDS_turnMax'] }}"></td>
         </tr>
         </tbody>
     </table>
@@ -68,7 +68,7 @@
     </div>
 </form>
 <script>
-    $('#game82Form').formValidation({
+    $('#game55Form').formValidation({
         framework: 'semantic',
         icon: {
             valid: 'checkmark icon',

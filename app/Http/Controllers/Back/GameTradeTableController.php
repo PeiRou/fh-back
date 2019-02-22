@@ -398,6 +398,31 @@ class GameTradeTableController extends Controller
         }
         return view('back.gameTradeTables.82')->with('mm',$fromDB->all());
     }
+    //幸运飞艇
+    public function gameTradeTable55()
+    {
+        $data = Play::where('gameId',55)->get();
+        $filter = ['GAME55_1D10_min','GAME55_1D10_max','GAME55_1D10_turnMax','GAME55_GYZH_min','GAME55_GYZH_max','GAME55_GYZH_turnMax','GAME55_GYDXDS_turnMax','GAME55_GYDXDS_min','GAME55_GYDXDS_max','GAME55_DXDSLH_min','GAME55_DXDSLH_max','GAME55_DXDSLH_turnMax'];
+        $fromDB = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->min_tag == $i){
+                    $fromDB->put($item->min_tag,$item->minMoney);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->max_tag == $s){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }
+            }
+            foreach ($filter as $x){
+                if($item->turnMax_tag == $x){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.55')->with('mm',$fromDB->all());
+    }
 
     //秒速时时彩
     public function gameTradeTable81()

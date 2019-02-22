@@ -19,6 +19,7 @@
                 <a class="item" data-tab="five" data-type="lhc">六合彩</a>
                 {{--<a class="item" data-tab="six" data-type="nn">牛牛</a>--}}
             </div>
+
             <div class="ui tab segment active" data-tab="first" style="margin-bottom: 70px;">
                 <div class="sub-item">
                     <ul>
@@ -58,6 +59,7 @@
                         <li data-tag="three" data-id="83">幸运快乐8</li>
                         <li data-tag="three" data-id="84">幸运蛋蛋</li>
                         <li data-tag="three" data-id="85">幸运六合彩</li>
+                        <li data-tag="three" data-id="55">幸运飞艇</li>
                     </ul>
                 </div>
                 <div id="three_content"></div>
@@ -81,6 +83,7 @@
             {{--<div class="ui tab segment" data-tab="six" style="margin-bottom: 70px;">--}}
                 {{--牛牛--}}
             {{--</div>--}}
+
         </div>
     </div>
 @endsection

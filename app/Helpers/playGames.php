@@ -360,13 +360,19 @@ if(!function_exists('p')){
 if(!function_exists('writeLog')) {
     function writeLog($path = '', ...$args)
     {
+        if(isset($args[0]) && (is_array($args[0]) || is_object($args[0])))
+            $args[0] = json_encode($args[0], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if(isset($args[1]))
+            $args[1] = (array)$args[1];
+
         try {
-            $log = new \Monolog\Logger('back');
+            $log = new \Monolog\Logger('before');
             $log->pushHandler(new \Monolog\Handler\StreamHandler(storage_path('logs/' . $path . '/' . date('Y-m-d').'.log'), \Monolog\Logger::DEBUG));
             $log->info(...$args);
         } catch (\Exception $e) {
             \Log::info('日志记录失败：' . $e->getMessage());
         }
+
     }
 }
 
