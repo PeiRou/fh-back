@@ -28,6 +28,12 @@ class SaveGameOddsController extends Controller
         return $this->updateBatch($data,55);
     }
 
+    public function twxyft(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,804);
+    }
+
     public function cqssc(Request $request)
     {
         $data = $request->all();
@@ -386,10 +392,14 @@ class SaveGameOddsController extends Controller
                 'name' => ['GYD_odds','GYD_rebate','GYX_odds','GYX_rebate','GYDan_odds','GYDan_rebate','GYS_odds','GYS_rebate','341819_odds','341819_rebate','561617_odds','561617_rebate','781415_odds','781415_rebate','9101213_odds','9101213_rebate','11_odds','11_rebate','1_10_odds','1_10_rebate','2face_odds','2face_rebate'],
                 'view' => 'bjpk10'
             ],
-            '55' => [
+            '804' => [
                 'name' => ['GYD_odds','GYD_rebate','GYX_odds','GYX_rebate','GYDan_odds','GYDan_rebate','GYS_odds','GYS_rebate','341819_odds','341819_rebate','561617_odds','561617_rebate','781415_odds','781415_rebate','9101213_odds','9101213_rebate','11_odds','11_rebate','1_10_odds','1_10_rebate','2face_odds','2face_rebate'],
                 'view' => 'bjpk10'
             ],
+//            '55' => [ //幸运飞艇
+//                'name' => ['GYD_odds','GYD_rebate','GYX_odds','GYX_rebate','GYDan_odds','GYDan_rebate','GYS_odds','GYS_rebate','341819_odds','341819_rebate','561617_odds','561617_rebate','781415_odds','781415_rebate','9101213_odds','9101213_rebate','11_odds','11_rebate','1_10_odds','1_10_rebate','2face_odds','2face_rebate'],
+//                'view' => 'bjpk10'
+//            ],
             '99' => [
                 'name' => ['GYD_odds','GYD_rebate','GYX_odds','GYX_rebate','GYDan_odds','GYDan_rebate','GYS_odds','GYS_rebate','341819_odds','341819_rebate','561617_odds','561617_rebate','781415_odds','781415_rebate','9101213_odds','9101213_rebate','11_odds','11_rebate','1_10_odds','1_10_rebate','2face_odds','2face_rebate'],
                 'view' => 'bjpk10'

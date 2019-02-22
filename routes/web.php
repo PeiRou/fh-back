@@ -702,6 +702,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/tables/802', 'Back\GameTableController@gameTable802'); //快速飞艇
     Route::get('/game/tables/803', 'Back\GameTableController@gameTable803'); //快速时时彩
     Route::get('/game/tables/55', 'Back\GameTableController@gameTable55'); //幸运飞艇
+    Route::get('/game/tables/804', 'Back\GameTableController@gameTable804'); //台灣幸運飛艇
 
     //不同层级的代理赔率
     Route::get('/game/agent/tables/{gameId}/{agentId}', 'Back\GameAgentTableController@gameTable');
@@ -736,6 +737,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/trade/tables/801', 'Back\GameTradeTableController@gameTradeTable801'); //快速赛车
     Route::get('/game/trade/tables/802', 'Back\GameTradeTableController@gameTradeTable802'); //快速飞艇
     Route::get('/game/trade/tables/803', 'Back\GameTradeTableController@gameTradeTable803'); //快速时时彩
+    Route::get('/game/trade/tables/804', 'Back\GameTradeTableController@gameTradeTable804'); //台湾幸运飞艇
 
     //保存游戏赔率表格数据
     Route::post('/game/table/save/bjpk10', 'Back\GameTables\SaveGameOddsController@bjpk10');
@@ -769,6 +771,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/table/save/ksft', 'Back\GameTables\SaveGameOddsController@ksft'); // 快速飞艇
     Route::post('/game/table/save/ksssc', 'Back\GameTables\SaveGameOddsController@ksssc'); // 快速时时彩
     Route::post('/game/table/save/xyft', 'Back\GameTables\SaveGameOddsController@xyft'); // 幸运飞艇
+    Route::post('/game/table/save/twxyft', 'Back\GameTables\SaveGameOddsController@twxyft'); // 台灣幸運飛艇
 
     //保存设置的代理赔率表
     Route::post('/game/table/agent/odds/save/{gameId}/{agentId}', 'Back\GameTables\SaveGameOddsController@agentOddsAgent')->middleware(['check-permission','add-log-handle'])->name('game.agent.agentOddsAgent');
@@ -804,6 +807,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/trade/table/save/kssc','Back\GameTradeTables\SaveGameTradeController@kssc'); //保存快速赛车
     Route::post('/game/trade/table/save/ksft','Back\GameTradeTables\SaveGameTradeController@ksft'); //保存快速飞艇
     Route::post('/game/trade/table/save/ksssc','Back\GameTradeTables\SaveGameTradeController@ksssc'); //保存快速时时彩
+    Route::post('/game/trade/table/save/twxyft','Back\GameTradeTables\SaveGameTradeController@twxyft'); //保存台湾幸运飞艇
 
 //error
     Route::get('/error/403', function () {
