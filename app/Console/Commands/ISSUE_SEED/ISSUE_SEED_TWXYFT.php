@@ -6,10 +6,10 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class ISSUE_SEED_MSJSK3 extends Command
+class ISSUE_SEED_TWXYFT extends Command
 {
-    protected $signature = 'ISSUE_SEED_MSJSK3';
-    protected $description = '秒速快3期数生成-1440-24小时';
+    protected $signature = 'ISSUE_SEED_TWXYFT';
+    protected $description = '台湾幸运飞艇期数生成-179-24小时';
 
     public function __construct()
     {
@@ -18,16 +18,16 @@ class ISSUE_SEED_MSJSK3 extends Command
 
     public function handle()
     {
-        $curDate = date('Ymd');
-        $timeUp = ' 23:59:00';
-        $checkUpdate = DB::table('issue_seed')->select('msjsk3')->where('id',1)->first();
+        $curDate = date('ymd');
+        $timeUp = ' 23:55:00';
+        $checkUpdate = DB::table('issue_seed')->select('twxyft')->where('id',1)->first();
         $issueDate = '';
-        if(isset($checkUpdate->msjsk3)) {
-            if($curDate == $checkUpdate->msjsk3) {
+        if(isset($checkUpdate->twxyft)) {
+            if($curDate == $checkUpdate->twxyft) {
                 $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
-                $curDate = date('Ymd', strtotime('+ 1 day', time()));
-            }else if($curDate < $checkUpdate->msjsk3)
-                writeLog('ISSUE_SEED', $curDate.'秒速快3期数已存在');
+                $curDate = date('ymd', strtotime('+ 1 day', time()));
+            }else if($curDate < $checkUpdate->twxyft)
+                writeLog('ISSUE_SEED', $curDate.'台湾幸运飞艇期数已存在');
             else
                 $issueDate = date('Y-m-d',time());
         }else{
@@ -38,9 +38,9 @@ class ISSUE_SEED_MSJSK3 extends Command
             return '';
         $timeUp = $issueDate . $timeUp;
         $timeUp = Carbon::parse($timeUp)->addDay(-1)->toDateTimeString();
-        $sql = "INSERT INTO game_msjsk3 (issue,opentime) VALUES ";
-        for($i=1;$i<=1440;$i++){
-            $timeUp = Carbon::parse($timeUp)->addSeconds(60);
+        $sql = "INSERT INTO game_twxyft (issue,opentime) VALUES ";
+        for($i=1;$i<=288;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(5);
             if(strlen($i) == 1){
                 $i = '000'.$i;
             }
@@ -53,13 +53,13 @@ class ISSUE_SEED_MSJSK3 extends Command
             $issue = $curDate.$i;
             $sql .= "('$issue','$timeUp'),";
         }
-        if($checkUpdate->msjsk3 == $curDate){
+        if($checkUpdate->twxyft == $curDate){
             writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
         } else {
             $run = DB::statement(rtrim($sql, ',').";");
             if($run == 1){
                 $update = DB::table('issue_seed')->where('id',1)->update([
-                    'msjsk3' => $curDate
+                    'twxyft' => $curDate
                 ]);
                 if($update !== 1){
                     writeLog('ISSUE_SEED', 'error');

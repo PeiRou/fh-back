@@ -106,6 +106,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunKsssc' => [
             'App\Listeners\RunKssscEventListener',
         ],
+        'App\Events\RunTwxyft' => [
+            'App\Listeners\RunTwxyftEventListener',
+        ],
         'App\Events\BackPusherEvent' => [
             'App\Listeners\BackPusherEventListener',
         ],

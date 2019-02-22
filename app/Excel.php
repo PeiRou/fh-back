@@ -548,6 +548,7 @@ class Excel
         'game_kssc' => array('id'=>801,'api'=>'kssc'),     //快速赛车
         'game_ksft' => array('id'=>802,'api'=>'ksft'),     //快速飞艇
         'game_ksssc' => array('id'=>803,'api'=>'ksssc'),    //快速时时彩
+        'game_twxyft' => array('id'=>804,'api'=>'twxyft'),    //台湾幸运飞艇
     );
 
     private function opennum_pk10(){
