@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_TWXYFT extends Command
 {
     protected $signature = 'ISSUE_SEED_TWXYFT';
-    protected $description = '台湾幸运飞艇期数生成-179-24小时';
+    protected $description = '台湾幸运飞艇期数生成-288-24小时';
 
     public function __construct()
     {
