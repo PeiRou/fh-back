@@ -68,6 +68,7 @@ class Games extends Model
         'ksssc' => 'ksssc',       //快速时时彩
         'ksft' => 'ksft',       //快速飞艇
         'kssc' => 'kssc',       //快速赛车
+        'twxyft' => 'twxyft',       //台湾幸运飞艇
     ];
 
     public static $aCodeBindingGame = [
@@ -82,7 +83,7 @@ class Games extends Model
         //时时彩
         'ssc' => ['jsssc','cqssc','tjssc','xjssc','qqffc','ksssc'],
         //赛车
-        'sc' => ['jspk10','pk10','jsft','xyft','paoma','jspk10','kssc','ksft'],
+        'sc' => ['jspk10','pk10','jsft','xyft','paoma','jspk10','kssc','ksft','twxyft'],
         //幸运农场 快乐十分
         'xync' => ['gdkl10','xync'],
         //广东11选5
@@ -130,5 +131,6 @@ class Games extends Model
         801 => 'kssc',
         802 => 'ksft',
         803 => 'ksssc',
+        804 => 'twxyft',
     ];
 }

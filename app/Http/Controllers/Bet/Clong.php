@@ -30,6 +30,7 @@
             'kssc' => array('id'=>801,'type'=>'car'),     //快速赛车
             'ksft' => array('id'=>802,'type'=>'car'),     //快速飞艇
             'ksssc' => array('id'=>803,'type'=>'ssc'),    //快速时时彩
+            'twxyft' => array('id'=>804,'type'=>'car'),     //台湾幸运飞艇
         );
         //开奖第一行
         private $clong_kaijian1 = array(
