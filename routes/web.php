@@ -800,7 +800,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/trade/table/save/fc3d','Back\GameTradeTables\SaveGameTradeController@fc3d'); //保存福彩3d
     Route::post('/game/trade/table/save/lhc','Back\GameTradeTables\SaveGameTradeController@lhc'); //保存六合彩
     Route::post('/game/trade/table/save/qqffc','Back\GameTradeTables\SaveGameTradeController@qqffc'); //保存QQ分分彩
-    Route::post('/game/trade/table/save/xyft','Back\GameTradeTables\SaveGameTradeController@xyft'); //幸运飞艇
+    Route::post('/game/trade/table/save/xyft','Back\GameTradeTables\SaveGameTradeController@xyft'); //保存幸运飞艇
     Route::post('/game/trade/table/save/kssc','Back\GameTradeTables\SaveGameTradeController@kssc'); //保存快速赛车
     Route::post('/game/trade/table/save/ksft','Back\GameTradeTables\SaveGameTradeController@ksft'); //保存快速飞艇
     Route::post('/game/trade/table/save/ksssc','Back\GameTradeTables\SaveGameTradeController@ksssc'); //保存快速时时彩

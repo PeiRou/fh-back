@@ -366,7 +366,7 @@ if(!function_exists('writeLog')) {
             $args[1] = (array)$args[1];
 
         try {
-            $log = new \Monolog\Logger('before');
+            $log = new \Monolog\Logger('back');
             $log->pushHandler(new \Monolog\Handler\StreamHandler(storage_path('logs/' . $path . '/' . date('Y-m-d').'.log'), \Monolog\Logger::DEBUG));
             $log->info(...$args);
         } catch (\Exception $e) {
