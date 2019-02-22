@@ -140,6 +140,12 @@ class SaveGameTradeController extends Controller
         return $this->updateBatch($data,55);
     }
 
+    public function twxyft(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,804);
+    }
+
     public function lhc(Request $request)
     {
         $data = $request->all();

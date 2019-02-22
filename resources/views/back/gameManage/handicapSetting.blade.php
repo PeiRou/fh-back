@@ -70,7 +70,8 @@
                         {{--<li>幸运快乐8</li>--}}
                         {{--<li>幸运蛋蛋</li>--}}
                         <li data-tag="three" data-id="85">幸运六合彩</li>
-                        <li data-tag="three" data-id="55">幸运飞艇</li>
+                        {{--<li data-tag="three" data-id="55">幸运飞艇</li>--}}
+                        <li data-tag="three" data-id="804">台灣幸運飛艇</li>
                     </ul>
                 </div>
                 <div id="three_content"></div>
