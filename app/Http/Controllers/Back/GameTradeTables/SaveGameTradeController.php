@@ -157,6 +157,21 @@ class SaveGameTradeController extends Controller
         return $this->updateBatch($data,113);
     }
 
+    public function kssc(Request $request){
+        $data = $request->all();
+        return $this->updateBatch($data,801);
+    }
+
+    public function ksft(Request $request){
+        $data = $request->all();
+        return $this->updateBatch($data,802);
+    }
+
+    public function ksssc(Request $request){
+        $data = $request->all();
+        return $this->updateBatch($data,803);
+    }
+
 
     function updateBatch($data,$id){
         $sqlMinMoney = "UPDATE play SET minMoney = CASE ";
