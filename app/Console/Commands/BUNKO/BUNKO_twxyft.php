@@ -3,7 +3,7 @@
 namespace App\Console\Commands\BUNKO;
 
 use App\Excel;
-use App\Events\RunMstf;
+use App\Events\RunTwxyft;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -12,7 +12,7 @@ class BUNKO_twxyft extends Command
 {
     protected $gameId = 804;
     protected $signature = 'BUNKO_twxyft';
-    protected $description = '秒速飞艇-定时结算';
+    protected $description = '台湾幸运飞艇-定时结算';
 
     public function __construct()
     {
@@ -37,7 +37,7 @@ class BUNKO_twxyft extends Command
                 'bunko' => 2
             ]);
             if($update)
-                event(new RunMstf($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
+                event(new RunTwxyft($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
         }
     }
 }
