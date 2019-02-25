@@ -375,7 +375,6 @@ if(!function_exists('writeLog')) {
 
     }
 }
-
 //获取队列真实名
 if(!function_exists('setQueueRealName')){
     function setQueueRealName($queue){
