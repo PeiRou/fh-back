@@ -37,11 +37,11 @@ class next_issue_xjssc extends Command
         $New_nextIssue = $nextIssue+1;
         if(substr($openTime,-8) == '02:00:00'){
             $New_nextIssue = date("Ymd",strtotime($openTime)).'01';                         //奖期
-            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 10:08:00';
-            $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime)).' 10:10:00';
+            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 10:18:00';
+            $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime)).' 10:20:00';
         } else {
-            $nextIssueEndTime = Carbon::parse($openTime)->addMinute(8)->toDateTimeString();
-            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(10)->toDateTimeString();
+            $nextIssueEndTime = Carbon::parse($openTime)->addMinutes(18)->toDateTimeString();
+            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(20)->toDateTimeString();
         }
 
         $redis->set('xjssc:nextIssue',(int)$New_nextIssue);
