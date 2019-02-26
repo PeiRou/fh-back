@@ -36,6 +36,7 @@ class clear_data extends Command
      */
     public function handle()
     {
+        $num = 0;
         $redis = Redis::connection();
         $redis->select(5);
         $keyEx = 'clearing';
@@ -51,32 +52,34 @@ class clear_data extends Command
         echo "clear Date31:".$clearDate31.PHP_EOL;
         echo "clear Date62:".$clearDate62.PHP_EOL;
         //清-游客
-//        $sql = "delete from users where testFlag = 1 and loginTime <='".date("Y-m-d H:i:s",strtotime('-1 day'))."' LIMIT 1000";
-//        $res = DB::connection('mysql::write')->statement($sql);
-//        echo 'table bet :'.$res.PHP_EOL;
-        if(!$redis->exists('canClear')){
+        $sql = "delete from users where testFlag = 1 and loginTime <='".date("Y-m-d H:i:s",strtotime('-1 day'))."' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table bet :'.$res.PHP_EOL;
+        if(!$redis->exists('clear-bet')){
             $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
-            $redis->setex('canClear',3600,'on');
+            $redis->setex('clear-bet',3600,'on');
             if(empty($res)){
                 $time = strtotime(date('Y-m-d 23:59:59')) - time();
-                $redis->setex($keyEx,$time,'on');
+                $redis->setex('clear-bet',$time,'on');
                 echo 'nothing';
                 return '';
+            }else{
+                try {
+                    $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
+                    $res = DB::connection('mysql::write')->statement($sql);
+                    echo 'table insert into bet_his :'.$res.PHP_EOL;
+                }catch (\Exception $e){
+                    echo 'table insert into bet_his :fail'.PHP_EOL;
+                }
+                $sql = "DELETE FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
+                $res = DB::connection('mysql::write')->statement($sql);
+                echo 'table bet :'.$res.PHP_EOL;
+                $num++;
             }
         }
         writeLog('clear','clear ing ....');
         writeLog('clear',"clear Date1:".$clearDate1."clear Date31:".$clearDate31."clear Date62:".$clearDate62);
         //清-投注表
-        try {
-            $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
-            $res = DB::connection('mysql::write')->statement($sql);
-            echo 'table insert into bet_his :'.$res.PHP_EOL;
-        }catch (\Exception $e){
-            echo 'table insert into bet_his :fail'.PHP_EOL;
-        }
-        $sql = "DELETE FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
-        $res = DB::connection('mysql::write')->statement($sql);
-        echo 'table bet :'.$res.PHP_EOL;
         //清-资金明细
         $sql = "DELETE FROM capital WHERE created_at <= '{$clearDate62}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
@@ -140,6 +143,11 @@ class clear_data extends Command
         $this->clrGameTables('game_xylhc',$clearDate62);
         echo 'Ok';
         writeLog('clear','Ok');
+        if($num==0){
+            $time = strtotime(date('Y-m-d 23:59:59')) - time();
+            $redis->setex($keyEx,$time,'on');
+            writeLog('clear',date('Y-m-d 23:59:59').'finished');
+        }
     }
 
     /**
@@ -148,12 +156,23 @@ class clear_data extends Command
      * @param string $clearDate62
      * @return int
      */
-    private function clrGameTables($table='',$clearDate62=''){
+    private function clrGameTables($table='',$clearDate62='',$num){
         if(empty($table) || empty($clearDate62))
             return 0;
-        $sql = "DELETE FROM {$table} WHERE opentime<='{$clearDate62}' LIMIT 1000";
-        $res = DB::connection('mysql::write')->statement($sql);
-        echo 'table '.$table.' :'.$res.PHP_EOL;
-        writeLog('clear',$table.'=>'.$res);
+        $redis = Redis::connection();
+        $redis->select(5);
+        if(!$redis->exists('clear-'.$table)){
+            $res = DB::connection('mysql::write')->table($table)->select('id')->where('opentime','<=',$clearDate62)->first();
+            if(empty($res)){
+                $time = strtotime(date('Y-m-d 23:59:59')) - time();
+                $redis->setex('clear-'.$table,$time,'on');
+                writeLog('clear',$table.'=>0');
+            }else{
+                $sql = "DELETE FROM {$table} WHERE opentime<='{$clearDate62}' LIMIT 1000";
+                $res = DB::connection('mysql::write')->statement($sql);
+                writeLog('clear',$table.'=>'.$res);
+                $num ++;
+            }
+        }
     }
 }
