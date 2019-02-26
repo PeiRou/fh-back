@@ -109,30 +109,51 @@ class clear_data extends Command
         $sql = "DELETE FROM log_login WHERE login_time<='{$clearDate62}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         echo 'table log_login :'.$res.PHP_EOL;
-        //清-秒速赛车
-        $sql = "DELETE FROM game_mssc WHERE opentime<='{$clearDate62}' LIMIT 1000";
-        $res = DB::connection('mysql::write')->statement($sql);
-        echo 'table game_mssc :'.$res.PHP_EOL;
-        //清-秒速时时彩
-        $sql = "DELETE FROM game_msssc WHERE opentime<='{$clearDate62}' LIMIT 1000";
-        $res = DB::connection('mysql::write')->statement($sql);
-        echo 'table game_msssc :'.$res.PHP_EOL;
-        //清-秒速飞艇
-        $sql = "DELETE FROM game_msft WHERE opentime<='{$clearDate62}' LIMIT 1000";
-        $res = DB::connection('mysql::write')->statement($sql);
-        echo 'table game_msft :'.$res.PHP_EOL;
-        //清-秒速快三
-        $sql = "DELETE FROM game_msjsk3 WHERE opentime<='{$clearDate62}' LIMIT 1000";
-        $res = DB::connection('mysql::write')->statement($sql);
-        echo 'table game_msjsk3 :'.$res.PHP_EOL;
-        //清-香港跑马
-        $sql = "DELETE FROM game_paoma WHERE opentime<='{$clearDate62}' LIMIT 1000";
-        $res = DB::connection('mysql::write')->statement($sql);
-        echo 'table game_paoma :'.$res.PHP_EOL;
-        //清-幸运六合彩
-        $sql = "DELETE FROM game_xylhc WHERE opentime<='{$clearDate62}' LIMIT 1000";
-        $res = DB::connection('mysql::write')->statement($sql);
-        echo 'table game_xylhc :'.$res.PHP_EOL;
+        $this->clrGameTables('game_ahk3',$clearDate62);
+        $this->clrGameTables('game_bjkl8',$clearDate62);
+        $this->clrGameTables('game_bjpk10',$clearDate62);
+        $this->clrGameTables('game_cqssc',$clearDate62);
+        $this->clrGameTables('game_cqxync',$clearDate62);
+        $this->clrGameTables('game_gd11x5',$clearDate62);
+        $this->clrGameTables('game_gdklsf',$clearDate62);
+        $this->clrGameTables('game_gsk3',$clearDate62);
+        $this->clrGameTables('game_gxk3',$clearDate62);
+        $this->clrGameTables('game_gzk3',$clearDate62);
+        $this->clrGameTables('game_hbk3',$clearDate62);
+        $this->clrGameTables('game_hebeik3',$clearDate62);
+        $this->clrGameTables('game_jsk3',$clearDate62);
+        $this->clrGameTables('game_ksft',$clearDate62);
+        $this->clrGameTables('game_kssc',$clearDate62);
+        $this->clrGameTables('game_ksssc',$clearDate62);
+        $this->clrGameTables('game_lhc',$clearDate62);
+        $this->clrGameTables('game_msft',$clearDate62);
+        $this->clrGameTables('game_msjsk3',$clearDate62);
+        $this->clrGameTables('game_msqxc',$clearDate62);
+        $this->clrGameTables('game_mssc',$clearDate62);
+        $this->clrGameTables('game_msssc',$clearDate62);
+        $this->clrGameTables('game_paoma',$clearDate62);
+        $this->clrGameTables('game_pcdd',$clearDate62);
+        $this->clrGameTables('game_pknn',$clearDate62);
+        $this->clrGameTables('game_qqffc',$clearDate62);
+        $this->clrGameTables('game_twxyft',$clearDate62);
+        $this->clrGameTables('game_xjssc',$clearDate62);
+        $this->clrGameTables('game_xylhc',$clearDate62);
         echo 'Ok';
+        writeLog('clear','Ok');
+    }
+
+    /**
+     * 清游戏数据表只保留两个月
+     * @param string $table
+     * @param string $clearDate62
+     * @return int
+     */
+    private function clrGameTables($table='',$clearDate62=''){
+        if(empty($table) || empty($clearDate62))
+            return 0;
+        $sql = "DELETE FROM {$table} WHERE opentime<='{$clearDate62}' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        echo 'table '.$table.' :'.$res.PHP_EOL;
+        writeLog('clear',$table.'=>'.$res);
     }
 }
