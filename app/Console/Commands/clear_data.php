@@ -147,7 +147,8 @@ class clear_data extends Command
             $time = strtotime(date('Y-m-d 23:59:59')) - time();
             $redis->setex($keyEx,$time,'on');
             writeLog('clear',date('Y-m-d 23:59:59').'finished');
-        }
+        }else
+            writeLog('clear',date('Y-m-d 23:59:59').'continue...');
     }
 
     /**
