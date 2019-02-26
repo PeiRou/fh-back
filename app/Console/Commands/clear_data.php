@@ -48,6 +48,7 @@ class clear_data extends Command
         $clearDate1 = date('Y-m-d 23:59:59',strtotime("-2 days")-300);        //1天
         $clearDate31 = date('Y-m-d 23:59:59',strtotime("-31 days")-300);        //31天
         $clearDate62 = date('Y-m-d 23:59:59',strtotime("-62 days")-300);        //62天
+        $clearDate93 = date('Y-m-d 23:59:59',strtotime("-93 days")-300);        //93天
         echo "clear Date1:".$clearDate1.PHP_EOL;
         echo "clear Date31:".$clearDate31.PHP_EOL;
         echo "clear Date62:".$clearDate62.PHP_EOL;
@@ -78,10 +79,10 @@ class clear_data extends Command
             }
         }
         writeLog('clear','clear ing ....');
-        writeLog('clear',"clear Date1:".$clearDate1."clear Date31:".$clearDate31."clear Date62:".$clearDate62);
+        writeLog('clear',"clear Date1:".$clearDate1."clear Date31:".$clearDate31."clear Date62:".$clearDate62."clear Date93:".$clearDate93);
         //清-投注表
         //清-资金明细
-        $sql = "DELETE FROM capital WHERE created_at <= '{$clearDate62}' LIMIT 1000";
+        $sql = "DELETE FROM capital WHERE created_at <= '{$clearDate93}' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         echo 'table capital :'.$res.PHP_EOL;
         //清-充值
