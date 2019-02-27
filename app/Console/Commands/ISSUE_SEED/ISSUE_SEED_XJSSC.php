@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_XJSSC extends Command
 {
     protected $signature = 'ISSUE_SEED_XJSSC';
-    protected $description = '新疆时时彩期数生成-96';
+    protected $description = '新疆时时彩期数生成-48';
 
     public function __construct()
     {
@@ -22,8 +22,8 @@ class ISSUE_SEED_XJSSC extends Command
         $timeUp = date('Y-m-d 10:00:00');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_xjssc (issue,opentime) VALUES ";
-        for($i=1;$i<=96;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
+        for($i=1;$i<=48;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
             if(strlen($i) == 1){
                 $i = '0'.$i;
             }
