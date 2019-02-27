@@ -360,6 +360,10 @@ if(!function_exists('p')){
 if(!function_exists('writeLog')) {
     function writeLog($path = '', ...$args)
     {
+        //如果资料夹不存在，则创建资料夹
+        if(!file_exists(storage_path().'/logs/'.$path))
+            mkdir(storage_path().'/logs/'.$path);
+
         if(isset($args[0]) && (is_array($args[0]) || is_object($args[0])))
             $args[0] = json_encode($args[0], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         if(isset($args[1]))
