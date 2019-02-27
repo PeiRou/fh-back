@@ -411,7 +411,7 @@ class ModalController extends Controller
         } else {
             $bankName = '无';
         }
-        return "<div class='agent-info'>
+        return "<div class='agent-info' style='overflow-wrap: break-word' >
                 <span>账号：".$user->username."</span><br>
                 <span>真实姓名：".$user->fullName."</span><br>
                 <span>开户银行：".$bankName."</span><br>
