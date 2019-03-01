@@ -10,7 +10,7 @@
             </select>
         </div>
     </div>
-    @if(env('TEST',0) == 1)
+    @if(env('TEST',0) == 1 && env('AGENT_MODEL',1) == 2)
         <div class="field">
             <label>代理模式</label>
             <div class="ui input icon">
