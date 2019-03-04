@@ -254,7 +254,7 @@ class SystemSettingController extends Controller
         $data = [];
 
         $data['value'] = $params['value'];
-        $data['type'] = $params['type'];
+        $data['type'] = (int)$params['type'];
         $data['content'] = $params['content'];
         $data['admin_id'] = Session::get('account_id');
         $data['admin_account'] = Session::get('account');
@@ -263,6 +263,8 @@ class SystemSettingController extends Controller
                 return show(0);
         }
         else {
+            if(Blacklist::where('value', $data['value'])->where('type', $data['type'])->count())
+                return show(1, '参数重复，请直接编辑');
             if (Blacklist::insert($data))
                 return show(0);
         }

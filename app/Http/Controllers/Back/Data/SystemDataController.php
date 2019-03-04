@@ -173,11 +173,14 @@ class SystemDataController extends Controller
 
     //黑名单管理-表格数据
     public function Blacklist(Request $request){
-        $roles = Blacklist::where(function($sql) use($request){
+        $model = Blacklist::where(function($sql) use($request){
             isset($request->type) && $sql->where('type', $request->type);
-        })->get();
+        });
+        $count = $model->count();
+        $roles = $model->skip($request->start)->take($request->length)->get();
         $types = Blacklist::$types;
         return DataTables::of($roles)
+            ->setTotalRecords($count)
             ->editColumn('control',function ($roles) {
                 return '<span class="edit-link" onclick="edit('.$roles->id.')"><i class="iconfont">&#xe602;</i> 修改 </a></span> | '
                     .'<span class="edit-link" onclick="del('.$roles->id.')"> 删除</span>';
@@ -186,6 +189,7 @@ class SystemDataController extends Controller
                 return $types[$roles->type] ?? '';
             })
             ->rawColumns(['control'])
+            ->skipPaging()
             ->make(true);
     }
 }
