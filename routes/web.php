@@ -119,6 +119,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('feedback', 'Back\SrcViewController@feedback')->name('system.feedback'); //意见反馈
         Route::get('advertise', 'Back\SrcViewAdController@advertise')->name('system.advertise'); //广告位
         Route::get('advertiseInfo', 'Back\SrcViewAdController@advertiseInfo')->name('system.advertiseInfo'); //广告位
+        Route::get('systemBlacklist', 'Back\SrcViewAdController@systemBlacklist')->name('system.Blacklist'); //黑名单管理
 
     });
 
@@ -225,6 +226,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/premissionsAuth', 'Back\Data\SystemDataController@permissionsAuth'); //权限控制-表格数据
     Route::get('/back/datatables/roles', 'Back\Data\SystemDataController@roles'); //角色-表格数据
     Route::get('/back/datatables/whitelist', 'Back\Data\SystemDataController@whitelist'); //ip白名单设置-表格数据
+    Route::get('/back/datatables/Blacklist', 'Back\Data\SystemDataController@Blacklist'); //黑名单管理-表格数据
     Route::get('/back/datatables/feedback', 'Back\Data\SystemDataController@feedback'); //建议反馈-表格数据
     Route::get('/back/datatables/advertise', 'Back\Data\AdDataController@advertise'); //广告位-表格数据
     Route::get('/back/datatables/advertiseInfo', 'Back\Data\AdDataController@advertiseInfo'); //广告位内容-表格数据
@@ -369,6 +371,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/addWhitelist', 'Back\SystemSettingController@addWhitelist')->middleware('add-log-handle')->name('ac.ad.addWhitelist');//添加ip白名单
     Route::post('/action/admin/delWhitelist', 'Back\SystemSettingController@delWhitelist')->middleware('add-log-handle')->name('ac.ad.delWhitelist');//删除ip白名单
     Route::post('/action/admin/editWhitelist', 'Back\SystemSettingController@editWhitelist')->middleware('add-log-handle')->name('ac.ad.editWhitelist');//修改ip白名单
+    Route::post('/action/admin/editBlacklist', 'Back\SystemSettingController@editBlacklist')->middleware('add-log-handle')->name('ac.ad.editBlacklist');//黑名单管理
+    Route::post('/action/admin/delBlacklist', 'Back\SystemSettingController@delBlacklist')->middleware('add-log-handle')->name('ac.ad.Blacklist');//删除黑名单
     Route::post('/action/admin/replyFeedback', 'Back\SystemSettingController@replyFeedback')->middleware('add-log-handle')->name('ac.ad.replyFeedback');//问题回复
     Route::post('/action/admin/addAdvertise', 'Back\AdSystemSettingController@addAdvertise')->middleware('add-log-handle')->name('ac.ad.addAdvertise');//添加广告位
     Route::post('/action/admin/editAdvertise', 'Back\AdSystemSettingController@editAdvertise')->middleware('add-log-handle')->name('ac.ad.editAdvertise');//修改广告位
@@ -549,6 +553,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editPermissionAuth/{id}', 'Back\Ajax\ModalController@editPermissionAuth'); //修改权限控制
     Route::get('/back/modal/addRole', 'Back\Ajax\ModalController@addRole'); //添加角色
     Route::get('/back/modal/editRole/{id}', 'Back\Ajax\ModalController@editRole'); //修改角色
+    Route::get('/back/modal/addBlacklist', 'Back\Ajax\ModalController@addBlacklist'); //添加黑名单
     Route::get('/back/modal/addWhitelist', 'Back\Ajax\ModalController@addWhitelist'); //添加ip白名单
     Route::get('/back/modal/editWhitelist/{id}', 'Back\Ajax\ModalController@editWhitelist'); //修改ip白名单
     Route::get('/back/modal/viewFeedback/{id}', 'Back\Ajax\ModalController@viewFeedback'); //查看意见反馈
