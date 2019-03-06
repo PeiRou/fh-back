@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back\GameTables;
 
 use App\AgentOddsSetting;
 use App\Games;
+use App\Http\Services\CurlService;
 use App\Play;
 use App\PlayAgentSet;
 use App\PlayCates;
@@ -293,8 +294,9 @@ class SaveGameOddsController extends Controller
                 $plays_txt = collect($newCollect)->keyBy('id');
                 $writeIos = Storage::disk('static')->put('iosOdds.json', $plays_txt);
                 if ($write == 1 && $write1 == 1 && $writeIos == 1) {
+                    $result = $this->webGenerateOddsFiles();
 //                    $this->agentOddsAllFile($newCollect,$gameMap_txt,$gameMap_txt,$playCate_txt,$animalsYear,$next_row);
-                    return response()->json([
+                    if($result) return response()->json([
                         'status' => true
                     ]);
                 }
@@ -526,5 +528,16 @@ class SaveGameOddsController extends Controller
     public function agentOddsRestore($gameId,$agentId){
         PlayAgentSet::where('game_id',$gameId)->where('agent_id',$agentId)->delete();
         return ['status' => true];
+    }
+
+    //前端生成赔率文件
+    public function webGenerateOddsFiles(){
+        $intranetIps = explode(',',env('WEB_INTRANET_IP',''));
+        foreach ($intranetIps as $intranetIp){
+            $result = CurlService::getInstance()->post($intranetIp.'/files/odds/js',true);
+            if($result === 'OK'){
+                return true;
+            }
+        }
     }
 }
