@@ -534,10 +534,11 @@ class SaveGameOddsController extends Controller
     public function webGenerateOddsFiles(){
         $intranetIps = explode(',',env('WEB_INTRANET_IP',''));
         foreach ($intranetIps as $intranetIp){
-            $result = CurlService::getInstance()->post($intranetIp.'/files/odds/js',true);
-            if($result === 'OK'){
-                return true;
+            $result = CurlService::getInstance()->post($intranetIp.'/files/odds/js');
+            if($result !== 'OK'){
+                return false;
             }
         }
+        return true;
     }
 }
