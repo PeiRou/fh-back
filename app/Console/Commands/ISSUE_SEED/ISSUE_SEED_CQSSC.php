@@ -33,7 +33,12 @@ class ISSUE_SEED_CQSSC extends Command
         }
         for($i=10;$i<=59;$i++){
             $timeUp_baitian = Carbon::parse($timeUp_baitian)->addMinutes(20);
-            $i = str_repeat('0',3-strlen($i)).$i;
+            if(strlen($i) == 1){
+                $i = '00'.$i;
+            }
+            if(strlen($i) == 2){
+                $i = '0'.$i;
+            }
             $issue = date('Ymd').$i;
             $sql .= "('$issue','$timeUp_baitian'),";
         }

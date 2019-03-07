@@ -24,7 +24,15 @@ class ISSUE_SEED_MSQXC extends Command
         $sql = "INSERT INTO game_msqxc (issue,opentime) VALUES ";
         for($i=1;$i<=1105;$i++){
             $timeUp = Carbon::parse($timeUp)->addSeconds(75);
-            $i = str_repeat('0',4-strlen($i)).$i;
+            if(strlen($i) == 1){
+                $i = '000'.$i;
+            }
+            if(strlen($i) == 2){
+                $i = '00'.$i;
+            }
+            if(strlen($i) == 3){
+                $i = '0'.$i;
+            }
             $issue = $curDate.$i;
             $sql .= "('$issue','$timeUp'),";
             //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);

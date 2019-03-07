@@ -30,7 +30,12 @@ class ISSUE_SEED_CQXYNC extends Command
         for($i=1;$i<=12;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(10);
             $num = 1 + $i;
-            $num = str_repeat('0',3-strlen($num)).$num;
+            if(strlen($num) == 1){
+                $num = '00'.$num;
+            }
+            if(strlen($num) == 2){
+                $num = '0'.$num;
+            }
             $issue = date('ymd').$num;
             $sql .= "('$issue','$timeUp'),";
         }

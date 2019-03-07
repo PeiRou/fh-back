@@ -40,7 +40,12 @@ class ISSUE_SEED_AHK3 extends Command
         $sql = "INSERT INTO game_ahk3 (issue,opentime) VALUES ";
         for($i=1;$i<=80;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(10);
-            $i = str_repeat('0',3-strlen($i)).$i;
+            if(strlen($i) == 1){
+                $i = '00'.$i;
+            }
+            if(strlen($i) == 2){
+                $i = '0'.$i;
+            }
             $issue = $curDate.$i;
             $sql .= "('$issue','$timeUp'),";
             //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
@@ -49,8 +54,14 @@ class ISSUE_SEED_AHK3 extends Command
         if($checkUpdate->ahk3 == $curDate){
             writeLog('ISSUE_SEED', date('Y-m-d').'安徽快3期数已存在');
         } else {
-            if(DB::statement(rtrim($sql, ',').";") and DB::table('issue_seed')->where('id',1)->update(['ahk3' => $curDate]) ){
-                writeLog('ISSUE_SEED', '安徽快3期数生成成功,已更新');
+            $run = DB::statement(rtrim($sql, ',').";");
+            if($run == 1){
+                $update = DB::table('issue_seed')->where('id',1)->update([
+                    'ahk3' => $curDate
+                ]);
+                if($update !== 1){
+                    writeLog('ISSUE_SEED', '安徽快3error');
+                }
             } else {
                 writeLog('ISSUE_SEED', '安徽快3error');
             }

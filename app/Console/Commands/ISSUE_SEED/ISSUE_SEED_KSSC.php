@@ -40,7 +40,12 @@ class ISSUE_SEED_KSSC extends Command
         $sql = "INSERT INTO game_kssc (issue,opentime) VALUES ";
         for($i=1;$i<=276;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(5);
-            $i = str_repeat('0',3-strlen($i)).$i;
+            if(strlen($i) == 1){
+                $i = '00'.$i;
+            }
+            if(strlen($i) == 2){
+                $i = '0'.$i;
+            }
             $issue = $curDate.$i;
             $sql .= "('$issue','$timeUp'),";
             //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
