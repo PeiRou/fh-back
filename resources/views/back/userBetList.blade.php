@@ -69,7 +69,7 @@
     </style>
 </head>
 <body>
-<div class="user-bet-list">
+<div class="user-bet-list" style="margin: 0 10px" >
     <div class="title">会员：<span id="changeUserDisplayName">{{ $getUserInfo->username }}</span>-注单详情</div>
     <div class="games">
         <div class="title">游戏选择：</div>

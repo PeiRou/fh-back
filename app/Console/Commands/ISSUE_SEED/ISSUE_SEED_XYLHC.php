@@ -20,40 +20,23 @@ class ISSUE_SEED_XYLHC extends Command
     {
         $curDate = date('ymd');
         $timeUp = date('Y-m-d 08:00:00');
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
+        $seededDate = @DB::table('issue_seed')->where('id',1)->value('xylhc');
         $sql = "INSERT INTO game_xylhc (issue,opentime) VALUES ";
-        for($i=1;$i<=240;$i++){
-            $timeUp = Carbon::parse($timeUp)->addSeconds(300);
-            if(strlen($i) == 1){
-                $i = '00'.$i;
-            }
-            if(strlen($i) == 2){
-                $i = '0'.$i;
-            }
-            $issue = $curDate.$i;
-            $sql .= "('$issue','$timeUp'),";
-            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
-        }
-        if($checkUpdate->xylhc == $curDate){
-            echo '幸运六合彩期数已存在';
-        } else {
-            $run = DB::statement(rtrim($sql, ',').";");
-            if($run == 1){
-                $update = DB::table('issue_seed')->where('id',1)->update([
-                    'xylhc' => $curDate
-                ]);
-                if($update == 1){
-                    $delClong1 = DB::table('clong_kaijian1')->where('lotteryid',85)->delete();
-                    if($delClong1 == 1){
-                        $delClong2 = DB::table('clong_kaijian2')->where('lotteryid',85)->delete();
-                        if($delClong2 == 1){
-                            writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
-                        }
-                    }
-                }
+        $sql .= issueSeedValues(240,$timeUp,$curDate);
+        if ($seededDate){
+            if($seededDate == $curDate){
+                echo '幸运六合彩期数已存在';
             } else {
-                writeLog('ISSUE_SEED', 'error');
+                if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['xylhc' => $curDate])
+                    and DB::table('clong_kaijian1')->where('lotteryid',85)->delete()
+                    and DB::table('clong_kaijian2')->where('lotteryid',85)->delete() ){
+                    writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
+                } else {
+                    writeLog('ISSUE_SEED', 'error,期数生成失败');
+                }
             }
+        } else {
+
         }
     }
 }

@@ -24,12 +24,7 @@ class ISSUE_SEED_GDKLSF extends Command
         $sql = "INSERT INTO game_gdklsf (issue,opentime) VALUES ";
         for($i=1;$i<=42;$i++){
             $timeUp = Carbon::parse($timeUp)->addMinutes(20);
-            if(strlen($i) == 1){
-                $i = '00'.$i;
-            }
-            if(strlen($i) == 2){
-                $i = '0'.$i;
-            }
+            $i = str_repeat('0',3-strlen($i)).$i;
             $issue = $curDate.$i;
             $sql .= "('$issue','$timeUp'),";
         }

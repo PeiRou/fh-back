@@ -1,4 +1,7 @@
 <?php
+Route::get('/1111', function (){
+    dd(issueSeedValues(240,date('Y-m-d 08:00:00'),date('ymd')));
+});
 Route::get('/test', 'GamesApi\Card\PrivodeController@test');
 Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/', 'Back\SrcViewController@index');

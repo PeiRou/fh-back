@@ -41,15 +41,7 @@ class ISSUE_SEED_MSJSK3 extends Command
         $sql = "INSERT INTO game_msjsk3 (issue,opentime) VALUES ";
         for($i=1;$i<=1440;$i++){
             $timeUp = Carbon::parse($timeUp)->addSeconds(60);
-            if(strlen($i) == 1){
-                $i = '000'.$i;
-            }
-            if(strlen($i) == 2){
-                $i = '00'.$i;
-            }
-            if(strlen($i) == 3){
-                $i = '0'.$i;
-            }
+            $i = str_repeat('0',4-strlen($i)).$i;
             $issue = $curDate.$i;
             $sql .= "('$issue','$timeUp'),";
         }

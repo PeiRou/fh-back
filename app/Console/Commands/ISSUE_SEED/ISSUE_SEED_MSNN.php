@@ -24,12 +24,7 @@ class ISSUE_SEED_MSNN extends Command
         $sql = "INSERT INTO game_msnn (issue,opentime) VALUES ";
         for($i=1;$i<=985;$i++){
             $timeUp = Carbon::parse($timeUp)->addSeconds(75);
-            if(strlen($i) == 1){
-                $i = '00'.$i;
-            }
-            if(strlen($i) == 2){
-                $i = '0'.$i;
-            }
+            $i = str_repeat('0',3-strlen($i)).$i;
             $issue = $curDate.$i;
             $sql .= "('$issue','$timeUp'),";
             //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);

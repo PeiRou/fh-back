@@ -416,3 +416,24 @@ if(!function_exists('ip')){
         return $ipInfo;
     }
 }
+//从ymd格式字符串获取时间戳
+if(!function_exists('ymdtime')){
+    function ymdtime($date=''){
+        $date or die('$date不能为空');
+        is_numeric($date) or die('$date不为数字');
+        strlen($date) == 6 or die('$date长度不为6');
+        return strtotime(join('-',str_split($date,2)));
+    }
+}
+//
+if(!function_exists('issueSeedValues')) {
+    function issueSeedValues($itemNum,$timeUp,$curDate,$len=3,$interval=300){
+        for($sql='',$i=1;$i<=$itemNum;$i++){
+            $timeUp = \Illuminate\Support\Carbon::parse($timeUp)->addSeconds($interval);
+            $i = str_repeat('0',$len-strlen($i)).$i;
+            $sql .= "('{$curDate}{$i}','$timeUp'),";
+        }
+        return rtrim($sql,',').';';
+    }
+
+}
