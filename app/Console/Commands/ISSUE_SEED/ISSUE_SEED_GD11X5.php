@@ -19,31 +19,34 @@ class ISSUE_SEED_GD11X5 extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = date('Y-m-d 09:10:00');
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
-        $sql = "INSERT INTO game_gd11x5 (issue,opentime) VALUES ";
-        for($i=1;$i<=42;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
-            if(strlen($i) == 1){
-                $i = '0'.$i;
+        $seededDate = @DB::table('issue_seed')->where('id',1)->value('gd11x5');
+        $sqlH = "INSERT INTO game_gd11x5 (issue,opentime) VALUES ";
+            $sql = $sqlH.issueSeedValues(42,date('Y-m-d 09:10:00'),$curDate,2,1200);
+        $valuesTomorrow = issueSeedValues(42,date('Y-m-d 09:10:00',($time=strtotime('+1 day'))),date('ymd',$time),2,1200);
+        if ($seededDate){
+            switch ($seededDate - $curDate) {
+                case 0:
+                    $sql = $sqlH.$valuesTomorrow;
+                    $this->sqlExec($sql,$time);
+                    break;
+                case 1:
+                    echo '广东11选5明日期数已存在';
+                    break;
+                case -1:
+                    $sql .= ','.$valuesTomorrow;
+                    $this->sqlExec($sql,$time,2);
             }
-            $issue = $curDate.$i;
-            $sql .= "('$issue','$timeUp'),";
-        }
-        if($checkUpdate->gd11x5 == $curDate){
-            writeLog('ISSUE_SEED', date('Y-m-d').'广东11选5已存在');
         } else {
-            $run = DB::statement(rtrim($sql, ',').";");
-            if($run == 1){
-                $update = DB::table('issue_seed')->where('id',1)->update([
-                    'gd11x5' => $curDate
-                ]);
-                if($update !== 1){
-                    writeLog('ISSUE_SEED', '广东11选5error');
-                }
-            } else {
-                writeLog('ISSUE_SEED', '广东11选5error');
-            }
+            $sql .= ','.$valuesTomorrow;
+            $this->sqlExec($sql,$time,2);
+        }
+    }
+
+    private function sqlExec($sql,$time,$days=1){
+        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['gd11x5' => date('ymd',$time)]) ){
+            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成广东11选5');
+        } else {
+            writeLog('ISSUE_SEED', 'error:广东11选5期数生成失败');
         }
     }
 }

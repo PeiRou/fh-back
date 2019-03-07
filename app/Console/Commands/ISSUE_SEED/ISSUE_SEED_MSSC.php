@@ -19,38 +19,34 @@ class ISSUE_SEED_MSSC extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = date('Y-m-d 07:29:15');
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
-        $sql = "INSERT INTO game_mssc (issue,opentime) VALUES ";
-        for($i=1;$i<=1105;$i++){
-            $timeUp = Carbon::parse($timeUp)->addSeconds(75);
-            if(strlen($i) == 1){
-                $i = '000'.$i;
+        $seededDate = @DB::table('issue_seed')->where('id',1)->value('mssc');
+        $sqlH = "INSERT INTO game_mssc (issue,opentime) VALUES ";
+        $sql = $sqlH.issueSeedValues(1105,date('Y-m-d 07:29:15'),$curDate,4,75);
+        $valuesTomorrow = issueSeedValues(1105,date('Y-m-d 07:29:15',($time = strtotime('+1 day'))),date('ymd',$time),4,75 );
+        if ($seededDate){
+            switch ($seededDate - $curDate) {
+                case 0:
+                    $sql = $sqlH.$valuesTomorrow;
+                    $this->sqlExec($sql,$time);
+                    break;
+                case 1:
+                    echo '秒速赛车明日期数已存在';
+                    break;
+                case -1:
+                    $sql .= ','.$valuesTomorrow;
+                    $this->sqlExec($sql,$time,2);
             }
-            if(strlen($i) == 2){
-                $i = '00'.$i;
-            }
-            if(strlen($i) == 3){
-                $i = '0'.$i;
-            }
-            $issue = $curDate.$i;
-            $sql .= "('$issue','$timeUp'),";
-            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
-        }
-        if($checkUpdate->mssc == $curDate){
-            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
         } else {
-            $run = DB::statement(rtrim($sql, ',').";");
-            if($run == 1){
-                $update = DB::table('issue_seed')->where('id',1)->update([
-                    'mssc' => $curDate
-                ]);
-                if($update == 1){
-                    writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
-                }
-            } else {
-                writeLog('ISSUE_SEED', 'error');
-            }
+            $sql .= ','.$valuesTomorrow;
+            $this->sqlExec($sql,$time,2);
+        }
+    }
+
+    private function sqlExec($sql,$time,$days=1){
+        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['mssc' => date('ymd',$time)]) ){
+            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成秒速赛车');
+        } else {
+            writeLog('ISSUE_SEED', 'error:秒速赛车期数生成失败');
         }
     }
 }

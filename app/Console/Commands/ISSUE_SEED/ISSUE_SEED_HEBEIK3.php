@@ -19,36 +19,34 @@ class ISSUE_SEED_HEBEIK3 extends Command
     public function handle()
     {
         $curDate = date('Ymd');
-        $timeUp = date('08:30:00');
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
-        $sql = "INSERT INTO game_hebeik3 (issue,opentime) VALUES ";
-        for($i=1;$i<=41;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
-            if(strlen($i) == 1){
-                $i = '00'.$i;
+        $seededDate = @DB::table('issue_seed')->where('id',1)->value('hebeik3');
+        $sqlH = "INSERT INTO game_hebeik3 (issue,opentime) VALUES ";
+        $sql = $sqlH.issueSeedValues(41,date('Y-m-d 08:30:00'),$curDate,3,1200);
+        $valuesTomorrow = issueSeedValues(41,date('Y-m-d 08:30:00',($time=strtotime('+1 day'))),date('Ymd',$time),3,1200);
+        if ($seededDate){
+            switch ($seededDate - $curDate) {
+                case 0:
+                    $sql = $sqlH.$valuesTomorrow;
+                    $this->sqlExec($sql,$time);
+                    break;
+                case 1:
+                    echo '河北快3明日期数已存在';
+                    break;
+                case -1:
+                    $sql .= ','.$valuesTomorrow;
+                    $this->sqlExec($sql,$time,2);
             }
-            if(strlen($i) == 2){
-                $i = '0'.$i;
-            }
-            $issue = $curDate.$i;
-            $sql .= "('$issue','$timeUp'),";
-            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
-        }
-
-        if($checkUpdate->hebeik3 == $curDate){
-            writeLog('ISSUE_SEED', date('Y-m-d').'河北快3期数已存在');
         } else {
-            $run = DB::statement(rtrim($sql, ',').";");
-            if($run == 1){
-                $update = DB::table('issue_seed')->where('id',1)->update([
-                    'hebeik3' => $curDate
-                ]);
-                if($update !== 1){
-                    writeLog('ISSUE_SEED', '河北快3error');
-                }
-            } else {
-                writeLog('ISSUE_SEED', '河北快3error');
-            }
+            $sql .= ','.$valuesTomorrow;
+            $this->sqlExec($sql,$time,2);
+        }
+    }
+
+    private function sqlExec($sql,$time,$days=1){
+        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['hebeik3' => date('Ymd',$time)]) ){
+            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成河北快3');
+        } else {
+            writeLog('ISSUE_SEED', 'error:河北快3期数生成失败');
         }
     }
 }
