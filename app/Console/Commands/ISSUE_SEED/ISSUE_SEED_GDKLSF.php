@@ -19,34 +19,29 @@ class ISSUE_SEED_GDKLSF extends Command
     public function handle()
     {
         $curDate = date('Ymd');
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('gdklsf');
-        $sqlH = "INSERT INTO game_gdklsf (issue,opentime) VALUES ";
-        $sql = $sqlH.issueSeedValues(42,date('Y-m-d 09:00:00'),$curDate,3,1200);
-        $valuesTomorrow = issueSeedValues(42,date('Y-m-d 09:00:00',($time=strtotime('+1 day'))),date('Ymd',$time),3,1200);
-        if ($seededDate){
-            switch ($seededDate - $curDate) {
-                case 0:
-                    $sql = $sqlH.$valuesTomorrow;
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo '广东快乐十分明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$valuesTomorrow;
-                    $this->sqlExec($sql,$time,2);
-            }
-        } else {
-            $sql .= ','.$valuesTomorrow;
-            $this->sqlExec($sql,$time,2);
+        $timeUp = date('Y-m-d 09:00:00');
+        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
+        $sql = "INSERT INTO game_gdklsf (issue,opentime) VALUES ";
+        for($i=1;$i<=42;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
+            $i = str_repeat('0',3-strlen($i)).$i;
+            $issue = $curDate.$i;
+            $sql .= "('$issue','$timeUp'),";
         }
-    }
-
-    private function sqlExec($sql,$time,$days=1){
-        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['gdklsf' => date('Ymd',$time)]) ){
-            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成广东快乐十分');
+        if($checkUpdate->gdklsf == $curDate){
+            writeLog('ISSUE_SEED', date('Y-m-d').'广东快乐十分已存在');
         } else {
-            writeLog('ISSUE_SEED', 'error:广东快乐十分期数生成失败');
+            $run = DB::statement(rtrim($sql, ',').";");
+            if($run == 1){
+                $update = DB::table('issue_seed')->where('id',1)->update([
+                    'gdklsf' => $curDate
+                ]);
+                if($update !== 1){
+                    writeLog('ISSUE_SEED', '广东快乐十分error');
+                }
+            } else {
+                writeLog('ISSUE_SEED', '广东快乐十分error');
+            }
         }
     }
 }

@@ -228,7 +228,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                         $str .= "<li onclick='viewInfo(\"$allAgent->a_id\")'>详情</li>";
                     if(in_array('m.agent.editMoney',$this->permissionArray))
                         $str .= "<li onclick='changeAgentMoney(\"$allAgent->a_id\")'>修改余额</li>";
-                    if(env('TEST',0) == 1 && env('AGENT_MODEL',1) == 2){
+                    if(env('TEST',0) == 1){
                         if(in_array('m.agent.capitalDetails',$this->permissionArray))
                             $str .= "<li onclick='capital(\"$allAgent->a_id\")'>资金明细</li>";
                     }
@@ -247,7 +247,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                             $j = true;
                         }
                     }
-                    if(env('TEST',0) == 1 && env('AGENT_MODEL',1) == 2) {
+                    if(env('TEST',0) == 1) {
                         if ($allAgent->modelStatus == 1){
                             if(in_array('m.agent.add',$this->permissionArray)) {
                                 $gd .= "<li onclick='changeAgentOdds(\"$allAgent->a_id\")'>修改盘口</li>";
@@ -277,7 +277,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                         <li onclick='edit(\"$allAgent->a_id\")'>修改</li>
                         <li onclick='viewInfo(\"$allAgent->a_id\")'>详情</li>
                         <li onclick='changeAgentMoney(\"$allAgent->a_id\")'>修改余额</li>";
-                    if(env('TEST',0) == 1 && env('AGENT_MODEL',1) == 2)
+                    if(env('TEST',0) == 1)
                         $html .= "<li onclick='capital(\"$allAgent->a_id\")'>资金明细</li>";
                     $html .= "<li>更多操作
                         <ul>";
@@ -287,7 +287,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                     }else if($allAgent->modelStatus == 3){
                         $html .= "<li onclick='panSettingOne(\"$allAgent->a_id\")'>盘口设定</li>";
                     }
-                    if(env('TEST',0) == 1 && env('AGENT_MODEL',1) == 2) {
+                    if(env('TEST',0) == 1) {
                         if ($allAgent->modelStatus == 1)
                             $html .= "<li onclick='addAgent(\"$allAgent->a_id\")'>添加子代理</li>";
                     }

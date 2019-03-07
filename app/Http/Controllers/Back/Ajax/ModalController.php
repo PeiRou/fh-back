@@ -10,7 +10,6 @@ use App\AgentOdds;
 use App\AgentOddsSetting;
 use App\Article;
 use App\Banks;
-use App\Blacklist;
 use App\Capital;
 use App\CapitalAgent;
 use App\Drawing;
@@ -93,13 +92,6 @@ class ModalController extends Controller
     //添加ip白名单
     public function addWhitelist(){
         return view('back.modal.system.addWhitelist');
-    }
-    //添加黑名单
-    public function addBlacklist(Request $request){
-        $data = [];
-        if(isset($request->id))
-            $data['info'] = Blacklist::find($request->id);
-        return view('back.modal.system.addBlacklist', $data);
     }
 
     //修改ip白名单

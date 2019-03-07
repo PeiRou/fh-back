@@ -19,34 +19,46 @@ class ISSUE_SEED_MSJSK3 extends Command
     public function handle()
     {
         $curDate = date('Ymd');
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('msjsk3');
-        $sqlH = "INSERT INTO game_msjsk3 (issue,opentime) VALUES ";
-        $sql = $sqlH.issueSeedValues(1440,date('Y-m-d 23:59:00',strtotime('-1 day')),$curDate,4,60);
-        $valuesTomorrow = issueSeedValues(1440,date('Y-m-d 23:59:00'),date('Ymd',($time=strtotime('+1 day'))),4,60);
-        if ($seededDate){
-            switch ($seededDate - $curDate) {
-                case 0:
-                    $sql = $sqlH.$valuesTomorrow;
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo '秒速快3明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$valuesTomorrow;
-                    $this->sqlExec($sql,$time,2);
-            }
-        } else {
-            $sql .= ','.$valuesTomorrow;
-            $this->sqlExec($sql,$time,2);
+        $timeUp = ' 23:59:00';
+        $checkUpdate = DB::table('issue_seed')->select('msjsk3')->where('id',1)->first();
+        $issueDate = '';
+        if(isset($checkUpdate->msjsk3)) {
+            if($curDate == $checkUpdate->msjsk3) {
+                $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
+                $curDate = date('Ymd', strtotime('+ 1 day', time()));
+            }else if($curDate < $checkUpdate->msjsk3)
+                writeLog('ISSUE_SEED', $curDate.'秒速快3期数已存在');
+            else
+                $issueDate = date('Y-m-d',time());
+        }else{
+            $issueDate = date('Y-m-d',time());
         }
-    }
-
-    private function sqlExec($sql,$time,$days=1){
-        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['msjsk3' => date('Ymd',$time)]) ){
-            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成秒速快3');
+        echo $issueDate;
+        if(empty($issueDate))
+            return '';
+        $timeUp = $issueDate . $timeUp;
+        $timeUp = Carbon::parse($timeUp)->addDay(-1)->toDateTimeString();
+        $sql = "INSERT INTO game_msjsk3 (issue,opentime) VALUES ";
+        for($i=1;$i<=1440;$i++){
+            $timeUp = Carbon::parse($timeUp)->addSeconds(60);
+            $i = str_repeat('0',4-strlen($i)).$i;
+            $issue = $curDate.$i;
+            $sql .= "('$issue','$timeUp'),";
+        }
+        if($checkUpdate->msjsk3 == $curDate){
+            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
         } else {
-            writeLog('ISSUE_SEED', 'error:秒速快3期数生成失败');
+            $run = DB::statement(rtrim($sql, ',').";");
+            if($run == 1){
+                $update = DB::table('issue_seed')->where('id',1)->update([
+                    'msjsk3' => $curDate
+                ]);
+                if($update !== 1){
+                    writeLog('ISSUE_SEED', 'error');
+                }
+            } else {
+                writeLog('ISSUE_SEED', 'error');
+            }
         }
     }
 }

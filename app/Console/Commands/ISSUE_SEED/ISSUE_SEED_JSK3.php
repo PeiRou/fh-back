@@ -19,34 +19,31 @@ class ISSUE_SEED_JSK3 extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('jsk3');
-        $sqlH = "INSERT INTO game_jsk3 (issue,opentime) VALUES ";
-        $sql = $sqlH.issueSeedValues(41,date('Y-m-d 08:30:00'),$curDate,3,1200);
-        $valuesTomorrow = issueSeedValues(41,date('Y-m-d 08:30:00',($time=strtotime('+1 day'))),date('ymd',$time),3,1200);
-        if ($seededDate){
-            switch ($seededDate - $curDate) {
-                case 0:
-                    $sql = $sqlH.$valuesTomorrow;
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo '江苏骰宝（快3）明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$valuesTomorrow;
-                    $this->sqlExec($sql,$time,2);
-            }
-        } else {
-            $sql .= ','.$valuesTomorrow;
-            $this->sqlExec($sql,$time,2);
+        $timeUp = date('Y-m-d 08:30:00');
+        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
+        $sql = "INSERT INTO game_jsk3 (issue,opentime) VALUES ";
+        for($i=1;$i<=41;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
+            $i = str_repeat('0',3-strlen($i)).$i;
+            $issue = $curDate.$i;
+            $sql .= "('$issue','$timeUp'),";
+            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
         }
-    }
 
-    private function sqlExec($sql,$time,$days=1){
-        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['jsk3' => date('ymd',$time)]) ){
-            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成江苏骰宝（快3）');
+        if($checkUpdate->jsk3 == $curDate){
+            writeLog('ISSUE_SEED', date('Y-m-d').'江苏骰宝期数已存在');
         } else {
-            writeLog('ISSUE_SEED', 'error:江苏骰宝（快3）期数生成失败');
+            $run = DB::statement(rtrim($sql, ',').";");
+            if($run == 1){
+                $update = DB::table('issue_seed')->where('id',1)->update([
+                    'jsk3' => $curDate
+                ]);
+                if($update !== 1){
+                    writeLog('ISSUE_SEED', '江苏骰宝error');
+                }
+            } else {
+                writeLog('ISSUE_SEED', '江苏骰宝error');
+            }
         }
     }
 }

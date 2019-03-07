@@ -19,34 +19,46 @@ class ISSUE_SEED_KSFT extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('ksft');
-        $sqlH = "INSERT INTO game_ksft (issue,opentime) VALUES ";
-        $sql = $sqlH.issueSeedValues(276,date('Y-m-d 07:25:30'),$curDate,3);
-        $valuesTomorrow = issueSeedValues(276,date('Y-m-d 07:25:30',($time=strtotime('+1 day'))),date('ymd',$time),3);
-        if ($seededDate){
-            switch ($seededDate - $curDate) {
-                case 0:
-                    $sql = $sqlH.$valuesTomorrow;
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo '快速飞艇明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$valuesTomorrow;
-                    $this->sqlExec($sql,$time,2);
-            }
-        } else {
-            $sql .= ','.$valuesTomorrow;
-            $this->sqlExec($sql,$time,2);
+        $timeUp = date(' 07:25:30');
+        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
+        $issueDate = '';
+        if(isset($checkUpdate->ksft)) {
+            if($curDate == $checkUpdate->ksft) {
+                $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
+                $curDate = date('ymd', strtotime('+ 1 day', time()));
+            }else if($curDate < $checkUpdate->ksft)
+                writeLog('ISSUE_SEED', $curDate.$this->description.'期数已存在');
+            else
+                $issueDate = date('Y-m-d',time());
+        }else{
+            $issueDate = date('Y-m-d',time());
         }
-    }
-
-    private function sqlExec($sql,$time,$days=1){
-        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['ksft' => date('ymd',$time)]) ){
-            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成快速飞艇');
+        echo $issueDate;
+        if(empty($issueDate))
+            return '';
+        $timeUp = $issueDate . $timeUp;
+        $sql = "INSERT INTO game_ksft (issue,opentime) VALUES ";
+        for($i=1;$i<=276;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(5);
+            $i = str_repeat('0',3-strlen($i)).$i;
+            $issue = $curDate.$i;
+            $sql .= "('$issue','$timeUp'),";
+            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
+        }
+        if($checkUpdate->ksft == $curDate){
+            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
         } else {
-            writeLog('ISSUE_SEED', 'error:快速飞艇期数生成失败');
+            $run = DB::statement(rtrim($sql, ',').";");
+            if($run == 1){
+                $update = DB::table('issue_seed')->where('id',1)->update([
+                    'ksft' => $curDate
+                ]);
+                if($update == 1){
+                    writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
+                }
+            } else {
+                writeLog('ISSUE_SEED', 'error');
+            }
         }
     }
 }

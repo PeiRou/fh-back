@@ -151,10 +151,7 @@ class SrcNoticeController extends Controller
                     foreach ($keys as $item){
                         $data = "[".Redis::get($item)."]";
                         $get = json_decode($data,true);
-                        if(empty($get[0]['user_id']))
-                            writeLog('error',$data);
-                        else
-                            $onlineUser[] = $get[0]['user_id'];
+                        $onlineUser[] = $get[0]['user_id'];
                     }
                     $usersArray = DB::table('users')
                         ->select('id','username')
