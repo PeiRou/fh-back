@@ -61,12 +61,12 @@
                 <th>在线</th>
                 <th>上级总代理</th>
                 <th>代理</th>
-                @if(env('TEST',0) == 1)
+                @if(env('TEST',0) == 1 && env('AGENT_MODEL',1) == 2)
                 <th>下级代理数</th>
                 @endif
                 <th>会员数</th>
                 <th>可用余额</th>
-                @if(env('TEST',0) == 1)
+                @if(env('TEST',0) == 1 && env('AGENT_MODEL',1) == 2)
                 <th>模式</th>
                 @endif
                 <th>状态</th>
@@ -88,12 +88,12 @@
             {data:'online'},
             {data:'general_agent'},
             {data:'agent'},
-            @if(env('TEST',0) == 1)
+            @if(env('TEST',0) == 1 && env('AGENT_MODEL',1) == 2)
             {data:'agentCount'},
             @endif
             {data:'members'},
             {data:'balance'},
-                @if(env('TEST',0) == 1)
+                @if(env('TEST',0) == 1 && env('AGENT_MODEL',1) == 2)
             {data:'model'},
                 @endif
             {data:'status'},

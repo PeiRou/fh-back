@@ -19,30 +19,34 @@ class ISSUE_SEED_PAOMA extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = date('Y-m-d 07:28:45');
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
-        $sql = "INSERT INTO game_paoma (issue,opentime) VALUES ";
-        for($i=1;$i<=985;$i++){
-            $timeUp = Carbon::parse($timeUp)->addSeconds(75);
-            $i = str_repeat('0',3-strlen($i)).$i;
-            $issue = $curDate.$i;
-            $sql .= "('$issue','$timeUp'),";
-            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
-        }
-        if($checkUpdate->paoma == $curDate){
-            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
-        } else {
-            $run = DB::statement(rtrim($sql, ',').";");
-            if($run == 1){
-                $update = DB::table('issue_seed')->where('id',1)->update([
-                    'paoma' => $curDate
-                ]);
-                if($update == 1){
-                    writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
-                }
-            } else {
-                writeLog('ISSUE_SEED', 'error');
+        $seededDate = @DB::table('issue_seed')->where('id',1)->value('paoma');
+        $sqlH = "INSERT INTO game_paoma (issue,opentime) VALUES ";
+        $sql = $sqlH.issueSeedValues(985,date('Y-m-d 07:28:45'),$curDate,3,75);
+        $valuesTomorrow = issueSeedValues(985,date('Y-m-d 07:28:45',($time = strtotime('+1 day'))),date('ymd',$time),3,75 );
+        if ($seededDate){
+            switch ($seededDate - $curDate) {
+                case 0:
+                    $sql = $sqlH.$valuesTomorrow;
+                    $this->sqlExec($sql,$time);
+                    break;
+                case 1:
+                    echo '跑马明日期数已存在';
+                    break;
+                case -1:
+                    $sql .= ','.$valuesTomorrow;
+                    $this->sqlExec($sql,$time,2);
             }
+        } else {
+            $sql .= ','.$valuesTomorrow;
+            $this->sqlExec($sql,$time,2);
+        }
+    }
+
+    private function sqlExec($sql,$time,$days=1){
+        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['paoma' => date('ymd',$time)]) ){
+            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成跑马');
+        } else {
+            writeLog('ISSUE_SEED', 'error:跑马期数生成失败');
         }
     }
 }

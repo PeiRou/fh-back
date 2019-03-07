@@ -19,46 +19,34 @@ class ISSUE_SEED_KSSC extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = date(' 07:25:15');
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
-        $issueDate = '';
-        if(isset($checkUpdate->kssc)) {
-            if($curDate == $checkUpdate->kssc) {
-                $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
-                $curDate = date('ymd', strtotime('+ 1 day', time()));
-            }else if($curDate < $checkUpdate->kssc)
-                writeLog('ISSUE_SEED', $curDate.$this->description.'期数已存在');
-            else
-                $issueDate = date('Y-m-d',time());
-        }else{
-            $issueDate = date('Y-m-d',time());
-        }
-        echo $issueDate;
-        if(empty($issueDate))
-            return '';
-        $timeUp = $issueDate . $timeUp;
-        $sql = "INSERT INTO game_kssc (issue,opentime) VALUES ";
-        for($i=1;$i<=276;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(5);
-            $i = str_repeat('0',3-strlen($i)).$i;
-            $issue = $curDate.$i;
-            $sql .= "('$issue','$timeUp'),";
-            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
-        }
-        if($checkUpdate->kssc == $curDate){
-            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
-        } else {
-            $run = DB::statement(rtrim($sql, ',').";");
-            if($run == 1){
-                $update = DB::table('issue_seed')->where('id',1)->update([
-                    'kssc' => $curDate
-                ]);
-                if($update == 1){
-                    writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
-                }
-            } else {
-                writeLog('ISSUE_SEED', 'error');
+        $seededDate = @DB::table('issue_seed')->where('id',1)->value('kssc');
+        $sqlH = "INSERT INTO game_kssc (issue,opentime) VALUES ";
+        $sql = $sqlH.issueSeedValues(276,date('Y-m-d 07:25:15'),$curDate,3);
+        $valuesTomorrow = issueSeedValues(276,date('Y-m-d 07:25:15',($time=strtotime('+1 day'))),date('ymd',$time),3);
+        if ($seededDate){
+            switch ($seededDate - $curDate) {
+                case 0:
+                    $sql = $sqlH.$valuesTomorrow;
+                    $this->sqlExec($sql,$time);
+                    break;
+                case 1:
+                    echo '快速赛车明日期数已存在';
+                    break;
+                case -1:
+                    $sql .= ','.$valuesTomorrow;
+                    $this->sqlExec($sql,$time,2);
             }
+        } else {
+            $sql .= ','.$valuesTomorrow;
+            $this->sqlExec($sql,$time,2);
+        }
+    }
+
+    private function sqlExec($sql,$time,$days=1){
+        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['kssc' => date('ymd',$time)]) ){
+            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成快速赛车');
+        } else {
+            writeLog('ISSUE_SEED', 'error:快速赛车期数生成失败');
         }
     }
 }

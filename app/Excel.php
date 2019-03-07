@@ -111,8 +111,11 @@ class Excel
         } else {
             \Log::info($gameName.'已结算过，已阻止！');
         }
-        //退水
-        $this->reBackUser($gameId,$issue,$gameName);
+        //普通模式才会退水
+        if(env('AGENT_MODEL',1) == 1) {
+            //退水
+            $this->reBackUser($gameId, $issue, $gameName);
+        }
         return 0;
     }
     private function reBackUser($gameId,$issue,$gameName=''){

@@ -19,45 +19,46 @@ class ISSUE_SEED_CQXYNC extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = date('Y-m-d 00:02:20');
-        $timeUp2 = date('Y-m-d 09:52:20');
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
-        $sql = "INSERT INTO game_cqxync (issue,opentime) VALUES ";
-
-        $date = date('Y-m-d');
-        $firstIssue = $curDate.'001';
-        $sql .= "('$firstIssue','$date 00:02:20'),";
-        for($i=1;$i<=12;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
-            $num = 1 + $i;
-            $num = str_repeat('0',3-strlen($num)).$num;
-            $issue = date('ymd').$num;
-            $sql .= "('$issue','$timeUp'),";
-        }
-        for($i=1;$i<=84;$i++){
-            $timeUp2 = Carbon::parse($timeUp2)->addMinutes(10);
-            $num = 13 + $i;
-            if(strlen($num) == 2){
-                $num = '0'.$num;
+        $seededDate = @DB::table('issue_seed')->where('id',1)->value('cqxync');
+        $sqlH = "INSERT INTO game_cqxync (issue,opentime) VALUES ";
+        $sql = $sqlH.$this->issueSeedValues(13,date('Y-m-d 23:52:20',strtotime('-1 day')),$curDate,1,3,600)
+            .','.$this->issueSeedValues(80,date('Y-m-d 09:52:20'),$curDate,14,3,600);
+        $valuesTomorrow = $this->issueSeedValues(13,date('Y-m-d 23:52:20'),date('ymd',($time=strtotime('+1 day'))),1,3,600)
+            .','.$this->issueSeedValues(80,date('Y-m-d 09:52:20',$time),date('ymd',$time),14,3,600);
+        if ($seededDate){
+            switch ($seededDate - $curDate) {
+                case 0:
+                    $sql = $sqlH.$valuesTomorrow;
+                    $this->sqlExec($sql,$time);
+                    break;
+                case 1:
+                    echo '重庆幸运农场明日期数已存在';
+                    break;
+                case -1:
+                    $sql .= ','.$valuesTomorrow;
+                    $this->sqlExec($sql,$time,2);
             }
-            $issue = date('ymd').$num;
-            $sql .= "('$issue','$timeUp2'),";
-        }
-
-        if($checkUpdate->cqxync == $curDate){
-            writeLog('ISSUE_SEED', date('Y-m-d').'重庆幸运农场期数已存在');
         } else {
-            $run = DB::statement(rtrim($sql, ',').";");
-            if($run == 1){
-                $update = DB::table('issue_seed')->where('id',1)->update([
-                    'cqxync' => $curDate
-                ]);
-                if($update !== 1){
-                    writeLog('ISSUE_SEED', '重庆幸运农场error');
-                }
-            } else {
-                writeLog('ISSUE_SEED', '重庆幸运农场error');
-            }
+            $sql .= ','.$valuesTomorrow;
+            $this->sqlExec($sql,$time,2);
         }
+    }
+
+    private function sqlExec($sql,$time,$days=1){
+        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['cqxync' => date('ymd',$time)]) ){
+            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成重庆幸运农场');
+        } else {
+            writeLog('ISSUE_SEED', 'error:重庆幸运农场期数生成失败');
+        }
+    }
+
+    private function issueSeedValues($end,$timeUp,$curDate,$start=1,$len=3,$interval=600)
+    {
+        for($sql='',$i=$start;$i<=$end;$i++){
+            $timeUp = Carbon::parse($timeUp)->addSeconds($interval);
+            $i = str_repeat('0',$len-strlen($i)).$i;
+            $sql .= "('{$curDate}{$i}','$timeUp'),";
+        }
+        return rtrim($sql,',');
     }
 }

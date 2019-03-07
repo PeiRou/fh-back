@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_MSSSC extends Command
 {
     protected $signature = 'ISSUE_SEED_MSSSC';
-    protected $description = '秒速时时彩期数生成-985';
+    protected $description = '秒速时时彩期数生成-1105';
 
     public function __construct()
     {
@@ -19,30 +19,34 @@ class ISSUE_SEED_MSSSC extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = date('Y-m-d 07:30:15');
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
-        $sql = "INSERT INTO game_msssc (issue,opentime) VALUES ";
-        for($i=1;$i<=1105;$i++){
-            $timeUp = Carbon::parse($timeUp)->addSeconds(75);
-            $i = str_repeat('0',4-strlen($i)).$i;
-            $issue = $curDate.$i;
-            $sql .= "('$issue','$timeUp'),";
-            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
-        }
-        if($checkUpdate->msssc == $curDate){
-            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
-        } else {
-            $run = DB::statement(rtrim($sql, ',').";");
-            if($run == 1){
-                $update = DB::table('issue_seed')->where('id',1)->update([
-                    'msssc' => $curDate
-                ]);
-                if($update == 1){
-                    writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
-                }
-            } else {
-                writeLog('ISSUE_SEED', 'error');
+        $seededDate = @DB::table('issue_seed')->where('id',1)->value('msssc');
+        $sqlH = "INSERT INTO game_msssc (issue,opentime) VALUES ";
+        $sql = $sqlH.issueSeedValues(1105,date('Y-m-d 07:30:15'),$curDate,4,75);
+        $valuesTomorrow = issueSeedValues(1105,date('Y-m-d 07:30:15',($time = strtotime('+1 day'))),date('ymd',$time),4,75 );
+        if ($seededDate){
+            switch ($seededDate - $curDate) {
+                case 0:
+                    $sql = $sqlH.$valuesTomorrow;
+                    $this->sqlExec($sql,$time);
+                    break;
+                case 1:
+                    echo '秒速时时彩明日期数已存在';
+                    break;
+                case -1:
+                    $sql .= ','.$valuesTomorrow;
+                    $this->sqlExec($sql,$time,2);
             }
+        } else {
+            $sql .= ','.$valuesTomorrow;
+            $this->sqlExec($sql,$time,2);
+        }
+    }
+
+    private function sqlExec($sql,$time,$days=1){
+        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['msssc' => date('ymd',$time)]) ){
+            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成秒速时时彩');
+        } else {
+            writeLog('ISSUE_SEED', 'error:秒速时时彩期数生成失败');
         }
     }
 }

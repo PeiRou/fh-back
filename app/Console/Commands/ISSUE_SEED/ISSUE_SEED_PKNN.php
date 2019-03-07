@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_PKNN extends Command
 {
     protected $signature = 'ISSUE_SEED_PKNN';
-    protected $description = 'PK10牛牛期数生成-179';
+    protected $description = 'PK10牛牛期数生成-44';
 
     public function __construct()
     {
@@ -18,39 +18,46 @@ class ISSUE_SEED_PKNN extends Command
 
     public function handle()
     {
-        $curDate = date('ymd');
-        $timeUp = date('Y-m-d 09:10:00');
-        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
-//        $checkLastIssue = DB::table('game_pknn')->select(DB::raw('MAX(id) as maxid'),'issue')->where('opentime',date('Y-m-d 23:50:00',strtotime('-1 days')))->first();
-//        $lastIssue = @$checkLastIssue->issue;
-        $checkLastIssue = DB::table('game_pknn')->max('issue');
-        $lastIssue = $checkLastIssue?$checkLastIssue:0;
-        if(empty($lastIssue)){
-            writeLog('ISSUE_SEED', date('Y-m-d').$this->signature.'期数不可为0');
-            echo '期数不可为0';
-            return '';
-        }
-        $sql = "INSERT INTO game_pknn (issue,opentime) VALUES ";
-        for($i=1;$i<=44;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
-            $issue = (int)$lastIssue + (int)$i;
-            $sql .= "('$issue','$timeUp'),";
-            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
-        }
-        if($checkUpdate->pknn == $curDate){
-            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
-        } else {
-            $run = DB::statement(rtrim($sql, ',').";");
-            if($run == 1){
-                $update = DB::table('issue_seed')->where('id',1)->update([
-                    'pknn' => $curDate
-                ]);
-                if($update == 1){
-                    writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
-                }
-            } else {
-                writeLog('ISSUE_SEED', 'error');
+        $seededDate = @DB::table('issue_seed')->where('id',1)->value('pknn');
+        $sqlH = "INSERT INTO game_pknn (issue,opentime) VALUES ";
+        $last = DB::table('game_pknn')->orderByDesc('id')->first()->issue??0;
+        $sql = $sqlH.$this->issueSeedValues(44,date('Y-m-d 09:10:00'),$last);
+        //明日奖期基数时间
+        $timeUp = date('Y-m-d 09:10:00',($time = strtotime('+1 day')));
+        if ($seededDate){
+            switch ($seededDate - date('ymd')) {
+                case 0:
+                    $sql = $sqlH.$this->issueSeedValues(44,$timeUp,$last);
+                    $this->sqlExec($sql,$time);
+                    break;
+                case 1:
+                    echo 'PK牛牛明日期数已存在';
+                    break;
+                case -1:
+                    $sql .= ','.$this->issueSeedValues(44,$timeUp,$last+44);
+                    $this->sqlExec($sql,$time,2);
             }
+        } else {
+            $sql .= ','.$this->issueSeedValues(44,$timeUp,$last+44);
+            $this->sqlExec($sql,$time,2);
         }
+    }
+
+    private function sqlExec($sql,$time,$days=1){
+        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['pknn' => date('ymd',$time)]) ){
+            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成PK牛牛');
+        } else {
+            writeLog('ISSUE_SEED', 'error:PK牛牛期数生成失败');
+        }
+    }
+
+    private function issueSeedValues($num,$timeUp,$last,$interval=1200)
+    {
+        for($sql='',$i=1;$i<=$num;$i++){
+            $timeUp = Carbon::parse($timeUp)->addSeconds($interval);
+            $issue = (int)$last + $i;
+            $sql .= "('$issue','$timeUp'),";
+        }
+        return rtrim($sql,',');
     }
 }
