@@ -18,46 +18,38 @@ class ISSUE_SEED_PCDD extends Command
 
     public function handle()
     {
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('pcdd');
-        $sqlH = "INSERT INTO game_pcdd (issue,opentime) VALUES ";
-        $last = DB::table('game_pcdd')->orderByDesc('id')->first()->issue??0;
-        $sql = $sqlH.$this->issueSeedValues(179,date('Y-m-d 09:00:00'),$last);
-        //明日奖期基数时间
-        $timeUp = date('Y-m-d 09:00:00',($time = strtotime('+1 day')));
-        if ($seededDate){
-            switch ($seededDate - date('ymd')) {
-                case 0:
-                    $sql = $sqlH.$this->issueSeedValues(179,$timeUp,$last);
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo 'PK10明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$this->issueSeedValues(179,$timeUp,$last+179);
-                    $this->sqlExec($sql,$time,2);
-            }
-        } else {
-            $sql .= ','.$this->issueSeedValues(179,$timeUp,$last+179);
-            $this->sqlExec($sql,$time,2);
+        $curDate = date('ymd');
+        $timeUp = date('Y-m-d 09:00:00');
+        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
+        $checkLastIssue = DB::table('game_pcdd')->select(DB::raw('MAX(id) as maxid'),'issue')->where('opentime',date('Y-m-d 23:55:00',strtotime('-1 days')))->first();
+        $lastIssue = @$checkLastIssue->issue;
+        //$lastIssue = '907087';
+        if(empty($lastIssue)){
+            writeLog('ISSUE_SEED', date('Y-m-d').$this->signature.'期数不可为0');
+            echo '期数不可为0';
+            return '';
         }
-    }
-
-    private function sqlExec($sql,$time,$days=1){
-        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['pcdd' => date('ymd',$time)]) ){
-            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成PK10');
-        } else {
-            writeLog('ISSUE_SEED', 'error:PK10期数生成失败');
-        }
-    }
-
-    private function issueSeedValues($num,$timeUp,$last,$interval=300)
-    {
-        for($sql='',$i=1;$i<=$num;$i++){
-            $timeUp = Carbon::parse($timeUp)->addSeconds($interval);
-            $issue = (int)$last + $i;
+        $sql = "INSERT INTO game_pcdd (issue,opentime) VALUES ";
+        for($i=1;$i<=179;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(5);
+            $issue = (int)$lastIssue + (int)$i;
             $sql .= "('$issue','$timeUp'),";
+            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
         }
-        return rtrim($sql,',');
+        if($checkUpdate->pcdd == $curDate){
+            writeLog('ISSUE_SEED', date('Y-m-d').'期数已存在');
+        } else {
+            $run = DB::statement(rtrim($sql, ',').";");
+            if($run == 1){
+                $update = DB::table('issue_seed')->where('id',1)->update([
+                    'pcdd' => $curDate
+                ]);
+                if($update == 1){
+                    writeLog('ISSUE_SEED', date('Y-m-d').'已更新');
+                }
+            } else {
+                writeLog('ISSUE_SEED', 'error');
+            }
+        }
     }
 }

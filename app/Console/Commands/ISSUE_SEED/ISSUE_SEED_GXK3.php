@@ -19,34 +19,36 @@ class ISSUE_SEED_GXK3 extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('gxk3');
-        $sqlH = "INSERT INTO game_gxk3 (issue,opentime) VALUES ";
-        $sql = $sqlH.issueSeedValues(40,date('Y-m-d 09:10:00'),$curDate,3,1200);
-        $valuesTomorrow = issueSeedValues(40,date('Y-m-d 09:10:00',($time=strtotime('+1 day'))),date('ymd',$time),3,1200);
-        if ($seededDate){
-            switch ($seededDate - $curDate) {
-                case 0:
-                    $sql = $sqlH.$valuesTomorrow;
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo '广西快3明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$valuesTomorrow;
-                    $this->sqlExec($sql,$time,2);
+        $timeUp = date('Y-m-d 09:10:00');
+        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
+        $sql = "INSERT INTO game_gxk3 (issue,opentime) VALUES ";
+        for($i=1;$i<=40;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
+            if(strlen($i) == 1){
+                $i = '00'.$i;
             }
-        } else {
-            $sql .= ','.$valuesTomorrow;
-            $this->sqlExec($sql,$time,2);
+            if(strlen($i) == 2){
+                $i = '0'.$i;
+            }
+            $issue = $curDate.$i;
+            $sql .= "('$issue','$timeUp'),";
+            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
         }
-    }
 
-    private function sqlExec($sql,$time,$days=1){
-        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['gxk3' => date('ymd',$time)]) ){
-            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成广西快3');
+        if($checkUpdate->gxk3 == $curDate){
+            writeLog('ISSUE_SEED', date('Y-m-d').'广西快3期数已存在');
         } else {
-            writeLog('ISSUE_SEED', 'error:广西快3期数生成失败');
+            $run = DB::statement(rtrim($sql, ',').";");
+            if($run == 1){
+                $update = DB::table('issue_seed')->where('id',1)->update([
+                    'gxk3' => $curDate
+                ]);
+                if($update !== 1){
+                    writeLog('ISSUE_SEED', '广西快3error');
+                }
+            } else {
+                writeLog('ISSUE_SEED', '广西快3error');
+            }
         }
     }
 }

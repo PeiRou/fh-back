@@ -19,34 +19,36 @@ class ISSUE_SEED_HBK3 extends Command
     public function handle()
     {
         $curDate = date('Ymd');
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('hbk3');
-        $sqlH = "INSERT INTO game_hbk3 (issue,opentime) VALUES ";
-        $sql = $sqlH.issueSeedValues(78,date('Y-m-d 09:00:40'),$curDate,3,600);
-        $valuesTomorrow = issueSeedValues(78,date('Y-m-d 09:00:40',($time=strtotime('+1 day'))),date('Ymd',$time),3,600);
-        if ($seededDate){
-            switch ($seededDate - $curDate) {
-                case 0:
-                    $sql = $sqlH.$valuesTomorrow;
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo '湖北快3明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$valuesTomorrow;
-                    $this->sqlExec($sql,$time,2);
+        $timeUp = date('Y-m-d 09:00:40');
+        $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
+        $sql = "INSERT INTO game_hbk3 (issue,opentime) VALUES ";
+        for($i=1;$i<=78;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
+            if(strlen($i) == 1){
+                $i = '00'.$i;
             }
-        } else {
-            $sql .= ','.$valuesTomorrow;
-            $this->sqlExec($sql,$time,2);
+            if(strlen($i) == 2){
+                $i = '0'.$i;
+            }
+            $issue = $curDate.$i;
+            $sql .= "('$issue','$timeUp'),";
+            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
         }
-    }
 
-    private function sqlExec($sql,$time,$days=1){
-        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['hbk3' => date('Ymd',$time)]) ){
-            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成湖北快3');
+        if($checkUpdate->hbk3 == $curDate){
+            writeLog('ISSUE_SEED', date('Y-m-d').'湖北快3期数已存在');
         } else {
-            writeLog('ISSUE_SEED', 'error:湖北快3期数生成失败');
+            $run = DB::statement(rtrim($sql, ',').";");
+            if($run == 1){
+                $update = DB::table('issue_seed')->where('id',1)->update([
+                    'hbk3' => $curDate
+                ]);
+                if($update !== 1){
+                    writeLog('ISSUE_SEED', '湖北快3error');
+                }
+            } else {
+                writeLog('ISSUE_SEED', '湖北快3error');
+            }
         }
     }
 }
