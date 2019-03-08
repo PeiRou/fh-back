@@ -19,26 +19,21 @@ class ISSUE_SEED_MSFT extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('msft');
+        $seededDate = DB::table('issue_seed')->where('id',1)->value('msft')??0;
         $sqlH = "INSERT INTO game_msft (issue,opentime) VALUES ";
         $sql = $sqlH.issueSeedValues(1105,date('Y-m-d 07:29:45'),$curDate,4,75);
         $valuesTomorrow = issueSeedValues(1105,date('Y-m-d 07:29:45',($time=strtotime('+1 day'))),date('ymd',$time),4,75);
-        if ($seededDate){
-            switch ($seededDate - $curDate) {
-                case 0:
-                    $sql = $sqlH.$valuesTomorrow;
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo '秒速飞艇明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$valuesTomorrow;
-                    $this->sqlExec($sql,$time,2);
-            }
-        } else {
-            $sql .= ','.$valuesTomorrow;
-            $this->sqlExec($sql,$time,2);
+        switch ($seededDate <=> $curDate) {
+            case 0:
+                $sql = $sqlH . $valuesTomorrow;
+                $this->sqlExec($sql, $time);
+                break;
+            case 1:
+                echo '秒速飞艇明日期数已存在';
+                break;
+            case -1:
+                $sql .= ',' . $valuesTomorrow;
+                $this->sqlExec($sql, $time, 2);
         }
     }
 

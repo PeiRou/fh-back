@@ -19,26 +19,21 @@ class ISSUE_SEED_MSNN extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('msnn');
+        $seededDate = DB::table('issue_seed')->where('id',1)->value('msnn')??0;
         $sqlH = "INSERT INTO game_msnn (issue,opentime) VALUES ";
         $sql = $sqlH.issueSeedValues(985,date('Y-m-d 07:29:15'),$curDate,3,75);
         $valuesTomorrow = issueSeedValues(985,date('Y-m-d 07:29:15',($time = strtotime('+1 day'))),date('ymd',$time),3,75 );
-        if ($seededDate){
-            switch ($seededDate - $curDate) {
-                case 0:
-                    $sql = $sqlH.$valuesTomorrow;
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo '秒速牛牛明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$valuesTomorrow;
-                    $this->sqlExec($sql,$time,2);
-            }
-        } else {
-            $sql .= ','.$valuesTomorrow;
-            $this->sqlExec($sql,$time,2);
+        switch ($seededDate <=> $curDate) {
+            case 0:
+                $sql = $sqlH . $valuesTomorrow;
+                $this->sqlExec($sql, $time);
+                break;
+            case 1:
+                echo '秒速牛牛明日期数已存在';
+                break;
+            case -1:
+                $sql .= ',' . $valuesTomorrow;
+                $this->sqlExec($sql, $time, 2);
         }
     }
 

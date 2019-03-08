@@ -18,28 +18,23 @@ class ISSUE_SEED_PK10 extends Command
 
     public function handle()
     {
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('pk10');
+        $seededDate = DB::table('issue_seed')->where('id',1)->value('pk10')??0;
         $sqlH = "INSERT INTO game_bjpk10 (issue,opentime) VALUES ";
         $last = DB::table('game_bjpk10')->orderByDesc('id')->first()->issue??0;
         $sql = $sqlH.$this->issueSeedValues(44,date('Y-m-d 09:10:00'),$last);
         //明日奖期基数时间
         $timeUp = date('Y-m-d 09:10:00',($time = strtotime('+1 day')));
-        if ($seededDate){
-            switch ($seededDate - date('ymd')) {
-                case 0:
-                    $sql = $sqlH.$this->issueSeedValues(44,$timeUp,$last);
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo 'PK10明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$this->issueSeedValues(44,$timeUp,$last+44);
-                    $this->sqlExec($sql,$time,2);
-            }
-        } else {
-            $sql .= ','.$this->issueSeedValues(44,$timeUp,$last+44);
-            $this->sqlExec($sql,$time,2);
+        switch ($seededDate <=> date('ymd')) {
+            case 0:
+                $sql = $sqlH.$this->issueSeedValues(44,$timeUp,$last);
+                $this->sqlExec($sql,$time);
+                break;
+            case 1:
+                echo 'PK10明日期数已存在';
+                break;
+            case -1:
+                $sql .= ','.$this->issueSeedValues(44,$timeUp,$last+44);
+                $this->sqlExec($sql,$time,2);
         }
     }
 

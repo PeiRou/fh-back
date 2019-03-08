@@ -19,32 +19,28 @@ class ISSUE_SEED_KSFT extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('ksft');
+        $seededDate = DB::table('issue_seed')->where('id', 1)->value('ksft') ?? 0;
         $sqlH = "INSERT INTO game_ksft (issue,opentime) VALUES ";
-        $sql = $sqlH.issueSeedValues(276,date('Y-m-d 07:25:30'),$curDate,3);
-        $valuesTomorrow = issueSeedValues(276,date('Y-m-d 07:25:30',($time=strtotime('+1 day'))),date('ymd',$time),3);
-        if ($seededDate){
-            switch ($seededDate - $curDate) {
-                case 0:
-                    $sql = $sqlH.$valuesTomorrow;
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo '快速飞艇明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$valuesTomorrow;
-                    $this->sqlExec($sql,$time,2);
-            }
-        } else {
-            $sql .= ','.$valuesTomorrow;
-            $this->sqlExec($sql,$time,2);
+        $sql = $sqlH . issueSeedValues(276, date('Y-m-d 07:25:30'), $curDate, 3);
+        $valuesTomorrow = issueSeedValues(276, date('Y-m-d 07:25:30', ($time = strtotime('+1 day'))), date('ymd', $time), 3);
+        switch ($seededDate <=> $curDate) {
+            case 0:
+                $sql = $sqlH . $valuesTomorrow;
+                $this->sqlExec($sql, $time);
+                break;
+            case 1:
+                echo '快速飞艇明日期数已存在';
+                break;
+            case -1:
+                $sql .= ',' . $valuesTomorrow;
+                $this->sqlExec($sql, $time, 2);
         }
     }
 
-    private function sqlExec($sql,$time,$days=1){
-        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['ksft' => date('ymd',$time)]) ){
-            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成快速飞艇');
+    private function sqlExec($sql, $time, $days = 1)
+    {
+        if (DB::statement($sql) and DB::table('issue_seed')->where('id', 1)->update(['ksft' => date('ymd', $time)])) {
+            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d', $time) : date('Y-m-d') . ':' . date('Y-m-d', $time)) . '已生成快速飞艇');
         } else {
             writeLog('ISSUE_SEED', 'error:快速飞艇期数生成失败');
         }
