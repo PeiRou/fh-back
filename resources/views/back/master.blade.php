@@ -399,6 +399,9 @@
                 @if($hasPermission->hasPermission('system.advertiseInfo') == "has")
                 <li id="menu-systemManage-advertiseInfo"><a href="{{ route('system.advertiseInfo') }}"><cite></cite><span>广告内容</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('system.Blacklist') == "has")
+                <li id="menu-systemManage-Blacklist"><a href="{{ route('system.Blacklist') }}"><cite></cite><span>黑名单管理</span></a></li>
+                @endif
             </ul>
         </li>
         @endif

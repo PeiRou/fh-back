@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Blacklist;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -37,5 +38,10 @@ class SrcViewAdController extends Controller
     public function advertiseInfo(){
         $aData = DB::table('advertise')->get();
         return view('back.system.advertiseInfo',compact('aData'));
+    }
+    //黑名单管理
+    public function systemBlacklist()
+    {
+        return view('back.system.systemBlacklist');
     }
 }
