@@ -30,7 +30,7 @@ class ISSUE_SEED_PCDD extends Command
                 $this->sqlExec($sql, $time);
                 break;
             case 1:
-                echo 'PK10明日期数已存在';
+                echo 'PC蛋蛋明日期数已存在';
                 break;
             case -1:
                 $sql .= ',' . $this->issueSeedValues(179, $timeUp, $last + 179);
@@ -41,9 +41,9 @@ class ISSUE_SEED_PCDD extends Command
     private function sqlExec($sql, $time, $days = 1)
     {
         if (DB::statement($sql) and DB::table('issue_seed')->where('id', 1)->update(['pcdd' => date('ymd', $time)])) {
-            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d', $time) : date('Y-m-d') . ':' . date('Y-m-d', $time)) . '已生成PK10');
+            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d', $time) : date('Y-m-d') . ':' . date('Y-m-d', $time)) . '已生成PC蛋蛋');
         } else {
-            writeLog('ISSUE_SEED', 'error:PK10期数生成失败');
+            writeLog('ISSUE_SEED', 'error:PC蛋蛋期数生成失败');
         }
     }
 
