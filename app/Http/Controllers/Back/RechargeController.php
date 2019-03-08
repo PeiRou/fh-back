@@ -80,6 +80,14 @@ class RechargeController extends Controller
                             $capital->content = '充值手续费';
                         $insert = $capital->save();
                     }
+
+                        //增加用户提款所需要的打码量
+                    if(($drawing_money_check_code = DB::table('system_setting')->value('drawing_money_check_code')) > 0){
+                        DB::connection('mysql::write')->table('users')->where('id' , $userId)->update([
+                            'cheak_drawing' => DB::raw(" cheak_drawing + ".($amout * $drawing_money_check_code)." ")
+                        ]);
+                    }
+
                     event(new BackPusherEvent('success','充值成功提醒','您的充值订单</br>【'.$getInfo->orderNum.'】已到账，充值金额：'.$amout.'元',array('fnotice-'.$userId)));
                     return response()->json([
                         'status' => true
