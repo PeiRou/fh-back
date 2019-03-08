@@ -416,3 +416,27 @@ if(!function_exists('ip')){
         return $ipInfo;
     }
 }
+//循环生成待插入奖期values
+if(!function_exists('issueSeedValues')) {
+    function issueSeedValues($itemNum,$timeUp,$curDate,$len=3,$interval=300){
+        for($sql='',$i=1;$i<=$itemNum;$i++){
+            $timeUp = \Illuminate\Support\Carbon::parse($timeUp)->addSeconds($interval);
+            $i = str_repeat('0',$len-strlen($i)).$i;
+            $sql .= "('{$curDate}{$i}','$timeUp'),";
+        }
+        return rtrim($sql,',');
+    }
+}
+//日志
+if(!function_exists('mylog')) {
+    function mylog($data, $attach = '', $dir = 'laravel', $dailyMode = 1, $days = 31){
+        $traceinfo = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1)[0];
+        $attach or $attach = 'line:' . $traceinfo['line'] . ' in ' . $traceinfo['file'];
+        $path = storage_path('logs/' . trim($dir, '/') . '.log');
+        $handlers[] = ($monolog = Log::getMonolog())->popHandler();
+        $dailyMode ? Log::useDailyFiles($path, $days) : Log::useFiles($path);
+        Log::info($attach);
+        Log::info($data);
+        $monolog->setHandlers($handlers);
+    }
+}

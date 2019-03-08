@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back\Data;
 
+use App\Levels;
 use App\MessagePush;
 use App\Notices;
 use Illuminate\Http\Request;
@@ -56,6 +57,7 @@ class NoticeDataController extends Controller
     public function sendMessage()
     {
         $MessagePush = MessagePush::orderBy('id','desc')->get();
+        $userLevel = Levels::getLevelArrayValue();
         return DataTables::of($MessagePush)
             ->editColumn('user_type',function ($MessagePush){
                 switch ($MessagePush->user_type){
@@ -86,39 +88,44 @@ class NoticeDataController extends Controller
                         break;
                 }
             })
-            ->editColumn('user_level',function ($MessagePush){
-                switch ($MessagePush->user_level){
-                    case '1';
-                        return '默认层';
-                        break;
-                    case '2';
-                        return '第一层';
-                        break;
-                    case '3';
-                        return '第二层';
-                        break;
-                    case '5';
-                        return '第三层';
-                        break;
-                    case '6';
-                        return '第四层';
-                        break;
-                    case '7';
-                        return '第五层';
-                        break;
-                    case '8';
-                        return '国外用户';
-                        break;
-                    case '9';
-                        return 'VIP用户';
-                        break;
-                    case '10';
-                        return '测试专用';
-                        break;
-                    case '11';
-                        return '黑名单';
-                        break;
+            ->editColumn('user_level',function ($MessagePush) use($userLevel){
+                if(empty($userLevel[$MessagePush->user_level])){
+                    return '';
+                }else{
+                    return $userLevel[$MessagePush->user_level]->name;
                 }
+//                switch ($MessagePush->user_level){
+//                    case '1';
+//                        return '默认层';
+//                        break;
+//                    case '2';
+//                        return '第一层';
+//                        break;
+//                    case '3';
+//                        return '第二层';
+//                        break;
+//                    case '5';
+//                        return '第三层';
+//                        break;
+//                    case '6';
+//                        return '第四层';
+//                        break;
+//                    case '7';
+//                        return '第五层';
+//                        break;
+//                    case '8';
+//                        return '国外用户';
+//                        break;
+//                    case '9';
+//                        return 'VIP用户';
+//                        break;
+//                    case '10';
+//                        return '测试专用';
+//                        break;
+//                    case '11';
+//                        return '黑名单';
+//                        break;
+//                }
             })
             ->editColumn('control',function ($MessagePush){
                 if(in_array('ac.ad.delSendMessage',$this->permissionArray)) {
