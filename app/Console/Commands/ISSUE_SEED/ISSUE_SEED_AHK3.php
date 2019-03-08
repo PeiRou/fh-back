@@ -19,34 +19,52 @@ class ISSUE_SEED_AHK3 extends Command
     public function handle()
     {
         $curDate = date('Ymd');
-        $seededDate = @DB::table('issue_seed')->where('id',1)->value('ahk3');
-        $sqlH = "INSERT INTO game_ahk3 (issue,opentime) VALUES ";
-        $sql = $sqlH.issueSeedValues(80,date('Y-m-d 08:40:00'),$curDate,3,600);
-        $valuesTomorrow = issueSeedValues(80,date('Y-m-d 08:40:00',($time=strtotime('+1 day'))),date('Ymd',$time),3,600);
-        if ($seededDate){
-            switch ($seededDate - $curDate) {
-                case 0:
-                    $sql = $sqlH.$valuesTomorrow;
-                    $this->sqlExec($sql,$time);
-                    break;
-                case 1:
-                    echo '安徽快3明日期数已存在';
-                    break;
-                case -1:
-                    $sql .= ','.$valuesTomorrow;
-                    $this->sqlExec($sql,$time,2);
-            }
-        } else {
-            $sql .= ','.$valuesTomorrow;
-            $this->sqlExec($sql,$time,2);
+        $timeUp = ' 08:40:00';
+        $checkUpdate = DB::table('issue_seed')->select('ahk3')->where('id',1)->first();
+        $issueDate = '';
+        if(isset($checkUpdate->ahk3)) {
+            if($curDate == $checkUpdate->ahk3) {
+                $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
+                $curDate = date('Ymd', strtotime('+ 1 day', time()));
+            }else if($curDate < $checkUpdate->ahk3)
+                writeLog('game/ahk3', $curDate.'安徽快3期数已存在');
+            else
+                $issueDate = date('Y-m-d',time());
+        }else{
+            $issueDate = date('Y-m-d',time());
         }
-    }
+        echo $issueDate;
+        if(empty($issueDate))
+            return '';
+        $timeUp = $issueDate . $timeUp;
+        $sql = "INSERT INTO game_ahk3 (issue,opentime) VALUES ";
+        for($i=1;$i<=80;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
+            if(strlen($i) == 1){
+                $i = '00'.$i;
+            }
+            if(strlen($i) == 2){
+                $i = '0'.$i;
+            }
+            $issue = $curDate.$i;
+            $sql .= "('$issue','$timeUp'),";
+            //\Log::info('期号:'.$curDate.$i.'====> 开奖时间：'.$timeUp);
+        }
 
-    private function sqlExec($sql,$time,$days=1){
-        if(DB::statement($sql) and DB::table('issue_seed')->where('id',1)->update(['ahk3' => date('Ymd',$time)]) ){
-            writeLog('ISSUE_SEED', ($days == 1 ? date('Y-m-d',$time) : date('Y-m-d').':'.date('Y-m-d',$time)).'已生成安徽快3');
+        if($checkUpdate->ahk3 == $curDate){
+            writeLog('ISSUE_SEED', date('Y-m-d').'安徽快3期数已存在');
         } else {
-            writeLog('ISSUE_SEED', 'error:安徽快3期数生成失败');
+            $run = DB::statement(rtrim($sql, ',').";");
+            if($run == 1){
+                $update = DB::table('issue_seed')->where('id',1)->update([
+                    'ahk3' => $curDate
+                ]);
+                if($update !== 1){
+                    writeLog('ISSUE_SEED', '安徽快3error');
+                }
+            } else {
+                writeLog('ISSUE_SEED', '安徽快3error');
+            }
         }
     }
 }
