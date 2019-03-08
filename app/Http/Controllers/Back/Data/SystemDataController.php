@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Back\Data;
 
 use App\Advertise;
 use App\AdvertiseInfo;
-use App\Blacklist;
 use App\Feedback;
 use App\Permissions;
 use App\PermissionsAuth;
@@ -168,28 +167,6 @@ class SystemDataController extends Controller
                         <span class="edit-link" style="color:#4183c4" onclick="del('.$data->id.')">删除</span>';
             })
             ->rawColumns(['control','sort'])
-            ->make(true);
-    }
-
-    //黑名单管理-表格数据
-    public function Blacklist(Request $request){
-        $model = Blacklist::where(function($sql) use($request){
-            isset($request->type) && $sql->where('type', $request->type);
-        });
-        $count = $model->count();
-        $roles = $model->skip($request->start)->take($request->length)->get();
-        $types = Blacklist::$types;
-        return DataTables::of($roles)
-            ->setTotalRecords($count)
-            ->editColumn('control',function ($roles) {
-                return '<span class="edit-link" onclick="edit('.$roles->id.')"><i class="iconfont">&#xe602;</i> 修改 </a></span> | '
-                    .'<span class="edit-link" onclick="del('.$roles->id.')"> 删除</span>';
-            })
-            ->editColumn('type',function ($roles) use($types){
-                return $types[$roles->type] ?? '';
-            })
-            ->rawColumns(['control'])
-            ->skipPaging()
             ->make(true);
     }
 }

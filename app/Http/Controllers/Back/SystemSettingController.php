@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Back;
 
 use App\Article;
-use App\Blacklist;
 use App\Feedback;
 use App\FeedbackMessage;
 use App\SystemSetting;
@@ -241,43 +240,5 @@ class SystemSettingController extends Controller
                 'msg' => '回复失败，请稍后再试！'
             ]);
         }
-    }
-
-    //黑名单编辑
-    public function editBlacklist(Request $request){
-        $params = $request->post();
-        if(!isset($request->type))
-            return show(1, '请选择类型');
-        $validator = Validator::make($params,Blacklist::$role);
-        if($validator->fails())
-            return show(1, $validator->errors()->first());
-        $data = [];
-
-        $data['value'] = $params['value'];
-        $data['type'] = (int)$params['type'];
-        $data['content'] = $params['content'];
-        $data['admin_id'] = Session::get('account_id');
-        $data['admin_account'] = Session::get('account');
-        if(isset($request->id)) {
-            if (Blacklist::where('id', $request->id)->update($data))
-                return show(0);
-        }
-        else {
-            if(Blacklist::where('value', $data['value'])->where('type', $data['type'])->count())
-                return show(1, '参数重复，请直接编辑');
-            if (Blacklist::insert($data))
-                return show(0);
-        }
-        return show(1, '失败，请稍后再试！');
-    }
-
-    //删除黑名单
-    public function delBlacklist(Request $request)
-    {
-        if(!isset($request->id))
-            return show(1, '参数错误');
-        if(Blacklist::where('id', $request->id)->delete())
-            return show(0);
-        return show(1, '失败，请稍后再试！');
     }
 }

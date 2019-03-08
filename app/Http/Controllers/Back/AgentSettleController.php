@@ -206,15 +206,6 @@ class AgentSettleController extends Controller
         if(isset($params['effective_money']) && array_key_exists('effective_money',$params)){
             $data['effective_money'] = $params['effective_money'];
         }
-        if(isset($params['platMoneyCost']) && array_key_exists('platMoneyCost',$params)){
-            $data['platMoneyCost'] = $params['platMoneyCost'];
-        }
-        if(isset($params['platOperateCost']) && array_key_exists('platOperateCost',$params)){
-            $data['platOperateCost'] = $params['platOperateCost'];
-        }
-        if(isset($params['agentRebateCost']) && array_key_exists('agentRebateCost',$params)){
-            $data['agentRebateCost'] = $params['agentRebateCost'];
-        }
         if(isset($params['profitStart']) && array_key_exists('profitStart',$params)){
             $validMember = [];
             foreach ($params['profitStart'] as $key => $value){
