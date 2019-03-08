@@ -1,6 +1,6 @@
 @extends('back.master')
 
-@section('title','资金明细')
+@section('title','代理结算报表')
 
 @section('content')
     <style>
@@ -56,8 +56,20 @@
                     <td><input type="text" name="incre_member" value="{{ $aConfigInfo->incre_member }}"></td>
                 </tr>
                 <tr>
-                    <td class="borderR">平台百分比：</td>
+                    <td class="borderR">平台抽成百分比：</td>
                     <td><input type="text" name="feesProp" value="{{ $aConfigInfo->feesProp }}"></td>
+                </tr>
+                <tr>
+                    <td class="borderR">出款入款手续费、资金风险费用百分比：</td>
+                    <td><input type="text" name="platMoneyCost" value="{{ $aConfigInfo->platMoneyCost ?? 0 }}"></td>
+                </tr>
+                <tr>
+                    <td class="borderR">行政费用百分比：</td>
+                    <td><input type="text" name="platOperateCost" value="{{ $aConfigInfo->platOperateCost ?? 0}}"></td>
+                </tr>
+                <tr>
+                    <td class="borderR">代理盈利注单返水：</td>
+                    <td><input type="text" name="agentRebateCost" value="{{ $aConfigInfo->agentRebateCost ?? 0 }}"></td>
                 </tr>
                 <tr>
                     <td class="borderR">金牌代理用户：</td>
@@ -68,11 +80,11 @@
                     <td><input type="text" name="noNeed_agent" value="{{ $aConfigInfo->noNeed_agent }}" placeholder="多个用户请使用分号(;)来分割"></td>
                 </tr>
                 <tr>
-                    <td class="borderR">有效会员的最低投注数：</td>
+                    <td class="borderR">达标会员的最低投注数：</td>
                     <td><input type="text" name="effective_bet" value="{{ $aConfigInfo->effective_bet }}"></td>
                 </tr>
                 <tr>
-                    <td class="borderR">有效会员的最低金额：</td>
+                    <td class="borderR">达标会员的最低金额：</td>
                     <td><input type="text" name="effective_money" value="{{ $aConfigInfo->effective_money }}"></td>
                 </tr>
                 <thead>
