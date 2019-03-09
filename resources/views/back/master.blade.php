@@ -300,8 +300,6 @@
                 @if($hasPermission->hasPermission('historyLottery.qqffc') == "has")
                     <li id="menu-openManage-qqffc"><a href="{{ route('historyLottery.qqffc') }}"><cite></cite><span>qq分分彩</span></a></li>
                 @endif
-
-
                 @if($hasPermission->hasPermission('historyLottery.ksssc') == "has")
                     <li id="menu-openManage-ksssc"><a href="{{ route('historyLottery.ksssc') }}"><cite></cite><span>快速时时彩</span></a></li>
                 @endif
@@ -310,6 +308,9 @@
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.kssc') == "has")
                     <li id="menu-openManage-kssc"><a href="{{ route('historyLottery.kssc') }}"><cite></cite><span>快速赛车</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.twxyft') == "has")
+                    <li id="menu-openManage-twxyft"><a href="{{ route('historyLottery.twxyft') }}"><cite></cite><span>台湾幸运飞艇</span></a></li>
                 @endif
 
             </ul>
