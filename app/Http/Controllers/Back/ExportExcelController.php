@@ -179,6 +179,7 @@ class ExportExcelController extends Controller
         fputcsv($fp, $columns);//将数据格式化为CSV格式并写入到output流中
 
         foreach ($bet as $k=>$v){
+            $v = (object)$v;
             $rowData =[
                 $v->game_name,
                 $v->user_name,
