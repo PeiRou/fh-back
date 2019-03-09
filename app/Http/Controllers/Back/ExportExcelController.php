@@ -159,4 +159,45 @@ class ExportExcelController extends Controller
         })->export('xls');
 
     }
+
+    public function exportExcelForCard(Request $request)
+    {
+        $bet = app(\App\Http\Controllers\Back\Data\ReportDataController::class)->CardData($request)['res'];
+        ini_set("auto_detect_line_endings", true);
+        set_time_limit(0);
+        $columns =['游戏','玩家','上级代理','笔数','投注金额','盈利','上分','下分','报表时间'];
+        $csvFileName = '棋牌报表-['.$request->input('startTime').'-'.$request->input('endTime')."].csv";
+        //设置好告诉浏览器要下载excel文件的headers
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="'.$csvFileName.'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        $fp = fopen('php://output', 'a');//打开output流
+        mb_convert_variables('GBK', 'UTF-8', $columns);
+        fputcsv($fp, $columns);//将数据格式化为CSV格式并写入到output流中
+
+        foreach ($bet as $k=>$v){
+            $rowData =[
+                $v->game_name,
+                $v->user_name,
+                $v->agent_account,
+                $v->bet_count,
+                $v->bet_money,
+                $v->bet_bunko,
+                $v->up_money,
+                $v->down_money,
+                $v->date,
+            ];
+            mb_convert_variables('GBK', 'UTF-8', $rowData);
+            fputcsv($fp, $rowData);
+        }
+        unset($bet);//释放变量的内存
+        //刷新输出缓冲到浏览器
+        ob_flush();
+        flush();//必须同时使用 ob_flush() 和flush() 函数来刷新输出缓冲。
+        fclose($fp);
+        exit();
+    }
 }

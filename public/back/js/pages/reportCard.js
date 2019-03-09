@@ -163,3 +163,28 @@ function getReport(){
         }
     });
 }
+
+
+function addSubAccount() {
+    var startTime = $('#startTime').val();
+    var endTime = $('#endTime').val();
+    jc = $.confirm({
+        title: '导出充值记录',
+        theme: 'material',
+        type: 'orange',
+        boxWidth:'25%',
+        content: '您选择了导出【'+startTime+' - '+endTime+'】范围内的【投注报表】数据，确定导出吗？',
+        buttons: {
+            confirm: {
+                text:'确定',
+                btnClass: 'btn-orange',
+                action: function(){
+                    window.location.href = '/action/admin/exportExcel/Card?startTime='+startTime+'&endTime='+endTime;
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}

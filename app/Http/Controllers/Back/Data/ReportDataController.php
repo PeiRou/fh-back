@@ -421,8 +421,9 @@ class ReportDataController extends Controller
             'msg' => '没有数据'
         ]);
     }
-    //棋牌投注报表
-    public function Card(Request $request){
+
+    public function CardData(Request $request)
+    {
         if(isset($request->startTime))
             $request->startTime = date('Y-m-d', strtotime($request->startTime));
         if(isset($request->endTime))
@@ -437,9 +438,19 @@ class ReportDataController extends Controller
         $count = $table->count();
         $totalArr = $totalTable->select(DB::raw('COUNT(distinct `user_id`) AS `count_user` ,SUM(`bet_count`) AS `BetCountSum`,SUM(`up_money`) AS totalUp,SUM(`down_money`) AS totaldown, SUM(`bet_money`) AS `betMoney`, SUM(`bet_bunko`) AS betBunko'))->first();
         $res = $table->skip($request->start ?? 0)->take($request->length ?? 100)->get();
-        return DataTables::of($res)
-            ->setTotalRecords($count)
-            ->with('totalArr',$totalArr)
+        return [
+            'count' => $count,
+            'totalArr' => $totalArr,
+            'res' => $res,
+        ];
+    }
+
+    //棋牌投注报表
+    public function Card(Request $request){
+        $arr = $this->CardData($request);
+        return DataTables::of($arr['res'])
+            ->setTotalRecords($arr['count'])
+            ->with('totalArr',$arr['totalArr'])
             ->skipPaging()
             ->make(true);
     }
@@ -463,11 +474,11 @@ class ReportDataController extends Controller
             'totalUp' => $Total->totalUp ?? 0,
             'totalDown' => $Total->totalDown ?? 0,
         ];
-        return DataTables::of($res)
-            ->setTotalRecords($resCount)
-            ->with('totalArr',$totalArr)
-            ->skipPaging()
-            ->make(true);
+        return [
+            'res' => $res,
+            'count' => $resCount,
+            'totalArr' => $totalArr,
+        ];
     }
 
     /**
