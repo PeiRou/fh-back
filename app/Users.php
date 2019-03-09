@@ -16,9 +16,10 @@ class Users extends Model
     ];
 
     public static function exportUserData($aParam){
-        $aSql = "SELECT `users`.`money`,`users`.`bank_name`,`users`.`content`,`users`.`bank_num`,`users`.`bank_addr`,`users`.`wechat`,`users`.`username`,`users`.`fullName`,`users`.`email`,`users`.`mobile`,`users`.`created_at`,`users`.`saveMoneyCount`,`users`.`lastLoginTime`,`re`.`sumReAmount`,`re`.`sumReAmountAd`,`dr`.`sumDrAmount`,`dr`.`sumDrAmountAd` FROM `users` 
+        $aSql = "SELECT `users`.`money`,`users`.`bank_name`,`users`.`content`,`users`.`bank_num`,`users`.`bank_addr`,`users`.`wechat`,`users`.`username`,`users`.`fullName`,`users`.`email`,`users`.`mobile`,`users`.`created_at`,`users`.`saveMoneyCount`,`users`.`lastLoginTime`,`re`.`sumReAmount`,`re`.`sumReAmountAd`,`dr`.`sumDrAmount`,`dr`.`sumDrAmountAd`,`agent`.`account` AS `agentAccount`,`agent`.`name` AS `agentName` FROM `users` 
 LEFT JOIN (SELECT SUM(CASE WHEN `payType` != 'adminAddMoney' THEN `amount` ELSE 0 END) AS sumReAmount,SUM(CASE WHEN `payType` = 'adminAddMoney' THEN `amount` ELSE 0 END) AS sumReAmountAd,`userId` FROM `recharges` WHERE `status` = 2 GROUP BY `userId`) AS `re` ON `re`.`userId` = `users`.`id` 
 LEFT JOIN (SELECT SUM(CASE WHEN `draw_type` != 2 THEN `amount` ELSE 0 END ) AS sumDrAmount,SUM(CASE WHEN `draw_type` = 2 THEN `amount` ELSE 0 END ) AS sumDrAmountAd,`user_id` FROM `drawing` WHERE `status` = 2 GROUP BY `user_id`) AS `dr` ON `dr`.`user_id` = `users`.`id` 
+LEFT JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
 WHERE 1 ";
         $aArray = [];
         if(isset($aParam['login_type']) && array_key_exists('login_type',$aParam)){

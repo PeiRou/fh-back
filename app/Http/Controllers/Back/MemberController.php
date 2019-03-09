@@ -167,13 +167,14 @@ class MemberController extends Controller
         $todayTime = date('Y-m-d');
         Excel::create('【'.$todayTime.'】导出用户数据-['.$aParam['startTime'].'-'.$aParam['endTime'].']',function ($excel) use ($aData,$todayTime){
             $excel->sheet('【'.$todayTime.'】导出用户数据', function($sheet) use ($aData,$todayTime){
-                $sheet->appendRow(['用户账号','用户姓名','用户邮箱','用户手机','开户银行','银行卡号','支行地址','微信','新增时间','未登录时间','是否存款','存款金额记录','后台加钱记录','取款金额记录','后台扣钱记录','备注信息']);
+                $sheet->appendRow(['用户账号','上级代理','用户姓名','用户邮箱','用户手机','开户银行','银行卡号','支行地址','微信','新增时间','未登录时间','是否存款','用户余额','存款金额记录','后台加钱记录','取款金额记录','后台扣钱记录','备注信息']);
                 $sheetHeight = [
                     1 => 20,
                 ];
                 foreach ($aData as $kData => $iData){
                     $sheet->appendRow([
                         $iData->username,
+                        $iData->agentAccount.'('.$iData->agentName.')',
                         empty($iData->fullName)?'':$iData->fullName,
                         empty($iData->email)?'':$iData->email,
                         empty($iData->mobile)?'':$iData->mobile,
@@ -184,6 +185,7 @@ class MemberController extends Controller
                         $iData->created_at,
                         floor((strtotime($todayTime) - strtotime(substr($iData->lastLoginTime,0,10)))/3600/24),
                         empty($iData->sumReAmount)?'否':'是',
+                        empty($iData->money)?'0.00':$iData->money,
                         empty($iData->sumReAmount)?'0.00':$iData->sumReAmount,
                         empty($iData->sumReAmountAd)?'0.00':$iData->sumReAmountAd,
                         empty($iData->sumDrAmount)?'0.00':$iData->sumDrAmount,
@@ -199,7 +201,7 @@ class MemberController extends Controller
                     'C'    =>  10,
                     'D'    =>  15,
                     'E'    =>  18,
-                    'F'    =>  10,
+                    'F'    =>  18,
                     'G'    =>  10,
                     'H'    =>  10,
                     'I'    =>  10,
@@ -210,6 +212,8 @@ class MemberController extends Controller
                     'N'    =>  12,
                     'O'    =>  12,
                     'P'    =>  12,
+                    'Q'    =>  12,
+                    'R'    =>  12,
                 ));
             });
         })->export('xls');
@@ -223,13 +227,14 @@ class MemberController extends Controller
         $todayTime = date('Y-m-d');
         Excel::create('【'.$todayTime.'】导出用户数据-[代理：'.$name.']',function ($excel) use ($aData,$todayTime){
             $excel->sheet('【'.$todayTime.'】导出用户数据', function($sheet) use ($aData,$todayTime){
-                $sheet->appendRow(['用户账号','用户姓名','用户邮箱','用户手机','开户银行','银行卡号','支行地址','微信','新增时间','未登录时间','是否存款','存款金额记录','后台加钱记录','取款金额记录','后台扣钱记录','备注信息']);
+                $sheet->appendRow(['用户账号','上级代理','用户姓名','用户邮箱','用户手机','开户银行','银行卡号','支行地址','微信','新增时间','未登录时间','是否存款','用户余额','存款金额记录','后台加钱记录','取款金额记录','后台扣钱记录','备注信息']);
                 $sheetHeight = [
                     1 => 20,
                 ];
                 foreach ($aData as $kData => $iData){
                     $sheet->appendRow([
                         $iData->username,
+                        $iData->agentAccount.'('.$iData->agentName.')',
                         empty($iData->fullName)?'':$iData->fullName,
                         empty($iData->email)?'':$iData->email,
                         empty($iData->mobile)?'':$iData->mobile,
@@ -240,6 +245,7 @@ class MemberController extends Controller
                         $iData->created_at,
                         floor((strtotime($todayTime) - strtotime(substr($iData->lastLoginTime,0,10)))/3600/24),
                         empty($iData->sumReAmount)?'否':'是',
+                        empty($iData->money)?'0.00':$iData->money,
                         empty($iData->sumReAmount)?'0.00':$iData->sumReAmount,
                         empty($iData->sumReAmountAd)?'0.00':$iData->sumReAmountAd,
                         empty($iData->sumDrAmount)?'0.00':$iData->sumDrAmount,
@@ -252,10 +258,10 @@ class MemberController extends Controller
                 $sheet->setWidth(array(
                     'A'    =>  10,
                     'B'    =>  20,
-                    'C'    =>  10,
+                    'C'    =>  20,
                     'D'    =>  15,
                     'E'    =>  18,
-                    'F'    =>  10,
+                    'F'    =>  18,
                     'G'    =>  10,
                     'H'    =>  10,
                     'I'    =>  10,
@@ -266,6 +272,8 @@ class MemberController extends Controller
                     'N'    =>  12,
                     'O'    =>  12,
                     'P'    =>  12,
+                    'Q'    =>  12,
+                    'R'    =>  12,
                 ));
             });
         })->export('xls');
