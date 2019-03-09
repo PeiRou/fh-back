@@ -106,6 +106,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('ksssc', 'Back\SrcViewController@openManage_ksssc')->name('historyLottery.ksssc'); //快速时时彩
         Route::get('ksft', 'Back\SrcViewController@openManage_ksft')->name('historyLottery.ksft'); //快速飞艇
         Route::get('kssc', 'Back\SrcViewController@openManage_kssc')->name('historyLottery.kssc'); //快速赛车
+        Route::get('twxyft', 'Back\SrcViewController@openManage_twxyft')->name('historyLottery.twxyft'); //台湾幸运飞艇
     });
 
 //系统管理

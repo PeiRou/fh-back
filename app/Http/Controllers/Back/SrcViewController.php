@@ -696,6 +696,18 @@ class SrcViewController extends Controller
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }
+
+    //台湾幸运飞艇
+    public function openManage_twxyft()
+    {
+        $data = [
+            'title' => '台湾幸运飞艇',
+            'activeName' => 'menu-openManage-twxyft',
+            'type' => 'twxyft',
+            'cat' => 'sc' //游戏类别 赛车
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
     
     //报表管理
     //总代理报表
