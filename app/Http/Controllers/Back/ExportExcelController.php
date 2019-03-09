@@ -182,7 +182,7 @@ class ExportExcelController extends Controller
             $v = (object)$v;
             $rowData =[
                 $v->game_name,
-                $v->user_name,
+                $v->user_account,
                 $v->agent_account,
                 $v->bet_count,
                 $v->bet_money,
