@@ -437,7 +437,10 @@ class ReportDataController extends Controller
         $totalTable = clone $table;
         $count = $table->count();
         $totalArr = $totalTable->select(DB::raw('COUNT(distinct `user_id`) AS `count_user` ,SUM(`bet_count`) AS `BetCountSum`,SUM(`up_money`) AS totalUp,SUM(`down_money`) AS totaldown, SUM(`bet_money`) AS `betMoney`, SUM(`bet_bunko`) AS betBunko'))->first();
-        $res = $table->skip($request->start ?? 0)->take($request->length ?? 100)->get();
+        if(isset($request->start, $request->length)){
+            $table->skip($request->start ?? 0)->take($request->length ?? 100);
+        }
+        $res = $table->get();
         return [
             'count' => $count,
             'totalArr' => $totalArr,

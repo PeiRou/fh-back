@@ -162,7 +162,6 @@ class ExportExcelController extends Controller
 
     public function exportExcelForCard(Request $request)
     {
-        $bet = app(\App\Http\Controllers\Back\Data\ReportDataController::class)->CardData($request)['res'];
         ini_set("auto_detect_line_endings", true);
         set_time_limit(0);
         $columns =['游戏','玩家','上级代理','笔数','投注金额','盈利','上分','下分','报表时间'];
@@ -178,6 +177,7 @@ class ExportExcelController extends Controller
         mb_convert_variables('GBK', 'UTF-8', $columns);
         fputcsv($fp, $columns);//将数据格式化为CSV格式并写入到output流中
 
+        $bet = app(\App\Http\Controllers\Back\Data\ReportDataController::class)->CardData($request)['res'];
         foreach ($bet as $k=>$v){
             $v = (object)$v;
             $rowData =[
