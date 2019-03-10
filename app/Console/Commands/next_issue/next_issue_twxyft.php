@@ -40,7 +40,7 @@ class next_issue_twxyft extends Command
         $New_nextIssue = $nextIssue+1;
         if(substr($New_nextIssue,-3)=='289'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
-            $New_nextIssue = date("ymd",strtotime($nextDay)).'001';
+            $New_nextIssue = date("ymd",strtotime($nextDay)).'0001';
         }
 
         $redis->set('twxyft:nextIssue',(int)$New_nextIssue);
