@@ -226,13 +226,19 @@
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="drawing_time" data-c="提现间隔时间" class="edit-link">修改</td>
             </tr>
             <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">提现检查打码量(参数是充值金额的倍数,不包含棋牌游戏。0-关闭)</td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">提现检查打码量(参数是充值金额的倍数,不包含棋牌游戏)</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->drawing_money_check_code / 100 }}" data-id-input="drawing_money_check_code"/>
+                    <div class="ui input" style="width: 700px; height: 28px">
+                        <select class="ui fluid dropdown" id="drawing_money_check_code" style="height: 30px">
+                            <option value="0" @if($set->drawing_money_check_code == 0) selected @endif>关闭</option>
+                            <option value="0.5" @if($set->drawing_money_check_code == 0.5) selected @endif>0.5</option>
+                            <option value="1"  @if($set->drawing_money_check_code == 1) selected @endif>1</option>
+                            <option value="2"  @if($set->drawing_money_check_code == 2) selected @endif>2</option>
+                        </select>
+                        <input type="hidden" name="drawing_money_check_code" style="width: 700px;height: 28px;" value="{{ $set->drawing_money_check_code }}" data-id-input="drawing_money_check_code"/>
                     </div>
                 </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="drawing_money_check_code" data-c="提现检查打码量(参数是充值金额的倍数，0-关闭)" class="edit-link">修改</td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="drawing_money_check_code" data-c="提现检查打码量(参数是充值金额的倍数)" class="edit-link">修改</td>
             </tr>
             {{--<tr>--}}
                 {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">网页验证码开关：0-关闭，1-开启</td>--}}

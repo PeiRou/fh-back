@@ -48,3 +48,6 @@ $('.edit-link').on('click',function () {
         }
     });
 });
+$('#drawing_money_check_code').change(function(){
+    $("input[name='drawing_money_check_code']").val($('#drawing_money_check_code').val());
+})
