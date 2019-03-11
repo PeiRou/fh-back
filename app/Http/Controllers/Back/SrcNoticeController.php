@@ -102,7 +102,7 @@ class SrcNoticeController extends Controller
     public function addSendMessage(Request $request)
     {
         $redis = Redis::connection();
-        $redis->select(1);
+        $redis->select(5);
         if($redis->exists('addSend'))
             return response()->json(['status'=>false,'msg'=>'请勿连续点击'],200);
         $redis->setex('addSend',5,'ing');

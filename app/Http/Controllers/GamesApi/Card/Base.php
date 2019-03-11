@@ -37,7 +37,7 @@ class Base
         }
         return $this->show($res['code'] ?? 500, $res['msg'] ?? 'error');
     }
-    //
+    //开元的拉取历史投注报表，可供拉自定义的时间数据
     public function getHistoryBet()
     {
         $redis = Redis::connection();
