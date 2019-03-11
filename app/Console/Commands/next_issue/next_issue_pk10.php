@@ -34,7 +34,7 @@ class next_issue_pk10 extends Command
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
 
-        if(substr($openTime,-8) == '23:50:30'){
+        if(substr($openTime,-8) == '23:50:00'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
             $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:29:30';
             $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:30:00';
