@@ -1241,4 +1241,9 @@ class SrcViewController extends Controller
         return view('back.gamesApi.list.list',compact('aStatus','aType'));
     }
 
+    public function errorBet()
+    {
+        return view('back.gamesApi.error.errorBet');
+    }
+
 }

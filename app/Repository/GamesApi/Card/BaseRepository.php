@@ -113,8 +113,11 @@ class BaseRepository
     }
 
     //获取时间
-    public function getMillisecond()
+    public function getMillisecond($param = [])
     {
+        if(isset($param['toTime'])){
+            return $param['toTime'] * 1000;
+        }
         list($t1, $t2) = explode(' ', microtime());
         return  sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);
     }

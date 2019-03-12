@@ -22,10 +22,11 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('userBetList/{userId}', 'Back\SrcViewController@userBetList')->name('m.user.viewDetails'); //用户注单明细
     });
 
-//棋牌管理
+//第三方游戏管理
     Route::group(['prefix' => 'back/control/cardGameManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('up_down', 'Back\SrcViewController@upDownSearch')->name('cardGame.upDownSearch'); // 上下分记录查询
         Route::get('card_bet', 'Back\SrcViewController@cardBetInfo')->name('cardGame.cardBetInfo'); // 棋牌下注查询
+        Route::get('errorBet', 'Back\SrcViewController@errorBet')->name('cardGame.errorBet'); // 投注记录失败列表
     });
 
 //财务管理
@@ -157,6 +158,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::group(['prefix' => 'back/GamesApi', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('List', 'Back\SrcViewController@GamesApiList')->name('GamesApi.List'); //平台接口列表
     });
+    Route::post('back/GamesApi/reGetBet/{id}', 'GamesApi\Card\PrivodeController@reGetBet'); // 重新获取投注记录失败列表
 
 //充值配置新
     Route::group(['prefix' => 'back/control/payNewManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
@@ -298,6 +300,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/openHistory/ssc', 'Back\Data\openHistoryController@ssc'); //历史开奖 - 时时彩
 
     Route::get('/back/datatables/openHistory/card_betInfo', 'Back\Data\openHistoryController@card_betInfo'); //棋牌下注
+    Route::get('/back/datatables/openHistory/errorBet', 'Back\Data\openHistoryController@errorBet'); //棋牌下注
 
 
     Route::get('/back/datatables/agentSettle/report', 'Back\Data\AgentSettleController@report'); //代理结算报表-表格数据
@@ -318,6 +321,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/platform/settlement','Back\Data\PlatformController@settlement'); //平台费用结算-表格数据
     Route::get('/back/datatables/platform/record','Back\Data\PlatformController@record'); //付款记录-表格数据
     Route::get('/back/datatables/GameApiList','Back\GamesApiController@GameApiList'); //获取游戏接口列表
+
 
     //图表数据
     Route::post('/back/charts/gameBunko','Back\Charts\ChartsDataController@gameBunko');

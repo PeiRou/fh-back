@@ -26,7 +26,7 @@ class VGRepository extends BaseRepository
                 'GameEndTime' => $v['endtime'],  //游戏结束时间
             ];
         }
-        $this->insertDB($arr, $table);
+        return $this->insertDB($arr, $table);
     }
 
     //获取注单
