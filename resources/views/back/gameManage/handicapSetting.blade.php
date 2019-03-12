@@ -25,6 +25,8 @@
                 <a class="item" data-tab="four">福彩3D</a>
                 <a class="item" data-tab="five">六合彩</a>
                 <a class="item" data-tab="six">快速彩</a>
+                <a class="item" data-tab="seven">三分彩</a>
+                <a class="item" data-tab="eight">急速彩</a>
             </div>
             <div class="ui tab segment active" data-tab="first" style="margin-bottom: 70px;">
                 <div class="sub-item">
@@ -101,6 +103,24 @@
                     </ul>
                 </div>
                 <div id="six_content"></div>
+            </div>
+            <div class="ui tab segment" data-tab="seven" style="margin-bottom: 70px;">
+                <div class="sub-item">
+                    <ul>
+                        <li data-tag="seven" data-id="901">三分赛车</li>
+                        <li data-tag="seven" data-id="902">三分时时彩</li>
+                        <li data-tag="seven" data-id="904">三分六合彩</li>
+                    </ul>
+                </div>
+                <div id="seven_content"></div>
+            </div>
+            <div class="ui tab segment" data-tab="eight" style="margin-bottom: 70px;">
+                <div class="sub-item">
+                    <ul>
+                        <li data-tag="eight" data-id="903">急速六合彩</li>
+                    </ul>
+                </div>
+                <div id="eight_content"></div>
             </div>
         </div>
     </div>

@@ -372,6 +372,31 @@ class GameTradeTableController extends Controller
         }
         return view('back.gameTradeTables.80')->with('mm',$fromDB->all());
     }
+    //三分赛车
+    public function gameTradeTable901()
+    {
+        $data = Play::where('gameId',901)->get();
+        $filter = ['GAME901_1D10_min','GAME901_1D10_max','GAME901_1D10_turnMax','GAME901_GYZH_min','GAME901_GYZH_max','GAME901_GYZH_turnMax','GAME901_GYDXDS_turnMax','GAME901_GYDXDS_min','GAME901_GYDXDS_max','GAME901_DXDSLH_min','GAME901_DXDSLH_max','GAME901_DXDSLH_turnMax'];
+        $fromDB = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->min_tag == $i){
+                    $fromDB->put($item->min_tag,$item->minMoney);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->max_tag == $s){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }
+            }
+            foreach ($filter as $x){
+                if($item->turnMax_tag == $x){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.901')->with('mm',$fromDB->all());
+    }
 
     //秒速飞艇
     public function gameTradeTable82()
@@ -604,6 +629,58 @@ class GameTradeTableController extends Controller
         return view('back.gameTradeTables.85')->with('mm',$fromDB->all());
     }
 
+    //急速六合彩
+    public function gameTradeTable903()
+    {
+        $data = Play::where('gameId',903)->get();
+        $filter = ['GAME903_TMAB_min','GAME903_TMAB_max','GAME903_TMAB_turnMax','GAME903_LM_min','GAME903_LM_max','GAME903_LM_turnMax','GAME903_SB_min','GAME903_SB_max','GAME903_SB_turnMax','GAME903_TX_turnMax','GAME903_TX_min','GAME903_TX_max','GAME903_HX_min','GAME903_HX_max','GAME903_HX_turnMax','GAME903_TWS_turnMax','GAME903_TWS_min','GAME903_TWS_max','GAME903_ZM_turnMax','GAME903_ZM_min','GAME903_ZM_max','GAME903_WUXING_min','GAME903_WUXING_max','GAME903_WUXING_turnMax','GAME903_PTYXWS_min','GAME903_PTYXWS_max','GAME903_PTYXWS_turnMax','GAME903_ZXIAO_turnMax','GAME903_ZXIAO_min','GAME903_ZXIAO_max','GAME903_7SB_min','GAME903_7SB_max','GAME903_7SB_turnMax','GAME903_7SBHJ_turnMax','GAME903_7SBHJ_min','GAME903_7SBHJ_max','GAME903_ZONGXIAO234_min','GAME903_ZONGXIAO234_max','GAME903_ZONGXIAO234_turnMax','GAME903_ZONGXIAOQT_min','GAME903_ZONGXIAOQT_max','GAME903_ZONGXIAOQT_turnMax','GAME903_ZXBZ_turnMax','GAME903_ZXBZ_min','GAME903_ZXBZ_max','GAME903_ELX_min','GAME903_ELX_max','GAME903_ELX_turnMax','GAME903_SLX_turnMax','GAME903_SLX_min','GAME903_SLX_max','GAME903_SILX_min','GAME903_SILX_max','GAME903_SILX_turnMax','GAME903_WLX_min','GAME903_WLX_max','GAME903_WLX_turnMax','GAME903_EELW_turnMax','GAME903_EELW_min','GAME903_EELW_max','GAME903_SSLW_min','GAME903_SSLW_max','GAME903_SSLW_turnMax','GAME903_SILW_min','GAME903_SILW_max','GAME903_SILW_turnMax','GAME903_WULW_min','GAME903_WULW_max','GAME903_WULW_turnMax','GAME903_3Z2_min','GAME903_3Z2_max','GAME903_3Z2_turnMax','GAME903_3QZ_min','GAME903_3QZ_max','GAME903_3QZ_turnMax','GAME903_2QZ_min','GAME903_2QZ_max','GAME903_2QZ_turnMax','GAME903_2ZT_min','GAME903_2ZT_max','GAME903_2ZT_turnMax','GAME903_TC_min','GAME903_TC_max','GAME903_TC_turnMax','GAME903_SQZ_min','GAME903_SQZ_max','GAME903_SQZ_turnMax','GAME903_ZMT_min','GAME903_ZMT_max','GAME903_ZMT_turnMax'];
+        $fromDB = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->min_tag == $i){
+                    $fromDB->put($item->min_tag,$item->minMoney);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->max_tag == $s){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }
+            }
+            foreach ($filter as $x){
+                if($item->turnMax_tag == $x){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.903')->with('mm',$fromDB->all());
+    }
+
+    //三分六合彩
+    public function gameTradeTable904()
+    {
+        $data = Play::where('gameId',904)->get();
+        $filter = ['GAME904_TMAB_min','GAME904_TMAB_max','GAME904_TMAB_turnMax','GAME904_LM_min','GAME904_LM_max','GAME904_LM_turnMax','GAME904_SB_min','GAME904_SB_max','GAME904_SB_turnMax','GAME904_TX_turnMax','GAME904_TX_min','GAME904_TX_max','GAME904_HX_min','GAME904_HX_max','GAME904_HX_turnMax','GAME904_TWS_turnMax','GAME904_TWS_min','GAME904_TWS_max','GAME904_ZM_turnMax','GAME904_ZM_min','GAME904_ZM_max','GAME904_WUXING_min','GAME904_WUXING_max','GAME904_WUXING_turnMax','GAME904_PTYXWS_min','GAME904_PTYXWS_max','GAME904_PTYXWS_turnMax','GAME904_ZXIAO_turnMax','GAME904_ZXIAO_min','GAME904_ZXIAO_max','GAME904_7SB_min','GAME904_7SB_max','GAME904_7SB_turnMax','GAME904_7SBHJ_turnMax','GAME904_7SBHJ_min','GAME904_7SBHJ_max','GAME904_ZONGXIAO234_min','GAME904_ZONGXIAO234_max','GAME904_ZONGXIAO234_turnMax','GAME904_ZONGXIAOQT_min','GAME904_ZONGXIAOQT_max','GAME904_ZONGXIAOQT_turnMax','GAME904_ZXBZ_turnMax','GAME904_ZXBZ_min','GAME904_ZXBZ_max','GAME904_ELX_min','GAME904_ELX_max','GAME904_ELX_turnMax','GAME904_SLX_turnMax','GAME904_SLX_min','GAME904_SLX_max','GAME904_SILX_min','GAME904_SILX_max','GAME904_SILX_turnMax','GAME904_WLX_min','GAME904_WLX_max','GAME904_WLX_turnMax','GAME904_EELW_turnMax','GAME904_EELW_min','GAME904_EELW_max','GAME904_SSLW_min','GAME904_SSLW_max','GAME904_SSLW_turnMax','GAME904_SILW_min','GAME904_SILW_max','GAME904_SILW_turnMax','GAME904_WULW_min','GAME904_WULW_max','GAME904_WULW_turnMax','GAME904_3Z2_min','GAME904_3Z2_max','GAME904_3Z2_turnMax','GAME904_3QZ_min','GAME904_3QZ_max','GAME904_3QZ_turnMax','GAME904_2QZ_min','GAME904_2QZ_max','GAME904_2QZ_turnMax','GAME904_2ZT_min','GAME904_2ZT_max','GAME904_2ZT_turnMax','GAME904_TC_min','GAME904_TC_max','GAME904_TC_turnMax','GAME904_SQZ_min','GAME904_SQZ_max','GAME904_SQZ_turnMax','GAME904_ZMT_min','GAME904_ZMT_max','GAME904_ZMT_turnMax'];
+        $fromDB = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->min_tag == $i){
+                    $fromDB->put($item->min_tag,$item->minMoney);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->max_tag == $s){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }
+            }
+            foreach ($filter as $x){
+                if($item->turnMax_tag == $x){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.904')->with('mm',$fromDB->all());
+    }
+
     //福彩3D
     public function gameTradeTable30()
     {
@@ -751,5 +828,31 @@ class GameTradeTableController extends Controller
             }
         }
         return view('back.gameTradeTables.803')->with('mm',$fromDB->all());
+    }
+
+    //三分时时彩
+    public function gameTradeTable902()
+    {
+        $data = Play::where('gameId',902)->get();
+        $filter = ['GAME902_DXDSLHH_min','GAME902_DXDSLHH_max','GAME902_DXDSLHH_turnMax','GAME902_1D5_min','GAME902_1D5_max','GAME902_1D5_turnMax','GAME902_BAOZI_min','GAME902_BAOZI_max','GAME902_BAOZI_turnMax','GAME902_SHUNZI_min','GAME902_SHUNZI_max','GAME902_SHUNZI_turnMax','GAME902_DBZ_min','GAME902_DBZ_max','GAME902_DBZ_turnMax'];
+        $fromDB = collect([]);
+        foreach ($data as $item){
+            foreach ($filter as $i){
+                if($item->min_tag == $i){
+                    $fromDB->put($item->min_tag,$item->minMoney);
+                }
+            }
+            foreach ($filter as $s){
+                if($item->max_tag == $s){
+                    $fromDB->put($item->max_tag,$item->maxMoney);
+                }
+            }
+            foreach ($filter as $x){
+                if($item->turnMax_tag == $x){
+                    $fromDB->put($item->turnMax_tag,$item->maxTurnMoney);
+                }
+            }
+        }
+        return view('back.gameTradeTables.902')->with('mm',$fromDB->all());
     }
 }
