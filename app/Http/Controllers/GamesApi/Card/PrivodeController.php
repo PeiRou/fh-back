@@ -64,6 +64,8 @@ class PrivodeController extends Controller{
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
+        //删除两天以前的
+        DB::table('jq_error_bet')->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 2))->delete();
     }
 
     private function action($g_id, $action, $param = []){

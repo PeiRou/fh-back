@@ -26,7 +26,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::group(['prefix' => 'back/control/cardGameManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('up_down', 'Back\SrcViewController@upDownSearch')->name('cardGame.upDownSearch'); // 上下分记录查询
         Route::get('card_bet', 'Back\SrcViewController@cardBetInfo')->name('cardGame.cardBetInfo'); // 棋牌下注查询
-        Route::get('errorBet', 'Back\SrcViewController@errorBet')->name('cardGame.errorBet'); // 投注记录失败列表
+        Route::get('errorBet', 'Back\SrcViewController@errorBet')->name('cardGame.errorBet'); // 第三方投注记录失败列表
     });
 
 //财务管理
@@ -158,7 +158,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::group(['prefix' => 'back/GamesApi', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('List', 'Back\SrcViewController@GamesApiList')->name('GamesApi.List'); //平台接口列表
     });
-    Route::post('back/GamesApi/reGetBet/{id}', 'GamesApi\Card\PrivodeController@reGetBet'); // 重新获取投注记录失败列表
+    Route::post('back/GamesApi/reGetBet/{id}', 'GamesApi\Card\PrivodeController@reGetBet'); // 重新获取第三方投注记录失败列表
 
 //充值配置新
     Route::group(['prefix' => 'back/control/payNewManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
