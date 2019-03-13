@@ -52,8 +52,8 @@ class PrivodeController extends Controller{
 
     private function insertError($g_info, $code, $codeMsg, $param)
     {
-        if($g_info->g_id == 15 && $code == 16){
-//            return null;
+        if(($g_info->g_id == 15 || $g_info->g_id == 16) && $code == 16){
+            return null;
         }
         DB::table('jq_error_bet')->insert([
             'g_id' => $g_info->g_id,
