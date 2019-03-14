@@ -56,8 +56,7 @@ class next_open_sfsc extends Command
         $needOpenIssue = $res->issue;
         $openTime = $res->opentime;
         $issuenum = substr($needOpenIssue,-3);
-//        $res->opencode = $excel->opennum($table);
-        $res->opencode = "";
+        $res->opencode = $excel->opennum($table);
 
         //---kill start
         $opennum = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
