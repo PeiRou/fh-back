@@ -19,7 +19,7 @@ class ISSUE_SEED_SFLHC extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = date(' 23:00:00');
+        $timeUp = date(' 06:30:00');
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $issueDate = '';
         if(isset($checkUpdate->sflhc)) {

@@ -19,7 +19,7 @@ class ISSUE_SEED_JSLHC extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = ' 23:30:00';
+        $timeUp = ' 06:00:00';
         $checkUpdate = DB::table('issue_seed')->select('jslhc')->where('id',1)->first();
         $issueDate = '';
         if(isset($checkUpdate->jslhc)) {

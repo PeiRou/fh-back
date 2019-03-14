@@ -40,8 +40,8 @@ class next_issue_sflhc extends Command
         $New_nextIssue = $nextIssue+1;
         if(substr($New_nextIssue,-3)=='481'){
             $New_nextIssue = date("ymd",strtotime($openTime)).'001';
-            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 23:00:00';
-            $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime)).' 23:03:00';
+            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 06:30:00';
+            $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime)).' 06:33:00';
         }
 
         $redis->set('sflhc:nextIssue',(int)$New_nextIssue);

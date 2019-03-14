@@ -39,8 +39,9 @@ class next_issue_jslhc extends Command
 
         $New_nextIssue = $nextIssue+1;
         if(substr($New_nextIssue,-4)=='1441'){
-            //急速六合彩特例，他的跨日是當日00:00，所以用計算後的開獎日期去算明天第一期(秒速快3也是)
-            $New_nextIssue = date("Ymd",strtotime($nextIssueLotteryTime)).'0001';
+            $New_nextIssue = date("ymd",strtotime($openTime)).'0001';
+            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 06:00:00';
+            $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime)).' 06:01:00';
         }
 
         $redis->set('jslhc:nextIssue',(int)$New_nextIssue);
