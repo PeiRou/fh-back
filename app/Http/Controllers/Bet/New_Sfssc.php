@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: vincent
- * Date: 2018/4/4
- * Time: 下午11:57
+ * User: jeremy
+ * Date: 2019/3/14
+ * Time: 上午2:01
  */
 
 namespace App\Http\Controllers\Bet;
