@@ -115,6 +115,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunSfssc' => [
             'App\Listeners\RunSfsscEventListener',
         ],
+        'App\Events\RunJslhc' => [
+            'App\Listeners\RunJslhcEventListener',
+        ],
+        'App\Events\RunSflhc' => [
+            'App\Listeners\RunSflhcEventListener',
+        ],
         'App\Events\BackPusherEvent' => [
             'App\Listeners\BackPusherEventListener',
         ],
