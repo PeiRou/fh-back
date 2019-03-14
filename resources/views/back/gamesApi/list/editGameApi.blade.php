@@ -31,7 +31,13 @@
 <script src="{{ asset('back/vendor/ueditor/umeditor.min.js') }}"></script>
 <script src="{{ asset('back/vendor/ueditor/lang/zh-cn/zh-cn.js') }}"></script>
 <form id="formBox" class="ui form" method="post" action="{{ route('ac.ad.GamesApi.edit') }}">
-    <input type="hidden" name="g_id" value="{{ $g_id }}">
+    <input type="hidden" name="id" value="{{ $data->id ?? '' }}">
+    <div class="field" id="div-description">
+        <label>游戏ID</label>
+        <div class="ui input icon">
+            <input type="text" name="g_id" id="g_id" @if(isset($data->g_id)) readonly  @endif value="{{ $data->g_id ?? '' }}"/>
+        </div>
+    </div>
     <div class="field">
         <label>名称</label>
         <div class="ui input icon">

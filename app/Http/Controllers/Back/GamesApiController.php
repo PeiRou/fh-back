@@ -65,7 +65,7 @@ class GamesApiController extends Controller
     public function edit(Request $request)
     {
         $param = $request->all();
-        $g_id = $request->g_id ?? 0;
+        $id = $request->id ?? 0;
         //验证
         $data = $this->validateParam($param);
         if ($data['stauts']) {
@@ -75,48 +75,49 @@ class GamesApiController extends Controller
         $paramValue = $param['paramValue'];
         $paramDescribes = $param['paramDescribes'];
         try{
-        $GamesApi = new GamesApi;
-        $data = [
-            'name' => $param['name'],
-            'description' => $param['description'],
-            'type' => (int)$param['type'],
-            'status' => isset($param['status']) ? 1 : 0,
-            'class_name' => $param['class_name'],
-            'alias' => $param['alias'],
-//            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ];
-        if($g_id){
-            $GamesApi->where('g_id', $g_id)->update($data);
-        }else{
-            if ($GamesApi->where('name', $param['name'])->exists()) {
-                return show(1, '游戏名字重复');
-            }
-            $data['created_at'] =  date('Y-m-d H:i:s');
-            $g_id = $GamesApi->insertGetId($data);
-        }
-        if (!$g_id) {
-            return show(1, '配置添加失败');
-        }
-        //清除原先的配置
-        $GamesApiConfig = new GamesApiConfig;
-        $GamesApiConfig->where('g_id', $g_id)->delete();
-        $data = [];
-        foreach ($paramKey as $k => $v) {
-            if (empty($v)) {
-                continue;
-            }
-            $data[] = [
-                'g_id' => $g_id,
-                'key' => $paramKey[$k],
-                'value' => $paramValue[$k] ?? '',
-                'description' => $paramDescribes[$k]
+            $GamesApi = new GamesApi;
+            $data = [
+                'g_id' => $param['g_id'],
+                'name' => $param['name'],
+                'description' => $param['description'],
+                'type' => (int)$param['type'],
+                'status' => isset($param['status']) ? 1 : 0,
+                'class_name' => $param['class_name'],
+                'alias' => $param['alias'],
+    //            'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ];
-        }
-        if ($c_id = $GamesApiConfig->insert($data)) {
-            return show(0);
-        }
-        return show(3, '参数添加失败');
+            if($id){
+                $GamesApi->where('id', $id)->update($data);
+            }else{
+                if ($GamesApi->where('name', $param['name'])->exists()) {
+                    return show(1, '游戏名字重复');
+                }
+                $data['created_at'] =  date('Y-m-d H:i:s');
+                $id= $GamesApi->insertGetId($data);
+            }
+            if (!$id) {
+                return show(1, '配置添加失败');
+            }
+            //清除原先的配置
+            $GamesApiConfig = new GamesApiConfig;
+            $GamesApiConfig->where('g_id', $param['g_id'])->delete();
+            $data = [];
+            foreach ($paramKey as $k => $v) {
+                if (empty($v)) {
+                    continue;
+                }
+                $data[] = [
+                    'g_id' => $param['g_id'],
+                    'key' => $paramKey[$k],
+                    'value' => $paramValue[$k] ?? '',
+                    'description' => $paramDescribes[$k]
+                ];
+            }
+            if ($c_id = $GamesApiConfig->insert($data)) {
+                return show(0);
+            }
+            return show(3, '参数添加失败');
         }catch (\Exception $e){
             return show(1, 'server error');
         }

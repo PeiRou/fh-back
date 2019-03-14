@@ -9,29 +9,13 @@ class CardReport extends Command
 {
     //棋牌报表
     protected $signature = 'CardReport:get {startTime?} {endTime?}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Command description';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         ini_set('memory_limit','2048M');

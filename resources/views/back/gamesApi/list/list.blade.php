@@ -38,6 +38,7 @@
         <table id="tableBox" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
             <tr>
+                <th>ID</th>
                 <th>名称</th>
                 <th>类型</th>
                 <th>别名</th>

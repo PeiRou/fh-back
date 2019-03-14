@@ -22,6 +22,7 @@ $(function () {
             }
         },
         columns: [
+            {data: 'g_id'},
             {data: 'name'},
             {data: 'type_id'},
             {data: 'alias'},

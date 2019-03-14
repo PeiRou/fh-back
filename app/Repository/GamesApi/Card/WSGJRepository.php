@@ -54,12 +54,18 @@ class WSGJRepository extends BaseRepository
                 continue;
             $arr[] = [
 //                'g_id' => $this->gameInfo->g_id,
-                'GameID' => $v['betOrderNo'],   //游戏代码
+                'GameID' => $v['betOrderNo'],   //投注订单编号
                 'Accounts' => $v['username'],   //玩家账号
-                'AllBet' => abs($v['netPnl']),//总下注
-                'Profit' => $v['netPnl'],       //盈利
-                'GameStartTime' => $v['betTime'],//游戏开始时间
-                'GameEndTime' => $v['endTime'],  //游戏结束时间
+                'AllBet' => $v['betAmount'],//投注金额
+                'Profit' => $v['netPnl'],       //净输赢
+                'GameStartTime' => $v['betTime'],//投注时间
+                'GameEndTime' => $v['endTime'] ?? '',  //游戏结束时间
+
+                'validBetAmount' => $v['validBetAmount'] ?? '',  //有效投注金额
+                'productType' => $v['productType'] ?? '',  //产品类别
+                'gameCategory' => $v['gameCategory'] ?? '',  //游戏类别
+                'sessionId' => $v['sessionId'] ?? '',  //会话标识
+                'additionalDetails' => $v['additionalDetails'] ?? '',  //额外细节
             ];
         }
         return $this->insertDB($arr, $table);
