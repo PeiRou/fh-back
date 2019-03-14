@@ -503,10 +503,12 @@ class Excel
                 case 'game_paoma':
                 case 'game_msft':
                 case 'game_mssc':
+                case 'game_sfsc':
                     return $this->opennum_pk10();
                     break;
                 case 'game_msssc':
                 case 'game_qqffc':
+                case 'game_sfssc':
                     return $this->opennum_ssc();
                     break;
                 case 'game_msqxc':
@@ -521,6 +523,8 @@ class Excel
                 case 'game_bjkl8':
                     return $this->opennum_kl8();
                 case 'game_xylhc':
+                case 'game_sflhc':
+                case 'game_jslhc':
                     return $this->opennum_lhc();
                     break;
 
