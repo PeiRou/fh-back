@@ -25,7 +25,7 @@ class ISSUE_SEED_JSLHC extends Command
         if(isset($checkUpdate->jslhc)) {
             if($curDate == $checkUpdate->jslhc) {
                 $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
-                $curDate = date('Ymd', strtotime('+ 1 day', time()));
+                $curDate = date('ymd', strtotime('+ 1 day', time()));
             }else if($curDate < $checkUpdate->jslhc)
                 writeLog('ISSUE_SEED', $curDate.'急速六合彩期数已存在');
             else
