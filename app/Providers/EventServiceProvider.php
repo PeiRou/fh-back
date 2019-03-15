@@ -109,6 +109,18 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunTwxyft' => [
             'App\Listeners\RunTwxyftEventListener',
         ],
+        'App\Events\RunSfsc' => [
+            'App\Listeners\RunSfscEventListener',
+        ],
+        'App\Events\RunSfssc' => [
+            'App\Listeners\RunSfsscEventListener',
+        ],
+        'App\Events\RunJslhc' => [
+            'App\Listeners\RunJslhcEventListener',
+        ],
+        'App\Events\RunSflhc' => [
+            'App\Listeners\RunSflhcEventListener',
+        ],
         'App\Events\BackPusherEvent' => [
             'App\Listeners\BackPusherEventListener',
         ],

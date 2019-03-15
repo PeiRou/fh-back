@@ -31,6 +31,8 @@
             'ksft' => array('id'=>802,'type'=>'car'),     //快速飞艇
             'ksssc' => array('id'=>803,'type'=>'ssc'),    //快速时时彩
             'twxyft' => array('id'=>804,'type'=>'car'),     //台湾幸运飞艇
+            'sfsc' => array('id'=>901,'type'=>'car'),     //三分赛车
+            'sfssc' => array('id'=>902,'type'=>'car'),     //三分时时彩
         );
         //开奖第一行
         private $clong_kaijian1 = array(

@@ -69,6 +69,10 @@ class Games extends Model
         'ksft' => 'ksft',       //快速飞艇
         'kssc' => 'kssc',       //快速赛车
         'twxyft' => 'twxyft',       //台湾幸运飞艇
+        'sfsc' => 'sfsc',       //三分赛车
+        'sfssc' => 'sfssc',       //三分时时彩
+        'jslhc' => 'jslhc',       //急速六合彩
+        'sflhc' => 'sflhc',       //三分六合彩
     ];
 
     public static $aCodeBindingGame = [
@@ -81,9 +85,9 @@ class Games extends Model
         //快3类
         'k3' => ['jsk3','ahk3','gxk3','hbk3','msjsk3','hebeik3','gzk3','gsk3'],
         //时时彩
-        'ssc' => ['jsssc','cqssc','tjssc','xjssc','qqffc','ksssc'],
+        'ssc' => ['jsssc','cqssc','tjssc','xjssc','qqffc','ksssc','sfssc'],
         //赛车
-        'sc' => ['jspk10','pk10','jsft','xyft','paoma','jspk10','kssc','ksft','twxyft'],
+        'sc' => ['jspk10','pk10','jsft','xyft','paoma','jspk10','kssc','ksft','twxyft','sfsc'],
         //幸运农场 快乐十分
         'xync' => ['gdkl10','xync'],
         //广东11选5
@@ -91,7 +95,7 @@ class Games extends Model
         //北京快乐8
         'bjkl8' => ['bjkl8'],
         //香港六合彩
-        'lhc' => ['lhc','xylhc'],
+        'lhc' => ['lhc','xylhc','jslhc','sflhc'],
     ];
 
     public static $aTableByGameId = [
@@ -132,5 +136,9 @@ class Games extends Model
         802 => 'ksft',
         803 => 'ksssc',
         804 => 'twxyft',
+        901 => 'sfsc',
+        902 => 'sfssc',
+        903 => 'jslhc',
+        904 => 'sflhc',
     ];
 }
