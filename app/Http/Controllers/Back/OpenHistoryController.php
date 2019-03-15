@@ -13,6 +13,7 @@ use App\Events\LotteryRenew;
 use App\Events\RunLHC;
 use App\Events\RunXYLHC;
 use App\Games;
+use App\Helpers\CurService;
 use App\Helpers\LHC_SX;
 use App\UserFreezeMoney;
 use App\Users;
@@ -552,12 +553,14 @@ class OpenHistoryController extends Controller
             'is_open' => 1
         ]);
         if($update == 1){
-            $getIssue = DB::table('game_lhc')->where('id',$id)->first();
+//            $getIssue = DB::table('game_lhc')->where('id',$id)->first();
             $update = DB::table('game_lhc')->where('id', $id)->update([
                 'bunko' => 2
             ]);
             if ($update == 1){
-                event(new RunLHC($openNum,$getIssue->issue,70,$id)); //触发六合彩结算事件
+//                event(new RunLHC($openNum,$getIssue->issue,70,$id)); //触发六合彩结算事件
+                $curl = new CurService();
+                $curl->curlGet('http://127.0.0.1:9500?thread=BUNKO_lhc',1);
                 return response()->json([
                     'status' => true
                 ]);

@@ -294,6 +294,19 @@ class Excel
             $res = $value;
         return $res;
     }
+    //取得最新的需要结算奖期
+    public function getNeedBunkoIssueLhc($table){
+        if(empty($table))
+            return false;
+        $today = date('Y-m-d H:i:s',time());
+//        writeLog('New_Bet1',  "SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 2)");
+        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 2)");
+        if(empty($tmp))
+            return false;
+        foreach ($tmp as&$value)
+            $res = $value;
+        return $res;
+    }
     //取得最新的需要结算NN奖期
     public function getNeedNNBunkoIssue($table){
         if(empty($table))
