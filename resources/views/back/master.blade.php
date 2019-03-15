@@ -315,6 +315,18 @@
                 @if($hasPermission->hasPermission('historyLottery.twxyft') == "has")
                     <li id="menu-openManage-twxyft"><a href="{{ route('historyLottery.twxyft') }}"><cite></cite><span>台湾幸运飞艇</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('historyLottery.sfsc') == "has")
+                    <li id="menu-openManage-sfsc"><a href="{{ route('historyLottery.sfsc') }}"><cite></cite><span>三分赛车</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.sfssc') == "has")
+                    <li id="menu-openManage-sfssc"><a href="{{ route('historyLottery.sfssc') }}"><cite></cite><span>三分时时彩</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.jslhc') == "has")
+                    <li id="menu-openManage-jslhc"><a href="{{ route('historyLottery.jslhc') }}"><cite></cite><span>急速六合彩</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.sflhc') == "has")
+                    <li id="menu-openManage-sflhc"><a href="{{ route('historyLottery.sflhc') }}"><cite></cite><span>三分六合彩</span></a></li>
+                @endif
 
             </ul>
         </li>

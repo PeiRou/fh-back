@@ -10,7 +10,6 @@
         </div>
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('lhcHistoryTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="addNewIssue()">新增下一期</span>
         </div>
     </div>
     <div class="table-content">

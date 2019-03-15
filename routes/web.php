@@ -108,6 +108,10 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('ksft', 'Back\SrcViewController@openManage_ksft')->name('historyLottery.ksft'); //快速飞艇
         Route::get('kssc', 'Back\SrcViewController@openManage_kssc')->name('historyLottery.kssc'); //快速赛车
         Route::get('twxyft', 'Back\SrcViewController@openManage_twxyft')->name('historyLottery.twxyft'); //台湾幸运飞艇
+        Route::get('sfsc', 'Back\SrcViewController@openManage_sfsc')->name('historyLottery.sfsc'); //三分赛车
+        Route::get('sfssc', 'Back\SrcViewController@openManage_sfssc')->name('historyLottery.sfssc'); //三分时时彩
+        Route::get('jslhc', 'Back\SrcViewController@openManage_jslhc')->name('historyLottery.jslhc'); //急速六合彩
+        Route::get('sflhc', 'Back\SrcViewController@openManage_sflhc')->name('historyLottery.sflhc'); //三分六合彩
     });
 
 //系统管理
@@ -637,18 +641,18 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editPayCftNew/{id}', 'Back\Ajax\ModalController@editPayCftNew');  //充值配置新-财付通-修改
     Route::get('/back/modal/user48hoursInfo/{uid}', 'Back\Ajax\ModalController@user48hoursInfo');
     Route::get('/back/modal/addLhcNewIssue', 'Back\Ajax\ModalController@addLhcNewIssue');
-    Route::get('/back/modal/addXylhcNewIssue', 'Back\Ajax\ModalController@addXylhcNewIssue');
+//    Route::get('/back/modal/addXylhcNewIssue', 'Back\Ajax\ModalController@addXylhcNewIssue');  //幸运六合彩 - 新增期数
     Route::get('/back/modal/editLhcNewIssue/{id}', 'Back\Ajax\ModalController@editLhcNewIssue');
-    Route::get('/back/modal/editXylhcNewIssue/{id}', 'Back\Ajax\ModalController@editXylhcNewIssue');
+    Route::get('/back/modal/editXylhcNewIssue/{id}', 'Back\Ajax\ModalController@editXylhcNewIssue');  //幸运六合彩 - 修改期数
 
     Route::get('/back/modal/openBjpk10/{id}', 'Back\Ajax\ModalController@openBjpk10');           //北京PK10 - 手动开奖
     Route::get('/back/modal/openBjkl8/{id}', 'Back\Ajax\ModalController@openBjkl8');             //北京快乐8 - 手动开奖
     Route::get('/back/modal/open/{id}/{gameType}/{cat}/{issue}/{type}', 'Back\Ajax\ModalController@open');       //手动开奖 id/游戏名/类型
 
     Route::get('/back/modal/openLhc/{id}', 'Back\Ajax\ModalController@openLhc');
-    Route::get('/back/modal/openXylhc/{id}', 'Back\Ajax\ModalController@openXylhc');
+    Route::get('/back/modal/openXylhc/{id}/{gameType}', 'Back\Ajax\ModalController@openXylhc');      //幸运六合彩 - 手动开奖
     Route::get('/back/modal/reOpenLhc/{id}', 'Back\Ajax\ModalController@reOpenLhc');
-    Route::get('/back/modal/reOpenXylhc/{id}', 'Back\Ajax\ModalController@reOpenXylhc');
+    Route::get('/back/modal/reOpenXylhc/{id}/{gameType}', 'Back\Ajax\ModalController@reOpenXylhc');  //幸运六合彩 - 重新开奖
     Route::get('/back/modal/editAgentSettleReport/{id}', 'Back\Ajax\ModalController@editAgentSettleReport'); //修改代理结算报表-模板
     Route::get('/back/modal/editAgentSettleReview/{id}', 'Back\Ajax\ModalController@editAgentSettleReview'); //修改代理结算审核-模板
     Route::get('/back/modal/addActivityList', 'Back\Ajax\ModalController@addActivityList'); //增加活动-模板

@@ -31,7 +31,6 @@ class OpenApiGetController extends Controller
                 ];
             }
         }
-
         $excelModel = new Excel();
         if(in_array($type,['kssc','ksssc','ksft','twxyft']))
             $openCode = $excelModel->opennum('game_'.Games::$aCodeGameName[$type],0,$issue);
@@ -233,6 +232,7 @@ class OpenApiGetController extends Controller
             'n8' => (int)$arrCode[7],
         ];
     }
+
     //广东快乐十分
     public function gdkl10($aJson,$issue){
         $arrCode = '';
@@ -617,6 +617,89 @@ class OpenApiGetController extends Controller
             'n8' => (int)$arrCode[7],
             'n9' => (int)$arrCode[8],
             'n10' => (int)$arrCode[9],
+        ];
+    }
+
+    //三分赛车
+    public function sfsc($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+            'n8' => (int)$arrCode[7],
+            'n9' => (int)$arrCode[8],
+            'n10' => (int)$arrCode[9],
+        ];
+    }
+
+    //三分时时彩
+    public function sfssc($arrCode){
+        $arrCode = explode(',',$arrCode);
+        return [
+            'code' => 200,
+            'data'=> [],
+            'status' => true,
+            'openCode' => $this->strongConversionInt($arrCode),
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+        ];
+    }
+
+    //急速六合彩
+    public function jslhc($json,$issue)
+    {
+        $num_str = '';
+        foreach ($json as $k => $v){
+            $num_str .= $v['number'];
+        }
+        $arrCode = explode(',',$num_str);
+        return [
+            'code' => 200,
+            'data'=> $json,
+            'status' => true,
+            'openCode' => $num_str,
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
+        ];
+    }
+
+    //三分六合彩
+    public function jslsflhchc($json,$issue)
+    {
+        $num_str = '';
+        foreach ($json as $k => $v){
+            $num_str .= $v['number'];
+        }
+        $arrCode = explode(',',$num_str);
+        return [
+            'code' => 200,
+            'data'=> $json,
+            'status' => true,
+            'openCode' => $num_str,
+            'n1' => (int)$arrCode[0],
+            'n2' => (int)$arrCode[1],
+            'n3' => (int)$arrCode[2],
+            'n4' => (int)$arrCode[3],
+            'n5' => (int)$arrCode[4],
+            'n6' => (int)$arrCode[5],
+            'n7' => (int)$arrCode[6],
         ];
     }
 }
