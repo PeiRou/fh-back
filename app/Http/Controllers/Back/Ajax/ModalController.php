@@ -1205,4 +1205,10 @@ class ModalController extends Controller
         }
         return view('back.modal.platform.settleOffer',compact('iInfo','aPay'));
     }
+
+    //棋牌投注报表-添加报表
+    public function addReportCard()
+    {
+        return view('back.modal.report.addReportCard');
+    }
 }
