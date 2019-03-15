@@ -14,8 +14,8 @@ class WS extends Base{
     }
 
     //获取棋牌投注详情
-    public function getBet(){
-        $this->repo->param['time'] = $this->repo->param['time'] ?? $this->getTime();
+    public function getBet($param = []){
+        $this->repo->param['time'] = $this->repo->param['time'] ?? $this->getTime($param);
 //        $this->repo->param['time'] = '201811251845,201811251860';
         $res = $this->repo->getBet();
         if(isset($res['code']) && $res['code'] == 0){
@@ -33,8 +33,8 @@ class WS extends Base{
         }
 
     }
-    private function getTime(){
-        $toMinute = date('i');
+    private function getTime($param = []){
+        $toMinute = date('i', $param['toTime'] ?? time());
         if ($toMinute >= 0 && $toMinute < 15){
             $toMinute = '15';
         }else if($toMinute >= 15 && $toMinute < 30){
@@ -45,7 +45,7 @@ class WS extends Base{
             $toMinute = '60';
         }
         $Minute = ($toMinute - 15) == 0 ? '00' : $toMinute - 15;
-        return date('YmdH').$Minute.','.date('YmdH').$toMinute;
+        return date('YmdH', $param['toTime'] ?? time()).$Minute.','.date('YmdH', $param['toTime'] ?? time()).$toMinute;
     }
 
 }

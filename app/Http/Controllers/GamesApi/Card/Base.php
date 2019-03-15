@@ -13,23 +13,23 @@ use Illuminate\Support\Facades\Redis;
 
 class Base
 {
-    public $intervals = 10; //查询数据时间 分钟
+    public $intervals = 60; //查询数据时间 分钟
     public  $res_m = 0;
     public $repo = null;
     public $game_code = 0;
     public function __construct($repo){
         $this->repo = $repo;
     }
-    public function action($method){
+    public function action($method, $param = []){
         if(!method_exists($this,$method))
             return '';
-        return $this->$method();
+        return $this->$method($param);
     }
     //获取棋牌投注详情
-    public function getBet(){
+    public function getBet($param = []){
         $this->repo->param['s'] = 6;
-        $this->repo->param['startTime'] = $this->repo->getMillisecond() - (1000 * $this->intervals * 60);
-        $this->repo->param['endTime'] = $this->repo->getMillisecond();
+        $this->repo->param['startTime'] = $this->repo->param['startTime'] ?? ($this->repo->getMillisecond($param) - (1000 * $this->intervals * 60));
+        $this->repo->param['endTime'] = $this->repo->param['endTime'] ?? $this->repo->getMillisecond($param);
         $res = $this->repo->createReqData();
         if(isset($res['code']) && $res['code'] == 0 ){
             $data = $res['data']['list'];

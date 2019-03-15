@@ -27,7 +27,7 @@ class GamesApiController extends Controller
             'name' => ['required'],
             'description' => ['required'],
             'alias' => ['required'],
-            'type_id' => ['required',function($attribute, $value, $fail){
+            'type' => ['required',function($attribute, $value, $fail){
                 if((int)$value <= 0)
                     return $fail('游戏类型不对');
             }],
@@ -79,7 +79,7 @@ class GamesApiController extends Controller
         $data = [
             'name' => $param['name'],
             'description' => $param['description'],
-            'type_id' => (int)$param['type_id'],
+            'type' => (int)$param['type'],
             'status' => isset($param['status']) ? 1 : 0,
             'class_name' => $param['class_name'],
             'alias' => $param['alias'],
@@ -137,7 +137,7 @@ class GamesApiController extends Controller
         $statusArr = $GamesApi->statusArr;
         return DataTables::of($res)
             ->editColumn('type_id',function ($res) use ($statusArr){
-                return $statusArr[$res->type_id] ?? '';
+                return $statusArr[$res->type] ?? '';
             })
             ->editColumn('sort',function ($res) use ($statusArr){
                 $sort = $res->sort ?? 99;

@@ -203,6 +203,9 @@
                 @if($hasPermission->hasPermission('cardGame.cardBetInfo') == "has")
                 <li id="menu-cardGameManage-cardBetInfo"><a href="{{ route('cardGame.cardBetInfo') }}"><cite></cite><span>棋牌下注查询</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('cardGame.errorBet') == "has")
+                <li id="menu-cardGameManage-errorBet"><a href="{{ route('cardGame.errorBet') }}"><cite></cite><span>拉取失败注单</span></a></li>
+                @endif
             </ul>
         </li>
         @endif
