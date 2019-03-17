@@ -183,7 +183,7 @@ class SrcViewController extends Controller
                 'status' => true,
                 'openNum' => '<div class="ll-text">暂无此游戏，请联系技术</div>'
             ]);
-        if($gameId == 70 || $gameId == 85){
+        if($gameId == 70 || $gameId == 85 || $gameId == 903 || $gameId == 904){
             if($get->open_num == ''){
                 return response()->json([
                     'status' => false
