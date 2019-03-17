@@ -160,7 +160,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     });
 //平台接口设置
     Route::group(['prefix' => 'back/GamesApi', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
-        Route::get('List', 'Back\SrcViewController@GamesApiList')->name('GamesApi.List'); //平台接口列表
+        Route::get('List', 'Back\SrcViewController@GamesApiList')->name('GamesApi.List'); //第三方接口列表
+        Route::get('gamesList', 'Back\SrcViewController@gamesList')->name('GamesApi.games.list'); //第三方游戏列表
     });
     Route::group(['prefix' => 'back/GamesApi', 'middleware' => ['add-log-handle']], function () {
         Route::post('reGetBet/{id}', 'GamesApi\Card\PrivodeController@reGetBet'); // 重新获取第三方投注记录失败列表
@@ -327,6 +328,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/platform/settlement','Back\Data\PlatformController@settlement'); //平台费用结算-表格数据
     Route::get('/back/datatables/platform/record','Back\Data\PlatformController@record'); //付款记录-表格数据
     Route::get('/back/datatables/GameApiList','Back\GamesApiController@GameApiList'); //获取游戏接口列表
+    Route::get('/back/datatables/GamesApiGamesList','Back\GamesApiListController@GameApiGamesList'); //获取游戏接口列表
 
 
     //图表数据
@@ -685,6 +687,8 @@ Route::group(['middleware'=>['check-ip']],function () {
 //游戏MODAL
     Route::get('/back/modal/gameSetting/{id}', 'Back\Ajax\ModalController@gameSetting');
     Route::get('/back/modal/killSetting/{id}', 'Back\Ajax\ModalController@killSetting');     //杀率设置
+
+    Route::any('/back/modal/addGamesApiList', 'Back\GamesApiListController@add');     //添加第三方游戏
 
     Route::get('/web/api/select2/agents', 'Back\Api\ApiController@agents');
     Route::get('/web/api/select2/defaultAgents', 'Back\Api\ApiController@defaultAgents');

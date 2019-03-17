@@ -1283,6 +1283,10 @@ class SrcViewController extends Controller
     public function GamesApiList(){
         return view('back.gamesApi.list.list',compact('aStatus','aType'));
     }
+    //平台接口设置 - 平台接口列表
+    public function gamesList(){
+        return view('back.gamesApi.games.list',compact('aStatus','aType'));
+    }
 
     public function errorBet()
     {
