@@ -623,6 +623,9 @@ GROUP BY g.ga_id LIMIT $start,$length";
                         </li>';
                 if($j) $str .= $gd;
 
+                if(Session::get('account') == 'admin'){
+                    $str .= '<li onclick=\'allDown('.$users->uid.')\'>下所有分</li>';
+                }
 
                 $str .= "</ul>";
                 return $str;

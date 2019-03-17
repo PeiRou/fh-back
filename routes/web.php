@@ -554,7 +554,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/gamesApi/del','Back\GamesApiController@del')->name('ac.ad.GamesApi.del'); //平台接口删除
     Route::get('/action/admin/gamesApi/sort','Back\GamesApiController@sort'); //平台接口排序
     Route::post('/action/admin/gamesApi/editParameter','Back\GamesApiController@editParameter')->name('ac.ad.GamesApi.editParameter'); //平台接口参数修改
-
+    Route::get('/action/admin/gamesApi/allDown','Back\GamesApiController@allDown'); //下掉一个用户的所有分
 
     Route::post('/action/admin/platform/pay', 'Back\PlatformController@pay')->middleware('add-log-handle')->name('ac.ad.platform.pay');//平台费用支付
 

@@ -197,4 +197,15 @@ class GamesApiController extends Controller
         return show(0);
     }
 
+    public function allDown(Request $request)
+    {
+        $url = explode(',', env('WEB_INTRANET_IP'))[0] ?? '';
+        if(empty($url)){
+            return '';
+        }
+        $url .= '/api/GamesApi/allDown?user_id='.$request->user_id;
+        $res = file_get_contents($url);
+        echo $res;
+    }
+
 }

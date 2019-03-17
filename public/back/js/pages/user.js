@@ -386,3 +386,14 @@ function addMoneyAllUser(){
     var url = '/back/modal/addMoneyAllUser/';
     Cmodal('批量添加会员','22%',url,true,'changeUserMoneyForm');
 }
+
+function allDown(user_id){
+    $.ajax({
+        url:'/action/admin/gamesApi/allDown?user_id='+user_id,
+        dataType:'json',
+        type:'get',
+        success:function(e){
+            console.log(e);
+        },
+    });
+}
