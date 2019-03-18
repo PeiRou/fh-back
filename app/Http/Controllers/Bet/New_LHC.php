@@ -1859,8 +1859,8 @@ class New_LHC
             $sql_bets_lose = '';
             $sql_bets_he = '';
             foreach ($getUserBets as $item){
-                $bunko = ($item->bet_money * $item->play_odds) + ($item->bet_money * $item->play_rebate);
-                $bunko_lose = (0-$item->bet_money) + ($item->bet_money * $item->play_rebate);
+                $bunko = ($item->bet_money * $item->play_odds);
+                $bunko_lose = (0-$item->bet_money);
                 $bunko_he = $item->bet_money * 1;
                 $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                 $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
