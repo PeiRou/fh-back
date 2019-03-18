@@ -382,7 +382,7 @@ class Excel
         $params['logo'] = env('logo','');
         $params['open'] = $opencode;
         $params['win'] = $win;
-        $url = Config::get('website.guanIssueServerUrl').'setBunko/'.$key;
+        $url = (empty(Config::get('website.setGuanIssueServerUrl'))?Config::get('website.guanIssueServerUrl'):Config::get('website.setGuanIssueServerUrl')).'setBunko/'.$key;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -398,7 +398,7 @@ class Excel
     }
     //对统一杀率传当期输赢
     private function setWinIssueNum($params){
-        $url = Config::get('website.guanIssueServerUrl').'setLastBunko';
+        $url = (empty(Config::get('website.setGuanIssueServerUrl'))?Config::get('website.guanIssueServerUrl'):Config::get('website.setGuanIssueServerUrl')).'setLastBunko';
         writeLog('sameKill','setWinIssueNum - '.'url:'.$url);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
