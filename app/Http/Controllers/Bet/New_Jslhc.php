@@ -115,8 +115,10 @@ class New_Jslhc
                 DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
             }
             $openCode = $excel->opennum($table,$exeBase->is_user,$issue,$i);
-            $win = $this->exc_play($openCode,$gameId);
-            $bunko = $excel->bunko($win,$gameId,$issue,true);
+            $resData = $this->exc_play($openCode,$gameId);
+            $win = @$resData['win'];
+            $he = isset($resData['ids_he'])?$resData['ids_he']:array();
+            $bunko = $this->BUNKO($openCode, $win, $gameId, $issue, $he, true);
             if($bunko == 1){
                 $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)
