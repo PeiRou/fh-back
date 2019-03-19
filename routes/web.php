@@ -108,6 +108,10 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('ksft', 'Back\SrcViewController@openManage_ksft')->name('historyLottery.ksft'); //快速飞艇
         Route::get('kssc', 'Back\SrcViewController@openManage_kssc')->name('historyLottery.kssc'); //快速赛车
         Route::get('twxyft', 'Back\SrcViewController@openManage_twxyft')->name('historyLottery.twxyft'); //台湾幸运飞艇
+        Route::get('sfsc', 'Back\SrcViewController@openManage_sfsc')->name('historyLottery.sfsc'); //三分赛车
+        Route::get('sfssc', 'Back\SrcViewController@openManage_sfssc')->name('historyLottery.sfssc'); //三分时时彩
+        Route::get('jslhc', 'Back\SrcViewController@openManage_jslhc')->name('historyLottery.jslhc'); //急速六合彩
+        Route::get('sflhc', 'Back\SrcViewController@openManage_sflhc')->name('historyLottery.sflhc'); //三分六合彩
     });
 
 //系统管理
@@ -158,7 +162,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::group(['prefix' => 'back/GamesApi', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('List', 'Back\SrcViewController@GamesApiList')->name('GamesApi.List'); //平台接口列表
     });
-    Route::post('back/GamesApi/reGetBet/{id}', 'GamesApi\Card\PrivodeController@reGetBet'); // 重新获取第三方投注记录失败列表
+    Route::group(['prefix' => 'back/GamesApi', 'middleware' => ['add-log-handle']], function () {
+        Route::post('reGetBet/{id}', 'GamesApi\Card\PrivodeController@reGetBet'); // 重新获取第三方投注记录失败列表
+    });
 
 //充值配置新
     Route::group(['prefix' => 'back/control/payNewManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
@@ -433,6 +439,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/delSendMessage', 'Back\SrcNoticeController@delSendMessage')->middleware('add-log-handle')->name('ac.ad.delSendMessage'); //删除消息
 
     Route::post('/action/admin/report/addStatistics', 'Back\SrcReportController@addStatistics')->middleware(['check-permission','add-log-handle'])->name('report.addStatistics'); //添加操作报表
+    Route::post('/action/admin/report/addReportCard', 'Back\SrcReportController@addReportCard'); // 手动生成棋牌报表
 
     Route::post('/action/admin/addBank', 'Back\SrcPayController@addBank')->middleware('add-log-handle')->name('ac.ad.addBank');//添加银行
     Route::post('/action/admin/addLevel', 'Back\SrcPayController@addLevel')->middleware('add-log-handle')->name('ac.ad.addLevel');//添加层级
@@ -547,7 +554,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/gamesApi/del','Back\GamesApiController@del')->name('ac.ad.GamesApi.del'); //平台接口删除
     Route::get('/action/admin/gamesApi/sort','Back\GamesApiController@sort'); //平台接口排序
     Route::post('/action/admin/gamesApi/editParameter','Back\GamesApiController@editParameter')->name('ac.ad.GamesApi.editParameter'); //平台接口参数修改
-
+    Route::get('/action/admin/gamesApi/allDown','Back\GamesApiController@allDown'); //下掉一个用户的所有分
 
     Route::post('/action/admin/platform/pay', 'Back\PlatformController@pay')->middleware('add-log-handle')->name('ac.ad.platform.pay');//平台费用支付
 
@@ -634,18 +641,18 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editPayCftNew/{id}', 'Back\Ajax\ModalController@editPayCftNew');  //充值配置新-财付通-修改
     Route::get('/back/modal/user48hoursInfo/{uid}', 'Back\Ajax\ModalController@user48hoursInfo');
     Route::get('/back/modal/addLhcNewIssue', 'Back\Ajax\ModalController@addLhcNewIssue');
-    Route::get('/back/modal/addXylhcNewIssue', 'Back\Ajax\ModalController@addXylhcNewIssue');
+//    Route::get('/back/modal/addXylhcNewIssue', 'Back\Ajax\ModalController@addXylhcNewIssue');  //幸运六合彩 - 新增期数
     Route::get('/back/modal/editLhcNewIssue/{id}', 'Back\Ajax\ModalController@editLhcNewIssue');
-    Route::get('/back/modal/editXylhcNewIssue/{id}', 'Back\Ajax\ModalController@editXylhcNewIssue');
+    Route::get('/back/modal/editXylhcNewIssue/{id}', 'Back\Ajax\ModalController@editXylhcNewIssue');  //幸运六合彩 - 修改期数
 
     Route::get('/back/modal/openBjpk10/{id}', 'Back\Ajax\ModalController@openBjpk10');           //北京PK10 - 手动开奖
     Route::get('/back/modal/openBjkl8/{id}', 'Back\Ajax\ModalController@openBjkl8');             //北京快乐8 - 手动开奖
     Route::get('/back/modal/open/{id}/{gameType}/{cat}/{issue}/{type}', 'Back\Ajax\ModalController@open');       //手动开奖 id/游戏名/类型
 
     Route::get('/back/modal/openLhc/{id}', 'Back\Ajax\ModalController@openLhc');
-    Route::get('/back/modal/openXylhc/{id}', 'Back\Ajax\ModalController@openXylhc');
+    Route::get('/back/modal/openXylhc/{id}/{gameType}', 'Back\Ajax\ModalController@openXylhc');      //幸运六合彩 - 手动开奖
     Route::get('/back/modal/reOpenLhc/{id}', 'Back\Ajax\ModalController@reOpenLhc');
-    Route::get('/back/modal/reOpenXylhc/{id}', 'Back\Ajax\ModalController@reOpenXylhc');
+    Route::get('/back/modal/reOpenXylhc/{id}/{gameType}', 'Back\Ajax\ModalController@reOpenXylhc');  //幸运六合彩 - 重新开奖
     Route::get('/back/modal/editAgentSettleReport/{id}', 'Back\Ajax\ModalController@editAgentSettleReport'); //修改代理结算报表-模板
     Route::get('/back/modal/editAgentSettleReview/{id}', 'Back\Ajax\ModalController@editAgentSettleReview'); //修改代理结算审核-模板
     Route::get('/back/modal/addActivityList', 'Back\Ajax\ModalController@addActivityList'); //增加活动-模板
@@ -663,6 +670,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/returnVisit','Back\Ajax\ModalController@returnVisit')->middleware('check-permission')->name('member.returnVisit.view'); //会员回访用户-模板
     Route::get('/back/modal/exportUser','Back\Ajax\ModalController@exportUser')->middleware('check-permission')->name('member.exportUser.view'); //导出用户数据-模板
     Route::get('/back/modal/addStatistics','Back\Ajax\ModalController@addStatistics')->middleware('check-permission')->name('report.addStatistics.view'); //操作报表添加-模板
+    Route::get('/back/modal/addReportCard','Back\Ajax\ModalController@addReportCard'); //操作报表添加-模板
     Route::get('/back/modal/addAgentSettleDomain', 'Back\Ajax\ModalController@addAgentSettleDomain'); //添加代理专属域名
     Route::get('/back/modal/editAgentSettleDomain/{id}', 'Back\Ajax\ModalController@editAgentSettleDomain'); //修改代理专属域名
     Route::get('/back/modal/gameAgentOddsAdd', 'Back\Ajax\ModalController@gameAgentOddsAdd'); //添加代理赔率-模板

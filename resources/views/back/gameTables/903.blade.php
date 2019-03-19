@@ -3,7 +3,7 @@
     <table align="center" class="ui celled small table">
         <tbody>
         <tr class="firstRow">
-            <td valign="middle" rowspan="1" colspan="4" align="center" class="blue-title-table">幸运六合彩</td>
+            <td valign="middle" rowspan="1" colspan="4" align="center" class="blue-title-table">急速六合彩</td>
         </tr>
         <tr class="firstRow">
             <td valign="middle" rowspan="1" colspan="2" align="center" class="blue-title-table" style="font-size: 13px;padding: 4px !important;">种类</td>

@@ -382,7 +382,7 @@ class Excel
         $params['logo'] = env('logo','');
         $params['open'] = $opencode;
         $params['win'] = $win;
-        $url = Config::get('website.guanIssueServerUrl').'setBunko/'.$key;
+        $url = (empty(Config::get('website.setGuanIssueServerUrl'))?Config::get('website.guanIssueServerUrl'):Config::get('website.setGuanIssueServerUrl')).'setBunko/'.$key;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -398,7 +398,7 @@ class Excel
     }
     //对统一杀率传当期输赢
     private function setWinIssueNum($params){
-        $url = Config::get('website.guanIssueServerUrl').'setLastBunko';
+        $url = (empty(Config::get('website.setGuanIssueServerUrl'))?Config::get('website.guanIssueServerUrl'):Config::get('website.setGuanIssueServerUrl')).'setLastBunko';
         writeLog('sameKill','setWinIssueNum - '.'url:'.$url);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -509,7 +509,7 @@ class Excel
                 case 'game_msssc':
                 case 'game_qqffc':
                 case 'game_sfssc':
-                    return $this->opennum_ssc();
+                    return $this->opennum_ssc($num);
                     break;
                 case 'game_msqxc':
                     return $this->opennum_qxc();
@@ -525,7 +525,7 @@ class Excel
                 case 'game_xylhc':
                 case 'game_sflhc':
                 case 'game_jslhc':
-                    return $this->opennum_lhc();
+                    return $this->opennum_lhc($num);
                     break;
 
             }
@@ -644,9 +644,36 @@ class Excel
         sort($newarr);
         return implode(",",$newarr);
     }
-    private function opennum_lhc(){
+    private function opennum_lhc($num=0){
         $arr = range(1,49,1);
         shuffle($arr);   //打乱数组
+        switch ($num){
+            case 2:
+                shuffle($arr);   //打乱数组
+                break;
+            case 3:
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                break;
+            case 4:
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                break;
+            case 5:
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                break;
+            case 6:
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                break;
+        }
         $newarr = array_splice($arr,0,7);
         return implode(",",$newarr);
     }

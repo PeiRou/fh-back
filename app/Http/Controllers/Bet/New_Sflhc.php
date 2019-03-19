@@ -115,8 +115,10 @@ class New_Sflhc
                 DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
             }
             $openCode = $excel->opennum($table,$exeBase->is_user,$issue,$i);
-            $win = $this->exc_play($openCode,$gameId);
-            $bunko = $excel->bunko($win,$gameId,$issue,true);
+            $resData = $this->exc_play($openCode,$gameId);
+            $win = @$resData['win'];
+            $he = isset($resData['ids_he'])?$resData['ids_he']:array();
+            $bunko = $this->BUNKO($openCode, $win, $gameId, $issue, $he, true);
             if($bunko == 1){
                 $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)
@@ -1933,8 +1935,8 @@ class New_Sflhc
             $sql_bets_lose = '';
             $sql_bets_he = '';
             foreach ($getUserBets as $item){
-                $bunko = ($item->bet_money * $item->play_odds) + ($item->bet_money * $item->play_rebate);
-                $bunko_lose = (0-$item->bet_money) + ($item->bet_money * $item->play_rebate);
+                $bunko = ($item->bet_money * $item->play_odds);
+                $bunko_lose = (0-$item->bet_money);
                 $bunko_he = $item->bet_money * 1;
                 $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                 $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";

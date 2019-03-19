@@ -9,6 +9,7 @@ $(function () {
         ajax: {
             url:'/back/datatables/openHistory/xylhc',
             data:function (d) {
+                d.type = gameType;   //类型
                 d.issue = $('#issue').val();
                 d.issuedate = $('#issuedate').val();
             }
@@ -84,7 +85,7 @@ $(function () {
         dataTable.ajax.reload();
     });
 });
-
+/*
 function addNewIssue() {
     jc = $.confirm({
         theme: 'material',
@@ -114,15 +115,15 @@ function addNewIssue() {
             }
         }
     });
-}
+}*/
 
 function edit(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '六合彩-修改期数',
+        title: title + '-修改期数',
         closeIcon:true,
         boxWidth:'20%',
-        content: 'url:/back/modal/editXylhcNewIssue/'+id,
+        content: 'url:/back/modal/editXylhcNewIssue/'+id+'/'+gameType,
         buttons: {
             formSubmit: {
                 text:'确定修改',
@@ -150,10 +151,10 @@ function edit(id) {
 function openLhc(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '六合彩-手动开奖',
+        title: title + '-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content: 'url:/back/modal/openXylhc/'+id,
+        content: 'url:/back/modal/openXylhc/'+id+'/'+gameType,
         buttons: {
             formSubmit: {
                 text:'确定',
@@ -181,10 +182,10 @@ function openLhc(id) {
 function reOpen(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '六合彩-重新开奖',
+        title: title + '-重新开奖',
         closeIcon:true,
         boxWidth:'30%',
-        content: 'url:/back/modal/reOpenXylhc/'+id,
+        content: 'url:/back/modal/reOpenXylhc/'+id+'/'+gameType,
         buttons: {
             formSubmit: {
                 text:'确定',

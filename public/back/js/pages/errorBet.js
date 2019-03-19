@@ -200,6 +200,7 @@ function reGetBet(id){
     $.ajax({
         url: '/back/GamesApi/reGetBet/'+id,
         type: 'post',
+        dataType:'text',
         success: function (data) {
             layer.close(index);
             // try{
@@ -215,7 +216,7 @@ function reGetBet(id){
             dataTable.ajax.reload(null, false);
         },
         error:function(){
-            alert();
+            layer.close(index);
         }
     });
 }

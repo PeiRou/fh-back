@@ -20,21 +20,12 @@ class CardReport implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $aDateTime;
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
+
     public function __construct($aParam)
     {
         $this->aDateTime = $aParam;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         try{

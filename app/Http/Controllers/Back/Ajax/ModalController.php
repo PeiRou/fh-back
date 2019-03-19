@@ -970,11 +970,11 @@ class ModalController extends Controller
         return view('back.modal.open.addLhcNewIssue',compact('endTime','openTime'));
     }
     //添加幸运六合彩
-    public function addXylhcNewIssue(){
+    /*public function addXylhcNewIssue(){
         $endTime = date('Y-m-d 21:30:00');
         $openTime = date('Y-m-d 21:35:00');
         return view('back.modal.open.addXylhcNewIssue',compact('endTime','openTime'));
-    }
+    }*/
     //修改六合彩
     public function editLhcNewIssue($id = '')
     {
@@ -982,9 +982,10 @@ class ModalController extends Controller
         return view('back.modal.open.editLhcNewIssue',compact('lhc'));
     }
     //修改幸运六合彩
-    public function editXylhcNewIssue($id = '')
+    public function editXylhcNewIssue($id = '',$gameType = '')
     {
-        $lhc = DB::table('game_xylhc')->where('id',$id)->first();
+        $table ='game_'.$gameType;
+        $lhc = DB::table($table)->where('id',$id)->first();
         return view('back.modal.open.editXylhcNewIssue',compact('lhc'));
     }
     //六合彩手动开奖
@@ -994,9 +995,10 @@ class ModalController extends Controller
         return view('back.modal.open.openLHC',compact('lhc'));
     }
     //幸运六合彩手动开奖
-    public function openXylhc($id = '')
+    public function openXylhc($id = '',$gameType = '')
     {
-        $lhc = DB::table('game_xylhc')->where('id',$id)->first();
+        $table ='game_'.$gameType;
+        $lhc = DB::table($table)->where('id',$id)->first();
         return view('back.modal.open.openXYLHC',compact('lhc'));
     }
 
@@ -1008,9 +1010,10 @@ class ModalController extends Controller
         return view('back.modal.open.reOpenLHC',compact('lhc'));
     }
     //幸运六合彩重新开奖
-    public function reOpenXylhc($id = '')
+    public function reOpenXylhc($id = '',$gameType = '')
     {
-        $lhc = DB::table('game_xylhc')->where('id',$id)->first();
+        $table ='game_'.$gameType;
+        $lhc = DB::table($table)->where('id',$id)->first();
         return view('back.modal.open.reOpenXYLHC',compact('lhc'));
     }
 
@@ -1204,5 +1207,11 @@ class ModalController extends Controller
             $aPay = [];
         }
         return view('back.modal.platform.settleOffer',compact('iInfo','aPay'));
+    }
+
+    //棋牌投注报表-添加报表
+    public function addReportCard()
+    {
+        return view('back.modal.report.addReportCard');
     }
 }

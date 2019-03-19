@@ -44,4 +44,18 @@ class SrcReportController extends Controller
             'msg' => "添加成功！"
         ]);
     }
+
+    //生成棋牌投注报表
+    public function addReportCard(Request $request)
+    {
+        $aParam = [
+            'startTime' => $request->startDay,
+            'endTime' => $request->startDay
+        ];
+        Artisan::call('CardReport:get',$aParam);
+        return response()->json([
+            'status' => true,
+            'msg' => "已生成！"
+        ]);
+    }
 }

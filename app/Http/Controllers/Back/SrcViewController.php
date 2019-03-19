@@ -183,7 +183,7 @@ class SrcViewController extends Controller
                 'status' => true,
                 'openNum' => '<div class="ll-text">暂无此游戏，请联系技术</div>'
             ]);
-        if($gameId == 70 || $gameId == 85){
+        if($gameId == 70 || $gameId == 85 || $gameId == 903 || $gameId == 904){
             if($get->open_num == ''){
                 return response()->json([
                     'status' => false
@@ -696,7 +696,6 @@ class SrcViewController extends Controller
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }
-
     //台湾幸运飞艇
     public function openManage_twxyft()
     {
@@ -705,6 +704,50 @@ class SrcViewController extends Controller
             'activeName' => 'menu-openManage-twxyft',
             'type' => 'twxyft',
             'cat' => 'sc' //游戏类别 赛车
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //三分赛车
+    public function openManage_sfsc()
+    {
+        $data = [
+            'title' => '三分赛车',
+            'activeName' => 'menu-openManage-sfsc',
+            'type' => 'sfsc',
+            'cat' => 'sc' //游戏类别 赛车
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //三分时时彩
+    public function openManage_sfssc()
+    {
+        $data = [
+            'title' => '三分时时彩',
+            'activeName' => 'menu-openManage-sfssc',
+            'type' => 'sfssc',
+            'cat' => 'ssc' //游戏类别 时时彩
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //急速六合彩
+    public function openManage_jslhc()
+    {
+        $data = [
+            'title' => '急速六合彩',
+            'activeName' => 'menu-openManage-jslhc',
+            'type' => 'jslhc',
+            'cat' => 'xylhc' //游戏类别 幸运六合彩
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //三分六合彩
+    public function openManage_sflhc()
+    {
+        $data = [
+            'title' => '三分六合彩',
+            'activeName' => 'menu-openManage-sflhc',
+            'type' => 'sflhc',
+            'cat' => 'xylhc' //游戏类别 幸运六合彩
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }

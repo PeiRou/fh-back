@@ -73,6 +73,7 @@ class GamesApi extends Model
         //获取所有棋牌的游戏
         $gamesList = self::where(function($aSql) use ($request, $type_id){
             $aSql->where('type_id', $type_id);
+            $aSql->where('type', 1);
             if(isset($request->g_id) && $g_id = $request->g_id)
                 $aSql->where('g_id', $g_id);
         })->get();

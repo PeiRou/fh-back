@@ -384,8 +384,11 @@ class openHistoryController extends Controller
 
     public function xylhc(Request $request){
         $param = $request->post();
-
-        $HISModel = $this->getPostData('game_xylhc',$param['issue'],$param['issuedate']);
+        if(!($gameType = $request->get('type'))){
+            return false;
+        }
+        $table = 'game_'.Games::$aCodeGameName[$gameType];
+        $HISModel = $this->getPostData($table,$param['issue'],$param['issuedate']);
         $lhcCount = $HISModel->count();
         $lhc = $HISModel->orderBy('id','desc')->skip($param['start'])->take($param['length'])->get();
         $gameIsOpen = Games::$gameIsOpen;
