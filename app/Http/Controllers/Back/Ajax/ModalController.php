@@ -151,8 +151,9 @@ class ModalController extends Controller
         $account = $get->account;
         $subAccountId = $get->sa_id;
         $google_code = $get->google_code;
-        $ga = new \PHPGangsta_GoogleAuthenticator();
-        $qrCodeUrl = $ga->getQRCodeGoogleUrl($account,$google_code,null,['chs'=>'300x300']);
+//        $ga = new \PHPGangsta_GoogleAuthenticator();
+//        $qrCodeUrl = $ga->getQRCodeGoogleUrl($account,$google_code,null,['chs'=>'300x300']);
+        $qrCodeUrl = urlencode('otpauth://totp/'.$account.'?secret='.$google_code.'');
         return view('back.modal.member.subAccountGoogleCode',compact('qrCodeUrl','subAccountId','account','google_code'));
     }
     //会员对帐详情

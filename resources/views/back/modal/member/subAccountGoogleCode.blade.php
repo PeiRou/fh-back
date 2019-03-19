@@ -4,7 +4,7 @@
         <div class="google-mask">
             <span></span>
         </div>
-        <img id="codeImg" src="{{ $qrCodeUrl }}">
+        <img id="codeImg" src="/QrCode/show?content={{ $qrCodeUrl }}">
         <div style="font-size: 12px;color: #afafaf;">需要在您的手机中下载Google Authenticator应用</div>
         <hr>
         <div class="google-bind-tips">扫码绑定或输入<code>{{ $google_code }}</code>绑定</div>

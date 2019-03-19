@@ -866,6 +866,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/inner/getPlayCateItem', 'Inner\innerActionController@getPlayCateItem');
     Route::get('/tttt/test', 'Inner\TestController@lhc');
 
+//二维码显示
+    Route::get('/QrCode/show', 'Common\QrCodeController@show');
 //后台状态轮询
     Route::get('/back/status', 'Back\AjaxStatusController@status');
 //后台获取开奖--接口
