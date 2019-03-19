@@ -564,6 +564,11 @@ class OpenHistoryController extends Controller
                 return response()->json([
                     'status' => true
                 ]);
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'msg' => '上次开奖未完成！'
+                ]);
             }
         } else {
             return response()->json([
