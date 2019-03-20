@@ -14,7 +14,7 @@ class next_open_jslhc extends Command
     protected  $gameId = 903;
     protected $LHC;
     protected $signature = 'next_open_jslhc';
-    protected $description = '急速六合彩-定時開號';
+    protected $description = '极速六合彩-定時開號';
 
     public function __construct(LHC_SX $LHC)
     {

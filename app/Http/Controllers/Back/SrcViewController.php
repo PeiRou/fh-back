@@ -729,11 +729,11 @@ class SrcViewController extends Controller
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }
-    //急速六合彩
+    //极速六合彩
     public function openManage_jslhc()
     {
         $data = [
-            'title' => '急速六合彩',
+            'title' => '极速六合彩',
             'activeName' => 'menu-openManage-jslhc',
             'type' => 'jslhc',
             'cat' => 'xylhc' //游戏类别 幸运六合彩

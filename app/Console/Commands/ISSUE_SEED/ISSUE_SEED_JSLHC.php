@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_JSLHC extends Command
 {
     protected $signature = 'ISSUE_SEED_JSLHC';
-    protected $description = '急速六合彩期数生成-1440-24小时';
+    protected $description = '极速六合彩期数生成-1440-24小时';
 
     public function __construct()
     {
@@ -27,7 +27,7 @@ class ISSUE_SEED_JSLHC extends Command
                 $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
                 $curDate = date('ymd', strtotime('+ 1 day', time()));
             }else if($curDate < $checkUpdate->jslhc)
-                writeLog('ISSUE_SEED', $curDate.'急速六合彩期数已存在');
+                writeLog('ISSUE_SEED', $curDate.'极速六合彩期数已存在');
             else
                 $issueDate = date('Y-m-d',time());
         }else{

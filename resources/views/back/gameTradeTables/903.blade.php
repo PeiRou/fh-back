@@ -34,7 +34,7 @@
     </tr>
     <tr>
         <td align="center" rowspan="1" colspan="4" class="table-title">
-            急速六合彩
+            极速六合彩
         </td>
     </tr>
     <tr>

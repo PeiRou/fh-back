@@ -12,7 +12,7 @@ class BUNKO_jslhc extends Command
 {
     protected $gameId = 903;
     protected $signature = 'BUNKO_jslhc';
-    protected $description = '急速六合彩-定时结算';
+    protected $description = '极速六合彩-定时结算';
 
     public function __construct()
     {

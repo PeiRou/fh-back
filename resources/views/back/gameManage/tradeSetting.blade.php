@@ -19,7 +19,7 @@
                 <a class="item" data-tab="five" data-type="lhc">六合彩</a>
                 <a class="item" data-tab="six" data-type="ksc">快速彩</a>
                 <a class="item" data-tab="seven">三分彩</a>
-                <a class="item" data-tab="eight">急速彩</a>
+                <a class="item" data-tab="eight">极速彩</a>
                 {{--<a class="item" data-tab="six" data-type="nn">牛牛</a>--}}
             </div>
 
@@ -107,7 +107,7 @@
             <div class="ui tab segment" data-tab="eight" style="margin-bottom: 70px;">
                 <div class="sub-item">
                     <ul>
-                        <li data-tag="eight" data-id="903">急速六合彩</li>
+                        <li data-tag="eight" data-id="903">极速六合彩</li>
                     </ul>
                 </div>
                 <div id="eight_content"></div>

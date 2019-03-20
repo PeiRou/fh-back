@@ -11,7 +11,7 @@ class next_issue_jslhc extends Command
 {
     protected  $code = 'jslhc';
     protected $signature = 'next_issue_jslhc';
-    protected $description = '急速六合彩-產下一期開盤';
+    protected $description = '极速六合彩-產下一期開盤';
 
     public function __construct()
     {

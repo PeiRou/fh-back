@@ -110,7 +110,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('twxyft', 'Back\SrcViewController@openManage_twxyft')->name('historyLottery.twxyft'); //台湾幸运飞艇
         Route::get('sfsc', 'Back\SrcViewController@openManage_sfsc')->name('historyLottery.sfsc'); //三分赛车
         Route::get('sfssc', 'Back\SrcViewController@openManage_sfssc')->name('historyLottery.sfssc'); //三分时时彩
-        Route::get('jslhc', 'Back\SrcViewController@openManage_jslhc')->name('historyLottery.jslhc'); //急速六合彩
+        Route::get('jslhc', 'Back\SrcViewController@openManage_jslhc')->name('historyLottery.jslhc'); //极速六合彩
         Route::get('sflhc', 'Back\SrcViewController@openManage_sflhc')->name('historyLottery.sflhc'); //三分六合彩
     });
 
@@ -724,7 +724,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/tables/804', 'Back\GameTableController@gameTable804'); //台灣幸運飛艇
     Route::get('/game/tables/901', 'Back\GameTableController@gameTable901'); //三分赛车
     Route::get('/game/tables/902', 'Back\GameTableController@gameTable902'); //三分时时彩
-    Route::get('/game/tables/903', 'Back\GameTableController@gameTable903'); //急速六合彩
+    Route::get('/game/tables/903', 'Back\GameTableController@gameTable903'); //极速六合彩
     Route::get('/game/tables/904', 'Back\GameTableController@gameTable904'); //三分六合彩
 
     //不同层级的代理赔率
@@ -763,7 +763,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/trade/tables/804', 'Back\GameTradeTableController@gameTradeTable804'); //台湾幸运飞艇
     Route::get('/game/trade/tables/901', 'Back\GameTradeTableController@gameTradeTable901'); //三分赛车
     Route::get('/game/trade/tables/902', 'Back\GameTradeTableController@gameTradeTable902'); //三分时时彩
-    Route::get('/game/trade/tables/903', 'Back\GameTradeTableController@gameTradeTable903'); //急速六合彩
+    Route::get('/game/trade/tables/903', 'Back\GameTradeTableController@gameTradeTable903'); //极速六合彩
     Route::get('/game/trade/tables/904', 'Back\GameTradeTableController@gameTradeTable904'); //三分六合彩
 
     //保存游戏赔率表格数据
@@ -801,7 +801,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/table/save/twxyft', 'Back\GameTables\SaveGameOddsController@twxyft'); // 台灣幸運飛艇
     Route::post('/game/table/save/sfsc', 'Back\GameTables\SaveGameOddsController@sfsc'); // 三分赛车
     Route::post('/game/table/save/sfssc', 'Back\GameTables\SaveGameOddsController@sfssc'); // 三分时时彩
-    Route::post('/game/table/save/jslhc', 'Back\GameTables\SaveGameOddsController@jslhc'); // 急速六合彩
+    Route::post('/game/table/save/jslhc', 'Back\GameTables\SaveGameOddsController@jslhc'); // 极速六合彩
     Route::post('/game/table/save/sflhc', 'Back\GameTables\SaveGameOddsController@sflhc'); // 三分六合彩
 
 
@@ -842,7 +842,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/trade/table/save/twxyft','Back\GameTradeTables\SaveGameTradeController@twxyft'); //保存台湾幸运飞艇
     Route::post('/game/trade/table/save/sfsc','Back\GameTradeTables\SaveGameTradeController@sfsc'); //保存三分赛车
     Route::post('/game/trade/table/save/sfssc','Back\GameTradeTables\SaveGameTradeController@sfssc'); //保存三分时时彩
-    Route::post('/game/trade/table/save/jslhc','Back\GameTradeTables\SaveGameTradeController@jslhc'); //保存急速六合彩
+    Route::post('/game/trade/table/save/jslhc','Back\GameTradeTables\SaveGameTradeController@jslhc'); //保存极速六合彩
     Route::post('/game/trade/table/save/sflhc','Back\GameTradeTables\SaveGameTradeController@sflhc'); //保存三分六合彩
 
 //error

@@ -46,7 +46,7 @@ class New_Jslhc
     public function all($openCode,$issue,$gameId,$id,$excel)
     {
         $table = 'game_jslhc';
-        $gameName = '急速六合彩';
+        $gameName = '极速六合彩';
         $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
 
         if($betCount > 0){
