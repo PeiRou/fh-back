@@ -894,15 +894,12 @@ class Excel
         foreach ($exeData as $key => $val) {
             $arrLimit[(string)$val->bunko] = $val->opennum;
         }
-        \Log::info($arrLimit);
         asort($arrLimit);                //将计算后的杀率值，由小到大排序
         if($exeBase->is_open==1){
             $iLimit = count($arrLimit)==1?1:count($arrLimit)+1;
             if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
-                \Log::info('111');
-                \Log::info($arrLimit);
                 if($lose_losewin_rate>$exeBase->kill_rate){            //如果当日的输赢比高于杀率，则选给用户吃红
                     arsort($arrLimit);
                     $ii = 0;
