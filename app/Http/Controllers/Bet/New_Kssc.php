@@ -12,9 +12,9 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Kssc
+class New_Kssc extends Excel
 {
-    private function exc_play($openCode,$gameId){
+    protected function exc_play($openCode,$gameId){
         $win = collect([]);
         $this->GYH($openCode,$gameId,$win);
         $this->GYH_ZD_NUM($openCode,$gameId,$win);
@@ -46,9 +46,8 @@ class New_Kssc
         $gameName = '快速赛车';
         $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $excelModel = new Excel();
-            $exeIssue = $excelModel->getNeedKillIssue($table,2);
-            $exeBase = $excelModel->getNeedKillBase($gameId);
+            $exeIssue = $this->getNeedKillIssue($table,2);
+            $exeBase = $this->getNeedKillBase($gameId);
             if(isset($exeIssue->excel_num) && $exeBase->excel_num > 0 && $excel){
                 $update = DB::table($table)->where('id',$id)->where('excel_num',2)->update([
                     'excel_num' => 3
@@ -60,10 +59,10 @@ class New_Kssc
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $excelModel->bunko($win,$gameId,$issue,$excel);
-                $excelModel->bet_total($issue,$gameId);
+                $bunko = $this->bunko($win,$gameId,$issue,$excel);
+                $this->bet_total($issue,$gameId);
                 if($bunko == 1){
-                    $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
+                    $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
                     if($updateUserMoney == 1){
                         writeLog('New_Bet', $gameName . $issue . "结算出错");
                     }
@@ -75,7 +74,7 @@ class New_Kssc
                 'excel_num' => 1
             ]);
             if ($update !== 1) {
-                writeLog('New_Bet', $gameName . $issue . "杀率not Finshed");
+                writeLog('New_Kill', $gameName . $issue . "杀率not Finshed");
             }
         }else{
             $update = DB::table($table)->where('id',$id)->update([
@@ -88,48 +87,6 @@ class New_Kssc
                 $agentJob->addQueue();
             }
         }
-    }
-
-    private function excel($openCode,$exeBase,$issue,$gameId,$table = ''){
-        if(empty($table))
-            return false;
-        $excel = new Excel();
-        for($i=1;$i<= (int)$exeBase->excel_num;$i++){
-            if($i==1){
-                $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
-                if(empty($exeBet))
-                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}' and bet.testFlag = 0");
-            }else{
-                DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
-            }
-            $openCode = $excel->opennum($table,$exeBase->is_user,$issue,$i);
-            $win = $this->exc_play($openCode,$gameId);
-            $bunko = $excel->bunko($win,$gameId,$issue,true);
-            if($bunko == 1){
-                $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
-                foreach ($tmp as&$value)
-                    $excBunko = $value->sumBunko;
-                writeLog('New_Bet', $table.' :'.$openCode.' => '.$excBunko);
-                $dataExcGame['game_id'] = $gameId;
-                $dataExcGame['issue'] = $issue;
-                $dataExcGame['opennum'] = $openCode;
-                $dataExcGame['bunko'] = $excBunko;
-                $dataExcGame['excel_num'] = $i;
-                $dataExcGame['created_at'] = date('Y-m-d H:i:s');
-                $dataExcGame['updated_at'] = date('Y-m-d H:i:s');
-                DB::table('excel_game')->insert([$dataExcGame]);
-                if($exeBase->is_user==0)
-                    $excel->setKillIssueNum($table,$issue,$dataExcGame['excel_num'],$openCode,$excBunko);
-            }
-        }
-        $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = ".$gameId." AND issue ='{$issue}') and game_id = ".$gameId." AND issue ='{$issue}' LIMIT 1";
-        $tmp = DB::select($aSql);
-        foreach ($tmp as&$value)
-            $openCode = $value->opennum;
-        writeLog('New_Bet', $table.' :'.$openCode);
-        DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
-        DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
-        DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->where('game_id',$gameId)->delete();
     }
 
     private function GYH($openCode,$gameId,$win){
