@@ -11,24 +11,11 @@ class GamesList extends Base
     protected $table = 'games_list';
     protected $primaryKey = 'id';
 
-    public static function getArr()
+    public static function getArr($param = [])
     {
         $arr = self::select('id', 'pid', 'name')->get();
-        $data = [];
-
-
+        return self::getTree($arr->toArray());
     }
 
-    private static function getPid($arr, $pid = 0)
-    {
-        $data = [];
-        foreach ($arr as $k=>$v){
-            if($v->pid == $pid){
-                $data[] = $v;
-                unset($arr[$k]);
-            }
-        }
-
-    }
 
 }

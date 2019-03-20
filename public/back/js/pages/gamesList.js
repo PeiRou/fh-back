@@ -10,10 +10,11 @@ $(function () {
     $('#menu-GamesApi-games-list').addClass('active');
 
      dataTable = $('#example').DataTable({
-        searching: false,
-        bLengthChange: false,
-        processing: true,
-        serverSide: true,
+         ordering: false,
+         searching: false, //去掉搜索框
+         bLengthChange: false,//去掉每页多少条框体
+         processing: true,
+         serverSide: true,
         aLengthMenu: [[50]],
         ajax: {
             url : '/back/datatables/GamesApiGamesList',
@@ -92,19 +93,59 @@ function add() {
     });
 }
 
+function del(id) {
+    jc = $.confirm({
+        title: '确定要删除吗？',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '请确认您的操作',
+        buttons: {
+            confirm: {
+                text:'确定',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/back/modal/delGamesApiList?id='+id,
+                        type:'post',
+                        dataType:'json',
+                        data:{id:id},
+                        success:function (data) {
+                            if(data.code == 0){
+                                dataTable.ajax.reload()
+                            }else{
+                                Calert(data.msg,'red')
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
+
 function edit(id) {
     jc1 = $.confirm({
         theme: 'material',
         title: '修改权限',
         closeIcon:true,
         boxWidth:'25%',
-        content: 'url:/back/modal/editPermissionAuth/'+id,
+        content: 'url:/back/modal/addGamesApiList?id='+id,
         buttons: {
             formSubmit: {
                 text:'确定提交',
                 btnClass: 'btn-blue',
                 action: function () {
-                    var form = this.$content.find('#editPermissionAuthForm').data('formValidation').validate().isValid();
+                    var form = this.$content.find('#addPermissionAuthForm').data('formValidation').validate().isValid();
                     if(!form){
                         return false;
                     }
@@ -115,8 +156,27 @@ function edit(id) {
     });
 }
 
-function jumpHref(id) {
-    pid = id;
-    $('#exampleAuthId').val(id);
-    dataTable.ajax.reload();
+function sort(){
+    var data = [];
+    $('.sort').each(function(k, i){
+        data.push({
+            id:$(i).attr('data-id'),
+            val:$(i).val()
+        });
+    });
+    $.ajax({
+        url:'/back/modal/sortGamesApiList',
+        data:{
+            sort:data
+        },
+        dataType:'json',
+        type:'get',
+        success:function(e){
+            if(e.code == 0){
+                dataTable.ajax.reload(null,false)
+            }else{
+                Calert(e.msg,'red')
+            }
+        }
+    })
 }

@@ -2,6 +2,7 @@
 /* 游戏api对接 */
 namespace App\Http\Controllers\Back;
 
+use App\GamesList;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -12,143 +13,39 @@ use Yajra\DataTables\Facades\DataTables;
 
 class GamesApiListController extends Controller
 {
-
-    //验证器数据
-    private function verifyData($data, $CallbackArr, $message)
-    {
-        $validator = Validator::make($data, $CallbackArr, $message);
-        return ['stauts' => $validator->fails(), 'msg' => $validator->errors()->first()];
-    }
-
-//组合验证数据
-    private function validateParam($data = [])
-    {
-        return $this->verifyData($data, [
-            'name' => ['required'],
-            'description' => ['required'],
-            'alias' => ['required'],
-            'type' => ['required',function($attribute, $value, $fail){
-                if((int)$value <= 0)
-                    return $fail('游戏类型不对');
-            }],
-            'paramValue' => ['required', function ($attribute, $value, $fail) {
-                if (!count($value)) {
-                    return $fail($attribute . ' is invalid.');
-                }
-                if (count($value) == 1 && in_array('', $value)) {
-                    return $fail($attribute . ' is invalid.');
-                }
-            }],
-            'paramDescribes' => ['required', function ($attribute, $value, $fail) {
-                if (!count($value)) {
-                    return $fail($attribute . ' is invalid.');
-                }
-                if (count($value) == 1 && in_array('', $value)) {
-                    return $fail($attribute . ' is invalid.');
-                }
-            }],
-            'paramKey' => ['required', function ($attribute, $value, $fail) {
-                if (!count($value)) {
-                    return $fail($attribute . ' is invalid.');
-                }
-                if (count($value) == 1 && in_array('', $value)) {
-                    return $fail($attribute . ' is invalid.');
-                }
-            }],
-            'class_name' => ['required'],
-        ], [
-//            'name.required' => '',
-//            'description.required' => '提款密码暂未设置，请先设置提款密码',
-        ]);
-    }
-
-    public function edit(Request $request)
-    {
-        $param = $request->all();
-        $id = $request->id ?? 0;
-        //验证
-        $data = $this->validateParam($param);
-        if ($data['stauts']) {
-            return show(1, $data['msg']);
-        }
-        $paramKey = $param['paramKey'];
-        $paramValue = $param['paramValue'];
-        $paramDescribes = $param['paramDescribes'];
-        try{
-            $GamesApi = new GamesApi;
-            $data = [
-                'g_id' => $param['g_id'],
-                'name' => $param['name'],
-                'description' => $param['description'],
-                'type' => (int)$param['type'],
-                'status' => isset($param['status']) ? 1 : 0,
-                'class_name' => $param['class_name'],
-                'alias' => $param['alias'],
-    //            'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ];
-            if($id){
-                $GamesApi->where('id', $id)->update($data);
-            }else{
-                if ($GamesApi->where('name', $param['name'])->exists()) {
-                    return show(1, '游戏名字重复');
-                }
-                $data['created_at'] =  date('Y-m-d H:i:s');
-                $id= $GamesApi->insertGetId($data);
-            }
-            if (!$id) {
-                return show(1, '配置添加失败');
-            }
-            //清除原先的配置
-            $GamesApiConfig = new GamesApiConfig;
-            $GamesApiConfig->where('g_id', $param['g_id'])->delete();
-            $data = [];
-            foreach ($paramKey as $k => $v) {
-                if (empty($v)) {
-                    continue;
-                }
-                $data[] = [
-                    'g_id' => $param['g_id'],
-                    'key' => $paramKey[$k],
-                    'value' => $paramValue[$k] ?? '',
-                    'description' => $paramDescribes[$k]
-                ];
-            }
-            if ($c_id = $GamesApiConfig->insert($data)) {
-                return show(0);
-            }
-            return show(3, '参数添加失败');
-        }catch (\Exception $e){
-            return show(1, 'server error');
-        }
-    }
-
     //获取列表
     public function GameApiGamesList(Request $request)
     {
-//        $start = $request->get('start');
-//        $length = $request->get('length');
-//        $GamesApi = new GamesApi;
-//        $resCount = $GamesApi->count();
-//        $res = $GamesApi
-//            ->skip($start)->take($length)
-//            ->orderBy('sort', 'asc')
-//            ->orderBy('g_id', 'desc')
-//            ->get();
-//        $statusArr = $GamesApi->statusArr;
-
         $model = DB::table('games_list')->where(function($sql) use($request){
 
         });
+        $apis = GamesApi::select('g_id', 'name')->pluck('name', 'g_id')->toArray();
+        $pids = DB::table('games_list')->pluck('name', 'id')->toArray();
+
         if(isset($request->start, $request->length))
             $model->skip($request->start)->take($request->length);
 
         $resCount = $model->count();
-        $res = $model->get();
+        $res = $model->orderBy('sort', 'asc')->get();
 
         return DataTables::of($res)
+            ->editColumn('g_id',function ($res)use($apis){
+                return $apis[$res->g_id] ?? '';
+            })
+            ->editColumn('pid',function ($res)use($pids){
+                return $pids[$res->pid] ?? '';
+            })
+            ->editColumn('sort',function ($res){
+                return '<input type="text" class="sort" data-id="'.$res->id.'" style="width: 30px; height:20px;" oninput="this.value=value.replace(/[^\d]/g,\'\')" value="'.$res->sort.'">';
+            })
+            ->editColumn('control',function ($res){
+                return '<ul class="control-menu">
+                        <li onclick="edit('.$res->id.')">修改</li>
+                        <li onclick="del('.$res->id.')">删除</li>
+                        </ul>';
+            })
             ->setTotalRecords($resCount)
-            ->rawColumns(['sort'])
+            ->rawColumns(['sort','control'])
             ->skipPaging()
             ->make();
     }
@@ -159,20 +56,8 @@ class GamesApiListController extends Controller
         if(!($id = $request->get('id'))){
             return show(2);
         }
-        GamesApiConfig::where('g_id',$id)->delete();
-        GamesApi::where('g_id',$id)->delete();
+        DB::table('games_list')->where('id',$id)->delete();
         return show(0);
-    }
-    //修改gameApi表参数
-    public function editParameter(Request $request){
-        if(!($id = $request->get('id'))){
-            return show(2);
-        }
-        $data['status'] = $request->get('status');
-        if(GamesApi::where('g_id',$id)->update($data)){
-            return show(0);
-        }
-        return show(3, 'error');
     }
 
     //排序
@@ -181,19 +66,19 @@ class GamesApiListController extends Controller
         $arr = [];
         $str = [];
         foreach ($request->sort as $k=>$v){
-            if(isset($v['g_id'], $v['val'])){
-                array_push($arr, "when g_id = {$v['g_id']} then {$v['val']}");
-                array_push($str, $v['g_id']);
+            if(isset($v['id'], $v['val'])){
+                array_push($arr, "when id = {$v['id']} then {$v['val']}");
+                array_push($str, $v['id']);
             }
         }
         if(count($arr)){
             $sql = "
-                update games_api set 
+                update games_list set 
                 sort = 
                 case 
                     ".implode('   ',$arr)."
                 end
-                where g_id in(".implode(',', $str).")
+                where id in(".implode(',', $str).")
             ";
             DB::select($sql);
         }
@@ -203,12 +88,41 @@ class GamesApiListController extends Controller
     public function add(Request $request)
     {
         if($request->getMethod() == 'GET'){
-            $data = [];
-            return view('back.gamesApi.games.add');
+            $data = [
+                'p' => GamesList::getArr(),
+                'apis' => GamesApi::select('g_id', 'name')->get()
+            ];
+            isset($request->id) &&
+                $data['data'] = DB::table('games_list')->where('id', $request->id)->first();
+            return view('back.gamesApi.games.add', $data);
         }
-
-
-
+        if(!isset($request->pid,$request->name,$request->g_id)){
+            return show(1, '参数错误');
+        }
+        $model = DB::table('games_list');
+//        if(!$request->id && DB::table('games_list')->where('name', $request->name)->count())
+//            return show(1, '游戏名称重复');
+        $keys = $request->paramKey;
+        $val = $request->paramValue;
+        $param = [];
+        if(count($val) && count($keys))
+            while ($keys)
+                $param[array_shift($keys)] = array_shift($val) ?? '';
+        $data = [
+            'pid' => (int)$request->pid,
+            'name' => $request->name,
+            'g_id' => (int)$request->g_id,
+            'param' => json_encode($param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            'type' => (int)$request->type,
+            'open' => (int)$request->open,
+            'sort' => 0,
+        ];
+        if(isset($request->id)){
+            $res = $model->where('id', $request->id)->update($data);
+        }else{
+            $res = $model->insertGetId($data);
+        }
+        return show(0);
     }
 
 }

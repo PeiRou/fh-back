@@ -10,6 +10,7 @@
         </div>
         <div class="content-top-buttons">
             <span onclick="add()">添加</span>
+            <span onclick="sort()">排序</span>
         </div>
     </div>
     <div class="table-content">

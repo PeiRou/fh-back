@@ -689,6 +689,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/killSetting/{id}', 'Back\Ajax\ModalController@killSetting');     //杀率设置
 
     Route::any('/back/modal/addGamesApiList', 'Back\GamesApiListController@add');     //添加第三方游戏
+    Route::any('/back/modal/delGamesApiList', 'Back\GamesApiListController@del');     //删除第三方游戏
+    Route::any('/back/modal/sortGamesApiList', 'Back\GamesApiListController@sort');     //删除第三方游戏
 
     Route::get('/web/api/select2/agents', 'Back\Api\ApiController@agents');
     Route::get('/web/api/select2/defaultAgents', 'Back\Api\ApiController@defaultAgents');

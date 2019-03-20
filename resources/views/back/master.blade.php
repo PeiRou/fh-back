@@ -27,6 +27,13 @@
     <script src="/vendor/clipboard/dist/clipboard.js"></script>
     <script src="/vendor/contextJs/context.js"></script>
 </head>
+<style>
+    @if(env('TEST') == 1)
+        .dash>.main-content {
+            min-width: 50px!important;
+        }
+    @endif
+</style>
 <body class="dash">
 <audio id="rechargeSound" src="{{ asset('back/audio/ti.mp3') }}"></audio>
 <audio id="darwingSound" src="{{ asset('back/audio/chong.wav') }}"></audio>

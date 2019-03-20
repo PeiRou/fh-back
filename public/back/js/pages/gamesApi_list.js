@@ -207,7 +207,6 @@ function del(id) {
             }
         }
     });
-
 }
 function sort(){
     var data = [];
@@ -232,8 +231,4 @@ function sort(){
             }
         }
     })
-    console.log(data);
-    // $('input[name="sort"]').each(function(i){
-    //     console.log('asd');
-    // });
 }
