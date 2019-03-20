@@ -112,6 +112,7 @@ class GamesApiListController extends Controller
             'pid' => (int)$request->pid,
             'name' => $request->name,
             'g_id' => (int)$request->g_id,
+            'game_id' => (int)$request->game_id,
             'param' => json_encode($param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'type' => (int)$request->type,
             'open' => (int)$request->open,

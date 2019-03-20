@@ -537,9 +537,9 @@
                         <li id="menu-GamesApi-List"><a href="{{ route('GamesApi.List') }}"><cite></cite><span>接口列表</span></a></li>
                     @endif
                     {{-- 暂时注释 --}}
-                    {{--@if($hasPermission->hasPermission('GamesApi.games.list') == "has")--}}
-                        {{--<li id="menu-GamesApi-games-list"><a href="{{ route('GamesApi.games.list') }}"><cite></cite><span>游戏列表</span></a></li>--}}
-                    {{--@endif--}}
+                    @if($hasPermission->hasPermission('GamesApi.games.list') == "has")
+                        <li id="menu-GamesApi-games-list"><a href="{{ route('GamesApi.games.list') }}"><cite></cite><span>游戏列表</span></a></li>
+                    @endif
                 </ul>
             </li>
         @endif

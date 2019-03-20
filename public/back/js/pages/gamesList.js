@@ -25,6 +25,7 @@ $(function () {
         },
         columns: [
             {data: 'pid'},
+            {data: 'game_id'},
             {data: 'name'},
             {data: 'g_id'},
             {data: 'param'},

@@ -20,6 +20,12 @@
         </div>
     </div>
     <div class="field">
+        <label>游戏ID</label>
+        <div class="ui input icon">
+            <input type="text" name="game_id" id="game_id"  value="{{ $data->game_id ?? '' }}"/>
+        </div>
+    </div>
+    <div class="field">
         <label>游戏名称</label>
         <div class="ui input icon">
             <input type="text" name="name" id="name"  value="{{ $data->name ?? '' }}"/>

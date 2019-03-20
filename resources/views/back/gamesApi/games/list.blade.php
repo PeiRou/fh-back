@@ -18,6 +18,7 @@
             <thead>
             <tr>
                 <th>父级栏目</th>
+                <th>游戏ID</th>
                 <th>游戏名称</th>
                 <th>使用接口</th>
                 <th>参数</th>
