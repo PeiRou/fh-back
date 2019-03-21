@@ -505,13 +505,6 @@ class openHistoryController extends Controller
     //第三方游戏拉取注单失败列表
     public function errorBet(Request $request)
     {
-//        $sql = ' SELECT * FROM jq_error_bet WHERE code <> 0
-//                    AND
-//                    CASE
-//                        WHEN g_id = 15 THEN  code <> 16
-//                        ELSE 1
-//                    END ';
-
         $model = DB::table('jq_error_bet')->where(function($sql) use($request){
             $sql->where('code', '<>', 0);
         });
@@ -525,12 +518,23 @@ class openHistoryController extends Controller
                             <li onclick=\'reGetBet('.$aData->id.')\'>重新获取</li>
                          </ul>';
             })
-//            ->editColumn('toTime',function ($aData) {
-////                if($toTime = @json_decode($aData->param)->toTime)
-////                    return date('Y-m-d H:i:s', $toTime);
-//                return $aData->param;
-//            })
             ->rawColumns(['control','toTime'])
+            ->setTotalRecords($count)
+            ->skipPaging()
+            ->make(true);
+    }
+    //TC下注查询
+    public function TCBetInfo(Request $request)
+    {
+        $model = DB::table('jq_wsgj_bet')->where(function($sql) use($request){
+
+        });
+        $count = $model->count();
+        if(isset($request->start, $request->length))
+            $model->orderBy('id','desc')->skip($request->start)->take($request->length);
+        $res = $model->get();
+        return DataTables::of($res)
+            ->rawColumns(['control'])
             ->setTotalRecords($count)
             ->skipPaging()
             ->make(true);

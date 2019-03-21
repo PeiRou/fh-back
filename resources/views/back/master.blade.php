@@ -199,23 +199,23 @@
             </ul>
         </li>
         @endif
-        @if($hasPermission->hasPermission('cardGame') == "has")
-        <li id="menu-cardGameManage" class="nav-item"><a href="javascript:void(0)">
-                <span><img src="/back/old/images/leftico01.png"></span>
-                棋牌管理</a>
-            <ul>
+        {{--@if($hasPermission->hasPermission('cardGame') == "has")--}}
+        {{--<li id="menu-cardGameManage" class="nav-item"><a href="javascript:void(0)">--}}
+                {{--<span><img src="/back/old/images/leftico01.png"></span>--}}
+                {{--棋牌管理</a>--}}
+            {{--<ul>--}}
                 {{--@if($hasPermission->hasPermission('cardGame.upDownSearch') == "has")--}}
                 {{--<li id="menu-cardGameManage-upDownSearch"><a href="{{ route('cardGame.upDownSearch') }}"><cite></cite><span>上下分记录查询</span></a></li>--}}
                 {{--@endif--}}
-                @if($hasPermission->hasPermission('cardGame.cardBetInfo') == "has")
-                <li id="menu-cardGameManage-cardBetInfo"><a href="{{ route('cardGame.cardBetInfo') }}"><cite></cite><span>棋牌下注查询</span></a></li>
-                @endif
-                @if($hasPermission->hasPermission('cardGame.errorBet') == "has")
-                <li id="menu-cardGameManage-errorBet"><a href="{{ route('cardGame.errorBet') }}"><cite></cite><span>拉取失败注单</span></a></li>
-                @endif
-            </ul>
-        </li>
-        @endif
+                {{--@if($hasPermission->hasPermission('cardGame.cardBetInfo') == "has")--}}
+                {{--<li id="menu-cardGameManage-cardBetInfo"><a href="{{ route('cardGame.cardBetInfo') }}"><cite></cite><span>棋牌下注查询</span></a></li>--}}
+                {{--@endif--}}
+                {{--@if($hasPermission->hasPermission('cardGame.errorBet') == "has")--}}
+                {{--<li id="menu-cardGameManage-errorBet"><a href="{{ route('cardGame.errorBet') }}"><cite></cite><span>拉取失败注单</span></a></li>--}}
+                {{--@endif--}}
+            {{--</ul>--}}
+        {{--</li>--}}
+        {{--@endif--}}
         @if($hasPermission->hasPermission('game') == "has")
         <li id="menu-gameManage" class="nav-item"><a href="javascript:void(0)">
                 <span><img src="/back/old/images/leftico01.png"></span>
@@ -531,7 +531,7 @@
         @if($hasPermission->hasPermission('GamesApi') == "has")
             <li id="menu-GamesApi" class="nav-item"><a href="javascript:void(0)">
                     <span><img src="/back/old/images/leftico01.png"></span>
-                    平台设置</a>
+                    第三方游戏</a>
                 <ul>
                     @if($hasPermission->hasPermission('GamesApi.List') == "has")
                         <li id="menu-GamesApi-List"><a href="{{ route('GamesApi.List') }}"><cite></cite><span>接口列表</span></a></li>
@@ -539,6 +539,18 @@
                     {{-- 暂时注释 --}}
                     @if($hasPermission->hasPermission('GamesApi.games.list') == "has")
                         <li id="menu-GamesApi-games-list"><a href="{{ route('GamesApi.games.list') }}"><cite></cite><span>游戏列表</span></a></li>
+                    @endif
+                    @if($hasPermission->hasPermission('cardGame.cardBetInfo') == "has")
+                        <li id="menu-GamesApi-cardBetInfo"><a href="{{ route('cardGame.cardBetInfo') }}"><cite></cite><span>棋牌下注查询</span></a></li>
+                    @endif
+                    @if($hasPermission->hasPermission('cardGame.TCBetInfo') == "has")
+                        <li id="menu-GamesApi-TCBetInfo"><a href="{{ route('cardGame.TCBetInfo') }}"><cite></cite><span>TC下注查询</span></a></li>
+                    @endif
+                    @if($hasPermission->hasPermission('cardGame.recharges') == "has")
+                        <li id="menu-GamesApi-recharges"><a href="{{ route('cardGame.recharges') }}"><cite></cite><span>资金转账记录</span></a></li>
+                    @endif
+                    @if($hasPermission->hasPermission('cardGame.errorBet') == "has")
+                        <li id="menu-GamesApi-errorBet"><a href="{{ route('cardGame.errorBet') }}"><cite></cite><span>拉取失败注单</span></a></li>
                     @endif
                 </ul>
             </li>

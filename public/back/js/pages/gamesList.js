@@ -19,17 +19,14 @@ $(function () {
         ajax: {
             url : '/back/datatables/GamesApiGamesList',
             data : function (d) {
-                d.pid = pid;
-                d.route_name = $('#route_name').val();
+                d.pid = $('#pid').val();
             }
         },
         columns: [
             {data: 'pid'},
             {data: 'game_id'},
             {data: 'name'},
-            {data: 'g_id'},
-            {data: 'param'},
-            {data: 'type'},
+            // {data: 'type'},
             {data: 'open'},
             {data: 'sort'},
             {data: 'control'},
@@ -180,4 +177,43 @@ function sort(){
             }
         }
     })
+}
+
+function editSwitch(id,status){
+    jc = $.confirm({
+        title: '确定要改变吗？',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '请确认您的操作',
+        buttons: {
+            confirm: {
+                text:'确定',
+                btnClass: 'btn-red',
+                action: function(){
+                    var data = {
+                        id:id,
+                        status: status == 1 ? 0 : 1,
+                    };
+                    $.ajax({
+                        url: '/back/modal/switchGamesApiList',
+                        data:data,
+                        type:'post',
+                        dataType:'json',
+                        success:function(e){
+                            if(e.code == 0){
+                                // Calert('状态修改成功','green')
+                                dataTable.ajax.reload();
+                            }else{
+                                Calert(e.msg,'red')
+                            }
+                        }
+                    })
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
 }
