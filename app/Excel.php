@@ -897,6 +897,7 @@ class Excel
             $arrLimit[(string)$val->bunko] = $val->opennum;
         }
         ksort($arrLimit);                //将计算后的杀率值，由小到大排序
+        writeLog('New_Kill', $table.' :'.$issue.' s-to-b-'.json_encode($arrLimit));
         if($exeBase->is_open==1){
             $iLimit = count($arrLimit)==1?1:count($arrLimit)+1;
             if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
@@ -904,7 +905,8 @@ class Excel
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                 if($lose_losewin_rate>$exeBase->kill_rate){            //如果当日的输赢比高于杀率，则选给用户吃红
                     $openCode = $this->opennum($table);
-//                    krsort($arrLimit);
+                    krsort($arrLimit);
+                    writeLog('New_Kill', $table.' :'.$issue.' b-to-s-'.json_encode($arrLimit));
 //                    $ii = 0;
 //                    $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
 //                    if($randNum<=5)
