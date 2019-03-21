@@ -903,6 +903,9 @@ class Excel
                 if($lose_losewin_rate>$exeBase->kill_rate){            //如果当日的输赢比高于杀率，则选给用户吃红
                     arsort($arrLimit);
                     $ii = 0;
+                    $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
+                    if($randNum<=7)
+                        $iLimit = 1;
                     foreach ($arrLimit as $key2 =>$va2){
                         $ii++;
                         if($ii==$iLimit) {
