@@ -569,17 +569,43 @@ class Excel
         'game_twxyft' => array('id'=>804,'api'=>'twxyft'),    //台湾幸运飞艇
     );
 
-    private function opennum_pk10(){
+    private function opennum_pk10($num=0){
         $tmpArray = [0=>1,1=>2,2=>3,3=>4,4=>5,5=>6,6=>7,7=>8,8=>9,9=>10];
-        for ($i=0;$i<10;$i++){
-            $tmpLegth = count($tmpArray);
-            $tmpRand = rand(0,$tmpLegth-1);
-            $res[] = $tmpArray[$tmpRand];
-            unset($tmpArray[$tmpRand]);
-            $tmpArray2 = [];
-            foreach ($tmpArray as&$value)
-                $tmpArray2[] = $value;
-            $tmpArray = $tmpArray2;
+        switch ($num) {
+            case 2:
+                $arr = range(1,10,1);
+                shuffle($arr);   //打乱数组
+                break;
+            case 3:
+                $arr = range(1,10,1);
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                break;
+            case 4:
+                $arr = range(1,10,1);
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                break;
+            case 5:
+                $arr = range(1,10,1);
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                shuffle($arr);   //打乱数组
+                break;
+            default:
+                for ($i=0;$i<10;$i++){
+                    $tmpLegth = count($tmpArray);
+                    $tmpRand = rand(0,$tmpLegth-1);
+                    $res[] = $tmpArray[$tmpRand];
+                    unset($tmpArray[$tmpRand]);
+                    $tmpArray2 = [];
+                    foreach ($tmpArray as&$value)
+                        $tmpArray2[] = $value;
+                    $tmpArray = $tmpArray2;
+                }
+                break;
         }
         return implode(',',$res);
     }
@@ -908,17 +934,17 @@ class Excel
                     $openCode = $this->opennum($table);
                     krsort($arrLimit);
                     writeLog('New_Kill', $table.' :'.$issue.' b-to-s-'.json_encode($arrLimit));
-//                    $ii = 0;
-//                    $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
-//                    if($randNum<=5)
-//                        $iLimit = 1;
-//                    foreach ($arrLimit as $key2 =>$va2){
-//                        $ii++;
-//                        if($ii==$iLimit) {
-//                            $openCode = $va2;
-//                            break;
-//                        }
-//                    }
+                    $ii = 0;
+                    $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
+                    if($randNum<=5)
+                        $iLimit = 1;
+                    foreach ($arrLimit as $key2 =>$va2){
+                        $ii++;
+                        if($ii==$iLimit) {
+                            $openCode = $va2;
+                            break;
+                        }
+                    }
                 }else{
                     foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
                         $openCode = $va2;
