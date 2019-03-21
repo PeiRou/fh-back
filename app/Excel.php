@@ -931,7 +931,7 @@ class Excel
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                 writeLog('New_Kill', $table.' :'.$issue.' now-'.$lose_losewin_rate.' target-'.$exeBase->kill_rate);
                 if($lose_losewin_rate>$exeBase->kill_rate){            //如果当日的输赢比高于杀率，则选给用户吃红
-                    $openCode = $this->opennum($table);
+//                    $openCode = $this->opennum($table);
                     krsort($arrLimit);
                     writeLog('New_Kill', $table.' :'.$issue.' b-to-s-'.json_encode($arrLimit));
                     $ii = 0;
