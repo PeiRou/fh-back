@@ -1288,10 +1288,26 @@ class SrcViewController extends Controller
     public function GamesApiList(){
         return view('back.gamesApi.list.list',compact('aStatus','aType'));
     }
+    //平台接口设置 - 平台接口列表
+    public function gamesList(){
+        $data = [
+            'p' => \App\GamesList::getArr(),
+        ];
+        return view('back.gamesApi.games.list',$data);
+    }
+    //平台接口设置 - 资金转账记录
+    public function recharges()
+    {
+        return view('back.gamesApi.recharges.list');
+    }
 
     public function errorBet()
     {
         return view('back.gamesApi.error.errorBet');
+    }
+    public function TCBetInfo()
+    {
+        return view('back.gamesApi.TCBetInfo.list');
     }
 
 }

@@ -78,6 +78,7 @@ class GamesApiController extends Controller
             $GamesApi = new GamesApi;
             $data = [
                 'g_id' => $param['g_id'],
+                'type_id' => $param['type_id'],
                 'name' => $param['name'],
                 'description' => $param['description'],
                 'type' => (int)$param['type'],

@@ -1,6 +1,6 @@
 $(function () {
     $('#menu-GamesApi').addClass('nav-show');
-    $('#menu-GamesApi-cardBetInfo').addClass('active');
+    $('#menu-GamesApi-TCBetInfo').addClass('active');
 
     dataTable = $('#datTable').DataTable({
         searching: false,
@@ -10,31 +10,22 @@ $(function () {
         serverSide: true,
         aLengthMenu: [[20]],
         ajax: {
-            url:'/back/datatables/openHistory/card_betInfo',
+            url:'/back/datatables/openHistory/TCBetInfo',
             data:function (d) {
                 d.startTime = $('#startTime').val();//查询时间段
                 d.endTime = $('#endTime').val();
                 d.Accounts = $('#Accounts').val();//玩家账号
                 d.g_id = $('#g_id').val();
             },
-            dataSrc:function(e){
-                $('#BetSum').html(e.TotalSum.BetSum);
-                $('#ProfitSum').html(e.TotalSum.ProfitSum);
-                return e.data;
-            }
         },
         columns: [
-            {data: 'name'},
-            // {data: 'GameID'},
-            {data: function(e){
-                // return '';
-                    var Accounts = e.Accounts.match(/[0-9]*[_](.*)/)
-                return Accounts ? Accounts[1] : e.Accounts;
-            }},
+            {data: 'gameCategory'},
+            {data: 'productType'},
+            {data: 'Accounts'},
             {data: 'AllBet'},
             {data: 'Profit'},
+            {data: 'additionalDetails'},
             {data: 'GameStartTime'},
-            {data: 'GameEndTime'},
         ],
         footerCallback:function(e,data, c, d){
             // console.log(c);

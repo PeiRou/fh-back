@@ -62,6 +62,7 @@ class WSGJRepository extends BaseRepository
                 'GameEndTime' => $v['endTime'] ?? '',  //游戏结束时间
 
                 'validBetAmount' => $v['validBetAmount'] ?? '',  //有效投注金额
+                'gameCode' => $v['gameCode'] ?? '',  //有效投注金额
                 'productType' => $v['productType'] ?? '',  //产品类别
                 'gameCategory' => $v['gameCategory'] ?? '',  //游戏类别
                 'sessionId' => $v['sessionId'] ?? '',  //会话标识

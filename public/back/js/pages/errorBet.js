@@ -5,8 +5,8 @@
 var dataTable;
 
 $(function () {
-    $('#menu-cardGameManage').addClass('nav-show');
-    $('#menu-cardGameManage-errorBet').addClass('active');
+    $('#menu-GamesApi').addClass('nav-show');
+    $('#menu-GamesApi-errorBet').addClass('active');
 
     dataTable = $('#tableBox').DataTable({
         searching: false,

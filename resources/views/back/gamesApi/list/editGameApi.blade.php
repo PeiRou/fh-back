@@ -66,8 +66,14 @@
     <div class="field">
         <label>类型</label>
         <div class="ui input icon">
+            <input type="text" name="type_id" id="type_id" value="{{ $data->type_id ?? '' }}"/>
+        </div>
+    </div>
+    <div class="field">
+        <label>接口类型</label>
+        <div class="ui input icon">
             <select class="ui fluid dropdown" name="type" id="type">
-                <option value="0">游戏类型</option>
+                <option value="0">接口类型</option>
                 @foreach($statusArr as $key => $value)
                     <option  @if(isset($data->type) && $data->type == $key) selected = "selected" @endif value="{{ $key }}">{{ $value }}</option>
                 @endforeach

@@ -26,7 +26,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::group(['prefix' => 'back/control/cardGameManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('up_down', 'Back\SrcViewController@upDownSearch')->name('cardGame.upDownSearch'); // 上下分记录查询
         Route::get('card_bet', 'Back\SrcViewController@cardBetInfo')->name('cardGame.cardBetInfo'); // 棋牌下注查询
+        Route::get('TCBetInfo', 'Back\SrcViewController@TCBetInfo')->name('cardGame.TCBetInfo'); // TC下注查询
         Route::get('errorBet', 'Back\SrcViewController@errorBet')->name('cardGame.errorBet'); // 第三方投注记录失败列表
+        Route::get('recharges', 'Back\SrcViewController@recharges')->name('cardGame.recharges'); // 第三方资金转账记录
     });
 
 //财务管理
@@ -160,7 +162,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     });
 //平台接口设置
     Route::group(['prefix' => 'back/GamesApi', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
-        Route::get('List', 'Back\SrcViewController@GamesApiList')->name('GamesApi.List'); //平台接口列表
+        Route::get('List', 'Back\SrcViewController@GamesApiList')->name('GamesApi.List'); //第三方接口列表
+        Route::get('gamesList', 'Back\SrcViewController@gamesList')->name('GamesApi.games.list'); //第三方游戏列表
     });
     Route::group(['prefix' => 'back/GamesApi', 'middleware' => ['add-log-handle']], function () {
         Route::post('reGetBet/{id}', 'GamesApi\Card\PrivodeController@reGetBet'); // 重新获取第三方投注记录失败列表
@@ -308,7 +311,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/openHistory/ssc', 'Back\Data\openHistoryController@ssc'); //历史开奖 - 时时彩
 
     Route::get('/back/datatables/openHistory/card_betInfo', 'Back\Data\openHistoryController@card_betInfo'); //棋牌下注
-    Route::get('/back/datatables/openHistory/errorBet', 'Back\Data\openHistoryController@errorBet'); //棋牌下注
+    Route::get('/back/datatables/openHistory/errorBet', 'Back\Data\openHistoryController@errorBet'); //拉取失败注单数据
+    Route::get('/back/datatables/openHistory/TCBetInfo', 'Back\Data\openHistoryController@TCBetInfo'); //TC下注查询
 
 
     Route::get('/back/datatables/agentSettle/report', 'Back\Data\AgentSettleController@report'); //代理结算报表-表格数据
@@ -329,6 +333,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/platform/settlement','Back\Data\PlatformController@settlement'); //平台费用结算-表格数据
     Route::get('/back/datatables/platform/record','Back\Data\PlatformController@record'); //付款记录-表格数据
     Route::get('/back/datatables/GameApiList','Back\GamesApiController@GameApiList'); //获取游戏接口列表
+    Route::get('/back/datatables/GamesApiGamesList','Back\GamesApiListController@GameApiGamesList'); //获取游戏接口列表
+    Route::get('/back/datatables/GamesApiRecharges','GamesApi\GamesApiRechargesController@list'); //获取游戏转账记录
 
 
     //图表数据
@@ -691,6 +697,11 @@ Route::group(['middleware'=>['check-ip']],function () {
 //游戏MODAL
     Route::get('/back/modal/gameSetting/{id}', 'Back\Ajax\ModalController@gameSetting');
     Route::get('/back/modal/killSetting/{id}', 'Back\Ajax\ModalController@killSetting');     //杀率设置
+
+    Route::any('/back/modal/addGamesApiList', 'Back\GamesApiListController@add');     //添加第三方游戏
+    Route::any('/back/modal/delGamesApiList', 'Back\GamesApiListController@del');     //删除第三方游戏
+    Route::any('/back/modal/sortGamesApiList', 'Back\GamesApiListController@sort');     //删除第三方游戏
+    Route::any('/back/modal/switchGamesApiList', 'Back\GamesApiListController@switch_');     //第三方游戏列表开关
 
     Route::get('/web/api/select2/agents', 'Back\Api\ApiController@agents');
     Route::get('/web/api/select2/defaultAgents', 'Back\Api\ApiController@defaultAgents');
