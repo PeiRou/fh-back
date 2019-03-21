@@ -896,7 +896,7 @@ class Excel
         foreach ($exeData as $key => $val) {
             $arrLimit[(string)$val->bunko] = $val->opennum;
         }
-        asort($arrLimit);                //将计算后的杀率值，由小到大排序
+        ksort($arrLimit);                //将计算后的杀率值，由小到大排序
         if($exeBase->is_open==1){
             $iLimit = count($arrLimit)==1?1:count($arrLimit)+1;
             if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
