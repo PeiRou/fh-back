@@ -903,18 +903,19 @@ class Excel
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                 if($lose_losewin_rate>$exeBase->kill_rate){            //如果当日的输赢比高于杀率，则选给用户吃红
-                    arsort($arrLimit);
-                    $ii = 0;
-                    $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
-                    if($randNum<=5)
-                        $iLimit = 1;
-                    foreach ($arrLimit as $key2 =>$va2){
-                        $ii++;
-                        if($ii==$iLimit) {
-                            $openCode = $va2;
-                            break;
-                        }
-                    }
+                    $openCode = $this->opennum($table);
+//                    arsort($arrLimit);
+//                    $ii = 0;
+//                    $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
+//                    if($randNum<=5)
+//                        $iLimit = 1;
+//                    foreach ($arrLimit as $key2 =>$va2){
+//                        $ii++;
+//                        if($ii==$iLimit) {
+//                            $openCode = $va2;
+//                            break;
+//                        }
+//                    }
                 }else{
                     foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
                         $openCode = $va2;
