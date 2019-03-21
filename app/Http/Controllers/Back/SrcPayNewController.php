@@ -461,6 +461,133 @@ class SrcPayNewController extends Controller{
             ]);
         }
     }
+
+    //添加支付宝扫码配置
+    public function addPayAlipaySm(Request $request)
+    {
+        $payeeName = $request->input('payeeName');
+        $lockArea = $request->input('lockArea');
+        if($lockArea !== null){
+            $new_lockArea = implode(',',$lockArea);
+        } else {
+            $new_lockArea = null;
+        }
+        $payee = $request->input('payee');
+        $qrCode = $request->input('qrCode');
+        $min_money = $request->input('min_money');
+        $max_money = $request->input('max_money');
+        $rebate_or_fee = $request->input('rebate_or_fee');
+        $status = $request->input('status');
+        $checkType = $request->input('checkType');
+        $remark = $request->input('remark');
+        $remark2 = $request->input('remark2');
+        $pageDesc = $request->input('pageDesc');
+        $levels = $request->input('levels');
+        if($levels !== null){
+            $new_levels = implode(',',$levels);
+        } else {
+            $new_levels = null;
+        }
+
+        $payOnline = new PayOnlineNew();
+        $payOnline->rechName = '支付宝扫码支付';
+        $payOnline->sort = $request->input('sort') ?? 99;
+        $payOnline->rechType = 'alipaySm';
+        $payOnline->payCode = 'alipaySm';
+        $payOnline->lockArea = $new_lockArea;
+        $payOnline->payee = $payee;
+        $payOnline->payeeName = $payeeName;
+        $payOnline->qrCode = $qrCode;
+        $payOnline->pageDesc = $pageDesc;
+        $payOnline->min_money = $min_money;
+        $payOnline->max_money = $max_money;
+        $payOnline->rebate_or_fee = $rebate_or_fee;
+        $payOnline->status = $status;
+        $payOnline->levels = $new_levels;
+        $payOnline->remark = $remark;
+        $payOnline->remark2 = $remark2;
+        $payOnline->checkType = $checkType;
+        $payOnline->qrCodeBase64 = $request->qrCodeBase64 ?? '';
+        $save = $payOnline->save();
+        if($save == 1){
+            if(!empty($payOnline->qrCodeBase64)){
+                preg_match("/:image\/(.*);base64/", $payOnline->qrCodeBase64, $arr);
+                $payOnline->qrCode = $payOnline->payCode.'/'.$this->qrCode.$payOnline->id.date('YmdHis').'.'.($arr[1] ?? 'png');
+                $payOnline->save();
+            }
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => ''
+            ]);
+        }
+    }
+
+    //修改支付宝扫码配置
+    public function editPayAlipaySm(Request $request)
+    {
+        $id = $request->input('id');
+        $payeeName = $request->input('payeeName');
+        $lockArea = $request->input('lockArea');
+        if($lockArea !== null){
+            $new_lockArea = implode(',',$lockArea);
+        } else {
+            $new_lockArea = null;
+        }
+        $payee = $request->input('payee');
+        $qrCode = $request->input('qrCode');
+        $min_money = $request->input('min_money');
+        $max_money = $request->input('max_money');
+        $rebate_or_fee = $request->input('rebate_or_fee');
+        $status = $request->input('status');
+        $checkType = $request->input('checkType');
+        $remark = $request->input('remark');
+        $remark2 = $request->input('remark2');
+        $pageDesc = $request->input('pageDesc');
+        $sort = $request->input('sort') ?? 99;
+        $levels = $request->input('levels');
+        if($levels !== null){
+            $new_levels = implode(',',$levels);
+        } else {
+            $new_levels = '0';
+        }
+        $data = [
+            'lockArea' => $new_lockArea,
+            'payee' => $payee,
+            'payeeName' => $payeeName,
+            'checkType' => $checkType,
+            'qrCode' => $qrCode,
+            'remark' => $remark,
+            'remark2' => $remark2,
+            'pageDesc' => $pageDesc,
+            'min_money' => $min_money,
+            'max_money' => $max_money,
+            'rebate_or_fee' => $rebate_or_fee,
+            'status' => $status,
+            'levels' => $new_levels,
+            'sort' => $sort
+        ];
+        $data['qrCodeBase64'] = $request->qrCodeBase64 ?? '';
+        if(!empty($data['qrCodeBase64'])){
+            preg_match("/:image\/(.*);base64/", $data['qrCodeBase64'], $arr);
+            $data['qrCode'] = PayOnlineNew::where('id',$id)->value('payCode').'/'.$this->qrCode.$id.date('YmdHis').'.'.($arr[1] ?? 'png');
+        }
+        $update = PayOnlineNew::where('id',$id)
+            ->update($data);
+        if($update == 1){
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => ''
+            ]);
+        }
+    }
     //添加云闪付配置
     public function addPayYsf(Request $request)
     {

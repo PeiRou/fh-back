@@ -1110,6 +1110,11 @@ class SrcViewController extends Controller
     {
         return view('back.payNew.payAlipay');
     }
+    //支付宝扫码支付配置
+    public function payAlipaySmNew()
+    {
+        return view('back.payNew.payAlipaySm');
+    }
     //微信支付配置
     public function payWechatNew()
     {

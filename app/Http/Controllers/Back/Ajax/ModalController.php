@@ -863,6 +863,21 @@ class ModalController extends Controller
         $payAlipay->levels = explode(",",$payAlipay->levels);
         return view('back.modal.payNew.editPayAlipay',compact('levels','id','payAlipay'));
     }
+    //添加支付宝扫码配置
+    public function addPayAlipaySmNew()
+    {
+        $levels = Levels::all();
+        return view('back.modal.payNew.addPayAlipaySm',compact('levels'));
+    }
+
+    //修改支付宝配置
+    public function editPayAlipaySmNew($id = '')
+    {
+        $levels = Levels::all();
+        $payAlipay = PayOnlineNew::where('id',$id)->first();
+        $payAlipay->levels = explode(",",$payAlipay->levels);
+        return view('back.modal.payNew.editPayAlipay',compact('levels','id','payAlipay'));
+    }
     //添加云闪付配置
     public function addPayYsfNew()
     {

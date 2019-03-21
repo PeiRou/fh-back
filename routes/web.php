@@ -171,6 +171,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('payOnlineNew', 'Back\SrcViewController@payOnlineNew')->name('payNew.online'); //在线支付配置新
         Route::get('payBankNew', 'Back\SrcViewController@payBankNew')->name('payNew.bank'); //银行支付配置
         Route::get('payAlipayNew', 'Back\SrcViewController@payAlipayNew')->name('payNew.alipay'); //支付宝支付配置
+        Route::get('payAlipaySmNew', 'Back\SrcViewController@payAlipaySmNew')->name('payNew.alipaySm'); //支付宝扫码支付配置
         Route::get('payWechatNew', 'Back\SrcViewController@payWechatNew')->name('payNew.wechat'); //微信支付配置
         Route::get('payYunShanPayNew', 'Back\SrcViewController@payYunShanPayNew')->name('payNew.payYunShanPay'); //云闪付配置
         Route::get('payCftNew', 'Back\SrcViewController@payCftNew')->name('payNew.cft'); //财付通支付配置
@@ -284,6 +285,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/payOnlineNew', 'Back\Data\PayNewDataController@payOnline'); //充值配置新-在线支付
     Route::get('/back/datatables/payBankNew', 'Back\Data\PayNewDataController@payBank');    //充值配置新-银行支付
     Route::get('/back/datatables/payAlipayNew', 'Back\Data\PayNewDataController@payAlipay');  //充值配置新-支付宝
+    Route::get('/back/datatables/payAlipaySmNew', 'Back\Data\PayNewDataController@payAlipaySm');  //充值配置新-支付宝扫码
     Route::get('/back/datatables/payYsfNew', 'Back\Data\PayNewDataController@payYsf');  //充值配置新-云闪付
     Route::get('/back/datatables/payWechatNew', 'Back\Data\PayNewDataController@payWechat'); //充值配置新-微信
     Route::get('/back/datatables/payCftNew', 'Back\Data\PayNewDataController@payCft');  //充值配置新-财付通
@@ -480,7 +482,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/new/addPayBank', 'Back\SrcPayNewController@addPayBank')->middleware('add-log-handle')->name('ac.ad.new.addPayBank');//添加银行支付配置
     Route::post('/action/admin/new/editPayBank', 'Back\SrcPayNewController@editPayBank')->middleware('add-log-handle')->name('ac.ad.new.editPayBank');//修改银行支付配置
     Route::post('/action/admin/new/addPayAlipay', 'Back\SrcPayNewController@addPayAlipay')->middleware('add-log-handle')->name('ac.ad.new.addPayAlipay');//添加支付宝配置
-    Route::post('/action/admin/new/editPayAlipay', 'Back\SrcPayNewController@editPayAlipay')->middleware('add-log-handle')->name('ac.ad.new.editPayAlipay');//修改支付宝配置
+    Route::post('/action/admin/new/editPayAlipaySm', 'Back\SrcPayNewController@editPayAlipaySm')->middleware('add-log-handle')->name('ac.ad.new.editPayAlipay');//修改支付宝配置
+    Route::post('/action/admin/new/addPayAlipaySm', 'Back\SrcPayNewController@addPayAlipaySm')->middleware('add-log-handle')->name('ac.ad.new.addPayAlipay');//添加支付宝扫码配置
+    Route::post('/action/admin/new/editPayAlipay', 'Back\SrcPayNewController@editPayAlipay')->middleware('add-log-handle')->name('ac.ad.new.editPayAlipay');//修改支付宝扫码配置
     Route::post('/action/admin/new/addPayYsf', 'Back\SrcPayNewController@addPayYsf')->middleware('add-log-handle')->name('ac.ad.new.addPayYsf');//添加云闪付配置
     Route::post('/action/admin/new/editPayYsf', 'Back\SrcPayNewController@editPayYsf')->middleware('add-log-handle')->name('ac.ad.new.editPayYsf');//修改云闪付配置
     Route::post('/action/admin/new/addPayWechat', 'Back\SrcPayNewController@addPayWechat')->middleware('add-log-handle')->name('ac.ad.new.addPayWechat');//添加微信配置
@@ -633,6 +637,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editPayBankNew/{id}', 'Back\Ajax\ModalController@editPayBankNew'); //充值配置新-银行支付-修改
     Route::get('/back/modal/addPayAlipayNew', 'Back\Ajax\ModalController@addPayAlipayNew');  //充值配置新-支付宝-添加
     Route::get('/back/modal/editPayAlipayNew/{id}', 'Back\Ajax\ModalController@editPayAlipayNew');  //充值配置新-支付宝-修改
+    Route::get('/back/modal/addPayAlipaySmNew', 'Back\Ajax\ModalController@addPayAlipaySmNew');  //充值配置新-支付宝扫码-添加
+    Route::get('/back/modal/editPayAlipaySmNew/{id}', 'Back\Ajax\ModalController@editPayAlipaySmNew');  //充值配置新-支付宝扫码-修改
     Route::get('/back/modal/addPayYsfNew', 'Back\Ajax\ModalController@addPayYsfNew');  //充值配置新-云闪付-添加
     Route::get('/back/modal/editPayYsfNew/{id}', 'Back\Ajax\ModalController@editPayYsfNew');  //充值配置新-云闪付-修改
     Route::get('/back/modal/addPayWechatNew', 'Back\Ajax\ModalController@addPayWechatNew');  //充值配置新-微信-添加
