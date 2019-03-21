@@ -903,6 +903,7 @@ class Excel
             if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
+                writeLog('New_Kill', $table.' :'.$issue.' now-'.$lose_losewin_rate.' target-'.$exeBase->kill_rate);
                 if($lose_losewin_rate>$exeBase->kill_rate){            //如果当日的输赢比高于杀率，则选给用户吃红
                     $openCode = $this->opennum($table);
                     krsort($arrLimit);
