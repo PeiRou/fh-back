@@ -53,6 +53,7 @@
                             <option value="onlinePayment">在线支付</option>
                             <option value="bankTransfer">银行汇款</option>
                             <option value="alipay">支付宝支付</option>
+                            <option value="alipaySm">支付宝扫码</option>
                             <option value="weixin">微信支付</option>
                             <option value="cft">财付通</option>
                             <option value="ysf">云闪付</option>

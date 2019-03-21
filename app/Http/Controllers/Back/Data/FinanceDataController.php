@@ -294,7 +294,7 @@ class FinanceDataController extends Controller
             if(isset($payType) && $payType){
                 $where .= " and recharges.payType = '".$payType."'";
             }else{
-                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
+                $where .= " and recharges.payType in ('bankTransfer' , 'alipaySm', 'ysf' , 'alipay', 'weixin', 'cft')";
             }
             if(isset($recharges_id) && $recharges_id > 0 ){
                 $where .= " and recharges.admin_add_money = ".$recharges_id."";
@@ -355,6 +355,12 @@ class FinanceDataController extends Controller
                 }
                 if($recharge->re_payType == 'adminAddMoney'){
                     return "后台加钱";
+                }
+                if($recharge->re_payType == 'alipaySm'){
+                    return "支付宝扫码";
+                }
+                if($recharge->re_payType == 'ysf'){
+                    return "云闪付";
                 }
             })
             ->editColumn('amount',function ($recharge){
