@@ -904,7 +904,7 @@ class Excel
                     arsort($arrLimit);
                     $ii = 0;
                     $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
-                    if($randNum<=7)
+                    if($randNum<=5)
                         $iLimit = 1;
                     foreach ($arrLimit as $key2 =>$va2){
                         $ii++;
