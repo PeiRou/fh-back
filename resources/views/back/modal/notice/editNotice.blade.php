@@ -14,14 +14,14 @@
     <div class="field">
         <label>公告类型</label>
         <div class="ui input icon">
-            <select class="ui fluid dropdown" name="type">
+            <select class="ui fluid dropdown" name="type" id="type">
                 @foreach($aStatus as $key => $iStatus)
                     <option @if($key == $iNotice->type) selected="selected" @endif value="{{ $key }}">{{ $iStatus }}</option>
                 @endforeach
             </select>
         </div>
     </div>
-    <div class="field">
+    <div class="field" id="level_Div" @if($iNotice->type == 3) style="display: none" @endif>
         <label>用户层级</label>
         @foreach($levels as $item)
             <div class="ui checkbox">
@@ -76,5 +76,13 @@
                 }
             });
         });
+
+        $('#type').on('change',function () {
+            if($(this).val() == 3){
+                $('#level_Div').hide();
+            }else{
+                $('#level_Div').show();
+            }
+        })
     })
 </script>

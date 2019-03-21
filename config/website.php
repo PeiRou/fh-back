@@ -19,7 +19,9 @@ return [
     //官方开奖
     'guanServerUrl' => env('GUAN_SERVER_URL'),
     //新官方开奖可以用獎期獲取舊數據
-    'guanIssueServerUrl' => env('GUAN_ISSUE_SERVER_URL'),
+    'guanIssueServerUrl' => env('GUAN_ISSUE_SERVER_URL',''),
+    //新官方开奖可以用獎期獲取舊數據-传直
+    'setGuanIssueServerUrl' => env('SET_GUAN_ISSUE_SERVER_URL',''),
     //开奖服务器URL
     'openServerUrl'=> env('OPEN_SERVER_URL'),
     //第三方开奖接口

@@ -629,7 +629,7 @@ class GameTradeTableController extends Controller
         return view('back.gameTradeTables.85')->with('mm',$fromDB->all());
     }
 
-    //急速六合彩
+    //极速六合彩
     public function gameTradeTable903()
     {
         $data = Play::where('gameId',903)->get();

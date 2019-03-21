@@ -237,13 +237,10 @@ class Excel
         $is_killopen = DB::connection('mysql::write')->table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win','is_user')->where('game_id',$gameId)->first();
         $opennum = '';
 
-        if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1)&&!empty($is_killopen->count_date) && $is_killopen->is_user){
+        if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1) && $is_killopen->is_user){
+            $opennum = isset($killopennum->excel_opennum)&&!empty($killopennum->excel_opennum)?$killopennum->excel_opennum:$this->opennum($table);
             $total = $is_killopen->bet_lose + $is_killopen->bet_win;
-            if($total>0)
-                $lose_losewin_rate = $is_killopen->is_open?(($is_killopen->bet_lose-$is_killopen->bet_win)/$total):0;
-            else
-                $lose_losewin_rate = 0;
-            $opennum = $lose_losewin_rate>$is_killopen->kill_rate?'':$killopennum->excel_opennum;
+            $lose_losewin_rate = $total>0?($is_killopen->bet_lose-$is_killopen->bet_win)/$total:0;
             writeLog('serfKill',$table.':杀率设置'.json_encode($is_killopen));
             writeLog('serfKill',$table.':输赢比 '.$lose_losewin_rate);
             writeLog('serfKill',$table.' 获取KILL开奖'.$issue.'--'.$opennum);
@@ -275,7 +272,7 @@ class Excel
     public function getNeedKillBase($gameId){
         if(empty($gameId))
             return false;
-        $tmp = DB::connection('mysql::write')->select("SELECT excel_num,is_user FROM excel_base WHERE game_id = ".$gameId);
+        $tmp = DB::connection('mysql::write')->select("SELECT * FROM excel_base WHERE game_id = ".$gameId);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -288,6 +285,19 @@ class Excel
             return false;
         $today = date('Y-m-d H:i:s',time());
         $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0)");
+        if(empty($tmp))
+            return false;
+        foreach ($tmp as&$value)
+            $res = $value;
+        return $res;
+    }
+    //取得最新的需要结算奖期
+    public function getNeedBunkoIssueLhc($table){
+        if(empty($table))
+            return false;
+        $today = date('Y-m-d H:i:s',time());
+//        writeLog('New_Bet1',  "SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 2)");
+        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 2)");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -382,7 +392,7 @@ class Excel
         $params['logo'] = env('logo','');
         $params['open'] = $opencode;
         $params['win'] = $win;
-        $url = Config::get('website.guanIssueServerUrl').'setBunko/'.$key;
+        $url = (empty(Config::get('website.setGuanIssueServerUrl'))?Config::get('website.guanIssueServerUrl'):Config::get('website.setGuanIssueServerUrl')).'setBunko/'.$key;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -398,7 +408,7 @@ class Excel
     }
     //对统一杀率传当期输赢
     private function setWinIssueNum($params){
-        $url = Config::get('website.guanIssueServerUrl').'setLastBunko';
+        $url = (empty(Config::get('website.setGuanIssueServerUrl'))?Config::get('website.guanIssueServerUrl'):Config::get('website.setGuanIssueServerUrl')).'setLastBunko';
         writeLog('sameKill','setWinIssueNum - '.'url:'.$url);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -835,5 +845,100 @@ class Excel
         $redis->setex($key,5,'ing');
         $redis->set($code.':needopen','');
         return 0;
+    }
+    //试算杀率共用方法
+    public function excel($openCode,$exeBase,$issue,$gameId,$table = '',$lotterytype = ''){
+        if(empty($table))
+            return false;
+        for($i=1;$i<= (int)$exeBase->excel_num;$i++){
+            if($i==1){
+                $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
+                if(empty($exeBet))
+                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}' and bet.testFlag = 0");
+            }else{
+                DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
+            }
+            $openCode = $this->opennum($table,$exeBase->is_user,$issue,$i);
+            if($lotterytype=='lhc'){                                        //根据六合彩的系列另外有bunko
+                $resData = $this->exc_play($openCode,$gameId);
+                $win = @$resData['win'];
+                $he = isset($resData['ids_he'])?$resData['ids_he']:array();
+                $bunko = $this->BUNKO_LHC($openCode, $win, $gameId, $issue, $he, true);
+            }else{
+                $win = $this->exc_play($openCode,$gameId);
+                $bunko = $this->bunko($win,$gameId,$issue,true);
+            }
+            if($bunko == 1){
+                $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
+                foreach ($tmp as&$value)
+                    $excBunko = $value->sumBunko;
+                writeLog('New_Kill', $table.' :'.$openCode.' => '.$excBunko);
+                $dataExcGame['game_id'] = $gameId;
+                $dataExcGame['issue'] = $issue;
+                $dataExcGame['opennum'] = $openCode;
+                $dataExcGame['bunko'] = $excBunko;
+                $dataExcGame['excel_num'] = $i;
+                $dataExcGame['created_at'] = date('Y-m-d H:i:s');
+                $dataExcGame['updated_at'] = date('Y-m-d H:i:s');
+                DB::table('excel_game')->insert([$dataExcGame]);
+                if($exeBase->is_user==0)
+                    $this->setKillIssueNum($table,$issue,$dataExcGame['excel_num'],$openCode,$excBunko);
+            }
+        }
+//        $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = ".$gameId." AND issue ='{$issue}') and game_id = ".$gameId." AND issue ='{$issue}' LIMIT 1";
+//        $tmp = DB::select($aSql);
+//        foreach ($tmp as&$value)
+//            $openCode = $value->opennum;
+        $exeData = DB::table('excel_game')->select(DB::raw('opennum,issue,bunko'))->where('issue',$issue)->where('game_id',$gameId)->groupBy('issue','excel_num')->get();
+        $arrLimit = array();
+        foreach ($exeData as $key => $val) {
+            $arrLimit[(string)$val->bunko] = $val->opennum;
+        }
+        asort($arrLimit);                //将计算后的杀率值，由小到大排序
+        if($exeBase->is_open==1){
+            $iLimit = count($arrLimit)==1?1:count($arrLimit)+1;
+            if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
+                $total = $exeBase->bet_lose + $exeBase->bet_win;
+                $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
+                if($lose_losewin_rate>$exeBase->kill_rate){            //如果当日的输赢比高于杀率，则选给用户吃红
+                    arsort($arrLimit);
+                    $ii = 0;
+                    foreach ($arrLimit as $key2 =>$va2){
+                        $ii++;
+                        if($ii==$iLimit) {
+                            $openCode = $va2;
+                            break;
+                        }
+                    }
+                }else{
+                    foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
+                        $openCode = $va2;
+                        break;
+                    }
+                }
+            }else{                                                     //如果当日的尚未计算，则给中间值
+                $ii = 0;
+                foreach ($arrLimit as $key2 =>$va2){
+                    $ii++;
+                    if($ii==$iLimit){
+                        $openCode = $va2;
+                        break;
+                    }
+                }
+            }
+        }else
+            $openCode = '';
+        writeLog('New_Kill', $table.' :'.$openCode);
+        DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
+        DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
+        DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->where('game_id',$gameId)->delete();
+    }
+    //试算杀率个别取用方法，用来继承的父类
+    protected function exc_play($openCode,$gameId){
+        return '';
+    }
+    //试算杀率个别取用方法，用来继承的父类
+    protected function BUNKO_LHC($openCode, $win, $gameId, $issue, $he, $excel){
+        return '';
     }
 }

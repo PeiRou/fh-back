@@ -71,7 +71,7 @@ class Games extends Model
         'twxyft' => 'twxyft',       //台湾幸运飞艇
         'sfsc' => 'sfsc',       //三分赛车
         'sfssc' => 'sfssc',       //三分时时彩
-        'jslhc' => 'jslhc',       //急速六合彩
+        'jslhc' => 'jslhc',       //极速六合彩
         'sflhc' => 'sflhc',       //三分六合彩
     ];
 

@@ -12,7 +12,7 @@ class KILL_jslhc extends Command
 {
     protected $gameId = 903;
     protected $signature = 'KILL_jslhc';
-    protected $description = '急速六合彩-定时杀率';
+    protected $description = '极速六合彩-定时杀率';
 
     public function __construct()
     {
@@ -37,7 +37,7 @@ class KILL_jslhc extends Command
             //开奖号码
             $opennum = $excel->opennum($table);
             if(isset($get->excel_num) && $get->excel_num == 0){
-//                \Log::Info('急速六合彩 杀率:'.$get->issue.'=='.$get->id);
+//                \Log::Info('极速六合彩 杀率:'.$get->issue.'=='.$get->id);
                 $update = DB::table($table)->where('id',$get->id)->update([
                     'excel_num' => 2
                 ]);

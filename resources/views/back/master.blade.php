@@ -329,7 +329,7 @@
                     <li id="menu-openManage-sfssc"><a href="{{ route('historyLottery.sfssc') }}"><cite></cite><span>三分时时彩</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.jslhc') == "has")
-                    <li id="menu-openManage-jslhc"><a href="{{ route('historyLottery.jslhc') }}"><cite></cite><span>急速六合彩</span></a></li>
+                    <li id="menu-openManage-jslhc"><a href="{{ route('historyLottery.jslhc') }}"><cite></cite><span>极速六合彩</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.sflhc') == "has")
                     <li id="menu-openManage-sflhc"><a href="{{ route('historyLottery.sflhc') }}"><cite></cite><span>三分六合彩</span></a></li>

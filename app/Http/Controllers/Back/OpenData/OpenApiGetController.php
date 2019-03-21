@@ -657,7 +657,7 @@ class OpenApiGetController extends Controller
         ];
     }
 
-    //急速六合彩
+    //极速六合彩
     public function jslhc($json,$issue)
     {
         $num_str = '';

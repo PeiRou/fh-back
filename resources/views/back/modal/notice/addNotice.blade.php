@@ -14,16 +14,16 @@
     <div class="field">
         <label>公告类型</label>
         <div class="ui input icon">
-            <select class="ui fluid dropdown" name="type">
+            <select class="ui fluid dropdown" name="type" id="type">
                 <option value="1">1.最新消息(投注区底部公告)</option>
                 <option value="2">2.最新消息(登录弹窗公告)</option>
-                <option value="3">3.推广页公告</option>
-                <option value="4">4.所有类型公告(包含：1、2、3)</option>
+                <option value="3">3.最新消息(手机未登录公告)</option>
+                <option value="4">4.所有类型公告(包含：1、2)</option>
                 <option value="5">5.代理专属公告</option>
             </select>
         </div>
     </div>
-    <div class="field">
+    <div class="field" id="level_Div">
         <label>用户层级</label>
         @foreach($levels as $item)
             <div class="ui checkbox">
@@ -77,5 +77,13 @@
                 }
             });
         });
+
+        $('#type').on('change',function () {
+            if($(this).val() == 3){
+                $('#level_Div').hide();
+            }else{
+                $('#level_Div').show();
+            }
+        })
     })
 </script>
