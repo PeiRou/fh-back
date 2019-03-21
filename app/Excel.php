@@ -238,6 +238,7 @@ class Excel
         $opennum = '';
 
         if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1) && $is_killopen->is_user){
+            writeLog('serfKill',$table.' 获取KILL'.$issue.'--'.@$killopennum->excel_opennum);
             $opennum = isset($killopennum->excel_opennum)&&!empty($killopennum->excel_opennum)?$killopennum->excel_opennum:$this->opennum($table);
             $total = $is_killopen->bet_lose + $is_killopen->bet_win;
             $lose_losewin_rate = $total>0?($is_killopen->bet_lose-$is_killopen->bet_win)/$total:0;
@@ -850,6 +851,7 @@ class Excel
     public function excel($openCode,$exeBase,$issue,$gameId,$table = '',$lotterytype = ''){
         if(empty($table))
             return false;
+        writeLog('New_Kill', $table.' issue:'.$issue);
         for($i=1;$i<= (int)$exeBase->excel_num;$i++){
             if($i==1){
                 $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
