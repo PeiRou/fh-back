@@ -366,6 +366,9 @@
                     @if($hasPermission->hasPermission('payNew.alipay') == "has")
                         <li id="menu-payNewManage-alipay"><a href="{{ route('payNew.alipay') }}"><cite></cite><span>支付宝配置</span></a></li>
                     @endif
+                    @if($hasPermission->hasPermission('payNew.alipaySm') == "has")
+                        <li id="menu-payNewManage-alipaySm"><a href="{{ route('payNew.alipaySm') }}"><cite></cite><span>支付宝扫码</span></a></li>
+                    @endif
                     @if($hasPermission->hasPermission('payNew.wechat') == "has")
                         <li id="menu-payNewManage-wechat"><a href="{{ route('payNew.wechat') }}"><cite></cite><span>微信配置</span></a></li>
                     @endif

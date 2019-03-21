@@ -169,6 +169,57 @@ class PayNewDataController extends Controller
             ->make(true);
     }
 
+    //支付宝扫码配置
+    public function payAlipaySm()
+    {
+        $payAlipay = PayOnlineNew::where('rechType','alipaySm')->orderBy('sort','asc')->get();
+        return DataTables::of($payAlipay)
+            ->editColumn('payeeName', function ($payAlipay){
+                return $payAlipay->payeeName;
+            })
+            ->editColumn('payee', function ($payAlipay){
+                return $payAlipay->payee;
+            })
+            ->editColumn('qrCode', function ($payAlipay){
+                return "<img style='width: 100px;' src='".(empty($payAlipay->qrCodeBase64) ? $payAlipay->qrCode : $payAlipay->qrCodeBase64)."'>";
+            })
+            ->editColumn('status', function ($payAlipay){
+                if($payAlipay->status == 1){
+                    return '<span class="status-1"><i class="iconfont">&#xe652;</i> 正常</span>';
+                }
+                if($payAlipay->status == 0){
+                    return '<span class="status-3"><i class="iconfont">&#xe672;</i> 停用</span>';
+                }
+            })
+            ->editColumn('levels', function ($payAlipay){
+                $data = '';
+                $explode = explode(',',$payAlipay->levels);
+                foreach ($explode as $i){
+                    $findLevels = Levels::where('value',$i)->first();
+                    $data .= "<input type='checkbox' disabled checked value=$i> $findLevels->name ";
+                }
+                return $data;
+            })
+            ->editColumn('remark2', function ($payBank){
+                return $payBank->remark2;
+            })
+            ->editColumn('sort', function ($payOnline){
+                return "<input type='text' value='".$payOnline->sort."' name='sort[]' style='border: 1px solid #aaa;height: 20px;width: 30px;'><input type='hidden' value='".$payOnline->id."' name='sortId[]'>";
+            })
+            ->editColumn('control', function ($payBank){
+                if($payBank->status === 1){
+                    $statusText = '<span class="edit-link" onclick="status(\''.$payBank->id.'\',\''.$payBank->status.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe687;</i> 停用</span>';
+                } else {
+                    $statusText = '<span class="edit-link" onclick="status(\''.$payBank->id.'\',\''.$payBank->status.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe687;</i> 启用</span>';
+                }
+                return '<span class="edit-link" onclick="edit(\''.$payBank->id.'\')"><i class="iconfont">&#xe602;</i> 修改</span> | 
+                        '.$statusText.' | 
+                        <span class="edit-link" onclick="del(\''.$payBank->id.'\',\''.$payBank->payeeName.'\')"><i class="iconfont">&#xe600;</i> 删除</span>';
+            })
+            ->rawColumns(['control','status','levels','qrCode','sort'])
+            ->make(true);
+    }
+
     //微信配置
     public function payWechat()
     {

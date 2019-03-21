@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\Common;
 
-include (base_path('/sameClass/vender/qrCode/phpqrcode.php'));
+include (base_path('/sameClass/Vender/QrCode/phpqrcode.php'));
 
 
 use App\Http\Controllers\Controller;
