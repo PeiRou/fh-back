@@ -371,7 +371,7 @@ class Excel
             return '';
         }
         $redis->setex($key,3,'ing');
-        $url = Config::get('website.guanIssueServerUrl').'getBunko/'.$key;
+        $url = (empty(Config::get('website.setGuanIssueServerUrl'))?Config::get('website.guanIssueServerUrl'):Config::get('website.setGuanIssueServerUrl')).'getBunko/'.$key;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
