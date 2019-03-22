@@ -34,7 +34,6 @@
                 <th>今日赢</th>
                 <th>今日营利比</th>
                 <th>保留营利比</th>
-                <th>更新日期</th>
                 <th width="160">操作</th>
             </tr>
             </thead>

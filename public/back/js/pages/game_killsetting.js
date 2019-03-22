@@ -6,7 +6,7 @@ $(function () {
     $('#menu-gameManage-killSetting').addClass('active');
 
     $('#gamesTable').DataTable({
-        aLengthMenu: [[20]],
+        aLengthMenu: [[50]],
         searching: false,
         bLengthChange: false,
         processing: true,
@@ -45,7 +45,6 @@ $(function () {
                     var rate = (data.kill_rate * 100).toFixed(0);
                     return rate+'%';
                 }},
-            {data:'updated_at'},
             {data:'control'},
             // {data:function (data) {
             //         litxt = "";

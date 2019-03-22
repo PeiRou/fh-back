@@ -11,6 +11,7 @@ $(function () {
         processing: true,
         serverSide: true,
         ordering: false,
+        aLengthMenu: [[50]],
         ajax: '/back/datatables/notice',
         columns: [
             {data: 'id'},

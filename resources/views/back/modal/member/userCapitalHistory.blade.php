@@ -170,7 +170,7 @@
             bLengthChange: false,//去掉每页多少条框体
             processing: true,
             serverSide: true,
-            aLengthMenu: [[10]],
+            aLengthMenu: [[50]],
             ajax: {
                 url:'/back/datatables/userCapital/{{ $uid }}',
                 data:function (d) {

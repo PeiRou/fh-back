@@ -6,7 +6,7 @@ $(function () {
     $('#menu-gameManage-gameSetting').addClass('active');
 
     $('#gamesTable').DataTable({
-        aLengthMenu: [[20]],
+        aLengthMenu: [[50]],
         searching: false,
         bLengthChange: false,
         processing: true,

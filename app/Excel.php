@@ -926,6 +926,10 @@ class Excel
         writeLog('New_Kill', $table.' :'.$issue.' s-to-b-'.json_encode($arrLimit));
         if($exeBase->is_open==1){
             $iLimit = count($arrLimit)>=2?2:1;
+            $ii = 0;
+            $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
+            if($randNum<=5)
+                $iLimit = 1;
             if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
@@ -934,10 +938,6 @@ class Excel
 //                    $openCode = $this->opennum($table);
                     krsort($arrLimit);
                     writeLog('New_Kill', $table.' :'.$issue.' b-to-s-'.json_encode($arrLimit));
-                    $ii = 0;
-                    $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
-                    if($randNum<=5)
-                        $iLimit = 1;
                     foreach ($arrLimit as $key2 =>$va2){
                         $ii++;
                         if($ii==$iLimit) {
@@ -947,12 +947,14 @@ class Excel
                     }
                 }else{
                     foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
-                        $openCode = $va2;
-                        break;
+                        $ii++;
+                        if($ii==$iLimit) {
+                            $openCode = $va2;
+                            break;
+                        }
                     }
                 }
             }else{                                                     //如果当日的尚未计算，则给中间值
-                $ii = 0;
                 foreach ($arrLimit as $key2 =>$va2){
                     $ii++;
                     if($ii==$iLimit){

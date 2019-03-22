@@ -14,7 +14,7 @@ class GameDataController extends Controller
     //游戏数据
     public function games()
     {
-        $games = Games::all();
+        $games = DB::table('game')->orderBy('status','desc')->orderBy('order','asc')->orderBy('g_id','asc')->get();
         return DataTables::of($games)
             ->editColumn('holiday_start',function ($games){
                 if(isset($games->holiday_start) && $games->holiday_start){
