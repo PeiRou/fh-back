@@ -605,6 +605,7 @@ class Excel
                         $tmpArray2[] = $value;
                     $tmpArray = $tmpArray2;
                 }
+                shuffle($arr);   //打乱数组
                 break;
         }
         return implode(',',$res);
