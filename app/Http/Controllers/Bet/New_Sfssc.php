@@ -38,7 +38,7 @@ class New_Sfssc extends Excel
     {
         $table = 'game_sfssc';
         $gameName = '三分时时彩';
-        $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $exeIssue = $this->getNeedKillIssue($table,2);
             $exeBase = $this->getNeedKillBase($gameId);
@@ -53,7 +53,7 @@ class New_Sfssc extends Excel
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $this->bunko($win,$gameId,$issue,$excel);
+                $bunko = $this->bunko($win,$gameId,$issue,$excel,$this->arrPlay_id);
                 $this->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);

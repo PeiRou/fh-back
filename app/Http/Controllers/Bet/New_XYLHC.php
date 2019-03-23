@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_XYLHC extends Excel
 {
+    protected $arrPlay_id = array(851623467,851623468,851623469,851623470,851623471,851623472,851623473,851623474,851623475,851623476,851623477,851623478,851623479,851623480,851623481,851623482,851623483,851623484,851623485,851623486,851623487,851623488,851623489,851623490,851623491,851623492,851623493,851623494,851623495,851623496,851623497,851623498,851623499,851623500,851623501,851623502,851623503,851623504,851623505,851623506,851623507,851623508,851623509,851623510,851623511,851623512,851623513,851623514,851623515,851623516,851623517,851623518,851623519,851623520,851623521,851623522,851623523,851623524,851623525,851623526,851623527,851623528,851623529,851623530,851623531,851623532,851623533,851623534,851623535,851623536,851623537,851623538,851623539,851623540,851623541,851623542,851623543,851623544,851623545,851623546,851623547,851623548,851623549,851623550,851623551,851623552,851623553,851623554,851623555,851623556,851623557,851623558,851623559,851623560,851623561,851623562,851623563,851623564,851633565,851633566,851633567,851633568,851633569,851633570,851633571,851633572,851633573,851633574,851633575,851633576,851633577,851633578,851633579,851633580,851633581,851633582,851633583,851633584,851633585,851633586,851633587,851633588,851643589,851643590,851643591,851643592,851643593,851643594,851643595,851643596,851643597,851643598,851643599,851643600,851643601,851643602,851643603,851643604,851643605,851643606,851643607,851643608,851643609,851643610,851643611,851643612,851643613,851643614,851643615,851653616,851653617,851653618,851653619,851653620,851653621,851653622,851653623,851653624,851653625,851653626,851653627,851663628,851663629,851663630,851663631,851663632,851663633,851663634,851663635,851663636,851663637,851673638,851673639,851673640,851673641,851673642,851673643,851673644,851673645,851673646,851673647,851673648,851673649,851673650,851673651,851673652,851683653,851683654,851683655,851683656,851683657,851683658,851683659,851683660,851683661,851683662,851683663,851683664,851683665,851683666,851683667,851683668,851683669,851683670,851683671,851683672,851683673,851683674,851683675,851683676,851683677,851683678,851683679,851683680,851683681,851683682,851683683,851683684,851683685,851683686,851683687,851683688,851683689,851683690,851683691,851683692,851683693,851683694,851683695,851683696,851683697,851683698,851683699,851683700,851683701,851703702,851703703,851703704,851703705,851703706,851713707,851713708,851713709,851713710,851713711,851713712,851713713,851713714,851713715,851713716,851713717,851713718,851713719,851713720,851713721,851713722,851713723,851713724,851713725,851713726,851713727,851713728,851723729,851723730,851723731,851723732,851723733,851723734,851723735,851723736,851723737,851723738,851723739,851723740,851733741,851733742,851733743,851733744,851743745,851743746,851743747,851743748,851743749,851743750,851743751,851743752,851753753,851753754,851753755,851753756,851753757,851753758,851753759,851753760,851763761,851763762,851763763,851763764,851763765,851763766,851763767,851763768,851763769,851763770,851763771,851763772,851763773,851763774,851763775,851763776,851763777,851763778,851763779,851763780,851763781,851763782,851763783,851763784,851763785,851763786,851763787,851763788,851763789,851763790,851763791,851763792,851763793,851763794,851763795,851763796,851763797,851763798,851763799,851763800,851763801,851763802,851763803,851763804,851763805,851763806,851763807,851763808,851763809,851763810,851763811,851763812,851763813,851763814,851763815,851763816,851763817,851763818,851763819,851763820,851763821,851763822,851763823,851763824,851763825,851763826,851763827,851763828,851763829,851763830,851763831,851763832,851763833,851763834,851763835,851763836,851763837,851763838,851763839,851763840,851763841,851763842,851763843,851763844,851763845,851763846,851763847,851763848,851773849,851773850,851773851,851773852,851773853,851773854,851773855,851773856,851693857,851693858,851693859,851693860,851693861,851693862,851693863,851693864,851693865,851693866,851693867,851693868,851693869,851693870,851693871,851693872,851693873,851693874,851693875,851693876,851693877,851693878,851693879,851693880,851693881,851693882,851693883,851693884,851693885,851693886,851693887,851693888,851693889,851693890,851693891,851693892,851693893,851693894,851693895,851693896,851693897,851693898,851693899,851693900,851693901,851693902,851693903,851693904,851693905,851693906,851693907,851693908,851693909,851693910,851693911,851693912,851693913,851693914,851693915,851693916,851693917,851693918,851693919,851693920,851693921,851693922,851693923,851693924,851693925,851693926,851693927,851693928,851693929,851693930,851693931,851693932,851693933,851693934,851693935,851693936,851693937,851693938,851693939,851693940,851693941,851693942,851693943,851693944,851693945,851693946,851693947,851693948,851693949,851693950,851693951,851693952,851693953,851693954,851693955,851693956,851693957,851693958,851693959,851693960,851693961,851693962,851693963,851693964,851693965,851693966,851693967,851693968,851693969,851693970,851693971,851693972,851693973,851693974,851693975,851693976,851693977,851693978,851693979,851693980,851693981,851693982,851693983,851693984,851693985,851693986,851693987,851693988,851693989,851693990,851693991,851693992,851693993,851693994,851693995,851693996,851693997,851693998,851693999,851694000,851694001,851694002,851694003,851694004,851694005,851694006,851694007,851694008,851694009,851694010,851694011,851694012,851694013,851694014,851694015,851694016,851694017,851694018,851694019,851694020,851694021,851694022,851694023,851694024,851694025,851694026,851694027,851694028,851694029,851694030,851694031,851694032,851694033,851694034,851694035,851694036,851694037,851694038,851694039,851694040,851694041,851694042,851694043,851694044,851694045,851694046,851694047,851694048,851694049,851694050,851694051,851694052,851694053,851694054,851694055,851694056,851694057,851694058,851694059,851694060,851694061,851694062,851694063,851694064,851694065,851694066,851694067,851694068,851694069,851694070,851694071,851694072,851694073,851694074,851694075,851694076,851694077,851694078,851694079,851694080,851694081,851694082,851694083,851694084,851694085,851694086,851694087,851694088,851694089,851694090,851694091,851694092,851694093,851694094,851694095,851694096,851694097,851694098,851694099,851694100,851694101,851694102,851694103,851694104,851694105,851694106,851694107,851694108,851694109,851694110,851694111,851694112,851694113,851694114,851694115,851694116,851694117,851694118,851694119,851694120,851694121,851694122,851694123,851694124,851694125,851694126,851694127,851694128,851694129,851694130,851694131,851694132,851694133,851694134,851694135,851694136,851694137,851694138,851694139,851694140,851694141,851694142,851694143,851694144,851694145,851694146,851694147,851694148,851694149,851694150,851694151,851694152,851694153,851694154,851694155,851694156,851694157,851694158,851694159,851694160,851694161,851694162,851694163,851694164,851694165,851694166,851694167,851694168,851694169,851694170,851694171,851694172,851694173,851694174,851694175,851694176,851694177,851694178,851694179,851694180,851694181,851694182,851694183,851694184,851694185,851694186,851694187,851694188,851694189,851694190,851694191,851694192,851694193,851694194,851694195,851694196,851694197,851694198,851694199,851694200,851694201,851694202,851694203,851694204,851694205,851694206,851694207,851694208,851694209,851694210,851694211,851694212,851694213,851694214,851694215,851694216,851694217,851694218,851694219,851694220,851694221,851694222,851694223,851694224,851694225,851694226,851694227,851694228);
     protected $LHC_SX;
 
     /**
@@ -47,7 +48,7 @@ class New_XYLHC extends Excel
     {
         $table = 'game_xylhc';
         $gameName = '幸运六合彩';
-        $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
 
         if($betCount > 0){
             $exeIssue = $this->getNeedKillIssue($table,2);
@@ -1873,11 +1874,10 @@ class New_XYLHC extends Excel
 
         if($excel) {
             $table = 'excel_bet';
-            $getUserBets = DB::connection('mysql::write')->table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         }else{
             $table = 'bet';
-            $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         }
+        $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
 
         if($getUserBets){
             $sql = "UPDATE ".$table." SET bunko = CASE "; //中奖的SQL语句
@@ -1907,13 +1907,14 @@ class New_XYLHC extends Excel
                     $tmpids_lose[] = $v;
                 }
                 $ids = implode(',', $tmpids);
+                $tmpids_lose = array_diff($this->arrPlay_id,$tmpids_lose);
                 $ids_lose = implode(',', $tmpids_lose);
                 $ids_he = implode(',', $ids_he);
                 $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_he)";
             }else
                 $sql_he = '';
             $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids)";
-            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` NOT IN ($ids_lose)";
+            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_lose)";
             if(!empty($sql_bets))
                 $run = DB::statement($sql);
 
@@ -1922,7 +1923,7 @@ class New_XYLHC extends Excel
                 $zxbz_playCate = 175; //特码分类ID
                 $zxbz_ids = [];
                 $zxbz_lose_ids = [];
-                $get = DB::table($table)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
+                $get = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
                 foreach ($get as $item) {
                     $open = explode(',', $openCode);
                     $user = explode(',', $item->bet_info);
@@ -1943,7 +1944,7 @@ class New_XYLHC extends Excel
                 //合肖-----开始
                 $hexiao_playCate = 166; //分类ID
                 $hexiao_ids = [];
-                $getHexiao = DB::table($table)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
+                $getHexiao = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
                 foreach ($getHexiao as $item) {
                     $hexiao_open = explode(',', $tema_SX);
                     $hexiao_user = explode(',', $item->bet_info);
@@ -1985,7 +1986,7 @@ class New_XYLHC extends Excel
                 }
                 $zx_ids = implode(',',$zx_id);
                 if($zx_ids && isset($zx_ids)){
-                    $zx_sql .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE play_id IN ($zx_ids) AND `issue` = $issue AND `game_id` = $gameId";
+                    $zx_sql .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND play_id IN ($zx_ids)";
                 } else {
                     $zx_sql = 0;
                 }
@@ -1996,7 +1997,7 @@ class New_XYLHC extends Excel
                 $uniqueSX = array_unique([$sx1,$sx2,$sx3,$sx4,$sx5,$sx6,$sx7]);
                 //二连肖
                 $lx_ids = [];
-                $get2LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%二连肖%')->where('bunko','=',0.00)->get();
+                $get2LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连肖%')->where('bunko','=',0.00)->get();
                 foreach ($get2LX as $item) {
                     $userBetInfoSX = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueSX, $userBetInfoSX);
@@ -2005,7 +2006,7 @@ class New_XYLHC extends Excel
                     }
                 }
                 //三连肖
-                $get3LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%三连肖%')->where('bunko','=',0.00)->get();
+                $get3LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%三连肖%')->where('bunko','=',0.00)->get();
                 foreach ($get3LX as $item) {
                     $userBetInfoSX_3 = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueSX, $userBetInfoSX_3);
@@ -2014,7 +2015,7 @@ class New_XYLHC extends Excel
                     }
                 }
                 //四连肖
-                $get4LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%四连肖%')->where('bunko','=',0.00)->get();
+                $get4LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%四连肖%')->where('bunko','=',0.00)->get();
                 foreach ($get4LX as $item) {
                     $userBetInfoSX_4 = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueSX, $userBetInfoSX_4);
@@ -2023,7 +2024,7 @@ class New_XYLHC extends Excel
                     }
                 }
                 //五连肖
-                $get5LX = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%五连肖%')->where('bunko','=',0.00)->get();
+                $get5LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%五连肖%')->where('bunko','=',0.00)->get();
                 foreach ($get5LX as $item) {
                     $userBetInfoSX_5 = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueSX, $userBetInfoSX_5);
@@ -2049,7 +2050,7 @@ class New_XYLHC extends Excel
                 $uniqueWei = array_unique([$wei1,$wei2,$wei3,$wei4,$wei5,$wei6,$wei7]);
                 $lw_ids = [];
                 //二连尾
-                $get2LW = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%二连尾%')->where('bunko','=',0.00)->get();
+                $get2LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连尾%')->where('bunko','=',0.00)->get();
                 foreach ($get2LW as $item) {
                     $userBetInfoWei = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueWei, $userBetInfoWei);
@@ -2058,7 +2059,7 @@ class New_XYLHC extends Excel
                     }
                 }
                 //三连尾
-                $get3LW = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%三连尾%')->where('bunko','=',0.00)->get();
+                $get3LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%三连尾%')->where('bunko','=',0.00)->get();
                 foreach ($get3LW as $item) {
                     $userBetInfoWei_3 = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueWei, $userBetInfoWei_3);
@@ -2067,7 +2068,7 @@ class New_XYLHC extends Excel
                     }
                 }
                 //四连尾
-                $get4LW = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%四连尾%')->where('bunko','=',0.00)->get();
+                $get4LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%四连尾%')->where('bunko','=',0.00)->get();
                 foreach ($get4LW as $item) {
                     $userBetInfoWei_4 = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueWei, $userBetInfoWei_4);
@@ -2076,7 +2077,7 @@ class New_XYLHC extends Excel
                     }
                 }
                 //五连尾
-                $get5LW = DB::table($table)->where('game_id',$gameId)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%五连尾%')->where('bunko','=',0.00)->get();
+                $get5LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%五连尾%')->where('bunko','=',0.00)->get();
                 foreach ($get5LW as $item) {
                     $userBetInfoWei_5 = explode(',',$item->bet_info);
                     $bi = array_intersect($uniqueWei, $userBetInfoWei_5);

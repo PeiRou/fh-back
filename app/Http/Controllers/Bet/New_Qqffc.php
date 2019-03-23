@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Qqffc extends Excel
 {
+    protected $arrPlay_id = array(1132874963,1132874964,1132874965,1132874966,1132874967,1132874968,1132874969,1132884970,1132884971,1132884972,1132884973,1132884974,1132884975,1132884976,1132884977,1132884978,1132884979,1132884980,1132884981,1132884982,1132884983,1132894984,1132894985,1132894986,1132894987,1132894988,1132894989,1132894990,1132894991,1132894992,1132894993,1132894994,1132894995,1132894996,1132894997,1132904998,1132904999,1132905000,1132905001,1132905002,1132905003,1132905004,1132905005,1132905006,1132905007,1132905008,1132905009,1132905010,1132905011,1132915012,1132915013,1132915014,1132915015,1132915016,1132915017,1132915018,1132915019,1132915020,1132915021,1132915022,1132915023,1132915024,1132915025,1132925026,1132925027,1132925028,1132925029,1132925030,1132925031,1132925032,1132925033,1132925034,1132925035,1132925036,1132925037,1132925038,1132925039,1132935040,1132935041,1132935042,1132935043,1132935044,1132945045,1132945046,1132945047,1132945048,1132945049,1132955050,1132955051,1132955052,1132955053,1132955054);
     protected function exc_play($openCode,$gameId){
         $win = collect([]);
         $this->NUM1($openCode,$gameId,$win);
@@ -37,7 +38,7 @@ class New_Qqffc extends Excel
     {
         $table = 'game_qqffc';
         $gameName = 'QQ分分彩';
-        $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $exeIssue = $this->getNeedKillIssue($table,2);
             $exeBase = $this->getNeedKillBase($gameId);
@@ -52,7 +53,7 @@ class New_Qqffc extends Excel
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $this->bunko($win,$gameId,$issue,$excel);
+                $bunko = $this->bunko($win,$gameId,$issue,$excel,$this->arrPlay_id);
                 $this->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Msssc extends Excel
 {
+    protected $arrPlay_id = array(811232334,811232335,811232336,811232337,811232338,811232339,811232340,811242341,811242342,811242343,811242344,811242345,811242346,811242347,811242348,811242349,811242350,811242351,811242352,811242353,811242354,811252355,811252356,811252357,811252358,811252359,811252360,811252361,811252362,811252363,811252364,811252365,811252366,811252367,811252368,811262369,811262370,811262371,811262372,811262373,811262374,811262375,811262376,811262377,811262378,811262379,811262380,811262381,811262382,811272383,811272384,811272385,811272386,811272387,811272388,811272389,811272390,811272391,811272392,811272393,811272394,811272395,811272396,811282397,811282398,811282399,811282400,811282401,811282402,811282403,811282404,811282405,811282406,811282407,811282408,811282409,811282410,811292411,811292412,811292413,811292414,811292415,811302416,811302417,811302418,811302419,811302420,811312421,811312422,811312423,811312424,811312425);
     protected function exc_play($openCode,$gameId){
         $win = collect([]);
         $this->NUM1($openCode,$gameId,$win);
@@ -38,7 +39,7 @@ class New_Msssc extends Excel
     {
         $table = 'game_msssc';
         $gameName = '秒速时时彩';
-        $betCount = DB::connection('mysql::write')->table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $exeIssue = $this->getNeedKillIssue($table,2);
             $exeBase = $this->getNeedKillBase($gameId);
@@ -53,7 +54,7 @@ class New_Msssc extends Excel
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $this->bunko($win,$gameId,$issue,$excel);
+                $bunko = $this->bunko($win,$gameId,$issue,$excel,$this->arrPlay_id);
                 $this->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);

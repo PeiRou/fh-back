@@ -778,15 +778,14 @@ class Excel
         return $total;
     }
 
-    public function bunko($win,$gameId,$issue,$excel=false){
+    public function bunko($win,$gameId,$issue,$excel=false,$arrPlay_id = []){
         try {
             if ($excel) {
                 $table = 'excel_bet';
-                $getUserBets = DB::connection('mysql::write')->table('excel_bet')->where('game_id', $gameId)->where('issue', $issue)->where('bunko', '=', 0.00)->get();
             } else {
                 $table = 'bet';
-                $getUserBets = Bets::where('game_id', $gameId)->where('issue', $issue)->where('bunko', '=', 0.00)->get();
             }
+            $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds')->where('status',0)->where('game_id', $gameId)->where('issue', $issue)->where('bunko', '=', 0.00)->get();
             $id = [];
             foreach ($win as $k => $v) {
                 $id[] = $v;
@@ -795,6 +794,8 @@ class Excel
                 $sql_upd = "UPDATE " . $table . " SET bunko = CASE ";
                 $sql_upd_lose = "UPDATE " . $table . " SET bunko = CASE ";
                 $ids = implode(',', $id);
+                $arrPlay_id = array_diff($arrPlay_id,$id);
+                $ids_lose = implode(',', $arrPlay_id);
                 if ($ids && isset($ids)) {
                     $sql = "";
                     $sql_lose = "";
@@ -805,7 +806,7 @@ class Excel
                         $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
                     }
                     $sql_upd .= $sql . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids)";
-                    $sql_upd_lose .= $sql_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` NOT IN ($ids)";
+                    $sql_upd_lose .= $sql_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_lose)";
                     if (!isset($bunko) || empty($bunko))
                         return 0;
                     $run = empty($sql) ? 1 : DB::statement($sql_upd);
@@ -819,7 +820,7 @@ class Excel
             }
         }catch (\exception $exception){
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-            DB::table($table)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+            DB::table($table)->where('status',0)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
             return 0;
         }
     }
@@ -880,7 +881,7 @@ class Excel
         writeLog('New_Kill', $table.' issue:'.$issue);
         for($i=1;$i<= (int)$exeBase->excel_num;$i++){
             if($i==1){
-                $exeBet = DB::table('excel_bet')->where('issue','=',$issue)->where('game_id',$gameId)->first();
+                $exeBet = DB::table('excel_bet')->select('bet_id')->where('issue','=',$issue)->where('game_id',$gameId)->first();
                 if(empty($exeBet))
                     DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}' and bet.testFlag = 0");
             }else{
@@ -894,7 +895,7 @@ class Excel
                 $bunko = $this->BUNKO_LHC($openCode, $win, $gameId, $issue, $he, true);
             }else{
                 $win = $this->exc_play($openCode,$gameId);
-                $bunko = $this->bunko($win,$gameId,$issue,true);
+                $bunko = $this->bunko($win,$gameId,$issue,true,$this->arrPlay_id);
             }
             if($bunko == 1){
                 $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
@@ -978,4 +979,6 @@ class Excel
     protected function BUNKO_LHC($openCode, $win, $gameId, $issue, $he, $excel){
         return '';
     }
+    //试算杀率个别取用方法，用来继承的父类
+    protected $arrPlay_id = [];
 }
