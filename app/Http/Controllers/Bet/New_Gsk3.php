@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Gsk3 extends Excel
 {
+    protected $arrPlay_id = array(162694815,162694816,162694817,162694818,162694819,162694820,162684821,162684822,162684823,162684824,162684825,162684826,162674827,162674828,162674829,162674830,162674831,162674832,162674833,162674834,162674835,162674836,162674837,162674838,162674839,162674840,162664841,162664842,162664843,162664844,162664845,162664846,162664847,162664848,162664849,162664850,162654851,162654852,162654853,162654854,162654855,162654856,162644857,162644858,162644859,162644860,162644861,162644862,162644863,162634864,162634865,162634866,162634867,162634868,162624869,162624870,162624871,162624872,162624873,162624874,162624875,162624876,162624877,162624878,162624879,162624880,162624881,162624882,162624883,162624884,162624885,162624886,162624887,162624888);
     public function all($openCode,$issue,$gameId,$id)
     {
         $win = collect([]);
@@ -30,10 +31,9 @@ class New_Gsk3 extends Excel
         $gameName = '甘肃快3';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $excelModel = new Excel();
-            $bunko = $excelModel->bunko($win,$gameId,$issue);
+            $bunko = $this->bunko($win,$gameId,$issue,false,$this->arrPlay_id);
             if($bunko == 1){
-                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
                     writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }

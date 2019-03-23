@@ -7,7 +7,7 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Cqxync extends Excel
+class New_Cqxync
 {
     private function exc_play($openCode,$gameId)
     {

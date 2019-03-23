@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Bjkl8 extends Excel
 {
+    protected $arrPlay_id = array(65211259,65211260,65211261,65211262,65211263,65211264,65211265,65211266,65211267,65221268,65221269,65221270,65231271,65231272,65231273,65241274,65241275,65241276,65241277,65241278,65251279,65251280,65251281,65251282,65251283,65251284,65251285,65251286,65251287,65251288,65251289,65251290,65251291,65251292,65251293,65251294,65251295,65251296,65251297,65251298,65251299,65251300,65251301,65251302,65251303,65251304,65251305,65251306,65251307,65251308,65251309,65251310,65251311,65251312,65251313,65251314,65251315,65251316,65251317,65251318,65251319,65251320,65251321,65251322,65251323,65251324,65251325,65251326,65251327,65251328,65251329,65251330,65251331,65251332,65251333,65251334,65251335,65251336,65251337,65251338,65251339,65251340,65251341,65251342,65251343,65251344,65251345,65251346,65251347,65251348,65251349,65251350,65251351,65251352,65251353,65251354,65251355,65251356,65251357,65251358);
     public function all($openCode,$issue,$gameId,$id)
     {
         $win = collect([]);
@@ -27,10 +28,9 @@ class New_Bjkl8 extends Excel
         $gameName = '北京快乐8';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $excelModel = new Excel();
-            $bunko = $excelModel->bunko($win,$gameId,$issue);
+            $bunko = $this->bunko($win,$gameId,$issue,false,$this->arrPlay_id);
             if($bunko == 1){
-                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
                     writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }

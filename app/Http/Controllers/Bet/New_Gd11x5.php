@@ -7,7 +7,7 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Gd11x5 extends Excel
+class New_Gd11x5
 {
     public function all($openCode,$issue,$gameId,$id)
     {

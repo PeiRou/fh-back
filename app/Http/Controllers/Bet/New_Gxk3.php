@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Gxk3 extends Excel
 {
+    protected $arrPlay_id = array(122454427,122454428,122454429,122454430,122454431,122454432,122444433,122444434,122444435,122444436,122444437,122444438,122434439,122434440,122434441,122434442,122434443,122434444,122434445,122434446,122434447,122434448,122434449,122434450,122434451,122434452,122424453,122424454,122424455,122424456,122424457,122424458,122424459,122424460,122424461,122424462,122414463,122414464,122414465,122414466,122414467,122414468,122404469,122404470,122404471,122404472,122404473,122404474,122404475,122394476,122394477,122394478,122394479,122394480,122384481,122384482,122384483,122384484,122384485,122384486,122384487,122384488,122384489,122384490,122384491,122384492,122384493,122384494,122384495,122384496,122384497,122384498,122384499,122384500);
     public function all($openCode,$issue,$gameId,$id)
     {
         $win = collect([]);
@@ -30,10 +31,9 @@ class New_Gxk3 extends Excel
         $gameName = '广西快3';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $excelModel = new Excel();
-            $bunko = $excelModel->bunko($win,$gameId,$issue);
+            $bunko = $this->bunko($win,$gameId,$issue,false,$this->arrPlay_id);
             if($bunko == 1){
-                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
                     writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }

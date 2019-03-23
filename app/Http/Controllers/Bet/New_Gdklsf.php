@@ -7,7 +7,7 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Gdklsf extends Excel
+class New_Gdklsf
 {
     private function exc_play($openCode,$gameId)
     {
