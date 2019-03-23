@@ -13,7 +13,7 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Gxk3
+class New_Gxk3 extends Excel
 {
     public function all($openCode,$issue,$gameId,$id)
     {
@@ -28,7 +28,7 @@ class New_Gxk3
         $this->BICHU($openCode,$gameId,$win); //必出号码
         $table = 'game_gxk3';
         $gameName = '广西快3';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $bunko = $excelModel->bunko($win,$gameId,$issue);

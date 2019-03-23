@@ -54,7 +54,7 @@ class New_Kssc extends Excel
                     'excel_num' => 3
                 ]);
                 if($update == 1) {
-                    writeLog('New_Bet', 'kssc killing...');
+                    writeLog('New_Kill', 'kssc killing...');
                     $this->excel($openCode, $exeBase, $issue, $gameId, $table);
                 }
             }

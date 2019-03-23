@@ -13,7 +13,7 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Cqssc
+class New_Cqssc extends Excel
 {
     public function all($openCode,$issue,$gameId,$id)
     {
@@ -34,7 +34,7 @@ class New_Cqssc
         $this->HOUSAN($openCode,$gameId,$win);
         $table = 'game_cqssc';
         $gameName = '重庆时时彩';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $bunko = $excelModel->bunko($win,$gameId,$issue);

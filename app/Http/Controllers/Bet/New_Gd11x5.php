@@ -7,13 +7,13 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Gd11x5
+class New_Gd11x5 extends Excel
 {
     public function all($openCode,$issue,$gameId,$id)
     {
         $table = 'game_gd11x5';
         $gameName = '广东11选5';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $bunko = 0;

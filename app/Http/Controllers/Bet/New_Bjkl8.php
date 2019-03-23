@@ -13,7 +13,7 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Bjkl8
+class New_Bjkl8 extends Excel
 {
     public function all($openCode,$issue,$gameId,$id)
     {
@@ -25,7 +25,7 @@ class New_Bjkl8
         $this->WX($openCode,$gameId,$win);
         $table = 'game_bjkl8';
         $gameName = '北京快乐8';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $bunko = $excelModel->bunko($win,$gameId,$issue);

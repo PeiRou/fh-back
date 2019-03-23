@@ -7,7 +7,7 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Cqxync
+class New_Cqxync extends Excel
 {
     private function exc_play($openCode,$gameId)
     {
@@ -21,7 +21,7 @@ class New_Cqxync
     {
         $table = 'game_cqxync';
         $gameName = '重庆幸运农场';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $bunko = 0;

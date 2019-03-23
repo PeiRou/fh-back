@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Session;
 
 class New_Msnn
 {
+    protected $arrPlay_id = array(911893457,911893458,911893459,911893460,911893461);
     public function all($openCode,$nn,$issue,$gameId,$id)
     {
         $win = collect([]);
@@ -24,7 +25,7 @@ class New_Msnn
         $this->NN($openCode,$nn,$gameId,$win,$lose);
         $table = 'game_mssc';
         $gameName = '秒速牛牛';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $excelModel = new Excel();
             $bunko = 0;
@@ -32,7 +33,7 @@ class New_Msnn
                 $bunko = $this->bunko($win,$lose,$nn,$gameId,$issue);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-                DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+                DB::table('bet')->where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
             }
             if($bunko == 1) {
                 $updateUserMoney = $excelModel->updateUserMoney($gameId, $issue,$gameName);

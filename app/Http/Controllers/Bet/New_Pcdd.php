@@ -13,8 +13,9 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Pcdd
+class New_Pcdd extends Excel
 {
+    protected $arrPlay_id = array(66911741,66911742,66911743,66911744,66911745,66911746,66911747,66911748,66911749,66911750,66911751,66921752,66921753,66921754,66931755,66931756,66931757,66931758,66931759,66931760,66931761,66931762,66931763,66931764,66931765,66931766,66931767,66931768,66931769,66931770,66931771,66931772,66931773,66931774,66931775,66931776,66931777,66931778,66931779,66931780,66931781,66931782);
     public function all($openCode,$issue,$gameId,$id)
     {
         $win = collect([]);
@@ -23,12 +24,11 @@ class New_Pcdd
         $this->TM($openCode,$gameId,$win); //特码
         $table = 'game_pcdd';
         $gameName = 'PC蛋蛋';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $excelModel = new Excel();
-            $bunko = $excelModel->bunko($win,$gameId,$issue);
+            $bunko = $this->bunko($win,$gameId,$issue,false,$this->arrPlay_id);
             if($bunko == 1){
-                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
                     writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }

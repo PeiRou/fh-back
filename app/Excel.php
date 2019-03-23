@@ -820,7 +820,7 @@ class Excel
             }
         }catch (\exception $exception){
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-            DB::table($table)->where('status',0)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+            DB::table($table)->where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
             return 0;
         }
     }

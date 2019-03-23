@@ -13,8 +13,9 @@ use App\Excel;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Jsk3
+class New_Jsk3 extends Excel
 {
+    protected $arrPlay_id = array(102144279,102144280,102144281,102144282,102144283,102144284,102144285,102144286,102144287,102144288,102144289,102144290,102144291,102144292,102144293,102144294,102144295,102144296,102144297,102144298,102154299,102154300,102154301,102154302,102154303,102164304,102164305,102164306,102164307,102164308,102164309,102164310,102174311,102174312,102174313,102174314,102174315,102174316,102184317,102184318,102184319,102184320,102184321,102184322,102184323,102184324,102184325,102184326,102194327,102194328,102194329,102194330,102194331,102194332,102194333,102194334,102194335,102194336,102194337,102194338,102194339,102194340,102204341,102204342,102204343,102204344,102204345,102204346,102214347,102214348,102214349,102214350,102214351,102214352);
     public function all($openCode,$issue,$gameId,$id)
     {
         $win = collect([]);
@@ -28,12 +29,11 @@ class New_Jsk3
         $this->BICHU($openCode,$gameId,$win); //必出号码
         $table = 'game_jsk3';
         $gameName = '江苏快3';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $excelModel = new Excel();
-            $bunko = $excelModel->bunko($win,$gameId,$issue);
+            $bunko = $this->bunko($win,$gameId,$issue,false,$this->arrPlay_id);
             if($bunko == 1){
-                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
                     writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }

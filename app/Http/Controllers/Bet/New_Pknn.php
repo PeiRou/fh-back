@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Session;
 
 class New_Pknn
 {
+    protected $arrPlay_id = array(901903462,901903463,901903464,901903465,901903466);
     public function all($openCode,$nn,$issue,$gameId,$id)
     {
         $win = collect([]);
@@ -23,14 +24,14 @@ class New_Pknn
         $this->NN($openCode,$nn,$gameId,$win,$lose);
         $table = 'game_pknn';
         $gameName = 'PK10牛牛';
-        $betCount = DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->where('bunko','=',0.00)->count();
+        $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = 0;
             try{
                 $bunko = $this->bunko($win,$lose,$nn,$gameId,$issue);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-                DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+                DB::table('bet')->where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
             }
             if($bunko == 1){
                 $excelModel = new Excel();
