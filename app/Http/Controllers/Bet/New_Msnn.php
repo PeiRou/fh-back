@@ -142,7 +142,7 @@ class New_Msnn
         $loseArr = [];
         $winArr = [];
 
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        $getUserBets = DB::table('bet')->select('bet_id','play_id','bet_money','freeze_money')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
 //        \Log::info('赢'.$win);
 //        \Log::info('输'.$lose);
         if($getUserBets){
@@ -196,7 +196,7 @@ class New_Msnn
                 if($WinListIn && isset($WinListIn)){
                     $sql_win .= "END ";
                     $sql_nn_money .= "END ";
-                    $sql_unfreeze_win .= "END, status = 1, updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($WinListIn) AND `issue` = $issue AND `game_id` = $gameId";
+                    $sql_unfreeze_win .= "END, status = 1, updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($WinListIn)";
                     //\Log::info('sql1+++'.$sql_win.$sql_nn_money.$sql_unfreeze_win);
                     $run = DB::statement($sql_win.$sql_nn_money.$sql_unfreeze_win);
                     if($run == 1){
@@ -261,7 +261,7 @@ class New_Msnn
                 if($LoseListIn && isset($LoseListIn)){
                     $sql_lose .= "END ";
                     $sql_nn_money .= "END ";
-                    $sql_unfreeze_lose .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($LoseListIn) AND `issue` = $issue AND `game_id` = $gameId";
+                    $sql_unfreeze_lose .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($LoseListIn)";
                     //\Log::info('sql2+++'.$sql_lose.$sql_nn_money.$sql_unfreeze_lose);
                     $run = DB::statement($sql_lose.$sql_nn_money.$sql_unfreeze_lose);
                     if($run == 1){
