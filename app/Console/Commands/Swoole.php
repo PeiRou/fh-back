@@ -111,7 +111,6 @@ class Swoole extends Command
         try{
             DB::disconnect();
             Artisan::call($data['thread']);
-            DB::disconnect();
         }catch (\exception $exception){
             \Log::info($exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             \Log::info('this commands error :'.$data['thread']);
