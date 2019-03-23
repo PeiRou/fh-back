@@ -811,7 +811,7 @@ class Excel
                         return 0;
                     $run = empty($sql) ? 1 : DB::statement($sql_upd);
                     if ($run == 1) {
-                        $run2 = empty($ids_lose) ? 1 : DB::statement($sql_upd_lose);
+                        $run2 = empty($sql_lose) ? 1 : DB::statement($sql_upd_lose);
                         if ($run2 == 1) {
                             return 1;
                         }
