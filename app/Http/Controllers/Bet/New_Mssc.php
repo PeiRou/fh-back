@@ -49,20 +49,25 @@ class New_Mssc extends Excel
         $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $exeIssue = $this->getNeedKillIssue($table,2);
+            \Log::info('1|'.$issue);
             $exeBase = $this->getNeedKillBase($gameId);
+            \Log::info('2|'.$issue);
             if(isset($exeIssue->excel_num) && $exeBase->excel_num > 0 && $excel){
                 $update = DB::table($table)->where('id',$id)->where('excel_num',2)->update([
                     'excel_num' => 3
                 ]);
+                \Log::info($update.'|3|'.$issue);
                 if($update == 1) {
                     writeLog('New_Kill', 'mssc killing...');
                     $this->excel($openCode, $exeBase, $issue, $gameId, $table);
+                    \Log::info('|4|'.$issue);
                 }
             }
             if(!$excel){
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue,$excel,$this->arrPlay_id);
                 $this->bet_total($issue,$gameId);
+                \Log::info($bunko.'|5|'.$issue);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
                     if($updateUserMoney == 1){
@@ -72,6 +77,7 @@ class New_Mssc extends Excel
             }
         }
         if($excel){
+            \Log::info('|6|'.$issue);
             $update = DB::table($table)->where('id',$id)->update([
                 'excel_num' => 1
             ]);
@@ -80,6 +86,7 @@ class New_Mssc extends Excel
             }else
                 $this->stopBunko($gameId,1,'Kill');
         }else{
+            \Log::info('|7|'.$issue);
             $update = DB::table($table)->where('id',$id)->update([
                 'bunko' => 1
             ]);

@@ -34,7 +34,7 @@ class KILL_mssc extends Command
             //阻止進行中
             $key = 'Kill:'.$this->gameId.'ing:'.$get->issue;
             if($redis->exists($key)){
-                return 'ing';
+                return 'ing1';
             }
             $redis->setex($key,60,'ing');
             //开奖号码
