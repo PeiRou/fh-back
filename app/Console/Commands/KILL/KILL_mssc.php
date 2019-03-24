@@ -28,14 +28,13 @@ class KILL_mssc extends Command
 //            return 'ing';
         $get = $excel->getNeedKillIssue($table);
         $exeBase = $excel->getKillBase($this->gameId);
-        \Log::info(json_encode($get).'|'.json_encode($exeBase));
         if(isset($get) && $get && !empty($exeBase)){
             $redis = Redis::connection();
             $redis->select(0);
             //阻止進行中
             $key = 'Kill:'.$this->gameId.'ing:'.$get->issue;
             if($redis->exists($key)){
-                return 'ing1';
+                return 'ing';
             }
             $redis->setex($key,60,'ing');
             //开奖号码
