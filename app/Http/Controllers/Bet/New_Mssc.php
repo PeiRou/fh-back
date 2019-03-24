@@ -56,8 +56,8 @@ class New_Mssc extends Excel
                 ]);
                 if($update == 1) {
                     writeLog('New_Kill', 'mssc killing...');
-                    $this->excel($openCode, $exeBase, $issue, $gameId, $table);
                     \Log::info('|4|'.$issue);
+                    $this->excel($openCode, $exeBase, $issue, $gameId, $table);
                 }
             }
             if(!$excel){

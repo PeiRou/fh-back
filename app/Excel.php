@@ -892,6 +892,7 @@ class Excel
         if(empty($table))
             return false;
         writeLog('New_Kill', $table.' issue:'.$issue);
+        \Log::info('0|excel'.$issue.'|'.$exeBase->is_open);
         for($i=1;$i<= (int)$exeBase->excel_num;$i++){
             if($i==1){
                 $exeBet = DB::table('excel_bet')->select('bet_id')->where('issue','=',$issue)->where('game_id',$gameId)->first();
