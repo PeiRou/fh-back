@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Artisan;
 
@@ -90,11 +91,14 @@ class Swoole extends Command
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
 
             $this->timer = $this->serv->tick(1000, function($id) use ($data){
+                $redis = Redis::connection();
+
                 //设置ID计数器
                 $this->setId($id);
                 //开始计数器
-                $this->settimer($id,$data);
+                $this->settimer($id,$data, $redis);
                 $this->num[$id] ++;
+                $redis->disconnect();
             });
         });
 
@@ -105,12 +109,18 @@ class Swoole extends Command
         $this->ws->start();
     }
     //计数到60则停下
-    private function settimer($id,$data){
+    private function settimer($id,$data,$redis){
         if(!isset($data['thread']) || empty($data['thread']))
             $this->serv->clearTimer($id);
         try{
-            DB::disconnect();
-            Artisan::call($data['thread']);
+            $redis->select(0);
+            $key = 'Artisan:'.$data['thread'];
+            if(!$redis->exists($key)){
+                $redis->setex($key, 60,'on');
+                DB::disconnect();
+                Artisan::call($data['thread']);
+                $redis->setex($key,1,'on');
+            }
         }catch (\exception $exception){
             \Log::info($exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             \Log::info('this commands error :'.$data['thread']);
