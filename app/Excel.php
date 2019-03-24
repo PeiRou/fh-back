@@ -984,7 +984,7 @@ class Excel
             }
         }else {
             $openCode = '';
-            \Log::info('4|excel'.$issue);
+            \Log::info('6|excel'.$issue);
         }
         writeLog('New_Kill', $table.' :'.$openCode);
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
