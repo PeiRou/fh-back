@@ -2097,50 +2097,6 @@ class New_XYLHC extends Excel
                 //连码-----开始
                 $lm_playCate = 177; //分类ID
                 //连码-----结束
-                if($sql_zxb !== 0){
-                    $run3 = DB::connection('mysql::write')->statement($sql_zxb);
-                    if($run3 == 1){
-                        $bunko_index++;
-                    }
-                } else {
-                    $bunko_index++;
-                }
-
-                if($sql_hexiao !== 0){
-                    $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
-                    if($run4 == 1){
-                        $bunko_index++;
-                    }
-                } else {
-                    $bunko_index++;
-                }
-
-                if($zx_sql !== 0){
-                    $run5 = DB::connection('mysql::write')->statement($zx_sql);
-                    if($run5 == 1){
-                        $bunko_index++;
-                    }
-                } else {
-                    $bunko_index++;
-                }
-
-                if($sql_lx !== 0){
-                    $run6 = DB::connection('mysql::write')->statement($sql_lx);
-                    if($run6 == 1){
-                        $bunko_index++;
-                    }
-                } else {
-                    $bunko_index++;
-                }
-
-                if($sql_lw !== 0){
-                    $run7 = DB::connection('mysql::write')->statement($sql_lw);
-                    if($run7 == 1){
-                        $bunko_index++;
-                    }
-                } else {
-                    $bunko_index++;
-                }
             }
             if(!empty($sql_he)){
                 $runhe = DB::connection('mysql::write')->statement($sql_he);
@@ -2152,6 +2108,50 @@ class New_XYLHC extends Excel
                 if($run2 == 1){
                     $bunko_index++;
                 }
+            }
+            if($sql_zxb !== 0){
+                $run3 = DB::connection('mysql::write')->statement($sql_zxb);
+                if($run3 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if($sql_hexiao !== 0){
+                $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
+                if($run4 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if($zx_sql !== 0){
+                $run5 = DB::connection('mysql::write')->statement($zx_sql);
+                if($run5 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if($sql_lx !== 0){
+                $run6 = DB::connection('mysql::write')->statement($sql_lx);
+                if($run6 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if($sql_lw !== 0){
+                $run7 = DB::connection('mysql::write')->statement($sql_lw);
+                if($run7 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
             }
         }
 
