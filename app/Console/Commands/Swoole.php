@@ -110,7 +110,13 @@ class Swoole extends Command
             $this->serv->clearTimer($id);
         try{
             DB::disconnect();
-            Artisan::call($data['thread']);
+//            Artisan::call($data['thread']);
+            if(empty(env('BAKE_URL', ''))){
+                Artisan::call($data['thread']);
+            }else{
+                file_get_contents(env('BAKE_URL').'/artisan/'.$data['thread']);
+            }
+//            exec('php /www/wwwroot/back/fh-back/artisan '.$data['thread']);
         }catch (\exception $exception){
             \Log::info($exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             \Log::info('this commands error :'.$data['thread']);

