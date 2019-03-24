@@ -910,7 +910,6 @@ class Excel
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue,true,$this->arrPlay_id);
             }
-            \Log::info($bunko.'|excel');
             if($bunko == 1){
                 $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)
@@ -939,6 +938,7 @@ class Excel
         }
         ksort($arrLimit);                //将计算后的杀率值，由小到大排序
         writeLog('New_Kill', $table.' :'.$issue.' s-to-b-'.json_encode($arrLimit));
+        \Log::info('1|excel'.$issue.'|'.$exeBase->is_open);
         if($exeBase->is_open==1){
             $iLimit = count($arrLimit)>=2?2:1;
             $ii = 0;
@@ -949,6 +949,7 @@ class Excel
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                 writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
+                \Log::info('2|excel'.$issue);
                 if($lose_losewin_rate>$exeBase->kill_rate){            //如果当日的输赢比高于杀率，则选给用户吃红
 //                    $openCode = $this->opennum($table);
                     krsort($arrLimit);
@@ -960,6 +961,7 @@ class Excel
                             break;
                         }
                     }
+                    \Log::info('3|excel'.$issue);
                 }else{
                     foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
                         $ii++;
@@ -968,8 +970,10 @@ class Excel
                             break;
                         }
                     }
+                    \Log::info('4|excel'.$issue);
                 }
-            }else{                                                     //如果当日的尚未计算，则给中间值
+            }else{
+                \Log::info('5|excel'.$issue);                                         //如果当日的尚未计算，则给中间值
                 foreach ($arrLimit as $key2 =>$va2){
                     $ii++;
                     if($ii==$iLimit){
@@ -978,8 +982,10 @@ class Excel
                     }
                 }
             }
-        }else
+        }else {
             $openCode = '';
+            \Log::info('4|excel'.$issue);
+        }
         writeLog('New_Kill', $table.' :'.$openCode);
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
         DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
