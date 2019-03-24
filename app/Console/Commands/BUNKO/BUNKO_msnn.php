@@ -26,7 +26,7 @@ class BUNKO_msnn extends Command
 //        $get = $excel->stopBunko($this->gameId,60);
 //        if($get)
 //            return 'ing';
-        $get = $excel->getNeedBunkoIssue($table);
+        $get = $excel->getNeedNNBunkoIssue($table);
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
