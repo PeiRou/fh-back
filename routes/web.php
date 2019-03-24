@@ -1,9 +1,5 @@
 <?php
 
-
-Route::get('/artisan/{data}',function($data){
-    \Illuminate\Support\Facades\Artisan::call($data);
-});
 Route::get('/test', 'GamesApi\Card\PrivodeController@test');
 Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/', 'Back\SrcViewController@index');
