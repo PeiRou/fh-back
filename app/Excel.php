@@ -807,6 +807,8 @@ class Excel
                     }
                     $sql_upd .= $sql . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids)";
                     $sql_upd_lose .= $sql_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_lose)";
+                    \Log::info($sql_upd);
+                    \Log::info($sql_upd_lose);
                     if (!isset($bunko) || empty($bunko))
                         return 0;
                     $run = empty($sql) ? 1 : DB::statement($sql_upd);
