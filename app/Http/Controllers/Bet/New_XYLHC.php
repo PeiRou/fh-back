@@ -1884,8 +1884,10 @@ class New_XYLHC extends Excel
             $sql_lose = "UPDATE ".$table." SET bunko = CASE "; //未中奖的SQL语句
             $sql_he = "UPDATE ".$table." SET bunko = CASE "; //和局的SQL语句
 
-            $ids = implode(',', $id);
-            $ids_lose = $ids;
+//            $ids = implode(',', $id);
+//            $ids_lose = $ids;
+            $win = $id;
+            $lose = $id;
             $sql_bets = '';
             $sql_bets_lose = '';
             $sql_bets_he = '';
@@ -1899,24 +1901,25 @@ class New_XYLHC extends Excel
             }
             if(count($he)>0) {
                 $ids_he = [];
-                $tmpids = explode(',',$ids);
-                $tmpids_lose = $tmpids;
                 foreach ($he as $k=>$v){
                     $ids_he[] = $v;
-                    unset($tmpids[$v]);
-                    $tmpids_lose[] = $v;
+                    unset($win[$v]);
+                    $lose[] = $v;
                 }
-                $ids = implode(',', $tmpids);
-                $tmpids_lose = array_diff($this->arrPlay_id,$tmpids_lose);
-                $ids_lose = implode(',', $tmpids_lose);
                 $ids_he = implode(',', $ids_he);
                 $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_he)";
             }else
                 $sql_he = '';
+            $ids = implode(',', $win);
+            $ids_lose = array_diff($this->arrPlay_id,$lose);
+            $ids_lose = implode(',', $ids_lose);
             $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids)";
             $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_lose)";
-            if(!empty($sql_bets))
+            if(!empty($sql_bets)) {
                 $run = DB::statement($sql);
+                if($run == 1)
+                    $bunko_index++;
+            }
             if(!empty($sql_he)){
                 $runhe = DB::connection('mysql::write')->statement($sql_he);
                 if($runhe == 1)
