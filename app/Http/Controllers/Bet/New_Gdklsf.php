@@ -22,8 +22,8 @@ class New_Gdklsf
         $table = 'game_gdklsf';
         $gameName = '广东快乐十分';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
+        $excelModel = new Excel();
         if($betCount > 0){
-            $excelModel = new Excel();
             $bunko = 0;
             $resData = $this->exc_play($openCode,$gameId);
             $win = @$resData['win'];

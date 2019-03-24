@@ -25,6 +25,7 @@ class New_Pknn
         $table = 'game_pknn';
         $gameName = 'PK10牛牛';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
+        $excelModel = new Excel();
         if($betCount > 0){
             $bunko = 0;
             try{
@@ -34,7 +35,6 @@ class New_Pknn
                 DB::table('bet')->where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
             }
             if($bunko == 1){
-                $excelModel = new Excel();
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
                     writeLog('New_Bet', $gameName . $issue . "结算出错");

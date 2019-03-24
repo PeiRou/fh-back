@@ -26,8 +26,8 @@ class New_Msnn
         $table = 'game_mssc';
         $gameName = '秒速牛牛';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
+        $excelModel = new Excel();
         if($betCount > 0){
-            $excelModel = new Excel();
             $bunko = 0;
             try{
                 $bunko = $this->bunko($win,$lose,$nn,$gameId,$issue);

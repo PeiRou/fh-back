@@ -14,8 +14,8 @@ class New_Gd11x5
         $table = 'game_gd11x5';
         $gameName = '广东11选5';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
+        $excelModel = new Excel();
         if($betCount > 0){
-            $excelModel = new Excel();
             $bunko = 0;
             try{
                 $win = collect([]);
