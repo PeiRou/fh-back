@@ -50,7 +50,6 @@ class New_LHC extends Excel
         $gameName = '六合彩';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $excelModel = new Excel();
             $bunko = 0;
             $resData = $this->exc_play($openCode,$gameId);
             $win = @$resData['win'];
@@ -62,7 +61,7 @@ class New_LHC extends Excel
                 DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
             }
             if($bunko == 1){
-                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
                 if($updateUserMoney == 1){
                     writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }
