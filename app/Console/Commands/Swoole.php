@@ -111,7 +111,7 @@ class Swoole extends Command
         try{
             DB::disconnect();
 //            Artisan::call($data['thread']);
-            if(empty(env('BAKE_URL', ''))){
+            if(empty(env('BACK_URL', ''))){
                 Artisan::call($data['thread']);
             }else{
                 file_get_contents(env('BAKE_URL').'/artisan/'.$data['thread']);
