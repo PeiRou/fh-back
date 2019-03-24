@@ -26,9 +26,12 @@ class KILL_mssc extends Command
 //        $get = $excel->stopBunko($this->gameId,60,'Kill');
 //        if($get)
 //            return 'ing';
+        \Log::info('|1|KILL_mssc');
         $get = $excel->getNeedKillIssue($table);
+        \Log::info('|2|KILL_mssc');
         $exeBase = $excel->getKillBase($this->gameId);
         if(isset($get) && $get && !empty($exeBase)){
+            \Log::info('|3|KILL_mssc');
             $redis = Redis::connection();
             $redis->select(0);
             //阻止進行中
@@ -46,6 +49,8 @@ class KILL_mssc extends Command
                 if($update)
                     event(new RunMssc($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
             }
+        }else{
+            \Log::info('|4|KILL_mssc');
         }
     }
 }
