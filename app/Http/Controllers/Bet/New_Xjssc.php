@@ -36,7 +36,6 @@ class New_Xjssc extends Excel
         $table = 'game_xjssc';
         $gameName = '新疆时时彩';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
-        \Log::info($betCount);
         if($betCount > 0){
             $bunko = $this->bunko($win,$gameId,$issue,false,$this->arrPlay_id);
             if($bunko == 1){
