@@ -810,6 +810,7 @@ class Excel
                     if (!isset($bunko) || empty($bunko))
                         return 0;
                     $run = empty($sql) ? 1 : DB::statement($sql_upd);
+
                     if ($run == 1) {
                         $run2 = empty($sql_lose) ? 1 : DB::statement($sql_upd_lose);
                         if ($run2 == 1) {
@@ -909,6 +910,7 @@ class Excel
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue,true,$this->arrPlay_id);
             }
+            \Log::info($bunko.'|excel');
             if($bunko == 1){
                 $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
                 foreach ($tmp as&$value)

@@ -46,18 +46,14 @@ class New_Mssc extends Excel
     {
         $table = 'game_mssc';
         $gameName = '秒速赛车';
-        \Log::info('0|'.$issue);
         $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $exeIssue = $this->getNeedKillIssue($table,2);
-            \Log::info('1|'.$issue);
             $exeBase = $this->getNeedKillBase($gameId);
-            \Log::info('2|'.$issue);
             if(isset($exeIssue->excel_num) && $exeBase->excel_num > 0 && $excel){
                 $update = DB::table($table)->where('id',$id)->where('excel_num',2)->update([
                     'excel_num' => 3
                 ]);
-                \Log::info($update.'|3|'.$issue);
                 if($update == 1) {
                     writeLog('New_Kill', 'mssc killing...');
                     $this->excel($openCode, $exeBase, $issue, $gameId, $table);
