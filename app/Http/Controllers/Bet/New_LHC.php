@@ -1963,42 +1963,42 @@ class New_LHC extends Excel
 
                 //正肖-----结束
 
-                if(!empty($sql_he)){
-                    $runhe = DB::connection('mysql::write')->statement($sql_he);
-                    if($runhe == 1)
+                if($sql_zxb !== 0){
+                    $run3 = DB::connection('mysql::write')->statement($sql_zxb);
+                    if($run3 == 1){
                         $bunko_index++;
-                }
-                if(!empty($sql_bets_lose)){
-                    $run2 = DB::connection('mysql::write')->statement($sql_lose);
-                    if($run2 == 1){
-                        $bunko_index++;
-                        if($sql_zxb !== 0){
-                            $run3 = DB::connection('mysql::write')->statement($sql_zxb);
-                            if($run3 == 1){
-                                $bunko_index++;
-                            }
-                        } else {
-                            $bunko_index++;
-                        }
-
-                        if($sql_hexiao !== 0){
-                            $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
-                            if($run4 == 1){
-                                $bunko_index++;
-                            }
-                        } else {
-                            $bunko_index++;
-                        }
-
-                        if($zx_sql !== 0){
-                            $run5 = DB::connection('mysql::write')->statement($zx_sql);
-                            if($run5 == 1){
-                                $bunko_index++;
-                            }
-                        } else {
-                            $bunko_index++;
-                        }
                     }
+                } else {
+                    $bunko_index++;
+                }
+
+                if($sql_hexiao !== 0){
+                    $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
+                    if($run4 == 1){
+                        $bunko_index++;
+                    }
+                } else {
+                    $bunko_index++;
+                }
+
+                if($zx_sql !== 0){
+                    $run5 = DB::connection('mysql::write')->statement($zx_sql);
+                    if($run5 == 1){
+                        $bunko_index++;
+                    }
+                } else {
+                    $bunko_index++;
+                }
+            }
+            if(!empty($sql_he)){
+                $runhe = DB::connection('mysql::write')->statement($sql_he);
+                if($runhe == 1)
+                    $bunko_index++;
+            }
+            if(!empty($sql_bets_lose)){
+                $run2 = DB::connection('mysql::write')->statement($sql_lose);
+                if($run2 == 1){
+                    $bunko_index++;
                 }
             }
         }
