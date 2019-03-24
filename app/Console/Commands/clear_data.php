@@ -33,7 +33,7 @@ class clear_data extends Command
         $redis->setex($keyEx,30,'on');
         $this->stoptime = date('Y-m-d 23:59:59');                                 //卡redis时间
         $this->time = strtotime($this->stoptime) - time();                                     //卡redis时间
-        $clearDate1 = date('Y-m-d 23:59:59',strtotime("-2 days")-300);        //1天
+        $clearDate1 = date('Y-m-d 23:59:59',strtotime("-1 days")-300);        //1天
         $clearDate31 = date('Y-m-d 23:59:59',strtotime("-31 days")-300);        //31天
         $clearDate62 = date('Y-m-d 23:59:59',strtotime("-62 days")-300);        //62天
         $clearDate93 = date('Y-m-d 23:59:59',strtotime("-93 days")-300);        //93天
