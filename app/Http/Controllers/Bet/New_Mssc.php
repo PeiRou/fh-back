@@ -47,6 +47,7 @@ class New_Mssc extends Excel
         $table = 'game_mssc';
         $gameName = '秒速赛车';
         $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
+        \Log::info('|0|'.$betCount);
         if($betCount > 0){
             $exeIssue = $this->getNeedKillIssue($table,2);
             $exeBase = $this->getNeedKillBase($gameId);
