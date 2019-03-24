@@ -45,6 +45,7 @@ class New_Ahk3 extends Excel
         if ($update !== 1) {
             writeLog('New_Ahk3', $gameName . $issue . "结算not Finshed");
         }else{
+            $this->stopBunko($gameId,1);
             $agentJob = new AgentBackwaterJob($gameId,$issue);
             $agentJob->addQueue();
         }

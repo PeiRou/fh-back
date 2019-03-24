@@ -23,18 +23,13 @@ class BUNKO_msnn extends Command
     {
         $table = 'game_mssc';
         $excel = new Excel();
-        $get = $excel->getNeedNNBunkoIssue($table);
+        $get = $excel->stopBunko($this->gameId,60);
+        if($get)
+            return 'ing';
+        $get = $excel->getNeedBunkoIssue($table);
         if ($get) {
-            $redis = Redis::connection();
-            $redis->select(0);
-            //阻止進行中
-            $key = 'Bunko:'.$this->gameId.'ing:'.$get->issue;
-            if($redis->exists($key)){
-                return 'ing';
-            }
-            $redis->setex($key,60,'ing');
             $update = DB::table($table)->where('id', $get->id)->update([
-                'nn_bunko' => 2
+                'bunko' => 2
             ]);
             if($update)
                 event(new RunMsnn($get->opennum,$get->niuniu, $get->issue, $this->gameId, $get->id)); //新--结算

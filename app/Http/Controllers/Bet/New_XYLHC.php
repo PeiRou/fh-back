@@ -88,7 +88,8 @@ class New_XYLHC extends Excel
             ]);
             if ($update !== 1) {
                 writeLog('New_Kill', $gameName . $issue . "杀率not Finshed");
-            }
+            }else
+                $this->stopBunko($gameId,1,'Kill');
         }else{
             $update = DB::table($table)->where('id',$id)->update([
                 'bunko' => 1
@@ -1884,8 +1885,6 @@ class New_XYLHC extends Excel
             $sql_lose = "UPDATE ".$table." SET bunko = CASE "; //未中奖的SQL语句
             $sql_he = "UPDATE ".$table." SET bunko = CASE "; //和局的SQL语句
 
-//            $ids = implode(',', $id);
-//            $ids_lose = $ids;
             $win = $id;
             $lose = $id;
             $sql_bets = '';

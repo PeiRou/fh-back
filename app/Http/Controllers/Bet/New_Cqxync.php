@@ -47,6 +47,7 @@ class New_Cqxync
         if ($update !== 1) {
             writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
         }else{
+            $excelModel->stopBunko($gameId,1);
             $agentJob = new AgentBackwaterJob($gameId,$issue);
             $agentJob->addQueue();
         }

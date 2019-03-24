@@ -864,6 +864,18 @@ class Excel
         }
         return $html;
     }
+    //结算阻止
+    public function stopBunko($gameId,$time=1,$strBunko='Bunko'){
+        $redis = Redis::connection();
+        $redis->select(0);
+        //阻止進行中
+        $key = $strBunko.':'.$gameId.'ing:';
+        if($redis->exists($key)){
+            return '1';
+        }
+        $redis->setex($key,$time,'ing');
+        return '0';
+    }
     //开奖阻止
     public function stopIng($code,$issue,$redis){
         $key = $code.'ing:'.$issue;

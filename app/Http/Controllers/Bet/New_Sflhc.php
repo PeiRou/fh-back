@@ -88,14 +88,17 @@ class New_Sflhc extends Excel
             ]);
             if ($update !== 1) {
                 writeLog('New_Kill', $gameName . $issue . "杀率not Finshed");
-            }
+            }else
+                $this->stopBunko($gameId,1,'Kill');
         }else{
             $update = DB::table($table)->where('id',$id)->update([
                 'bunko' => 1
             ]);
+            $this->stopBunko($gameId,1);
             if ($update !== 1) {
                 writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
             }else{
+                $this->stopBunko($gameId,1);
                 $agentJob = new AgentBackwaterJob($gameId,$issue);
                 $agentJob->addQueue();
             }

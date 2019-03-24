@@ -23,17 +23,12 @@ class KILL_twxyft extends Command
     {
         $table = 'game_twxyft';
         $excel = new Excel();
+        $get = $excel->stopBunko($this->gameId,60,'Kill');
+        if($get)
+            return 'ing';
         $get = $excel->getNeedKillIssue($table);
         $exeBase = $excel->getKillBase($this->gameId);
         if(isset($get) && $get && !empty($exeBase)){
-            $redis = Redis::connection();
-            $redis->select(0);
-            //阻止進行中
-            $key = 'Kill:'.$this->gameId.'ing:'.$get->issue;
-            if($redis->exists($key)){
-                return 'ing';
-            }
-            $redis->setex($key,60,'ing');
             //开奖号码
             $opennum = $excel->opennum($table);
             if(isset($get->excel_num) && $get->excel_num == 0){
