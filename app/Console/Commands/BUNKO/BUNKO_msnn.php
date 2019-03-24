@@ -38,7 +38,7 @@ class BUNKO_msnn extends Command
             $redis->setex($key,60,'ing');
 //        if ($get) {
             $update = DB::table($table)->where('id', $get->id)->update([
-                'bunko' => 2
+                'nn_bunko' => 2
             ]);
             if($update)
                 event(new RunMsnn($get->opennum,$get->niuniu, $get->issue, $this->gameId, $get->id)); //新--结算
