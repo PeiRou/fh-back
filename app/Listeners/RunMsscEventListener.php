@@ -28,6 +28,7 @@ class RunMsscEventListener implements ShouldQueue
      */
     public function handle(RunMssc $event)
     {
+        \Log::info('1|Listeners');
         $up = $this->mssc->all($event->openCode,$event->openIssue,$event->gameId,$event->id,$event->excel);
         return $up;
     }
