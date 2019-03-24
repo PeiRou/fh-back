@@ -23,11 +23,19 @@ class BUNKO_lhc extends Command
     {
         $table = 'game_lhc';
         $excel = new Excel();
-        $get = $excel->stopBunko($this->gameId,80);
-        if($get)
-            return 'ing';
+//        $get = $excel->stopBunko($this->gameId,80);
+//        if($get)
+//            return 'ing';
         $get = $excel->getNeedBunkoIssueLhc($table);
         if($get){
+            $redis = Redis::connection();
+            $redis->select(0);
+            //阻止進行中
+            $key = 'Bunko:'.$this->gameId.'ing:'.$get->issue;
+            if($redis->exists($key)){
+                return 'ing';
+            }
+                $redis->setex($key,60,'ing');
 //            $update = DB::table($table)->where('id', $get->id)->update([
 //                'bunko' => 2
 //            ]);
