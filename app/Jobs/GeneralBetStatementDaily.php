@@ -39,7 +39,7 @@ class GeneralBetStatementDaily implements ShouldQueue
         //获取代理,总代
         $aGeneral = GeneralAgent::betGeneralReportData();
         //获取投注
-        if(strtotime($this->aDateTime) >= strtotime(date('Y-m-d',strtotime('-1 day'))))
+        if(strtotime($this->aDateTime) >= strtotime(date('Y-m-d')))
             $aBet = Bets::generalReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         else
             $aBet = BetHis::generalReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
