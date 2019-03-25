@@ -523,19 +523,50 @@ class openHistoryController extends Controller
             ->skipPaging()
             ->make(true);
     }
+    //下注查询
+    public function BetInfo(Request $request)
+    {
+        if($request->dataTag == 'qp'){ //棋牌
+            if($gInfo = DB::table('games_list')->where('game_id', $request->dataId)->where('open', 1)->first()){
+                $request->offsetSet('g_id', $gInfo->g_id);
+            }
+            return $this->card_betInfo($request);
+        }elseif ($request->dataTag == 'tc'){
+            return $this->TCBetInfo($request);
+        }
+    }
     //TC下注查询
     public function TCBetInfo(Request $request)
     {
         $model = DB::table('jq_wsgj_bet')->where(function($sql) use($request){
-
+            isset($request->dataId) &&
+                $sql->where('gameCategory', $request->dataId);
+            isset($request->gameCategory) &&
+                $sql->where('gameCategory', $request->gameCategory);
+            isset($request->Accounts) &&
+                $sql->where('Accounts', $request->Accounts);
+            isset($request->productType) &&
+                $sql->where('productType', $request->productType);
+            isset($request->startTime) &&
+                $sql->where('GameStartTime', '>=', date('Y-m-d',strtotime($request->startTime)).' 00:00:00');
+            isset($request->endTime) &&
+                $sql->where('GameStartTime', '<=', date('Y-m-d',strtotime($request->endTime)).' 23:59:59');
         });
+        $totalModel = clone $model;
+        $TotalSum = $totalModel->select(DB::raw(' COUNT(Accounts) as BetCountSum, SUM(validBetAmount) as BetSum, SUM(Profit) as ProfitSum '))->first();
         $count = $model->count();
         if(isset($request->start, $request->length))
             $model->orderBy('id','desc')->skip($request->start)->take($request->length);
+        $model->select(DB::raw('gameCategory, Accounts, SUM(validBetAmount) as validBetAmount, SUM(AllBet) as AllBet, SUM(Profit) as Profit, productType, GameStartTime'));
+        $model->groupBy('Accounts','productType');
         $res = $model->get();
         return DataTables::of($res)
+            ->editColumn('productType',function ($aData) {
+                return \App\GamesList::$productType[$aData->productType] ?? '';
+            })
             ->rawColumns(['control'])
             ->setTotalRecords($count)
+            ->with('TotalSum',$TotalSum)
             ->skipPaging()
             ->make(true);
     }

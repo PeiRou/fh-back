@@ -42,6 +42,9 @@ class GamesApiListController extends Controller
             ->editColumn('pid',function ($res)use($pids){
                 return $pids[$res->pid] ?? '';
             })
+            ->editColumn('g_id',function ($res)use($apis){
+                return $apis[$res->g_id] ?? '';
+            })
             ->editColumn('sort',function ($res){
                 return '<input type="text" class="sort" data-id="'.$res->id.'" style="width: 30px; height:20px;" oninput="this.value=value.replace(/[^\d]/g,\'\')" value="'.$res->sort.'">';
             })
@@ -116,21 +119,21 @@ class GamesApiListController extends Controller
         $model = DB::table('games_list');
 //        if(!$request->id && DB::table('games_list')->where('name', $request->name)->count())
 //            return show(1, '游戏名称重复');
-        $keys = $request->paramKey;
-        $val = $request->paramValue;
-        $param = [];
-        if(count($val) && count($keys))
-            while ($keys)
-                $param[array_shift($keys)] = array_shift($val) ?? '';
+//        $keys = $request->paramKey;
+//        $val = $request->paramValue;
+//        $param = [];
+//        if(count($val) && count($keys))
+//            while ($keys)
+//                $param[array_shift($keys)] = array_shift($val) ?? '';
         $data = [
             'pid' => (int)$request->pid,
             'name' => $request->name,
             'g_id' => (int)$request->g_id,
             'game_id' => (int)$request->game_id,
-            'param' => json_encode($param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+//            'param' => json_encode($param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'type' => (int)$request->type,
-            'open' => (int)$request->open,
-            'sort' => 0,
+            'open' => $request->open == 'on' ? 1 : 0,
+//            'sort' => 0,
         ];
         if(isset($request->id)){
             $res = $model->where('id', $request->id)->update($data);

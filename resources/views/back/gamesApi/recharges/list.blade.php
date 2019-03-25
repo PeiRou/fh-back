@@ -35,6 +35,14 @@
                             <option value="500">超时</option>
                         </select>
                     </div>
+                    <div class="one wide field" style="width: initial!important;">
+                        <select class="ui dropdown" id="g_id" style="height:32px !important">
+                            <option value="">使用接口</option>
+                            @foreach(App\GamesApi::pluck('name','g_id') as $k => $v)
+                                <option value="{{ $k }}">{{ $v }}</option>
+                                @endforeach
+                        </select>
+                    </div>
                     <div class="field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询</button>
                     </div>
@@ -46,6 +54,7 @@
             <tr>
                 <th>ID</th>
                 <th>会员</th>
+                <th>使用接口</th>
                 <th>游戏</th>
                 <th>订单号</th>
                 <th>类型</th>

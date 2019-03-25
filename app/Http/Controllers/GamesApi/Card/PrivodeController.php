@@ -20,7 +20,7 @@ class PrivodeController extends Controller{
 //            echo '更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
     }
     public function getBet($param = []){
-        $list = GamesApi::getQpList(array_merge($param,['open' => 1]));
+        $list = GamesApi::getBetList(array_merge($param,['open' => 1]));
         foreach ($list as $k=>$v){
             //删除十天以前的
             $tableName = 'jq_'.strtolower($v->alias).'_bet';

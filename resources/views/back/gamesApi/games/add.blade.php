@@ -57,21 +57,21 @@
             <span id="dvOpenOpenUn" class="red" @if(isset($data) && $data->open == "1")style="display: none"@endif>关闭中</span>
         </div>
     </div>
-    <div class="field" id="div-aParam" style="display: inline-block">
-        <label>携带参数<button type="button" onclick="param()" style="margin-bottom: 10px;margin-top: 10px;margin-left: 30px;">添加参数</button></label>
-        <div id="aParam">
-            @if(!empty($data))
-                @foreach(json_decode($data->param)??[] as $k=>$v)
-                    <div class="ui input icon firstParam">
-                        <span>参数：</span>
-                        <input class="firstInput" type="text" name="paramKey[]" value="{{ $k }}"/>
-                        <span class="firstSpan">值：</span>
-                        <input class="firstInput" type="text" name="paramValue[]" value="{{ $v }}"/>
-                    </div>
-                @endforeach
-            @endif
-        </div>
-    </div>
+    {{--<div class="field" id="div-aParam" style="display: inline-block">--}}
+        {{--<label>携带参数<button type="button" onclick="param()" style="margin-bottom: 10px;margin-top: 10px;margin-left: 30px;">添加参数</button></label>--}}
+        {{--<div id="aParam">--}}
+            {{--@if(!empty($data))--}}
+                {{--@foreach(json_decode($data->param)??[] as $k=>$v)--}}
+                    {{--<div class="ui input icon firstParam">--}}
+                        {{--<span>参数：</span>--}}
+                        {{--<input class="firstInput" type="text" name="paramKey[]" value="{{ $k }}"/>--}}
+                        {{--<span class="firstSpan">值：</span>--}}
+                        {{--<input class="firstInput" type="text" name="paramValue[]" value="{{ $v }}"/>--}}
+                    {{--</div>--}}
+                {{--@endforeach--}}
+            {{--@endif--}}
+        {{--</div>--}}
+    {{--</div>--}}
 </form>
 <script type="text/html" id="aParamHtml">
     <div class="ui input icon firstParam">

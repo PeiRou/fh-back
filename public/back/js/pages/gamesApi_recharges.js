@@ -19,11 +19,13 @@ $(function () {
             url : '/back/datatables/GamesApiRecharges',
             data : function (d) {
                 d.code = $('#code').val();
+                d.g_id = $('#g_id').val();
             }
         },
         columns: [
             {data: 'id'},
             {data: 'username'},
+            {data: 'g_id'},
             {data: 'game_id'},
             {data: 'order_id'},
             {data: 'type'},

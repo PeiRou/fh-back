@@ -26,6 +26,7 @@ $(function () {
             {data: 'pid'},
             {data: 'game_id'},
             {data: 'name'},
+            {data: 'g_id'},
             // {data: 'type'},
             {data: 'open'},
             {data: 'sort'},

@@ -31,6 +31,20 @@ class GamesApi extends Model
             $sql->where('type_id', 111);
         })->get();
     }
+    //获取拉数据的游戏
+    public static function getBetList($param = []){
+        return self::where(function($sql) use ($param){
+            if(isset($param['g_id']))
+                $sql->where('g_id', $param['g_id']);
+            else
+                isset($param['type']) && $sql->where('type', $param['type']);
+
+            if(isset($param['open']))
+                $sql->where('open', $param['open']);
+
+            $sql->where('type_id', 111);
+        })->get();
+    }
     //获取天成的游戏 现在暂时只有一个
     public static function getTcList(){
         return self::where('type', 2)->first();

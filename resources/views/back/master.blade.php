@@ -543,11 +543,11 @@
                     @if($hasPermission->hasPermission('GamesApi.games.list') == "has")
                         <li id="menu-GamesApi-games-list"><a href="{{ route('GamesApi.games.list') }}"><cite></cite><span>游戏列表</span></a></li>
                     @endif
-                    @if($hasPermission->hasPermission('cardGame.cardBetInfo') == "has")
-                        <li id="menu-GamesApi-cardBetInfo"><a href="{{ route('cardGame.cardBetInfo') }}"><cite></cite><span>棋牌下注查询</span></a></li>
-                    @endif
+                    {{--@if($hasPermission->hasPermission('cardGame.cardBetInfo') == "has")--}}
+                        {{--<li id="menu-GamesApi-cardBetInfo"><a href="{{ route('cardGame.cardBetInfo') }}"><cite></cite><span>棋牌下注查询</span></a></li>--}}
+                    {{--@endif--}}
                     @if($hasPermission->hasPermission('cardGame.TCBetInfo') == "has")
-                        <li id="menu-GamesApi-TCBetInfo"><a href="{{ route('cardGame.TCBetInfo') }}"><cite></cite><span>TC下注查询</span></a></li>
+                        <li id="menu-GamesApi-TCBetInfo"><a href="{{ route('cardGame.TCBetInfo') }}"><cite></cite><span>下注查询</span></a></li>
                     @endif
                     @if($hasPermission->hasPermission('cardGame.recharges') == "has")
                         <li id="menu-GamesApi-recharges"><a href="{{ route('cardGame.recharges') }}"><cite></cite><span>资金转账记录</span></a></li>

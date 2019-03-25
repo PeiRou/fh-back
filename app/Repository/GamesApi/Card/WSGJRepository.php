@@ -66,7 +66,7 @@ class WSGJRepository extends BaseRepository
                 'productType' => $v['productType'] ?? '',  //产品类别
                 'gameCategory' => $v['gameCategory'] ?? '',  //游戏类别
                 'sessionId' => $v['sessionId'] ?? '',  //会话标识
-                'additionalDetails' => $v['additionalDetails'] ?? '',  //额外细节
+                'additionalDetails' => json_encode($v['additionalDetails'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?? '',  //额外细节
             ];
         }
         return $this->insertDB($arr, $table);
