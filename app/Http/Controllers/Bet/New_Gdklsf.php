@@ -33,7 +33,7 @@ class New_Gdklsf
                 $bunko = $this->bunko_nc($win,$gameId,$issue,$openCode,$he);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-                DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+                DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['status' => 0,'bunko' => 0]);
             }
             if($bunko == 1){
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);

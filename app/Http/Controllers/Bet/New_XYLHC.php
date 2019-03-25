@@ -71,7 +71,7 @@ class New_XYLHC extends Excel
                     $bunko = $this->BUNKO_LHC($openCode, $win, $gameId, $issue, $he, $excel);
                 }catch (\exception $exception){
                     writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-                    DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+                    DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['status' => 0,'bunko' => 0]);
                 }
                 $this->bet_total($issue,$gameId);
                 if(isset($bunko) && $bunko == 1){

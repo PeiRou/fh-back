@@ -24,7 +24,7 @@ class New_Gd11x5
                 $bunko = $this->bunko_gd11x5($win,$gameId,$issue,$openCode);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-                DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['status',0,'bunko' => 0]);
+                DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['status' => 0,'bunko' => 0]);
             }
             if($bunko == 1){
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
@@ -627,7 +627,7 @@ class New_Gd11x5
             $lm_playCate = 33;
             $lm_ids = [];
             $lm_lose_ids = [];
-            $get_lm = DB::table($table)->select('bet_id','bet_info','play_name')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
+            $get_lm = DB::table($table)->select('bet_id','bet_info','play_id','play_name')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
             $lm_open = explode(',', $openCode);
             $lm_open_qian2 = explode(',',$OPEN_QIAN_2);
             $lm_open_qian3 = explode(',',$OPEN_QIAN_3);
@@ -683,24 +683,23 @@ class New_Gd11x5
                         $lm_lose_ids[] = $item->bet_id;
                     }
                 }
-            }
-            foreach ($get_lm as $x) {
-                $explodeBetInfo = explode(',',$x->bet_info);
-                if($x->play_id == '2133244'){ //前二组选
+                $explodeBetInfo = explode(',',$item->bet_info);
+                if($item->play_id == '2133244'){ //前二组选
                     if($explodeBetInfo[0] == $lm_open_qian2[0] && $explodeBetInfo[1] == $lm_open_qian2[1]){
-                        $lm_ids[] = $x->bet_id;
+                        $lm_ids[] = $item->bet_id;
                     } else {
-                        $lm_lose_ids[] = $x->bet_id;
+                        $lm_lose_ids[] = $item->bet_id;
                     }
                 }
-                if($x->play_id == '2133245'){ //前三组选
+                if($item->play_id == '2133245'){ //前三组选
                     if($explodeBetInfo[0] == $lm_open_qian3[0] && $explodeBetInfo[1] == $lm_open_qian3[1] && $explodeBetInfo[2] == $lm_open_qian3[2]){
-                        $lm_ids[] = $x->bet_id;
+                        $lm_ids[] = $item->bet_id;
                     } else {
-                        $lm_lose_ids[] = $x->bet_id;
+                        $lm_lose_ids[] = $item->bet_id;
                     }
                 }
             }
+
             $ids_lm = implode(',', $lm_ids);
             if($ids_lm){
                 $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
@@ -708,7 +707,6 @@ class New_Gd11x5
                 $sql_lm = 0;
             }
             //连码 - End
-
             //特殊处理单号为和
             $heArrayPush = [];
             if($openCodeArr[0] == 11){
@@ -764,11 +762,10 @@ class New_Gd11x5
             } else {
                 $sql_he = 0;
             }
-
             $run2 = !empty($sql_lose)?DB::connection('mysql::write')->statement($sql_upd_lose):0;
             if($run2 == 1){
                 $bunko_index++;
-                if($sql_zhixuan !== 0){
+                if(!empty($sql_zhixuan)){
                     $run3 = DB::connection('mysql::write')->statement($sql_zhixuan);
                     if($run3 == 1){
                         $bunko_index++;
@@ -777,7 +774,7 @@ class New_Gd11x5
                     $bunko_index++;
                 }
 
-                if($sql_lm !== 0){
+                if(!empty($sql_lm !== 0)){
                     $run4 = DB::connection('mysql::write')->statement($sql_lm);
                     if($run4 == 1){
                         $bunko_index++;
@@ -786,7 +783,7 @@ class New_Gd11x5
                     $bunko_index++;
                 }
 
-                if($sql_he != ""){
+                if(!empty($sql_he)){
                     $run5 = DB::connection('mysql::write')->statement($sql_upd_he);
                     if($run5 == 1){
                         $bunko_index++;

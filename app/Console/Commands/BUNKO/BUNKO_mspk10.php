@@ -40,7 +40,6 @@ class BUNKO_mspk10 extends Command
             $update = DB::table($table)->where('id', $get->id)->update([
                 'bunko' => 2
             ]);
-            \Log::info('1|BUNKO_mspk10|'.$update);
             if($update)
                 event(new RunMssc($get->opennum, $get->issue, $this->gameId, $get->id, false)); //新--结算
         }
