@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Gd11x5
 {
+    protected $arrPlay_id = array(2126143,2126144,2126145,2126146,2126147,2126148,2126149,2126150,2127151,2127152,2127153,2127154,2127155,2127156,2127157,2127158,2127159,2127160,2127161,2127162,2127163,2127164,2127165,2128166,2128167,2128168,2128169,2128170,2128171,2128172,2128173,2128174,2128175,2128176,2128177,2128178,2128179,2128180,2129181,2129182,2129183,2129184,2129185,2129186,2129187,2129188,2129189,2129190,2129191,2129192,2129193,2129194,2129195,2130196,2130197,2130198,2130199,2130200,2130201,2130202,2130203,2130204,2130205,2130206,2130207,2130208,2130209,2130210,2131211,2131212,2131213,2131214,2131215,2131216,2131217,2131218,2131219,2131220,2131221,2131222,2131223,2131224,2131225,2132226,2132227,2132228,2132229,2132230,2132231,2132232,2132233,2132234,2132235,2132236,2133237,2133238,2133239,2133240,2133241,2133242,2133243,2133244,2133245,2134246,2134247);
     public function all($openCode,$issue,$gameId,$id)
     {
         $table = 'game_gd11x5';
@@ -20,10 +21,10 @@ class New_Gd11x5
             try{
                 $win = collect([]);
                 $this->LM($openCode,$gameId,$win);
-                $bunko = $this->bunko($win,$gameId,$issue,$openCode);
+                $bunko = $this->bunko_gd11x5($win,$gameId,$issue,$openCode);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-                DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+                DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['status',0,'bunko' => 0]);
             }
             if($bunko == 1){
                 $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
@@ -559,7 +560,7 @@ class New_Gd11x5
         //一中一 - End
     }
 
-    private function bunko($win,$gameId,$issue,$openCode){
+    private function bunko_gd11x5($win,$gameId,$issue,$openCode){
 
         $bunko_index = 0;
         $openCodeArr = explode(',',$openCode);
@@ -571,10 +572,13 @@ class New_Gd11x5
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        $table = 'bet';
+        $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         $sql_upd = "UPDATE bet SET bunko = CASE ";
         $sql_upd_lose = "UPDATE bet SET bunko = CASE ";
         $ids = implode(',', $id);
+        $arrPlay_id = array_diff($this->arrPlay_id,$id);
+        $ids_lose = implode(',', $arrPlay_id);
         $sql = "";
         $sql_lose = "";
         foreach ($getUserBets as $item){
@@ -583,15 +587,15 @@ class New_Gd11x5
             $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
             $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
         }
-        $sql_upd .= $sql ."END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-        $sql_upd_lose .= $sql_lose ."END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
+        $sql_upd .= $sql ."END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids)";
+        $sql_upd_lose .= $sql_lose ."END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `status` = 0 AND `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_lose)";
         $run = !empty($sql)?DB::statement($sql_upd):0;
         if($run == 1){
             //直选- Start
             $zhixuan_playCate = 34; //直选分类ID
             $zhixuan_ids = [];
             $zhixuan_lose_ids = [];
-            $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zhixuan_playCate)->where('bunko','=',0.00)->get();
+            $get = DB::table($table)->select('bet_id','bet_info','play_id')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zhixuan_playCate)->where('bunko','=',0.00)->get();
             $open2 = explode(',', $OPEN_QIAN_2);
             $open3 = explode(',', $OPEN_QIAN_3);
             foreach ($get as $item) {
@@ -623,7 +627,7 @@ class New_Gd11x5
             $lm_playCate = 33;
             $lm_ids = [];
             $lm_lose_ids = [];
-            $get_lm = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
+            $get_lm = DB::table($table)->select('bet_id','bet_info','play_name')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
             $lm_open = explode(',', $openCode);
             $lm_open_qian2 = explode(',',$OPEN_QIAN_2);
             $lm_open_qian3 = explode(',',$OPEN_QIAN_3);
@@ -742,7 +746,7 @@ class New_Gd11x5
                 $heArrayPush[] = 2126147;
             }
             if($heArrayPush){
-                $getUserHeBets = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArrayPush)->get();
+                $getUserHeBets = DB::table($table)->select('bet_id','bet_money')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArrayPush)->get();
                 if($getUserHeBets){
                     $updateHeId = [];
                     $sql_upd_he = "UPDATE bet SET bunko = CASE ";

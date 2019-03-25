@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Gdklsf
 {
+    protected $arrPlay_id = array(6053603,6053604,6053605,6053606,6053607,6053608,6054609,6054610,6054611,6054612,6054613,6054614,6054615,6054616,6054617,6054618,6054619,6054620,6054621,6054622,6054623,6054624,6054625,6054626,6054627,6054628,6054629,6054630,6054631,6054632,6054633,6054634,6054635,6054636,6054637,6054638,6054639,6054640,6054641,6054642,6054643,6054644,6054645,6055646,6055647,6055648,6055649,6055650,6055651,6055652,6055653,6055654,6055655,6055656,6055657,6055658,6055659,6055660,6055661,6055662,6055663,6055664,6055665,6055666,6055667,6055668,6055669,6055670,6055671,6055672,6055673,6055674,6055675,6055676,6055677,6055678,6055679,6055680,6055681,6055682,6056683,6056684,6056685,6056686,6056687,6056688,6056689,6056690,6056691,6056692,6056693,6056694,6056695,6056696,6056697,6056698,6056699,6056700,6056701,6056702,6056703,6056704,6056705,6056706,6056707,6056708,6056709,6056710,6056711,6056712,6056713,6056714,6056715,6056716,6056717,6056718,6056719,6057720,6057721,6057722,6057723,6057724,6057725,6057726,6057727,6057728,6057729,6057730,6057731,6057732,6057733,6057734,6057735,6057736,6057737,6057738,6057739,6057740,6057741,6057742,6057743,6057744,6057745,6057746,6057747,6057748,6057749,6057750,6057751,6057752,6057753,6057754,6057755,6057756,6058757,6058758,6058759,6058760,6058761,6058762,6058763,6058764,6058765,6058766,6058767,6058768,6058769,6058770,6058771,6058772,6058773,6058774,6058775,6058776,6058777,6058778,6058779,6058780,6058781,6058782,6058783,6058784,6058785,6058786,6058787,6058788,6058789,6058790,6058791,6058792,6058793,6059794,6059795,6059796,6059797,6059798,6059799,6059800,6059801,6059802,6059803,6059804,6059805,6059806,6059807,6059808,6059809,6059810,6059811,6059812,6059813,6059814,6059815,6059816,6059817,6059818,6059819,6059820,6059821,6059822,6059823,6059824,6059825,6059826,6059827,6059828,6059829,6059830,6060831,6060832,6060833,6060834,6060835,6060836,6060837,6060838,6060839,6060840,6060841,6060842,6060843,6060844,6060845,6060846,6060847,6060848,6060849,6060850,6060851,6060852,6060853,6060854,6060855,6060856,6060857,6060858,6060859,6060860,6060861,6060862,6060863,6060864,6060865,6060866,6060867,6061868,6061869,6061870,6061871,6061872,6061873,6061874,6061875,6061876,6061877,6061878,6061879,6061880,6061881,6061882,6061883,6061884,6061885,6061886,6061887,6061888,6061889,6061890,6061891,6061892,6061893,6061894,6061895,6061896,6061897,6061898,6061899,6061900,6061901,6061902,6061903,6061904,6062905,6062906,6062907,6062908,6062909,6062910,6062911,6062912,6062913,6062914,6062915,6062916,6062917,6062918,6062919,6062920,6062921,6062922,6062923,6062924,6063925,6063926,6063927,6063928,6063929,6063930);
     private function exc_play($openCode,$gameId)
     {
         $win = collect([]);
@@ -29,7 +30,7 @@ class New_Gdklsf
             $win = @$resData['win'];
             $he = isset($resData['ids_he'])?$resData['ids_he']:array();
             try{
-                $bunko = $this->bunko($win,$gameId,$issue,$openCode,$he);
+                $bunko = $this->bunko_nc($win,$gameId,$issue,$openCode,$he);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
@@ -1709,21 +1710,23 @@ class New_Gdklsf
         }
     }
 
-    private function bunko($win,$gameId,$issue,$openCode,$he){
+    private function bunko_nc($win,$gameId,$issue,$openCode,$he){
         $bunko_index = 0;
         $openCodeArr = explode(',',$openCode);
         $id = [];
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        $table = 'bet';
+        $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         if($getUserBets){
             $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
             $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
             $sql_he = "UPDATE bet SET bunko = CASE "; //和局的SQL语句
 
             $ids = implode(',', $id);
-            $ids_lose = $ids;
+            $arrPlay_id = array_diff($this->arrPlay_id,$id);
+            $ids_lose = implode(',', $arrPlay_id);
             $sql_bets = '';
             $sql_bets_lose = '';
             $sql_bets_he = '';
@@ -1747,11 +1750,11 @@ class New_Gdklsf
                 $ids = implode(',', $tmpids);
                 $ids_lose = implode(',', $tmpids_lose);
                 $ids_he = implode(',', $ids_he);
-                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `play_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
+                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_he)";
             }else
                 $sql_he = '';
-            $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids_lose) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql .= $sql_bets . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids)";
+            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_lose)";
             if(!empty($sql_bets))
                 $run = DB::statement($sql);
 
@@ -1760,7 +1763,7 @@ class New_Gdklsf
                 $lm_playCate = 63; //连码分类ID
                 $lm_ids = [];
                 $lm_lose_ids = [];
-                $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
+                $get = DB::table($table)->select('bet_id','bet_info','play_name')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
                 $lm_open = explode(',', $openCode);
                 foreach ($get as $item) {
                     $explodeBetInfo = explode(',',$item->bet_info);

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class New_Cqxync
 {
+    protected $arrPlay_id = array(6142931,6142932,6142933,6142934,6142935,6142936,6143937,6143938,6143939,6143940,6143941,6143942,6143943,6143944,6143945,6143946,6143947,6143948,6143949,6143950,6143951,6143952,6143953,6143954,6143955,6143956,6143957,6143958,6143959,6143960,6143961,6143962,6143963,6143964,6143965,6143966,6143967,6143968,6143969,6143970,6143971,6143972,6143973,6144974,6144975,6144976,6144977,6144978,6144979,6144980,6144981,6144982,6144983,6144984,6144985,6144986,6144987,6144988,6144989,6144990,6144991,6144992,6144993,6144994,6144995,6144996,6144997,6144998,6144999,61441000,61441001,61441002,61441003,61441004,61441005,61441006,61441007,61441008,61441009,61441010,61451011,61451012,61451013,61451014,61451015,61451016,61451017,61451018,61451019,61451020,61451021,61451022,61451023,61451024,61451025,61451026,61451027,61451028,61451029,61451030,61451031,61451032,61451033,61451034,61451035,61451036,61451037,61451038,61451039,61451040,61451041,61451042,61451043,61451044,61451045,61451046,61451047,61461048,61461049,61461050,61461051,61461052,61461053,61461054,61461055,61461056,61461057,61461058,61461059,61461060,61461061,61461062,61461063,61461064,61461065,61461066,61461067,61461068,61461069,61461070,61461071,61461072,61461073,61461074,61461075,61461076,61461077,61461078,61461079,61461080,61461081,61461082,61461083,61461084,61471085,61471086,61471087,61471088,61471089,61471090,61471091,61471092,61471093,61471094,61471095,61471096,61471097,61471098,61471099,61471100,61471101,61471102,61471103,61471104,61471105,61471106,61471107,61471108,61471109,61471110,61471111,61471112,61471113,61471114,61471115,61471116,61471117,61471118,61471119,61471120,61471121,61481122,61481123,61481124,61481125,61481126,61481127,61481128,61481129,61481130,61481131,61481132,61481133,61481134,61481135,61481136,61481137,61481138,61481139,61481140,61481141,61481142,61481143,61481144,61481145,61481146,61481147,61481148,61481149,61481150,61481151,61481152,61481153,61481154,61481155,61481156,61481157,61481158,61491159,61491160,61491161,61491162,61491163,61491164,61491165,61491166,61491167,61491168,61491169,61491170,61491171,61491172,61491173,61491174,61491175,61491176,61491177,61491178,61491179,61491180,61491181,61491182,61491183,61491184,61491185,61491186,61491187,61491188,61491189,61491190,61491191,61491192,61491193,61491194,61491195,61501196,61501197,61501198,61501199,61501200,61501201,61501202,61501203,61501204,61501205,61501206,61501207,61501208,61501209,61501210,61501211,61501212,61501213,61501214,61501215,61501216,61501217,61501218,61501219,61501220,61501221,61501222,61501223,61501224,61501225,61501226,61501227,61501228,61501229,61501230,61501231,61501232,61511233,61511234,61511235,61511236,61511237,61511238,61511239,61511240,61511241,61511242,61511243,61511244,61511245,61511246,61511247,61511248,61511249,61511250,61511251,61511252,61521253,61521254,61521255,61521256,61521257,61521258);
     private function exc_play($openCode,$gameId)
     {
         $win = collect([]);
@@ -29,7 +30,7 @@ class New_Cqxync
             $win = @$resData['win'];
             $he = isset($resData['ids_he'])?$resData['ids_he']:array();
             try{
-                $bunko = $this->bunko($win,$gameId,$issue,$openCode,$he);
+                $bunko = $this->bunko_nc($win,$gameId,$issue,$openCode,$he);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
@@ -1710,21 +1711,23 @@ class New_Cqxync
         }
     }
 
-    private function bunko($win,$gameId,$issue,$openCode,$he){
+    private function bunko_nc($win,$gameId,$issue,$openCode,$he){
         $bunko_index = 0;
         $openCodeArr = explode(',',$openCode);
         $id = [];
         foreach ($win as $k=>$v){
             $id[] = $v;
         }
-        $getUserBets = Bets::where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        $table = 'bet';
+        $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         if($getUserBets){
             $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
             $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
             $sql_he = "UPDATE bet SET bunko = CASE "; //和局的SQL语句
 
             $ids = implode(',', $id);
-            $ids_lose = $ids;
+            $arrPlay_id = array_diff($this->arrPlay_id,$id);
+            $ids_lose = implode(',', $arrPlay_id);
             $sql_bets = '';
             $sql_bets_lose = '';
             $sql_bets_he = '';
@@ -1748,78 +1751,78 @@ class New_Cqxync
                 $ids = implode(',', $tmpids);
                 $ids_lose = implode(',', $tmpids_lose);
                 $ids_he = implode(',', $ids_he);
-                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `play_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
+                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_he)";
             }else
                 $sql_he = '';
-            $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` IN ($ids) AND `issue` = $issue AND `game_id` = $gameId";
-            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `play_id` NOT IN ($ids_lose) AND `issue` = $issue AND `game_id` = $gameId";
+            $sql .= $sql_bets . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids)";
+            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_lose)";
             if(!empty($sql_bets))
                 $run = DB::statement($sql);
             if(isset($run) && $run == 1){
-            //连码- Start
-            $lm_playCate = 52; //连码分类ID
-            $lm_ids = [];
-            $lm_lose_ids = [];
-            $get = DB::table('bet')->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
-            $lm_open = explode(',', $openCode);
-            foreach ($get as $item) {
-                $explodeBetInfo = explode(',',$item->bet_info);
-                if(count($explodeBetInfo) == 2 && $item->play_name == '任选二'){
-                    $diff2 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff2) == 2){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
+                //连码- Start
+                $lm_playCate = 52; //连码分类ID
+                $lm_ids = [];
+                $lm_lose_ids = [];
+                $get = DB::table($table)->select('bet_id','bet_info','play_name')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
+                $lm_open = explode(',', $openCode);
+                foreach ($get as $item) {
+                    $explodeBetInfo = explode(',',$item->bet_info);
+                    if(count($explodeBetInfo) == 2 && $item->play_name == '任选二'){
+                        $diff2 = array_intersect($lm_open, $explodeBetInfo);
+                        if(count($diff2) == 2){
+                            $lm_ids[] = $item->bet_id;
+                        } else {
+                            $lm_lose_ids[] = $item->bet_id;
+                        }
+                    }
+                    if(count($explodeBetInfo) == 3 && $item->play_name == '任选三'){
+                        $diff3 = array_intersect($lm_open, $explodeBetInfo);
+                        if(count($diff3) == 3){
+                            $lm_ids[] = $item->bet_id;
+                        } else {
+                            $lm_lose_ids[] = $item->bet_id;
+                        }
+                    }
+                    if(count($explodeBetInfo) == 4 && $item->play_name == '任选四'){
+                        $diff4 = array_intersect($lm_open, $explodeBetInfo);
+                        if(count($diff4) == 4){
+                            $lm_ids[] = $item->bet_id;
+                        } else {
+                            $lm_lose_ids[] = $item->bet_id;
+                        }
+                    }
+                    if(count($explodeBetInfo) == 5 && $item->play_name == '任选五'){
+                        $diff5 = array_intersect($lm_open, $explodeBetInfo);
+                        if(count($diff5) == 5){
+                            $lm_ids[] = $item->bet_id;
+                        } else {
+                            $lm_lose_ids[] = $item->bet_id;
+                        }
+                    }
+                    if(count($explodeBetInfo) == 2 && $item->play_name == '选二连组'){
+                        $pattern = '/('.$item->bet_info.')/u';
+                        $matches = preg_match($pattern, $openCode);
+                        if($matches){
+                            $lm_ids[] = $item->bet_id;
+                        }else{
+                            $lm_lose_ids[] = $item->bet_id;
+                        }
+                    }
+                    if(count($explodeBetInfo) == 3 && $item->play_name == '选三前组'){
+                        if($explodeBetInfo[0] == $openCodeArr[0] && $explodeBetInfo[1] == $openCodeArr[1] && $explodeBetInfo[2] == $openCodeArr[2]){
+                            $lm_ids[] = $item->bet_id;
+                        } else {
+                            $lm_lose_ids[] = $item->bet_id;
+                        }
                     }
                 }
-                if(count($explodeBetInfo) == 3 && $item->play_name == '任选三'){
-                    $diff3 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff3) == 3){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
+                $ids_lm = implode(',', $lm_ids);
+                if($ids_lm){
+                    $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
+                } else {
+                    $sql_lm = 0;
                 }
-                if(count($explodeBetInfo) == 4 && $item->play_name == '任选四'){
-                    $diff4 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff4) == 4){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-                if(count($explodeBetInfo) == 5 && $item->play_name == '任选五'){
-                    $diff5 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff5) == 5){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-                if(count($explodeBetInfo) == 2 && $item->play_name == '选二连组'){
-                    $pattern = '/('.$item->bet_info.')/u';
-                    $matches = preg_match($pattern, $openCode);
-                    if($matches){
-                        $lm_ids[] = $item->bet_id;
-                    }else{
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-                if(count($explodeBetInfo) == 3 && $item->play_name == '选三前组'){
-                    if($explodeBetInfo[0] == $openCodeArr[0] && $explodeBetInfo[1] == $openCodeArr[1] && $explodeBetInfo[2] == $openCodeArr[2]){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-            }
-            $ids_lm = implode(',', $lm_ids);
-            if($ids_lm){
-                $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
-            } else {
-                $sql_lm = 0;
-            }
-            //连码- End
+                //连码- End
 
                 if(!empty($sql_he)){
                     $runhe = DB::connection('mysql::write')->statement($sql_he);
