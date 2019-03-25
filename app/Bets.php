@@ -221,7 +221,10 @@ class Bets extends Model
     }
 
     public static function updateBetBunkoClear($issue,$gameId){
-        return self::where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0]);
+        return self::where('issue',$issue)->where('game_id',$gameId)->update([
+            'bunko' => 0,
+            'status' => 0
+        ]);
     }
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
