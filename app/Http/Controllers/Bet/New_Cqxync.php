@@ -1726,8 +1726,8 @@ class New_Cqxync
             $sql_he = "UPDATE bet SET bunko = CASE "; //和局的SQL语句
 
             $ids = implode(',', $id);
-            $arrPlay_id = array_diff($this->arrPlay_id,$id);
-            $ids_lose = implode(',', $arrPlay_id);
+            $ids_lose = array_diff($this->arrPlay_id,$id);
+            $ids_lose = implode(',', $ids_lose);
             $sql_bets = '';
             $sql_bets_lose = '';
             $sql_bets_he = '';
@@ -1749,7 +1749,7 @@ class New_Cqxync
                     $tmpids_lose[] = $v;
                 }
                 $ids = implode(',', $tmpids);
-                $ids_lose = implode(',', $tmpids_lose);
+                $ids_lose = implode(',', $ids_lose);
                 $ids_he = implode(',', $ids_he);
                 $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_he)";
             }else

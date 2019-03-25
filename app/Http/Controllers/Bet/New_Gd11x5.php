@@ -577,8 +577,8 @@ class New_Gd11x5
         $sql_upd = "UPDATE bet SET bunko = CASE ";
         $sql_upd_lose = "UPDATE bet SET bunko = CASE ";
         $ids = implode(',', $id);
-        $arrPlay_id = array_diff($this->arrPlay_id,$id);
-        $ids_lose = implode(',', $arrPlay_id);
+        $ids_lose = array_diff($this->arrPlay_id,$id);
+        $ids_lose = implode(',', $ids_lose);
         $sql = "";
         $sql_lose = "";
         foreach ($getUserBets as $item){

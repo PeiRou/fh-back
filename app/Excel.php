@@ -794,8 +794,8 @@ class Excel
                 $sql_upd = "UPDATE " . $table . " SET bunko = CASE ";
                 $sql_upd_lose = "UPDATE " . $table . " SET bunko = CASE ";
                 $ids = implode(',', $id);
-                $arrPlay_id = array_diff($arrPlay_id,$id);
-                $ids_lose = implode(',', $arrPlay_id);
+                $ids_lose = array_diff($arrPlay_id,$id);
+                $ids_lose = implode(',', $ids_lose);
                 if ($ids && isset($ids)) {
                     $sql = "";
                     $sql_lose = "";
@@ -892,14 +892,13 @@ class Excel
         if(empty($table))
             return false;
         writeLog('New_Kill', $table.' issue:'.$issue);
-        \Log::info('0|excel'.$issue.'|'.$exeBase->is_open);
         for($i=1;$i<= (int)$exeBase->excel_num;$i++){
             if($i==1){
-                $exeBet = DB::table('excel_bet')->select('bet_id')->where('issue','=',$issue)->where('game_id',$gameId)->first();
+                $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->first();
                 if(empty($exeBet))
-                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE bet.issue = '{$issue}' and bet.game_id = '{$gameId}' and bet.testFlag = 0");
+                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.game_id = '{$gameId}' and bet.issue = '{$issue}' and bet.testFlag = 0");
             }else{
-                DB::connection('mysql::write')->table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->update(["bunko"=>0]);
+                DB::connection('mysql::write')->table("excel_bet")->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 0,'bunko' => 0]);
             }
             $openCode = $this->opennum($table,$exeBase->is_user,$issue,$i);
             if($lotterytype=='lhc'){                                        //根据六合彩的系列另外有bunko
@@ -912,7 +911,7 @@ class Excel
                 $bunko = $this->bunko($win,$gameId,$issue,true,$this->arrPlay_id);
             }
             if($bunko == 1){
-                $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE issue = '{$issue}' and game_id = '{$gameId}'");
+                $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE game_id = '{$gameId}' and issue = '{$issue}'");
                 foreach ($tmp as&$value)
                     $excBunko = $value->sumBunko;
                 writeLog('New_Kill', $table.' :'.$openCode.' => '.$excBunko);
@@ -932,14 +931,15 @@ class Excel
 //        $tmp = DB::select($aSql);
 //        foreach ($tmp as&$value)
 //            $openCode = $value->opennum;
-        $exeData = DB::table('excel_game')->select(DB::raw('opennum,issue,bunko'))->where('issue',$issue)->where('game_id',$gameId)->groupBy('issue','excel_num')->get();
+        $exeData = DB::table('excel_game')->select(DB::raw('opennum,issue,bunko'))->where('game_id',$gameId)->where('issue',$issue)->groupBy('issue','excel_num')->get();
+        writeLog('New_Kill', $table.' :'.$issue.' origin-'.json_encode($exeData));
         $arrLimit = array();
         foreach ($exeData as $key => $val) {
             $arrLimit[(string)$val->bunko] = $val->opennum;
         }
         ksort($arrLimit);                //将计算后的杀率值，由小到大排序
         writeLog('New_Kill', $table.' :'.$issue.' s-to-b-'.json_encode($arrLimit));
-        \Log::info('1|excel'.$issue.'|'.$exeBase->is_open);
+
         if($exeBase->is_open==1){
             $iLimit = count($arrLimit)>=2?2:1;
             $ii = 0;
@@ -950,7 +950,6 @@ class Excel
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                 writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
-                \Log::info('2|excel'.$issue);
                 if($lose_losewin_rate>$exeBase->kill_rate){            //如果当日的输赢比高于杀率，则选给用户吃红
 //                    $openCode = $this->opennum($table);
                     krsort($arrLimit);
@@ -962,7 +961,6 @@ class Excel
                             break;
                         }
                     }
-                    \Log::info('3|excel'.$issue);
                 }else{
                     foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
                         $ii++;
@@ -971,10 +969,8 @@ class Excel
                             break;
                         }
                     }
-                    \Log::info('4|excel'.$issue);
                 }
-            }else{
-                \Log::info('5|excel'.$issue);                                         //如果当日的尚未计算，则给中间值
+            }else{                                        //如果当日的尚未计算，则给中间值
                 foreach ($arrLimit as $key2 =>$va2){
                     $ii++;
                     if($ii==$iLimit){
@@ -985,7 +981,6 @@ class Excel
             }
         }else {
             $openCode = '';
-            \Log::info('6|excel'.$issue);
         }
         writeLog('New_Kill', $table.' :'.$openCode);
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);

@@ -1855,8 +1855,8 @@ class New_LHC extends Excel
             $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
             $sql_he = "UPDATE bet SET bunko = CASE "; //和局的SQL语句
 
-            $ids = implode(',', $id);
-            $ids_lose = $ids;
+            $win = $id;
+            $lose = $id;
             $sql_bets = '';
             $sql_bets_lose = '';
             $sql_bets_he = '';
@@ -1870,125 +1870,24 @@ class New_LHC extends Excel
             }
             if(count($he)>0) {
                 $ids_he = [];
-                $tmpids = explode(',',$ids);
-                $tmpids_lose = $tmpids;
                 foreach ($he as $k=>$v){
                     $ids_he[] = $v;
-                    unset($tmpids[$v]);
-                    $tmpids_lose[] = $v;
+                    unset($win[$v]);
+                    $lose[] = $v;
                 }
-                $ids = implode(',', $tmpids);
-                $tmpids_lose = array_diff($this->arrPlay_id,$tmpids_lose);
-                $ids_lose = implode(',', $tmpids_lose);
                 $ids_he = implode(',', $ids_he);
                 $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_he)";
             }else
                 $sql_he = '';
+            $ids = implode(',', $win);
+            $ids_lose = array_diff($this->arrPlay_id,$lose);
+            $ids_lose = implode(',', $ids_lose);
             $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids)";
             $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_lose)";
-            if(!empty($sql_bets))
-            $run = DB::statement($sql);
-
-            if($run == 1){
-                //自选不中------开始
-                $zxbz_playCate = 77; //特码分类ID
-                $zxbz_ids = [];
-                $zxbz_lose_ids = [];
-                $get = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
-                foreach ($get as $item) {
-                    $open = explode(',', $openCode);
-                    $user = explode(',', $item->bet_info);
-                    $bi = array_intersect($open, $user);
-                    if (empty($bi)) {
-                        $zxbz_ids[] = $item->bet_id;
-                    } else {
-                        $zxbz_lose_ids[] = $item->bet_id;
-                    }
-                }
-                $ids_zxbz = implode(',', $zxbz_ids);
-                if($ids_zxbz){
-                    $sql_zxb = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
-                } else {
-                    $sql_zxb = 0;
-                }
-                //自选不中------结束
-                //合肖-----开始
-                $hexiao_playCate = 68; //分类ID
-                $hexiao_ids = [];
-                $getHexiao = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
-                foreach ($getHexiao as $item) {
-                    $hexiao_open = explode(',', $tema_SX);
-                    $hexiao_user = explode(',', $item->bet_info);
-                    $hexiao_bi = array_intersect($hexiao_open, $hexiao_user);
-                    if ($hexiao_bi) {
-                        $hexiao_ids[] = $item->bet_id;
-                    }
-                }
-                $ids_hexiao = implode(',', $hexiao_ids);
-                if($ids_hexiao){
-                    $sql_hexiao = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_hexiao)"; //中奖的SQL语句
-                } else {
-                    $sql_hexiao = 0;
-                }
-                //合肖-----结束
-                //正肖-----开始
-                $zx_playCate = 74; //分类ID
-                $zx_id = [];
-                $zx_plays = ['鼠'=>1621,'牛'=>1622,'虎'=>1623,'兔'=>1624,'龙'=>1625,'蛇'=>1626,'马'=>1627,'羊'=>1628,'猴'=>1629,'鸡'=>1630,'狗'=>1631,'猪'=>1632];
-                $arrOpenCode = explode(',',$openCode); // 分割开奖号码
-                $sx1 = $this->LHC_SX->shengxiao($arrOpenCode[0]);
-                $sx2 = $this->LHC_SX->shengxiao($arrOpenCode[1]);
-                $sx3 = $this->LHC_SX->shengxiao($arrOpenCode[2]);
-                $sx4 = $this->LHC_SX->shengxiao($arrOpenCode[3]);
-                $sx5 = $this->LHC_SX->shengxiao($arrOpenCode[4]);
-                $sx6 = $this->LHC_SX->shengxiao($arrOpenCode[5]);
-                $openSX = [$sx1,$sx2,$sx3,$sx4,$sx5,$sx6];
-                $countOpen = array_count_values($openSX);
-                $zx_sql = "UPDATE bet SET bunko = CASE play_id ";
-                foreach ($countOpen as $kk => $vv){
-                    foreach ($zx_plays as $k => $v){
-                        if ($kk == $k){
-                            $zx_id[] = $gameId.$zx_playCate.$v;
-                            $playId = $gameId.$zx_playCate.$v;
-                            $zx_sql .= sprintf("WHEN %d THEN (bet_money * play_odds) * %d ", $playId, $vv);
-                        }
-                    }
-                }
-                $zx_ids = implode(',',$zx_id);
-                if($zx_ids && isset($zx_ids)){
-                    $zx_sql .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND play_id IN ($zx_ids)";
-                } else {
-                    $zx_sql = 0;
-                }
-
-                //正肖-----结束
-
-                if($sql_zxb !== 0){
-                    $run3 = DB::connection('mysql::write')->statement($sql_zxb);
-                    if($run3 == 1){
-                        $bunko_index++;
-                    }
-                } else {
+            if(!empty($sql_bets)) {
+                $run = DB::statement($sql);
+                if($run == 1)
                     $bunko_index++;
-                }
-
-                if($sql_hexiao !== 0){
-                    $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
-                    if($run4 == 1){
-                        $bunko_index++;
-                    }
-                } else {
-                    $bunko_index++;
-                }
-
-                if($zx_sql !== 0){
-                    $run5 = DB::connection('mysql::write')->statement($zx_sql);
-                    if($run5 == 1){
-                        $bunko_index++;
-                    }
-                } else {
-                    $bunko_index++;
-                }
             }
             if(!empty($sql_he)){
                 $runhe = DB::connection('mysql::write')->statement($sql_he);
@@ -2000,6 +1899,105 @@ class New_LHC extends Excel
                 if($run2 == 1){
                     $bunko_index++;
                 }
+            }
+            //自选不中------开始
+            $zxbz_playCate = 77; //特码分类ID
+            $zxbz_ids = [];
+            $zxbz_lose_ids = [];
+            $get = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
+            foreach ($get as $item) {
+                $open = explode(',', $openCode);
+                $user = explode(',', $item->bet_info);
+                $bi = array_intersect($open, $user);
+                if (empty($bi)) {
+                    $zxbz_ids[] = $item->bet_id;
+                } else {
+                    $zxbz_lose_ids[] = $item->bet_id;
+                }
+            }
+            $ids_zxbz = implode(',', $zxbz_ids);
+            if($ids_zxbz){
+                $sql_zxb = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
+            } else {
+                $sql_zxb = 0;
+            }
+            //自选不中------结束
+            //合肖-----开始
+            $hexiao_playCate = 68; //分类ID
+            $hexiao_ids = [];
+            $getHexiao = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
+            foreach ($getHexiao as $item) {
+                $hexiao_open = explode(',', $tema_SX);
+                $hexiao_user = explode(',', $item->bet_info);
+                $hexiao_bi = array_intersect($hexiao_open, $hexiao_user);
+                if ($hexiao_bi) {
+                    $hexiao_ids[] = $item->bet_id;
+                }
+            }
+            $ids_hexiao = implode(',', $hexiao_ids);
+            if($ids_hexiao){
+                $sql_hexiao = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_hexiao)"; //中奖的SQL语句
+            } else {
+                $sql_hexiao = 0;
+            }
+            //合肖-----结束
+            //正肖-----开始
+            $zx_playCate = 74; //分类ID
+            $zx_id = [];
+            $zx_plays = ['鼠'=>1621,'牛'=>1622,'虎'=>1623,'兔'=>1624,'龙'=>1625,'蛇'=>1626,'马'=>1627,'羊'=>1628,'猴'=>1629,'鸡'=>1630,'狗'=>1631,'猪'=>1632];
+            $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+            $sx1 = $this->LHC_SX->shengxiao($arrOpenCode[0]);
+            $sx2 = $this->LHC_SX->shengxiao($arrOpenCode[1]);
+            $sx3 = $this->LHC_SX->shengxiao($arrOpenCode[2]);
+            $sx4 = $this->LHC_SX->shengxiao($arrOpenCode[3]);
+            $sx5 = $this->LHC_SX->shengxiao($arrOpenCode[4]);
+            $sx6 = $this->LHC_SX->shengxiao($arrOpenCode[5]);
+            $openSX = [$sx1,$sx2,$sx3,$sx4,$sx5,$sx6];
+            $countOpen = array_count_values($openSX);
+            $zx_sql = "UPDATE bet SET bunko = CASE play_id ";
+            foreach ($countOpen as $kk => $vv){
+                foreach ($zx_plays as $k => $v){
+                    if ($kk == $k){
+                        $zx_id[] = $gameId.$zx_playCate.$v;
+                        $playId = $gameId.$zx_playCate.$v;
+                        $zx_sql .= sprintf("WHEN %d THEN (bet_money * play_odds) * %d ", $playId, $vv);
+                    }
+                }
+            }
+            $zx_ids = implode(',',$zx_id);
+            if($zx_ids && isset($zx_ids)){
+                $zx_sql .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND play_id IN ($zx_ids)";
+            } else {
+                $zx_sql = 0;
+            }
+
+            //正肖-----结束
+
+            if($sql_zxb !== 0){
+                $run3 = DB::connection('mysql::write')->statement($sql_zxb);
+                if($run3 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if($sql_hexiao !== 0){
+                $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
+                if($run4 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if($zx_sql !== 0){
+                $run5 = DB::connection('mysql::write')->statement($zx_sql);
+                if($run5 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
             }
         }
 
