@@ -117,7 +117,7 @@ class Excel
         if(env('AGENT_MODEL',1) == 1) {
             if(!empty($table)&&!empty($tableid)){
                 $reWater = DB::table($table)->where('id',$tableid)->where('returnwater',0)->first();
-                if(!empty($reWater))
+                if(empty($reWater))
                     return 0;
             }
             //退水
