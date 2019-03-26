@@ -61,7 +61,7 @@ class clear_data extends Command
                 $res = DB::connection('mysql::write')->statement($sql);
                 echo 'table bet :'.$res.PHP_EOL;
                 $num++;
-                $redis->setex('clear-bet',1,'on');
+                $redis->del('clear-bet');
             }
         }
         writeLog('clear','clear ing ....');
@@ -76,7 +76,7 @@ class clear_data extends Command
                 $redis->setex('clear-bet-his',$this->time,$this->stoptime);
             }else{
                 $num++;
-                $redis->setex('clear-bet-his',1,'on');
+                $redis->del('clear-bet-his');
             }
         }
         //清-资金明细
@@ -144,8 +144,9 @@ class clear_data extends Command
             $num_else = $this->clrGameTables('game_xylhc', $clearDate62, $num_else);
             if($num_else==0){
                 $this->time = strtotime($this->stoptime) - time();
-                $redis->setex('clear-else',$this->time,'on');
+                $redis->setex('clear-else',$this->time,$this->stoptime);
             }else{
+                $redis->del('clear-else');
                 $num++;
             }
         }
