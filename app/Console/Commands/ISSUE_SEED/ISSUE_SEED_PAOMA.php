@@ -20,6 +20,16 @@ class ISSUE_SEED_PAOMA extends Command
     {
         $curDate = date('ymd');
         $timeUp = date('Y-m-d 07:28:45');
+
+        $redis = \Illuminate\Support\Facades\Redis::connection();
+        $redis->select(5);
+        $key = 'issue_send:'.$this->signature.'_'.$curDate;
+        if($redis->exists($key)){
+            echo '重复执行！';
+            return false;
+        }
+        $redis->setex($key, 60, 'on');
+
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_paoma (issue,opentime) VALUES ";
         for($i=1;$i<=985;$i++){

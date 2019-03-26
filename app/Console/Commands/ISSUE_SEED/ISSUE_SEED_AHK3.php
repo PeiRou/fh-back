@@ -20,6 +20,16 @@ class ISSUE_SEED_AHK3 extends Command
     {
         $curDate = date('Ymd');
         $timeUp = ' 08:40:00';
+
+        $redis = \Illuminate\Support\Facades\Redis::connection();
+        $redis->select(5);
+        $key = 'issue_send:'.$this->signature.'_'.$curDate;
+        if($redis->exists($key)){
+            echo '重复执行！';
+            return false;
+        }
+        $redis->setex($key, 60, 'on');
+
         $checkUpdate = DB::table('issue_seed')->select('ahk3')->where('id',1)->first();
         $issueDate = '';
         if(isset($checkUpdate->ahk3)) {
@@ -27,7 +37,7 @@ class ISSUE_SEED_AHK3 extends Command
                 $issueDate = date('Y-m-d', strtotime('+ 1 day', time()));
                 $curDate = date('Ymd', strtotime('+ 1 day', time()));
             }else if($curDate < $checkUpdate->ahk3)
-                writeLog('game/ahk3', $curDate.'安徽快3期数已存在');
+                writeLog('ISSUE_SEED', $curDate.'安徽快3期数已存在');
             else
                 $issueDate = date('Y-m-d',time());
         }else{

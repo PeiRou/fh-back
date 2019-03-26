@@ -20,6 +20,16 @@ class ISSUE_SEED_MSSSC extends Command
     {
         $curDate = date('ymd');
         $timeUp = date('Y-m-d 07:30:15');
+
+        $redis = \Illuminate\Support\Facades\Redis::connection();
+        $redis->select(5);
+        $key = 'issue_send:'.$this->signature.'_'.$curDate;
+        if($redis->exists($key)){
+            echo '重复执行！';
+            return false;
+        }
+        $redis->setex($key, 60, 'on');
+
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_msssc (issue,opentime) VALUES ";
         for($i=1;$i<=1105;$i++){

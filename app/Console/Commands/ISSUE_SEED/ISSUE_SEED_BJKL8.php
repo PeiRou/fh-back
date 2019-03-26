@@ -20,6 +20,16 @@ class ISSUE_SEED_BJKL8 extends Command
     {
         $curDate = date('ymd');
         $timeUp = date('Y-m-d 09:00:00');
+
+        $redis = \Illuminate\Support\Facades\Redis::connection();
+        $redis->select(5);
+        $key = 'issue_send:'.$this->signature.'_'.$curDate;
+        if($redis->exists($key)){
+            echo '重复执行！';
+            return false;
+        }
+        $redis->setex($key, 60, 'on');
+
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $checkLastIssue = DB::table('game_bjkl8')->select(DB::raw('MAX(id) as maxid'),'issue')->where('opentime',date('Y-m-d 23:55:00',strtotime('-1 days')))->first();
         $lastIssue = @$checkLastIssue->issue;

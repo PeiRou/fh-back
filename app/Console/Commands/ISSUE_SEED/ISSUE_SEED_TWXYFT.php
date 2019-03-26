@@ -20,6 +20,16 @@ class ISSUE_SEED_TWXYFT extends Command
     {
         $curDate = date('ymd');
         $timeUp = ' 23:55:00';
+
+        $redis = \Illuminate\Support\Facades\Redis::connection();
+        $redis->select(5);
+        $key = 'issue_send:'.$this->signature.'_'.$curDate;
+        if($redis->exists($key)){
+            echo '重复执行！';
+            return false;
+        }
+        $redis->setex($key, 60, 'on');
+
         $checkUpdate = DB::table('issue_seed')->select('twxyft')->where('id',1)->first();
         $issueDate = '';
         if(isset($checkUpdate->twxyft)) {

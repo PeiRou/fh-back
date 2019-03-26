@@ -20,6 +20,16 @@ class ISSUE_SEED_HEBEIK3 extends Command
     {
         $curDate = date('Ymd');
         $timeUp = date('08:30:00');
+
+        $redis = \Illuminate\Support\Facades\Redis::connection();
+        $redis->select(5);
+        $key = 'issue_send:'.$this->signature.'_'.$curDate;
+        if($redis->exists($key)){
+            echo '重复执行！';
+            return false;
+        }
+        $redis->setex($key, 60, 'on');
+
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_hebeik3 (issue,opentime) VALUES ";
         for($i=1;$i<=41;$i++){

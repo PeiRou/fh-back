@@ -20,6 +20,16 @@ class ISSUE_SEED_KSSC extends Command
     {
         $curDate = date('ymd');
         $timeUp = date(' 07:25:15');
+
+        $redis = \Illuminate\Support\Facades\Redis::connection();
+        $redis->select(5);
+        $key = 'issue_send:'.$this->signature.'_'.$curDate;
+        if($redis->exists($key)){
+            echo '重复执行！';
+            return false;
+        }
+        $redis->setex($key, 20, 'on');
+
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $issueDate = '';
         if(isset($checkUpdate->kssc)) {
