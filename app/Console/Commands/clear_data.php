@@ -30,7 +30,7 @@ class clear_data extends Command
             echo "ing...";
             return "";
         }
-        $redis->setex($keyEx,60,'on');
+        $redis->setex($keyEx,300,'on');
         $this->stoptime = date('Y-m-d 23:59:59');                                 //卡redis时间
         $this->time = strtotime($this->stoptime) - time();                                     //卡redis时间
         $clearDate1 = date('Y-m-d 23:59:59',strtotime("-1 days")-300);        //1天
@@ -46,7 +46,7 @@ class clear_data extends Command
         echo 'table bet :'.$res.PHP_EOL;
         if(!$redis->exists('clear-bet')){
             $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
-            $redis->setex('clear-bet',50,'on');
+            $redis->setex('clear-bet',100,'on');
             if(empty($res)){
                 $redis->setex('clear-bet',$this->time,$this->stoptime);
             }else{
@@ -76,7 +76,7 @@ class clear_data extends Command
                 $redis->setex('clear-bet-his',$this->time,$this->stoptime);
             }else{
                 $num++;
-                $redis->setex('clear-bet',1,'on');
+                $redis->setex('clear-bet-his',1,'on');
             }
         }
         //清-资金明细
