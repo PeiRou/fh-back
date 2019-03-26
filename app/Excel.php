@@ -17,7 +17,7 @@ class Excel
      * @param string $gameName
      * @return int
      */
-    public function updateUserMoney($gameId,$issue,$gameName=''){
+    public function updateUserMoney($gameId,$issue,$gameName='',$table='',$tableid=0){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',1)->where('bunko','>',0)->groupBy('user_id')->get();
         $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds','order_id','bet_money','unfreeze_money','nn_view_money')->where('game_id',$gameId)->where('issue',$issue)->where('status',1)->where('bunko','>',0)->get();
         if($get){
@@ -115,6 +115,11 @@ class Excel
         }
         //普通模式才会退水
         if(env('AGENT_MODEL',1) == 1) {
+            if(!empty($table)&&!empty($tableid)){
+                $reWater = DB::table($table)->where('id',$tableid)->where('returnwater',0)->first();
+                if(empty($reWater))
+                    return 0;
+            }
             //退水
             $this->reBackUser($gameId, $issue, $gameName);
         }

@@ -1925,12 +1925,6 @@ class New_Sflhc extends Excel
                 if($runhe == 1)
                     $bunko_index++;
             }
-            if(!empty($sql_bets_lose)){
-                $run2 = DB::connection('mysql::write')->statement($sql_lose);
-                if($run2 == 1){
-                    $bunko_index++;
-                }
-            }
 
             //自选不中------开始
             $zxbz_playCate = 406; //特码分类ID
@@ -2111,6 +2105,12 @@ class New_Sflhc extends Excel
             $lm_playCate = 408; //分类ID
             //连码-----结束
 
+            if(!empty($sql_bets_lose)){
+                $run2 = DB::connection('mysql::write')->statement($sql_lose);
+                if($run2 == 1){
+                    $bunko_index++;
+                }
+            }
             if($sql_zxb !== 0){
                 $run3 = DB::connection('mysql::write')->statement($sql_zxb);
                 if($run3 == 1){

@@ -61,7 +61,7 @@ class New_LHC extends Excel
                 DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['status' => 0,'bunko' => 0]);
             }
             if($bunko == 1){
-                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id);
                 if($updateUserMoney == 1){
                     writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }
@@ -1894,12 +1894,6 @@ class New_LHC extends Excel
                 if($runhe == 1)
                     $bunko_index++;
             }
-            if(!empty($sql_bets_lose)){
-                $run2 = DB::connection('mysql::write')->statement($sql_lose);
-                if($run2 == 1){
-                    $bunko_index++;
-                }
-            }
             //自选不中------开始
             $zxbz_playCate = 77; //特码分类ID
             $zxbz_ids = [];
@@ -1972,7 +1966,12 @@ class New_LHC extends Excel
             }
 
             //正肖-----结束
-
+            if(!empty($sql_bets_lose)){
+                $run2 = DB::connection('mysql::write')->statement($sql_lose);
+                if($run2 == 1){
+                    $bunko_index++;
+                }
+            }
             if($sql_zxb !== 0){
                 $run3 = DB::connection('mysql::write')->statement($sql_zxb);
                 if($run3 == 1){
