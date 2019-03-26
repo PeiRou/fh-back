@@ -46,7 +46,6 @@ class clear_data extends Command
         echo 'table bet :'.$res.PHP_EOL;
         if(!$redis->exists('clear-bet')){
             $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
-            $redis->setex('clear-bet',100,'on');
             if(empty($res)){
                 $redis->setex('clear-bet',$this->time,$this->stoptime);
             }else{
