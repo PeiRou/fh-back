@@ -44,7 +44,7 @@
                     <div class="one wide field">
                         <div class="ui calendar" id="rangestart">
                             <div class="ui input left">
-                                <input type="text" id="timeStart" placeholder="起始日期" value="{{date('Y-m-d',strtotime('-2 day'))}}">
+                                <input type="text" id="timeStart" placeholder="起始日期" value="{{date('Y-m-d',strtotime('-1 day'))}}">
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                     <div class="one wide field">
                         <div class="ui calendar" id="rangeend">
                             <div class="ui input left">
-                                <input type="text" id="timeEnd" placeholder="结束日期" value="{{date('Y-m-d',strtotime('-2 day'))}}">
+                                <input type="text" id="timeEnd" placeholder="结束日期" value="{{date('Y-m-d',strtotime('-1 day'))}}">
                             </div>
                         </div>
                     </div>
