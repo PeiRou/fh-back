@@ -55,7 +55,7 @@ class New_LHC extends Excel
             $win = @$resData['win'];
             $he = isset($resData['ids_he'])?$resData['ids_he']:array();
             try{
-                $bunko = $this->BUNKO_LHC($openCode,$win,$gameId,$issue,$he);
+                $bunko = $this->BUNKO_LHC($openCode,$win,$gameId,$issue,$he,false);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['status' => 0,'bunko' => 0]);
@@ -1836,7 +1836,7 @@ class New_LHC extends Excel
     }
 
     //投注结算
-    protected function BUNKO_LHC($openCode,$win,$gameId,$issue,$he)
+    protected function BUNKO_LHC($openCode,$win,$gameId,$issue,$he,$excel=false)
     {
         $bunko_index = 0;
 
