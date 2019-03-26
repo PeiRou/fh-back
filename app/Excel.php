@@ -76,6 +76,8 @@ class Excel
                     $bunko = $i->bunko;
                     $winBunko = $i->bunko - $i->bet_money;
                 }
+                if(!isset($capUsers[$i->user_id]))
+                    continue;
                 $capUsers[$i->user_id] += $bunko; //累加馀额
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
