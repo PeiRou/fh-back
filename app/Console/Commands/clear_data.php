@@ -41,7 +41,7 @@ class clear_data extends Command
         echo "clear Date31:".$clearDate31.PHP_EOL;
         echo "clear Date62:".$clearDate62.PHP_EOL;
         //清-游客
-        $sql = "delete from users where testFlag = 1 and loginTime <='".date("Y-m-d H:i:s",strtotime('-1 day'))."' LIMIT 1000";
+        $sql = "delete from users where testFlag = 1 and loginTime <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         echo 'table bet :'.$res.PHP_EOL;
         if(!$redis->exists('clear-bet')){
