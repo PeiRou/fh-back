@@ -61,7 +61,7 @@ class clear_data extends Command
                     writeLog('clear','table insert into bet_his :fail');
                 }
                 $num++;
-                $redis->del('clear-bet');
+                $redis->setex('clear-bet',1,'on');
             }
         }
         writeLog('clear','clear ing ....');
@@ -76,7 +76,7 @@ class clear_data extends Command
                 $redis->setex('clear-bet-his',$this->time,$this->stoptime);
             }else{
                 $num++;
-                $redis->del('clear-bet-his');
+                $redis->setex('clear-bet-his',1,'on');
             }
         }
         //清-资金明细
@@ -146,7 +146,7 @@ class clear_data extends Command
                 $this->time = strtotime($this->stoptime) - time();
                 $redis->setex('clear-else',$this->time,$this->stoptime);
             }else{
-                $redis->del('clear-else');
+                $redis->setex('clear-else',1,'on');
                 $num++;
             }
         }
