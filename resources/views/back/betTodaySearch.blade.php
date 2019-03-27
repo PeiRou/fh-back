@@ -22,12 +22,12 @@
             <div class="ui mini form">
                 <div class="fields">
                     <input type="hidden" id="markSix" name="markSix" value="1">
-                    <div class="one wide field">
-                        <select class="ui dropdown" id="searchType" style='height:32px !important'>
-                            <option value="today">今日注单</option>
-                            <option value="yesterday">昨日注单</option>
-                        </select>
-                    </div>
+                    {{--<div class="one wide field">--}}
+                        {{--<select class="ui dropdown" id="searchType" style='height:32px !important'>--}}
+                            {{--<option value="today">今日注单</option>--}}
+                            {{--<option value="yesterday">昨日注单</option>--}}
+                        {{--</select>--}}
+                    {{--</div>--}}
                     <div class="one wide field">
                         <select class="ui dropdown" id="game" style='height:32px !important'>
                             <option value="">游戏选择</option>
