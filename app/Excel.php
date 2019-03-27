@@ -969,7 +969,7 @@ class Excel
                         }
                     }
                 }else{
-                    if($lose_losewin_rate<0 && $randNum<=8)                        //如果当日的输赢比低于0，则选平台最好的营利值
+                    if($lose_losewin_rate<0 && (in_array($randNum,array(2,9))))                        //如果当日的输赢比低于0，则选平台最好的营利值
                         $iLimit = 1;
                     foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
                         $ii++;
