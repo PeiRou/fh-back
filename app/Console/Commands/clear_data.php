@@ -43,7 +43,7 @@ class clear_data extends Command
         //清-游客
         $sql = "delete from users where testFlag = 1 and loginTime <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
-        echo 'table bet :'.$res.PHP_EOL;
+        writeLog('clear','clear users testFlag:'.$res);
         if(!$redis->exists('clear-bet')){
             $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
             if(empty($res)){
