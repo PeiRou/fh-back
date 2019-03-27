@@ -25,12 +25,12 @@ class clear_data extends Command
         $num = 0;
         $redis = Redis::connection();
         $redis->select(5);
-        $keyEx = 'clearing';
-        if($redis->exists($keyEx)){
+//        $keyEx = 'clearing';
+        if($redis->exists('clearing')){
             echo "ing...";
             return "";
         }
-        $redis->setex($keyEx,300,'on');
+        $redis->setex('clearing',300,'on');
         $this->stoptime = date('Y-m-d 23:59:59');                                 //卡redis时间
         $this->time = strtotime($this->stoptime) - time();                                     //卡redis时间
         $clearDate1 = date('Y-m-d 23:59:59',strtotime("-1 days"));        //1天
@@ -153,7 +153,7 @@ class clear_data extends Command
             $redis->setex('clearing',$this->time,$this->stoptime);
             writeLog('clear',$this->stoptime.'finished');
         }else{
-            $redis->setex($keyEx,1,'on');
+            $redis->setex('clearing',1,'on');
             writeLog('clear','have program num :'.$num.','.$this->stoptime.'continue...');
         }
         writeLog('clear','Ok');
