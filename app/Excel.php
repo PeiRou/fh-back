@@ -951,7 +951,7 @@ class Excel
             $iLimit = count($arrLimit)>=2?2:1;
             $ii = 0;
             $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
-            if($randNum<=5)
+            if($randNum<=8)
                 $iLimit = 1;
             if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
