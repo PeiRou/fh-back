@@ -54,12 +54,12 @@ class clear_data extends Command
                     $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
                     $res = DB::connection('mysql::write')->statement($sql);
                     writeLog('clear','table insert into bet_his :'.$res);
+                    $sql = "DELETE FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
+                    $res = DB::connection('mysql::write')->statement($sql);
+                    writeLog('clear','table delete bet :'.$res);
                 }catch (\Exception $e){
                     writeLog('clear','table insert into bet_his :fail');
                 }
-                $sql = "DELETE FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
-                $res = DB::connection('mysql::write')->statement($sql);
-                echo 'table bet :'.$res.PHP_EOL;
                 $num++;
                 $redis->del('clear-bet');
             }
