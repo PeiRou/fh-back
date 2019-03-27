@@ -38,7 +38,7 @@ class Games extends Model
         'pk10' => 'bjpk10',     //北京赛车
         'jsft' => 'msft',       //秒速飞艇
         'jsssc' => 'msssc',     //秒速时时彩
-        'cqssc' => 'cqssc',     //秒速时时彩
+        'cqssc' => 'cqssc',     //重庆时时彩
         'xydd' => '',           //幸运蛋蛋
         'lhc' => 'lhc',         //香港六合彩
         'xync' => 'cqxync',     //重庆幸运农场
@@ -52,7 +52,7 @@ class Games extends Model
         'fc3d' => 'fc3d',       //福彩3D
         'tjssc' => '',          //天津时时彩
         'xjssc' => 'xjssc',     //新疆时时彩
-        'xyft' => '',           //幸运飞艇
+        'xyft' => 'xyft',           //幸运飞艇
         'paoma' => 'paoma',     //香港跑马
         'pk10nn' => 'pknn',     //PK10牛牛
         'msnn' => 'mssc',       //秒速牛牛
@@ -117,7 +117,7 @@ class Games extends Model
         30 => 'fc3d',
         5 => '',
         4 => 'xjssc',
-        55 => '',
+        55 => 'xyft',
         99 => 'paoma',
         90 => 'pknn',
         91 => 'mssc',
