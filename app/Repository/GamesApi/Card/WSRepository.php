@@ -58,8 +58,8 @@ class WSRepository extends BaseRepository
                 'Accounts' => $v['username'],   //玩家账号
                 'AllBet' => abs($v['netPnl']),//总下注
                 'Profit' => $v['netPnl'],       //盈利
-                'GameStartTime' => $v['betTime'],//游戏开始时间
-                'GameEndTime' => $v['endTime'],  //游戏结束时间
+                'GameStartTime' => $v['betTime'] ?? $v['endTime'],//游戏开始时间
+                'GameEndTime' => $v['endTime'] ?? $v['betTime'],  //游戏结束时间
             ];
         }
         return $this->insertDB($arr, $table);

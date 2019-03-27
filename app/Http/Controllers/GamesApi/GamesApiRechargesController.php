@@ -29,12 +29,11 @@ class GamesApiRechargesController extends Controller
                 in_array($k, $columns) && !empty($v) && $sql->where($k, $v);
             }
         });
-
+        $resCount = $model->count();
         if(isset($request->start, $request->length))
             $model->skip($request->start)->take($request->length);
 
-        $resCount = $model->count();
-        $res = $model->orderBy('id', 'asc')->get();
+        $res = $model->orderBy('id', 'desc')->get();
         $g_ids = GamesApi::pluck('name','g_id')->toArray();
         return DataTables::of($res)
             ->editColumn('control',function ($res){

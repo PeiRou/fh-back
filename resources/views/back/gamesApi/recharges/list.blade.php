@@ -43,6 +43,9 @@
                                 @endforeach
                         </select>
                     </div>
+                    <div class="two wide field" style="width:150px !important">
+                        <input type="text" id="username" name="username" placeholder='账号'>
+                    </div>
                     <div class="field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询</button>
                     </div>

@@ -20,6 +20,7 @@ $(function () {
             data : function (d) {
                 d.code = $('#code').val();
                 d.g_id = $('#g_id').val();
+                d.username = $('#username').val();
             }
         },
         columns: [
