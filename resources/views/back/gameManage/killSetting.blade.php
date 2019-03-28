@@ -21,7 +21,9 @@
     </div>
     <div class="table-content">
         <div class="contenr-title">
-            警告：杀率计算方式为商业机密，杀率比例不能调整范围外，此举会造成用户流失。
+            警告：
+                1.杀率计算方式为商业机密。
+                2.智慧模式会自动调节长龙不正常现象，而传统模式会以平台最大营利去选杀号，此举会造成长期用户留不住，请慎选。
         </div>
         <table id="gamesTable" class="ui small selectable celled striped table" cellspacing="0" width="100%">
             <thead>
@@ -34,7 +36,8 @@
                 <th>今日赢</th>
                 <th>今日营利比</th>
                 <th>保留营利比</th>
-                <th width="160">操作</th>
+                <th>智慧杀率状态</th>
+                <th width="200">操作</th>
             </tr>
             </thead>
         </table>

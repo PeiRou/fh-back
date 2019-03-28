@@ -45,6 +45,19 @@ $(function () {
                     var rate = (data.kill_rate * 100).toFixed(0);
                     return rate+'%';
                 }},
+            {data:function(data){
+                    switch (parseInt(data.is_ai)){
+                        case 1:
+                            var txt = "智慧模式";
+                            clsName = 1;      //绿色
+                            break;
+                        case 0:
+                            var txt = "传统模式";
+                            clsName = 3;      //红色
+                            break;
+                    }
+                    return '<span class="status-'+clsName+'">'+txt+'</span>';
+                }},
             {data:'control'},
             // {data:function (data) {
             //         litxt = "";
@@ -148,7 +161,6 @@ function closeKill(id) {
         }
     });
 }
-
 //开启杀率
 function openKill(id) {
     jc = $.confirm({
@@ -164,6 +176,91 @@ function openKill(id) {
                 action: function(){
                     $.ajax({
                         url:'/action/admin/killStatus',
+                        data: {
+                            id:id,
+                            type:1
+                        },
+                        type:'post',
+                        dataType:'json',
+                        success:function (data) {
+                            if(data.status == true){
+                                $('#gamesTable').DataTable().ajax.reload(null,false)
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
+
+//关闭杀率
+function closeKillai(id) {
+    jc = $.confirm({
+        title: '提示',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '确定要关闭这个彩种的智慧模式吗?',
+        buttons: {
+            confirm: {
+                text:'确定关闭',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/action/admin/killaiStatus',
+                        data: {
+                            id:id,
+                            type:0
+                        },
+                        type:'post',
+                        dataType:'json',
+                        success:function (data) {
+                            if(data.status == true){
+                                $('#gamesTable').DataTable().ajax.reload(null,false)
+                            }
+                        },
+                        error:function (e) {
+                            if(e.status == 403)
+                            {
+                                Calert('您没有此项权限！无法继续！','red')
+                            }
+                        }
+                    });
+                }
+            },
+            cancel:{
+                text:'取消'
+            }
+        }
+    });
+}
+
+
+//开启智慧杀率
+function openKillai(id) {
+    jc = $.confirm({
+        title: '提示',
+        theme: 'material',
+        type: 'red',
+        boxWidth:'25%',
+        content: '确定要开启这个彩种的智慧模式吗?',
+        buttons: {
+            confirm: {
+                text:'确定开启',
+                btnClass: 'btn-red',
+                action: function(){
+                    $.ajax({
+                        url:'/action/admin/killaiStatus',
                         data: {
                             id:id,
                             type:1
