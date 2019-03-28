@@ -36,7 +36,7 @@ class BUNKO_lhc extends Command
                 return 'ing';
             }
             $redis->setex($key,80,'ing');
-            $update = DB::table($table)->where('id', $get->id)->update([
+            $update = DB::table($table)->where('id', $get->id)->where('bunko', 2)->update([
                 'bunko' => 3
             ]);
             if($update)
