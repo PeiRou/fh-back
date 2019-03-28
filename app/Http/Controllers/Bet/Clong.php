@@ -33,6 +33,7 @@
             'twxyft' => array('id'=>804,'type'=>'car'),     //台湾幸运飞艇
             'sfsc' => array('id'=>901,'type'=>'car'),     //三分赛车
             'sfssc' => array('id'=>902,'type'=>'car'),     //三分时时彩
+            'xyft' => array('id'=>55,'type'=>'car'),     //幸运飞艇
         );
         //开奖第一行
         private $clong_kaijian1 = array(
