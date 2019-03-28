@@ -35,11 +35,12 @@ class BUNKO_lhc extends Command
             if($redis->exists($key)){
                 return 'ing';
             }
-                $redis->setex($key,60,'ing');
-//            $update = DB::table($table)->where('id', $get->id)->update([
-//                'bunko' => 2
-//            ]);
-            event(new RunLHC($get->open_num,$get->issue,$this->gameId,$get->id)); //新--结算
+            $redis->setex($key,80,'ing');
+            $update = DB::table($table)->where('id', $get->id)->update([
+                'bunko' => 3
+            ]);
+            if($update)
+                event(new RunLHC($get->open_num,$get->issue,$this->gameId,$get->id)); //新--结算
 //            if($update)
 //                event(new RunLHC($get->open_num,$get->issue,$this->gameId,$get->id)); //新--结算
         }
