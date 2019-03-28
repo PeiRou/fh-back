@@ -484,9 +484,75 @@ class ReportDataController extends Controller
         ];
     }
 
-    /**
-     * @param Request $request
-     */
+    public function dayTc(Request $request)
+    {
+        if(isset($request->startTime,$request->endTime)){
+            $request->startTime = date('Y-m-d', strtotime($request->startTime));
+            $request->endTime = date('Y-m-d', strtotime($request->endTime));
+        }
+        $res = GamesApi::tc_betInfoData($request);
+        $resCount = GamesApi::tc_betInfoCount($request);
+        $totalArr = GamesApi::tc_betInfoTotal($request);
+        return [
+            'res' => $res,
+            'count' => $resCount,
+            'totalArr' => $totalArr,
+        ];
+    }
+
+    public function TcData(Request $request)
+    {
+        isset($request->startTime) && $request->startTime = date('Y-m-d', strtotime($request->startTime));
+        isset($request->endTime) && $request->endTime = date('Y-m-d', strtotime($request->endTime));
+        if(isset($request->startTime) && ($request->startTime == date('Y-m-d')) && ($request->startTime == $request->endTime))
+            return $this->dayTc($request);
+
+        $model = DB::table('report_tc');
+        isset($request->startTime, $request->endTime) &&
+        $model->whereBetween('date',[$request->startTime, $request->endTime]);
+        $totalModel = clone $model;
+        $totalArr = $totalModel->select(DB::raw('SUM(bet_count) AS `bet_count`,
+                SUM(user_count) AS user_count,
+                SUM(AllBet) AS AllBet,
+                SUM(Profit) AS Profit,
+                SUM(validBetAmount) AS validBetAmount,
+                productType,
+                SUM(upMoney) AS upMoney,
+                SUM(downMoney) AS downMoney'))->first();
+        $resCount = $model->count();
+        isset($request->start, $request->length) &&
+        $model->skip($request->start)->take($request->length);
+        $res = $model->get();
+        return [
+            'res' => $res,
+            'count' => $resCount,
+            'totalArr' => $totalArr,
+        ];
+
+    }
+
+    public function Tc(Request $request)
+    {
+        $arr = $this->TcData($request);
+        return DataTables::of($arr['res'])
+            ->editColumn('productType',function ($v){
+                return \App\GamesList::$productType[$v->productType] ?? '';
+            })
+            ->setTotalRecords($arr['count'])
+            ->with('totalArr',$arr['totalArr'])
+            ->skipPaging()
+            ->make(true);
+    }
+
+    public function GamesApi(Request $request)
+    {
+        if($request->dataTag == 'qp')
+            return $this->Card($request);
+        if($request->dataTag == 'tc')
+            return $this->Tc($request);
+
+    }
+
     public function Browse(Request $request){
         $params = $request->all();
         $startTime = $params['startTime'] ?? date('Y-m-d');

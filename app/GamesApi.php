@@ -152,4 +152,87 @@ class GamesApi extends Model
         $sql = 'SELECT * FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a  ORDER BY `GameStartTime` DESC '.$limit;
         return DB::select($sql);
     }
+
+    //获取天成游戏报表的数据
+    public static function tc_betInfoData($param)
+    {
+        return DB::select(static::tc_betInfoSql($param));
+    }
+    //总数
+    public static function tc_betInfoCount($param)
+    {
+        return DB::select(' SELECT COUNT(*) AS `count` FROM ('.static::tc_betInfoSql($param, 0).') as b ')[0]->count;
+    }
+    //总记
+    public static function tc_betInfoTotal($param)
+    {
+        $sql =' SELECT SUM(bet_count) AS `bet_count`,
+                SUM(user_count) AS user_count,
+                SUM(AllBet) AS AllBet,
+                SUM(Profit) AS Profit,
+                SUM(validBetAmount) AS validBetAmount,
+                productType,
+                SUM(upMoney) AS upMoney,
+                SUM(downMoney) AS downMoney FROM ( '.static::tc_betInfoSql($param, 0).' ) as b ';
+        return DB::select($sql)[0];
+    }
+
+    public static function tc_betInfoSql($param, $limit = 1, $column = 0, $group = true)
+    {
+        ($limit &&
+        isset($param->start, $param->length) &&
+        $limit = " LIMIT {$param->start}, {$param->length} ") ||
+        $limit = '';
+
+        $columns = [
+            0 => 'COUNT(AllBet > 0 OR null) AS `bet_count`,
+                COUNT(distinct username) AS user_count,
+                SUM(AllBet) AS AllBet,
+                SUM(Profit) AS Profit,
+                SUM(validBetAmount) AS validBetAmount,
+                productType,
+                SUM(upMoney) AS upMoney,
+                SUM(downMoney) AS downMoney',
+        ];
+        $column = $columns[$column];
+
+        $where_bet = ' 1 ';
+        $where_list = ' 1 ';
+        if(isset($param->startTime,$param->endTime)){
+            $param->startTime = date('Y-m-d', strtotime($param->startTime));
+            $param->endTime = date('Y-m-d', strtotime($param->endTime));
+            $where_bet .= " AND `GameStartTime` BETWEEN '{$param->startTime} 00:00:00' AND '{$param->endTime} 23:59:59' ";
+            $where_list .= " AND `date` BETWEEN '{$param->startTime} 00:00:00' AND '{$param->endTime} 23:59:59' ";
+        }
+
+        $sql = "select 
+                {$column}
+                FROM (
+                    SELECT 
+                    Accounts AS username,
+                    AllBet,
+                    Profit,
+                    GameStartTime AS `date`,
+                    validBetAmount,
+                    productType,
+                    0 AS upMoney,
+                    0 AS downMoney
+                    FROM jq_wsgj_bet 
+                    WHERE {$where_bet}
+                    UNION ALL
+                    SELECT 
+                    username,
+                    0 AS AllBet,
+                    0 AS Profit,
+                    `date`,
+                    0 AS validBetAmount,
+                    productType,
+                    (CASE WHEN `type` = 1 THEN `amount` ELSE 0 END) AS upMoney,
+                    (CASE WHEN `type` = 2 THEN `amount` ELSE 0 END) AS downMoney
+                    FROM jq_wsgjlist
+                    WHERE {$where_list}
+                ) AS a
+                ".($group ? 'GROUP BY productType' : '')." {$limit} ";
+        return $sql;
+    }
 }
