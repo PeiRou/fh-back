@@ -934,63 +934,70 @@ class Excel
                     $this->setKillIssueNum($table,$issue,$dataExcGame['excel_num'],$openCode,$excBunko);
             }
         }
-//        $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = ".$gameId." AND issue ='{$issue}') and game_id = ".$gameId." AND issue ='{$issue}' LIMIT 1";
-//        $tmp = DB::select($aSql);
-//        foreach ($tmp as&$value)
-//            $openCode = $value->opennum;
-        $exeData = DB::table('excel_game')->select(DB::raw('opennum,issue,bunko'))->where('game_id',$gameId)->where('issue',$issue)->groupBy('issue','excel_num')->get();
-        writeLog('New_Kill', $table.' :'.$issue.' origin-'.json_encode($exeData));
-        $arrLimit = array();
-        foreach ($exeData as $key => $val) {
-            $arrLimit[(string)$val->bunko] = $val->opennum;
-        }
-        ksort($arrLimit);                //将计算后的杀率值，由小到大排序
-        writeLog('New_Kill', $table.' :'.$issue.' s-to-b-'.json_encode($arrLimit));
-
-        if($exeBase->is_open==1){
-            $iLimit = count($arrLimit)>=2?2:1;
-            $ii = 0;
-            $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
-            if($randNum<=5)
-                $iLimit = 1;
-            if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
-                $total = $exeBase->bet_lose + $exeBase->bet_win;
-                $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
-                writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
-                $randRate = rand(1000,1999)/1000;
-                if($lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
+        //开启智慧杀率
+        if(isset($exeBase->is_ai)&&$exeBase->is_ai){
+            if($exeBase->is_open==1){
+                $exeData = DB::table('excel_game')->select(DB::raw('opennum,issue,bunko'))->where('game_id',$gameId)->where('issue',$issue)->groupBy('issue','excel_num')->get();
+                writeLog('New_Kill', $table.' :'.$issue.' origin-'.json_encode($exeData));
+                $arrLimit = array();
+                foreach ($exeData as $key => $val) {
+                    $arrLimit[(string)$val->bunko] = $val->opennum;
+                }
+                ksort($arrLimit);                //将计算后的杀率值，由小到大排序
+                writeLog('New_Kill', $table.' :'.$issue.' s-to-b-'.json_encode($arrLimit));
+                $iLimit = count($arrLimit)>=2?2:1;
+                $ii = 0;
+                $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
+                if($randNum<=5)
+                    $iLimit = 1;
+                if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
+                    $total = $exeBase->bet_lose + $exeBase->bet_win;
+                    $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
+                    writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
+                    $randRate = rand(1000,1999)/1000;
+                    if($lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
 //                    $openCode = $this->opennum($table);
-                    krsort($arrLimit);
-                    writeLog('New_Kill', $table.' :'.$issue.' b-to-s-'.json_encode($arrLimit));
+                        krsort($arrLimit);
+                        writeLog('New_Kill', $table.' :'.$issue.' b-to-s-'.json_encode($arrLimit));
+                        foreach ($arrLimit as $key2 =>$va2){
+                            $ii++;
+                            if($ii==$iLimit) {
+                                $openCode = $va2;
+                                break;
+                            }
+                        }
+                    }else{
+                        if($lose_losewin_rate<0 && (in_array($randNum,array(2,9))))                        //如果当日的输赢比低于0，则选平台最好的营利值
+                            $iLimit = 1;
+                        foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
+                            $ii++;
+                            if($ii==$iLimit) {
+                                $openCode = $va2;
+                                break;
+                            }
+                        }
+                    }
+                }else{                                        //如果当日的尚未计算，则给中间值
                     foreach ($arrLimit as $key2 =>$va2){
                         $ii++;
-                        if($ii==$iLimit) {
-                            $openCode = $va2;
-                            break;
-                        }
-                    }
-                }else{
-                    if($lose_losewin_rate<0 && (in_array($randNum,array(2,9))))                        //如果当日的输赢比低于0，则选平台最好的营利值
-                        $iLimit = 1;
-                    foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
-                        $ii++;
-                        if($ii==$iLimit) {
+                        if($ii==$iLimit){
                             $openCode = $va2;
                             break;
                         }
                     }
                 }
-            }else{                                        //如果当日的尚未计算，则给中间值
-                foreach ($arrLimit as $key2 =>$va2){
-                    $ii++;
-                    if($ii==$iLimit){
-                        $openCode = $va2;
-                        break;
-                    }
-                }
+            }else {
+                $openCode = '';
             }
-        }else {
-            $openCode = '';
+        }else{  //传统模式
+            if($exeBase->is_open==1) {
+                $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = ".$gameId." AND issue ='{$issue}') and game_id = ".$gameId." AND issue ='{$issue}' LIMIT 1";
+                $tmp = DB::select($aSql);
+                foreach ($tmp as&$value)
+                    $openCode = $value->opennum;
+            }else{
+                $openCode = '';
+            }
         }
         writeLog('New_Kill', $table.' :'.$openCode);
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
