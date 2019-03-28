@@ -17,7 +17,7 @@ class Excel
      * @param string $gameName
      * @return int
      */
-    public function updateUserMoney($gameId,$issue,$gameName=''){
+    public function updateUserMoney($gameId,$issue,$gameName='',$table='',$tableid=0){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',1)->where('bunko','>',0)->groupBy('user_id')->get();
         $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds','order_id','bet_money','unfreeze_money','nn_view_money')->where('game_id',$gameId)->where('issue',$issue)->where('status',1)->where('bunko','>',0)->get();
         if($get){
@@ -76,6 +76,8 @@ class Excel
                     $bunko = $i->bunko;
                     $winBunko = $i->bunko - $i->bet_money;
                 }
+                if(!isset($capUsers[$i->user_id]))
+                    continue;
                 $capUsers[$i->user_id] += $bunko; //累加馀额
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
@@ -113,6 +115,11 @@ class Excel
         }
         //普通模式才会退水
         if(env('AGENT_MODEL',1) == 1) {
+            if(!empty($table)&&!empty($tableid)){
+                $reWater = DB::table($table)->where('id',$tableid)->where('returnwater',0)->first();
+                if(empty($reWater))
+                    return 0;
+            }
             //退水
             $this->reBackUser($gameId, $issue, $gameName);
         }
@@ -950,7 +957,8 @@ class Excel
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                 writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
-                if($lose_losewin_rate>$exeBase->kill_rate){            //如果当日的输赢比高于杀率，则选给用户吃红
+                $randRate = rand(1000,1999)/1000;
+                if($lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
 //                    $openCode = $this->opennum($table);
                     krsort($arrLimit);
                     writeLog('New_Kill', $table.' :'.$issue.' b-to-s-'.json_encode($arrLimit));
@@ -962,6 +970,8 @@ class Excel
                         }
                     }
                 }else{
+                    if($lose_losewin_rate<0 && (in_array($randNum,array(2,9))))                        //如果当日的输赢比低于0，则选平台最好的营利值
+                        $iLimit = 1;
                     foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
                         $ii++;
                         if($ii==$iLimit) {

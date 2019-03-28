@@ -33,7 +33,7 @@ $(function () {
             pm: 'PM'
         },
         minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 99),
-        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2)
+        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1)
     });
     $('#rangeend').calendar({
         type: 'date',
@@ -57,7 +57,7 @@ $(function () {
             pm: 'PM'
         },
         minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 99),
-        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2)
+        maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1)
     });
 
     dataTable = $('#betHistoryTable').DataTable({

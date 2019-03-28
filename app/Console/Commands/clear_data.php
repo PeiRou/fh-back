@@ -25,15 +25,15 @@ class clear_data extends Command
         $num = 0;
         $redis = Redis::connection();
         $redis->select(5);
-        $keyEx = 'clearing';
-        if($redis->exists($keyEx)){
+//        $keyEx = 'clearing';
+        if($redis->exists('clearing')){
             echo "ing...";
             return "";
         }
-        $redis->setex($keyEx,60,'on');
+        $redis->setex('clearing',300,'on');
         $this->stoptime = date('Y-m-d 23:59:59');                                 //卡redis时间
         $this->time = strtotime($this->stoptime) - time();                                     //卡redis时间
-        $clearDate1 = date('Y-m-d 23:59:59',strtotime("-1 days")-300);        //1天
+        $clearDate1 = date('Y-m-d 23:59:59',strtotime("-1 days"));        //1天
         $clearDate31 = date('Y-m-d 23:59:59',strtotime("-31 days")-300);        //31天
         $clearDate62 = date('Y-m-d 23:59:59',strtotime("-62 days")-300);        //62天
         $clearDate93 = date('Y-m-d 23:59:59',strtotime("-93 days")-300);        //93天
@@ -41,12 +41,12 @@ class clear_data extends Command
         echo "clear Date31:".$clearDate31.PHP_EOL;
         echo "clear Date62:".$clearDate62.PHP_EOL;
         //清-游客
-        $sql = "delete from users where testFlag = 1 and loginTime <='".date("Y-m-d H:i:s",strtotime('-1 day'))."' LIMIT 1000";
+        $sql = "delete from users where testFlag = 1 and loginTime <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
-        echo 'table bet :'.$res.PHP_EOL;
+        writeLog('clear','clear users testFlag:'.json_encode($res));
         if(!$redis->exists('clear-bet')){
             $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
-            $redis->setex('clear-bet',50,'on');
+            writeLog('clear','clear bet :'.json_encode($res));
             if(empty($res)){
                 $redis->setex('clear-bet',$this->time,$this->stoptime);
             }else{
@@ -54,12 +54,12 @@ class clear_data extends Command
                     $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
                     $res = DB::connection('mysql::write')->statement($sql);
                     writeLog('clear','table insert into bet_his :'.$res);
+                    $sql = "DELETE FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
+                    $res = DB::connection('mysql::write')->statement($sql);
+                    writeLog('clear','table delete bet :'.$res);
                 }catch (\Exception $e){
                     writeLog('clear','table insert into bet_his :fail');
                 }
-                $sql = "DELETE FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
-                $res = DB::connection('mysql::write')->statement($sql);
-                echo 'table bet :'.$res.PHP_EOL;
                 $num++;
                 $redis->setex('clear-bet',1,'on');
             }
@@ -76,7 +76,7 @@ class clear_data extends Command
                 $redis->setex('clear-bet-his',$this->time,$this->stoptime);
             }else{
                 $num++;
-                $redis->setex('clear-bet',1,'on');
+                $redis->setex('clear-bet-his',1,'on');
             }
         }
         //清-资金明细
@@ -144,8 +144,9 @@ class clear_data extends Command
             $num_else = $this->clrGameTables('game_xylhc', $clearDate62, $num_else);
             if($num_else==0){
                 $this->time = strtotime($this->stoptime) - time();
-                $redis->setex('clear-else',$this->time,'on');
+                $redis->setex('clear-else',$this->time,$this->stoptime);
             }else{
+                $redis->setex('clear-else',1,'on');
                 $num++;
             }
         }
@@ -153,7 +154,7 @@ class clear_data extends Command
             $redis->setex('clearing',$this->time,$this->stoptime);
             writeLog('clear',$this->stoptime.'finished');
         }else{
-            $redis->setex($keyEx,1,'on');
+            $redis->setex('clearing',1,'on');
             writeLog('clear','have program num :'.$num.','.$this->stoptime.'continue...');
         }
         writeLog('clear','Ok');
