@@ -506,6 +506,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/changeGameStatus', 'Back\SrcGameController@changeGameStatus')->middleware('add-log-handle')->name('ac.ad.changeGameStatus');//修改游戏开启和停用状态
     Route::post('/action/admin/saveOddsRebate', 'Back\SrcGameController@saveOddsRebate')->middleware('add-log-handle')->name('ac.ad.saveOddsRebate');//修改游戏开启和停用状态
     Route::post('/action/admin/killStatus', 'Back\SrcGameController@killStatus')->middleware(['check-permission','add-log-handle'])->name('game.killStatus'); //杀率开关
+    Route::post('/action/admin/killaiStatus', 'Back\SrcGameController@killaiStatus')->middleware(['check-permission','add-log-handle'])->name('game.killStatus'); //杀率开关
     Route::post('/action/admin/editKillSetting', 'Back\SrcGameController@editKillSetting')->middleware(['check-permission','add-log-handle'])->name('game.editKillSetting'); //修改杀率保留营利比
     Route::post('/action/admin/addAgentOdds', 'Back\SrcGameController@addAgentOdds');//添加代理赔率
     Route::post('/action/admin/editAgentOdds', 'Back\SrcGameController@editAgentOdds');//修改代理赔率
