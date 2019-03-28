@@ -2,20 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Agent;
-use App\Bets;
-use App\Capital;
-use App\Drawing;
-use App\Recharges;
-use App\ReportAgent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-//棋牌投注报表
-class CardReport implements ShouldQueue
+//TC投注报表
+class TcReport implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -29,15 +23,14 @@ class CardReport implements ShouldQueue
     public function handle()
     {
         try{
-            $repo = new \App\Repository\GamesApi\Card\Report($this->aDateTime);
+            $repo = new \App\Repository\GamesApi\Card\TcReport($this->aDateTime);
             $repo->getRes();
             $repo->createData();
             $repo->insertData();
         }catch (\Exception $e){
             writeLog('tcReport', print_r($e->getMessage().$e->getFile().'('.$e->getLine().')', 1));
-            writeLog('tcReport', print_r($e->getPrevious(), 1));
-            echo 'error:'.$this->aDateTime;
+            writeLog('tcReport', print_r($e->getTraceAsString(), 1));
+            echo 'error:'.$e->getMessage().$this->aDateTime;
         }
-
     }
 }

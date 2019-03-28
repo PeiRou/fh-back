@@ -58,4 +58,27 @@ class SrcReportController extends Controller
             'msg' => "已生成！"
         ]);
     }
+    //生成TC投注报表
+    public function addReportTc(Request $request)
+    {
+        $aParam = [
+            'startTime' => $request->startDay,
+            'endTime' => $request->startDay
+        ];
+        Artisan::call('TcReport:get',$aParam);
+        return response()->json([
+            'status' => true,
+            'msg' => "已生成！"
+        ]);
+    }
+
+    //生成第三方统计报表
+    public function addReportGamesApi(Request $request)
+    {
+        if($request->type == 'qp'){
+            return $this->addReportCard($request);
+        }else if($request->type == 'tc'){
+            return $this->addReportTc($request);
+        }
+    }
 }

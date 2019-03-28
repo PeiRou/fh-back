@@ -1,4 +1,4 @@
-<form id="addAgentForm" class="ui mini form" action="{{ url('/action/admin/report/addReportCard') }}" style="height: 320px;">
+<form id="addAgentForm" class="ui mini form" action="{{ url('/action/admin/report/addReportGamesApi') }}" style="height: 320px;">
     <div class="field" id="login_date-div">
         <label>时间</label>
         <div class="ui input icon">
@@ -10,10 +10,29 @@
             </div>
         </div>
     </div>
+    <div class="field" id="login_date-div">
+        <label>类型</label>
+        <div class="ui input icon">
+            <div class="ui calendar" id="rangestart1">
+                <select class="ui dropdown" name="type" id="type" style='height:32px !important'>
+                    <option selected="selected" value="">请选择类型</option>
+                </select>
+            </div>
+        </div>
+    </div>
 </form>
+<script>
+
+</script>
 <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
 <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
 <script>
+    $('#gameTabs .item').each(function(k, v){
+        var value = $(v).attr('data-tab');
+        var info = $(v).html();
+        var selected = value == dataTag ? 'selected' : '';
+        $('#type').append('<option '+selected+' value="'+value+'">'+info+'</option>');
+    })
     $('#addAgentForm').formValidation({
         framework: 'semantic',
         icon: {
@@ -34,6 +53,7 @@
         e.preventDefault();
         var $form = $(e.target),
             fv    = $form.data('formValidation');
+        if(!$('#type').val()) return alert('请选择类型');
         $.ajax({
             url: $form.attr('action'),
             type: 'POST',

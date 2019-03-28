@@ -35,7 +35,7 @@ class Report{
         $this->res = $GamesApi->card_betInfoData($this->param, $this->sqlArr);
     }
     private function insertData(){
-        $table = DB::table('report_card');
+        $table = DB::table('jq_report_card');
         if(count($this->iData)){
             $table->where('date', $this->param->aTime)->delete();
             if($table->insert($this->iData))
