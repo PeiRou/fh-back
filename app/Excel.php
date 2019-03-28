@@ -991,10 +991,16 @@ class Excel
             }
         }else{  //传统模式
             if($exeBase->is_open==1) {
-                $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = ".$gameId." AND issue ='{$issue}') and game_id = ".$gameId." AND issue ='{$issue}' LIMIT 1";
-                $tmp = DB::select($aSql);
-                foreach ($tmp as&$value)
-                    $openCode = $value->opennum;
+                $total = $exeBase->bet_lose + $exeBase->bet_win;
+                $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
+                writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
+                if($lose_losewin_rate<=($exeBase->kill_rate)) {            //如果当日的输赢比高于杀率，则选给用户吃红
+                    $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = " . $gameId . " AND issue ='{$issue}') and game_id = " . $gameId . " AND issue ='{$issue}' LIMIT 1";
+                    $tmp = DB::select($aSql);
+                    foreach ($tmp as &$value)
+                        $openCode = $value->opennum;
+                }else
+                    $openCode = '';
             }else{
                 $openCode = '';
             }
