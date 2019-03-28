@@ -50,8 +50,8 @@ class TcReport{
 
     public function insertData()
     {
-        DB::table('report_tc')->where('date', $this->param->aTime)->delete();
-        DB::table('report_tc')->insert($this->iData);
+        DB::table('jq_report_tc')->where('date', $this->param->aTime)->delete();
+        DB::table('jq_report_tc')->insert($this->iData);
     }
 
     public function __call($name, $arguments){

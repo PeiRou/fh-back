@@ -29,7 +29,7 @@ class TcReport implements ShouldQueue
             $repo->insertData();
         }catch (\Exception $e){
             writeLog('tcReport', print_r($e->getMessage().$e->getFile().'('.$e->getLine().')', 1));
-            writeLog('tcReport', print_r($e->getPrevious(), 1));
+            writeLog('tcReport', print_r($e->getTraceAsString(), 1));
             echo 'error:'.$e->getMessage().$this->aDateTime;
         }
     }

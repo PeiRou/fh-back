@@ -451,6 +451,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 
     Route::post('/action/admin/report/addStatistics', 'Back\SrcReportController@addStatistics')->middleware(['check-permission','add-log-handle'])->name('report.addStatistics'); //添加操作报表
     Route::post('/action/admin/report/addReportCard', 'Back\SrcReportController@addReportCard'); // 手动生成棋牌报表
+    Route::post('/action/admin/report/addReportGamesApi', 'Back\SrcReportController@addReportGamesApi'); // 手动生成第三方游戏报表
 
     Route::post('/action/admin/addBank', 'Back\SrcPayController@addBank')->middleware('add-log-handle')->name('ac.ad.addBank');//添加银行
     Route::post('/action/admin/addLevel', 'Back\SrcPayController@addLevel')->middleware('add-log-handle')->name('ac.ad.addLevel');//添加层级
@@ -686,7 +687,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/returnVisit','Back\Ajax\ModalController@returnVisit')->middleware('check-permission')->name('member.returnVisit.view'); //会员回访用户-模板
     Route::get('/back/modal/exportUser','Back\Ajax\ModalController@exportUser')->middleware('check-permission')->name('member.exportUser.view'); //导出用户数据-模板
     Route::get('/back/modal/addStatistics','Back\Ajax\ModalController@addStatistics')->middleware('check-permission')->name('report.addStatistics.view'); //操作报表添加-模板
-    Route::get('/back/modal/addReportCard','Back\Ajax\ModalController@addReportCard'); //操作报表添加-模板
+    Route::get('/back/modal/addReportCard','Back\Ajax\ModalController@addReportCard'); //生成棋牌报表-模板
+    Route::get('/back/modal/addReportGamesApi','Back\Ajax\ModalController@addReportGamesApi'); //生成Tc报表-模板
     Route::get('/back/modal/addAgentSettleDomain', 'Back\Ajax\ModalController@addAgentSettleDomain'); //添加代理专属域名
     Route::get('/back/modal/editAgentSettleDomain/{id}', 'Back\Ajax\ModalController@editAgentSettleDomain'); //修改代理专属域名
     Route::get('/back/modal/gameAgentOddsAdd', 'Back\Ajax\ModalController@gameAgentOddsAdd'); //添加代理赔率-模板

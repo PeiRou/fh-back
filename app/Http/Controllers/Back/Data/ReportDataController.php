@@ -430,7 +430,7 @@ class ReportDataController extends Controller
             $request->endTime = date('Y-m-d', strtotime($request->endTime));
         if(isset($request->startTime) && ($request->startTime == date('Y-m-d')) && ($request->startTime == $request->endTime))
             return $this->dayCard($request);
-        $table = DB::table('report_card')->where(function($aSql) use($request){
+        $table = DB::table('jq_report_card')->where(function($aSql) use($request){
             if(isset($request->startTime) && isset($request->endTime))
                 $aSql->whereBetween('date', [$request->startTime, $request->endTime]);
         });
@@ -507,7 +507,7 @@ class ReportDataController extends Controller
         if(isset($request->startTime) && ($request->startTime == date('Y-m-d')) && ($request->startTime == $request->endTime))
             return $this->dayTc($request);
 
-        $model = DB::table('report_tc');
+        $model = DB::table('jq_report_tc');
         isset($request->startTime, $request->endTime) &&
         $model->whereBetween('date',[$request->startTime, $request->endTime]);
         $totalModel = clone $model;
