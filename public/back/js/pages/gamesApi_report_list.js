@@ -21,6 +21,7 @@ function createTable() {
             },
             dataSrc:function(e){
                 if(e.data.length <= 0) return '';
+                $('#dataTable1 tfoot').remove();
                 if(dataTag == 'qp'){
                     $('#dataTable1').append(`<tfoot>
                     <tr>
