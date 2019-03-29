@@ -490,7 +490,8 @@ class ReportDataController extends Controller
             $request->startTime = date('Y-m-d', strtotime($request->startTime));
             $request->endTime = date('Y-m-d', strtotime($request->endTime));
         }
-        $res = GamesApi::tc_betInfoData($request);
+        $res = \App\Repository\GamesApi\Card\TcReport::getData($request);
+        foreach ($res as &$v) $v = (object)$v;
         $resCount = GamesApi::tc_betInfoCount($request);
         $totalArr = GamesApi::tc_betInfoTotal($request);
         return [
@@ -518,6 +519,8 @@ class ReportDataController extends Controller
                 SUM(validBetAmount) AS validBetAmount,
                 productType,
                 username,
+                agent_account,
+                agent_name,
                 SUM(upMoney) AS upMoney,
                 SUM(downMoney) AS downMoney'));
         $totalModel = clone $model;
@@ -647,6 +650,9 @@ class ReportDataController extends Controller
             })
             ->editColumn('control',function ($v){
                 return '<span class="edit-link" onclick="info('.$v->productType.',\''.$v->username.'\')">查看明细</span>';
+            })
+            ->editColumn('agent_account',function ($v){
+                return $v->agent_account.'('.$v->agent_name.')';
             })
             ->setTotalRecords($arr['count'])
             ->rawColumns(['control'])
