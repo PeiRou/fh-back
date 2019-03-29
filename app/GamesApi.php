@@ -184,6 +184,13 @@ class GamesApi extends Model
         $limit = " LIMIT {$param->start}, {$param->length} ") ||
         $limit = '';
 
+        $groupInfo = '';
+
+        if($group){
+            $groupInfo = 'GROUP BY productType';
+            isset($param->isGroupUser) && $groupInfo = 'GROUP BY productType,username';
+        }
+
         $columns = [
             0 => 'COUNT(AllBet > 0 OR null) AS `bet_count`,
                 COUNT(distinct username) AS user_count,
@@ -192,7 +199,8 @@ class GamesApi extends Model
                 SUM(validBetAmount) AS validBetAmount,
                 productType,
                 SUM(upMoney) AS upMoney,
-                SUM(downMoney) AS downMoney',
+                SUM(downMoney) AS downMoney,
+                username',
         ];
         $column = $columns[$column];
 
@@ -203,6 +211,14 @@ class GamesApi extends Model
             $param->endTime = date('Y-m-d', strtotime($param->endTime));
             $where_bet .= " AND `GameStartTime` BETWEEN '{$param->startTime} 00:00:00' AND '{$param->endTime} 23:59:59' ";
             $where_list .= " AND `date` BETWEEN '{$param->startTime} 00:00:00' AND '{$param->endTime} 23:59:59' ";
+        }
+        if(isset($param->username)){
+            $where_bet .= " AND `Accounts` = '{$param->username}' ";
+            $where_list .= " AND `username` = '{$param->username}' ";
+        }
+        if(isset($param->productType)){
+            $where_bet .= " AND `productType` = '{$param->productType}' ";
+            $where_list .= " AND `productType` = '{$param->productType}' ";
         }
 
         $sql = "select 
@@ -232,7 +248,62 @@ class GamesApi extends Model
                     FROM jq_wsgjlist
                     WHERE {$where_list}
                 ) AS a
-                ".($group ? 'GROUP BY productType' : '')." {$limit} ";
+                ".$groupInfo." {$limit} ";
         return $sql;
     }
+
+    public static function report_tc_data($param)
+    {
+        return DB::select(static::report_tc_sql($param));
+    }
+    //总数
+    public static function report_tc_Count($param)
+    {
+        return DB::select(' SELECT COUNT(*) AS `count` FROM ('.static::report_tc_sql($param, 0).') as b ')[0]->count;
+    }
+    //总记
+    public static function report_tc_Total($param)
+    {
+        $sql =' SELECT SUM(bet_count) AS `bet_count`,
+                SUM(AllBet) AS AllBet,
+                SUM(Profit) AS Profit,
+                SUM(validBetAmount) AS validBetAmount FROM ( '.static::report_tc_sql($param, 0).' ) as b ';
+        return DB::select($sql)[0];
+    }
+    public static function report_tc_sql($param, $limit = 1, $column = 0, $group = true)
+    {
+        ($limit &&
+            isset($param->start, $param->length) &&
+            $limit = " LIMIT {$param->start}, {$param->length} ") ||
+        $limit = '';
+
+        $columns = [
+            0 => 'COUNT(*) AS bet_count, 
+                SUM(AllBet) AS AllBet,
+                SUM(Profit) AS Profit,
+                SUM(validBetAmount) AS validBetAmount,
+                Accounts AS username, 
+                productType, 
+                gameCategory ',
+        ];
+        $column = $columns[$column];
+
+        $where_bet = ' 1 ';
+        if(isset($param->startTime,$param->endTime)){
+            $param->startTime = date('Y-m-d', strtotime($param->startTime));
+            $param->endTime = date('Y-m-d', strtotime($param->endTime));
+            $where_bet .= " AND `GameStartTime` BETWEEN '{$param->startTime} 00:00:00' AND '{$param->endTime} 23:59:59' ";
+        }
+
+        if (isset($param->productType))
+            $where_bet .= " AND productType = {$param->productType} ";
+
+        $sql = "SELECT {$column}
+                FROM jq_wsgj_bet 
+                WHERE {$where_bet}
+                 ".($group ? 'GROUP BY productType' : '')." {$limit} ";
+        return $sql;
+    }
+
+
 }

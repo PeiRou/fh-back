@@ -1,4 +1,4 @@
-var columns,dataTag='qp',dataId,footerCallback,search;
+var columns,dataTag='tc',dataId,footerCallback,search;
 
 function createTable() {
     return $('#dataTable1').DataTable({
@@ -37,13 +37,14 @@ function createTable() {
                     </tr>
                     </tfoot>`);
                 }else if(dataTag == 'tc'){
+                    console.log(e.TotalSum.AllBet);
                     $('#dataTable1').append(`<tfoot>
                     <tr>
                     <th>总计</th>
                     <th>`+(e.TotalSum.BetCountSum|0)+`笔</th>
-                    <th>`+(e.TotalSum.BetSum|0)+`</th>
-                    <th>`+(e.TotalSum.BetSum|0)+`</th>
-                    <th>`+(e.TotalSum.ProfitSum|0)+`</th>
+                    <th>`+(e.TotalSum.AllBet||0)+`</th>
+                    <th>`+(e.TotalSum.validBetAmount||0)+`</th>
+                    <th>`+(e.TotalSum.ProfitSum||0)+`</th>
                     <th></th>
                     <th></th>
                     </tr>

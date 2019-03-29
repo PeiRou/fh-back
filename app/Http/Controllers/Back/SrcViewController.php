@@ -776,6 +776,12 @@ class SrcViewController extends Controller
     public function reportGamesApi(){
         return view('back.gamesApi.Report.list');
     }
+    public function reportGamesApiInfo_Tc(){
+        return view('back.gamesApi.Report.listInfo_Tc');
+    }
+    public function reportGamesApiUserBet_TC(){
+        return view('back.gamesApi.Report.userBet_Tc');
+    }
     //会员报表
     public function reportUser(Request $request)
     {

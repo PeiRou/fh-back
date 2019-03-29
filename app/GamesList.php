@@ -46,5 +46,12 @@ class GamesList extends Base
         3 => 'PT',
     ];
 
+    public static $gameCategory = [
+        'RNG' => '电子',
+        'LIVE' => '真人',
+        'FISH' => '捕鱼',
+        'SPORTS' => '体育',
+    ];
+
 
 }
