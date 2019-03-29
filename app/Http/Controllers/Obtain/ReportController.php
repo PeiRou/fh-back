@@ -3,15 +3,22 @@
 namespace App\Http\Controllers\Obtain;
 
 use App\Bets;
+use App\ReportAgent;
 
 class ReportController extends BaseController
 {
     //执行方法
     public function doAction($aParam){
-        $aData = Bets::AgentTodaySum([
-            'timeStart' => $aParam['dateTime'],
-            'timeEnd' => $aParam['dateTime'],
-        ]);
+        if(strtotime($aParam['startTime']) == strtotime(date('Y-m-d')))
+            $aData = Bets::AgentTodaySum([
+                'timeStart' => $aParam['dateTime'],
+                'timeEnd' => $aParam['dateTime'],
+            ]);
+        else
+            $aData = ReportAgent::reportQuerySum([
+                'timeStart' => $aParam['dateTime'],
+                'timeEnd' => $aParam['dateTime'],
+            ]);
         echo $this->returnAction([
             'code' => 0,
             'msg' => $this->code[0],
