@@ -62,7 +62,7 @@ $(function () {
         serverSide: true,
         ordering: false,
         "order": [],
-        aLengthMenu: [[10]],
+        aLengthMenu: [[100]],
         ajax: {
             url:'/back/datatables/reportGagent',
             data:function (d) {
