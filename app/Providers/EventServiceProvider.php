@@ -121,6 +121,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunSflhc' => [
             'App\Listeners\RunSflhcEventListener',
         ],
+        'App\Events\RunXyft' => [
+            'App\Listeners\RunXyftEventListener',
+        ],
         'App\Events\BackPusherEvent' => [
             'App\Listeners\BackPusherEventListener',
         ],
