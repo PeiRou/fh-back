@@ -46,6 +46,22 @@ class GamesList extends Base
         3 => 'PT',
     ];
 
+    public static $productTypeList = [
+        4 => [
+            'name' => 'AG',
+            'games' => ['FISH','RNG','LIVE']
+        ],
+        17 => [
+            'name' => 'Ameba(AE)',
+            'games' => ['RNG']
+        ],
+        25 => ['name' => 'Lotus','games' => ['RNG','LIVE']],
+        30 => ['name' => 'IBC(沙巴)','games' => ['SPORTS']],
+        47 => ['name' => 'BTI','games' => ['SPORTS']],
+        43 => ['name' => 'MG','games' => ['RNG']],
+        3 => ['name' => 'PT','games' => ['FISH','RNG','LIVE']],
+    ];
+
     public static $gameCategory = [
         'RNG' => '电子',
         'LIVE' => '真人',

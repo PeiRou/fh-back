@@ -540,7 +540,14 @@ class ReportDataController extends Controller
         $arr = $this->TcData($request);
         return DataTables::of($arr['res'])
             ->editColumn('productType',function ($v){
-                return \App\GamesList::$productType[$v->productType] ?? '';
+                $str = \App\GamesList::$productTypeList[$v->productType]['name'] ?? '';
+                $games = [];
+                foreach (\App\GamesList::$productTypeList[$v->productType]['games'] ?? [] as $v){
+                    $games[] = \App\GamesList::$gameCategory[$v] ?? '';
+                }
+
+                !empty($games) && $str .= '('.implode('、', $games).')';
+                return $str;
             })
             ->editColumn('control',function ($v){
                 return '<span class="edit-link" onclick="info('.$v->productType.')">查看明细</span>';
@@ -629,7 +636,14 @@ class ReportDataController extends Controller
         $arr = $this->TcData($request);
         return DataTables::of($arr['res'])
             ->editColumn('productType',function ($v){
-                return \App\GamesList::$productType[$v->productType] ?? '';
+                $str = \App\GamesList::$productTypeList[$v->productType]['name'] ?? '';
+                $games = [];
+                foreach (\App\GamesList::$productTypeList[$v->productType]['games'] ?? [] as $v){
+                    $games[] = \App\GamesList::$gameCategory[$v] ?? '';
+                }
+
+                !empty($games) && $str .= '('.implode('、', $games).')';
+                return $str;
             })
             ->editColumn('control',function ($v){
                 return '<span class="edit-link" onclick="info('.$v->productType.',\''.$v->username.'\')">查看明细</span>';

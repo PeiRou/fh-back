@@ -7,7 +7,7 @@ function createTable() {
         ordering:false,
         processing: true,
         serverSide: true,
-        aLengthMenu: [[20]],
+        aLengthMenu: [[100]],
         ajax: {
             url:'/back/datatables/reportGamesApi',
             data:function (d) {
