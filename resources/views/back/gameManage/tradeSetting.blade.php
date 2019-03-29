@@ -59,10 +59,10 @@
             <div class="ui tab segment" data-tab="three" style="margin-bottom: 70px;">
                 <div class="sub-item">
                     <ul>
-                        <li data-tag="three" data-id="83">幸运快乐8</li>
-                        <li data-tag="three" data-id="84">幸运蛋蛋</li>
+                        {{--<li data-tag="three" data-id="83">幸运快乐8</li>--}}
+                        {{--<li data-tag="three" data-id="84">幸运蛋蛋</li>--}}
                         <li data-tag="three" data-id="85">幸运六合彩</li>
-                        {{--<li data-tag="three" data-id="55">幸运飞艇</li>--}}
+                        <li data-tag="three" data-id="55">幸运飞艇</li>
                         <li data-tag="three" data-id="804">台灣幸運飛艇</li>
                     </ul>
                 </div>

@@ -1230,4 +1230,10 @@ class ModalController extends Controller
     {
         return view('back.modal.report.addReportCard');
     }
+    //棋牌投注报表-添加报表
+    public function addReportGamesApi()
+    {
+        return view('back.modal.report.addReportGamesApi');
+    }
+
 }

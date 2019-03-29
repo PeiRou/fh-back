@@ -53,6 +53,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('register', 'Back\SrcViewController@reportRegister')->name('report.register'); // 注册报表
         Route::get('recharge', 'Back\SrcViewController@reportRecharge')->name('report.recharge'); // 充值报表
         Route::get('Card', 'Back\SrcViewController@reportCard')->name('report.Card'); // 棋牌投注报表
+        Route::get('GamesApi', 'Back\SrcViewController@reportGamesApi')->name('report.GamesApi'); // 第三方统计报表
     });
 //图表统计
     Route::group(['prefix' => 'back/control/chartsManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
@@ -267,6 +268,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 //    Route::get('/back/datatables/reportBrowseTotal', 'Back\Data\ReportDataController@BrowseTotal');       //报表管理-访问报表总计 功能未实现,预留
     Route::get('/back/datatables/reportBet', 'Back\Data\ReportDataController@Bet');
     Route::get('/back/datatables/reportCard', 'Back\Data\ReportDataController@Card');//棋牌投注报表
+    Route::get('/back/datatables/reportGamesApi', 'Back\Data\ReportDataController@GamesApi');//第三方统计报表
     Route::get('/back/datatables/getReportCard', 'Back\Data\ReportDataController@getCard');//重新获取棋牌投注报表
     Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal'); //报表管理-总代总计
     Route::get('/back/datatables/reportAgentTotal', 'Back\Data\ReportDataController@AgentTotal');   //报表管理-代理总计
@@ -449,6 +451,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 
     Route::post('/action/admin/report/addStatistics', 'Back\SrcReportController@addStatistics')->middleware(['check-permission','add-log-handle'])->name('report.addStatistics'); //添加操作报表
     Route::post('/action/admin/report/addReportCard', 'Back\SrcReportController@addReportCard'); // 手动生成棋牌报表
+    Route::post('/action/admin/report/addReportGamesApi', 'Back\SrcReportController@addReportGamesApi'); // 手动生成第三方游戏报表
 
     Route::post('/action/admin/addBank', 'Back\SrcPayController@addBank')->middleware('add-log-handle')->name('ac.ad.addBank');//添加银行
     Route::post('/action/admin/addLevel', 'Back\SrcPayController@addLevel')->middleware('add-log-handle')->name('ac.ad.addLevel');//添加层级
@@ -504,6 +507,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/changeGameStatus', 'Back\SrcGameController@changeGameStatus')->middleware('add-log-handle')->name('ac.ad.changeGameStatus');//修改游戏开启和停用状态
     Route::post('/action/admin/saveOddsRebate', 'Back\SrcGameController@saveOddsRebate')->middleware('add-log-handle')->name('ac.ad.saveOddsRebate');//修改游戏开启和停用状态
     Route::post('/action/admin/killStatus', 'Back\SrcGameController@killStatus')->middleware(['check-permission','add-log-handle'])->name('game.killStatus'); //杀率开关
+    Route::post('/action/admin/killaiStatus', 'Back\SrcGameController@killaiStatus')->middleware(['check-permission','add-log-handle'])->name('game.killStatus'); //杀率开关
     Route::post('/action/admin/editKillSetting', 'Back\SrcGameController@editKillSetting')->middleware(['check-permission','add-log-handle'])->name('game.editKillSetting'); //修改杀率保留营利比
     Route::post('/action/admin/addAgentOdds', 'Back\SrcGameController@addAgentOdds');//添加代理赔率
     Route::post('/action/admin/editAgentOdds', 'Back\SrcGameController@editAgentOdds');//修改代理赔率
@@ -683,7 +687,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/returnVisit','Back\Ajax\ModalController@returnVisit')->middleware('check-permission')->name('member.returnVisit.view'); //会员回访用户-模板
     Route::get('/back/modal/exportUser','Back\Ajax\ModalController@exportUser')->middleware('check-permission')->name('member.exportUser.view'); //导出用户数据-模板
     Route::get('/back/modal/addStatistics','Back\Ajax\ModalController@addStatistics')->middleware('check-permission')->name('report.addStatistics.view'); //操作报表添加-模板
-    Route::get('/back/modal/addReportCard','Back\Ajax\ModalController@addReportCard'); //操作报表添加-模板
+    Route::get('/back/modal/addReportCard','Back\Ajax\ModalController@addReportCard'); //生成棋牌报表-模板
+    Route::get('/back/modal/addReportGamesApi','Back\Ajax\ModalController@addReportGamesApi'); //生成Tc报表-模板
     Route::get('/back/modal/addAgentSettleDomain', 'Back\Ajax\ModalController@addAgentSettleDomain'); //添加代理专属域名
     Route::get('/back/modal/editAgentSettleDomain/{id}', 'Back\Ajax\ModalController@editAgentSettleDomain'); //修改代理专属域名
     Route::get('/back/modal/gameAgentOddsAdd', 'Back\Ajax\ModalController@gameAgentOddsAdd'); //添加代理赔率-模板

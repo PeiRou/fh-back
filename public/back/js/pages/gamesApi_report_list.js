@@ -9,12 +9,8 @@ function createTable() {
         serverSide: true,
         aLengthMenu: [[20]],
         ajax: {
-            url:'/back/datatables/openHistory/BetInfo',
+            url:'/back/datatables/reportGamesApi',
             data:function (d) {
-                // d.startTime = $('#startTime').val();//查询时间段
-                // d.endTime = $('#endTime').val();
-                // d.Accounts = $('#Accounts').val();//玩家账号
-                // d.g_id = $('#g_id').val();
                 d.dataTag = dataTag;
                 d.dataId = dataId;
                 if(typeof search == 'object'){
@@ -29,23 +25,26 @@ function createTable() {
                     $('#dataTable1').append(`<tfoot>
                     <tr>
                     <th>总计</th>
-                    <th>`+(e.TotalSum.BetCountSum|0)+`笔</th>
-                    <th>`+(e.TotalSum.BetSum | 0)+`</th>
-                    <th>`+(e.TotalSum.ProfitSum | 0)+`</th>
+                    <th>`+e.totalArr.count_user+`</th>
                     <th></th>
-                    <th></th>
+                    <th>`+e.totalArr.BetCountSum+`</th>
+                    <th>`+e.totalArr.betMoney+`</th>
+                    <th>`+e.totalArr.betBunko+`</th>
+                    <th>`+e.totalArr.totalUp+`</th>
+                    <th>`+(e.totalArr.totalDown | e.totalArr.totaldown)+`</th>
                     </tr>
                     </tfoot>`);
                 }else if(dataTag == 'tc'){
                     $('#dataTable1').append(`<tfoot>
                     <tr>
                     <th>总计</th>
-                    <th>`+(e.TotalSum.BetCountSum|0)+`笔</th>
-                    <th>`+(e.TotalSum.BetSum|0)+`</th>
-                    <th>`+(e.TotalSum.BetSum|0)+`</th>
-                    <th>`+(e.TotalSum.ProfitSum|0)+`</th>
-                    <th></th>
-                    <th></th>
+                    <th>`+e.totalArr.user_count+`</th>
+                    <th>`+e.totalArr.bet_count+`</th>
+                    <th>`+e.totalArr.AllBet+`</th>
+                    <th>`+e.totalArr.validBetAmount+`</th>
+                    <th>`+e.totalArr.Profit+`</th>
+                    <th>`+e.totalArr.upMoney+`</th>
+                    <th>`+e.totalArr.downMoney+`</th>
                     </tr>
                     </tfoot>`);
                 }
@@ -92,8 +91,8 @@ function reload_() {
 $(function () {
     columns = qp;
     reload_();
-    $('#menu-GamesApi').addClass('nav-show');
-    $('#menu-GamesApi-TCBetInfo').addClass('active');
+    $('#menu-reportManage').addClass('nav-show');
+    $('#menu-reportManage-GamesApi').addClass('active');
     $('.menu .item').tab({
         context: $('#context1')
     }).click(function(){
@@ -133,25 +132,63 @@ $(function () {
     $('.timeEnd').calendar(createdDate);
 });
 
+function getReport() {
+    jc = $.confirm({
+        theme: 'material',
+        title: '生成报表',
+        closeIcon:true,
+        boxWidth:'30%',
+        content: 'url:/back/modal/addReportGamesApi',
+        buttons: {
+            formSubmit: {
+                text:'确定提交',
+                btnClass: 'btn-blue',
+                action: function () {
+                    var form = this.$content.find('#addAgentForm').data('formValidation').validate().isValid();
+                    if(!form){
+                        return false;
+                    }
+                    return false;
+                }
+            }
+        },
+        contentLoaded: function(data, status, xhr){
+            $('.jconfirm-content').css('overflow','hidden');
+            if(data.status == 403)
+            {
+                this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
+                $('.jconfirm-buttons').hide();
+            }
+        }
+    });
+}
+
 $('.btn_search').click(function(){
     reload_();
 });
 var qp = [
-    {data: 'name',title:'游戏名称'},
-    {data: 'Accounts',title:'游戏账号'},
-    {data: 'AllBet',title:'总下注'},
-    {data: 'Profit',title:'盈利'},
-    {data: 'GameStartTime',title:'第一次游戏时间'},
-    {data: 'GameEndTime',title:'最后一次游戏时间'},
+    {data:'game_name',title:'游戏'},
+    {data:'user_account',title:'玩家'},
+    {data:'agent_account',title:'上级代理'},
+    {data:'bet_count',title:'笔数'},
+    {data:'bet_money',title:'投注金额'},
+    {data:'bet_bunko',title:'盈利'},
+    {data:function(e){
+            return e.up_money || '0.00'
+        },title:'上分'},
+    {data:function(e){
+            return e.down_money || '0.00'
+        },title:'下分'},
+    // {data:'date',title:'报表时间'}
 ];
 
 var tc = [
-    {data: 'gameCategory',title:'游戏名称'},
-    {data: 'Accounts',title:'玩家账号'},
+    {data: 'productType',title:'平台'},
+    {data: 'user_count',title:'投注人数'},
+    {data: 'bet_count',title:'下注笔数'},
     {data: 'AllBet',title:'投注金额'},
-    {data: 'validBetAmount',title:'有效投注金额'},
-    {data: 'Profit',title:'盈利'},
-    {data: 'productType',title:'产品'},
-    // {data: 'additionalDetails',title:'额外细节',width: "20px"},
-    {data: 'GameStartTime',title:'游戏时间'},
+    {data: 'validBetAmount',title:'有效投注额'},
+    {data: 'Profit',title:'游戏输赢'},
+    {data: 'upMoney',title:'上分'},
+    {data: 'downMoney',title:'下分'},
 ];
