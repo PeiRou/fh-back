@@ -1,4 +1,4 @@
-var columns,dataTag='qp',dataId,footerCallback,search;
+var columns,dataTag='tc',dataId,footerCallback,search;
 
 function createTable() {
     return $('#dataTable1').DataTable({
@@ -7,7 +7,7 @@ function createTable() {
         ordering:false,
         processing: true,
         serverSide: true,
-        aLengthMenu: [[20]],
+        aLengthMenu: [[100]],
         ajax: {
             url:'/back/datatables/reportGamesApi',
             data:function (d) {
@@ -21,6 +21,7 @@ function createTable() {
             },
             dataSrc:function(e){
                 if(e.data.length <= 0) return '';
+                $('#dataTable1 tfoot').remove();
                 if(dataTag == 'qp'){
                     $('#dataTable1').append(`<tfoot>
                     <tr>
@@ -45,6 +46,7 @@ function createTable() {
                     <th>`+e.totalArr.Profit+`</th>
                     <th>`+e.totalArr.upMoney+`</th>
                     <th>`+e.totalArr.downMoney+`</th>
+                    <th></th>
                     </tr>
                     </tfoot>`);
                 }
@@ -89,6 +91,12 @@ function reload_() {
 
 }
 $(function () {
+    layui.use('layer', function(){
+        layer = layui.layer;
+    });
+    layui.use('laydate', function(){
+        laydate = layui.laydate;
+    });
     columns = qp;
     reload_();
     $('#menu-reportManage').addClass('nav-show');
@@ -166,6 +174,20 @@ function getReport() {
 $('.btn_search').click(function(){
     reload_();
 });
+
+function info(productType){
+    openIndex = layer.open({
+        type: 2,
+        title:false,
+        content: '/back/control/reportManage/GamesApiInfo_Tc?productType='+productType,
+        area: ['100%', '100%'],
+        maxmin: false,
+        success:function(){
+            layer.full(openIndex)
+        }
+    });
+}
+
 var qp = [
     {data:'game_name',title:'游戏'},
     {data:'user_account',title:'玩家'},
@@ -184,11 +206,12 @@ var qp = [
 
 var tc = [
     {data: 'productType',title:'平台'},
-    {data: 'user_count',title:'投注人数'},
+    {data: 'user_count',title:'人数'},
     {data: 'bet_count',title:'下注笔数'},
     {data: 'AllBet',title:'投注金额'},
     {data: 'validBetAmount',title:'有效投注额'},
     {data: 'Profit',title:'游戏输赢'},
     {data: 'upMoney',title:'上分'},
     {data: 'downMoney',title:'下分'},
+    {data: 'control',title:'操作'},
 ];

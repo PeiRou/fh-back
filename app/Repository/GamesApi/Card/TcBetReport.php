@@ -8,8 +8,7 @@ namespace App\Repository\GamesApi\Card;
 use App\GamesApi;
 use Illuminate\Support\Facades\DB;
 
-
-class TcReport extends ReportBase
+class TcBetReport extends ReportBase
 {
     public $param;
     private $iData = [];
@@ -26,18 +25,8 @@ class TcReport extends ReportBase
     }
 
     public function getRes(){
-        $this->param->isGroupUser = 1;
         $GamesApi = new GamesApi();
-        $this->res = $GamesApi->tc_betInfoData($this->param);
-    }
-
-    public static function getData($param)
-    {
-        $instance = new static();
-        $instance->param = $param;
-        $instance->getRes();
-        $instance->createData();
-        return $instance->iData;
+        $this->res = $GamesApi->report_tc_data($this->param);
     }
 
     public function createData()
@@ -48,15 +37,12 @@ class TcReport extends ReportBase
 
             $this->iData[] = [
                 'bet_count' =>  $v->bet_count,
-                'username' =>  $v->username,
-                'user_count' =>  $v->user_count,
                 'AllBet' =>  $v->AllBet,
                 'Profit' =>  $v->Profit,
                 'validBetAmount' =>  $v->validBetAmount,
+                'username' =>  $v->username,
                 'productType' =>  $v->productType,
-                'upMoney' =>  $v->upMoney,
-                'downMoney' =>  $v->downMoney,
-                'validBetAmount' =>  $v->validBetAmount,
+                'gameCategory' =>  $v->gameCategory,
                 'date' =>  $this->param->aTime ?? date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'agent_account' => $agent->account ?? '',
@@ -68,8 +54,8 @@ class TcReport extends ReportBase
 
     public function insertData()
     {
-        DB::table('jq_report_tc')->where('date', $this->param->aTime)->delete();
-        DB::table('jq_report_tc')->insert($this->iData);
+        DB::table('jq_report_tc_bet')->where('date', $this->param->aTime)->delete();
+        DB::table('jq_report_tc_bet')->insert($this->iData);
     }
 
     public function __call($name, $arguments){

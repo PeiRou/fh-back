@@ -55,6 +55,10 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('Card', 'Back\SrcViewController@reportCard')->name('report.Card'); // 棋牌投注报表
         Route::get('GamesApi', 'Back\SrcViewController@reportGamesApi')->name('report.GamesApi'); // 第三方统计报表
     });
+    Route::group(['prefix' => 'back/control/reportManage', 'middleware' => ['domain-check', 'add-log-handle']], function () {
+        Route::get('GamesApiInfo_Tc', 'Back\SrcViewController@reportGamesApiInfo_Tc'); // 第三方统计报表-Tc
+        Route::get('GamesApiUserBet_Tc', 'Back\SrcViewController@reportGamesApiUserBet_Tc'); // 第三方统计报表-Tc
+    });
 //图表统计
     Route::group(['prefix' => 'back/control/chartsManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('gameBunko', 'Back\SrcViewController@chartsGameBunko')->name('charts.gameBunko'); // 盈亏统计
@@ -269,6 +273,8 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/reportBet', 'Back\Data\ReportDataController@Bet');
     Route::get('/back/datatables/reportCard', 'Back\Data\ReportDataController@Card');//棋牌投注报表
     Route::get('/back/datatables/reportGamesApi', 'Back\Data\ReportDataController@GamesApi');//第三方统计报表
+    Route::get('/back/datatables/reportGamesApiInfo_tc', 'Back\Data\ReportDataController@GamesApiInfo_tc');//第三方统计报表 - Tc的详细的 - 平台
+    Route::get('/back/datatables/reportGamesApiBet_Tc', 'Back\Data\ReportDataController@GamesApiBet_Tc');//第三方统计报表 - Tc的详细的 - 个人
     Route::get('/back/datatables/getReportCard', 'Back\Data\ReportDataController@getCard');//重新获取棋牌投注报表
     Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal'); //报表管理-总代总计
     Route::get('/back/datatables/reportAgentTotal', 'Back\Data\ReportDataController@AgentTotal');   //报表管理-代理总计

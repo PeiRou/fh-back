@@ -21,10 +21,10 @@
     <div class="table-content">
         <div id="context1">
             <div class="ui pointing secondary menu" id="gameTabs">
-                <a class="item active" data-tab="qp">棋牌游戏</a>
-                <a class="item" data-tab="tc">TC游戏</a>
+                <a class="item " data-tab="qp">棋牌游戏</a>
+                <a class="item active" data-tab="tc">TC游戏</a>
             </div>
-            <div class="table-quick-bar ui tab active " data-tab="qp">
+            <div class="table-quick-bar ui tab  " data-tab="qp">
                 {{--<div class="sub-item">--}}
                     {{--<ul>--}}
                         {{--@foreach(\App\GamesList::getList(['type' => 1]) as $k=>$v)--}}
@@ -69,29 +69,28 @@
 
                 </div>
             </div>
-            <div class="table-quick-bar ui tab " data-tab="tc">
+            <div class="table-quick-bar ui tab  active" data-tab="tc">
                 <div class="ui mini form">
                     <form action="javascript:;" name="tc">
                         <div class="fields">
                             <div class="one wide field" style="width: initial!important;">
                                 <select class="ui dropdown" name="gameCategory" style="height:32px !important">
                                     <option value="">游戏名称</option>
-                                    <option value="RNG">电子</option>
-                                    <option value="LIVE">真人</option>
-                                    <option value="FISH">捕鱼</option>
-                                    <option value="SPORTS">体育</option>
+                                    @foreach(\App\GamesList::$gameCategory as $k=>$v)
+                                        <option @if(isset(request()->gameCategory) && request()->gameCategory == $k) selected @endif  value="{{ $k }}">{{ $v }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="one wide field" style="width: initial!important;">
                                 <select class="ui dropdown" name="productType" style="height:32px !important">
                                     <option value="">产品</option>
                                     @foreach(\App\GamesList::$productType as $k=>$v)
-                                        <option value="{{ $k }}">{{ $v }}</option>
+                                        <option @if(isset(request()->productType) && request()->productType == $k) selected @endif  value="{{ $k }}">{{ $v }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="two wide field" style="width:150px !important">
-                                <input type="text" name="Accounts" placeholder='账号'>
+                                <input type="text" name="Accounts" placeholder='账号' value="{{ request()->username ?? '' }}">
                             </div>
                             <div class="one wide field" style="width:7.25%!important">
                                 <div class="ui calendar timeStart" id="tcStart">

@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 //TC投注报表
-class TcReport implements ShouldQueue
+class TcBetReport implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -23,11 +23,11 @@ class TcReport implements ShouldQueue
     public function handle()
     {
         try{
-            $repo = new \App\Repository\GamesApi\Card\TcReport($this->aDateTime);
+            $repo = new \App\Repository\GamesApi\Card\TcBetReport($this->aDateTime);
             $repo->getRes();
             $repo->createData();
             $repo->insertData();
-        }catch (\Throwable $e){
+        }catch (\Exception $e){
             writeLog('tcReport', print_r($e->getMessage().$e->getFile().'('.$e->getLine().')', 1));
             writeLog('tcReport', print_r($e->getTraceAsString(), 1));
             echo 'error:'.$e->getMessage().$this->aDateTime;

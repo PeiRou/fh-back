@@ -553,16 +553,22 @@ class openHistoryController extends Controller
                 $sql->where('GameStartTime', '<=', date('Y-m-d',strtotime($request->endTime)).' 23:59:59');
         });
         $totalModel = clone $model;
-        $TotalSum = $totalModel->select(DB::raw(' COUNT(Accounts) as BetCountSum, SUM(validBetAmount) as BetSum, SUM(Profit) as ProfitSum '))->first();
+        $TotalSum = $totalModel->select(DB::raw(' COUNT(Accounts) as BetCountSum, SUM(AllBet) as AllBet, SUM(validBetAmount) as validBetAmount, SUM(Profit) as ProfitSum '))->first();
+        foreach ($TotalSum as &$v){
+            $v = sprintf('%.2f', $v) * 1;
+        }
         $count = $model->count();
         if(isset($request->start, $request->length))
             $model->orderBy('id','desc')->skip($request->start)->take($request->length);
-        $model->select(DB::raw('gameCategory, Accounts, SUM(validBetAmount) as validBetAmount, SUM(AllBet) as AllBet, SUM(Profit) as Profit, productType, GameStartTime'));
-        $model->groupBy('Accounts','productType');
+//        $model->select(DB::raw('gameCategory, Accounts, SUM(validBetAmount) as validBetAmount, SUM(AllBet) as AllBet, SUM(Profit) as Profit, productType, GameStartTime'));
+//        $model->groupBy('Accounts','productType');
         $res = $model->get();
         return DataTables::of($res)
             ->editColumn('productType',function ($aData) {
                 return \App\GamesList::$productType[$aData->productType] ?? '';
+            })
+            ->editColumn('gameCategory',function ($v){
+                return \App\GamesList::$gameCategory[$v->gameCategory] ?? '';
             })
             ->rawColumns(['control'])
             ->setTotalRecords($count)
