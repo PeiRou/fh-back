@@ -506,22 +506,26 @@ class ReportDataController extends Controller
         isset($request->endTime) && $request->endTime = date('Y-m-d', strtotime($request->endTime));
         if(isset($request->startTime) && ($request->startTime == date('Y-m-d')) && ($request->startTime == $request->endTime))
             return $this->dayTc($request);
-
         $model = DB::table('jq_report_tc');
         isset($request->startTime, $request->endTime) &&
         $model->whereBetween('date',[$request->startTime, $request->endTime]);
-        $totalModel = clone $model;
-        $totalArr = $totalModel->select(DB::raw('SUM(bet_count) AS `bet_count`,
+        isset($request->productType) && $model->where('productType', $request->productType);
+        isset($request->username) && $model->where('username', $request->username);
+        $model->select(DB::raw('SUM(bet_count) AS `bet_count`,
                 SUM(user_count) AS user_count,
                 SUM(AllBet) AS AllBet,
                 SUM(Profit) AS Profit,
                 SUM(validBetAmount) AS validBetAmount,
                 productType,
+                username,
                 SUM(upMoney) AS upMoney,
-                SUM(downMoney) AS downMoney'))->first();
+                SUM(downMoney) AS downMoney'));
+        $totalModel = clone $model;
+        $totalArr = $totalModel->first();
+        isset($request->isGroupUser) && $request->isGroupUser && $model->groupBy('username');
+        $model->groupBy('productType');
         $resCount = $model->count();
-        isset($request->start, $request->length) &&
-        $model->skip($request->start)->take($request->length);
+        isset($request->start, $request->length) && $model->skip($request->start)->take($request->length);
         $res = $model->get();
         return [
             'res' => $res,
@@ -538,7 +542,11 @@ class ReportDataController extends Controller
             ->editColumn('productType',function ($v){
                 return \App\GamesList::$productType[$v->productType] ?? '';
             })
+            ->editColumn('control',function ($v){
+                return '<span class="edit-link" onclick="info('.$v->productType.')">查看明细</span>';
+            })
             ->setTotalRecords($arr['count'])
+            ->rawColumns(['control'])
             ->with('totalArr',$arr['totalArr'])
             ->skipPaging()
             ->make(true);
@@ -550,7 +558,87 @@ class ReportDataController extends Controller
             return $this->Card($request);
         if($request->dataTag == 'tc')
             return $this->Tc($request);
+    }
 
+    public function dayGamesApiBet_Tc(Request $request)
+    {
+        if(isset($request->startTime,$request->endTime)){
+            $request->startTime = date('Y-m-d', strtotime($request->startTime));
+            $request->endTime = date('Y-m-d', strtotime($request->endTime));
+        }
+        $res = GamesApi::report_tc_data($request);
+        $resCount = GamesApi::report_tc_Count($request);
+        $totalArr = GamesApi::report_tc_Total($request);
+        return [
+            'res' => $res,
+            'count' => $resCount,
+            'totalArr' => $totalArr,
+        ];
+    }
+    public function GamesApiBet_TcData(Request $request)
+    {
+        isset($request->startTime) && $request->startTime = date('Y-m-d', strtotime($request->startTime));
+        isset($request->endTime) && $request->endTime = date('Y-m-d', strtotime($request->endTime));
+        if(isset($request->startTime) && ($request->startTime == date('Y-m-d')) && ($request->startTime == $request->endTime))
+            return $this->dayGamesApiBet_Tc($request);
+
+        $model = DB::table('jq_report_tc_bet');
+
+        isset($request->startTime, $request->endTime) && $model->whereBetween('date',[$request->startTime, $request->endTime]);
+        isset($request->productType) && $model->where('productType', $request->productType);
+        isset($request->username) && $model->where('username', $request->username);
+
+        $totalModel = clone $model;
+        $totalArr = $totalModel->select(DB::raw('SUM(bet_count) AS `bet_count`,
+                SUM(AllBet) AS AllBet,
+                SUM(Profit) AS Profit,
+                SUM(validBetAmount) AS validBetAmount'))->first();
+
+        $resCount = $model->count();
+
+        isset($request->start, $request->length) && $model->skip($request->start)->take($request->length);
+        $res = $model->get();
+        return [
+            'res' => $res,
+            'count' => $resCount,
+            'totalArr' => $totalArr,
+        ];
+    }
+    public function GamesApiBet_Tc(Request $request)
+    {
+        $arr = $this->GamesApiBet_TcData($request);
+
+        return DataTables::of($arr['res'])
+            ->editColumn('productType',function ($v){
+                return \App\GamesList::$productType[$v->productType] ?? '';
+            })
+            ->editColumn('gameCategory',function ($v){
+                return \App\GamesList::$gameCategory[$v->gameCategory] ?? '';
+            })
+            ->editColumn('control',function ($v){
+                return '<span class="edit-link" onclick="info('.$v->productType.',\''.$v->username.'\',\''.$v->gameCategory.'\')">查看明细</span>';
+            })
+            ->setTotalRecords($arr['count'])
+            ->with('totalArr',$arr['totalArr'])
+            ->rawColumns(['control'])
+            ->skipPaging()
+            ->make(true);
+    }
+    public function GamesApiInfo_tc(Request $request)
+    {
+        $arr = $this->TcData($request);
+        return DataTables::of($arr['res'])
+            ->editColumn('productType',function ($v){
+                return \App\GamesList::$productType[$v->productType] ?? '';
+            })
+            ->editColumn('control',function ($v){
+                return '<span class="edit-link" onclick="info('.$v->productType.',\''.$v->username.'\')">查看明细</span>';
+            })
+            ->setTotalRecords($arr['count'])
+            ->rawColumns(['control'])
+            ->with('totalArr',$arr['totalArr'])
+            ->skipPaging()
+            ->make(true);
     }
 
     public function Browse(Request $request){
