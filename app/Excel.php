@@ -112,7 +112,7 @@ class Excel
                 return 1;
             }
             foreach ($push as $key => $val){
-                @event(new BackPusherEvent('win','中奖通知',$val['notice'],array('fnotice-'.$val['user_id'])));
+                @event(new BackPusherEvent('win','中奖通知',$val['notice'],array('fnotice-'.$val['userid'])));
             }
         } else {
             \Log::info($gameName.'已结算过，已阻止！');
