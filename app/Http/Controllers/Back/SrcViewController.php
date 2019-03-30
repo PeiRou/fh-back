@@ -644,13 +644,12 @@ class SrcViewController extends Controller
     public function openManage_xylhc()
     {
         $data = [
-            'title' => '六合彩',
+            'title' => '幸运六合彩',
             'activeName' => 'menu-openManage-xylhc',
             'type' => 'xylhc',
             'cat' => 'xylhc' //游戏类别
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
-        return view('back.open.xylhc',compact('data'));
     }
     //qq分分彩
     public function openManage_qqffc()
