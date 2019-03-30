@@ -84,6 +84,8 @@ class OpenApiGetController extends Controller
         'xync',
         'gdkl10',
         'xyft',
+        'xjssc',
+        'ahk3',
     ];
     /*
     //开奖API
@@ -122,6 +124,7 @@ class OpenApiGetController extends Controller
             case "gzk3":    //贵州快3
             case "gxk3":    //广西快3
             case "gsk3":    //甘肃快3
+            case "ahk3":    //安徽快3
                 return [
                     'code' => 200,
                     'data'=> [],
@@ -138,6 +141,7 @@ class OpenApiGetController extends Controller
             case "gd11x5":  //广东11选5
             case "cqssc":   //重庆时时彩
             case "sfssc":   //三分时时彩
+            case "xjssc":   //新疆时时彩
                 return [
                     'code' => 200,
                     'data'=> [],
