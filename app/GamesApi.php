@@ -206,12 +206,6 @@ class GamesApi extends Model
 
         $where_bet = ' 1 ';
         $where_list = ' 1 ';
-        if(isset($param->startTime,$param->endTime)){
-            $param->startTime = date('Y-m-d', strtotime($param->startTime));
-            $param->endTime = date('Y-m-d', strtotime($param->endTime));
-            $where_bet .= " AND `GameStartTime` BETWEEN '{$param->startTime} 00:00:00' AND '{$param->endTime} 23:59:59' ";
-            $where_list .= " AND `date` BETWEEN '{$param->startTime} 00:00:00' AND '{$param->endTime} 23:59:59' ";
-        }
         if(isset($param->username)){
             $where_bet .= " AND `Accounts` = '{$param->username}' ";
             $where_list .= " AND `username` = '{$param->username}' ";
@@ -221,6 +215,12 @@ class GamesApi extends Model
             $where_list .= " AND `productType` = '{$param->productType}' ";
         }
 
+        if(isset($param->startTime,$param->endTime)){
+            $param->startTime = date('Y-m-d', strtotime($param->startTime));
+            $param->endTime = date('Y-m-d', strtotime($param->endTime));
+            $where_bet .= " AND `GameStartTime` BETWEEN '{$param->startTime} 00:00:00' AND '{$param->endTime} 23:59:59' ";
+            $where_list .= " AND `date` BETWEEN '{$param->startTime} 00:00:00' AND '{$param->endTime} 23:59:59' ";
+        }
         $sql = "select 
                 {$column}
                 FROM (
