@@ -751,6 +751,17 @@ class SrcViewController extends Controller
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }
+    //幸運飞艇
+    public function openManage_xyft()
+    {
+        $data = [
+            'title' => '幸運飞艇',
+            'activeName' => 'menu-openManage-xyft',
+            'type' => 'xyft',
+            'cat' => 'sc' //游戏类别 赛车
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
     
     //报表管理
     //总代理报表

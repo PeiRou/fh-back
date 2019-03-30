@@ -337,7 +337,9 @@
                 @if($hasPermission->hasPermission('historyLottery.sflhc') == "has")
                     <li id="menu-openManage-sflhc"><a href="{{ route('historyLottery.sflhc') }}"><cite></cite><span>三分六合彩</span></a></li>
                 @endif
-
+                @if($hasPermission->hasPermission('historyLottery.xyft') == "has")
+                    <li id="menu-openManage-xyft"><a href="{{ route('historyLottery.xyft') }}"><cite></cite><span>幸运飞艇</span></a></li>
+                @endif
             </ul>
         </li>
         @endif
