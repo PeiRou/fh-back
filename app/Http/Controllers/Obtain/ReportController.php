@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Obtain;
 
 use App\Bets;
 use App\ReportAgent;
+use Illuminate\Support\Facades\Log;
 
 class ReportController extends BaseController
 {
     //执行方法
     public function doAction($aParam){
-        if(strtotime($aParam['startTime']) == strtotime(date('Y-m-d')))
+        if(strtotime($aParam['dateTime']) == strtotime(date('Y-m-d')))
             $aData = Bets::AgentTodaySum([
                 'timeStart' => $aParam['dateTime'],
                 'timeEnd' => $aParam['dateTime'],
@@ -18,6 +19,7 @@ class ReportController extends BaseController
             $aData = ReportAgent::reportQuerySum([
                 'timeStart' => $aParam['dateTime'],
                 'timeEnd' => $aParam['dateTime'],
+                'general_id' => NULL
             ]);
         echo $this->returnAction([
             'code' => 0,
@@ -29,7 +31,7 @@ class ReportController extends BaseController
             'bet_amount' => $aData->bet_amount,
             'activity_money' => empty($aData->activity_money)?'0.00':$aData->activity_money,
             'handling_fee' => empty($aData->handling_fee)?'0.00':$aData->handling_fee,
-            'odds_amount' => $aData->odds_amount,
+            'odds_amount' => empty($aData->odds_amount)?'0.00':$aData->odds_amount,
             'return_amount' => $aData->return_amount,
             'bet_bunko' => $aData->bet_bunko,
             'fact_return_amount' => $aData->fact_return_amount,
