@@ -40,7 +40,7 @@ class next_issue_kssc extends Command
         $New_nextIssue = $nextIssue+1;
         if(substr($New_nextIssue,-3)=='277'){
             $New_nextIssue = date("ymd",strtotime($openTime)).'001';
-            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 07:25:15';
+            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 07:29:45';
             $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime)).' 07:30:15';
         }
 
