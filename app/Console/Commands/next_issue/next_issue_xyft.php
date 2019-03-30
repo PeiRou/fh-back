@@ -34,7 +34,7 @@ class next_issue_xyft extends Command
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
 
-        $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(180)->toDateTimeString();
+        $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(270)->toDateTimeString();
         $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
 
         $New_nextIssue = $nextIssue+1;
