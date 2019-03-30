@@ -85,6 +85,7 @@
             <tr>
                 <th>总计</th>
                 <th id="user_count"></th>
+                <th id=""></th>
                 <th id="bet_count"></th>
                 <th id="AllBet"></th>
                 <th id="validBetAmount"></th>
@@ -109,6 +110,7 @@
         var columns = [
             {data: 'productType',title:'平台'},
             {data: 'username',title:'会员'},
+            {data: 'agent_account',title:'代理'},
             {data: 'bet_count',title:'下注笔数'},
             {data: 'AllBet',title:'投注金额'},
             {data: 'validBetAmount',title:'有效投注额'},
@@ -198,13 +200,14 @@
     });
 
     function info(productType,username){
-        parent.openIndex1 = layer.open({
-            type: 2,
-            title:false,
-            content: '/back/control/reportManage/GamesApiUserBet_Tc?productType='+productType+'&username='+username,
-            area: ['90%', '90%'],
-            maxmin: false,
-        });
+        window.open('/back/control/reportManage/GamesApiUserBet_Tc?productType='+productType+'&username='+username);
+        // parent.openIndex1 = layer.open({
+        //     type: 2,
+        //     title:false,
+        //     content: '/back/control/reportManage/GamesApiUserBet_Tc?productType='+productType+'&username='+username,
+        //     area: ['90%', '90%'],
+        //     maxmin: false,
+        // });
     }
 
 </script>

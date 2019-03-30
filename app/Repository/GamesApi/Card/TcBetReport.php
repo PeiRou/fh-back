@@ -8,7 +8,8 @@ namespace App\Repository\GamesApi\Card;
 use App\GamesApi;
 use Illuminate\Support\Facades\DB;
 
-class TcBetReport{
+class TcBetReport extends ReportBase
+{
     public $param;
     private $iData = [];
     private $res;
@@ -31,6 +32,9 @@ class TcBetReport{
     public function createData()
     {
         foreach ($this->res as $k=>$v){
+            $user = $this->getUserInfo($v->username);
+            $agent = $this->getAgent($user->agent ?? 0);
+
             $this->iData[] = [
                 'bet_count' =>  $v->bet_count,
                 'AllBet' =>  $v->AllBet,
@@ -41,6 +45,9 @@ class TcBetReport{
                 'gameCategory' =>  $v->gameCategory,
                 'date' =>  $this->param->aTime ?? date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s'),
+                'agent_account' => $agent->account ?? '',
+                'agent_name' => $agent->name ?? '',
+                'agent_id' => $agent->a_id ?? '',
             ];
         }
     }

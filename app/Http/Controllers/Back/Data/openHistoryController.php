@@ -554,6 +554,9 @@ class openHistoryController extends Controller
         });
         $totalModel = clone $model;
         $TotalSum = $totalModel->select(DB::raw(' COUNT(Accounts) as BetCountSum, SUM(AllBet) as AllBet, SUM(validBetAmount) as validBetAmount, SUM(Profit) as ProfitSum '))->first();
+        foreach ($TotalSum as &$v){
+            $v = sprintf('%.2f', $v) * 1;
+        }
         $count = $model->count();
         if(isset($request->start, $request->length))
             $model->orderBy('id','desc')->skip($request->start)->take($request->length);

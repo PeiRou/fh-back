@@ -297,11 +297,13 @@ class GamesApi extends Model
 
         if (isset($param->productType))
             $where_bet .= " AND productType = {$param->productType} ";
+        if (isset($param->username))
+            $where_bet .= " AND Accounts = '{$param->username}' ";
 
         $sql = "SELECT {$column}
                 FROM jq_wsgj_bet 
                 WHERE {$where_bet}
-                 ".($group ? 'GROUP BY productType' : '')." {$limit} ";
+                 ".($group ? 'GROUP BY productType,gameCategory,Accounts' : '')." {$limit} ";
         return $sql;
     }
 

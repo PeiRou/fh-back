@@ -9,7 +9,8 @@ use App\GamesApi;
 use Illuminate\Support\Facades\DB;
 
 
-class TcReport{
+class TcReport extends ReportBase
+{
     public $param;
     private $iData = [];
     private $res;
@@ -30,9 +31,21 @@ class TcReport{
         $this->res = $GamesApi->tc_betInfoData($this->param);
     }
 
+    public static function getData($param)
+    {
+        $instance = new static();
+        $instance->param = $param;
+        $instance->getRes();
+        $instance->createData();
+        return $instance->iData;
+    }
+
     public function createData()
     {
         foreach ($this->res as $k=>$v){
+            $user = $this->getUserInfo($v->username);
+            $agent = $this->getAgent($user->agent ?? 0);
+
             $this->iData[] = [
                 'bet_count' =>  $v->bet_count,
                 'username' =>  $v->username,
@@ -46,6 +59,9 @@ class TcReport{
                 'validBetAmount' =>  $v->validBetAmount,
                 'date' =>  $this->param->aTime ?? date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s'),
+                'agent_account' => $agent->account ?? '',
+                'agent_name' => $agent->name ?? '',
+                'agent_id' => $agent->a_id ?? '',
             ];
         }
     }

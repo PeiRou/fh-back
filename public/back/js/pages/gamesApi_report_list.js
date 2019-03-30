@@ -7,7 +7,7 @@ function createTable() {
         ordering:false,
         processing: true,
         serverSide: true,
-        aLengthMenu: [[20]],
+        aLengthMenu: [[100]],
         ajax: {
             url:'/back/datatables/reportGamesApi',
             data:function (d) {
@@ -206,7 +206,7 @@ var qp = [
 
 var tc = [
     {data: 'productType',title:'平台'},
-    {data: 'user_count',title:'投注人数'},
+    {data: 'user_count',title:'人数'},
     {data: 'bet_count',title:'下注笔数'},
     {data: 'AllBet',title:'投注金额'},
     {data: 'validBetAmount',title:'有效投注额'},
