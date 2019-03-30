@@ -63,10 +63,10 @@ class LotteryOneClick implements ShouldQueue
         $table = 'game_'.$this->gameType;
 
         $openAPI = new OpenApiGetController();
-        if(!empty($openAPI->apiArray[$this->type]))
-            $openNum = $openAPI->parsingParameters($this->type,$this->aParam->issue);
+        $openExcel = new Excel();
+        if(in_array($this->type,$openAPI->apiArray))
+            $openNum = $openExcel->getGuanIssueNum($this->aParam->issue,$this->type);
         else {
-            $openExcel = new Excel();
             $openNum = $openExcel->opennum($table);
         }
         Log::info($openNum);
