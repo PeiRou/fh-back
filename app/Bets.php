@@ -1041,6 +1041,26 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $bet->where('order_id', $param->orderNum);
             $bet_his->where('order_id', $param->orderNum);
         }
+        if(count($param->games) > 0){
+            $bet->whereIn('game_id', $param->games);
+            $bet_his->whereIn('game_id', $param->games);
+        }
+        if(isset($param->status)){
+            switch ($param->status){
+                case 1: //未结
+                    $bet->where('status', 0);
+                    $bet_his->where('status', 0);
+                    break;
+                case 2: //已结
+                    $bet->where('status', 1);
+                    $bet_his->where('status', 1);
+                    break;
+                case 3: //撤单
+                    $bet->where('status', 2);
+                    $bet_his->where('status', 2);
+                    break;
+            }
+        }
         if(isset($param->userId)){
             $bet->where('user_id', $param->userId);
             $bet_his->where('user_id', $param->userId);

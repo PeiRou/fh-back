@@ -34,11 +34,11 @@ class next_issue_xyft extends Command
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
 
-        $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(180)->toDateTimeString();
+        $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(270)->toDateTimeString();
         $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
 
         $New_nextIssue = $nextIssue+1;
-        if(substr($New_nextIssue,-3)=='179'){
+        if(substr($New_nextIssue,-3)=='181'){
             $New_nextIssue = date("ymd",strtotime($openTime)).'001';
             $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 13:04:00';
             $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime)).' 13:09:00';

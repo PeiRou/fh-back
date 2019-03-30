@@ -248,7 +248,7 @@
                 <li id="menu-openManage-cqssc"><a href="{{ route('historyLottery.cqssc') }}"><cite></cite><span>重庆时时彩</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.bjpk10') == "has")
-                <li id="menu-openManage-bjpk10"><a href="{{ route('historyLottery.bjpk10') }}"><cite></cite><span>北京PK10</span></a></li>
+                <li id="menu-openManage-bjpk10"><a href="{{ route('historyLottery.bjpk10') }}"><cite></cite><span>北京赛车</span></a></li>
                 @endif
                 @if($hasPermission->hasPermission('historyLottery.bjkl8') == "has")
                 <li id="menu-openManage-bjkl8"><a href="{{ route('historyLottery.bjkl8') }}"><cite></cite><span>北京快乐8</span></a></li>
@@ -337,7 +337,9 @@
                 @if($hasPermission->hasPermission('historyLottery.sflhc') == "has")
                     <li id="menu-openManage-sflhc"><a href="{{ route('historyLottery.sflhc') }}"><cite></cite><span>三分六合彩</span></a></li>
                 @endif
-
+                @if($hasPermission->hasPermission('historyLottery.xyft') == "has")
+                    <li id="menu-openManage-xyft"><a href="{{ route('historyLottery.xyft') }}"><cite></cite><span>幸运飞艇</span></a></li>
+                @endif
             </ul>
         </li>
         @endif
