@@ -406,11 +406,12 @@
         var issue = $('#issue').val();
         var orderNum = $('#orderNum').val();
         var statusTime = $('#statusTime').val();
+        var status = $('#status').val();
         $.ajax({
             url:'/action/userBetList/total',
             type:'post',
             dataType:'json',
-            data:{username:username,date:date,startTime:startTime,endTime:endTime,_token:token,issue:issue,orderNum:orderNum,statusTime:statusTime},
+            data:{username:username,date:date,startTime:startTime,endTime:endTime,_token:token,issue:issue,orderNum:orderNum,statusTime:statusTime,status:status,games:check_val},
             success:function (data) {
                 var winTotal = data[0]['winTotal'];
                 var betTotal = data[0]['betTotal'];
