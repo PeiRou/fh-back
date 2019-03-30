@@ -40,7 +40,7 @@ class next_issue_jslhc extends Command
         $New_nextIssue = $nextIssue+1;
         if(substr($New_nextIssue,-4)=='1441'){
             $New_nextIssue = date("ymd",strtotime($openTime)).'0001';
-            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 06:00:00';
+            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 06:00:50';
             $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime)).' 06:01:00';
         }
 
