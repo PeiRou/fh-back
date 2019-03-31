@@ -126,7 +126,7 @@ class SrcViewController extends Controller
     public function userBetList($userId)
     {
         $getUserInfo = User::where('id',$userId)->first();
-        $games = DB::table('game')->where('status',1)->get();
+        $games = DB::table('game')->select('game_id','game_name','status')->get();
         $nowDate = date('Y-m-d');
         $yesterday = Carbon::parse($nowDate)->addDays(-1)->toDateString();
         $today = date('Y-m-d');
