@@ -1960,7 +1960,7 @@ class New_LHC extends Excel
             }
             $zx_ids = implode(',',$zx_id);
             if($zx_ids && isset($zx_ids)){
-                $zx_sql .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND play_id IN ($zx_ids)";
+                $zx_sql .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `game_id` = $gameId AND `issue` = $issue AND play_id IN ($zx_ids)";
             } else {
                 $zx_sql = 0;
             }
