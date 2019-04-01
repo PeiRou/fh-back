@@ -469,11 +469,7 @@ class BetDataController extends Controller
                     return '<div style="position: relative"><div class="show-open" id="openH_'.$bet->bet_bet_id.'"></div><span onmouseover="showOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\',\''.$bet->g_game_name.'\')" onmouseout="hideOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" style="color: #'.$currentColor.';cursor: pointer;">'.$bet->bet_issue.'</span></div>';
                 })
                 ->editColumn('play',function ($bet){
-                    if($bet->bet_playcate_id == 175 || $bet->bet_playcate_id == 77 || $bet->bet_playcate_id == 68 || $bet->bet_playcate_id == 166){
-                        $betInfo = $bet->bet_bet_info ?? '';
-                    } else {
-                        $betInfo = '';
-                    }
+                    $betInfo = $bet->bet_bet_info ?? '';
                     return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span> <span>$betInfo</span>";
                 })
                 ->editColumn('rebate',function ($bet){
