@@ -960,9 +960,7 @@ class Excel
                     writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
                     $randRate = rand(1000,1999)/1000;
                     if($lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
-//                    $openCode = $this->opennum($table);
-                        krsort($arrLimit);
-                        writeLog('New_Kill', $table.' :'.$issue.' b-to-s-'.json_encode($arrLimit));
+                        $iLimit = count($arrLimit)>=2?2:1;
                         foreach ($arrLimit as $key2 =>$va2){
                             $ii++;
                             if($ii==$iLimit) {
