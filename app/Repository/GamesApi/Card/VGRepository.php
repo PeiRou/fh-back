@@ -24,6 +24,8 @@ class VGRepository extends BaseRepository
                 'Profit' => $v['money'],       //盈利
                 'GameStartTime' => $v['begintime'],//游戏开始时间
                 'GameEndTime' => $v['endtime'],  //游戏结束时间
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ];
         }
         return $this->insertDB($arr, $table);

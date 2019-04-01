@@ -60,6 +60,8 @@ class WSGJRepository extends BaseRepository
                 'Profit' => $v['netPnl'],       //净输赢
                 'GameStartTime' => $v['betTime'],//投注时间
                 'GameEndTime' => $v['endTime'] ?? '',  //游戏结束时间
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
 
                 'validBetAmount' => $v['validBetAmount'] ?? '',  //有效投注金额
                 'gameCode' => $v['gameCode'] ?? '',  //有效投注金额

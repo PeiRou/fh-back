@@ -22,9 +22,10 @@ class PrivodeController extends Controller{
     public function getBet($param = []){
         $list = GamesApi::getBetList(array_merge($param,['open' => 1]));
         foreach ($list as $k=>$v){
-            //删除十天以前的
+            //删除六十天以前的
             $tableName = 'jq_'.strtolower($v->alias).'_bet';
-            DB::table($tableName)->where('GameStartTime', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
+            DB::table($tableName)->where('GameStartTime', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 60))->delete();
+//            DB::table($tableName)->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 60))->delete();
             $res = $this->action($v->g_id, 'getBet', $param);
             if(isset($res['code']) && $res['code'] != 0){
                 $this->insertError($v, $res['code'], $res['msg'], $this->repo->param);

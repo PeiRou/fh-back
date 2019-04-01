@@ -69,6 +69,8 @@ class BaseRepository
 //                'Revenue' => $res['Revenue'][$k],
                 'GameStartTime' => $data['GameStartTime'][$k],
                 'GameEndTime' => $data['GameEndTime'][$k],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ];
         }
         return $this->insertDB($arr, $table);
@@ -122,7 +124,7 @@ class BaseRepository
         return  sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);
     }
 
-    protected function show($code = '', $msg = '', $data = []){
+    public function show($code = '', $msg = '', $data = []){
         $data = [
             'code' => $code,
             'msg' => $msg,
