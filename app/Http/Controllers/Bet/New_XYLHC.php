@@ -1987,7 +1987,7 @@ class New_XYLHC extends Excel
                     if ($kk == $k){
                         $zx_id[] = $gameId.$zx_playCate.$v;
                         $playId = $gameId.$zx_playCate.$v;
-                        $zx_sql .= sprintf("WHEN %d THEN (bet_money * play_odds) * %d ", $playId, $vv);
+                        $zx_sql .= sprintf("WHEN %d THEN bet_money + (bet_money * (play_odds-1)) * %d ", $playId, $vv);
                     }
                 }
             }

@@ -591,211 +591,213 @@ class New_Gd11x5
         $sql_upd_lose .= $sql_lose ."END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `status` = 0 AND `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_lose)";
         $run = !empty($sql)?DB::statement($sql_upd):0;
         if($run == 1){
-            //直选- Start
-            $zhixuan_playCate = 34; //直选分类ID
-            $zhixuan_ids = [];
-            $zhixuan_lose_ids = [];
-            $get = DB::table($table)->select('bet_id','bet_info','play_id')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zhixuan_playCate)->where('bunko','=',0.00)->get();
-            $open2 = explode(',', $OPEN_QIAN_2);
-            $open3 = explode(',', $OPEN_QIAN_3);
-            foreach ($get as $item) {
-                $user = explode(',', $item->bet_info);
-                if($item->play_id == '2134246'){ //前二直选
-                    if($open2[0] == $user[0] && $open2[1] == $user[1]){
-                        $zhixuan_ids[] = $item->bet_id;
-                    } else {
-                        $zhixuan_lose_ids[] = $item->bet_id;
-                    }
-                }
-                if($item->play_id == '2134247'){ //前三直选
-                    if($open3[0] == $user[0] && $open3[1] == $user[1] && $open3[2] == $user[2]){
-                        $zhixuan_ids[] = $item->bet_id;
-                    } else {
-                        $zhixuan_lose_ids[] = $item->bet_id;
-                    }
-                }
-            }
-            $ids_zhixuan = implode(',', $zhixuan_ids);
-            if($ids_zhixuan){
-                $sql_zhixuan = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_zhixuan)"; //中奖的SQL语句
-            } else {
-                $sql_zhixuan = 0;
-            }
-            //直选 - End
-
-            //连码 - Start
-            $lm_playCate = 33;
-            $lm_ids = [];
-            $lm_lose_ids = [];
-            $get_lm = DB::table($table)->select('bet_id','bet_info','play_id','play_name')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
-            $lm_open = explode(',', $openCode);
-            $lm_open_qian2 = explode(',',$OPEN_QIAN_2);
-            $lm_open_qian3 = explode(',',$OPEN_QIAN_3);
-            foreach ($get_lm as $item) {
-                $explodeBetInfo = explode(',',$item->bet_info);
-                if(count($explodeBetInfo) == 2 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                    $diff2 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff2) == 2){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                } else if (count($explodeBetInfo) == 3 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                    $diff3 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff3) == 3){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                } else if (count($explodeBetInfo) == 4 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                    $diff4 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff4) == 4){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                } else if (count($explodeBetInfo) == 5 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                    $diff5 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff5) == 5){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                } else if (count($explodeBetInfo) == 6 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                    $diff6 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff6) == 5){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                } else if (count($explodeBetInfo) == 7 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                    $diff7 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff7) == 5){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                } else if (count($explodeBetInfo) == 8 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                    $diff8 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff8) == 5){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-                $explodeBetInfo = explode(',',$item->bet_info);
-                if($item->play_id == '2133244'){ //前二组选
-                    if($explodeBetInfo[0] == $lm_open_qian2[0] && $explodeBetInfo[1] == $lm_open_qian2[1]){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-                if($item->play_id == '2133245'){ //前三组选
-                    if($explodeBetInfo[0] == $lm_open_qian3[0] && $explodeBetInfo[1] == $lm_open_qian3[1] && $explodeBetInfo[2] == $lm_open_qian3[2]){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-            }
-
-            $ids_lm = implode(',', $lm_ids);
-            if($ids_lm){
-                $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
-            } else {
-                $sql_lm = 0;
-            }
-            //连码 - End
-            //特殊处理单号为和
-            $heArrayPush = [];
-            if($openCodeArr[0] == 11){
-                $heArrayPush[] = 2127162;
-                $heArrayPush[] = 2127163;
-                $heArrayPush[] = 2127164;
-                $heArrayPush[] = 2127165;
-            }
-            if($openCodeArr[1] == 11){
-                $heArrayPush[] = 2128177;
-                $heArrayPush[] = 2128178;
-                $heArrayPush[] = 2128179;
-                $heArrayPush[] = 2128180;
-            }
-            if($openCodeArr[2] == 11){
-                $heArrayPush[] = 2129192;
-                $heArrayPush[] = 2129193;
-                $heArrayPush[] = 2129194;
-                $heArrayPush[] = 2129195;
-            }
-            if($openCodeArr[3] == 11){
-                $heArrayPush[] = 2130207;
-                $heArrayPush[] = 2130208;
-                $heArrayPush[] = 2130209;
-                $heArrayPush[] = 2130210;
-            }
-            if($openCodeArr[4] == 11){
-                $heArrayPush[] = 2131222;
-                $heArrayPush[] = 2131223;
-                $heArrayPush[] = 2131224;
-                $heArrayPush[] = 2131225;
-            }
-            if($open_total == 30){
-                $heArrayPush[] = 2126143;
-                $heArrayPush[] = 2126147;
-            }
-            if($heArrayPush){
-                $getUserHeBets = DB::table($table)->select('bet_id','bet_money')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArrayPush)->get();
-                if($getUserHeBets){
-                    $updateHeId = [];
-                    $sql_upd_he = "UPDATE bet SET bunko = CASE ";
-                    $sql_he = "";
-                    foreach ($getUserHeBets as $item){
-                        $updateHeId[] = $item->bet_id;
-                        $bunko_he = $item->bet_money * 1;
-                        $sql_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
-                    }
-                    $ids_he = implode(',', $updateHeId);
-                    $sql_upd_he .= $sql_he . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_he) AND `issue` = $issue AND `game_id` = $gameId";
+            $bunko_index++;
+        }
+        //直选- Start
+        $zhixuan_playCate = 34; //直选分类ID
+        $zhixuan_ids = [];
+        $zhixuan_lose_ids = [];
+        $get = DB::table($table)->select('bet_id','bet_info','play_id')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zhixuan_playCate)->where('bunko','=',0.00)->get();
+        $open2 = explode(',', $OPEN_QIAN_2);
+        $open3 = explode(',', $OPEN_QIAN_3);
+        foreach ($get as $item) {
+            $user = explode(',', $item->bet_info);
+            if($item->play_id == '2134246'){ //前二直选
+                if($open2[0] == $user[0] && $open2[1] == $user[1]){
+                    $zhixuan_ids[] = $item->bet_id;
                 } else {
-                    $sql_he = 0;
+                    $zhixuan_lose_ids[] = $item->bet_id;
                 }
+            }
+            if($item->play_id == '2134247'){ //前三直选
+                if($open3[0] == $user[0] && $open3[1] == $user[1] && $open3[2] == $user[2]){
+                    $zhixuan_ids[] = $item->bet_id;
+                } else {
+                    $zhixuan_lose_ids[] = $item->bet_id;
+                }
+            }
+        }
+        $ids_zhixuan = implode(',', $zhixuan_ids);
+        if($ids_zhixuan){
+            $sql_zhixuan = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_zhixuan)"; //中奖的SQL语句
+        } else {
+            $sql_zhixuan = 0;
+        }
+        //直选 - End
+
+        //连码 - Start
+        $lm_playCate = 33;
+        $lm_ids = [];
+        $lm_lose_ids = [];
+        $get_lm = DB::table($table)->select('bet_id','bet_info','play_id','play_name')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
+        $lm_open = explode(',', $openCode);
+        $lm_open_qian2 = explode(',',$OPEN_QIAN_2);
+        $lm_open_qian3 = explode(',',$OPEN_QIAN_3);
+        foreach ($get_lm as $item) {
+            $explodeBetInfo = explode(',',$item->bet_info);
+            if(count($explodeBetInfo) == 2 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                $diff2 = array_intersect($lm_open, $explodeBetInfo);
+                if(count($diff2) == 2){
+                    $lm_ids[] = $item->bet_id;
+                } else {
+                    $lm_lose_ids[] = $item->bet_id;
+                }
+            } else if (count($explodeBetInfo) == 3 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                $diff3 = array_intersect($lm_open, $explodeBetInfo);
+                if(count($diff3) == 3){
+                    $lm_ids[] = $item->bet_id;
+                } else {
+                    $lm_lose_ids[] = $item->bet_id;
+                }
+            } else if (count($explodeBetInfo) == 4 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                $diff4 = array_intersect($lm_open, $explodeBetInfo);
+                if(count($diff4) == 4){
+                    $lm_ids[] = $item->bet_id;
+                } else {
+                    $lm_lose_ids[] = $item->bet_id;
+                }
+            } else if (count($explodeBetInfo) == 5 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                $diff5 = array_intersect($lm_open, $explodeBetInfo);
+                if(count($diff5) == 5){
+                    $lm_ids[] = $item->bet_id;
+                } else {
+                    $lm_lose_ids[] = $item->bet_id;
+                }
+            } else if (count($explodeBetInfo) == 6 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                $diff6 = array_intersect($lm_open, $explodeBetInfo);
+                if(count($diff6) == 5){
+                    $lm_ids[] = $item->bet_id;
+                } else {
+                    $lm_lose_ids[] = $item->bet_id;
+                }
+            } else if (count($explodeBetInfo) == 7 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                $diff7 = array_intersect($lm_open, $explodeBetInfo);
+                if(count($diff7) == 5){
+                    $lm_ids[] = $item->bet_id;
+                } else {
+                    $lm_lose_ids[] = $item->bet_id;
+                }
+            } else if (count($explodeBetInfo) == 8 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                $diff8 = array_intersect($lm_open, $explodeBetInfo);
+                if(count($diff8) == 5){
+                    $lm_ids[] = $item->bet_id;
+                } else {
+                    $lm_lose_ids[] = $item->bet_id;
+                }
+            }
+            $explodeBetInfo = explode(',',$item->bet_info);
+            if($item->play_id == '2133244'){ //前二组选
+                if($explodeBetInfo[0] == $lm_open_qian2[0] && $explodeBetInfo[1] == $lm_open_qian2[1]){
+                    $lm_ids[] = $item->bet_id;
+                } else {
+                    $lm_lose_ids[] = $item->bet_id;
+                }
+            }
+            if($item->play_id == '2133245'){ //前三组选
+                if($explodeBetInfo[0] == $lm_open_qian3[0] && $explodeBetInfo[1] == $lm_open_qian3[1] && $explodeBetInfo[2] == $lm_open_qian3[2]){
+                    $lm_ids[] = $item->bet_id;
+                } else {
+                    $lm_lose_ids[] = $item->bet_id;
+                }
+            }
+        }
+
+        $ids_lm = implode(',', $lm_ids);
+        if($ids_lm){
+            $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
+        } else {
+            $sql_lm = 0;
+        }
+        //连码 - End
+        //特殊处理单号为和
+        $heArrayPush = [];
+        if($openCodeArr[0] == 11){
+            $heArrayPush[] = 2127162;
+            $heArrayPush[] = 2127163;
+            $heArrayPush[] = 2127164;
+            $heArrayPush[] = 2127165;
+        }
+        if($openCodeArr[1] == 11){
+            $heArrayPush[] = 2128177;
+            $heArrayPush[] = 2128178;
+            $heArrayPush[] = 2128179;
+            $heArrayPush[] = 2128180;
+        }
+        if($openCodeArr[2] == 11){
+            $heArrayPush[] = 2129192;
+            $heArrayPush[] = 2129193;
+            $heArrayPush[] = 2129194;
+            $heArrayPush[] = 2129195;
+        }
+        if($openCodeArr[3] == 11){
+            $heArrayPush[] = 2130207;
+            $heArrayPush[] = 2130208;
+            $heArrayPush[] = 2130209;
+            $heArrayPush[] = 2130210;
+        }
+        if($openCodeArr[4] == 11){
+            $heArrayPush[] = 2131222;
+            $heArrayPush[] = 2131223;
+            $heArrayPush[] = 2131224;
+            $heArrayPush[] = 2131225;
+        }
+        if($open_total == 30){
+            $heArrayPush[] = 2126143;
+            $heArrayPush[] = 2126147;
+        }
+        if($heArrayPush){
+            $getUserHeBets = DB::table($table)->select('bet_id','bet_money')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArrayPush)->get();
+            if($getUserHeBets){
+                $updateHeId = [];
+                $sql_upd_he = "UPDATE bet SET bunko = CASE ";
+                $sql_he = "";
+                foreach ($getUserHeBets as $item){
+                    $updateHeId[] = $item->bet_id;
+                    $bunko_he = $item->bet_money * 1;
+                    $sql_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
+                }
+                $ids_he = implode(',', $updateHeId);
+                $sql_upd_he .= $sql_he . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_he)";
             } else {
                 $sql_he = 0;
             }
-            $run2 = !empty($sql_lose)?DB::connection('mysql::write')->statement($sql_upd_lose):0;
-            if($run2 == 1){
+        } else {
+            $sql_he = 0;
+        }
+        $run2 = !empty($sql_lose)?DB::connection('mysql::write')->statement($sql_upd_lose):0;
+        if($run2 == 1){
+            $bunko_index++;
+            if(!empty($sql_zhixuan)){
+                $run3 = DB::connection('mysql::write')->statement($sql_zhixuan);
+                if($run3 == 1){
+                    $bunko_index++;
+                }
+            } else {
                 $bunko_index++;
-                if(!empty($sql_zhixuan)){
-                    $run3 = DB::connection('mysql::write')->statement($sql_zhixuan);
-                    if($run3 == 1){
-                        $bunko_index++;
-                    }
-                } else {
-                    $bunko_index++;
-                }
-
-                if(!empty($sql_lm !== 0)){
-                    $run4 = DB::connection('mysql::write')->statement($sql_lm);
-                    if($run4 == 1){
-                        $bunko_index++;
-                    }
-                } else {
-                    $bunko_index++;
-                }
-
-                if(!empty($sql_he)){
-                    $run5 = DB::connection('mysql::write')->statement($sql_upd_he);
-                    if($run5 == 1){
-                        $bunko_index++;
-                    }
-                } else {
-                    $bunko_index++;
-                }
             }
 
-            if($bunko_index !== 0){
-                return 1;
+            if(!empty($sql_lm !== 0)){
+                $run4 = DB::connection('mysql::write')->statement($sql_lm);
+                if($run4 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if(!empty($sql_he)){
+                $run5 = DB::connection('mysql::write')->statement($sql_upd_he);
+                if($run5 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
             }
         }
+
+        if($bunko_index !== 0){
+            return 1;
+        }
+
     }
 }

@@ -1851,9 +1851,9 @@ class New_LHC extends Excel
         $table = 'bet';
         $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         if($getUserBets){
-            $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
-            $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
-            $sql_he = "UPDATE bet SET bunko = CASE "; //和局的SQL语句
+            $sql = "UPDATE ".$table." SET bunko = CASE "; //中奖的SQL语句
+            $sql_lose = "UPDATE ".$table." SET bunko = CASE "; //未中奖的SQL语句
+            $sql_he = "UPDATE ".$table." SET bunko = CASE "; //和局的SQL语句
 
             $win = $id;
             $lose = $id;
@@ -1946,15 +1946,16 @@ class New_LHC extends Excel
             $sx4 = $this->LHC_SX->shengxiao($arrOpenCode[3]);
             $sx5 = $this->LHC_SX->shengxiao($arrOpenCode[4]);
             $sx6 = $this->LHC_SX->shengxiao($arrOpenCode[5]);
+            $sx7 = $this->LHC_SX->shengxiao($arrOpenCode[6]);
             $openSX = [$sx1,$sx2,$sx3,$sx4,$sx5,$sx6];
             $countOpen = array_count_values($openSX);
-            $zx_sql = "UPDATE bet SET bunko = CASE play_id ";
+            $zx_sql = "UPDATE ".$table." SET bunko = CASE play_id ";
             foreach ($countOpen as $kk => $vv){
                 foreach ($zx_plays as $k => $v){
                     if ($kk == $k){
                         $zx_id[] = $gameId.$zx_playCate.$v;
                         $playId = $gameId.$zx_playCate.$v;
-                        $zx_sql .= sprintf("WHEN %d THEN (bet_money * play_odds) * %d ", $playId, $vv);
+                        $zx_sql .= sprintf("WHEN %d THEN bet_money + (bet_money * (play_odds-1)) * %d ", $playId, $vv);
                     }
                 }
             }
@@ -1964,8 +1965,114 @@ class New_LHC extends Excel
             } else {
                 $zx_sql = 0;
             }
-
             //正肖-----结束
+
+            //连肖连尾-----开始
+            $lxlw_playCate = 78; //分类ID
+            $uniqueSX = array_unique([$sx1,$sx2,$sx3,$sx4,$sx5,$sx6,$sx7]);
+            //二连肖
+            $lx_ids = [];
+            $get2LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连肖%')->where('bunko','=',0.00)->get();
+            foreach ($get2LX as $item) {
+                $userBetInfoSX = explode(',',$item->bet_info);
+                $bi = array_intersect($uniqueSX, $userBetInfoSX);
+                if(count($bi) == 2){
+                    $lx_ids[] = $item->bet_id;
+                }
+            }
+            //三连肖
+            $get3LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%三连肖%')->where('bunko','=',0.00)->get();
+            foreach ($get3LX as $item) {
+                $userBetInfoSX_3 = explode(',',$item->bet_info);
+                $bi = array_intersect($uniqueSX, $userBetInfoSX_3);
+                if(count($bi) == 3){
+                    $lx_ids[] = $item->bet_id;
+                }
+            }
+            //四连肖
+            $get4LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%四连肖%')->where('bunko','=',0.00)->get();
+            foreach ($get4LX as $item) {
+                $userBetInfoSX_4 = explode(',',$item->bet_info);
+                $bi = array_intersect($uniqueSX, $userBetInfoSX_4);
+                if(count($bi) == 4){
+                    $lx_ids[] = $item->bet_id;
+                }
+            }
+            //五连肖
+            $get5LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%五连肖%')->where('bunko','=',0.00)->get();
+            foreach ($get5LX as $item) {
+                $userBetInfoSX_5 = explode(',',$item->bet_info);
+                $bi = array_intersect($uniqueSX, $userBetInfoSX_5);
+                if(count($bi) == 5){
+                    $lx_ids[] = $item->bet_id;
+                }
+            }
+            $ids_lx = implode(',', $lx_ids);
+            if($ids_lx){
+                $sql_lx = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lx)"; //中奖的SQL语句
+            } else {
+                $sql_lx = 0;
+            }
+
+            //连尾
+            $wei1 = $this->LHC_SX->wei($arrOpenCode[0]);
+            $wei2 = $this->LHC_SX->wei($arrOpenCode[1]);
+            $wei3 = $this->LHC_SX->wei($arrOpenCode[2]);
+            $wei4 = $this->LHC_SX->wei($arrOpenCode[3]);
+            $wei5 = $this->LHC_SX->wei($arrOpenCode[4]);
+            $wei6 = $this->LHC_SX->wei($arrOpenCode[5]);
+            $wei7 = $this->LHC_SX->wei($arrOpenCode[6]);
+            $uniqueWei = array_unique([$wei1,$wei2,$wei3,$wei4,$wei5,$wei6,$wei7]);
+            $lw_ids = [];
+            //二连尾
+            $get2LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连尾%')->where('bunko','=',0.00)->get();
+            foreach ($get2LW as $item) {
+                $userBetInfoWei = explode(',',$item->bet_info);
+                $bi = array_intersect($uniqueWei, $userBetInfoWei);
+                if(count($bi) == 2){
+                    $lw_ids[] = $item->bet_id;
+                }
+            }
+            //三连尾
+            $get3LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%三连尾%')->where('bunko','=',0.00)->get();
+            foreach ($get3LW as $item) {
+                $userBetInfoWei_3 = explode(',',$item->bet_info);
+                $bi = array_intersect($uniqueWei, $userBetInfoWei_3);
+                if(count($bi) == 3){
+                    $lw_ids[] = $item->bet_id;
+                }
+            }
+            //四连尾
+            $get4LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%四连尾%')->where('bunko','=',0.00)->get();
+            foreach ($get4LW as $item) {
+                $userBetInfoWei_4 = explode(',',$item->bet_info);
+                $bi = array_intersect($uniqueWei, $userBetInfoWei_4);
+                if(count($bi) == 4){
+                    $lw_ids[] = $item->bet_id;
+                }
+            }
+            //五连尾
+            $get5LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%五连尾%')->where('bunko','=',0.00)->get();
+            foreach ($get5LW as $item) {
+                $userBetInfoWei_5 = explode(',',$item->bet_info);
+                $bi = array_intersect($uniqueWei, $userBetInfoWei_5);
+                if(count($bi) == 5){
+                    $lw_ids[] = $item->bet_id;
+                }
+            }
+
+            $ids_lw = implode(',', $lw_ids);
+            if($ids_lw){
+                $sql_lw = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lw)"; //中奖的SQL语句
+            } else {
+                $sql_lw = 0;
+            }
+            //连肖连尾-----结束
+
+            //连码-----开始
+            $lm_playCate = 177; //分类ID
+            //连码-----结束
+
             if(!empty($sql_bets_lose)){
                 $run2 = DB::connection('mysql::write')->statement($sql_lose);
                 if($run2 == 1){
@@ -1998,10 +2105,27 @@ class New_LHC extends Excel
             } else {
                 $bunko_index++;
             }
+
+            if($sql_lx !== 0){
+                $run6 = DB::connection('mysql::write')->statement($sql_lx);
+                if($run6 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if($sql_lw !== 0){
+                $run7 = DB::connection('mysql::write')->statement($sql_lw);
+                if($run7 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
         }
 
         if($bunko_index !== 0){
-            //\Log::info('BUNKO:'.$bunko_index);
             return 1;
         }
     }
