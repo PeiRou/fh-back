@@ -30,7 +30,7 @@ $(function () {
             {data: 'game_id'},
             {data: 'order_id'},
             {data: 'type'},
-            {data: 'status'},
+            // {data: 'status'},
             {data: 'code'},
             {data: 'codeMsg'},
             {data: 'money'},

@@ -61,7 +61,7 @@
                 <th>游戏</th>
                 <th>订单号</th>
                 <th>类型</th>
-                <th>状态</th>
+                {{--<th>状态</th>--}}
                 <th>返回码</th>
                 <th>返回码对应信息</th>
                 <th>金额</th>
@@ -84,4 +84,47 @@
     <?php } ?>
     </script>
     <script src="/back/js/pages/gamesApi_recharges.js"></script>
+    <script>
+
+        function checkOrder(id)
+        {
+            jc = $.confirm({
+                title: '检查订单状态',
+                theme: 'material',
+                type: 'red',
+                boxWidth:'25%',
+                content: '若订单状态为成功将解冻冻结金额',
+                buttons: {
+                    confirm: {
+                        text:'确定',
+                        btnClass: 'btn-red',
+                        action: function(){
+                            var data = {
+                                id:id,
+                                status: status == 1 ? 0 : 1,
+                            };
+                            $.ajax({
+                                url: "{{ env('WEB_INTRANET_IP', 'http://192.168.162.28:8811') }}/gamesApiOrder/UpMoney?id="+id,
+                                data:data,
+                                type:'get',
+                                dataType:'json',
+                                success:function(e){
+                                    console.log(e);
+                                    if(e.code == 0){
+                                        // Calert('状态修改成功','green')
+                                        dataTable.ajax.reload();
+                                    }else{
+                                        Calert(e.msg,'red')
+                                    }
+                                }
+                            })
+                        }
+                    },
+                    cancel:{
+                        text:'取消'
+                    }
+                }
+            });
+        }
+    </script>
 @endsection

@@ -167,6 +167,9 @@ class GamesApiController extends Controller
             return show(2);
         }
         $data['status'] = $request->get('status');
+        if($data['status'] == 1){
+            $data['open'] = 1;
+        }
         if(GamesApi::where('g_id',$id)->update($data)){
             return show(0);
         }

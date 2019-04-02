@@ -39,8 +39,23 @@ class GamesApiRechargesController extends Controller
             ->editColumn('control',function ($res){
                 return '';
             })
+            ->editColumn('type',function ($res){
+                $str = '';
+                $res->type == 'up' && $str = '上分';
+                $res->type == 'down' && $str = '下分';
+                return $str;
+            })
             ->editColumn('g_id',function ($res)use($g_ids){
                 return $g_ids[$res->g_id] ?? '';
+            })
+            ->editColumn('control',function ($res){
+                $str = '';
+                if($res->code == 500 && $res->order_code !== '0'){
+                    $str .= '<ul class="control-menu">
+                        <li onclick="checkOrder('.$res->id.')">检查订单</li>
+                        </ul>';
+                }
+                return $str;
             })
             ->setTotalRecords($resCount)
             ->rawColumns(['sort','control'])

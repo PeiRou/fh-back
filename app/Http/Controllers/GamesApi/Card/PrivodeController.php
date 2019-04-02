@@ -53,9 +53,17 @@ class PrivodeController extends Controller{
 
     private function insertError($g_info, $code, $codeMsg, $param)
     {
-        if(($g_info->g_id == 15 || $g_info->g_id == 16) && $code == 16){
+        //不记录失败信息的
+        if($code == 9999){
             return null;
         }
+        if(($g_info->g_id == 15 || $g_info->g_id == 16) && $code == 16){
+            return null;
+        }elseif ($g_info->g_id == 21 && $code == 16){
+            return null;
+        }
+
+
         DB::table('jq_error_bet')->insert([
             'g_id' => $g_info->g_id,
             'g_name' => $g_info->name,
@@ -66,7 +74,7 @@ class PrivodeController extends Controller{
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
         //删除两天以前的
-        DB::table('jq_error_bet')->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 2))->delete();
+        DB::table('jq_error_bet')->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
     }
 
     private function action($g_id, $action, $param = []){
@@ -74,7 +82,7 @@ class PrivodeController extends Controller{
         $config = $this->getConfig($g_id);
         if(count($config) <= 0)
             return [
-                'code' => 1,
+                'code' => 9999,
                 'msg' => '缺少配置',
                 'data' => []
             ];
