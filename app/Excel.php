@@ -18,7 +18,7 @@ class Excel
      * @return int
      */
     public function updateUserMoney($gameId,$issue,$gameName='',$table='',$tableid=0){
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',1)->where('bunko','>',0)->groupBy('user_id')->get();
+        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('status',1)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>',0)->groupBy('user_id')->get();
         $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds','order_id','bet_money','unfreeze_money','nn_view_money')->where('game_id',$gameId)->where('issue',$issue)->where('status',1)->where('bunko','>',0)->get();
         if($get){
             //更新返奖的用户馀额
@@ -84,7 +84,7 @@ class Excel
                 $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
                 $tmpCap['order_id'] = 'W'.substr($i->order_id,1);
-                $tmpCap['type'] = 't09';
+                $tmpCap['type'] = ($i->bet_money==$bunko&&!in_array($i->game_id,array(90,91)))?'t02':'t09';
                 $tmpCap['money'] = $bunko;
                 $tmpCap['balance'] = round($capUsers[$i->user_id],3);
                 $tmpCap['operation_id'] = 0;

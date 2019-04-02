@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\DB;
 class New_Gd11x5
 {
     protected $arrPlay_id = array(2126143,2126144,2126145,2126146,2126147,2126148,2126149,2126150,2127151,2127152,2127153,2127154,2127155,2127156,2127157,2127158,2127159,2127160,2127161,2127162,2127163,2127164,2127165,2128166,2128167,2128168,2128169,2128170,2128171,2128172,2128173,2128174,2128175,2128176,2128177,2128178,2128179,2128180,2129181,2129182,2129183,2129184,2129185,2129186,2129187,2129188,2129189,2129190,2129191,2129192,2129193,2129194,2129195,2130196,2130197,2130198,2130199,2130200,2130201,2130202,2130203,2130204,2130205,2130206,2130207,2130208,2130209,2130210,2131211,2131212,2131213,2131214,2131215,2131216,2131217,2131218,2131219,2131220,2131221,2131222,2131223,2131224,2131225,2132226,2132227,2132228,2132229,2132230,2132231,2132232,2132233,2132234,2132235,2132236,2133237,2133238,2133239,2133240,2133241,2133242,2133243,2133244,2133245,2134246,2134247);
+    private function exc_play($openCode,$gameId)
+    {
+        $win = collect([]);
+        $ids_he = collect([]);
+        $this->LM($openCode,$gameId,$win,$ids_he);
+        return array('win'=>$win,'ids_he'=>$ids_he);
+    }
     public function all($openCode,$issue,$gameId,$id)
     {
         $table = 'game_gd11x5';
@@ -18,10 +25,11 @@ class New_Gd11x5
         $excelModel = new Excel();
         if($betCount > 0){
             $bunko = 0;
+            $resData = $this->exc_play($openCode,$gameId);
+            $win = @$resData['win'];
+            $he = isset($resData['ids_he'])?$resData['ids_he']:array();
             try{
-                $win = collect([]);
-                $this->LM($openCode,$gameId,$win);
-                $bunko = $this->bunko_gd11x5($win,$gameId,$issue,$openCode);
+                $bunko = $this->bunko_gd11x5($win,$gameId,$issue,$openCode,$he);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['status' => 0,'bunko' => 0]);
@@ -46,7 +54,7 @@ class New_Gd11x5
     }
 
     //两面部分结算
-    private function LM($openCode,$gameId,$win)
+    private function LM($openCode,$gameId,$win,$ids_he)
     {
         $arrOpenCode = explode(',',$openCode);
         $playCate = 26;
@@ -57,33 +65,48 @@ class New_Gd11x5
         $num5 = (int)$arrOpenCode[4];
         $numsTotal = $num1 + $num2 + $num3 + $num4 + $num5;
 
-        //总和大小-Start
-        if($numsTotal == 30){ //和局
-
-        }
-        if($numsTotal > 30){ //总和大
+        //总和大小单双-Start
+        if($numsTotal == 30){   //总和等于30视为和局 //和局退本金
             $playId = 143;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        if($numsTotal < 30){ //总和小
+            $ids_he->push($winCode);
             $playId = 147;
             $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //总和大小-End
-
-        //总和单双-Start
-        if($numsTotal%2 == 0){ //总和双
+            $ids_he->push($winCode);
             $playId = 148;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        } else { //总和单
+            $ids_he->push($winCode);
             $playId = 144;
             $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
+            $ids_he->push($winCode);
+        }else {
+            //总和大小-Start
+            if($numsTotal > 30){ //总和大
+                $playId = 143;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }else if($numsTotal < 30){ //总和小
+                $playId = 147;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+            //总和大小-End
+
+            //总和单双-Start
+            if($numsTotal%2 == 0){ //总和双
+                $playId = 148;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            } else { //总和单
+                $playId = 144;
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+            //总和单双-End
         }
-        //总和单双-End
+        //总和大小单双-End
 
         //总和尾大、尾小-Start
         $totalStrSplit = str_split($numsTotal);
@@ -169,29 +192,72 @@ class New_Gd11x5
                 $playId = 161;
                 $winCode = $gameId.$Q1PlayCate.$playId;
                 $win->push($winCode);
+
+                //开和1-10单号都要退本金
+                $playId = 151;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 152;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 153;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 154;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 155;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 156;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 157;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 158;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 159;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 160;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $ids_he->push($winCode);
                 break;
         }
-        if($num1 == 11){ //和
-
-        }
-        if($num1 >= 6 && $num1 !== 11){ //大
+        if($num1 == 11){ //单号1两面开11视为和局 //和局退本金
             $playId = 162;
             $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num1 <= 5){ //小
+            $ids_he->push($winCode);
             $playId = 163;
             $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num1%2 == 0){ //双
+            $ids_he->push($winCode);
             $playId = 165;
             $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
+            $ids_he->push($winCode);
             $playId = 164;
             $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
+            $ids_he->push($winCode);
+        }else{
+            if($num1 >= 6 && $num1 !== 11){ //大
+                $playId = 162;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $win->push($winCode);
+            }else if($num1 <= 5){ //小
+                $playId = 163;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num1%2 == 0){ //双
+                $playId = 165;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $win->push($winCode);
+            } else { //单
+                $playId = 164;
+                $winCode = $gameId.$Q1PlayCate.$playId;
+                $win->push($winCode);
+            }
         }
         //单号1两面-End
 
@@ -252,29 +318,72 @@ class New_Gd11x5
                 $playId = 176;
                 $winCode = $gameId.$Q2PlayCate.$playId;
                 $win->push($winCode);
+
+                //开和1-10单号都要退本金
+                $playId = 166;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 167;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 168;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 169;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 170;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 171;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 172;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 173;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 174;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 175;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $ids_he->push($winCode);
                 break;
         }
-        if($num2 == 11){ //和
-
-        }
-        if($num2 >= 6){ //大
+        if($num2 == 11){ //单号2两面开11视为和局 //和局退本金
             $playId = 177;
             $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num2 <= 5){ //小
+            $ids_he->push($winCode);
             $playId = 178;
             $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num2%2 == 0){ //双
+            $ids_he->push($winCode);
             $playId = 180;
             $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
+            $ids_he->push($winCode);
             $playId = 179;
             $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
+            $ids_he->push($winCode);
+        }else{
+            if($num2 >= 6){ //大
+                $playId = 177;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $win->push($winCode);
+            }else if($num2 <= 5){ //小
+                $playId = 178;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num2%2 == 0){ //双
+                $playId = 180;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $win->push($winCode);
+            } else { //单
+                $playId = 179;
+                $winCode = $gameId.$Q2PlayCate.$playId;
+                $win->push($winCode);
+            }
         }
         //单号2两面-End
 
@@ -335,29 +444,72 @@ class New_Gd11x5
                 $playId = 191;
                 $winCode = $gameId.$Q3PlayCate.$playId;
                 $win->push($winCode);
+
+                //开和1-10单号都要退本金
+                $playId = 181;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 182;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 183;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 184;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 185;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 186;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 187;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 188;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 189;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 190;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $ids_he->push($winCode);
                 break;
         }
-        if($num3 == 11){ //和
-
-        }
-        if($num3 >= 6){ //大
+        if($num3 == 11){ //单号3两面开11视为和局 //和局退本金
             $playId = 192;
             $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num3 <= 5){ //小
+            $ids_he->push($winCode);
             $playId = 193;
             $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num3%2 == 0){ //双
+            $ids_he->push($winCode);
             $playId = 195;
             $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
+            $ids_he->push($winCode);
             $playId = 194;
             $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
+            $ids_he->push($winCode);
+        }else{
+            if($num3 >= 6){ //大
+                $playId = 192;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $win->push($winCode);
+            }else if($num3 <= 5){ //小
+                $playId = 193;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num3%2 == 0){ //双
+                $playId = 195;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $win->push($winCode);
+            } else { //单
+                $playId = 194;
+                $winCode = $gameId.$Q3PlayCate.$playId;
+                $win->push($winCode);
+            }
         }
         //单号3两面-End
 
@@ -418,29 +570,72 @@ class New_Gd11x5
                 $playId = 206;
                 $winCode = $gameId.$Q4PlayCate.$playId;
                 $win->push($winCode);
+
+                //开和1-10单号都要退本金
+                $playId = 196;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 197;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 198;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 199;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 200;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 201;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 202;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 203;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 204;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 205;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $ids_he->push($winCode);
                 break;
         }
-        if($num4 == 11){ //和
-
-        }
-        if($num4 >= 6){ //大
+        if($num4 == 11){ //单号4两面开11视为和局 //和局退本金
             $playId = 207;
             $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num4 <= 5){ //小
+            $ids_he->push($winCode);
             $playId = 208;
             $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num4%2 == 0){ //双
+            $ids_he->push($winCode);
             $playId = 210;
             $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
+            $ids_he->push($winCode);
             $playId = 209;
             $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
+            $ids_he->push($winCode);
+        }else{
+            if($num4 >= 6){ //大
+                $playId = 207;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $win->push($winCode);
+            }else if($num4 <= 5){ //小
+                $playId = 208;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num4%2 == 0){ //双
+                $playId = 210;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $win->push($winCode);
+            } else { //单
+                $playId = 209;
+                $winCode = $gameId.$Q4PlayCate.$playId;
+                $win->push($winCode);
+            }
         }
         //单号4两面-End
 
@@ -501,29 +696,73 @@ class New_Gd11x5
                 $playId = 221;
                 $winCode = $gameId.$Q5PlayCate.$playId;
                 $win->push($winCode);
+
+                //开和1-10单号都要退本金
+                $playId = 211;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 212;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 213;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 214;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 215;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 216;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 217;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 218;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 219;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $ids_he->push($winCode);
+                $playId = 220;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $ids_he->push($winCode);
                 break;
         }
-        if($num5 == 11){ //和
-
-        }
-        if($num5 >= 6){ //大
+        if($num5 == 11){ //单号5两面开11视为和局 //和局退本金
             $playId = 222;
             $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num5 <= 5){ //小
+            $ids_he->push($winCode);
             $playId = 223;
             $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num5%2 == 0){ //双
+            $ids_he->push($winCode);
             $playId = 225;
             $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
+            $ids_he->push($winCode);
             $playId = 224;
             $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
+            $ids_he->push($winCode);
+        }else{
+            if($num5 >= 6){ //大
+                $playId = 222;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num5 <= 5){ //小
+                $playId = 223;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $win->push($winCode);
+            }
+            if($num5%2 == 0){ //双
+                $playId = 225;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $win->push($winCode);
+            } else { //单
+                $playId = 224;
+                $winCode = $gameId.$Q5PlayCate.$playId;
+                $win->push($winCode);
+            }
         }
         //单号5两面-End
 
@@ -560,7 +799,7 @@ class New_Gd11x5
         //一中一 - End
     }
 
-    private function bunko_gd11x5($win,$gameId,$issue,$openCode){
+    private function bunko_gd11x5($win,$gameId,$issue,$openCode,$he){
 
         $bunko_index = 0;
         $openCodeArr = explode(',',$openCode);
@@ -574,230 +813,257 @@ class New_Gd11x5
         }
         $table = 'bet';
         $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        $sql_upd = "UPDATE bet SET bunko = CASE ";
-        $sql_upd_lose = "UPDATE bet SET bunko = CASE ";
-        $ids = implode(',', $id);
-        $ids_lose = array_diff($this->arrPlay_id,$id);
-        $ids_lose = implode(',', $ids_lose);
-        $sql = "";
-        $sql_lose = "";
-        foreach ($getUserBets as $item){
-            $bunko = $item->bet_money * $item->play_odds;
-            $bunko_lose = 0-$item->bet_money;
-            $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-            $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-        }
-        $sql_upd .= $sql ."END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids)";
-        $sql_upd_lose .= $sql_lose ."END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `status` = 0 AND `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_lose)";
-        $run = !empty($sql)?DB::statement($sql_upd):0;
-        if($run == 1){
-            $bunko_index++;
-        }
-        //直选- Start
-        $zhixuan_playCate = 34; //直选分类ID
-        $zhixuan_ids = [];
-        $zhixuan_lose_ids = [];
-        $get = DB::table($table)->select('bet_id','bet_info','play_id')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zhixuan_playCate)->where('bunko','=',0.00)->get();
-        $open2 = explode(',', $OPEN_QIAN_2);
-        $open3 = explode(',', $OPEN_QIAN_3);
-        foreach ($get as $item) {
-            $user = explode(',', $item->bet_info);
-            if($item->play_id == '2134246'){ //前二直选
-                if($open2[0] == $user[0] && $open2[1] == $user[1]){
-                    $zhixuan_ids[] = $item->bet_id;
-                } else {
-                    $zhixuan_lose_ids[] = $item->bet_id;
-                }
-            }
-            if($item->play_id == '2134247'){ //前三直选
-                if($open3[0] == $user[0] && $open3[1] == $user[1] && $open3[2] == $user[2]){
-                    $zhixuan_ids[] = $item->bet_id;
-                } else {
-                    $zhixuan_lose_ids[] = $item->bet_id;
-                }
-            }
-        }
-        $ids_zhixuan = implode(',', $zhixuan_ids);
-        if($ids_zhixuan){
-            $sql_zhixuan = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_zhixuan)"; //中奖的SQL语句
-        } else {
-            $sql_zhixuan = 0;
-        }
-        //直选 - End
+        if($getUserBets){
+            $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
+            $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
+            $sql_he = "UPDATE bet SET bunko = CASE "; //和局的SQL语句
 
-        //连码 - Start
-        $lm_playCate = 33;
-        $lm_ids = [];
-        $lm_lose_ids = [];
-        $get_lm = DB::table($table)->select('bet_id','bet_info','play_id','play_name')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
-        $lm_open = explode(',', $openCode);
-        $lm_open_qian2 = explode(',',$OPEN_QIAN_2);
-        $lm_open_qian3 = explode(',',$OPEN_QIAN_3);
-        foreach ($get_lm as $item) {
-            $explodeBetInfo = explode(',',$item->bet_info);
-            if(count($explodeBetInfo) == 2 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                $diff2 = array_intersect($lm_open, $explodeBetInfo);
-                if(count($diff2) == 2){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            } else if (count($explodeBetInfo) == 3 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                $diff3 = array_intersect($lm_open, $explodeBetInfo);
-                if(count($diff3) == 3){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            } else if (count($explodeBetInfo) == 4 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                $diff4 = array_intersect($lm_open, $explodeBetInfo);
-                if(count($diff4) == 4){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            } else if (count($explodeBetInfo) == 5 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                $diff5 = array_intersect($lm_open, $explodeBetInfo);
-                if(count($diff5) == 5){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            } else if (count($explodeBetInfo) == 6 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                $diff6 = array_intersect($lm_open, $explodeBetInfo);
-                if(count($diff6) == 5){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            } else if (count($explodeBetInfo) == 7 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                $diff7 = array_intersect($lm_open, $explodeBetInfo);
-                if(count($diff7) == 5){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            } else if (count($explodeBetInfo) == 8 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
-                $diff8 = array_intersect($lm_open, $explodeBetInfo);
-                if(count($diff8) == 5){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
+            $ids = implode(',', $id);
+            $ids_lose = array_diff($this->arrPlay_id,$id);
+            $sql_bets = '';
+            $sql_bets_lose = '';
+            $sql_bets_he = '';
+            foreach ($getUserBets as $item){
+                $bunko = $item->bet_money * $item->play_odds;
+                $bunko_lose = 0-$item->bet_money;
+                $bunko_he = $item->bet_money * 1;
+                $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                $sql_bets_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
             }
-            $explodeBetInfo = explode(',',$item->bet_info);
-            if($item->play_id == '2133244'){ //前二组选
-                if($explodeBetInfo[0] == $lm_open_qian2[0] && $explodeBetInfo[1] == $lm_open_qian2[1]){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
+            if(count($he)>0) {
+                $ids_he = [];
+                $tmpids = explode(',',$ids);
+                foreach ($he as $k=>$v){
+                    $ids_he[] = $v;
+                    unset($tmpids[$v]);
+                    unset($ids_lose[$v]);
                 }
-            }
-            if($item->play_id == '2133245'){ //前三组选
-                if($explodeBetInfo[0] == $lm_open_qian3[0] && $explodeBetInfo[1] == $lm_open_qian3[1] && $explodeBetInfo[2] == $lm_open_qian3[2]){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            }
-        }
-
-        $ids_lm = implode(',', $lm_ids);
-        if($ids_lm){
-            $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
-        } else {
-            $sql_lm = 0;
-        }
-        //连码 - End
-        //特殊处理单号为和
-        $heArrayPush = [];
-        if($openCodeArr[0] == 11){
-            $heArrayPush[] = 2127162;
-            $heArrayPush[] = 2127163;
-            $heArrayPush[] = 2127164;
-            $heArrayPush[] = 2127165;
-        }
-        if($openCodeArr[1] == 11){
-            $heArrayPush[] = 2128177;
-            $heArrayPush[] = 2128178;
-            $heArrayPush[] = 2128179;
-            $heArrayPush[] = 2128180;
-        }
-        if($openCodeArr[2] == 11){
-            $heArrayPush[] = 2129192;
-            $heArrayPush[] = 2129193;
-            $heArrayPush[] = 2129194;
-            $heArrayPush[] = 2129195;
-        }
-        if($openCodeArr[3] == 11){
-            $heArrayPush[] = 2130207;
-            $heArrayPush[] = 2130208;
-            $heArrayPush[] = 2130209;
-            $heArrayPush[] = 2130210;
-        }
-        if($openCodeArr[4] == 11){
-            $heArrayPush[] = 2131222;
-            $heArrayPush[] = 2131223;
-            $heArrayPush[] = 2131224;
-            $heArrayPush[] = 2131225;
-        }
-        if($open_total == 30){
-            $heArrayPush[] = 2126143;
-            $heArrayPush[] = 2126147;
-        }
-        if($heArrayPush){
-            $getUserHeBets = DB::table($table)->select('bet_id','bet_money')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArrayPush)->get();
-            if($getUserHeBets){
-                $updateHeId = [];
-                $sql_upd_he = "UPDATE bet SET bunko = CASE ";
-                $sql_he = "";
-                foreach ($getUserHeBets as $item){
-                    $updateHeId[] = $item->bet_id;
-                    $bunko_he = $item->bet_money * 1;
-                    $sql_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
-                }
-                $ids_he = implode(',', $updateHeId);
-                $sql_upd_he .= $sql_he . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_he)";
-            } else {
-                $sql_he = 0;
-            }
-        } else {
-            $sql_he = 0;
-        }
-        $run2 = !empty($sql_lose)?DB::connection('mysql::write')->statement($sql_upd_lose):0;
-        if($run2 == 1){
-            $bunko_index++;
-            if(!empty($sql_zhixuan)){
-                $run3 = DB::connection('mysql::write')->statement($sql_zhixuan);
-                if($run3 == 1){
+                $ids = implode(',', $tmpids);
+                $ids_he = implode(',', $ids_he);
+                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_he)";
+            }else
+                $sql_he = '';
+            $ids_lose = implode(',', $ids_lose);
+            $sql .= $sql_bets . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids)";
+            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_lose)";
+            if(!empty($sql_bets)){
+                $run = DB::statement($sql);
+                if($run == 1) {
                     $bunko_index++;
                 }
+            }
+            //直选- Start
+            $zhixuan_playCate = 34; //直选分类ID
+            $zhixuan_ids = [];
+            $zhixuan_lose_ids = [];
+            $get = DB::table($table)->select('bet_id','bet_info','play_id')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zhixuan_playCate)->where('bunko','=',0.00)->get();
+            $open2 = explode(',', $OPEN_QIAN_2);
+            $open3 = explode(',', $OPEN_QIAN_3);
+            foreach ($get as $item) {
+                $user = explode(',', $item->bet_info);
+                if($item->play_id == '2134246'){ //前二直选
+                    if($open2[0] == $user[0] && $open2[1] == $user[1]){
+                        $zhixuan_ids[] = $item->bet_id;
+                    } else {
+                        $zhixuan_lose_ids[] = $item->bet_id;
+                    }
+                }
+                if($item->play_id == '2134247'){ //前三直选
+                    if($open3[0] == $user[0] && $open3[1] == $user[1] && $open3[2] == $user[2]){
+                        $zhixuan_ids[] = $item->bet_id;
+                    } else {
+                        $zhixuan_lose_ids[] = $item->bet_id;
+                    }
+                }
+            }
+            $ids_zhixuan = implode(',', $zhixuan_ids);
+            if($ids_zhixuan){
+                $sql_zhixuan = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_zhixuan)"; //中奖的SQL语句
             } else {
-                $bunko_index++;
+                $sql_zhixuan = 0;
+            }
+            //直选 - End
+
+            //连码 - Start
+            $lm_playCate = 33;
+            $lm_ids = [];
+            $lm_lose_ids = [];
+            $get_lm = DB::table($table)->select('bet_id','bet_info','play_id','play_name')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
+            $lm_open = explode(',', $openCode);
+            $lm_open_qian2 = explode(',',$OPEN_QIAN_2);
+            $lm_open_qian3 = explode(',',$OPEN_QIAN_3);
+            foreach ($get_lm as $item) {
+                $explodeBetInfo = explode(',',$item->bet_info);
+                if(count($explodeBetInfo) == 2 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                    $diff2 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff2) == 2){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 3 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                    $diff3 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff3) == 3){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 4 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                    $diff4 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff4) == 4){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 5 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                    $diff5 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff5) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 6 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                    $diff6 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff6) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 7 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                    $diff7 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff7) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                } else if (count($explodeBetInfo) == 8 && $item->play_name !== '前二组选' && $item->play_name !== '前三组选'){
+                    $diff8 = array_intersect($lm_open, $explodeBetInfo);
+                    if(count($diff8) == 5){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
+                $explodeBetInfo = explode(',',$item->bet_info);
+                if($item->play_id == '2133244'){ //前二组选
+                    if($explodeBetInfo[0] == $lm_open_qian2[0] && $explodeBetInfo[1] == $lm_open_qian2[1]){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
+                if($item->play_id == '2133245'){ //前三组选
+                    if($explodeBetInfo[0] == $lm_open_qian3[0] && $explodeBetInfo[1] == $lm_open_qian3[1] && $explodeBetInfo[2] == $lm_open_qian3[2]){
+                        $lm_ids[] = $item->bet_id;
+                    } else {
+                        $lm_lose_ids[] = $item->bet_id;
+                    }
+                }
             }
 
-            if(!empty($sql_lm !== 0)){
-                $run4 = DB::connection('mysql::write')->statement($sql_lm);
-                if($run4 == 1){
-                    $bunko_index++;
-                }
+            $ids_lm = implode(',', $lm_ids);
+            if($ids_lm){
+                $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
             } else {
-                $bunko_index++;
+                $sql_lm = 0;
+            }
+            //连码 - End
+            //特殊处理单号为和
+            $heArrayPush = [];
+            if($openCodeArr[0] == 11){
+                $heArrayPush[] = 2127162;
+                $heArrayPush[] = 2127163;
+                $heArrayPush[] = 2127164;
+                $heArrayPush[] = 2127165;
+            }
+            if($openCodeArr[1] == 11){
+                $heArrayPush[] = 2128177;
+                $heArrayPush[] = 2128178;
+                $heArrayPush[] = 2128179;
+                $heArrayPush[] = 2128180;
+            }
+            if($openCodeArr[2] == 11){
+                $heArrayPush[] = 2129192;
+                $heArrayPush[] = 2129193;
+                $heArrayPush[] = 2129194;
+                $heArrayPush[] = 2129195;
+            }
+            if($openCodeArr[3] == 11){
+                $heArrayPush[] = 2130207;
+                $heArrayPush[] = 2130208;
+                $heArrayPush[] = 2130209;
+                $heArrayPush[] = 2130210;
+            }
+            if($openCodeArr[4] == 11){
+                $heArrayPush[] = 2131222;
+                $heArrayPush[] = 2131223;
+                $heArrayPush[] = 2131224;
+                $heArrayPush[] = 2131225;
+            }
+            if($open_total == 30){
+                $heArrayPush[] = 2126143;
+                $heArrayPush[] = 2126147;
+            }
+            $sql_lm_he = "";
+            if($heArrayPush){
+                $getUserHeBets = DB::table($table)->select('bet_id','bet_money')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->whereIn('play_id',$heArrayPush)->get();
+                if($getUserHeBets){
+                    $updateHeId = [];
+                    $sql_lm_he = "UPDATE bet SET bunko = CASE ";
+                    $sql_lm_bets_he = '';
+                    foreach ($getUserHeBets as $item){
+                        $updateHeId[] = $item->bet_id;
+                        $bunko_he = $item->bet_money * 1;
+                        $sql_lm_bets_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
+                    }
+                    $ids_he = implode(',', $updateHeId);
+                    $sql_lm_he .= $sql_lm_bets_he . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_he)";
+                }else
+                    $sql_lm_he = '';
             }
 
             if(!empty($sql_he)){
-                $run5 = DB::connection('mysql::write')->statement($sql_upd_he);
-                if($run5 == 1){
+                $runhe = DB::connection('mysql::write')->statement($sql_he);
+                if($runhe == 1)
                     $bunko_index++;
+            }
+            if(!empty($sql_bets_lose)){
+                $run2 = DB::connection('mysql::write')->statement($sql_lose);
+                if($run2 == 1){
+                    $bunko_index++;
+                    if(!empty($sql_zhixuan)){
+                        $run3 = DB::connection('mysql::write')->statement($sql_zhixuan);
+                        if($run3 == 1){
+                            $bunko_index++;
+                        }
+                    } else {
+                        $bunko_index++;
+                    }
+
+                    if(!empty($sql_lm !== 0)){
+                        $run4 = DB::connection('mysql::write')->statement($sql_lm);
+                        if($run4 == 1){
+                            $bunko_index++;
+                        }
+                    } else {
+                        $bunko_index++;
+                    }
+
+                    if(!empty($sql_lm_he)){
+                        $run5 = DB::connection('mysql::write')->statement($sql_lm_he);
+                        if($run5 == 1){
+                            $bunko_index++;
+                        }
+                    } else {
+                        $bunko_index++;
+                    }
                 }
-            } else {
-                $bunko_index++;
+            }
+
+            if($bunko_index !== 0){
+                return 1;
             }
         }
-
-        if($bunko_index !== 0){
-            return 1;
-        }
-
     }
 }

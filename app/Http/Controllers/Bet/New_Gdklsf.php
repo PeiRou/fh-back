@@ -83,8 +83,7 @@ class New_Gdklsf
             $playId = 604;
             $winCode = $gameId.$playCate.$playId;
             $ids_he->push($winCode);
-        }
-        if($numsTotal >= 85 && $numsTotal <= 132){ //总和大
+        }else if($numsTotal >= 85 && $numsTotal <= 132){ //总和大
             $playId = 603;
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
