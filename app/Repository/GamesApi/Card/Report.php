@@ -17,6 +17,8 @@ class Report{
     private $iData = [];
     private $res;
     public $sqlArr;
+    public $UsersArr;
+
     public function __construct($aTime = null){
         if(is_null($aTime))
             $aTime = date('Y-m-d');
@@ -25,6 +27,8 @@ class Report{
             'startTime' => $aTime,
             'endTime' => $aTime
         ];
+        $this->UsersArr = collect([]);
+        $this->agents = collect([]);
     }
     public function getData(){
         return $this->iData;
@@ -74,9 +78,13 @@ class Report{
     }
     //获取代理
     private function getAgent($a_id){
-        if(empty($this->agent))
-            $this->agent = Agent::select('a_id', 'name', 'account', 'gagent_id')->get()->keyBy('a_id');
-        return $this->agent->get($a_id);
+        if(empty($this->agents->get($a_id))){
+            $this->agents->put($a_id, Agent::select('a_id', 'name', 'account', 'gagent_id')->first());
+        }
+        return $this->agents->get($a_id);
+//        if(empty($this->agents))
+//            $this->agent = Agent::select('a_id', 'name', 'account', 'gagent_id')->get()->keyBy('a_id');
+//        return $this->agent->get($a_id);
     }
     //获取用户
     private function getUserInfo(&$username){
@@ -84,6 +92,14 @@ class Report{
             $this->Users = Users::whereIn('username', $this->createUserName())->get()->keyBy('username');
         return $this->Users->get($username);
     }
+    //获取用户
+    private function getUser($username){
+        if(empty($this->UsersArr->get($username))){
+            $this->UsersArr->put($username, Users::where('username',$username)->first());
+        }
+        return $this->UsersArr->get($username);
+    }
+
     //获取总代理
     private function getGeneralAgent($gagent_id){
         if(empty($this->GeneralAgent))

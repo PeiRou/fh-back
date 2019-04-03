@@ -2,7 +2,7 @@
     <div class="field">
         <label>期号</label>
         <div class="ui input icon">
-            <input type="text" name="issue"/>
+            <input type="text" oninput=" value=value.replace(/[^\d]/g,'')" name="issue"/>
         </div>
     </div>
     <div class="field">

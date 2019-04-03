@@ -13,20 +13,32 @@ class VGRepository extends BaseRepository
 
     //格式化数据  插入数据库
     public function createData($data){
-        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
-        $table = \Illuminate\Support\Facades\DB::table($tableName);
+//        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
+
+//        $table = \Illuminate\Support\Facades\DB::table($tableName);
+        $table = \Illuminate\Support\Facades\DB::table('jq_bet');
+
         $arr = [];
         foreach ($data as $v){
-            $arr[] = [
+            $array = [
+                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['id'],   //游戏代码
-                'Accounts' => str_replace($this->Config['agent'].'_','',$v['username']),  //玩家账号
-                'AllBet' => $v['validbetamount'],//总下注
-                'Profit' => $v['money'],       //盈利
+                'username' => str_replace($this->Config['agent'].'_','',$v['username']),  //玩家账号
+                'AllBet' => $v['betamount'],//总下注
+                'bunko' => $v['money'],       //盈利
+                'bet_money' => $data['validbetamount'],
                 'GameStartTime' => $v['begintime'],//游戏开始时间
                 'GameEndTime' => $v['endtime'],  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
+                'gameCategory' => 'PVP',
             ];
+            $user = $this->getUser($array['username']);
+            $array['agent'] = $user->agent ?? 0;
+            $array['user_id'] = $user->id ?? 0;
+            $array['agent_account'] = $this->getAgent($user->agent)->account;
+            $array['agent_name'] = $this->getAgent($user->agent)->name;
+            $arr[] = $array;
         }
         return $this->insertDB($arr, $table);
     }

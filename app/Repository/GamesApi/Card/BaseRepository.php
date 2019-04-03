@@ -34,6 +34,7 @@ class BaseRepository
     }
     //插入数据库
     public function insertDB($data, $table){
+        $table = DB::table('jq_bet');
         if($table->insert($data)){
             echo $this->gameInfo->name.'插入'.count($data).'条数据';
         }else{
@@ -42,8 +43,9 @@ class BaseRepository
     }
     //格式化数据  插入数据库
     public function createData($data){
-        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
-        $table = DB::table($tableName);
+//        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
+//        $table = DB::table($tableName);
+        $table = DB::table('jq_bet');
         //根据GameID Accounts去掉重复的
 //        foreach ($data['GameID'] as $k => $k){
 //            $table->orWhere(['GameID'=>$data['GameID'][$k]])
@@ -51,7 +53,7 @@ class BaseRepository
 //                    'Accounts' => $data['Accounts'][$k],
 //                ]);
 //        }
-        $table->whereIn('GameID',$data['GameID']);
+        $table->where('g_id', $this->gameInfo->g_id)->whereIn('GameID',$data['GameID']);
         $distinctArr = $table->pluck('GameID')->toArray();
         $res['GameID'] = array_diff($data['GameID'],$distinctArr);
 
@@ -60,18 +62,25 @@ class BaseRepository
 //        $res['GameID'] = $data['GameID'];
         $arr = [];
         foreach ($res['GameID'] as $k => $k){
-            $arr[] = [
-//                'g_id' => $this->gameInfo->g_id,
+            $array = [
+                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $data['GameID'][$k],
-                'Accounts' => str_replace($this->Config['agent'].'_','',$data['Accounts'][$k]),
-                'AllBet' => $data['CellScore'][$k],
-                'Profit' => $data['Profit'][$k],
-//                'Revenue' => $res['Revenue'][$k],
+                'username' => str_replace($this->Config['agent'].'_','',$data['Accounts'][$k]),
+                'AllBet' => $data['AllBet'][$k],
+                'bunko' => $data['Profit'][$k],
+                'bet_money' => $data['CellScore'][$k],
                 'GameStartTime' => $data['GameStartTime'][$k],
                 'GameEndTime' => $data['GameEndTime'][$k],
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
+                'gameCategory' => 'PVP',
             ];
+            $user = $this->getUser($array['username']);
+            $array['user_id'] = $user->id ?? 0;
+            $array['agent'] = $user->agent ?? 0;
+            $array['agent_account'] = $this->getAgent($user->agent)->account;
+            $array['agent_name'] = $this->getAgent($user->agent)->name;
+            $arr[] = $array;
         }
         return $this->insertDB($arr, $table);
     }
@@ -233,6 +242,15 @@ class BaseRepository
                 break;
         }
         return $codeMessage;
+    }
+
+    public function getUser($username)
+    {
+        return app(Report::class)->getUser($username);
+    }
+    public function getAgent($a_id)
+    {
+        return app(Report::class)->getAgent($a_id);
     }
 
 }

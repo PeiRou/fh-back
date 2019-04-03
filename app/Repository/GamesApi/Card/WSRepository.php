@@ -43,26 +43,35 @@ class WSRepository extends BaseRepository
 
     //格式化数据  插入数据库
     public function createData($data){
-        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
-        $table = DB::table($tableName);
+//        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
+//        $table = DB::table($tableName);
+        $table = DB::table('jq_bet');
 //        $table = $this->getOtherModel('JqBet');
 //        $distinctArr = $table->getOnly($this->gameInfo->g_id);
-        $distinctArr = $table->pluck('GameID');
+        $distinctArr = $table->where('g_id', $this->gameInfo->g_id)->pluck('GameID');
         $arr = [];
         foreach ($data as $v){
             if(in_array($v['betOrderNo'], $distinctArr->toArray()))
                 continue;
-            $arr[] = [
-//                'g_id' => $this->gameInfo->g_id,
+            $array = [
+                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['betOrderNo'],   //游戏代码
-                'Accounts' => $v['username'],   //玩家账号
+                'username' => $v['username'],   //玩家账号
                 'AllBet' => abs($v['netPnl']),//总下注
-                'Profit' => $v['netPnl'],       //盈利
+                'bet_money' => abs($v['netPnl']),//总下注
+                'bunko' => $v['netPnl'],       //盈利
                 'GameStartTime' => $v['betTime'] ?? $v['endTime'],//游戏开始时间
                 'GameEndTime' => $v['endTime'] ?? $v['betTime'],  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
+                'gameCategory' => 'PVP',
             ];
+            $user = $this->getUser($array['username']);
+            $array['user_id'] = $user->id ?? 0;
+            $array['agent'] = $user->agent ?? 0;
+            $array['agent_account'] = $this->getAgent($user->agent)->account;
+            $array['agent_name'] = $this->getAgent($user->agent)->name;
+            $arr[] = $array;
         }
         return $this->insertDB($arr, $table);
     }

@@ -17,26 +17,36 @@ class KXRepository extends BaseRepository
 
     //格式化数据  插入数据库
     public function createData($data){
-        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
-        $table = DB::table($tableName);
-        $table->whereIn('GameID',$data['id']);
+//        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
+//        $table = DB::table($tableName);
+        $table = DB::table('jq_bet');
+
+        $table->where('g_id', $this->gameInfo->g_id)->whereIn('GameID',$data['id']);
         $distinctArr = $table->pluck('GameID')->toArray();
         $res['GameID'] = array_diff($data['id'],$distinctArr);
         $arr = [];
         foreach ($res['GameID'] as $k => $k){
-            $arr[] = [
-//                'g_id' => $this->gameInfo->g_id,
+            $array = [
+                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $data['id'][$k],
-                'Accounts' => str_replace($this->Config['siteID'].'_','',$data['account'][$k]),
+                'username' => str_replace($this->Config['siteID'].'_','',$data['account'][$k]),
                 'AllBet' => $data['bet'][$k],
-                'Profit' => $data['settlement'][$k],
-//                'Revenue' => $res['Revenue'][$k],
+                'bunko' => $data['settlement'][$k],
+                'bet_money' => $data['bet'][$k],
                 'GameStartTime' => date('Y-m-d H:i:s', $data['ctime'][$k]),
                 'GameEndTime' =>  date('Y-m-d H:i:s', $data['ctime'][$k]),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
+                'gameCategory' => 'PVP',
             ];
+            $user = $this->getUser($array['username']);
+            $array['agent'] = $user->agent ?? 0;
+            $array['user_id'] = $user->id ?? 0;
+            $array['agent_account'] = $this->getAgent($user->agent)->account;
+            $array['agent_name'] = $this->getAgent($user->agent)->name;
+            $arr[] = $array;
         }
+
         return $this->insertDB($arr, $table);
     }
 

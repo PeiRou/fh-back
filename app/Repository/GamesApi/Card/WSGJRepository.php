@@ -43,33 +43,40 @@ class WSGJRepository extends BaseRepository
 
     //格式化数据  插入数据库
     public function createData($data){
-        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
-        $table = DB::table($tableName);
+//        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
+//        $table = DB::table($tableName);
+        $table = DB::table('jq_bet');
+
 //        $table = $this->getOtherModel('JqBet');
 //        $distinctArr = $table->getOnly($this->gameInfo->g_id);
-        $distinctArr = $table->pluck('GameID');
+        $distinctArr = $table->where('g_id', $this->gameInfo->g_id)->pluck('GameID');
         $arr = [];
         foreach ($data as $v){
             if(in_array($v['betOrderNo'], $distinctArr->toArray()))
                 continue;
-            $arr[] = [
-//                'g_id' => $this->gameInfo->g_id,
+            $array = [
+                'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['betOrderNo'],   //投注订单编号
-                'Accounts' => $v['username'],   //玩家账号
+                'username' => $v['username'],   //玩家账号
                 'AllBet' => $v['betAmount'],//投注金额
-                'Profit' => $v['netPnl'],       //净输赢
+                'bunko' => $v['netPnl'],       //净输赢
                 'GameStartTime' => $v['betTime'],//投注时间
                 'GameEndTime' => $v['endTime'] ?? '',  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
 
-                'validBetAmount' => $v['validBetAmount'] ?? '',  //有效投注金额
-                'gameCode' => $v['gameCode'] ?? '',  //有效投注金额
+                'bet_money' => $v['validBetAmount'] ?? '',  //有效投注金额
                 'productType' => $v['productType'] ?? '',  //产品类别
                 'gameCategory' => $v['gameCategory'] ?? '',  //游戏类别
                 'sessionId' => $v['sessionId'] ?? '',  //会话标识
-                'additionalDetails' => json_encode($v['additionalDetails'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?? '',  //额外细节
+                'bet_info' => json_encode($v['additionalDetails'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?? '',  //额外细节
             ];
+            $user = $this->getUser($array['username']);
+            $array['agent'] = $user->agent ?? 0;
+            $array['user_id'] = $user->id ?? 0;
+            $array['agent_account'] = $this->getAgent($user->agent)->account;
+            $array['agent_name'] = $this->getAgent($user->agent)->name;
+            $arr[] = $array;
         }
         return $this->insertDB($arr, $table);
     }
