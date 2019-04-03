@@ -192,38 +192,6 @@ class New_Gd11x5
                 $playId = 161;
                 $winCode = $gameId.$Q1PlayCate.$playId;
                 $win->push($winCode);
-
-                //开和1-10单号都要退本金
-                $playId = 151;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 152;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 153;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 154;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 155;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 156;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 157;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 158;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 159;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 160;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $ids_he->push($winCode);
                 break;
         }
         if($num1 == 11){ //单号1两面开11视为和局 //和局退本金
@@ -318,38 +286,6 @@ class New_Gd11x5
                 $playId = 176;
                 $winCode = $gameId.$Q2PlayCate.$playId;
                 $win->push($winCode);
-
-                //开和1-10单号都要退本金
-                $playId = 166;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 167;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 168;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 169;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 170;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 171;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 172;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 173;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 174;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 175;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $ids_he->push($winCode);
                 break;
         }
         if($num2 == 11){ //单号2两面开11视为和局 //和局退本金
@@ -444,38 +380,6 @@ class New_Gd11x5
                 $playId = 191;
                 $winCode = $gameId.$Q3PlayCate.$playId;
                 $win->push($winCode);
-
-                //开和1-10单号都要退本金
-                $playId = 181;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 182;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 183;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 184;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 185;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 186;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 187;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 188;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 189;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 190;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $ids_he->push($winCode);
                 break;
         }
         if($num3 == 11){ //单号3两面开11视为和局 //和局退本金
@@ -570,38 +474,6 @@ class New_Gd11x5
                 $playId = 206;
                 $winCode = $gameId.$Q4PlayCate.$playId;
                 $win->push($winCode);
-
-                //开和1-10单号都要退本金
-                $playId = 196;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 197;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 198;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 199;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 200;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 201;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 202;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 203;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 204;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 205;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $ids_he->push($winCode);
                 break;
         }
         if($num4 == 11){ //单号4两面开11视为和局 //和局退本金
@@ -696,38 +568,6 @@ class New_Gd11x5
                 $playId = 221;
                 $winCode = $gameId.$Q5PlayCate.$playId;
                 $win->push($winCode);
-
-                //开和1-10单号都要退本金
-                $playId = 211;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 212;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 213;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 214;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 215;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 216;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 217;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 218;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 219;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $ids_he->push($winCode);
-                $playId = 220;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $ids_he->push($winCode);
                 break;
         }
         if($num5 == 11){ //单号5两面开11视为和局 //和局退本金
