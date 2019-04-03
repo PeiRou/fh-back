@@ -1030,7 +1030,7 @@ class ModalController extends Controller
     {
         $table ='game_'.$gameType;
         $lhc = DB::table($table)->where('id',$id)->first();
-        return view('back.modal.open.reOpenXYLHC',compact('lhc'));
+        return view('back.modal.open.reOpenXYLHC',compact('lhc','gameType'));
     }
 
     //修改代理结算报表-模板
