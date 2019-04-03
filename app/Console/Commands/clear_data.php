@@ -58,6 +58,7 @@ class clear_data extends Command
                     $res = DB::connection('mysql::write')->statement($sql);
                     writeLog('clear','table delete bet :'.$res);
                 }catch (\Exception $e){
+                    writeLog('clear', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
                     writeLog('clear','table insert into bet_his :fail');
                 }
                 $num++;
