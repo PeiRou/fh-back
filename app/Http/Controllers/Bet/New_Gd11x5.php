@@ -65,7 +65,7 @@ class New_Gd11x5
         $num5 = (int)$arrOpenCode[4];
         $numsTotal = $num1 + $num2 + $num3 + $num4 + $num5;
 
-        //总和大小单双-Start
+        //总和大小-Start
         if($numsTotal == 30){   //总和等于30视为和局 //和局退本金
             $playId = 143;
             $winCode = $gameId.$playCate.$playId;
@@ -74,15 +74,7 @@ class New_Gd11x5
             $playId = 147;
             $winCode = $gameId.$playCate.$playId;
             $ids_he->push($winCode);
-            $playId = 148;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-            $ids_he->push($winCode);
-            $playId = 144;
-            $winCode = $gameId.$playCate.$playId;
-            $ids_he->push($winCode);
         }else {
-            //总和大小-Start
             if($numsTotal > 30){ //总和大
                 $playId = 143;
                 $winCode = $gameId.$playCate.$playId;
@@ -92,21 +84,20 @@ class New_Gd11x5
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
             }
-            //总和大小-End
-
-            //总和单双-Start
-            if($numsTotal%2 == 0){ //总和双
-                $playId = 148;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            } else { //总和单
-                $playId = 144;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-            //总和单双-End
         }
-        //总和大小单双-End
+        //总和大小-End
+
+        //总和单双-Start
+        if($numsTotal%2 == 0){ //总和双
+            $playId = 148;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        } else { //总和单
+            $playId = 144;
+            $winCode = $gameId.$playCate.$playId;
+            $win->push($winCode);
+        }
+        //总和单双-End
 
         //总和尾大、尾小-Start
         $totalStrSplit = str_split($numsTotal);
@@ -588,8 +579,7 @@ class New_Gd11x5
                 $playId = 222;
                 $winCode = $gameId.$Q5PlayCate.$playId;
                 $win->push($winCode);
-            }
-            if($num5 <= 5){ //小
+            }else if($num5 <= 5){ //小
                 $playId = 223;
                 $winCode = $gameId.$Q5PlayCate.$playId;
                 $win->push($winCode);
