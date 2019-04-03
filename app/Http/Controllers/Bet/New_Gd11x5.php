@@ -69,7 +69,6 @@ class New_Gd11x5
         if($numsTotal == 30){   //总和等于30视为和局 //和局退本金
             $playId = 143;
             $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
             $ids_he->push($winCode);
             $playId = 147;
             $winCode = $gameId.$playCate.$playId;
