@@ -50,7 +50,7 @@ class GamesApiRechargesController extends Controller
             })
             ->editColumn('control',function ($res){
                 $str = '';
-                if($res->code == 500 && $res->order_code !== '0'){
+                if($res->code == 500 && (empty($res->order_code) || $res->order_code == 500)){
                     $str .= '<ul class="control-menu">
                         <li onclick="checkOrder('.$res->id.')">检查订单</li>
                         </ul>';

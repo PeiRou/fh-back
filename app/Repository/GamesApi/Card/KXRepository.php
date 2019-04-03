@@ -31,7 +31,7 @@ class KXRepository extends BaseRepository
                 'GameID' => $data['id'][$k],
                 'username' => str_replace($this->Config['siteID'].'_','',$data['account'][$k]),
                 'AllBet' => $data['bet'][$k],
-                'bunko' => $data['settlement'][$k],
+                'bunko' => sprintf("%.2f", $data['settlement'][$k] - $data['bet'][$k]),
                 'bet_money' => $data['bet'][$k],
                 'GameStartTime' => date('Y-m-d H:i:s', $data['ctime'][$k]),
                 'GameEndTime' =>  date('Y-m-d H:i:s', $data['ctime'][$k]),
