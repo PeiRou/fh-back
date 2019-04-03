@@ -903,9 +903,12 @@ class Excel
         if(empty($table))
             return false;
         writeLog('New_Kill', $table.' issue:'.$issue);
+        $bet = DB::table('bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
+        if(empty($bet))
+            return false;
         for($i=1;$i<= (int)$exeBase->excel_num;$i++){
             if($i==1){
-                $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->first();
+                $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
                 if(empty($exeBet))
                     DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.game_id = '{$gameId}' and bet.issue = '{$issue}' and bet.testFlag = 0");
             }else{
