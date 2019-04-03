@@ -17,7 +17,7 @@ use Yajra\DataTables\DataTables;
 class BetDataController extends Controller
 {
     public function betTodayRes($request, $start, $length){
-        $res = $this->req($request,$start, $length);
+        $res = $this->req($request,$start, $length,'today');
         $bet = $res['bet'];
         $betCount = $res['betCount'];
         $betMoney = $res['betMoney'];
@@ -96,7 +96,7 @@ class BetDataController extends Controller
         return $this->betTodayRes($request, $start, $length);
     }
     //生成表格查询数据库数据  暂时和betToday分开
-    public function req($request, $start, $length){
+    public function req($request, $start, $length,$type=''){
         $game = $request->input('game');
         $playCate = (int)$request->input('playCate');
         $issue = (int)$request->input('issue');
@@ -126,7 +126,7 @@ class BetDataController extends Controller
         if(isset($markSix) && $markSix == 2){
             $betSql .= " AND bet.game_id != 70";
         }
-        if(isset($timeStart) && isset($timeEnd)){
+        if(isset($timeStart) && isset($timeEnd) && $type != 'today' && $status != 1){
             $betSql .= " AND bet.created_at BETWEEN '{$timeStart} 00:00:00' and '{$timeEnd} 23:59:59' ";
         }
         if(isset($game) && $game>0){
