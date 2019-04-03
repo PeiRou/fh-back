@@ -76,7 +76,7 @@
         <div class="list">
             @foreach($games as $item)
                 <label>
-                    <input type="checkbox" name="games" id="games" checked value="{{ $item->game_id }}"> {{ $item->game_name }}
+                    <input type="checkbox" name="games" id="games" @if($item->status==1) checked @endif value="{{ $item->game_id }}"> {{ $item->game_name }}
                 </label>
             @endforeach
             <button type="button" class="select_btn" id="selectAll">全选</button>

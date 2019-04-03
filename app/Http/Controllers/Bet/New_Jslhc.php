@@ -1987,13 +1987,13 @@ class New_Jslhc extends Excel
                     if ($kk == $k){
                         $zx_id[] = $gameId.$zx_playCate.$v;
                         $playId = $gameId.$zx_playCate.$v;
-                        $zx_sql .= sprintf("WHEN %d THEN (bet_money * play_odds) * %d ", $playId, $vv);
+                        $zx_sql .= sprintf("WHEN %d THEN bet_money + (bet_money * (play_odds-1)) * %d ", $playId, $vv);
                     }
                 }
             }
             $zx_ids = implode(',',$zx_id);
             if($zx_ids && isset($zx_ids)){
-                $zx_sql .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND play_id IN ($zx_ids)";
+                $zx_sql .= "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `game_id` = $gameId AND `issue` = $issue AND play_id IN ($zx_ids)";
             } else {
                 $zx_sql = 0;
             }
