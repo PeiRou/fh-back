@@ -961,7 +961,7 @@ class OpenHistoryController extends Controller
         }
         DB::beginTransaction();
         try {
-            Bets::updateBetStatus($issue, $gameInfo->game_id);
+            Bets::updateBetStatus($issue, $gameInfo->game_id,'isNotEnded');
             if(!empty($aBet)) {
                 Users::editBatchUserMoneyData($aBet);
                 Capital::insert($aCapital);
@@ -980,6 +980,7 @@ class OpenHistoryController extends Controller
             return response()->json(['status' => true]);
         }catch (\Exception $e){
             DB::rollback();
+            writeLog('cancel_game', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
             return response()->json(['status' => false,'msg'=>'撤单失败']);
         }
     }
@@ -1104,7 +1105,7 @@ class OpenHistoryController extends Controller
 
             if(!in_array($type,['msnn']))
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
-            Bets::updateBetStatus($issue, $gameInfo->game_id);
+            Bets::updateBetStatus($issue, $gameInfo->game_id,'isEnded');
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataReturn($aBetAll);
                 $aCapital = [];
