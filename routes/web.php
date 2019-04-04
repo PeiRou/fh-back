@@ -54,6 +54,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('recharge', 'Back\SrcViewController@reportRecharge')->name('report.recharge'); // 充值报表
         Route::get('Card', 'Back\SrcViewController@reportCard')->name('report.Card'); // 棋牌投注报表
         Route::get('GamesApi', 'Back\SrcViewController@reportGamesApi')->name('report.GamesApi'); // 第三方统计报表
+        Route::get('CardNew', 'Back\SrcViewController@reportCardNew')->name('report.CardNew'); // 棋牌投注报表(新)
     });
     Route::group(['prefix' => 'back/control/reportManage', 'middleware' => ['domain-check', 'add-log-handle']], function () {
         Route::get('GamesApiInfo_Tc', 'Back\SrcViewController@reportGamesApiInfo_Tc'); // 第三方统计报表-Tc
@@ -273,6 +274,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 //    Route::get('/back/datatables/reportBrowseTotal', 'Back\Data\ReportDataController@BrowseTotal');       //报表管理-访问报表总计 功能未实现,预留
     Route::get('/back/datatables/reportBet', 'Back\Data\ReportDataController@Bet');
     Route::get('/back/datatables/reportCard', 'Back\Data\ReportDataController@Card');//棋牌投注报表
+    Route::get('/back/datatables/reportCardNew', 'Back\Data\ReportDataController@CardNew');//棋牌投注报表(新)
     Route::get('/back/datatables/reportGamesApi', 'Back\Data\ReportDataController@GamesApi');//第三方统计报表
     Route::get('/back/datatables/reportGamesApiInfo_tc', 'Back\Data\ReportDataController@GamesApiInfo_tc');//第三方统计报表 - Tc的详细的 - 平台
     Route::get('/back/datatables/reportGamesApiBet_Tc', 'Back\Data\ReportDataController@GamesApiBet_Tc');//第三方统计报表 - Tc的详细的 - 个人
@@ -280,6 +282,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/reportGagentTotal', 'Back\Data\ReportDataController@GagentTotal'); //报表管理-总代总计
     Route::get('/back/datatables/reportAgentTotal', 'Back\Data\ReportDataController@AgentTotal');   //报表管理-代理总计
     Route::get('/back/datatables/reportUserTotal', 'Back\Data\ReportDataController@UserTotal');     //报表管理-用户总计
+    Route::get('/back/datatables/reportCardNewTotal', 'Back\Data\ReportDataController@CardNewTotal');   //报表管理-棋牌投注报表总计(新)
     Route::get('/back/datatables/betToday', 'Back\Data\BetDataController@betToday'); //今日注单搜索
     Route::get('/back/datatables/exportExcelToday', 'Back\Data\BetDataController@exportExcelBetToday'); //今日注单搜索
 
