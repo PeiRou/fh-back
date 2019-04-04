@@ -28,6 +28,7 @@ class ReportAgent extends Model
         $resultB = ReportMember::conditionalConnection($bSql,$bParam,0);
         $bSql = $resultB['aSql']." AND `bet_count` > 0 GROUP BY `agent_id`";
         $aSql = "SELECT `sum`.*,`count`.`memberCount` FROM (".$aSql.") AS `sum` LEFT JOIN (".$bSql.") AS `count` ON `count`.`agent_id` = `sum`.`agent_id`";
+        var_dump($aSql,array_merge($result['aArray'],$resultB['aArray']));die();
         return DB::select($aSql,array_merge($result['aArray'],$resultB['aArray']));
     }
 

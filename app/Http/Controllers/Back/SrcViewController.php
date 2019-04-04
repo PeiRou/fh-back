@@ -14,6 +14,7 @@ use App\Bets;
 use App\Capital;
 use App\Feedback;
 use App\Games;
+use App\GamesApi;
 use App\Levels;
 use App\LogHandle;
 use App\MessagePush;
@@ -771,6 +772,11 @@ class SrcViewController extends Controller
     //棋牌投注报表
     public function reportCard(){
         return view('back.reportCard');
+    }
+    //棋牌投注报表(新)
+    public function reportCardNew(){
+        $aGame = GamesApi::get();
+        return view('back.reportCardNew',compact('aGame'));
     }
     //第三方统计报表
     public function reportGamesApi(){

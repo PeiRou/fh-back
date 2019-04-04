@@ -150,6 +150,40 @@ class clear_data extends Command
                 $num++;
             }
         }
+        //清-棋牌昨日数据
+        if(!$redis->exists('clear-jq-bet')){
+            $res = DB::connection('mysql::write')->table('jq_bet')->select('id')->where('updated_at','<=',$clearDate1)->first();
+            writeLog('clear','clear jq bet :'.json_encode($res));
+            if(empty($res)){
+                $redis->setex('clear-jq-bet',$this->time,$this->stoptime);
+            }else{
+                try {
+                    $sql = "INSERT INTO jq_bet_his SELECT * FROM jq_bet WHERE  updated_at <= '{$clearDate1}' LIMIT 1000";
+                    $res = DB::connection('mysql::write')->statement($sql);
+                    writeLog('clear','table insert into jq_bet_his :'.$res);
+                    $sql = "DELETE FROM jq_bet WHERE  updated_at <= '{$clearDate1}' LIMIT 1000";
+                    $res = DB::connection('mysql::write')->statement($sql);
+                    writeLog('clear','table delete jq_bet :'.$res);
+                }catch (\Exception $e){
+                    writeLog('clear','table insert into jq_bet_his :fail');
+                }
+                $num++;
+                $redis->setex('clear-jq-bet',1,'on');
+            }
+        }
+        //清-棋牌历史数据
+        if(!$redis->exists('clear-jq-bet-his')){
+            $sql = "DELETE FROM jq_bet_his WHERE updated_at<='{$clearDate93}' LIMIT 5000";
+            $res = DB::connection('mysql::write')->statement($sql);
+            echo 'table jq_bet_his :' . $res . PHP_EOL;
+            $res = DB::connection('mysql::write')->table('jq_bet_his')->select('id')->where('updated_at','<=',$clearDate93)->first();
+            if(empty($res)){
+                $redis->setex('clear-jq-bet-his',$this->time,$this->stoptime);
+            }else{
+                $num++;
+                $redis->setex('clear-jq-bet-his',1,'on');
+            }
+        }
         if($num==0){
             $redis->setex('clearing',$this->time,$this->stoptime);
             writeLog('clear',$this->stoptime.'finished');
