@@ -88,7 +88,7 @@ $(function () {
 function addNewIssue() {
     jc = $.confirm({
         theme: 'material',
-        title: '六合彩-新增期数',
+        title: title+'-新增期数',
         closeIcon:true,
         boxWidth:'20%',
         content: 'url:/back/modal/addLhcNewIssue',
@@ -119,7 +119,7 @@ function addNewIssue() {
 function edit(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '六合彩-修改期数',
+        title: title+'-修改期数',
         closeIcon:true,
         boxWidth:'20%',
         content: 'url:/back/modal/editLhcNewIssue/'+id,
@@ -150,7 +150,7 @@ function edit(id) {
 function openLhc(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '六合彩-手动开奖',
+        title: title+'-手动开奖',
         closeIcon:true,
         boxWidth:'30%',
         content: 'url:/back/modal/openLhc/'+id,
@@ -181,7 +181,7 @@ function openLhc(id) {
 function reOpen(id) {
     jc = $.confirm({
         theme: 'material',
-        title: '六合彩-重新开奖',
+        title: title+'-重新开奖',
         closeIcon:true,
         boxWidth:'30%',
         content: 'url:/back/modal/reOpenLhc/'+id,

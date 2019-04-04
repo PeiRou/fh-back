@@ -121,6 +121,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('sfssc', 'Back\SrcViewController@openManage_sfssc')->name('historyLottery.sfssc'); //三分时时彩
         Route::get('jslhc', 'Back\SrcViewController@openManage_jslhc')->name('historyLottery.jslhc'); //极速六合彩
         Route::get('sflhc', 'Back\SrcViewController@openManage_sflhc')->name('historyLottery.sflhc'); //三分六合彩
+        Route::get('xyft', 'Back\SrcViewController@openManage_xyft')->name('historyLottery.xyft'); //幸运飞艇
     });
 
 //系统管理

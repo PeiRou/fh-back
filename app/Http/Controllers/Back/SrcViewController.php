@@ -127,7 +127,7 @@ class SrcViewController extends Controller
     public function userBetList($userId)
     {
         $getUserInfo = User::where('id',$userId)->first();
-        $games = DB::table('game')->where('status',1)->get();
+        $games = DB::table('game')->select('game_id','game_name','status')->get();
         $nowDate = date('Y-m-d');
         $yesterday = Carbon::parse($nowDate)->addDays(-1)->toDateString();
         $today = date('Y-m-d');
@@ -645,13 +645,12 @@ class SrcViewController extends Controller
     public function openManage_xylhc()
     {
         $data = [
-            'title' => '六合彩',
+            'title' => '幸运六合彩',
             'activeName' => 'menu-openManage-xylhc',
             'type' => 'xylhc',
             'cat' => 'xylhc' //游戏类别
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
-        return view('back.open.xylhc',compact('data'));
     }
     //qq分分彩
     public function openManage_qqffc()
@@ -749,6 +748,17 @@ class SrcViewController extends Controller
             'activeName' => 'menu-openManage-sflhc',
             'type' => 'sflhc',
             'cat' => 'xylhc' //游戏类别 幸运六合彩
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //幸運飞艇
+    public function openManage_xyft()
+    {
+        $data = [
+            'title' => '幸運飞艇',
+            'activeName' => 'menu-openManage-xyft',
+            'type' => 'xyft',
+            'cat' => 'sc' //游戏类别 赛车
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }

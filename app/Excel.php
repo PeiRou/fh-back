@@ -18,7 +18,7 @@ class Excel
      * @return int
      */
     public function updateUserMoney($gameId,$issue,$gameName='',$table='',$tableid=0){
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('status',1)->where('bunko','>',0)->groupBy('user_id')->get();
+        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('status',1)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>',0)->groupBy('user_id')->get();
         $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds','order_id','bet_money','unfreeze_money','nn_view_money')->where('game_id',$gameId)->where('issue',$issue)->where('status',1)->where('bunko','>',0)->get();
         if($get){
             //更新返奖的用户馀额
@@ -84,7 +84,7 @@ class Excel
                 $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
                 $tmpCap['order_id'] = 'W'.substr($i->order_id,1);
-                $tmpCap['type'] = 't09';
+                $tmpCap['type'] = ($i->bet_money==$bunko&&!in_array($i->game_id,array(90,91)))?'t02':'t09';
                 $tmpCap['money'] = $bunko;
                 $tmpCap['balance'] = round($capUsers[$i->user_id],3);
                 $tmpCap['operation_id'] = 0;
@@ -903,9 +903,12 @@ class Excel
         if(empty($table))
             return false;
         writeLog('New_Kill', $table.' issue:'.$issue);
+        $bet = DB::table('bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
+        if(empty($bet))
+            return false;
         for($i=1;$i<= (int)$exeBase->excel_num;$i++){
             if($i==1){
-                $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->first();
+                $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
                 if(empty($exeBet))
                     DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.game_id = '{$gameId}' and bet.issue = '{$issue}' and bet.testFlag = 0");
             }else{
@@ -960,9 +963,7 @@ class Excel
                     writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
                     $randRate = rand(1000,1999)/1000;
                     if($lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
-//                    $openCode = $this->opennum($table);
-                        krsort($arrLimit);
-                        writeLog('New_Kill', $table.' :'.$issue.' b-to-s-'.json_encode($arrLimit));
+                        $iLimit = count($arrLimit)>=2?2:1;
                         foreach ($arrLimit as $key2 =>$va2){
                             $ii++;
                             if($ii==$iLimit) {
@@ -971,7 +972,7 @@ class Excel
                             }
                         }
                     }else{
-                        if($lose_losewin_rate<0 && (in_array($randNum,array(2,9))))                        //如果当日的输赢比低于0，则选平台最好的营利值
+                        if($lose_losewin_rate<0 || (!in_array($randNum,array(2,4,9))))                        //如果当日的输赢比低于0，则选平台最好的营利值
                             $iLimit = 1;
                         foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
                             $ii++;

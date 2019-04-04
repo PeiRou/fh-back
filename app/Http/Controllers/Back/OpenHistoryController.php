@@ -961,7 +961,7 @@ class OpenHistoryController extends Controller
         }
         DB::beginTransaction();
         try {
-            Bets::updateBetStatus($issue, $gameInfo->game_id);
+            Bets::updateBetStatus($issue, $gameInfo->game_id,'isNotEnded');
             if(!empty($aBet)) {
                 Users::editBatchUserMoneyData($aBet);
                 Capital::insert($aCapital);
@@ -980,6 +980,7 @@ class OpenHistoryController extends Controller
             return response()->json(['status' => true]);
         }catch (\Exception $e){
             DB::rollback();
+            writeLog('cancel_game', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
             return response()->json(['status' => false,'msg'=>'撤单失败']);
         }
     }
@@ -1104,7 +1105,7 @@ class OpenHistoryController extends Controller
 
             if(!in_array($type,['msnn']))
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 6]);
-            Bets::updateBetStatus($issue, $gameInfo->game_id);
+            Bets::updateBetStatus($issue, $gameInfo->game_id,'isEnded');
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataReturn($aBetAll);
                 $aCapital = [];
@@ -1398,10 +1399,10 @@ class OpenHistoryController extends Controller
                 $opennum =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['niuniu' => $opennum]);
             }
-            if(!in_array($type,['lhc','xylhc']))
+            if(!in_array($type,['lhc','xylhc','sflhc','jslhc']))
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue', $issue)->update(['is_open' => 1, 'bunko' => 0, 'opennum' => $number]);
-            if(in_array($type,['xylhc']))
-                $this->reOpenXylhc($number, $issue);
+            if(in_array($type,['xylhc','sflhc','jslhc']))
+                $this->reOpenXylhc($number, $issue, $type);
             if(in_array($type,['pk10','bjkl8'])){
                 $gameInfo = Games::where('code',Games::$aCodeBindingGame[$type])->first();
                 $this->renewLotteryOperating($issue,Games::$aCodeBindingGame[$type],$gameInfo,$number);
@@ -1567,11 +1568,11 @@ class OpenHistoryController extends Controller
     }
 
     //幸运六合彩
-    public function reOpenXylhc($Number,$issue){
+    public function reOpenXylhc($Number,$issue,$gametype){
         $openNum = $Number['n1'].','.$Number['n2'].','.$Number['n3'].','.$Number['n4'].','.$Number['n5'].','.$Number['n6'].','.$Number['n7'];
         $totalNum = (int)$Number['n1']+(int)$Number['n2']+(int)$Number['n3']+(int)$Number['n4']+(int)$Number['n5']+(int)$Number['n6']+(int)$Number['n7'];
 
-        DB::table('game_xylhc')->where('issue',$issue)->update([
+        DB::table('game_'.$gametype)->where('issue',$issue)->update([
             'n1' => $Number['n1'],
             'n2' => $Number['n2'],
             'n3' => $Number['n3'],

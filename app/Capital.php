@@ -14,7 +14,7 @@ class Capital extends Model
     //类型选项
     public static $playTypeOption = [
         't01' => '充值',
-//        't02' => '撤单',
+        't02' => '退本金',
         't03' => '撤单[退水金额]',
         't04' => '返利/手续费',
         't05' => '下注',

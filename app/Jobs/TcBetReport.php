@@ -28,8 +28,8 @@ class TcBetReport implements ShouldQueue
             $repo->createData();
             $repo->insertData();
         }catch (\Exception $e){
-            writeLog('tcReport', print_r($e->getMessage().$e->getFile().'('.$e->getLine().')', 1));
-            writeLog('tcReport', print_r($e->getTraceAsString(), 1));
+            writeLog('tcReport', var_export($e->getMessage().$e->getFile().'('.$e->getLine().')', 1));
+            writeLog('tcReport', var_export($e->getTraceAsString(), 1));
             echo 'error:'.$e->getMessage().$this->aDateTime;
         }
     }

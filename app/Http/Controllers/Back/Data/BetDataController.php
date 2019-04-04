@@ -17,7 +17,7 @@ use Yajra\DataTables\DataTables;
 class BetDataController extends Controller
 {
     public function betTodayRes($request, $start, $length){
-        $res = $this->req($request,$start, $length);
+        $res = $this->req($request,$start, $length,'today');
         $bet = $res['bet'];
         $betCount = $res['betCount'];
         $betMoney = $res['betMoney'];
@@ -80,7 +80,7 @@ class BetDataController extends Controller
                 }
             })
             ->editColumn('control',function ($bet){
-                if($bet->bet_bunko ==0)
+                if($bet->status ==0)
                     return '<a href="javascript:;" onclick="cancel(\''.$bet->bet_order_id.'\')">取消注单</a>';
             })
             ->rawColumns(['user','play','issue','bunko','bet_money','platform','control'])
@@ -96,7 +96,7 @@ class BetDataController extends Controller
         return $this->betTodayRes($request, $start, $length);
     }
     //生成表格查询数据库数据  暂时和betToday分开
-    public function req($request, $start, $length){
+    public function req($request, $start, $length,$type=''){
         $game = $request->input('game');
         $playCate = (int)$request->input('playCate');
         $issue = (int)$request->input('issue');
@@ -126,7 +126,7 @@ class BetDataController extends Controller
         if(isset($markSix) && $markSix == 2){
             $betSql .= " AND bet.game_id != 70";
         }
-        if(isset($timeStart) && isset($timeEnd)){
+        if(isset($timeStart) && isset($timeEnd) && $type != 'today' && $status != 1){
             $betSql .= " AND bet.created_at BETWEEN '{$timeStart} 00:00:00' and '{$timeEnd} 23:59:59' ";
         }
         if(isset($game) && $game>0){
@@ -469,11 +469,7 @@ class BetDataController extends Controller
                     return '<div style="position: relative"><div class="show-open" id="openH_'.$bet->bet_bet_id.'"></div><span onmouseover="showOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\',\''.$bet->g_game_name.'\')" onmouseout="hideOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" style="color: #'.$currentColor.';cursor: pointer;">'.$bet->bet_issue.'</span></div>';
                 })
                 ->editColumn('play',function ($bet){
-                    if($bet->bet_playcate_id == 175 || $bet->bet_playcate_id == 77 || $bet->bet_playcate_id == 68 || $bet->bet_playcate_id == 166){
-                        $betInfo = $bet->bet_bet_info ?? '';
-                    } else {
-                        $betInfo = '';
-                    }
+                    $betInfo = $bet->bet_bet_info ?? '';
                     return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span> <span>$betInfo</span>";
                 })
                 ->editColumn('rebate',function ($bet){

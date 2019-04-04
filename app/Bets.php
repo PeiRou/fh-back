@@ -216,8 +216,11 @@ class Bets extends Model
         return self::where('issue',$issue)->where('game_id',$gameId)->delete();
     }
 
-    public static function updateBetStatus($issue,$gameId){
-        return self::where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => DB::raw('`bet_money`'),'nn_view_money' => 0]);
+    public static function updateBetStatus($issue,$gameId,$type=''){
+        if($type=='isEnded')
+            return self::where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['status' => 2,'bunko' => DB::raw('`bet_money`'),'nn_view_money' => 0]);
+        else if($type=='isNotEnded')
+            return self::where('status',0)->where('issue',$issue)->where('game_id',$gameId)->update(['status' => 2,'bunko' => DB::raw('`bet_money`'),'nn_view_money' => 0]);
     }
 
     public static function updateBetBunkoClear($issue,$gameId){

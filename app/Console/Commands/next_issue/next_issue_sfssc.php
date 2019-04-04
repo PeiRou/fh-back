@@ -40,7 +40,7 @@ class next_issue_sfssc extends Command
         $New_nextIssue = $nextIssue+1;
         if(substr($New_nextIssue,-3)=='481'){
             $New_nextIssue = date("ymd",strtotime($openTime)).'001';
-            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 07:15:00';
+            $nextIssueEndTime = date('Y-m-d',strtotime($openTime)).' 07:17:30';
             $nextIssueLotteryTime = date('Y-m-d',strtotime($openTime)).' 07:18:00';
         }
 

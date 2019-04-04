@@ -309,7 +309,7 @@ class openHistoryController extends Controller
                 $aSql->whereBetween('opentime',[$param['issuedate'],$param['issuedate'].' 23:59:59']);
         });
         $lhcCount = $lhcSql->count();
-        $lhc = $lhcSql->orderBy('id','DESC')->skip($param['start'])->take($param['length'])->get();
+        $lhc = $lhcSql->orderBy('issue','DESC')->orderBy('id','DESC')->skip($param['start'])->take($param['length'])->get();
         $gameIsOpen = Games::$gameIsOpen;
         return DataTables::of($lhc)
             ->editColumn('issue',function ($lhc){
