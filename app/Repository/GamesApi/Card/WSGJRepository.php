@@ -43,16 +43,24 @@ class WSGJRepository extends BaseRepository
 
     //格式化数据  插入数据库
     public function createData($data){
-//        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
-//        $table = DB::table($tableName);
-        $table = DB::table('jq_bet');
+        $GameID = array_map(function($v){
+            return $v['betOrderNo'];
+        },$data);
+        $GameIDs = [];
+        if(count($GameID)){
+            $where = 'GameID in ("'.implode('","', $GameID).'")';
+            $GameIDs = array_map(function($v){
+                return $v->GameID;
+            },DB::select('select GameID from jq_bet
+                where 1 and '.$where.'
+                union
+                select GameID from jq_bet_his
+                where 1 and '.$where));
+        }
 
-//        $table = $this->getOtherModel('JqBet');
-//        $distinctArr = $table->getOnly($this->gameInfo->g_id);
-        $distinctArr = $table->where('g_id', $this->gameInfo->g_id)->pluck('GameID');
         $arr = [];
         foreach ($data as $v){
-            if(in_array($v['betOrderNo'], $distinctArr->toArray()))
+            if(in_array($v['betOrderNo'], $GameIDs))
                 continue;
             $array = [
                 'g_id' => $this->gameInfo->g_id,
@@ -78,7 +86,7 @@ class WSGJRepository extends BaseRepository
             $array['agent_name'] = $this->getAgent($user->agent)->name;
             $arr[] = $array;
         }
-        return $this->insertDB($arr, $table);
+        return $this->insertDB($arr);
     }
 
 

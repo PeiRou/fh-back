@@ -17,13 +17,17 @@ class KXRepository extends BaseRepository
 
     //格式化数据  插入数据库
     public function createData($data){
-//        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
-//        $table = DB::table($tableName);
-        $table = DB::table('jq_bet');
+        $where = 'GameID in ("'.implode('","', $data['id']).'")';
 
-        $table->where('g_id', $this->gameInfo->g_id)->whereIn('GameID',$data['id']);
-        $distinctArr = $table->pluck('GameID')->toArray();
-        $res['GameID'] = array_diff($data['id'],$distinctArr);
+        $GameIDs = DB::select('select GameID from jq_bet
+                where 1 and '.$where.'
+                union
+                select GameID from jq_bet_his
+                where 1 and '.$where);
+
+        $res['GameID'] = array_diff($data['id'],array_map(function($v){
+            return $v->GameID;
+        },$GameIDs));
         $arr = [];
         foreach ($res['GameID'] as $k => $k){
             $array = [
@@ -42,12 +46,12 @@ class KXRepository extends BaseRepository
             $user = $this->getUser($array['username']);
             $array['agent'] = $user->agent ?? 0;
             $array['user_id'] = $user->id ?? 0;
-            $array['agent_account'] = $this->getAgent($user->agent)->account;
-            $array['agent_name'] = $this->getAgent($user->agent)->name;
+            $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';
+            $array['agent_name'] = $this->getAgent($user->agent ?? 0)->name ?? '';
             $arr[] = $array;
         }
 
-        return $this->insertDB($arr, $table);
+        return $this->insertDB($arr);
     }
 
     private function request_api($parms)

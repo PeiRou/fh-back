@@ -13,16 +13,31 @@ class VGRepository extends BaseRepository
 
     //格式化数据  插入数据库
     public function createData($data){
-        $table = \Illuminate\Support\Facades\DB::table('jq_bet');
+        $GameID = array_map(function($v){
+            return $v['id'];
+        },$data);
+        $GameIDs = [];
+        if(count($GameID)){
+            $where = 'GameID in ("'.implode('","', $GameID).'")';
+            $GameIDs = array_map(function($v){
+                return $v->GameID;
+            },DB::select('select GameID from jq_bet
+                where 1 and '.$where.'
+                union
+                select GameID from jq_bet_his
+                where 1 and '.$where));
+        }
+
         $arr = [];
         foreach ($data as $v){
+            if(in_array($v['id'], $GameIDs)) continue;
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['id'],   //游戏代码
                 'username' => str_replace($this->Config['agent'].'_','',$v['username']),  //玩家账号
                 'AllBet' => $v['betamount'],//总下注
-                'bunko' => $v['money'],       //盈利
-                'bet_money' => $v['validbetamount'],
+                'bunko' => $v['money'] - $v['servicemoney'],       //盈利
+                'bet_money' => $v['betamount'],//有效投注额
                 'GameStartTime' => $v['begintime'],//游戏开始时间
                 'GameEndTime' => $v['endtime'],  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
@@ -36,7 +51,7 @@ class VGRepository extends BaseRepository
             $array['agent_name'] = $this->getAgent($user->agent ?? 0)->name ?? '';
             $arr[] = $array;
         }
-        return $this->insertDB($arr, $table);
+        return $this->insertDB($arr);
     }
 
     //获取注单
