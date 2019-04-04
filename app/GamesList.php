@@ -63,6 +63,7 @@ class GamesList extends Base
     ];
 
     public static $gameCategory = [
+        'PVP' => '棋牌',
         'RNG' => '电子',
         'LIVE' => '真人',
         'FISH' => '捕鱼',

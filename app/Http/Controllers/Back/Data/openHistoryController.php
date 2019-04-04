@@ -526,6 +526,46 @@ class openHistoryController extends Controller
     //下注查询
     public function BetInfo(Request $request)
     {
+        $model = DB::table('jq_bet')->where(function($sql) use($request){
+            isset($request->gameCategory) &&
+            $sql->where('gameCategory', $request->gameCategory);
+            isset($request->username) &&
+            $sql->where('username', $request->username);
+            isset($request->GameID) &&
+            $sql->where('GameID', $request->GameID);
+            isset($request->g_id) &&
+            $sql->where('g_id', $request->g_id);
+            isset($request->productType) &&
+            $sql->where('GameStartTime', '>=', date('Y-m-d',strtotime($request->startTime)).' 00:00:00');
+            isset($request->endTime) &&
+            $sql->where('GameStartTime', '<=', date('Y-m-d',strtotime($request->endTime)).' 23:59:59');
+        });
+        $totalModel = clone $model;
+        $TotalSum = $totalModel->select(DB::raw(' COUNT(username) as BetCountSum, SUM(AllBet) as AllBet, SUM(bet_money) as bet_money, SUM(bunko) as bunkoSum '))->first();
+        foreach ($TotalSum as &$v){
+            $v = sprintf('%.2f', $v) * 1;
+        }
+        $count = $model->count();
+        if(isset($request->start, $request->length))
+            $model->orderBy('id','desc')->skip($request->start)->take($request->length);
+        $res = $model->get();
+
+        $g_ids = \App\GamesApi::getBetList()->keyBy('g_id')->toArray();
+        return DataTables::of($res)
+            ->editColumn('gameCategory',function ($v){
+                return \App\GamesList::$gameCategory[$v->gameCategory] ?? '';
+            })
+            ->editColumn('g_id',function ($v) use ($g_ids){
+                return $g_ids[$v->g_id]['name'] ?? $v->g_id;
+            })
+            ->rawColumns(['control'])
+            ->setTotalRecords($count)
+            ->with('TotalSum',$TotalSum)
+            ->skipPaging()
+            ->make(true);
+
+
+
         if($request->dataTag == 'qp'){ //棋牌
             if($gInfo = DB::table('games_list')->where('game_id', $request->dataId)->where('open', 1)->first()){
                 $request->offsetSet('g_id', $gInfo->g_id);
