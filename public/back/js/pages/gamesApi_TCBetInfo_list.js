@@ -12,7 +12,7 @@ function createTable() {
             data:function (d) {
                 d.startTime = $('#startTime').val();//查询时间段
                 d.endTime = $('#endTime').val();
-                d.username = $('#Accounts').val();//玩家账号
+                d.username = $('#username').val();//玩家账号
                 d.g_id = $('#g_id').val();
                 d.GameID = $('#GameID').val();
                 d.gameCategory = $('#gameCategory').val();
