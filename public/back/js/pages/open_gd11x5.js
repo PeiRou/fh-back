@@ -58,7 +58,7 @@ $(function () {
                     for(var i =0;i<after.length;i++){
                         var str = parseInt(after[i]) >= 6?"<font color='red'>大</font>":"小";
                         if(parseInt(after[i]) == 11)
-                            str = "<font color='green'>和</font>";
+                            str = "<font color='blue'>和</font>";
                         txt = txt + "<td>" + str + "</td>";
                     }
                     return "<table height='100%' width='100%' style='table-layout:fixed'><tr>"+ txt +"</tr></table>";
