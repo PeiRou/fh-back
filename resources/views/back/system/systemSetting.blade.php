@@ -44,51 +44,51 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="reg_black_list" data-c="注册黑名单" class="edit-link">修改</td>
             </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">六合彩【金】号码</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->lhc_jin_num }}" data-id-input="lhc_jin_num"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="lhc_jin_num" data-c="六合彩【金】号码" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">六合彩【木】号码</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->lhc_mu_num }}" data-id-input="lhc_mu_num"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="lhc_mu_num" data-c="六合彩【木】号码" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">六合彩【水】号码</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->lhc_shui_num }}" data-id-input="lhc_shui_num"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="lhc_shui_num" data-c="六合彩【水】号码" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">六合彩【火】号码</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->lhc_huo_num }}" data-id-input="lhc_huo_num"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="lhc_huo_num" data-c=">六合彩【火】号码" class="edit-link">修改</td>
-            </tr>
-            <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">六合彩【土】号码</td>
-                <td valign="top" style="word-break: break-all;text-align: center;">
-                    <div class="ui input">
-                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->lhc_tu_num }}" data-id-input="lhc_tu_num"/>
-                    </div>
-                </td>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="lhc_tu_num" data-c="六合彩【土】号码" class="edit-link">修改</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">六合彩【金】号码</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->lhc_jin_num }}" data-id-input="lhc_jin_num"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="lhc_jin_num" data-c="六合彩【金】号码" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">六合彩【木】号码</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->lhc_mu_num }}" data-id-input="lhc_mu_num"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="lhc_mu_num" data-c="六合彩【木】号码" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">六合彩【水】号码</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->lhc_shui_num }}" data-id-input="lhc_shui_num"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="lhc_shui_num" data-c="六合彩【水】号码" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">六合彩【火】号码</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->lhc_huo_num }}" data-id-input="lhc_huo_num"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="lhc_huo_num" data-c=">六合彩【火】号码" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">六合彩【土】号码</td>--}}
+                {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
+                    {{--<div class="ui input">--}}
+                        {{--<input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->lhc_tu_num }}" data-id-input="lhc_tu_num"/>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
+                {{--<td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="lhc_tu_num" data-c="六合彩【土】号码" class="edit-link">修改</td>--}}
+            {{--</tr>--}}
             {{--<tr>--}}
                 {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">在线客服</td>--}}
                 {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
