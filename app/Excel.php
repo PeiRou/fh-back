@@ -910,7 +910,7 @@ class Excel
             if($i==1){
                 $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
                 if(empty($exeBet))
-                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.game_id = '{$gameId}' and bet.issue = '{$issue}' and bet.testFlag = 0");
+                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.status = 0 and bet.game_id = '{$gameId}' and bet.issue = '{$issue}' and bet.testFlag = 0");
             }else{
                 DB::connection('mysql::write')->table("excel_bet")->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 0,'bunko' => 0]);
             }
@@ -1012,8 +1012,8 @@ class Excel
         }
         writeLog('New_Kill', $table.' :'.$openCode);
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
-        DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
-        DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->where('game_id',$gameId)->delete();
+        DB::table("excel_bet")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->limit(1000)->delete();
+        DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->limit(1000)->delete();
     }
     //试算杀率个别取用方法，用来继承的父类
     protected function exc_play($openCode,$gameId){
