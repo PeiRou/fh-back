@@ -2,6 +2,7 @@
 
 namespace App\Repository\GamesApi\Card;
 
+use Illuminate\Support\Facades\DB;
 
 class VGRepository extends BaseRepository
 {
