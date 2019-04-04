@@ -18,12 +18,23 @@ class GamesApiRechargesController extends Controller
     {
         $model = DB::table('jq_recharges')->where(function($sql) use($request){
             $columns = Schema::getColumnListing($sql->from);
-            if(isset($request->code)){
-                if($request->code >= 0)
-                    $sql->where('code', $request->code);
-                elseif($request->code == -1)
-                    $sql->where('code', '>', 0);
+            if(isset($request->order_id) || isset($request->username)){
+                unset($request->g_id);
+                $request->offsetSet('g_id', null);
                 unset($request->code);
+                $request->offsetSet('code', null);
+            }
+
+            if(isset($request->code)){
+                if($request->code >= 0){
+                    $sql->where('code', (string)$request->code);
+                }elseif($request->code == -1){
+                    $sql->where('code', '>', '0');
+                }elseif($request->code == '-2'){
+                    $sql->whereRaw(' code = "500" AND (order_code = "" OR order_code = "500") ');
+                }
+                unset($request->code);
+                $request->offsetSet('code', null);
             }
             foreach ($request->all() as $k=>$v){
                 in_array($k, $columns) && !empty($v) && $sql->where($k, $v);
@@ -50,7 +61,7 @@ class GamesApiRechargesController extends Controller
             })
             ->editColumn('control',function ($res){
                 $str = '';
-                if($res->code == 500 && (empty($res->order_code) || $res->order_code == 500)){
+                if($res->code == 500 && ($res->order_code === '' || $res->order_code == 500)){
                     $str .= '<ul class="control-menu">
                         <li onclick="checkOrder('.$res->id.')">检查订单</li>
                         </ul>';

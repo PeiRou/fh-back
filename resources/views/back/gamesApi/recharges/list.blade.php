@@ -29,6 +29,7 @@
                 <div class="fields">
                     <div class="one wide field" style="width: initial!important;">
                         <select class="ui dropdown" id="code" style="height:32px !important">
+                            <option value="-2">未处理</option>
                             <option value="">全部</option>
                             <option value="0">成功</option>
                             <option value="-1">失败</option>
@@ -45,6 +46,9 @@
                     </div>
                     <div class="two wide field" style="width:150px !important">
                         <input type="text" id="username" name="username" placeholder='账号'>
+                    </div>
+                    <div class="two wide field" style="width:150px !important">
+                        <input type="text" id="order_id" name="order_id" placeholder='订单号'>
                     </div>
                     <div class="field">
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询</button>
