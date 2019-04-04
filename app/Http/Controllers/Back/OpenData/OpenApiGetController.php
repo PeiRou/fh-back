@@ -156,7 +156,7 @@ class OpenApiGetController extends Controller
                 break;
             case "xylhc":       //幸运六合彩
             case "jslhc":       //极速六合彩
-            case "jslsflhchc":  //三分六合彩
+            case "sflhc":       //三分六合彩
                 return [
                     'code' => 200,
                     'data'=> [],
