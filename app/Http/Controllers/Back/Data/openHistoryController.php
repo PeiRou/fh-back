@@ -535,7 +535,7 @@ class openHistoryController extends Controller
             $sql->where('GameID', $request->GameID);
             isset($request->g_id) &&
             $sql->where('g_id', $request->g_id);
-            isset($request->productType) &&
+            isset($request->startTime) &&
             $sql->where('GameStartTime', '>=', date('Y-m-d',strtotime($request->startTime)).' 00:00:00');
             isset($request->endTime) &&
             $sql->where('GameStartTime', '<=', date('Y-m-d',strtotime($request->endTime)).' 23:59:59');

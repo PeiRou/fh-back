@@ -48,7 +48,7 @@
                         <div class="one wide field" style="width:7.25%!important">
                             <div class="ui calendar timeStart" id="tcStart">
                                 <div class="ui input left">
-                                    <input type="text" name="startTime" placeholder="起始日期" value="{{ date('Y-m-d') }}">
+                                    <input type="text" id="startTime" placeholder="起始日期" value="{{ date('Y-m-d') }}">
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                         <div class="one wide field"  style="width:7.25%!important">
                             <div class="ui calendar timeEnd" id="tcEnd">
                                 <div class="ui input left">
-                                    <input type="text" name="endTime" placeholder="结束日期" value="{{ date('Y-m-d') }}">
+                                    <input type="text" id="endTime" placeholder="结束日期" value="{{ date('Y-m-d') }}">
                                 </div>
                             </div>
                         </div>
