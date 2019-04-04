@@ -6,6 +6,8 @@ use App\Bets;
 use App\DomainAccess;
 use App\DomainInfo;
 use App\GamesApi;
+use App\JqBet;
+use App\JqReportBet;
 use App\ReportAgent;
 use App\ReportBet;
 use App\ReportBetAgent;
@@ -457,6 +459,7 @@ class ReportDataController extends Controller
             ->skipPaging()
             ->make(true);
     }
+
     public function dayCard($request){
         $repo = new \App\Repository\GamesApi\Card\Report();
         $repo->param->startTime = $request->startTime;
@@ -481,6 +484,147 @@ class ReportDataController extends Controller
             'res' => $res,
             'count' => $resCount,
             'totalArr' => $totalArr,
+        ];
+    }
+
+    public function CardNew(Request $request){
+        $aParam = $request->all();
+        if(strtotime($aParam['startTime']) == strtotime(date('Y-m-d'))){
+            $aUserId = JqBet::reportQuerySelect($aParam);
+            $aData = JqBet::reportQuery(implode(',',$aUserId),$aParam);
+            $iCount = JqBet::reportQueryCount($aParam);
+        }else {
+            $aUserId = JqReportBet::reportQuerySelect($aParam);
+            $aData = JqReportBet::reportQuery(implode(',',$aUserId),$aParam);
+            $iCount = JqReportBet::reportQueryCount($aParam);
+        }
+
+        //组装数组
+        $aArray = [];
+        foreach ($aData as $iData){
+            if(isset($aArray[$iData->user_id]) && array_key_exists($iData->user_id,$aArray)){
+                $aArray[$iData->user_id]['game'][$iData->game_id] = [
+                    'bet_count' => $iData->bet_count,
+                    'bet_money' => $iData->bet_money,
+                    'bet_bunko' => $iData->bet_bunko,
+                ];
+                $aArray[$iData->user_id]['total']['bet_count'] += $iData->bet_count;
+                $aArray[$iData->user_id]['total']['bet_money'] += $iData->bet_money;
+                $aArray[$iData->user_id]['total']['bet_bunko'] += $iData->bet_bunko;
+            }else{
+                $aArray[$iData->user_id]['user_account'] = $iData->user_account;
+                $aArray[$iData->user_id]['user_name'] = $iData->user_name;
+                $aArray[$iData->user_id]['agent_account'] = $iData->agent_account;
+                $aArray[$iData->user_id]['agent_name'] = $iData->agent_name;
+                $aArray[$iData->user_id]['game'][$iData->game_id] = [
+                    'bet_count' => $iData->bet_count,
+                    'bet_money' => $iData->bet_money,
+                    'bet_bunko' => $iData->bet_bunko,
+                ];
+                $aArray[$iData->user_id]['total'] = [
+                    'bet_count' => $iData->bet_count,
+                    'bet_money' => $iData->bet_money,
+                    'bet_bunko' => $iData->bet_bunko,
+                ];
+            }
+        }
+
+        $aGame = GamesApi::get();
+        $aArrayColumn = ['total'];
+        $DataTables = DataTables::of($aArray);
+        foreach ($aGame as $iGame){
+            $aArrayColumn[] = 'game'.$iGame->g_id;
+            $DataTables->editColumn('game'.$iGame->g_id,function ($iArray) use ($iGame){
+                $txt = '';
+                if(isset($iArray['game'][$iGame->g_id]) && array_key_exists($iGame->g_id,$iArray['game'])) {
+                    $txt .= "投注数：" . round($iArray['game'][$iGame->g_id]['bet_count'],2) . "<br/>";
+                    $txt .= "投注金额：" . round($iArray['game'][$iGame->g_id]['bet_money'],2) . "<br/>";
+                    $txt .= "输赢：" . round($iArray['game'][$iGame->g_id]['bet_bunko'],2);
+                }else{
+                    $txt .= "投注数：0 <br/>";
+                    $txt .= "投注金额：0.00<br/>";
+                    $txt .= "输赢：0.00";
+                }
+                return $txt;
+            });
+        }
+        return $DataTables
+            ->editColumn('user_account', function ($iArray){
+                 return $iArray['user_account'].(empty($iArray['user_name'])?'':'('.$iArray['user_name'].')');
+            })
+            ->editColumn('agent_account', function ($iArray){
+                return $iArray['agent_account'].(empty($iArray['agent_name'])?'':'('.$iArray['agent_name'].')');
+            })
+            ->editColumn('total', function ($iArray){
+                return "投注数:" . round($iArray['total']['bet_count'],2) . "<br/>
+                        投注金额：" . round($iArray['total']['bet_money'],2) . "<br/>
+                        输赢：" . round($iArray['total']['bet_bunko'],2) . "<br/>";
+            })
+            ->setTotalRecords($iCount)
+            ->rawColumns($aArrayColumn)
+            ->skipPaging()
+            ->make(true);
+
+    }
+
+    public function CardNewTotal(Request $request){
+        $aParam = $request->all();
+        if(strtotime($aParam['startTime']) == strtotime(date('Y-m-d'))){
+            $aData = JqBet::reportQuerySum($aParam);
+        }else {
+            $aData = JqReportBet::reportQuerySum($aParam);
+        }
+
+        $aArray = [];
+        $iBetCount = 0;
+        $iBetMoney = 0;
+        $iBetBunko = 0;
+        foreach ($aData as $iData){
+            if(isset($aArray[$iData->game_id]) && array_key_exists($iData->game_id,$aArray)){
+                $aArray[$iData->game_id]['bet_count'] += $iData->bet_count;
+                $aArray[$iData->game_id]['bet_money'] += $iData->bet_money;
+                $aArray[$iData->game_id]['bet_bunko'] += $iData->bet_bunko;
+                $iBetCount += $iData->bet_count;
+                $iBetMoney += $iData->bet_money;
+                $iBetBunko += $iData->bet_bunko;
+            }else{
+                $aArray[$iData->game_id] = [
+                    'bet_count' => $iData->bet_count,
+                    'bet_money' => $iData->bet_money,
+                    'bet_bunko' => $iData->bet_bunko,
+                ];
+                $iBetCount += $iData->bet_count;
+                $iBetMoney += $iData->bet_money;
+                $iBetBunko += $iData->bet_bunko;
+            }
+        }
+
+        $aData = [];
+        $aGame = GamesApi::get();
+
+        foreach ($aGame as $iGame){
+            if(isset($aArray[$iGame->g_id]) && array_key_exists($iGame->g_id,$aArray)){
+                $aData[] = [
+                    'key' => 'game'.$iGame->g_id,
+                    'value' => "投注数:" . round($aArray[$iGame->g_id]['bet_count'],2) . "<br/>
+                            投注金额：" . round($aArray[$iGame->g_id]['bet_money'],2) . "<br/>
+                            输赢：" . round($aArray[$iGame->g_id]['bet_bunko'],2) . "<br/>",
+                ];
+            }else{
+                $aData[] = [
+                    'key' => 'game'.$iGame->g_id,
+                    'value' => "投注数:0<br/>
+                            投注金额：0.00<br/>
+                            输赢：0.00<br/>",
+                ];
+            }
+        }
+
+        return [
+            'total' => (array)$aData,
+            'betCount' => round($iBetCount,2),
+            'betMoney' => round($iBetMoney,2),
+            'betBunko' => round($iBetBunko,2)
         ];
     }
 
