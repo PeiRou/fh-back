@@ -26,7 +26,7 @@ class VGRepository extends BaseRepository
                 'GameStartTime' => $v['begintime'],//游戏开始时间
                 'GameEndTime' => $v['endtime'],  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_at' => $v['begintime'],
                 'gameCategory' => 'PVP',
             ];
             $user = $this->getUser($array['username']);

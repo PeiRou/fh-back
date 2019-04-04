@@ -63,7 +63,7 @@ class WSRepository extends BaseRepository
                 'GameStartTime' => $v['betTime'] ?? $v['endTime'],//游戏开始时间
                 'GameEndTime' => $v['endTime'] ?? $v['betTime'],  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_at' => $v['betTime'],
                 'gameCategory' => 'PVP',
             ];
             $user = $this->getUser($array['username']);

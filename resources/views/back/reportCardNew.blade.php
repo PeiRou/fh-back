@@ -33,7 +33,7 @@
 
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('reportBetTable')"><i class="iconfont">&#xe61d;</i></span>
-            <span onclick="addSubAccount()">导出记录</span>
+            {{--<span onclick="addSubAccount()">导出记录</span>--}}
 {{--            <span onclick="getReport()">手动获取</span>--}}
         </div>
     </div>

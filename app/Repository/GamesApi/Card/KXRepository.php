@@ -36,7 +36,7 @@ class KXRepository extends BaseRepository
                 'GameStartTime' => date('Y-m-d H:i:s', $data['ctime'][$k]),
                 'GameEndTime' =>  date('Y-m-d H:i:s', $data['ctime'][$k]),
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s', $data['ctime'][$k]),
                 'gameCategory' => 'PVP',
             ];
             $user = $this->getUser($array['username']);

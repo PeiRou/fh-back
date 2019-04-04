@@ -72,7 +72,7 @@ class BaseRepository
                 'GameStartTime' => $data['GameStartTime'][$k],
                 'GameEndTime' => $data['GameEndTime'][$k],
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_at' => $data['GameStartTime'][$k],
                 'gameCategory' => 'PVP',
             ];
             $user = $this->getUser($array['username']);
