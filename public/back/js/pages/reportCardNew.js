@@ -168,10 +168,11 @@ function footerTotal() {
 // }
 
 function addSubAccount() {
-    var startTime = $('#startTime').val();
-    var endTime = $('#endTime').val();
+    var startTime = $('#timeStart').val();
+    var endTime = $('#timeEnd').val();
+    var user_account = $('#user_account').val();
     jc = $.confirm({
-        title: '导出充值记录',
+        title: '导出投注记录',
         theme: 'material',
         type: 'orange',
         boxWidth:'25%',
@@ -181,7 +182,7 @@ function addSubAccount() {
                 text:'确定',
                 btnClass: 'btn-orange',
                 action: function(){
-                    window.location.href = '/action/admin/exportExcel/Card?startTime='+startTime+'&endTime='+endTime;
+                    window.location.href = '/action/admin/exportExcel/CardNew?startTime='+startTime+'&endTime='+endTime+'&user_account='+user_account;
                 }
             },
             cancel:{

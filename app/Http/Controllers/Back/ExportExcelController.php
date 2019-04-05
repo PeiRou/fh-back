@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Back;
 
 use App\Drawing;
+use App\GamesApi;
+use App\JqBet;
+use App\JqReportBet;
 use App\Recharges;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -200,5 +203,134 @@ class ExportExcelController extends Controller
         flush();//必须同时使用 ob_flush() 和flush() 函数来刷新输出缓冲。
         fclose($fp);
         exit();
+    }
+
+    public function exportExcelForCardNew(Request $request){
+        $aParam = $request->post();
+        if(strtotime($aParam['startTime']) == strtotime(date('Y-m-d'))){
+            $aData = JqBet::excelQuery($aParam);
+        }else{
+            $aData = JqReportBet::excelQuery($aParam);
+        }
+
+        //组装数组
+        $aArray = [];
+        foreach ($aData as $kData => $iData){
+//            if(isset($aArray[$iData->user_id]) && array_key_exists($iData->user_id,$aArray)){
+//                $aArray[$iData->user_id]['bet_money'.$iData->game_id] = $iData->bet_money;
+//                $aArray[$iData->user_id]['bet_count'.$iData->game_id] = $iData->bet_count;
+//                $aArray[$iData->user_id]['bet_bunko'.$iData->game_id] = $iData->bet_bunko;
+//            }else{
+//                $aArray[$iData->user_id]['user_account'] = $iData->user_account;
+//                $aArray[$iData->user_id]['user_name'] = $iData->user_name;
+//                $aArray[$iData->user_id]['agent_account'] = $iData->agent_account;
+//                $aArray[$iData->user_id]['agent_name'] = $iData->agent_name;
+//                $aArray[$iData->user_id]['bet_money'.$iData->game_id] = $iData->bet_money;
+//                $aArray[$iData->user_id]['bet_count'.$iData->game_id] = $iData->bet_count;
+//                $aArray[$iData->user_id]['bet_bunko'.$iData->game_id] = $iData->bet_bunko;
+//            }
+
+            if(isset($aArray[$iData->user_id]) && array_key_exists($iData->user_id,$aArray)){
+                $aArray[$iData->user_id]['bet_money'][$iData->game_id] = $iData->bet_money;
+                $aArray[$iData->user_id]['bet_count'][$iData->game_id] = $iData->bet_count;
+                $aArray[$iData->user_id]['bet_bunko'][$iData->game_id] = $iData->bet_bunko;
+            }else{
+                $aArray[$iData->user_id]['user_account'] = $iData->user_account;
+                $aArray[$iData->user_id]['user_name'] = $iData->user_name;
+                $aArray[$iData->user_id]['agent_account'] = $iData->agent_account;
+                $aArray[$iData->user_id]['agent_name'] = $iData->agent_name;
+                $aArray[$iData->user_id]['bet_money'][$iData->game_id] = $iData->bet_money;
+                $aArray[$iData->user_id]['bet_count'][$iData->game_id] = $iData->bet_count;
+                $aArray[$iData->user_id]['bet_bunko'][$iData->game_id] = $iData->bet_bunko;
+            }
+        }
+
+
+        $aGame = GamesApi::getOpenData();
+
+        Excel::create('【'.$aParam['startTime'].'-'.$aParam['endTime'].'】棋牌投注报表',function ($excel) use ($aArray,$aParam,$aGame){
+            $excel->sheet('【'.$aParam['startTime'].'-'.$aParam['endTime'].'】棋牌投注报表', function($sheet) use ($aArray,$aParam,$aGame){
+//                $aFiled1 = ['用户名','代理'];
+//                $aFiled2 = ['',''];
+//                $num = ord('C');
+//                foreach ($aGame as $iGame){
+//                    array_push($aFiled1,$iGame->name,'','');
+//                    array_push($aFiled2,'投注数','投注额','输赢');
+//                    $sheet->mergeCells(chr($num)."1:".chr($num+2)."1");
+//                    $num += 3;
+//                }
+//                $sheet->appendRow($aFiled1);
+//                $sheet->appendRow($aFiled2);
+//                foreach ($aArray as $iArray){
+//                    $aFiled = [
+//                        $iArray['user_account'].(empty($iArray['user_name'])?'':'('.$iArray['user_name'].')'),
+//                        $iArray['agent_account'].(empty($iArray['agent_name'])?'':'('.$iArray['agent_name'].')')
+//                    ];
+//                    foreach ($aGame as $iGame){
+//                        if(isset($iArray['bet_count'.$iGame->g_id]) && array_key_exists('bet_count'.$iGame->g_id,$iArray)){
+//                            $aFiled[] = $iArray['bet_count'.$iGame->g_id];
+//                        }else{
+//                            $aFiled[] = 0;
+//                        }
+//                        if(isset($iArray['bet_money'.$iGame->g_id]) && array_key_exists('bet_money'.$iGame->g_id,$iArray)){
+//                            $aFiled[] = $iArray['bet_money'.$iGame->g_id];
+//                        }else{
+//                            $aFiled[] = 0;
+//                        }
+//                        if(isset($iArray['bet_bunko'.$iGame->g_id]) && array_key_exists('bet_bunko'.$iGame->g_id,$iArray)){
+//                            $aFiled[] = $iArray['bet_bunko'.$iGame->g_id];
+//                        }else{
+//                            $aFiled[] = 0;
+//                        }
+//                    }
+//                    $sheet->appendRow($aFiled);
+//                }
+                $aFiled = ['用户名','代理',''];
+                foreach ($aGame as $iGame){
+                    $aFiled[] = $iGame->name;
+                }
+                $sheet->appendRow($aFiled);
+                $i = 0;
+                foreach ($aArray as $kArray => $iArray){
+                    $aFiled = [
+                        $iArray['user_account'] . (empty($iArray['user_name']) ? '' : '(' . $iArray['user_name'] . ')'),
+                        $iArray['agent_account'] . (empty($iArray['agent_name']) ? '' : '(' . $iArray['agent_name'] . ')'),
+                    ];
+
+                    if ($i % 3 === 0)
+                        $aFiled[] = '投注数';
+                    elseif($i % 3 === 1)
+                        $aFiled[] = '投注额';
+                    elseif($i % 3 === 2)
+                        $aFiled[] = '输赢';
+
+                    foreach ($aGame as $iGame) {
+                        if ($i % 3 === 0) {
+                            if(isset($iArray['bet_count'][$iGame->g_id]) && array_key_exists($iGame->g_id,$iArray['bet_count']))
+                                $aFiled[] = $iArray['bet_count'][$iGame->g_id];
+                            else
+                                $aFiled[] = 0;
+                        }elseif($i % 3 === 1){
+                            if(isset($iArray['bet_money'][$iGame->g_id]) && array_key_exists($iGame->g_id,$iArray['bet_money']))
+                                $aFiled[] = $iArray['bet_money'][$iGame->g_id];
+                            else
+                                $aFiled[] = 0;
+                        }elseif($i % 3 === 2){
+                            if(isset($iArray['bet_bunko'][$iGame->g_id]) && array_key_exists($iGame->g_id,$iArray['bet_bunko']))
+                                $aFiled[] = $iArray['bet_bunko'][$iGame->g_id];
+                            else
+                                $aFiled[] = 0;
+                        }
+                    }
+                    $i++;
+                    $sheet->appendRow($aFiled);
+                }
+                $sheet->getDefaultRowDimension()->setRowHeight(20);
+                $sheet->setWidth([
+                    'a' => 20,
+                    'b' => 20,
+                ]);
+            });
+        })->export('xls');
     }
 }

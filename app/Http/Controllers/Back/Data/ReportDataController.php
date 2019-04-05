@@ -529,7 +529,7 @@ class ReportDataController extends Controller
             }
         }
 
-        $aGame = GamesApi::get();
+        $aGame = GamesApi::getOpenData();
         $aArrayColumn = ['total'];
         $DataTables = DataTables::of($aArray);
         foreach ($aGame as $iGame){

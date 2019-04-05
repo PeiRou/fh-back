@@ -307,5 +307,7 @@ class GamesApi extends Model
         return $sql;
     }
 
-
+    public static function getOpenData(){
+        return self::where('status',1)->OrderBy('g_id')->get();
+    }
 }
