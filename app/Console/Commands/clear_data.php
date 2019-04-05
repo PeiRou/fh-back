@@ -50,7 +50,7 @@ class clear_data extends Command
             if(empty($res)){
                 $redis->setex('clear-bet',$this->time,$this->stoptime);
             }else{
-                DB::beginTransaction();
+//                DB::beginTransaction();
                 try {
                     $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
                     $res = DB::connection('mysql::write')->statement($sql);
@@ -58,9 +58,9 @@ class clear_data extends Command
                     $sql = "DELETE FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
                     $res = DB::connection('mysql::write')->statement($sql);
                     writeLog('clear','table delete bet :'.$res);
-                    DB::commit();
+//                    DB::commit();
                 }catch (\Exception $e){
-                    DB::rollback();
+//                    DB::rollback();
                     writeLog('clear', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
                     writeLog('clear','table insert into bet_his :fail');
                 }
