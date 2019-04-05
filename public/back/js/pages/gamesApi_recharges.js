@@ -21,6 +21,7 @@ $(function () {
                 d.code = $('#code').val();
                 d.g_id = $('#g_id').val();
                 d.username = $('#username').val();
+                d.order_id = $('#order_id').val();
             }
         },
         columns: [

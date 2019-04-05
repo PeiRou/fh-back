@@ -1,5 +1,9 @@
 <?php
 
+Route::group(['prefix' => 'back/GamesApi'], function () {
+    Route::get('reGetBet/{id}', 'GamesApi\Card\PrivodeController@reGetBet'); // 重新获取第三方投注记录失败列表
+});
+
 Route::get('/test', 'GamesApi\Card\PrivodeController@test');
 Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/', 'Back\SrcViewController@index');
@@ -174,7 +178,7 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('gamesList', 'Back\SrcViewController@gamesList')->name('GamesApi.games.list'); //第三方游戏列表
     });
     Route::group(['prefix' => 'back/GamesApi', 'middleware' => ['add-log-handle']], function () {
-        Route::post('reGetBet/{id}', 'GamesApi\Card\PrivodeController@reGetBet'); // 重新获取第三方投注记录失败列表
+
     });
 
 //充值配置新

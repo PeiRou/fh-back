@@ -7,8 +7,13 @@ use App\GamesApi;
 use App\GamesApiConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class PrivodeController extends Controller{
+
+    const SwJobsKey = 'JqErrorBet'; //重新拉取注单的队列key
+    const SwJobsKeyDb = 12; //队列使用的redis库
+
     public function test ()
     {
         writeLog('test', 'asdada');
@@ -23,8 +28,7 @@ class PrivodeController extends Controller{
         $list = GamesApi::getBetList(array_merge($param,['open' => 1]));
         foreach ($list as $k=>$v){
             //删除六十天以前的
-            $tableName = 'jq_'.strtolower($v->alias).'_bet';
-            DB::table($tableName)->where('GameStartTime', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 60))->delete();
+//            $tableName = 'jq_'.strtolower($v->alias).'_bet';
 //            DB::table($tableName)->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 60))->delete();
             $res = $this->action($v->g_id, 'getBet', $param);
             if(isset($res['code']) && $res['code'] != 0){
@@ -48,7 +52,18 @@ class PrivodeController extends Controller{
             'resNum' => DB::raw('resNum + 1'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
+        if($res['code'] == 500)
+            $this->addJob($id);
         return show($res['code'], $res['msg']);
+    }
+    public function addJob($id){
+        if(!env('TESTSSS', false))
+            return null;
+        if($resNum = DB::table('jq_error_bet')->where('id', $id)->value('resNum'))
+            if($resNum > 10) return '';
+        $redis = Redis::connection();
+        $redis->select(self::SwJobsKeyDb);
+        $redis->Rpush(self::SwJobsKey, $id);
     }
 
     private function insertError($g_info, $code, $codeMsg, $param)
@@ -63,8 +78,7 @@ class PrivodeController extends Controller{
             return null;
         }
 
-
-        DB::table('jq_error_bet')->insert([
+        $id = DB::table('jq_error_bet')->insertGetId([
             'g_id' => $g_info->g_id,
             'g_name' => $g_info->name,
             'code' => $code,
@@ -73,7 +87,10 @@ class PrivodeController extends Controller{
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
-        //删除两天以前的
+        if($code == 500){
+            $this->addJob($id);
+        }
+        //删除7天以前的
         DB::table('jq_error_bet')->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
     }
 

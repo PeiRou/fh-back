@@ -33,7 +33,7 @@ class BaseRepository
         return $this->otherModel->$model;
     }
     //插入数据库
-    public function insertDB($data, $table){
+    public function insertDB($data){
         $table = DB::table('jq_bet');
         if($table->insert($data)){
             echo $this->gameInfo->name.'插入'.count($data).'条数据';
@@ -72,17 +72,17 @@ class BaseRepository
                 'GameStartTime' => $data['GameStartTime'][$k],
                 'GameEndTime' => $data['GameEndTime'][$k],
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_at' => $data['GameStartTime'][$k],
                 'gameCategory' => 'PVP',
             ];
             $user = $this->getUser($array['username']);
             $array['user_id'] = $user->id ?? 0;
             $array['agent'] = $user->agent ?? 0;
-            $array['agent_account'] = $this->getAgent($user->agent)->account;
-            $array['agent_name'] = $this->getAgent($user->agent)->name;
+            $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';
+            $array['agent_name'] = $this->getAgent($user->agent ?? 0)->name ?? '';
             $arr[] = $array;
         }
-        return $this->insertDB($arr, $table);
+        return $this->insertDB($arr);
     }
 
     //拼接请求数据

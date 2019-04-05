@@ -20,104 +20,68 @@
     </div>
     <div class="table-content">
         <div id="context1">
-            <div class="ui pointing secondary menu" id="gameTabs">
-                <a class="item " data-tab="qp">棋牌游戏</a>
-                <a class="item active" data-tab="tc">TC游戏</a>
-            </div>
-            <div class="table-quick-bar ui tab  " data-tab="qp">
-                {{--<div class="sub-item">--}}
-                    {{--<ul>--}}
-                        {{--@foreach(\App\GamesList::getList(['type' => 1]) as $k=>$v)--}}
-                            {{--<li data-tag="qp" data-id="{{ $v->game_id }}">{{ $v->name }}</li>--}}
-                        {{--@endforeach--}}
-                    {{--</ul>--}}
-                {{--</div>--}}
+            <div class="table-quick-bar ui">
                 <div class="ui mini form">
-                    <form action="javascript:;" name="qp">
-                        <div class="fields">
-                            <div class="one wide field" style="width: initial!important;">
-                                <select class="ui dropdown" name="dataId" style="height:32px !important">
-                                    <option value="">游戏名称</option>
-                                    @foreach(\App\GamesList::getList(['type' => 1]) as $k=>$v)
-                                        <option value="{{ $v->game_id }}">{{ $v->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="two wide field" style="width:150px !important">
-                                <input type="text" name="Accounts" placeholder='账号'>
-                            </div>
-                            <div class="one wide field" style="width:7.25%!important">
-                                <div class="ui calendar timeStart" id="tcStart">
-                                    <div class="ui input left">
-                                        <input type="text" name="startTime" placeholder="起始日期" value="{{ date('Y-m-d') }}">
-                                    </div>
+                    <div class="fields">
+                        <div class="one wide field" style="width: initial!important;">
+                            <select class="ui dropdown" id="g_id" style="height:32px !important">
+                                <option value="">游戏名称</option>
+                                @foreach(\App\GamesApi::getBetList() as $k=>$v)
+                                    <option value="{{ $v->g_id }}">{{ $v->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="two wide field" style="width:150px !important">
+                            <input type="text" id="username" placeholder='账号'>
+                        </div>
+                        <div class="two wide field" style="width:150px !important">
+                            <input type="text" id="GameID" placeholder='局号'>
+                        </div>
+                        <div class="one wide field" style="width: initial!important;">
+                            <select class="ui dropdown" id="gameCategory" style="height:32px !important">
+                                <option value="">游戏</option>
+                                @foreach(\App\GamesList::$gameCategory as $k=>$v)
+                                    <option value="{{ $k }}">{{ $v }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="one wide field" style="width:7.25%!important">
+                            <div class="ui calendar timeStart" id="tcStart">
+                                <div class="ui input left">
+                                    <input type="text" id="startTime" placeholder="起始日期" value="{{ date('Y-m-d') }}">
                                 </div>
-                            </div>
-                            <div style="line-height: 32px;">-</div>
-                            <div class="one wide field"  style="width:7.25%!important">
-                                <div class="ui calendar timeEnd" id="tcEnd">
-                                    <div class="ui input left">
-                                        <input type="text" name="endTime" placeholder="结束日期" value="{{ date('Y-m-d') }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <button class="btn_search fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询</button>
                             </div>
                         </div>
-                    </form>
-
-                </div>
-            </div>
-            <div class="table-quick-bar ui tab  active" data-tab="tc">
-                <div class="ui mini form">
-                    <form action="javascript:;" name="tc">
-                        <div class="fields">
-                            <div class="one wide field" style="width: initial!important;">
-                                <select class="ui dropdown" name="gameCategory" style="height:32px !important">
-                                    <option value="">游戏名称</option>
-                                    @foreach(\App\GamesList::$gameCategory as $k=>$v)
-                                        <option @if(isset(request()->gameCategory) && request()->gameCategory == $k) selected @endif  value="{{ $k }}">{{ $v }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="one wide field" style="width: initial!important;">
-                                <select class="ui dropdown" name="productType" style="height:32px !important">
-                                    <option value="">产品</option>
-                                    @foreach(\App\GamesList::$productType as $k=>$v)
-                                        <option @if(isset(request()->productType) && request()->productType == $k) selected @endif  value="{{ $k }}">{{ $v }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="two wide field" style="width:150px !important">
-                                <input type="text" name="Accounts" placeholder='账号' value="{{ request()->username ?? '' }}">
-                            </div>
-                            <div class="one wide field" style="width:7.25%!important">
-                                <div class="ui calendar timeStart" id="tcStart">
-                                    <div class="ui input left">
-                                        <input type="text" name="startTime" placeholder="起始日期" value="{{ date('Y-m-d') }}">
-                                    </div>
+                        <div style="line-height: 32px;">-</div>
+                        <div class="one wide field"  style="width:7.25%!important">
+                            <div class="ui calendar timeEnd" id="tcEnd">
+                                <div class="ui input left">
+                                    <input type="text" id="endTime" placeholder="结束日期" value="{{ date('Y-m-d') }}">
                                 </div>
-                            </div>
-                            <div style="line-height: 32px;">-</div>
-                            <div class="one wide field"  style="width:7.25%!important">
-                                <div class="ui calendar timeEnd" id="tcEnd">
-                                    <div class="ui input left">
-                                        <input type="text" name="endTime" placeholder="结束日期" value="{{ date('Y-m-d') }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <button class="btn_search fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询</button>
                             </div>
                         </div>
-                    </form>
+                        <div class="field">
+                            <button class="btn_search fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <table id="dataTable1" class="ui small selectable celled striped table" cellspacing="0" width="100%" style="text-align: center">
             <thead>
             </thead>
+            <tfoot>
+                <tr>
+                    <th>总计：</th>
+                    <th id=""></th>
+                    <th id="BetCountSum"></th>
+                    <th id=""></th>
+                    <th id=""></th>
+                    <th id="AllBet"></th>
+                    <th id="bet_money"></th>
+                    <th id="bunkoSum"></th>
+                </tr>
+            </tfoot>
         </table>
     </div>
 @endsection

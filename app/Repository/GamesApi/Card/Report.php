@@ -78,9 +78,8 @@ class Report{
     }
     //获取代理
     private function getAgent($a_id){
-        if(empty($this->agents->get($a_id))){
-            $this->agents->put($a_id, Agent::select('a_id', 'name', 'account', 'gagent_id')->first());
-        }
+        if(empty($this->agents->get($a_id)))
+            $this->agents->put($a_id, Agent::select('a_id', 'name', 'account', 'gagent_id')->where('a_id', $a_id)->first());
         return $this->agents->get($a_id);
 //        if(empty($this->agents))
 //            $this->agent = Agent::select('a_id', 'name', 'account', 'gagent_id')->get()->keyBy('a_id');
@@ -94,9 +93,8 @@ class Report{
     }
     //获取用户
     private function getUser($username){
-        if(empty($this->UsersArr->get($username))){
+        if(empty($this->UsersArr->get($username)))
             $this->UsersArr->put($username, Users::where('username',$username)->first());
-        }
         return $this->UsersArr->get($username);
     }
 

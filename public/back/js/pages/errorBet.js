@@ -25,8 +25,8 @@ $(function () {
             {data: 'g_name'},
             {data: 'code'},
             {data: 'codeMsg'},
-            {data: 'param'},
-            // {data: 'resNum'},
+            // {data: 'param'},
+            {data: 'resNum'},
             {data: 'created_at'},
             {data: 'control'},
         ],
@@ -199,20 +199,10 @@ function reGetBet(id){
     });
     $.ajax({
         url: '/back/GamesApi/reGetBet/'+id,
-        type: 'post',
+        type: 'get',
         dataType:'text',
         success: function (data) {
             layer.close(index);
-            // try{
-            //     data = JSON.parse(data);
-            //     if (data.code == 0) {
-            //         Calert('ok');
-            //     } else {
-            //         Calert(data.msg, 'red');
-            //     }
-            // }catch (e) {
-            //     Calert(data, 'red');
-            // }
             dataTable.ajax.reload(null, false);
         },
         error:function(){
