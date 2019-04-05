@@ -61,7 +61,7 @@ class BaseRepository
                 'GameID' => $data['GameID'][$k],
                 'username' => str_replace($this->Config['agent'].'_','',$data['Accounts'][$k]),
                 'AllBet' => $data['AllBet'][$k],
-                'bunko' => $data['Profit'][$k] - $data['Revenue'][$k],
+                'bunko' => $data['Profit'][$k],
                 'bet_money' => $data['CellScore'][$k],
                 'GameStartTime' => $data['GameStartTime'][$k],
                 'GameEndTime' => $data['GameEndTime'][$k],
