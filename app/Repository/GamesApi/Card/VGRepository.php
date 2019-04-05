@@ -19,7 +19,7 @@ class VGRepository extends BaseRepository
         },$data);
         $GameIDs = [];
         if(count($GameID)){
-            $where = 'GameID in ("'.implode('","', $GameID).'")';
+            $where = ' g_id = '.$this->gameInfo->g_id.' and GameID in ("'.implode('","', $GameID).'")';
             $GameIDs = array_map(function($v){
                 return $v->GameID;
             },DB::select('select GameID from jq_bet
