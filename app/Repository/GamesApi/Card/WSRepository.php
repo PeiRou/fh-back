@@ -72,14 +72,14 @@ class WSRepository extends BaseRepository
                 'GameStartTime' => $v['betTime'] ?? $v['endTime'],//游戏开始时间
                 'GameEndTime' => $v['endTime'] ?? $v['betTime'],  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => $v['betTime'],
+                'updated_at' => $v['betTime'] ?? $v['endTime'],
                 'gameCategory' => 'PVP',
             ];
             $user = $this->getUser($array['username']);
             $array['user_id'] = $user->id ?? 0;
             $array['agent'] = $user->agent ?? 0;
-            $array['agent_account'] = $this->getAgent($user->agent)->account;
-            $array['agent_name'] = $this->getAgent($user->agent)->name;
+            $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';
+            $array['agent_name'] = $this->getAgent($user->agent ?? 0)->name ?? '';
             $arr[] = $array;
         }
         return $this->insertDB($arr);

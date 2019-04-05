@@ -526,7 +526,12 @@ class openHistoryController extends Controller
     //下注查询
     public function BetInfo(Request $request)
     {
-        $model = DB::table('jq_bet')->where(function($sql) use($request){
+        $table = 'jq_bet_his';
+        isset($request->startTime) && $request->startTime = date('Y-m-d', strtotime($request->startTime));
+        isset($request->endTime) && $request->endTime = date('Y-m-d', strtotime($request->endTime));
+        if(isset($request->startTime) && ($request->startTime == date('Y-m-d')) && ($request->startTime == $request->endTime))
+            $table = 'jq_bet';
+        $model = DB::table($table)->where(function($sql) use($request){
             isset($request->gameCategory) &&
             $sql->where('gameCategory', $request->gameCategory);
             isset($request->username) &&

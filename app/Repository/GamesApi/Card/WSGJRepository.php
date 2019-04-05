@@ -68,10 +68,10 @@ class WSGJRepository extends BaseRepository
                 'username' => $v['username'],   //玩家账号
                 'AllBet' => $v['betAmount'],//投注金额
                 'bunko' => $v['netPnl'],       //净输赢
-                'GameStartTime' => $v['betTime'],//投注时间
+                'GameStartTime' => $v['betTime'] ?? $v['endTime'],//投注时间
                 'GameEndTime' => $v['endTime'] ?? '',  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => $v['betTime'],
+                'updated_at' => $v['betTime'] ?? $v['endTime'],
 
                 'bet_money' => $v['validBetAmount'] ?? '',  //有效投注金额
                 'productType' => $v['productType'] ?? '',  //产品类别
