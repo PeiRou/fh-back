@@ -974,8 +974,9 @@ class Excel
                                 }
                             }
                             $tmpNum = $exeBase->bet_lose-($exeBase->bet_win+$tmpVal);
-                            writeLog('New_Kill',$table.' :'.$issue.' lastBunko: '.$tmpNum .'share:'.$tmpVal);
-                            if(($exeBase->bet_lose-($exeBase->bet_win+$tmpVal))<=$tmpVal)
+                            $lose_losewin_rate = $total>0?($tmpNum)/$total:0;
+                            writeLog('New_Kill',$table.' :'.$issue.' lastBunko: '.$tmpNum .'share :'.$tmpVal);
+                            if( $lose_losewin_rate < $exeBase->kill_rate ||($exeBase->bet_lose-($exeBase->bet_win+$tmpVal))<=$tmpVal)
                                 $iLimit = 1;
                             $ii = 0;
                         }
