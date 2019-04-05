@@ -44,6 +44,9 @@
                     <div class="one wide field">
                         <input type="text" id="user_account" placeholder="用户账号">
                     </div>
+                    <div class="one wide field">
+                        <input type="text" id="agent_account" placeholder="代理">
+                    </div>
                     <div style="line-height: 32px;">时间：</div>
 
                     <div class="one wide field">
@@ -80,7 +83,6 @@
                         <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询 </button>
                     </div>
                     <div class="divClass">
-                        <span class="spanClassHeight" style="color:#ff392b;float: left;">（说明：历史记录不包含今天。当前记录仅供参考，真实数据请查询对应游戏后台）</span>
                         <span class="spanClassHeight mt20">
                             总投注数：<span id="betCount" class="spanClassNum">0</span>
                             总投注额：<span id="betMoney" class="spanClassNum">0.00</span>
