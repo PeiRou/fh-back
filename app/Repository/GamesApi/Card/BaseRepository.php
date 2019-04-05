@@ -36,9 +36,9 @@ class BaseRepository
     public function insertDB($data){
         $table = DB::table('jq_bet');
         if($table->insert($data)){
-            echo $this->gameInfo->name.'插入'.count($data).'条数据';
+            echo $this->gameInfo->name.'插入'.count($data).'条数据'.PHP_EOL;
         }else{
-            echo $this->gameInfo->name.'插入'.count($data).'条数据失败';
+            echo $this->gameInfo->name.'插入'.count($data).'条数据失败'.PHP_EOL;
         }
     }
     //格式化数据  插入数据库
