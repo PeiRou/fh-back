@@ -300,7 +300,8 @@ if(!function_exists('realIp')){
             $ip = $_SERVER['HTTP_CLIENT_IP'];
         }
         if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ips = explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $_SERVER['HTTP_X_FORWARDED_FOR'] = preg_replace('/\s+/','', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
             if ($ip) {
                 array_unshift($ips, $ip);
                 $ip = FALSE;

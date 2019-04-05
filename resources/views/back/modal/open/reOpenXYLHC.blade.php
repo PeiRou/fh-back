@@ -1,7 +1,7 @@
 <div class="modal-mask">
     <div>获取开奖数据中...请稍后</div>
 </div>
-<form id="reOpenLhc" class="ui mini form" action="{{ url('/action/admin/renewLottery/'.$lhc->issue.'/xylhc') }}">
+<form id="reOpenLhc" class="ui mini form" action="{{ url('/action/admin/renewLottery/'.$lhc->issue.'/'.$gameType) }}">
     <div class="field" style="width: 120px;">
         <label>期号</label>
         <div class="ui input icon">
@@ -49,7 +49,7 @@
     </div>
     <div class="field" style="margin-top: 15px;">
         <label>自动获取</label>
-        <span onclick="getLHCData('{{ date('Ymd',strtotime($lhc->opentime)) }}','{{ $lhc->issue }}')" class="getBtn">点击获取开奖号码</span>
+        <span onclick="getLHCData('{{ date('Ymd',strtotime($lhc->opentime)) }}','{{ $lhc->issue }}','{{$gameType}}')" class="getBtn">点击获取开奖号码</span>
     </div>
     <div class="field" style="width: 120px;">
         <label>开奖理由</label>
@@ -112,11 +112,11 @@
         });
     });
 
-    function getLHCData(date,issue) {
+    function getLHCData(date,issue,gametype) {
         $('.modal-mask').fadeIn();
         $('.getBtn').html('获取中...');
         $.ajax({
-            url:'/back/openData/xylhc/'+date+'/'+issue.slice(2),
+            url:'/back/openData/'+gametype+'/'+date+'/'+issue.slice(2),
             type:'get',
             dataType:'json',
             success:function (result) {
