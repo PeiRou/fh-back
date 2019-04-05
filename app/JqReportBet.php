@@ -111,4 +111,29 @@ class JqReportBet extends Model
         return DB::select($aSql,$aArray);
     }
 
+    public static function excelQuery($aParam){
+        $aSql = "SELECT `game_name`,`agent_account`,`agent_name`,`user_account`,`user_name`,`user_id`,`game_id`, 
+                    SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,SUM(`bet_bunko`) AS `bet_bunko`
+                    FROM `jq_report_bet` WHERE 1 ";
+        $aArray = [];
+        if(isset($aParam['user_account']) && array_key_exists('user_account',$aParam)){
+            $aSql .= " AND `user_account` = :user_account ";
+            $aArray['user_account'] = $aParam['user_account'];
+        }
+        if(isset($aParam['agent_account']) && array_key_exists('agent_account',$aParam)){
+            $aSql .= " AND `agent_account` = :agent_account ";
+            $aArray['agent_account'] = $aParam['agent_account'];
+        }
+        if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam)){
+            $aSql .= " AND `date` >= :startTime ";
+            $aArray['startTime'] = $aParam['startTime'];
+        }
+        if(isset($aParam['endTime']) && array_key_exists('endTime',$aParam)){
+            $aSql .= " AND `date` <= :endTime ";
+            $aArray['endTime'] = $aParam['endTime'].' 23:59:59';
+        }
+        $aSql .= " GROUP BY `user_id`,`game_id` ORDER BY `user_id`";
+        return DB::select($aSql,$aArray);
+    }
+
 }

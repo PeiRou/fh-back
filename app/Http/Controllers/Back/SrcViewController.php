@@ -785,7 +785,7 @@ class SrcViewController extends Controller
     }
     //棋牌投注报表(新)
     public function reportCardNew(){
-        $aGame = GamesApi::get();
+        $aGame = GamesApi::getOpenData();
         return view('back.reportCardNew',compact('aGame'));
     }
     //第三方统计报表
