@@ -47,7 +47,7 @@ class New_Qqffc extends Excel
                     'excel_num' => 3
                 ]);
                 if($update == 1) {
-                    writeLog('New_Bet', 'qqffc killing...');
+                    writeLog('New_Kill', 'qqffc killing...');
                     $this->excel($openCode, $exeBase, $issue, $gameId, $table);
                 }
             }

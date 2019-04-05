@@ -59,7 +59,7 @@ class New_XYLHC extends Excel
                 ]);
                 writeLog('New_Bet', 'excel_num:'.$update);
                 if($update == 1) {
-                    writeLog('New_Bet', 'xylhc killing...');
+                    writeLog('New_Kill', 'xylhc killing...');
                     $this->excel($openCode, $exeBase, $issue, $gameId, $table,'lhc');
                 }
             }
