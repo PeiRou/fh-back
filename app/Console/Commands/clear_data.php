@@ -28,7 +28,7 @@ class clear_data extends Command
 //        $keyEx = 'clearing';
         if($redis->exists('clearing')){
             echo "ing...";
-//            return "";
+            return "";
         }
         $redis->setex('clearing',300,'on');
         $this->stoptime = date('Y-m-d 23:59:59');                                 //卡redis时间
