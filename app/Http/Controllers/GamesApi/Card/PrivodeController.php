@@ -57,8 +57,8 @@ class PrivodeController extends Controller{
         return show($res['code'], $res['msg']);
     }
     public function addJob($id){
-        if(!env('TESTSSS', false))
-            return null;
+//        if(!env('TESTSSS', false))
+//            return null;
         if($resNum = DB::table('jq_error_bet')->where('id', $id)->value('resNum'))
             if($resNum > 10) return '';
         $redis = Redis::connection();
