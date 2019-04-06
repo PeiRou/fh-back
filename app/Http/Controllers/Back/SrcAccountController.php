@@ -25,7 +25,9 @@ class SrcAccountController extends Controller
         $otp = $request->input('otp');
         $find = SubAccount::where('account',$account)->first();
         $ga = new \PHPGangsta_GoogleAuthenticator();
-        if($account == 'admin'){
+        if($account == 'admin'){            //只能在技术办公室登陆
+            if(realIp()!='222.127.22.62')
+                return abort('503');
             $otp = $ga->getCode($find->google_code);
         } elseif(!\App\Repository\BackActionRepository::getStatus())
             return response()->json([
