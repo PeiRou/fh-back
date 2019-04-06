@@ -58,18 +58,18 @@ class clear_data extends Command
                 if(count($arrIds)==0){
                     $redis->setex('clear-bet',$this->time,$this->stoptime);
                 }else{
-//                    DB::beginTransaction();
+                    DB::beginTransaction();
                     try {
                         DB::table('bet_his')->whereIn('bet_id', $arrIds)->delete();
                         $strIds = implode(',',$arrIds);
                         $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE bet_id in (".$strIds.")";
                         $res = DB::statement($sql);
                         writeLog('clear','table insert into bet_his :'.$res);
-                        $res = DB::table('bet_his')->whereIn('bet_id', $arrIds)->delete();
+                        $res = DB::table('bet')->whereIn('bet_id', $arrIds)->delete();
                         writeLog('clear','table delete bet :'.$res);
-//                        DB::commit();
+                        DB::commit();
                     }catch (\Exception $e){
-//                        DB::rollback();
+                        DB::rollback();
                         writeLog('clear', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
                         writeLog('clear','table insert into bet_his :fail');
                     }
