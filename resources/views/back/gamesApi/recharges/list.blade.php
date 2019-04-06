@@ -108,7 +108,7 @@
                                 status: status == 1 ? 0 : 1,
                             };
                             $.ajax({
-                                url: "{{ env('WEB_INTRANET_IP', 'http://192.168.162.28:8811') }}/gamesApiOrder/UpMoney?id="+id,
+                                url: "{{ explode(',',env('WEB_INTRANET_IP', 'http://192.168.162.28:8811') ?? [])[0] ?? '' }}/gamesApiOrder/UpMoney?id="+id,
                                 data:data,
                                 type:'get',
                                 dataType:'json',
