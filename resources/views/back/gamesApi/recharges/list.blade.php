@@ -114,6 +114,7 @@
                                         dataTable.ajax.reload();
                                     }else{
                                         Calert(e.msg,'red')
+                                        dataTable.ajax.reload();
                                     }
                                 }
                             })
