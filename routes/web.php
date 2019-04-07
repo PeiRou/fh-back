@@ -2,6 +2,7 @@
 
 Route::group(['prefix' => 'back/GamesApi'], function () {
     Route::get('reGetBet/{id}', 'GamesApi\Card\PrivodeController@reGetBet'); // 重新获取第三方投注记录失败列表
+    Route::get('gamesApiOrder/UpMoney', 'GamesApi\Card\PrivodeController@checkOrder'); // 重新检查第三方上下分失败订单
 });
 
 Route::get('/test', 'GamesApi\Card\PrivodeController@test');

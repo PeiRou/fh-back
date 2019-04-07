@@ -56,6 +56,15 @@ class PrivodeController extends Controller{
             $this->addJob($id);
         return show($res['code'], $res['msg']);
     }
+
+    //重新检查第三方上下分失败订单 - 使用前台的接口
+    public function checkOrder(Request $request)
+    {
+        if(!isset($request->id))
+            return show(1, '参数错误');
+        return @file_get_contents((explode(',',env('WEB_INTRANET_IP', 'http://192.168.162.28:8811') ?? [])[0] ?? '').'/gamesApiOrder/UpMoney?id='.$request->id);
+    }
+
     public function addJob($id){
 //        if(!env('TESTSSS', false))
 //            return null;
