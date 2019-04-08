@@ -257,7 +257,6 @@ class AdSystemSettingController extends Controller
                     if(substr($iParam,0,10)=='data:image') {
                         $limit = strpos($iParam, ';base64,');
                         $timgtype = '.' . substr($iParam, 11, $limit - 11);
-                        \Log::info($timgtype);
                         if (!checkImg($timgtype)) {
                             return response()->json([
                                 'status' => false,
