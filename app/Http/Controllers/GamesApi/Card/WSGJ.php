@@ -45,7 +45,7 @@ class WSGJ extends Base{
             $toMinute = '60';
         }
         $Minute = ($toMinute - 15) == 0 ? '00' : $toMinute - 15;
-        return date('YmdH', $param['toTime'] ?? time()).$Minute.','.date('YmdH', $param['toTime'] ?? time()).$toMinute;
+        return date('YmdH', $param['toTime'] ?? time()).$Minute.','.date('YmdH', ($param['toTime'] ?? time())).($toMinute - 1).'59';
     }
 
 }

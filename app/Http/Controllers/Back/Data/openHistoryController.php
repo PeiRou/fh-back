@@ -552,8 +552,8 @@ class openHistoryController extends Controller
         }
         $count = $model->count();
         if(isset($request->start, $request->length))
-            $model->orderBy('id','desc')->skip($request->start)->take($request->length);
-        $res = $model->get();
+            $model->skip($request->start)->take($request->length);
+        $res = $model->orderBy('updated_at', 'desc')->orderBy('id','desc')->get();
 
         $g_ids = \App\GamesApi::getBetList()->keyBy('g_id')->toArray();
         return DataTables::of($res)

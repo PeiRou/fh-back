@@ -910,7 +910,7 @@ class Excel
             if($i==1){
                 $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
                 if(empty($exeBet))
-                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.game_id = '{$gameId}' and bet.issue = '{$issue}' and bet.testFlag = 0");
+                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.status = 0 and bet.game_id = '{$gameId}' and bet.issue = '{$issue}' and bet.testFlag = 0");
             }else{
                 DB::connection('mysql::write')->table("excel_bet")->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 0,'bunko' => 0]);
             }
@@ -964,6 +964,21 @@ class Excel
                     $randRate = rand(1000,1999)/1000;
                     if($lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
                         $iLimit = count($arrLimit)>=2?2:1;
+                        if($iLimit!=1){
+                            $tmpVal = 0;
+                            foreach ($arrLimit as $key2 =>$va2){
+                                $ii++;
+                                if($ii==$iLimit) {
+                                    $tmpVal = $key2;
+                                    break;
+                                }
+                            }
+                            $tmpNum = $exeBase->bet_lose-($exeBase->bet_win+$tmpVal);
+                            writeLog('New_Kill',$table.' :'.$issue.' lastBunko: '.$tmpNum .'share:'.$tmpVal);
+                            if(($exeBase->bet_lose-($exeBase->bet_win+$tmpVal))<=$tmpVal)
+                                $iLimit = 1;
+                            $ii = 0;
+                        }
                         foreach ($arrLimit as $key2 =>$va2){
                             $ii++;
                             if($ii==$iLimit) {
@@ -984,11 +999,8 @@ class Excel
                     }
                 }else{                                        //如果当日的尚未计算，则给中间值
                     foreach ($arrLimit as $key2 =>$va2){
-                        $ii++;
-                        if($ii==$iLimit){
-                            $openCode = $va2;
-                            break;
-                        }
+                        $openCode = $va2;
+                        break;
                     }
                 }
             }else {
@@ -1012,8 +1024,8 @@ class Excel
         }
         writeLog('New_Kill', $table.' :'.$openCode);
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
-        DB::table("excel_bet")->where('issue',$issue)->where('game_id',$gameId)->delete();
-        DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->where('game_id',$gameId)->delete();
+        DB::table("excel_bet")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->limit(1000)->delete();
+        DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->limit(1000)->delete();
     }
     //试算杀率个别取用方法，用来继承的父类
     protected function exc_play($openCode,$gameId){

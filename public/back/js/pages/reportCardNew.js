@@ -66,6 +66,7 @@ $(function () {
                 d.startTime = $('#timeStart').val();
                 d.endTime = $('#timeEnd').val();
                 d.userAccount = $('#user_account').val();
+                d.agent_account = $('#agent_account').val();
             }
         },
         columns: column,
@@ -122,6 +123,7 @@ function footerTotal() {
             startTime : $('#timeStart').val(),
             endTime : $('#timeEnd').val(),
             user_account : $('#user_account').val(),
+            agent_account : $('#agent_account').val(),
         },
         success:function (data) {
             for (var i=0;i<data.total.length;i++){

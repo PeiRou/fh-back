@@ -36,30 +36,24 @@ class BaseRepository
     public function insertDB($data){
         $table = DB::table('jq_bet');
         if($table->insert($data)){
-            echo $this->gameInfo->name.'插入'.count($data).'条数据';
+            echo $this->gameInfo->name.'插入'.count($data).'条数据'.PHP_EOL;
         }else{
-            echo $this->gameInfo->name.'插入'.count($data).'条数据失败';
+            echo $this->gameInfo->name.'插入'.count($data).'条数据失败'.PHP_EOL;
         }
     }
     //格式化数据  插入数据库
     public function createData($data){
-//        $tableName = 'jq_'.strtolower($this->gameInfo->alias).'_bet';
-//        $table = DB::table($tableName);
-        $table = DB::table('jq_bet');
-        //根据GameID Accounts去掉重复的
-//        foreach ($data['GameID'] as $k => $k){
-//            $table->orWhere(['GameID'=>$data['GameID'][$k]])
-//                ->where([
-//                    'Accounts' => $data['Accounts'][$k],
-//                ]);
-//        }
-        $table->where('g_id', $this->gameInfo->g_id)->whereIn('GameID',$data['GameID']);
-        $distinctArr = $table->pluck('GameID')->toArray();
-        $res['GameID'] = array_diff($data['GameID'],$distinctArr);
+        $where = ' g_id = '.$this->gameInfo->g_id.' and GameID in ("'.implode('","', $data['GameID']).'")';
+        $GameIDs = DB::select('select GameID from jq_bet
+                where 1 and '.$where.'
+                union
+                select GameID from jq_bet_his
+                where 1 and '.$where);
 
-        //直接删除已有的
-//        $table->whereIn('GameID',$data['GameID'])->delete();
-//        $res['GameID'] = $data['GameID'];
+        $res['GameID'] = array_diff($data['GameID'],array_map(function($v){
+            return $v->GameID;
+        },$GameIDs));
+
         $arr = [];
         foreach ($res['GameID'] as $k => $k){
             $array = [

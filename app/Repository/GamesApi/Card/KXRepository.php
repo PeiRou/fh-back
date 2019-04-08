@@ -17,8 +17,7 @@ class KXRepository extends BaseRepository
 
     //格式化数据  插入数据库
     public function createData($data){
-        $where = 'GameID in ("'.implode('","', $data['id']).'")';
-
+        $where = ' g_id = '.$this->gameInfo->g_id.' and GameID in ("'.implode('","', $data['id']).'")';
         $GameIDs = DB::select('select GameID from jq_bet
                 where 1 and '.$where.'
                 union

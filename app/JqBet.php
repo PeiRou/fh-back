@@ -45,6 +45,10 @@ class JqBet extends Model
             $aSql .= " AND `username` = :user_account ";
             $aArray['user_account'] = $aParam['user_account'];
         }
+        if(isset($aParam['agent_account']) && array_key_exists('agent_account',$aParam)){
+            $aSql .= " AND `agent_account` = :agent_account ";
+            $aArray['agent_account'] = $aParam['agent_account'];
+        }
         if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam)){
             $aSql .= " AND `updated_at` >= :startTime ";
             $aArray['startTime'] = $aParam['startTime'];
@@ -95,6 +99,10 @@ class JqBet extends Model
             $aSql .= " AND `username` = :user_account ";
             $aArray['user_account'] = $aParam['user_account'];
         }
+        if(isset($aParam['agent_account']) && array_key_exists('agent_account',$aParam)){
+            $aSql .= " AND `agent_account` = :agent_account ";
+            $aArray['agent_account'] = $aParam['agent_account'];
+        }
         if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam)){
             $aSql .= " AND `updated_at` >= :startTime ";
             $aArray['startTime'] = $aParam['startTime'];
@@ -113,6 +121,10 @@ class JqBet extends Model
         if(isset($aParam['user_account']) && array_key_exists('user_account',$aParam)){
             $aSql .= " AND `username` = :user_account ";
             $aArray['user_account'] = $aParam['user_account'];
+        }
+        if(isset($aParam['agent_account']) && array_key_exists('agent_account',$aParam)){
+            $aSql .= " AND `agent_account` = :agent_account ";
+            $aArray['agent_account'] = $aParam['agent_account'];
         }
         if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam)){
             $aSql .= " AND `updated_at` >= :startTime ";
