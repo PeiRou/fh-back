@@ -138,7 +138,6 @@ class CURL_ALL_THREAD extends Command
             $this->exeCURL('http://127.0.0.1:9500?thread=KILL_sflhc');
             //清数据
             $this->exeCURL('http://127.0.0.1:9500?thread=clear_data');
-            Storage::disk('thread')->delete('thread');
         }
     }
     private function exeCURL($url){
