@@ -375,6 +375,8 @@ class PayDataController extends Controller
                         return "<i class='iconfont bank_icon'>&#xe61b;</i>";
                     case "BRCB";
                         return "<i class='iconfont bank_icon'>&#xe61c;</i>";
+                    case "FHB";
+                        return "<img style='width: 30px;height: 20px;' src='/images/FJHXBC.png'/>";
                 }
             })
             ->editColumn('control', function ($allGeneralAgent){

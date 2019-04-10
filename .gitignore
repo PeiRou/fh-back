@@ -12,6 +12,7 @@ npm-debug.log
 yarn-error.log
 .env
 /storage/app/*
+/storage/clear_data/*
 /storage/framework/cache/*
 /storage/framework/sessions/*
 /storage/framework/testing/*
