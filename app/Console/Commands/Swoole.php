@@ -113,7 +113,7 @@ class Swoole extends Command
         if(!isset($data['thread']) || empty($data['thread']))
             $this->serv->clearTimer($id);
         try{
-            if(env('IS_CLOUD',0)==0){
+            if(env('IS_CLOUD',0)==0){       //如果非云主机
                 DB::disconnect();
                 Artisan::call($data['thread']);
             }else{
