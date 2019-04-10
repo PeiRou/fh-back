@@ -113,14 +113,19 @@ class Swoole extends Command
         if(!isset($data['thread']) || empty($data['thread']))
             $this->serv->clearTimer($id);
         try{
-            $redis->select(0);
-            $key = 'Artisan:'.$data['thread'];
-            if(!$redis->exists($key)){
-                $redis->setex($key, 60,'on');
+            if(env('IS_CLOUD',0)==0){
                 DB::disconnect();
                 Artisan::call($data['thread']);
+            }else{
+                $redis->select(0);
+                $key = 'Artisan:'.$data['thread'];
+                if(!$redis->exists($key)){
+                    $redis->setex($key, 60,'on');
+                    DB::disconnect();
+                    Artisan::call($data['thread']);
 //                $redis->setex($key,1,'on');
-                $redis->del($key);
+                    $redis->del($key);
+                }
             }
         }catch (\exception $exception){
             \Log::info($exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
