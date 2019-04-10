@@ -27,8 +27,8 @@ class CURL_ALL_THREAD extends Command
      */
     public function handle()
     {
-        if(!Storage::disk('thread')->exists('thread')||Storage::disk('thread')->get('thread')<time()){
-            Storage::disk('thread')->put('thread', time()+60);
+        if(!Storage::disk('thread')->exists('thread')||Storage::disk('thread')->get('thread')<=time()){
+            Storage::disk('thread')->put('thread', time()+59);
             $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_pk10');
             $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_pknn');
             $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_pcdd');
