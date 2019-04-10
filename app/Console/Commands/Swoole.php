@@ -119,7 +119,8 @@ class Swoole extends Command
                 $redis->setex($key, 60,'on');
                 DB::disconnect();
                 Artisan::call($data['thread']);
-                $redis->setex($key,1,'on');
+//                $redis->setex($key,1,'on');
+                $redis->del($key);
             }
         }catch (\exception $exception){
             \Log::info($exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
