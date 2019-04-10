@@ -143,7 +143,7 @@ class CURL_ALL_THREAD extends Command
             $redis->select(0);
             $redis_issue = $redis->get($thread[1]);
             if(!$redis->exists($redis_issue)){
-                $redis->setex($thread[1],10);
+                $redis->setex($thread[1],10,'ing');
                 $curl = curl_init();
                 curl_setopt($curl, CURLOPT_URL, $url);
                 curl_setopt($curl, CURLOPT_HEADER, 0);
