@@ -133,16 +133,26 @@ class CURL_ALL_THREAD extends Command
         $this->exeCURL('http://127.0.0.1:9500?thread=KILL_sfssc');
         $this->exeCURL('http://127.0.0.1:9500?thread=KILL_jslhc');
         $this->exeCURL('http://127.0.0.1:9500?thread=KILL_sflhc');
+        //清数据
+        $this->exeCURL('http://127.0.0.1:9500?thread=clear_data');
     }
     private function exeCURL($url){
-        $curl = curl_init();
-//        $url = 'http://192.168.1.219:8811/bet';
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
-        curl_exec($curl);
-        curl_close($curl);
-//        return '';
+        $thread = explode('?',$url);
+        if(isset($thread[1])){
+            $redis = Redis::connection();
+            $redis->select(0);
+            $redis_issue = $redis->get($thread[1]);
+            if(!$redis->exists($redis_issue)){
+                $redis->setex($thread[1],10);
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_HEADER, 0);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($curl, CURLOPT_TIMEOUT, 1);
+                curl_exec($curl);
+                curl_close($curl);
+                $redis->del($thread[1]);
+            }
+        }
     }
 }
