@@ -31,11 +31,11 @@ class CURL_ALL_THREAD extends Command
         $thread_time = $now;
         if(Storage::disk('thread')->exists('thread')){
             $thread_time = Storage::disk('thread')->get('thread');
-            $thread_time = explode('-',$thread_time);
+            $thread_time = explode('***',$thread_time);
             $thread_time = $thread_time[1];
         }
         if(!Storage::disk('thread')->exists('thread')||($thread_time<$now)){
-            Storage::disk('thread')->put('thread', date('Y-m-d H:i:s',$now).'-'.($now+59));
+            Storage::disk('thread')->put('thread', date('Y-m-d H:i:s',$now).'***'.($now+59));
             $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_pk10');
             $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_pknn');
             $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_pcdd');
@@ -148,21 +148,12 @@ class CURL_ALL_THREAD extends Command
         }
     }
     private function exeCURL($url){
-        $thread = explode('?',$url);
-        if(isset($thread[1])){
-            $redis = Redis::connection();
-            $redis->select(0);
-            $redis_issue = $redis->get($thread[1]);
-            if(!$redis->exists($redis_issue)){
-                $redis->setex($thread[1],1,'ing');
-                $curl = curl_init();
-                curl_setopt($curl, CURLOPT_URL, $url);
-                curl_setopt($curl, CURLOPT_HEADER, 0);
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($curl, CURLOPT_TIMEOUT, 1);
-                curl_exec($curl);
-                curl_close($curl);
-            }
-        }
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
+        curl_exec($curl);
+        curl_close($curl);
     }
 }
