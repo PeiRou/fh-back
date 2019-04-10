@@ -35,7 +35,7 @@ class CURL_ALL_THREAD extends Command
             $thread_time = $thread_time[1];
         }
         if(!Storage::disk('thread')->exists('thread')||($thread_time<$now)){
-            Storage::disk('thread')->put('thread', date('Y-m-d H:i:s',$now).'***'.($now+59));
+            Storage::disk('thread')->put('thread', date('Y-m-d H:i:s',$now).'***'.($now+50));
             $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_pk10');
             $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_pknn');
             $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_pcdd');
