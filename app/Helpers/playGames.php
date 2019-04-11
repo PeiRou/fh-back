@@ -398,6 +398,10 @@ if(!function_exists('setQueueRealName')){
 
 if(!function_exists('ip')){
     function ip($ip){
+        if( !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ){
+            $ipInfo = '暂不支持识别此IP类型';
+            return $ipInfo;
+        }
         $checkIp = \Illuminate\Support\Facades\DB::table('ip')->where('ip',$ip)->first();
         if(!$checkIp){
             $http = new \GuzzleHttp\Client();

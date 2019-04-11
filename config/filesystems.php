@@ -48,6 +48,11 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'thread' => [
+            'driver' => 'local',
+            'root' => storage_path('thread'),
+        ],
+
         'guanOpen' => [
             'driver' => 'local',
             'root' => storage_path('guanOpen'),
