@@ -86,6 +86,7 @@
                         <span class="spanClassHeight mt20">
                             上分：<span id="betCount" class="spanClassNum">0</span>
                             下分：<span id="betMoney" class="spanClassNum">0</span>
+                            投注额：<span id="betMoney1" class="spanClassNum">0.00</span>
                             总输赢：<span id="betBunko" class="spanClassNum">0.00</span>
                         </span>
                     </div>

@@ -131,6 +131,7 @@ function footerTotal() {
             }
             $('#betCount').text(data.betCount);
             $('#betMoney').text(data.betMoney);
+            $('#betMoney1').text(data.betMoney1);
             $('#betBunko').text(data.betBunko);
         }
     });

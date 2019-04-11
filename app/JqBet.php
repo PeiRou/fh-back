@@ -73,11 +73,11 @@ class JqBet extends Model
     }
 
     public static function reportQuery($userId,$aParam){
-        $aSql = "SELECT `jq`.`bet_bunko`,`users`.`name` AS `user_name`,`users`.`id` AS `user_id`,`users`.`username` AS `user_account`,
+        $aSql = "SELECT `jq`.`bet_bunko`,`jq`.`bet_money`,`users`.`name` AS `user_name`,`users`.`id` AS `user_id`,`users`.`username` AS `user_account`,
                      `agent`.`a_id` AS `agent_id`,`agent`.`account` AS `agent_account`,`agent`.`name` AS `agent_name`,
                      `games_api`.`g_id` AS `game_id`, `games_api`.`name` AS `game_name`,
                      `capital`.`up_amount` AS `up_fraction`,`capital`.`down_amount` AS `down_fraction`
-                    FROM (SELECT `g_id`,`user_id`,SUM(`bunko`) AS `bet_bunko`
+                    FROM (SELECT `g_id`,`user_id`,SUM(`bunko`) AS `bet_bunko`,SUM(`bet_money`) AS `bet_money`
                     FROM `jq_bet` WHERE 1 ";
         $aArray = [];
         $aSql1 = '';
@@ -131,7 +131,7 @@ class JqBet extends Model
     }
 
     public static function reportQuerySum($aParam){
-        $aSql = "SELECT `jq`.`bet_bunko`,`jq`.game_id,`capital`.`up_fraction`,`capital`.`down_fraction` FROM (SELECT SUM(`bunko`) AS `bet_bunko`,`g_id` AS `game_id` FROM `jq_bet` WHERE 1";
+        $aSql = "SELECT `jq`.`bet_bunko`,`jq`.`bet_money`,`jq`.game_id,`capital`.`up_fraction`,`capital`.`down_fraction` FROM (SELECT SUM(`bunko`) AS `bet_bunko`,SUM(`bet_money`) AS `bet_money`,`g_id` AS `game_id` FROM `jq_bet` WHERE 1";
         $aArray =[];
         $aSql1 = '';
         if(isset($aParam['user_account']) && array_key_exists('user_account',$aParam)){
