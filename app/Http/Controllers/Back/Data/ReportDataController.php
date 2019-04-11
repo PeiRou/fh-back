@@ -504,27 +504,31 @@ class ReportDataController extends Controller
         foreach ($aData as $iData){
             if(isset($aArray[$iData->user_id]) && array_key_exists($iData->user_id,$aArray)){
                 $aArray[$iData->user_id]['game'][$iData->game_id] = [
-                    'bet_count' => $iData->bet_count,
-                    'bet_money' => $iData->bet_money,
+                    'down_fraction' => $iData->down_fraction,
+                    'up_fraction' => $iData->up_fraction,
                     'bet_bunko' => $iData->bet_bunko,
+                    'bet_money' => $iData->bet_money,
                 ];
-                $aArray[$iData->user_id]['total']['bet_count'] += $iData->bet_count;
-                $aArray[$iData->user_id]['total']['bet_money'] += $iData->bet_money;
+                $aArray[$iData->user_id]['total']['down_fraction'] += $iData->down_fraction;
+                $aArray[$iData->user_id]['total']['up_fraction'] += $iData->up_fraction;
                 $aArray[$iData->user_id]['total']['bet_bunko'] += $iData->bet_bunko;
+                $aArray[$iData->user_id]['total']['bet_money'] += $iData->bet_money;
             }else{
                 $aArray[$iData->user_id]['user_account'] = $iData->user_account;
                 $aArray[$iData->user_id]['user_name'] = $iData->user_name;
                 $aArray[$iData->user_id]['agent_account'] = $iData->agent_account;
                 $aArray[$iData->user_id]['agent_name'] = $iData->agent_name;
                 $aArray[$iData->user_id]['game'][$iData->game_id] = [
-                    'bet_count' => $iData->bet_count,
-                    'bet_money' => $iData->bet_money,
+                    'up_fraction' => $iData->up_fraction,
+                    'down_fraction' => $iData->down_fraction,
                     'bet_bunko' => $iData->bet_bunko,
+                    'bet_money' => $iData->bet_money,
                 ];
                 $aArray[$iData->user_id]['total'] = [
-                    'bet_count' => $iData->bet_count,
-                    'bet_money' => $iData->bet_money,
+                    'down_fraction' => $iData->down_fraction,
+                    'up_fraction' => $iData->up_fraction,
                     'bet_bunko' => $iData->bet_bunko,
+                    'bet_money' => $iData->bet_money,
                 ];
             }
         }
@@ -537,12 +541,14 @@ class ReportDataController extends Controller
             $DataTables->editColumn('game'.$iGame->g_id,function ($iArray) use ($iGame){
                 $txt = '';
                 if(isset($iArray['game'][$iGame->g_id]) && array_key_exists($iGame->g_id,$iArray['game'])) {
-                    $txt .= "投注数：" . round($iArray['game'][$iGame->g_id]['bet_count'],2) . "<br/>";
-                    $txt .= "投注金额：" . round($iArray['game'][$iGame->g_id]['bet_money'],2) . "<br/>";
+                    $txt .= "上分：" . round($iArray['game'][$iGame->g_id]['up_fraction'],2) . "<br/>";
+                    $txt .= "下分：" . round($iArray['game'][$iGame->g_id]['down_fraction'],2) . "<br/>";
+                    $txt .= "投注额：" . round($iArray['game'][$iGame->g_id]['bet_money'],2) . "<br/>";
                     $txt .= "输赢：" . round($iArray['game'][$iGame->g_id]['bet_bunko'],2);
                 }else{
-                    $txt .= "投注数：0 <br/>";
-                    $txt .= "投注金额：0.00<br/>";
+                    $txt .= "上分：0 <br/>";
+                    $txt .= "下分：0<br/>";
+                    $txt .= "投注额：0.00<br/>";
                     $txt .= "输赢：0.00";
                 }
                 return $txt;
@@ -556,8 +562,9 @@ class ReportDataController extends Controller
                 return $iArray['agent_account'].(empty($iArray['agent_name'])?'':'('.$iArray['agent_name'].')');
             })
             ->editColumn('total', function ($iArray){
-                return "投注数:" . round($iArray['total']['bet_count'],2) . "<br/>
-                        投注金额：" . round($iArray['total']['bet_money'],2) . "<br/>
+                return "上分:" . round($iArray['total']['up_fraction'],2) . "<br/>
+                        下分：" . round($iArray['total']['down_fraction'],2) . "<br/>
+                        投注额：" . round($iArray['total']['bet_bunko'],2) . "<br/>
                         输赢：" . round($iArray['total']['bet_bunko'],2) . "<br/>";
             })
             ->setTotalRecords($iCount)
@@ -576,26 +583,31 @@ class ReportDataController extends Controller
         }
 
         $aArray = [];
-        $iBetCount = 0;
-        $iBetMoney = 0;
+        $iUpFraction = 0;
+        $iDownFraction = 0;
         $iBetBunko = 0;
+        $iBetMoney = 0;
         foreach ($aData as $iData){
             if(isset($aArray[$iData->game_id]) && array_key_exists($iData->game_id,$aArray)){
-                $aArray[$iData->game_id]['bet_count'] += $iData->bet_count;
-                $aArray[$iData->game_id]['bet_money'] += $iData->bet_money;
+                $aArray[$iData->game_id]['up_fraction'] += $iData->up_fraction;
+                $aArray[$iData->game_id]['down_fraction'] += $iData->down_fraction;
                 $aArray[$iData->game_id]['bet_bunko'] += $iData->bet_bunko;
-                $iBetCount += $iData->bet_count;
-                $iBetMoney += $iData->bet_money;
+                $aArray[$iData->game_id]['bet_money'] += $iData->bet_money;
+                $iUpFraction += $iData->up_fraction;
+                $iDownFraction += $iData->down_fraction;
                 $iBetBunko += $iData->bet_bunko;
+                $iBetMoney += $iData->bet_money;
             }else{
                 $aArray[$iData->game_id] = [
-                    'bet_count' => $iData->bet_count,
-                    'bet_money' => $iData->bet_money,
+                    'up_fraction' => $iData->up_fraction,
+                    'down_fraction' => $iData->down_fraction,
                     'bet_bunko' => $iData->bet_bunko,
+                    'bet_money' => $iData->bet_money,
                 ];
-                $iBetCount += $iData->bet_count;
-                $iBetMoney += $iData->bet_money;
+                $iUpFraction += $iData->up_fraction;
+                $iDownFraction += $iData->down_fraction;
                 $iBetBunko += $iData->bet_bunko;
+                $iBetMoney += $iData->bet_money;
             }
         }
 
@@ -606,25 +618,28 @@ class ReportDataController extends Controller
             if(isset($aArray[$iGame->g_id]) && array_key_exists($iGame->g_id,$aArray)){
                 $aData[] = [
                     'key' => 'game'.$iGame->g_id,
-                    'value' => "投注数:" . round($aArray[$iGame->g_id]['bet_count'],2) . "<br/>
-                            投注金额：" . round($aArray[$iGame->g_id]['bet_money'],2) . "<br/>
-                            输赢：" . round($aArray[$iGame->g_id]['bet_bunko'],2) . "<br/>",
+                    'value' => "上分:" . round($aArray[$iGame->g_id]['up_fraction'],2) . "<br/>
+                                下分：" . round($aArray[$iGame->g_id]['down_fraction'],2) . "<br/>
+                                投注额：" . round($aArray[$iGame->g_id]['bet_money'],2) . "<br/>
+                                输赢：" . round($aArray[$iGame->g_id]['bet_bunko'],2) . "<br/>",
                 ];
             }else{
                 $aData[] = [
                     'key' => 'game'.$iGame->g_id,
-                    'value' => "投注数:0<br/>
-                            投注金额：0.00<br/>
-                            输赢：0.00<br/>",
+                    'value' => "上分:0<br/>
+                                下分：0<br/>
+                                投注额：0.00<br/>
+                                输赢：0.00<br/>",
                 ];
             }
         }
 
         return [
             'total' => (array)$aData,
-            'betCount' => round($iBetCount,2),
-            'betMoney' => round($iBetMoney,2),
-            'betBunko' => round($iBetBunko,2)
+            'betCount' => round($iUpFraction,2),
+            'betMoney' => round($iDownFraction,2),
+            'betBunko' => round($iBetBunko,2),
+            'betMoney1' => round($iBetMoney,2)
         ];
     }
 

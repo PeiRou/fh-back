@@ -4,6 +4,8 @@ namespace App\Jobs\Jq;
 
 use App\JqBet;
 use App\JqBetHis;
+use App\JqCapital;
+use App\JqReportBet;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -34,15 +36,14 @@ class ReportBet implements ShouldQueue
     {
         ini_set('memory_limit','2048M');
         //获取投注
-        if(strtotime($this->aDateTime) >= strtotime(date('Y-m-d')))
-            $aBet = JqBet::jqReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
-        else
-            $aBet = JqBetHis::jqReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        $aBet = JqBetHis::jqReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        //获取上下分
+        $aCapital = JqCapital::jqReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         $aArray = [];
         $time = strtotime($this->aDateTime);
         $dateTime = date('Y-m-d H:i:s');
         foreach ($aBet as $iBet){
-            $aArray[] = [
+            $aArray[$iBet->game_id.'|'.$iBet->user_id] = [
                 'game_id' => $iBet->game_id,
                 'game_name' => $iBet->game_name,
                 'agent_id' => $iBet->agent_id,
@@ -54,17 +55,46 @@ class ReportBet implements ShouldQueue
                 'bet_count' => $iBet->bet_count,
                 'bet_money' => $iBet->bet_money,
                 'bet_bunko' => $iBet->bet_bunko,
+                'up_fraction' => 0,
+                'down_fraction' => 0,
                 'date' => $this->aDateTime,
                 'date_time' => $time,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ];
         }
+        foreach ($aCapital as $iCapital) {
+            if(isset($aArray[$iCapital->game_id.'|'.$iCapital->userid]) && array_key_exists($iCapital->game_id.'|'.$iCapital->userid,$aArray)){
+                $aArray[$iCapital->game_id.'|'.$iCapital->userid]['up_fraction'] = empty($iCapital->up_amount)?0:$iCapital->up_amount;
+                $aArray[$iCapital->game_id.'|'.$iCapital->userid]['down_fraction'] = empty($iCapital->down_amount)?0:$iCapital->down_amount;
+            }else{
+                $aArray[$iCapital->game_id.'|'.$iCapital->userid] = [
+                    'game_id' => $iCapital->game_id,
+                    'game_name' => $iCapital->game_name,
+                    'agent_id' => $iCapital->agent_id,
+                    'agent_account' => $iCapital->agent_account,
+                    'agent_name' => $iCapital->agent_name,
+                    'user_id' => $iCapital->userid,
+                    'user_account' => $iCapital->user_account,
+                    'user_name' => $iCapital->user_name,
+                    'bet_count' => 0,
+                    'bet_money' => 0.00,
+                    'bet_bunko' => 0.00,
+                    'up_fraction' => $iCapital->up_amount,
+                    'down_fraction' => $iCapital->down_amount,
+                    'date' => $this->aDateTime,
+                    'date_time' => $time,
+                    'created_at' => $dateTime,
+                    'updated_at' => $dateTime,
+                ];
+            }
+        }
         $aArray = array_chunk($aArray,1000);
+        JqReportBet::where('date','=',$this->aDateTime)->delete();
+//        var_dump($aArray);die();
         foreach ($aArray as $iArray){
             InsertReportBet::dispatch($iArray)->onQueue($this->setQueueRealName('generalBetStatementInsert'));
         }
-        \App\ReportBet::where('date','=',$this->aDateTime)->delete();
     }
 
     //队列真实名
