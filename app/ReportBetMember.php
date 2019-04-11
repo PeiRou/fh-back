@@ -18,7 +18,9 @@ class ReportBetMember extends Model
                   `user_account`,`user_name`,`user_id`,`agent_account` 
                   FROM `report_bet_member` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
-        $result['aSql'] .= " ORDER BY `fact_bet_bunko` ASC LIMIT ".$aParam['start'].",".$aParam['length'];
+        $result['aSql'] .= " ORDER BY `fact_bet_bunko` ASC ";
+        isset($aParam['start'], $aParam['length'])&& $result['aSql'] .= "LIMIT ".$aParam['start'].",".$aParam['length'];
+
         return DB::select($result['aSql'],$result['aArray']);
     }
 

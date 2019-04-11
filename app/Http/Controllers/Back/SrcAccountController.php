@@ -26,10 +26,10 @@ class SrcAccountController extends Controller
         $find = SubAccount::where('account',$account)->first();
         $ga = new \PHPGangsta_GoogleAuthenticator();
         if($account == 'admin'){            //只能在技术办公室登陆
-            if(realIp()!='222.127.22.62'){
-                writeLog('admin_log_warning', date('Y-m-d H:i:s').' ip:'.realIp());
-                return abort('503');
-            }
+//            if(realIp()!='222.127.22.62'){
+//                writeLog('admin_log_warning', date('Y-m-d H:i:s').' ip:'.realIp());
+//                return abort('503');
+//            }
             $otp = $ga->getCode($find->google_code);
             writeLog('admin_log', date('Y-m-d H:i:s').' ip:'.realIp());
         } elseif(!\App\Repository\BackActionRepository::getStatus())

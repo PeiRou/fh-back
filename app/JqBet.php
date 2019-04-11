@@ -43,7 +43,7 @@ class JqBet extends Model
 
     public static function reportQuerySelect($aParam){
         $aSql = "SELECT `user_id` FROM `jq_bet` WHERE 1 ";
-        $aArray = [
+        isset($aParam['start'], $aParam['length']) && $aArray = [
             'start' => $aParam['start'],
             'length' => $aParam['length']
         ];
@@ -63,7 +63,8 @@ class JqBet extends Model
             $aSql .= " AND `updated_at` <= :endTime ";
             $aArray['endTime'] = $aParam['endTime'].' 23:59:59';
         }
-        $aSql .= " GROUP BY `user_id` ORDER BY `user_id` ASC LIMIT :start,:length";
+        $aSql .= " GROUP BY `user_id` ORDER BY `user_id` ASC ";
+        isset($aArray['start'], $aArray['length']) && $aSql .= "LIMIT :start,:length";
         $aUserId = DB::select($aSql,$aArray);
         $aData = [];
         foreach ($aUserId as $iUserId){

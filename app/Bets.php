@@ -405,7 +405,8 @@ sum(b.fact_return_amount) AS fact_return_amount";
         $aSqlCount = "SELECT COUNT(DISTINCT(zd.ga_id)) AS count ".$aSql;
         $aSql = $aSql1.$aSql;
         Session::put('reportSql',$aSql);
-        $aSql .= " GROUP BY zd.ga_id ORDER BY fact_bet_bunko ASC LIMIT ".$aParam['start'].','.$aParam['length'];
+        $aSql .= " GROUP BY zd.ga_id ORDER BY fact_bet_bunko ASC ";
+        isset($aParam['start'], $aParam['length']) && $aSql .= "LIMIT ".$aParam['start'].','.$aParam['length'];
         $agent = DB::select($aSql);
         $agentCount = DB::select($aSqlCount)[0]->count;
         return [
@@ -560,7 +561,8 @@ sum(b.fact_return_amount) AS fact_return_amount";
         $aSql .= $where;
         $aSqlCount = "SELECT COUNT(DISTINCT(u.agent)) AS count ".$aSql;
         $aSql = $aSql1.$aSql;
-        $aSql .= " GROUP BY u.agent ORDER BY fact_bet_bunko ASC LIMIT ".$aParam['start'].','.$aParam['length'];
+        $aSql .= " GROUP BY u.agent ORDER BY fact_bet_bunko ASC ";
+        isset($aParam['start'], $aParam['length']) && $aSql .= "LIMIT ".$aParam['start'].','.$aParam['length'];
         $agent = DB::select($aSql);
         $agentCount = DB::select($aSqlCount)[0]->count;
         return [
@@ -748,7 +750,9 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
         $aSql .= $where;
         $aSqlCount = "SELECT COUNT(DISTINCT(u.id)) AS count ".$aSql;
         $aSql = $aSql1.$aSql;
-        $aSql .= " GROUP BY u.id ORDER BY bet_bunko ASC LIMIT ".$aParam['start'].','.$aParam['length'];
+        $aSql .= " GROUP BY u.id ORDER BY bet_bunko ASC ";
+        isset($aParam['start'], $aParam['length']) && $aSql .= " LIMIT ".$aParam['start'].','.$aParam['length'];
+
         $agent = DB::select($aSql);
         $agentCount = DB::select($aSqlCount)[0]->count;
         return [
@@ -1024,7 +1028,9 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             $whereBet .= " and updated_at <= '".date("Y-m-d 23:59:59",strtotime($aParam['endTime']))."'";
         }
         $sql = $join."JOIN (select sum(`bet_money`) as `sumMoney`,COUNT(`bet_id`) AS `countBets`,count(DISTINCT(`user_id`)) as `countMember`,sum(case WHEN `game_id` in (90,91) then (case WHEN `nn_view_money` > 0 then `bunko` else 0 end) else(case WHEN `bunko` >0 then `bunko` else 0 end) end) as `sumWinBunko`,count(case WHEN `game_id` in (90,91) then (case WHEN `nn_view_money` > 0 then `bet_id` else Null end) else(case WHEN `bunko` >0 then `bet_id` else Null end) end) as `countWinBunkoBet`,count(DISTINCT(case WHEN `game_id` in (90,91) then (case WHEN `nn_view_money` > 0 then `user_id` else Null end) else(case WHEN `bunko` >0 then `user_id` else Null end) end)) as `countWinBunkoMember`,sum(case WHEN `game_id` in (90,91) then `nn_view_money` else(case when `bunko` >0 then `bunko` - `bet_money` else `bunko` end)end) as `sumBunko`,`game_id` from bet where 1 AND testFlag = 0 ".$whereBet." GROUP BY `game_id`) as b ON g.game_id = b.game_id ";
-        $sql .= " WHERE 1 ".$where." order BY sumBunko asc LIMIT ".$aParam['start'].','.$aParam['length'];
+        $sql .= " WHERE 1 ".$where." order BY sumBunko asc ";
+        isset($aParam['start'], $aParam['length']) && $sql .= " LIMIT ".$aParam['start'].','.$aParam['length'];
+
         $sql = $sql1.$sql;
         return DB::select($sql);
     }

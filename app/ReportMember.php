@@ -19,7 +19,9 @@ class ReportMember extends Model
                   SUM(`drawing_money`) AS `drawing_money`,SUM(`recharges_money`) AS `recharges_money`
                   FROM `report_member` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
-        $result['aSql'] .= " ORDER BY `fact_bet_bunko` ASC LIMIT ".$aParam['start'].",".$aParam['length'];
+        $result['aSql'] .= " ORDER BY `fact_bet_bunko` ASC ";
+        isset($aParam['start'], $aParam['length']) && $result['aSql'] .= "LIMIT ".$aParam['start'].",".$aParam['length'];
+
         return DB::select($result['aSql'],$result['aArray']);
     }
 

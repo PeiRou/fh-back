@@ -1151,6 +1151,27 @@ class ModalController extends Controller
         return view('back.modal.member.exportUser');
     }
 
+    //导出会员报表-模板
+    public function exportReportUser(){
+        return view('back.modal.member.exportReportUser');
+    }
+    //导出代理报表-模板
+    public function exportReportAgent(){
+        return view('back.modal.member.exportReportAgent');
+    }
+    //导出代理报表-模板
+    public function exportReportGAgent(){
+        return view('back.modal.member.exportReportGAgent');
+    }
+    //导出投注报表-模板
+    public function exportReportBet(){
+        return view('back.modal.member.exportReportBet');
+    }
+    //导出棋牌报表-模板
+    public function exportReportCart(){
+        return view('back.modal.member.exportReportCart');
+    }
+
     //操作报表添加-模板
     public function addStatistics(){
         return view('back.modal.report.addStatistics');

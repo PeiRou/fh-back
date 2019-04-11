@@ -285,7 +285,7 @@ class ExportExcelController extends Controller
 //                    }
 //                    $sheet->appendRow($aFiled);
 //                }
-                $aFiled = ['用户名','代理',''];
+                $aFiled = ['用户名','代理'];
                 foreach ($aGame as $iGame){
                     $aFiled[] = $iGame->name;
                 }

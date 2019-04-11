@@ -33,6 +33,12 @@
 
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('reportBetTable')"><i class="iconfont">&#xe61d;</i></span>
+            <div class="content-top-buttons">
+                <?php $hasPermission = app('App\Http\Proxy\CheckPermission'); ?>
+                @if($hasPermission->hasPermission('member.exportReportCart') == 'has')
+                    <span onclick="exportUser()">导出数据</span>
+                @endif
+            </div>
             {{--<span onclick="addSubAccount()">导出记录</span>--}}
 {{--            <span onclick="getReport()">手动获取</span>--}}
         </div>
