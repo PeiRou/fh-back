@@ -157,7 +157,7 @@ class CURL_ALL_THREAD extends Command
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $err = curl_errno($curl);
         curl_close($curl);
-        if (($err) || ($httpcode !== 200))
+        if (($err) || (in_array($httpcode,array(200,500))))
             echo $httpcode.PHP_EOL;
         else
             echo $url.'**** ok'.PHP_EOL;
