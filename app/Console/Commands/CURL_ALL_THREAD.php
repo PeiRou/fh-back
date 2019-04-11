@@ -153,9 +153,9 @@ class CURL_ALL_THREAD extends Command
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 1);
+        curl_exec($curl);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $err = curl_errno($curl);
-        curl_exec($curl);
         curl_close($curl);
         if (($err) || ($httpcode !== 200))
             echo $httpcode.PHP_EOL;
