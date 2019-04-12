@@ -403,6 +403,7 @@ class MemberController extends Controller
         Excel::create('【'.$todayTime.'】导出会员报表-['.$aParam['timeStart'].'-'.$aParam['timeEnd'].']',function ($excel) use ($aData,$todayTime,$request){
             $excel->sheet('【'.$todayTime.'】导出会员报表', function($sheet) use ($aData,$todayTime,$request){
                 $appendRowTitle = [];
+                array_push($appendRowTitle, '');
                 in_array('user_account', $request->column_) && array_push($appendRowTitle, '账号');
                 in_array('user_name', $request->column_) && array_push($appendRowTitle, '姓名');
                 in_array('agent_account', $request->column_) && array_push($appendRowTitle, '上级代理');
@@ -422,29 +423,37 @@ class MemberController extends Controller
                 $sheetHeight = [
                     1 => 20,
                 ];
+                $arr = [];
                 foreach ($aData as $kData => $iData){
                     $appendRowContent = [];
+                    array_push($appendRowContent, '');
                     $activity_money = empty($iData->activity_money)?0:$iData->activity_money;
                     $handling_fee = empty($iData->handling_fee)?0:$iData->handling_fee;
                     $fact_return_amount = empty($iData->fact_return_amount)?0:$iData->fact_return_amount;
                     $fact_bet_bunko = round($iData->bet_bunko + $activity_money + $handling_fee + $fact_return_amount,2);
-                    in_array('user_account', $request->column_) && array_push($appendRowContent, $iData->user_account);
-                    in_array('user_name', $request->column_) && array_push($appendRowContent, $iData->user_name);
-                    in_array('agent_account', $request->column_) && array_push($appendRowContent, $iData->agent_account);
-                    in_array('recharges_money', $request->column_) && array_push($appendRowContent, $iData->recharges_money);
-                    in_array('drawing_money', $request->column_) && array_push($appendRowContent, $iData->drawing_money);
-                    in_array('bet_count', $request->column_) && array_push($appendRowContent, $iData->bet_count);
-                    in_array('bet_money', $request->column_) && array_push($appendRowContent, $iData->bet_money);
-                    in_array('win_amount', $request->column_) && array_push($appendRowContent, round($iData->bet_money + $iData->bet_bunko,2));
-                    in_array('bet_amount', $request->column_) && array_push($appendRowContent, $iData->bet_amount);
-                    in_array('activity_money', $request->column_) && array_push($appendRowContent, $iData->activity_money);
-                    in_array('handling_fee', $request->column_) && array_push($appendRowContent, $iData->handling_fee);
-                    in_array('bet_bunko', $request->column_) && array_push($appendRowContent, $iData->bet_bunko);
-                    in_array('fact_return_amount', $request->column_) && array_push($appendRowContent, $iData->fact_return_amount);
-                    in_array('fact_bet_bunko', $request->column_) && array_push($appendRowContent, $fact_bet_bunko);
+                    in_array('user_account', $request->column_) && array_push($appendRowContent, $iData->user_account) && $arr['user_account'] = '';
+                    in_array('user_name', $request->column_) && array_push($appendRowContent, $iData->user_name) && $arr['user_name'] = '';
+                    in_array('agent_account', $request->column_) && array_push($appendRowContent, $iData->agent_account) && $arr['agent_account'] = '';
+                    in_array('recharges_money', $request->column_) && array_push($appendRowContent, $iData->recharges_money) && $arr['recharges_money'] = ($arr['recharges_money'] ?? 0) + $iData->recharges_money;
+                    in_array('drawing_money', $request->column_) && array_push($appendRowContent, $iData->drawing_money) && $arr['drawing_money'] = ($arr['drawing_money'] ?? 0) + $iData->drawing_money;
+                    in_array('bet_count', $request->column_) && array_push($appendRowContent, $iData->bet_count) && $arr['bet_count'] = ($arr['bet_count'] ?? 0) + $iData->bet_count;
+                    in_array('bet_money', $request->column_) && array_push($appendRowContent, $iData->bet_money) && $arr['bet_money'] = ($arr['bet_money'] ?? 0) + $iData->bet_money;
+                    in_array('win_amount', $request->column_) && array_push($appendRowContent, round($iData->bet_money + $iData->bet_bunko,2)) && $arr['win_amount'] = ($arr['win_amount'] ?? 0) + (round($iData->bet_money + $iData->bet_bunko,2));
+                    in_array('bet_amount', $request->column_) && array_push($appendRowContent, $iData->bet_amount) && $arr['bet_amount'] = ($arr['bet_amount'] ?? 0) + $iData->bet_amount;
+                    in_array('activity_money', $request->column_) && array_push($appendRowContent, $iData->activity_money) && $arr['activity_money'] = ($arr['activity_money'] ?? 0) + $iData->activity_money;
+                    in_array('handling_fee', $request->column_) && array_push($appendRowContent, $iData->handling_fee) && $arr['handling_fee'] = ($arr['handling_fee'] ?? 0) + $iData->handling_fee;
+                    in_array('bet_bunko', $request->column_) && array_push($appendRowContent, $iData->bet_bunko) && $arr['bet_bunko'] = ($arr['bet_bunko'] ?? 0) + $iData->bet_bunko;
+                    in_array('fact_return_amount', $request->column_) && array_push($appendRowContent, $iData->fact_return_amount) && $arr['fact_return_amount'] = ($arr['fact_return_amount'] ?? 0) + $iData->fact_return_amount;
+                    in_array('fact_bet_bunko', $request->column_) && array_push($appendRowContent, $fact_bet_bunko) && $arr['fact_bet_bunko'] = ($arr['fact_bet_bunko'] ?? 0) + $fact_bet_bunko;
                     $sheet->appendRow($appendRowContent);
                     $sheetHeight[$kData + 2] = 20;
                 }
+                $arrk = [];
+                array_push($arrk, '总计：');
+                foreach ($arr as $k=>$v){
+                    array_push($arrk, $v);
+                }
+                $sheet->appendRow($arrk);
                 $sheet->setHeight($sheetHeight);
                 $sheet->setWidth(array(
                     'A'    =>  10,
@@ -479,6 +488,7 @@ class MemberController extends Controller
         Excel::create('【'.$todayTime.'】导出代理报表-['.$aParam['timeStart'].'-'.$aParam['timeEnd'].']',function ($excel) use ($aData,$todayTime,$request){
             $excel->sheet('【'.$todayTime.'】导出代理报表', function($sheet) use ($aData,$todayTime,$request){
                 $appendRowTitle = [];
+                array_push($appendRowTitle, '');
                 in_array('agent_account', $request->column_) && array_push($appendRowTitle, '账号');
                 in_array('memberCount', $request->column_) && array_push($appendRowTitle, '会员数');
                 in_array('recharges_money', $request->column_) && array_push($appendRowTitle, '充值金额');
@@ -496,6 +506,7 @@ class MemberController extends Controller
 
                 $sheet->appendRow($appendRowTitle);
                 $sheetHeight = [1 => 20,];
+                $arr = [];
                 foreach ($aData as $kData => $iData){
                     $appendRowContent = [];
                     $activity_money = empty($iData->activity_money)?0:$iData->activity_money;
@@ -503,23 +514,30 @@ class MemberController extends Controller
                     $fact_return_amount = empty($iData->fact_return_amount)?0:$iData->fact_return_amount;
                     $fact_bet_bunko = round($iData->bet_bunko + $activity_money + $handling_fee + $fact_return_amount,2);
 
-                    in_array('agent_account', $request->column_) && array_push($appendRowContent, $iData->agent_account);
-                    in_array('memberCount', $request->column_) && array_push($appendRowContent, $iData->memberCount);
-                    in_array('recharges_money', $request->column_) && array_push($appendRowContent, $iData->recharges_money);
-                    in_array('drawing_money', $request->column_) && array_push($appendRowContent, $iData->drawing_money);
-                    in_array('bet_count', $request->column_) && array_push($appendRowContent, $iData->bet_count);
-                    in_array('bet_money', $request->column_) && array_push($appendRowContent, $iData->bet_money);
-                    in_array('win_amount', $request->column_) && array_push($appendRowContent, round($iData->bet_money + $iData->bet_bunko,2));
-                    in_array('bet_amount', $request->column_) && array_push($appendRowContent, $iData->bet_amount);
-                    in_array('activity_money', $request->column_) && array_push($appendRowContent, $iData->activity_money);
-                    in_array('handling_fee', $request->column_) && array_push($appendRowContent, $iData->handling_fee);
-                    in_array('return_amount', $request->column_) && array_push($appendRowContent, $iData->return_amount);
-                    in_array('bet_bunko', $request->column_) && array_push($appendRowContent, $iData->bet_bunko);
-                    in_array('fact_return_amount', $request->column_) && array_push($appendRowContent, $iData->fact_return_amount);
-                    in_array('fact_bet_bunko', $request->column_) && array_push($appendRowContent, $fact_bet_bunko);
+                    array_push($appendRowContent, '');
+                    in_array('agent_account', $request->column_) && array_push($appendRowContent, $iData->agent_account) && $arr['agent_account'] = '';
+                    in_array('memberCount', $request->column_) && array_push($appendRowContent, $iData->memberCount) && $arr['memberCount'] = ($arr['memberCount'] ?? 0) + $iData->memberCount;
+                    in_array('recharges_money', $request->column_) && array_push($appendRowContent, $iData->recharges_money) && $arr['recharges_money'] = ($arr['recharges_money'] ?? 0) + $iData->recharges_money;
+                    in_array('drawing_money', $request->column_) && array_push($appendRowContent, $iData->drawing_money) && $arr['drawing_money'] = ($arr['drawing_money'] ?? 0) + $iData->drawing_money;
+                    in_array('bet_count', $request->column_) && array_push($appendRowContent, $iData->bet_count) && $arr['bet_count'] = ($arr['bet_count'] ?? 0) + $iData->bet_count;
+                    in_array('bet_money', $request->column_) && array_push($appendRowContent, $iData->bet_money) && $arr['bet_money'] = ($arr['bet_money'] ?? 0) + $iData->bet_money;
+                    in_array('win_amount', $request->column_) && array_push($appendRowContent, round($iData->bet_money + $iData->bet_bunko,2)) && $arr['win_amount'] = ($arr['win_amount'] ?? 0) + (round($iData->bet_money + $iData->bet_bunko,2));
+                    in_array('bet_amount', $request->column_) && array_push($appendRowContent, $iData->bet_amount) && $arr['bet_amount'] = ($arr['bet_amount'] ?? 0) + $iData->bet_amount;
+                    in_array('activity_money', $request->column_) && array_push($appendRowContent, $iData->activity_money) && $arr['activity_money'] = ($arr['activity_money'] ?? 0) + $iData->activity_money;
+                    in_array('handling_fee', $request->column_) && array_push($appendRowContent, $iData->handling_fee) && $arr['handling_fee'] = ($arr['handling_fee'] ?? 0) + $iData->handling_fee;
+                    in_array('return_amount', $request->column_) && array_push($appendRowContent, $iData->return_amount) && $arr['return_amount'] = ($arr['return_amount'] ?? 0) + $iData->return_amount;
+                    in_array('bet_bunko', $request->column_) && array_push($appendRowContent, $iData->bet_bunko) && $arr['bet_bunko'] = ($arr['bet_bunko'] ?? 0) + $iData->bet_bunko;
+                    in_array('fact_return_amount', $request->column_) && array_push($appendRowContent, $iData->fact_return_amount) && $arr['fact_return_amount'] = ($arr['fact_return_amount'] ?? 0) + $iData->fact_return_amount;
+                    in_array('fact_bet_bunko', $request->column_) && array_push($appendRowContent, $fact_bet_bunko) && $arr['fact_bet_bunko'] = ($arr['fact_bet_bunko'] ?? 0) + $fact_bet_bunko;
                     $sheet->appendRow($appendRowContent);
                     $sheetHeight[$kData + 2] = 20;
                 }
+                $arrk = [];
+                array_push($arrk, '总计：');
+                foreach ($arr as $k=>$v){
+                    array_push($arrk, $v);
+                }
+                $sheet->appendRow($arrk);
                 $sheet->setHeight($sheetHeight);
                 $sheet->setWidth(array(
                     'A'    =>  10,
@@ -554,6 +572,7 @@ class MemberController extends Controller
         Excel::create('【'.$todayTime.'】导出总代理报表-['.$aParam['timeStart'].'-'.$aParam['timeEnd'].']',function ($excel) use ($aData,$todayTime,$request){
             $excel->sheet('【'.$todayTime.'】导出总代理报表', function($sheet) use ($aData,$todayTime,$request){
                 $appendRowTitle = [];
+                array_push($appendRowTitle, '');
                 in_array('general_account', $request->column_) && array_push($appendRowTitle, '账号');
                 in_array('memberCount', $request->column_) && array_push($appendRowTitle, '会员数');
                 in_array('bet_count', $request->column_) && array_push($appendRowTitle, '笔数');
@@ -569,29 +588,37 @@ class MemberController extends Controller
 
                 $sheet->appendRow($appendRowTitle);
                 $sheetHeight = [1 => 20,];
+                $arr = [];
                 foreach ($aData as $kData => $iData){
                     $appendRowContent = [];
                     $activity_money = empty($iData->activity_money)?0:$iData->activity_money;
                     $handling_fee = empty($iData->handling_fee)?0:$iData->handling_fee;
                     $fact_return_amount = empty($iData->fact_return_amount)?0:$iData->fact_return_amount;
                     $fact_bet_bunko = round($iData->bet_bunko + $activity_money + $handling_fee + $fact_return_amount,2);
-
-                    in_array('general_account', $request->column_) && array_push($appendRowContent, $iData->general_account);
-                    in_array('memberCount', $request->column_) && array_push($appendRowContent, $iData->memberCount);
-                    in_array('bet_count', $request->column_) && array_push($appendRowContent, $iData->bet_count);
-                    in_array('bet_money', $request->column_) && array_push($appendRowContent, $iData->bet_money);
-                    in_array('win_amount', $request->column_) && array_push($appendRowContent, round($iData->bet_money + $iData->bet_bunko,2));
-                    in_array('bet_amount', $request->column_) && array_push($appendRowContent, $iData->bet_amount);
-                    in_array('activity_money', $request->column_) && array_push($appendRowContent, $iData->activity_money);
-                    in_array('handling_fee', $request->column_) && array_push($appendRowContent, $iData->handling_fee);
-                    in_array('return_amount', $request->column_) && array_push($appendRowContent, $iData->return_amount);
-                    in_array('bet_bunko', $request->column_) && array_push($appendRowContent, $iData->bet_bunko);
-                    in_array('fact_return_amount', $request->column_) && array_push($appendRowContent, $iData->fact_return_amount);
-                    in_array('fact_bet_bunko', $request->column_) && array_push($appendRowContent, $fact_bet_bunko);
+                    array_push($appendRowContent, '');
+                    in_array('general_account', $request->column_) && array_push($appendRowContent, $iData->general_account) && $arr['general_account'] = '';
+                    in_array('memberCount', $request->column_) && array_push($appendRowContent, $iData->memberCount) && $arr['memberCount'] = ($arr['memberCount'] ?? 0) + $iData->memberCount;
+                    in_array('bet_count', $request->column_) && array_push($appendRowContent, $iData->bet_count) && $arr['bet_count'] = ($arr['bet_count'] ?? 0) + $iData->bet_count;
+                    in_array('bet_money', $request->column_) && array_push($appendRowContent, $iData->bet_money) && $arr['bet_money'] = ($arr['bet_money'] ?? 0) + $iData->bet_money;
+                    in_array('win_amount', $request->column_) && array_push($appendRowContent, round($iData->bet_money + $iData->bet_bunko,2)) && ($arr['win_amount'] = ($arr['win_amount'] ?? 0) + round($iData->bet_money + $iData->bet_bunko,2));
+                    in_array('bet_amount', $request->column_) && array_push($appendRowContent, $iData->bet_amount) && $arr['bet_amount'] = ($arr['bet_amount'] ?? 0) + $iData->bet_amount ;
+                    in_array('activity_money', $request->column_) && array_push($appendRowContent, $iData->activity_money) && $arr['activity_money'] = ($arr['activity_money'] ?? 0) + $iData->activity_money;
+                    in_array('handling_fee', $request->column_) && array_push($appendRowContent, $iData->handling_fee) && $arr['handling_fee'] = ($arr['handling_fee'] ?? 0) + $iData->handling_fee;
+                    in_array('return_amount', $request->column_) && array_push($appendRowContent, $iData->return_amount) && $arr['return_amount'] = ($arr['return_amount'] ?? 0) + $iData->return_amount;
+                    in_array('bet_bunko', $request->column_) && array_push($appendRowContent, $iData->bet_bunko) && $arr['bet_bunko'] = ($arr['bet_bunko'] ?? 0) + $iData->bet_bunko;
+                    in_array('fact_return_amount', $request->column_) && array_push($appendRowContent, $iData->fact_return_amount) && ($arr['fact_return_amount'] = ($arr['fact_return_amount'] ?? 0) + $iData->fact_return_amount);
+                    in_array('fact_bet_bunko', $request->column_) && array_push($appendRowContent, $fact_bet_bunko) && ($arr['fact_bet_bunko'] = ($arr['fact_bet_bunko'] ?? 0) + $fact_bet_bunko);
 
                     $sheet->appendRow($appendRowContent);
                     $sheetHeight[$kData + 2] = 20;
                 }
+                $arrk = [
+                    '总计：'
+                ];
+                foreach ($arr as $k=>$v){
+                    array_push($arrk, $v);
+                }
+                $sheet->appendRow($arrk);
                 $sheet->setHeight($sheetHeight);
                 $sheet->setWidth(array(
                     'A'    =>  10,
@@ -626,6 +653,7 @@ class MemberController extends Controller
         Excel::create('【'.$todayTime.'】导出投注报表-['.$aParam['startTime'].'-'.$aParam['endTime'].']',function ($excel) use ($aData,$todayTime,$request){
             $excel->sheet('【'.$todayTime.'】导出投注报表', function($sheet) use ($aData,$todayTime,$request){
                 $appendRowTitle = [];
+                array_push($appendRowTitle, '');
                 in_array('game_name', $request->column_) && array_push($appendRowTitle, '彩种');
                 in_array('sumMoney', $request->column_) && array_push($appendRowTitle, '投注金额');
                 in_array('countBets', $request->column_) && array_push($appendRowTitle, '笔数');
@@ -638,26 +666,34 @@ class MemberController extends Controller
 
                 $sheet->appendRow($appendRowTitle);
                 $sheetHeight = [1 => 20,];
+                $arr = [];
                 foreach ($aData as $kData => $iData){
                     $appendRowContent = [];
-                    $countWinBunkoBet = empty($iData->countWinBunkoBet)?0:$iData->countWinBunkoBet;
+                    $countWinBunkoBet1 = empty($iData->countWinBunkoBet)?0:$iData->countWinBunkoBet;
                     $countBets =  empty($iData->countBets)?1:$iData->countBets;
-                    $bfb = $countWinBunkoBet/$countBets * 100;
-                    $countWinBunkoBet = $countWinBunkoBet.' ('.round($bfb,1).'%)';
-
-                    in_array('game_name', $request->column_) && array_push($appendRowContent, $iData->game_name);
-                    in_array('sumMoney', $request->column_) && array_push($appendRowContent, $iData->sumMoney ?? '0.00');
-                    in_array('countBets', $request->column_) && array_push($appendRowContent, $iData->countBets ?? 0);
-                    in_array('countMember', $request->column_) && array_push($appendRowContent, $iData->countMember ?? 0);
-                    in_array('rebate', $request->column_) && array_push($appendRowContent, $iData->rebate ?? 0);
-                    in_array('sumWinBunko', $request->column_) && array_push($appendRowContent, $iData->sumWinBunko ?? '0.00');
-                    in_array('countWinBunkoBet', $request->column_) && array_push($appendRowContent, $countWinBunkoBet ?? 0);
-                    in_array('countWinBunkoMember', $request->column_) && array_push($appendRowContent, $iData->countWinBunkoMember ?? 0);
-                    in_array('sumBunko', $request->column_) && array_push($appendRowContent, $iData->sumBunko);
+                    $bfb = $countWinBunkoBet1/$countBets * 100;
+                    $countWinBunkoBet = $countWinBunkoBet1.' ('.round($bfb,1).'%)';
+                    array_push($appendRowContent, '');
+                    in_array('game_name', $request->column_) && array_push($appendRowContent, $iData->game_name) && $arr['game_name'] = '';
+                    in_array('sumMoney', $request->column_) && array_push($appendRowContent, $iData->sumMoney ?? '0.00') && $arr['sumMoney'] = ($arr['sumMoney'] ?? 0) + $iData->sumMoney;
+                    in_array('countBets', $request->column_) && array_push($appendRowContent, $iData->countBets ?? 0) && $arr['countBets'] = ($arr['countBets'] ?? 0) + $iData->countBets;
+                    in_array('countMember', $request->column_) && array_push($appendRowContent, $iData->countMember ?? 0) && $arr['countMember'] = ($arr['countMember'] ?? 0) + $iData->countMember;
+                    in_array('rebate', $request->column_) && array_push($appendRowContent, $iData->rebate ?? 0) && $arr['rebate'] = ($arr['rebate'] ?? 0) + $iData->rebate;
+                    in_array('sumWinBunko', $request->column_) && array_push($appendRowContent, $iData->sumWinBunko ?? '0.00') && $arr['sumWinBunko'] = ($arr['sumWinBunko'] ?? 0) + $iData->sumWinBunko;
+                    in_array('countWinBunkoBet', $request->column_) && array_push($appendRowContent, $countWinBunkoBet ?? 0) && $arr['countWinBunkoBet'] = ($arr['countWinBunkoBet'] ?? 0) + $countWinBunkoBet1;
+                    in_array('countWinBunkoMember', $request->column_) && array_push($appendRowContent, $iData->countWinBunkoMember ?? 0) && $arr['countWinBunkoMember'] = ($arr['countWinBunkoMember'] ?? 0) + $iData->countWinBunkoMember;
+                    in_array('sumBunko', $request->column_) && array_push($appendRowContent, $iData->sumBunko) && $arr['sumBunko'] = ($arr['sumBunko'] ?? 0) + $iData->sumBunko;
 
                     $sheet->appendRow($appendRowContent);
                     $sheetHeight[$kData + 2] = 20;
                 }
+                $arrk = [
+                    '总计：'
+                ];
+                foreach ($arr as $k=>$v){
+                    array_push($arrk, $v);
+                }
+                $sheet->appendRow($arrk);
                 $sheet->setHeight($sheetHeight);
                 $sheet->setWidth(array(
                     'A'    =>  10,
@@ -711,6 +747,7 @@ class MemberController extends Controller
                 $row = 2;
                 $sheet->appendRow($appendRowTitle);
                 $sheetHeight = [1 => 20,];
+                $arr = [];
                 foreach ($aData as $kData => $iData){
                     $is = false;
                     foreach ($request->types as $kk=>$vv){
@@ -729,8 +766,10 @@ class MemberController extends Controller
                         foreach ($column_ as $k=>$v){
                             $m = $iData['game'][$v][$kk] ?? 0;
                             $total += $m;
+                            $arr[$kk][$v] = ($arr[$kk][$v] ?? 0) + $m;
                             array_push($appendRowContent, $m);
                         }
+                        $arr[$kk]['total'] = ($arr[$kk]['total'] ?? 0) + $total;
                         array_push($appendRowContent, $total);
                         $sheet->appendRow($appendRowContent);
                         $is = true;
@@ -739,13 +778,28 @@ class MemberController extends Controller
                     $sheet->mergeCells('A'.($row-count($request->types)).':A'.($row-1));
                     $sheet->mergeCells('B'.($row-count($request->types)).':B'.($row-1));
                 }
+                foreach ($arr as $kk => $vv){
+                    $row++;
+                    $arrk = [
+                        '总计：'
+                    ];
+                    if (in_array('agent_account', $request->column_)){
+                        array_push($arrk, '');
+                    }
+                    array_push($arrk, $request->types[$kk]);
+                    foreach ($vv as $k=>$v){
+                        array_push($arrk, $v);
+                    }
+                    $sheet->appendRow($arrk);
+                }
+                $sheet->mergeCells('A'.($row-count($request->types)).':A'.($row-1));
                 $sheet->setHeight($sheetHeight);
                 $sheet->setWidth(array(
-                    'A'    =>  10,
+                    'A'    =>  20,
                     'B'    =>  20,
                     'C'    =>  10,
-                    'D'    =>  15,
-                    'E'    =>  18,
+                    'D'    =>  10,
+                    'E'    =>  10,
                     'F'    =>  10,
                     'G'    =>  10,
                     'H'    =>  10,
