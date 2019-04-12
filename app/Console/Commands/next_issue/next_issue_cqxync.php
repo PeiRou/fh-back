@@ -34,18 +34,20 @@ class next_issue_cqxync extends Command
         $nextIssue = $res->issue;
         $openTime = $res->opentime;
         $issuenum = substr($nextIssue,-3);
-
         $New_nextIssue = $nextIssue+1;
-        if((int)$issuenum == 13){
-            $nextIssueEndTime = date('Y-m-d 10:00:20');
-            $nextIssueLotteryTime = date('Y-m-d 10:02:20');
+        if((int)$issuenum == 9){
+            $nextIssueEndTime = date('Y-m-d 07:18:00');
+            $nextIssueLotteryTime = date('Y-m-d 07:20:00');
         } else {
-            if(substr($openTime,-8) =='23:52:20'){
+            if(substr($openTime,-8) =='23:40:00'){
                 $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
                 $New_nextIssue = date('ymd',strtotime($nextDay)).'001';
+                $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 00:18:00';
+                $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 00:20:00';
+            }else{
+                $nextIssueEndTime = Carbon::parse($openTime)->addMinutes(18)->toDateTimeString();
+                $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(20)->toDateTimeString();
             }
-            $nextIssueEndTime = Carbon::parse($openTime)->addMinutes(8)->toDateTimeString();
-            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(10)->toDateTimeString();
         }
         $redis->set('cqxync:nextIssue',(int)$New_nextIssue);
         $redis->set('cqxync:nextIssueLotteryTime',strtotime($nextIssueLotteryTime));

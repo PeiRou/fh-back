@@ -19,8 +19,8 @@ class ISSUE_SEED_CQXYNC extends Command
     public function handle()
     {
         $curDate = date('ymd');
-        $timeUp = date('Y-m-d 00:02:20');
-        $timeUp2 = date('Y-m-d 09:52:20');
+        $timeUp = date('Y-m-d 00:00:00');
+        $timeUp2 = date('Y-m-d 07:00:00');
 
         $redis = \Illuminate\Support\Facades\Redis::connection();
         $redis->select(5);
@@ -34,12 +34,13 @@ class ISSUE_SEED_CQXYNC extends Command
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_cqxync (issue,opentime) VALUES ";
 
-        $date = date('Y-m-d');
-        $firstIssue = $curDate.'001';
-        $sql .= "('$firstIssue','$date 00:02:20'),";
-        for($i=1;$i<=12;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
-            $num = 1 + $i;
+//        $date = date('Y-m-d');
+//        $firstIssue = $curDate.'001';
+//        $sql .= "('$firstIssue','$date 00:20:00'),";
+        for($i=1;$i<=9;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
+            $num = $i;
+
             if(strlen($num) == 1){
                 $num = '00'.$num;
             }
@@ -49,9 +50,9 @@ class ISSUE_SEED_CQXYNC extends Command
             $issue = date('ymd').$num;
             $sql .= "('$issue','$timeUp'),";
         }
-        for($i=1;$i<=84;$i++){
-            $timeUp2 = Carbon::parse($timeUp2)->addMinutes(10);
-            $num = 13 + $i;
+        for($i=1;$i<=50;$i++){
+            $timeUp2 = Carbon::parse($timeUp2)->addMinutes(20);
+            $num = 9 + $i;
             if(strlen($num) == 2){
                 $num = '0'.$num;
             }
