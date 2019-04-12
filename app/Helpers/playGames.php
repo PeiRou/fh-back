@@ -399,16 +399,7 @@ if(!function_exists('ip')){
     function ip($ip){
         try{
             if( !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ){
-                $res = \Illuminate\Support\Facades\DB::table('ipv6')
-                    ->where('public_ip', '=', substr($ip, 0,14))
-                    ->first();
-                if(!$res)
-                    $res = \Illuminate\Support\Facades\DB::table('ipv6')
-                        ->where('public_ip', 'like', substr($ip, 0,9).'%')
-                        ->first();
-                if($res)
-                    return $res->country.' '.$res->province.' '.$res->city;
-                return '暂无此IP';
+                return '暂不支持识别此IP类型';
             }
             $checkIp = \Illuminate\Support\Facades\DB::table('ip')->where('ip',$ip)->first();
             if(!$checkIp){
