@@ -672,7 +672,7 @@ class MemberController extends Controller
                     $countWinBunkoBet1 = empty($iData->countWinBunkoBet)?0:$iData->countWinBunkoBet;
                     $countBets =  empty($iData->countBets)?1:$iData->countBets;
                     $bfb = $countWinBunkoBet1/$countBets * 100;
-                    $countWinBunkoBet = $countWinBunkoBet1.' ('.round($bfb,1).'%)';
+                    $countWinBunkoBet = $countWinBunkoBet1.' ('.sprintf('%.1f', round($bfb,1)).'%)';
                     array_push($appendRowContent, '');
                     in_array('game_name', $request->column_) && array_push($appendRowContent, $iData->game_name) && $arr['game_name'] = '';
                     in_array('sumMoney', $request->column_) && array_push($appendRowContent, $iData->sumMoney ?? '0.00') && $arr['sumMoney'] = ($arr['sumMoney'] ?? 0) + $iData->sumMoney;
