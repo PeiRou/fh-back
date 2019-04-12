@@ -18,7 +18,8 @@ class ReportAgent extends Model
                   `agent_account`,`agent_name`,`agent_id`
                   FROM `report_agent` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
-        $aSql = $result['aSql']." LIMIT ".$aParam['start'].",".$aParam['length'];
+        $aSql = $result['aSql'];
+        isset($aParam['start'], $aParam['length']) && $aSql .= " LIMIT ".$aParam['start'].",".$aParam['length'];
         $bSql = "SELECT COUNT(DISTINCT(`user_id`)) AS `memberCount`,`agent_id` FROM `report_member` WHERE 1 ";
         $bParam = [
             'timeStart' => $aParam['timeStart'],

@@ -28,11 +28,10 @@ use App\Agent;
 class ReportDataController extends Controller
 {
 
-    //总代理报表
-    public function Gagent(Request $request)
+    //总代理报表-数据
+    public function GagentData(Request $request)
     {
         $aParam = $request->all();
-
         if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
             $result = Bets::GagentToday($aParam);
             $aData = $result['aData'];
@@ -46,7 +45,12 @@ class ReportDataController extends Controller
                 $aDataCount = ReportGeneral::reportQueryCount($aParam);
             }
         }
-
+        return compact('aData', 'aDataCount');
+    }
+    //总代理报表
+    public function Gagent(Request $request)
+    {
+        extract($this->GagentData($request));
         return DataTables::of($aData)
             ->editColumn('fact_bet_bunko', function ($aData){
                 $activity_money = empty($aData->activity_money)?0:$aData->activity_money;
@@ -100,10 +104,9 @@ class ReportDataController extends Controller
             'fact_bet_bunko' => empty($aData->bet_bunko)?'':round($aData->bet_bunko + $activity_money + $handling_fee + $fact_return_amount,3),
         ]);
     }
+    //代理报表-数据
+    public function AgentData(Request $request){
 
-    //代理报表
-    public function Agent(Request $request)
-    {
         $aParam = $request->all();
         if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
             $result = Bets::AgentToday($aParam);
@@ -118,7 +121,12 @@ class ReportDataController extends Controller
                 $aDataCount = ReportAgent::reportQueryCount($aParam);
             }
         }
-
+        return compact('aData', 'aDataCount');
+    }
+    //代理报表
+    public function Agent(Request $request)
+    {
+        extract($this->AgentData($request));
         return DataTables::of($aData)
             ->editColumn('fact_bet_bunko', function ($aData){
                 $activity_money = empty($aData->activity_money)?0:$aData->activity_money;
@@ -170,9 +178,8 @@ class ReportDataController extends Controller
             'fact_bet_bunko' => empty($aData->bet_bunko)?'':round($aData->bet_bunko + $activity_money + $handling_fee + $fact_return_amount,2),
         ]);
     }
-
-    //会员报表
-    public function User(Request $request)
+    //会员报表-数据
+    public function UserData(Request $request)
     {
         $aParam = $request->all();
         if(strtotime($aParam['timeStart']) == strtotime(date('Y-m-d'))){
@@ -188,6 +195,12 @@ class ReportDataController extends Controller
                 $aDataCount = ReportMember::reportQueryCount($aParam);
             }
         }
+        return compact('aData', 'aDataCount');
+    }
+    //会员报表
+    public function User(Request $request)
+    {
+        extract($this->UserData($request));
         return DataTables::of($aData)
             ->editColumn('fact_bet_bunko', function ($aData){
                 $activity_money = empty($aData->activity_money)?0:$aData->activity_money;
@@ -239,17 +252,21 @@ class ReportDataController extends Controller
         ]);
     }
 
-    //投注报表
-    public function Bet(Request $request)
+    //投注报表-数据
+    public function BetData(Request $request)
     {
         $aParam = $request->input();
-
         if(strtotime($aParam['startTime']) == strtotime(date('Y-m-d'))){
             $aBet = Bets::todayReportBet($aParam);
         }else{
             $aBet = ReportBet::reportQuery($aParam);
         }
-
+        return compact('aBet');
+    }
+    //投注报表
+    public function Bet(Request $request)
+    {
+        extract($this->BetData($request));
         return DataTables::of($aBet)
             ->editColumn('countWinBunkoMember', function ($aBet){
                 return empty($aBet->countWinBunkoMember)?0:$aBet->countWinBunkoMember;
@@ -487,7 +504,7 @@ class ReportDataController extends Controller
         ];
     }
 
-    public function CardNew(Request $request){
+    public function CardNewDara(Request $request){
         $aParam = $request->all();
         if(strtotime($aParam['startTime']) == strtotime(date('Y-m-d'))){
             $aUserId = JqBet::reportQuerySelect($aParam);
@@ -532,7 +549,10 @@ class ReportDataController extends Controller
                 ];
             }
         }
-
+        return compact('aArray', 'iCount');
+    }
+    public function CardNew(Request $request){
+        extract($this->CardNewDara($request));
         $aGame = GamesApi::getOpenData();
         $aArrayColumn = ['total'];
         $DataTables = DataTables::of($aArray);
