@@ -143,6 +143,9 @@ class CURL_ALL_THREAD extends Command
             $this->exeCURL('http://127.0.0.1:9500?thread=KILL_sfssc');
             $this->exeCURL('http://127.0.0.1:9500?thread=KILL_jslhc');
             $this->exeCURL('http://127.0.0.1:9500?thread=KILL_sflhc');
+            $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_xyft');
+            $this->exeCURL('http://127.0.0.1:9500?thread=next_open_xyft');
+            $this->exeCURL('http://127.0.0.1:9500?thread=BUNKO_xyft');
             //清数据
             $this->exeCURL('http://127.0.0.1:9500?thread=clear_data');
         }
