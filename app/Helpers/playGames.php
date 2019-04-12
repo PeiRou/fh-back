@@ -407,7 +407,7 @@ if(!function_exists('ip')){
                         ->where('public_ip', 'like', substr($ip, 0,9).'%')
                         ->first();
                 if($res)
-                    return $res->country.' '.$res->city.' '.$res->city;
+                    return $res->country.' '.$res->province.' '.$res->city;
                 return '暂无此IP';
             }
             $checkIp = \Illuminate\Support\Facades\DB::table('ip')->where('ip',$ip)->first();
