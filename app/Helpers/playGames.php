@@ -400,9 +400,12 @@ if(!function_exists('ip')){
         try{
             if( !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ){
                 $res = \Illuminate\Support\Facades\DB::table('ipv6')
-                    ->where('minip', '<=', $ip)
-                    ->where('maxip', '>=', $ip)
+                    ->where('public_ip', '=', substr($ip, 0,14))
                     ->first();
+                if(!$res)
+                    $res = \Illuminate\Support\Facades\DB::table('ipv6')
+                        ->where('public_ip', 'like', substr($ip, 0,9).'%')
+                        ->first();
                 if($res)
                     return $res->country.' '.$res->city.' '.$res->city;
                 return '暂无此IP';
