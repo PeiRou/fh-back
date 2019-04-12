@@ -60,7 +60,7 @@ class GetPayDetail extends Command
                     'updated_at' => $time,
                 ];
             }
-            PayDetail::where('product_at','<=',$startTime)->where('product_at','>=',$endTime)->delete();
+            PayDetail::where('product_at','>=',$startTime)->where('product_at','<=',$endTime)->delete();
             PayDetail::insert($aArray);
             $this->info('ok');
         }else{

@@ -184,6 +184,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 
 //充值配置新
     Route::group(['prefix' => 'back/control/payNewManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
+        Route::get('payDetailNew', 'Back\SrcViewController@payDetailNew')->name('payNew.detail'); //支付排行榜
         Route::get('payOnlineNew', 'Back\SrcViewController@payOnlineNew')->name('payNew.online'); //在线支付配置新
         Route::get('payBankNew', 'Back\SrcViewController@payBankNew')->name('payNew.bank'); //银行支付配置
         Route::get('payAlipayNew', 'Back\SrcViewController@payAlipayNew')->name('payNew.alipay'); //支付宝支付配置

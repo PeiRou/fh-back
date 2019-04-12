@@ -365,6 +365,9 @@
                     <span><img src="/back/old/images/leftico01.png"></span>
                     充值配置</a>
                 <ul>
+                    @if($hasPermission->hasPermission('payNew.detail') == "has")
+                        <li id="menu-payNewManage-payDetail"><a href="{{ route('payNew.detail') }}"><cite></cite><span>支付排行榜</span></a></li>
+                    @endif
                     @if($hasPermission->hasPermission('payNew.online') == "has")
                         <li id="menu-payNewManage-payOnline"><a href="{{ route('payNew.online') }}"><cite></cite><span>在线支付配置</span></a></li>
                     @endif
