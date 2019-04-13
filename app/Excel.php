@@ -919,7 +919,8 @@ class Excel
                 $resData = $this->exc_play($openCode,$gameId);
                 $win = @$resData['win'];
                 $he = isset($resData['ids_he'])?$resData['ids_he']:array();
-                $bunko = $this->BUNKO_LHC($openCode, $win, $gameId, $issue, $he, true);
+                $LHC = isset($resData['LHC'])?$resData['LHC']:null;
+                $bunko = $this->BUNKO_LHC($openCode, $win, $gameId, $issue, $he, true, $LHC);
             }else{
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue,true,$this->arrPlay_id);
@@ -1033,8 +1034,141 @@ class Excel
         return '';
     }
     //试算杀率个别取用方法，用来继承的父类
-    protected function BUNKO_LHC($openCode, $win, $gameId, $issue, $he, $excel){
-        return '';
+    protected function BUNKO_LHC($openCode, $win, $gameId, $issue, $he, $excel, $LHC = null){
+        $bunko_index = 0;
+        $id = [];
+        foreach ($win as $k=>$v){
+            $id[] = $v;
+        }
+
+        if($excel) {
+            $table = 'excel_bet';
+        }else{
+            $table = 'bet';
+        }
+        $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+
+        if($getUserBets){
+            $sql = "UPDATE ".$table." SET bunko = CASE "; //中奖的SQL语句
+            $sql_lose = "UPDATE ".$table." SET bunko = CASE "; //未中奖的SQL语句
+            $sql_he = "UPDATE ".$table." SET bunko = CASE "; //和局的SQL语句
+
+            $win = $id;
+            $lose = $id;
+            $sql_bets = '';
+            $sql_bets_lose = '';
+            $sql_bets_he = '';
+            foreach ($getUserBets as $item){
+                $bunko = ($item->bet_money * $item->play_odds);
+                $bunko_lose = (0-$item->bet_money);
+                $bunko_he = $item->bet_money * 1;
+                $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                $sql_bets_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
+            }
+            if(count($he)>0) {
+                $ids_he = [];
+                foreach ($he as $k=>$v){
+                    $ids_he[] = $v;
+                    unset($win[$v]);
+                    $lose[] = $v;
+                }
+                $ids_he = implode(',', $ids_he);
+                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_he)";
+            }else
+                $sql_he = '';
+            $ids = implode(',', $win);
+            $ids_lose = array_diff($this->arrPlay_id,$lose);
+            $ids_lose = implode(',', $ids_lose);
+            $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids)";
+            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_lose)";
+            if(!empty($sql_bets)) {
+                $run = DB::statement($sql);
+                if($run == 1)
+                    $bunko_index++;
+            }
+            if(!empty($sql_he)){
+                $runhe = DB::connection('mysql::write')->statement($sql_he);
+                if($runhe == 1)
+                    $bunko_index++;
+            }
+
+            //自选不中------开始
+            $sql_zxb = $LHC->LHC_ZXBZH($openCode,$gameId,$table,$issue);
+            //自选不中------结束
+            //合肖-----开始
+            $sql_hexiao = $LHC->LHC_HX($gameId,$table,$issue);
+            //合肖-----结束
+            //正肖-----开始
+            $zx_sql = $LHC->LHC_ZX($gameId,$table,$issue);
+            //正肖-----结束
+
+            //连肖连尾-----开始
+            $res = $LHC->LHC_LXLW($gameId,$table,$issue);
+            $sql_lx = @$res['lx'];
+            $sql_lw = @$res['lw'];
+            //连肖连尾-----结束
+
+            //连码-----开始
+            $sql_lm = $LHC->LHC_LIANMA($gameId,$table,$issue);
+            //连码-----结束
+
+            if(!empty($sql_bets_lose)){
+                $run2 = DB::connection('mysql::write')->statement($sql_lose);
+                if($run2 == 1){
+                    $bunko_index++;
+                }
+            }
+            if(!empty($sql_zxb)){
+                $run3 = DB::connection('mysql::write')->statement($sql_zxb);
+                if($run3 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if(!empty($sql_hexiao)){
+                $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
+                if($run4 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if(!empty($zx_sql)){
+                $run5 = DB::connection('mysql::write')->statement($zx_sql);
+                if($run5 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if(!empty($sql_lx)){
+                $run6 = DB::connection('mysql::write')->statement($sql_lx);
+                if($run6 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if(!empty($sql_lw)){
+                $run7 = DB::connection('mysql::write')->statement($sql_lw);
+                if($run7 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+        }
+
+        if($bunko_index !== 0){
+            return 1;
+        }
+        return 0;
     }
     //试算杀率个别取用方法，用来继承的父类
     protected $arrPlay_id = [];
