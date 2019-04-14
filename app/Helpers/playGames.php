@@ -416,7 +416,7 @@ if(!function_exists('ip')){
                 $ipInfo = $checkIp->country.' '.$checkIp->prov.' '.$checkIp->city.' '.$checkIp->district;
             }
         }catch (\Throwable $e){
-            die($e->getMessage());
+//            die($e->getMessage());
             return 'IP定位系统错误';
         }
         return $ipInfo;
