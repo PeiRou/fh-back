@@ -584,7 +584,7 @@ class ReportDataController extends Controller
             ->editColumn('total', function ($iArray){
                 return "上分:" . round($iArray['total']['up_fraction'],2) . "<br/>
                         下分：" . round($iArray['total']['down_fraction'],2) . "<br/>
-                        投注额：" . round($iArray['total']['bet_bunko'],2) . "<br/>
+                        投注额：" . round($iArray['total']['bet_money'],2) . "<br/>
                         输赢：" . round($iArray['total']['bet_bunko'],2) . "<br/>";
             })
             ->setTotalRecords($iCount)

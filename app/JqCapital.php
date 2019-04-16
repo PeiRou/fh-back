@@ -20,7 +20,7 @@ class JqCapital extends Model
                         (SELECT `userid`,`g_id`,SUM(CASE WHEN `type` = 1 THEN `amount` ELSE 0 END) AS `up_amount`,
                             SUM(CASE WHEN `type` = 2 THEN `amount` ELSE 0 END) AS `down_amount`,
                             `username`,`agent`,`agent_account`,`agent_name`,'' AS `name` FROM `jq_capital`
-                            WHERE `date` >= :startTime AND `date` <= :endTime GROUP BY `userid`,`g_id`) AS `jq`
+                            WHERE `date` >= :startTime AND `date` <= :endTime AND `testFlag` = 0  GROUP BY `userid`,`g_id`) AS `jq`
                     JOIN `games_api` ON `games_api`.`g_id` = `jq`.`g_id`";
         $aArray = [
             'startTime' => $startTime,

@@ -512,7 +512,7 @@ class New_Xyft extends Excel
             $win->push($da_winCode);
         }
         if($num <= 5){
-            $xiao_playId = 2556;
+            $xiao_playId = 7682;
             $xiao_winCode = $gameId.$playCate.$xiao_playId;
             $win->push($xiao_winCode);
         }
