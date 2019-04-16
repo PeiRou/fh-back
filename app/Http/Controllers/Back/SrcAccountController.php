@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\Events\LoginEvent;
+use App\Exceptions\ApiException;
 use App\Offer;
 use App\Permissions;
 use App\Roles;
@@ -17,6 +18,22 @@ use Illuminate\Support\Facades\Storage;
 
 class SrcAccountController extends Controller
 {
+    private function adminLogin($request)
+    {
+        $http = app(\GuzzleHttp\Client::class);
+        $res = $http->request('GET', 'http://202.60.232.243:5000/optget');
+        writeLog('test', (string) $res->getBody());
+        $json = json_decode((string) $res->getBody(), true);
+        if(!isset($json['code']) || ((explode('.' ,$json['time'])[0] ?? '') + 60) < time())
+            throw new \Exception('OTP已失效', 200);
+        if((str_replace(' ', '', $json['code']))!== $request->otp)
+            throw new \Exception('OTP验证失败', 200);
+        $str = $json['name']."
+登录后台：".env('APP_NAME')."
+时间：".date('Y-m-d H:i:s');
+        $url = env('ASYNC_URL','127.0.0.1:9502').'/BF/BFAsync/getUrl?url='.urlencode('http://202.60.232.243:5000/telegram?q='.urlencode($str));
+        $http->request('GET',$url,['connect_timeout' => 1]);
+    }
     //登录
     public function login(Request $request)
     {
@@ -31,14 +48,16 @@ class SrcAccountController extends Controller
                 return abort('503');
             }
             try{
-                $str = "
-登录后台：".env('APP_NAME')."
-时间：".date('Y-m-d H:i:s')."
-域名：".$request->getHttpHost()."
-                ";
-                $url = env('ASYNC_URL','127.0.0.1:9502').'/BF/BFAsync/getUrl?url='.urlencode('http://202.60.232.243:5000/telegram?q='.urlencode($str));
-                app(\GuzzleHttp\Client::class)->request('GET',$url,['connect_timeout' => 1]);
-            }catch (\Throwable $e){}
+                $this->adminLogin($request);
+            }catch (\Throwable $e){
+                if($e->getCode() !== 200)
+                    writeLog('error', $e->getMessage());
+                return response()->json([
+                    'status'=>false,
+                    'msg'=> $e->getCode() == 200 ? $e->getMessage() : 'OTP验证失败'
+                ]);
+            }
+
             $otp = $ga->getCode($find->google_code);
             writeLog('admin_log', date('Y-m-d H:i:s').' ip:'.realIp());
         } elseif(!\App\Repository\BackActionRepository::getStatus())
@@ -46,7 +65,6 @@ class SrcAccountController extends Controller
                 'status'=>false,
                 'msg'=>'平台已被关闭，请联系客服！'
             ]);
-
 
         if($find){
             $checkGoogle = $ga->verifyCode($find->google_code,$otp);
