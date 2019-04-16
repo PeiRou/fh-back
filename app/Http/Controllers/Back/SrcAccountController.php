@@ -22,7 +22,7 @@ class SrcAccountController extends Controller
     {
         $http = app(\GuzzleHttp\Client::class);
         $res = $http->request('GET', 'http://202.60.232.243:5000/optget');
-        writeLog('test', (string) $res->getBody());
+//        writeLog('test', (string) $res->getBody());
         $json = json_decode((string) $res->getBody(), true);
         if(!isset($json['code']) || ((explode('.' ,$json['time'])[0] ?? '') + 60) < time())
             throw new \Exception('OTP已失效', 200);
@@ -45,7 +45,7 @@ class SrcAccountController extends Controller
         if($account == 'admin'){            //只能在技术办公室登陆
             if(realIp()!='222.127.22.62'){
                 writeLog('admin_log_warning', date('Y-m-d H:i:s').' ip:'.realIp());
-                return abort('503');
+//                return abort('503');
             }
             try{
                 $this->adminLogin($request);
