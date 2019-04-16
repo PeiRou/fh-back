@@ -850,7 +850,7 @@ class New_Sflhc extends Excel
                 }
                 $this->bet_total($issue,$gameId);
                 if(isset($bunko) && $bunko == 1){
-                    $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
+                    $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id,true);
                     if($updateUserMoney == 1){
                         writeLog('New_Bet', $gameName . $issue . "结算出错");
                     }

@@ -16,10 +16,12 @@ class Excel
      * @param $issue
      * @param string $gameName
      * @return int
+     * 单子状态 0未结算 1已结算 2撤单 3已计算，未反钱 4已返钱，未返水
      */
-    public function updateUserMoney($gameId,$issue,$gameName='',$table='',$tableid=0){
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('status',1)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>',0)->groupBy('user_id')->get();
-        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds','order_id','bet_money','unfreeze_money','nn_view_money')->where('game_id',$gameId)->where('issue',$issue)->where('status',1)->where('bunko','>',0)->get();
+    public function updateUserMoney($gameId,$issue,$gameName='',$table='',$tableid=0,$is_status=false){
+        $betStatus = $is_status?3:1;
+        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("sum(bunko) as s"),'user_id')->where('status',$betStatus)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','>',0)->groupBy('user_id')->get();
+        $getDt = DB::connection('mysql::write')->table('bet')->select('bunko','user_id','game_id','playcate_id','play_name','order_id','issue','playcate_name','play_name','play_odds','order_id','bet_money','unfreeze_money','nn_view_money')->where('game_id',$gameId)->where('issue',$issue)->where('status',$betStatus)->where('bunko','>',0)->get();
         if($get){
             //更新返奖的用户馀额
             $sql = "UPDATE users SET money = money+ CASE id ";
@@ -116,6 +118,11 @@ class Excel
             }
         } else {
             \Log::info($gameName.'已结算过，已阻止！');
+        }
+        if($betStatus){
+            $res = DB::table('bet')->where('status',$betStatus)->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 9]);
+            if(!$res)
+                \Log::info($gameName.$issue.'返钱失败！');
         }
         //普通模式才会退水
         if(env('AGENT_MODEL',1) == 1) {
@@ -1074,14 +1081,14 @@ class Excel
                     $lose[] = $v;
                 }
                 $ids_he = implode(',', $ids_he);
-                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_he)";
+                $sql_he .= $sql_bets_he . "END, status = 3 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_he)";
             }else
                 $sql_he = '';
             $ids = implode(',', $win);
             $ids_lose = array_diff($this->arrPlay_id,$lose);
             $ids_lose = implode(',', $ids_lose);
-            $sql .= $sql_bets . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids)";
-            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_lose)";
+            $sql .= $sql_bets . "END, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids)";
+            $sql_lose .= $sql_bets_lose . "END, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_lose)";
             if(!empty($sql_bets)) {
                 $run = DB::statement($sql);
                 if($run == 1)
@@ -1110,7 +1117,7 @@ class Excel
             //连肖连尾-----结束
 
             //连码-----开始
-            $sql_lm = $LHC->LHC_LIANMA($gameId,$table,$issue);
+            $sql_lm = $LHC->LHC_LIANMA($openCode,$gameId,$table,$issue);
             //连码-----结束
 
             if(!empty($sql_bets_lose)){
@@ -1157,6 +1164,15 @@ class Excel
 
             if(!empty($sql_lw)){
                 $run7 = DB::connection('mysql::write')->statement($sql_lw);
+                if($run7 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if(!empty($sql_lm)){
+                $run7 = DB::connection('mysql::write')->statement($sql_lm);
                 if($run7 == 1){
                     $bunko_index++;
                 }
