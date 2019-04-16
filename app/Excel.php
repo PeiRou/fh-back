@@ -120,7 +120,7 @@ class Excel
             \Log::info($gameName.'已结算过，已阻止！');
         }
         if($betStatus){
-            $res = DB::table('bet')->where('status',$betStatus)->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 9]);
+            $res = DB::table('bet')->where('status',$betStatus)->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 1]);
             if(!$res)
                 \Log::info($gameName.$issue.'返钱失败！');
         }
