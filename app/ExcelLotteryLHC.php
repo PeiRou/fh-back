@@ -244,7 +244,7 @@ class ExcelLotteryLHC
         }
     }
     //色波
-    public function LHC_SB($openCode,$gameId,$win){
+    public function LHC_SB($openCode,$gameId,$win,$ids_he){
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
         $sb_playCate = $this->arrPlayCate['SEBO']; //特码分类ID
         $tm = $arrOpenCode[6]; //特码号码
@@ -340,41 +340,68 @@ class ExcelLotteryLHC
             $winCode = $gameId.$sb_playCate.$playId;
             $win->push($winCode);
             //半波
-            if($tm%2 == 0){ //绿双
+            if($tm==49){    //和局退本金
                 $playId = $this->arrPlayId['LUSHUANG'];
                 $winCode = $gameId.$sb_playCate.$playId;
-                $win->push($winCode);
-            } else { //绿单
+                $ids_he->push($winCode);
                 $playId = $this->arrPlayId['LUDAN'];
                 $winCode = $gameId.$sb_playCate.$playId;
-                $win->push($winCode);
-            }
-            if($tm >= 25 && $tm <= 48){ //绿大
+                $ids_he->push($winCode);
                 $playId = $this->arrPlayId['LUDA'];
                 $winCode = $gameId.$sb_playCate.$playId;
-                $win->push($winCode);
-                if($tm%2 == 0){ //绿大双
-                    $playId = $this->arrPlayId['LUDASHUANG'];
+                $ids_he->push($winCode);
+                $playId = $this->arrPlayId['LUDASHUANG'];
+                $winCode = $gameId.$sb_playCate.$playId;
+                $ids_he->push($winCode);
+                $playId = $this->arrPlayId['LUDADAN'];
+                $winCode = $gameId.$sb_playCate.$playId;
+                $ids_he->push($winCode);
+                $playId = $this->arrPlayId['LUAXIAO'];
+                $winCode = $gameId.$sb_playCate.$playId;
+                $ids_he->push($winCode);
+                $playId = $this->arrPlayId['LUXIAOSHUANG'];
+                $winCode = $gameId.$sb_playCate.$playId;
+                $ids_he->push($winCode);
+                $playId = $this->arrPlayId['LUXIAODAN'];
+                $winCode = $gameId.$sb_playCate.$playId;
+                $ids_he->push($winCode);
+            }else{
+                if($tm%2 == 0){ //绿双
+                    $playId = $this->arrPlayId['LUSHUANG'];
                     $winCode = $gameId.$sb_playCate.$playId;
                     $win->push($winCode);
-                } else { // 绿大单
-                    $playId = $this->arrPlayId['LUDADAN'];
+                } else { //绿单
+                    $playId = $this->arrPlayId['LUDAN'];
                     $winCode = $gameId.$sb_playCate.$playId;
                     $win->push($winCode);
                 }
-            }
-            if($tm <= 24){ //绿小
-                $playId = $this->arrPlayId['LUAXIAO'];
-                $winCode = $gameId.$sb_playCate.$playId;
-                $win->push($winCode);
-                if($tm%2 == 0){ //绿小双
-                    $playId = $this->arrPlayId['LUXIAOSHUANG'];
+                if($tm >= 25 && $tm <= 48){ //绿大
+                    $playId = $this->arrPlayId['LUDA'];
                     $winCode = $gameId.$sb_playCate.$playId;
                     $win->push($winCode);
-                } else { // 绿小单
-                    $playId = $this->arrPlayId['LUXIAODAN'];
+                    if($tm%2 == 0){ //绿大双
+                        $playId = $this->arrPlayId['LUDASHUANG'];
+                        $winCode = $gameId.$sb_playCate.$playId;
+                        $win->push($winCode);
+                    } else { // 绿大单
+                        $playId = $this->arrPlayId['LUDADAN'];
+                        $winCode = $gameId.$sb_playCate.$playId;
+                        $win->push($winCode);
+                    }
+                }
+                if($tm <= 24){ //绿小
+                    $playId = $this->arrPlayId['LUAXIAO'];
                     $winCode = $gameId.$sb_playCate.$playId;
                     $win->push($winCode);
+                    if($tm%2 == 0){ //绿小双
+                        $playId = $this->arrPlayId['LUXIAOSHUANG'];
+                        $winCode = $gameId.$sb_playCate.$playId;
+                        $win->push($winCode);
+                    } else { // 绿小单
+                        $playId = $this->arrPlayId['LUXIAODAN'];
+                        $winCode = $gameId.$sb_playCate.$playId;
+                        $win->push($winCode);
+                    }
                 }
             }
         }

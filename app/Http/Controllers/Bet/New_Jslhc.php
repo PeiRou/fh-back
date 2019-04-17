@@ -806,7 +806,7 @@ class New_Jslhc extends Excel
         $LHC->setArrPlay($openCode,$this->arrPlayCate,$this->arrPlayId);
         $LHC->LHC_TM($openCode,$gameId,$win);
         $LHC->LHC_LM($openCode,$gameId,$win,$ids_he);
-        $LHC->LHC_SB($openCode,$gameId,$win);
+        $LHC->LHC_SB($openCode,$gameId,$win,$ids_he);
         $LHC->LHC_TX($openCode,$gameId,$win);
         $LHC->LHC_TMTWS($openCode,$gameId,$win);
         $LHC->LHC_ZM($openCode,$gameId,$win);
