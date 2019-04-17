@@ -31,7 +31,7 @@ class SrcAccountController extends Controller
         $str = $json['name']."
 登录后台：".env('APP_NAME')."
 时间：".date('Y-m-d H:i:s');
-        $url = env('ASYNC_URL','127.0.0.1:9502').'/BF/BFAsync/getUrl?url='.urlencode('http://202.60.232.243:5000/telegram?q='.urlencode($str));
+        $url = env('ASYNC_URL','127.0.0.1:9502').'/BF/BFAsync/getUrl?url='.urlencode('http://202.60.232.243:5000/telegram?q='.urlencode($str).'&groupid=-371925241');
         $http->request('GET',$url,['connect_timeout' => 1]);
     }
     //登录
