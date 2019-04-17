@@ -172,7 +172,7 @@ class DrawingController extends Controller
         $id  = $request->input('id');
         $msg = $request->input('msg');
 
-        $getUserId = Drawing::where('id',$id)->first();
+        $getUserId = Drawing::where('id',$id)->whereIn('status',[1,2,3,4])->first();
         if($getUserId->locked)
             return response()->json([
                 'status' => false,
