@@ -420,7 +420,7 @@ class DrawingController extends Controller
             'order_no' => $iDrawing->order_id,
             'money' => $iDrawing->amount,
             'app_id' => $iPayOnlineNew->para1,
-            'callback_url' => $iPayOnlineNew->res_url,
+            'callback_url' => isset($iPayOnlineNew->res_url)?$iPayOnlineNew->res_url:env('CALLBACK_URL',env('WEBSITE_PROTOCOL','https').'://'.$_SERVER['HTTP_HOST'].'pay/order/callback/new'),
             'bank' => $iBank->eng_name,
             'gateway_address' => $iPayOnlineNew->req_url,
             'platform_id' => SystemSetting::where('id',1)->value('payment_platform_id'),
