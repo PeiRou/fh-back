@@ -402,9 +402,18 @@ class DrawingController extends Controller
         $PaymentPlatform = new PaymentPlatform();
         $aArray['sign'] = $PaymentPlatform->getSign($aArray,SystemSetting::where('id',1)->value('payment_platform_key'));
         return $PaymentPlatform->postCurl(SystemSetting::where('id',1)->value('payment_platform_dispensing'),[
-            'ciphertext' => base64_encode(json_encode($aArray)),
+            'ciphertext' => $this->getciphertext($aArray),
         ]);
     }
+
+    private function getciphertext($aArray){
+        if(env('PAY_TWO',false)){
+            $PaymentPlatform = new PaymentPlatform();
+            return $PaymentPlatform->setPublicKey(env('PUBLIC_KEY'))->publicKeyToEncrypt($aArray)->getEncryptData();
+        }
+        return base64_encode(json_encode($aArray));
+    }
+
     //刷新ip信息
     public function refreshIp(Request $request){
         if(!isset($request->key) || !isset($request->value) || !isset($request->table) || !isset($request->ip) || !isset($request->upKey)){
