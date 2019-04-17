@@ -375,7 +375,11 @@ class DrawingController extends Controller
             ]);
         }
         DB::commit();
-        json_decode($this->getArraySign($iDrawing,$iPayOnlineNew,$iBank,$iUser),true);
+        if(env('PAY_TWO',false)){
+            json_decode($this->getArraySignNew($iDrawing,$iPayOnlineNew,$iBank,$iUser),true);
+        }else{
+            json_decode($this->getArraySign($iDrawing,$iPayOnlineNew,$iBank,$iUser),true);
+        }
         return response()->json([
             'status' => true
         ]);
@@ -402,16 +406,34 @@ class DrawingController extends Controller
         $PaymentPlatform = new PaymentPlatform();
         $aArray['sign'] = $PaymentPlatform->getSign($aArray,SystemSetting::where('id',1)->value('payment_platform_key'));
         return $PaymentPlatform->postCurl(SystemSetting::where('id',1)->value('payment_platform_dispensing'),[
-            'ciphertext' => $this->getciphertext($aArray),
+            'ciphertext' => base64_encode(json_encode($aArray)),
         ]);
     }
-
-    private function getciphertext($aArray){
-        if(env('PAY_TWO',false)){
-            $PaymentPlatform = new PaymentPlatform();
-            return $PaymentPlatform->setPublicKey(env('PUBLIC_KEY'))->publicKeyToEncrypt($aArray)->getEncryptData();
-        }
-        return base64_encode(json_encode($aArray));
+    //支付2.0使用
+    public function getArraySignNew($iDrawing,$iPayOnlineNew,$iBank = [],$iUser = []){
+        $aArray = [
+            'pay_uname' => $iPayOnlineNew->payName,
+            'merchant_code' => $iPayOnlineNew->apiId,
+            'merchant_secret' => $iPayOnlineNew->apiKey,
+            'public_key' => $iPayOnlineNew->apiPublicKey,
+            'private_key' => $iPayOnlineNew->apiPrivateKey,
+            'order_no' => $iDrawing->order_id,
+            'money' => $iDrawing->amount,
+            'app_id' => $iPayOnlineNew->para1,
+            'callback_url' => $iPayOnlineNew->res_url,
+            'bank' => $iBank->eng_name,
+            'gateway_address' => $iPayOnlineNew->req_url,
+            'platform_id' => SystemSetting::where('id',1)->value('payment_platform_id'),
+            'third_url' => $iPayOnlineNew->domain,
+            'timestamp' => time(),
+            'member_name' => $iUser->fullName,
+            'member_card' => $iDrawing->bank_num,
+        ];
+        $PaymentPlatform = new PaymentPlatform();
+        $aArray['sign'] = $PaymentPlatform->getSign($aArray,SystemSetting::where('id',1)->value('payment_platform_key'));
+        return $PaymentPlatform->postCurl(SystemSetting::where('id',1)->value('payment_platform_dispensing'),[
+            'ciphertext' => $PaymentPlatform->setPublicKey(env('PUBLIC_KEY'))->publicKeyToEncrypt($aArray)->getEncryptData(),
+        ]);
     }
 
     //刷新ip信息
