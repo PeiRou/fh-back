@@ -409,7 +409,7 @@ class DrawingController extends Controller
             'ciphertext' => base64_encode(json_encode($aArray)),
         ]);
     }
-    //支付2.0使用
+    //代付2.0使用
     public function getArraySignNew($iDrawing,$iPayOnlineNew,$iBank = [],$iUser = []){
         $aArray = [
             'pay_uname' => $iPayOnlineNew->payName,
