@@ -21,7 +21,6 @@ class PaymentPlatform
         return $sign;
     }
 
-    //
     public function postCurl($url,$aData){
         $curl = curl_init();  //初始化
         curl_setopt($curl,CURLOPT_URL,$url);  //设置url
@@ -41,7 +40,7 @@ class PaymentPlatform
     }
 
 
-    /****/
+    /**支付 2.0 使用 RSA 加解密**/
     private $public_key;
     private $private_key;
     private $encryptData;
@@ -54,7 +53,9 @@ class PaymentPlatform
     public function setPublicKey($public_key = ""){
         $public_key = openssl_pkey_get_public($this->getPublicKey($public_key));
         if($public_key == false){
-            echo "打开公钥出错";die;
+            writeLog('withdrawal', '打开公钥出错');
+            $this->public_key = '';
+            return $this;
         }
         $this->public_key = $public_key;
         return $this;
@@ -69,8 +70,9 @@ class PaymentPlatform
         if($private_key_source == false){
             $private_key_source = openssl_pkey_get_private($this->getPrivateKeyAndRsa($private_key));
             if($private_key_source == false) {
-                echo "打开私钥出错";
-                die;
+                writeLog('withdrawal', '打开私钥出错');
+                $this->private_key = '';
+                return $this;
             }
         }
         $this->private_key = $private_key_source;
@@ -108,7 +110,9 @@ class PaymentPlatform
      */
     public function publicKeyToEncrypt($data = "",$padding = OPENSSL_PKCS1_PADDING){
         if(!isset($this->public_key)){
-            echo "ERROR_01:Please call method setPublicKey first and set public_key.";
+            writeLog('withdrawal', 'ERROR_01:Please call method setPublicKey first and set public_key.');
+            $this->encryptData = 'ERROR_01:Please call method setPublicKey first and set public_key.';
+            return $this;
         }
         $json = json_encode($data);
         $crypto = '';
@@ -127,7 +131,9 @@ class PaymentPlatform
      */
     public function privateKeyToEncrypt($data = "",$padding = OPENSSL_PKCS1_PADDING){
         if(!isset($this->private_key)){
-            echo "ERROR_01:Please call method setPrivateKey first and set private_key.";
+            writeLog('withdrawal', 'ERROR_01:Please call method setPrivateKey first and set private_key.');
+            $this->encryptData = 'ERROR_01:Please call method setPrivateKey first and set private_key.';
+            return $this;
         }
         $json = json_encode($data);
         $crypto = '';
@@ -147,7 +153,9 @@ class PaymentPlatform
     public function publicKeyToDecrypt($data = "",$padding = OPENSSL_PKCS1_PADDING){
         $resData = base64_decode($data);
         if(!isset($this->public_key)){
-            echo "ERROR_01:Please call method setPublicKey first and set public_key.";
+            writeLog('withdrawal', 'ERROR_01:Please call method setPublicKey first and set public_key.');
+            $this->decryptData = 'ERROR_01:Please call method setPublicKey first and set public_key.';
+            return $this;
         }
         $info = openssl_pkey_get_details($this->public_key);
         $decry = '';
@@ -167,7 +175,9 @@ class PaymentPlatform
      */
     public function privateKeyToDecrypt($data = "",$padding = OPENSSL_PKCS1_PADDING){
         if(!isset($this->private_key)){
-            echo "ERROR_01:Please call method setPrivateKey first and set private_key.";
+            writeLog('withdrawal', 'ERROR_01:Please call method setPrivateKey first and set private_key.');
+            $this->decryptData = 'ERROR_01:Please call method setPrivateKey first and set private_key.';
+            return $this;
         }
         $resData = base64_decode($data);
         $info = openssl_pkey_get_details($this->private_key);
@@ -214,7 +224,9 @@ class PaymentPlatform
      */
     public function grantSignByPrivateKey($signStr = "",$signature_alg = OPENSSL_ALGO_SHA1){
         if(!isset($this->private_key)){
-            echo "ERROR_01:Please call method setPrivateKey first and set private_key.";
+            writeLog('withdrawal', 'RROR_01:Please call method setPrivateKey first and set private_key.');
+            $this->sign = 'RROR_01:Please call method setPrivateKey first and set private_key.';
+            return $this;
         }
         openssl_sign($signStr,$sign_info,$this->private_key,$signature_alg);
         $sign = base64_encode($sign_info);
@@ -243,7 +255,8 @@ class PaymentPlatform
      */
     public function verifySignByPublicKey($signStr = "",$sign = "",$signature_alg = OPENSSL_ALGO_SHA1){
         if(!isset($this->public_key)){
-            echo "ERROR_01:Please call method setPublicKey first and set public_key.";
+            writeLog('withdrawal', 'ERROR_01:Please call method setPublicKey first and set public_key.');
+            return false;
         }
         $flag = openssl_verify($signStr,$sign,$this->public_key,$signature_alg);
         if($flag){
