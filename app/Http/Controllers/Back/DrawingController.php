@@ -171,7 +171,13 @@ class DrawingController extends Controller
     {
         $id  = $request->input('id');
         $msg = $request->input('msg');
-
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'addDrawingError:'.$id;
+        if($redis->exists($key)){
+            return ['status' => false,'msg' => '您提交太快，请休息20秒'];
+        }
+        $redis->setex($key,20,time());
         $getUserId = Drawing::where('id',$id)->first();
         if($getUserId->locked)
             return response()->json([
