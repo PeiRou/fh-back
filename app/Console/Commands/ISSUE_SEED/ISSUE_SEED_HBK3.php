@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_HBK3 extends Command
 {
     protected $signature = 'ISSUE_SEED_HBK3';
-    protected $description = '湖北快3期数生成-78';
+    protected $description = '湖北快3期数生成-39';
 
     public function __construct()
     {
@@ -19,7 +19,7 @@ class ISSUE_SEED_HBK3 extends Command
     public function handle()
     {
         $curDate = date('Ymd');
-        $timeUp = date('Y-m-d 09:00:40');
+        $timeUp = date('Y-m-d 08:59:00');
 
         $redis = \Illuminate\Support\Facades\Redis::connection();
         $redis->select(5);
@@ -32,8 +32,8 @@ class ISSUE_SEED_HBK3 extends Command
 
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
         $sql = "INSERT INTO game_hbk3 (issue,opentime) VALUES ";
-        for($i=1;$i<=78;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
+        for($i=1;$i<=39;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
             if(strlen($i) == 1){
                 $i = '00'.$i;
             }
