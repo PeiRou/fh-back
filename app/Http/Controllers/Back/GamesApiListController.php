@@ -73,6 +73,8 @@ class GamesApiListController extends Controller
         if(!($id = $request->get('id'))){
             return show(2);
         }
+        if(DB::table('games_list')->where('pid', $id)->first())
+            return show(1, '当前分类下还有游戏');
         DB::table('games_list')->where('id',$id)->delete();
         return show(0);
     }
@@ -145,6 +147,12 @@ class GamesApiListController extends Controller
 
     public function switch_(Request $request)
     {
+        if(isset($request->list)){
+            DB::table('games_list')->update(['open' => 0]);
+            DB::table('games_list')->whereIn('game_id', explode(',',$request->list))->update(['open' => 1]);
+            return show(0);
+        }
+
         if(!isset($request->id, $request->status))
             return show(1, '参数错误');
         DB::table('games_list')->where('id', $request->id)->update(['open' => $request->status]);
