@@ -125,22 +125,38 @@ class Excel
                 \Log::info($gameName.$issue.'返钱失败！');
         }
         //普通模式才会退水
-        if(env('AGENT_MODEL',1) == 1) {
+        if(env('AGENT_MODEL',1) == 1 && !$is_status) {
+            \Log::info(1);
             if(!empty($table)&&!empty($tableid)){
                 $reWater = DB::table($table)->where('id',$tableid)->where('returnwater',0)->first();
                 if(empty($reWater))
                     return 0;
+                $res = DB::table($table)->where('id',$tableid)->where('returnwater',0)->update(['returnwater' => 2]);
+                if(empty($res)){
+                    \Log::info($gameName.$issue.'退水前失败！');
+                    return 0;
+                }
             }
             //退水
-            $this->reBackUser($gameId, $issue, $gameName);
+            $res = $this->reBackUser($gameId, $issue, $gameName);
+            if(!$res){
+                if(!empty($table)&&!empty($tableid)){
+                    $res = DB::table($table)->where('id',$tableid)->where('returnwater',2)->update(['returnwater' => 1]);
+                    if(empty($res)){
+                        \Log::info($gameName.$issue.'退水中失败！');
+                        return 0;
+                    }
+                }
+            }else
+                \Log::info($gameName.$issue.'退水前失败！');
         }
         return 0;
     }
-    private function reBackUser($gameId,$issue,$gameName=''){
+    public function reBackUser($gameId,$issue,$gameName=''){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00000001)->groupBy('user_id')->get();
         if($get){
             if (count($get)==0)
-                return 1;
+                return 0;
             //更新返奖的用户馀额
             $sql = "UPDATE users SET money = money+ CASE id ";
             $users = [];
@@ -796,6 +812,15 @@ class Excel
         return $total;
     }
 
+    /**
+     * 除了六合彩外的彩种结算
+     * @param $win
+     * @param $gameId
+     * @param $issue
+     * @param bool $excel
+     * @param array $arrPlay_id
+     * @return int
+     */
     public function bunko($win,$gameId,$issue,$excel=false,$arrPlay_id = []){
         try {
             if ($excel) {
@@ -844,6 +869,11 @@ class Excel
         }
     }
 
+    /**
+     * 产生订单号
+     * @param $fix
+     * @return string
+     */
     private function randOrder($fix)
     {
         $order_id_main = date('YmdHis').rand(10000000,99999999);

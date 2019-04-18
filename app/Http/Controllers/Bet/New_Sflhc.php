@@ -808,7 +808,7 @@ class New_Sflhc extends Excel
         $LHC->LHC_LM($openCode,$gameId,$win,$ids_he);
         $LHC->LHC_SB($openCode,$gameId,$win,$ids_he);
         $LHC->LHC_TX($openCode,$gameId,$win);
-        $LHC->LHC_TMTWS($openCode,$gameId,$win);
+        $LHC->LHC_TMTWS($openCode,$gameId,$win,$ids_he);
         $LHC->LHC_ZM($openCode,$gameId,$win);
         $LHC->LHC_ZMT($openCode,$gameId,$win,$ids_he);
         $LHC->LHC_WX($openCode,$gameId,$win);
@@ -873,8 +873,27 @@ class New_Sflhc extends Excel
                 writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
             }else{
                 $this->stopBunko($gameId,1);
-                $agentJob = new AgentBackwaterJob($gameId,$issue);
-                $agentJob->addQueue();
+                //玩法退水
+                if(env('AGENT_MODEL',1) == 1) {
+                    $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
+                    if(!$res){
+                        \Log::info($gameName.$issue.'退水前失败！');
+                        return 0;
+                    }
+                    //退水
+                    $res = $this->reBackUser($gameId, $issue, $gameName);
+                    if(!$res){
+                        $res = DB::table($table)->where('id',$id)->where('returnwater',2)->update(['returnwater' => 1]);
+                        if(empty($res)){
+                            \Log::info($gameName.$issue.'退水中失败！');
+                            return 0;
+                        }
+                    }else
+                        \Log::info($gameName.$issue.'退水前失败！');
+                }else{//代理退水
+                    $agentJob = new AgentBackwaterJob($gameId,$issue);
+                    $agentJob->addQueue();
+                }
             }
         }
     }

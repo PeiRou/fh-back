@@ -473,7 +473,7 @@ class ExcelLotteryLHC
         }
     }
     //特码头尾数
-    public function LHC_TMTWS($openCode,$gameId,$win){
+    public function LHC_TMTWS($openCode,$gameId,$win,$ids_he){
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
         $tmtws_playCate = $this->arrPlayCate['TOUWEISHU']; //特码分类ID
         $tm = $arrOpenCode[6]; //特码号码
@@ -481,15 +481,24 @@ class ExcelLotteryLHC
         $chaiTM = str_split($tmBL); //拆分个位 十位
         $tou = (int)$chaiTM[0];
         $wei = (int)$chaiTM[1];
-        if($tou>=0 && $tou<=4){
+        if($tm==49){    //和局：特码为49时，和局退本金//特码尾数大小，特尾大：5尾~9尾为大，如05、18、19。特尾小：0尾~4尾为小，如01，32，44。
             $playId = $this->arrPlayId['TOUT'.$tou];
             $winCode = $gameId.$tmtws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($wei>=0 && $wei<=9){
+            $ids_he->push($winCode);
             $playId = $this->arrPlayId['WEIW'.$wei];
             $winCode = $gameId.$tmtws_playCate.$playId;
-            $win->push($winCode);
+            $ids_he->push($winCode);
+        }else{
+            if($tou>=0 && $tou<=4){
+                $playId = $this->arrPlayId['TOUT'.$tou];
+                $winCode = $gameId.$tmtws_playCate.$playId;
+                $win->push($winCode);
+            }
+            if($wei>=0 && $wei<=9){
+                $playId = $this->arrPlayId['WEIW'.$wei];
+                $winCode = $gameId.$tmtws_playCate.$playId;
+                $win->push($winCode);
+            }
         }
     }
     //正码
@@ -657,6 +666,14 @@ class ExcelLotteryLHC
             $playId = $this->arrPlayId['ZHENGYITEHX'];
             $winCode = $gameId.$playCate.$playId;
             $ids_he->push($winCode);
+            //尾大
+            $playId = $this->arrPlayId['ZHENGYITEWEIDA'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
+            //尾小
+            $playId = $this->arrPlayId['ZHENGYITEWEIXIAO'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
         }else{
             if($zm1%2 == 0){ //双
                 $playId = $this->arrPlayId['ZHENGYITESM'];
@@ -694,16 +711,15 @@ class ExcelLotteryLHC
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
             }
-        }
-        if($zm1_wei == 5 || $zm1_wei == 6 || $zm1_wei == 7 || $zm1_wei == 8 || $zm1_wei == 9){ //尾大
-            $playId = $this->arrPlayId['ZHENGYITEWEIDA'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($zm1_wei == 0 || $zm1_wei == 1 || $zm1_wei == 2 || $zm1_wei == 3 || $zm1_wei == 4){ //尾小
-            $playId = $this->arrPlayId['ZHENGYITEWEIXIAO'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
+            if($zm1_wei == 5 || $zm1_wei == 6 || $zm1_wei == 7 || $zm1_wei == 8 || $zm1_wei == 9){ //尾大
+                $playId = $this->arrPlayId['ZHENGYITEWEIDA'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }else if($zm1_wei == 0 || $zm1_wei == 1 || $zm1_wei == 2 || $zm1_wei == 3 || $zm1_wei == 4){ //尾小
+                $playId = $this->arrPlayId['ZHENGYITEWEIXIAO'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
         }
         if($this->SB_Color($zm1) == 'R'){
             $playId = $this->arrPlayId['ZHENGYITEHONGBO'];
@@ -747,6 +763,14 @@ class ExcelLotteryLHC
             $playId = $this->arrPlayId['ZHENGERTEHX'];
             $winCode = $gameId.$playCate.$playId;
             $ids_he->push($winCode);
+            //尾大
+            $playId = $this->arrPlayId['ZHENGERTEWEIDA'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
+            //尾小
+            $playId = $this->arrPlayId['ZHENGERTEWEIXIAO'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
         }else{
             if($zm2%2 == 0){ //双
                 $playId = $this->arrPlayId['ZHENGERTESM'];
@@ -784,16 +808,15 @@ class ExcelLotteryLHC
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
             }
-        }
-        if($zm2_wei == 5 || $zm2_wei == 6 || $zm2_wei == 7 || $zm2_wei == 8 || $zm2_wei == 9){ //尾大
-            $playId = $this->arrPlayId['ZHENGERTEWEIDA'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($zm2_wei == 0 || $zm2_wei == 1 || $zm2_wei == 2 || $zm2_wei == 3 || $zm2_wei == 4){ //尾小
-            $playId = $this->arrPlayId['ZHENGERTEWEIXIAO'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
+            if($zm2_wei == 5 || $zm2_wei == 6 || $zm2_wei == 7 || $zm2_wei == 8 || $zm2_wei == 9){ //尾大
+                $playId = $this->arrPlayId['ZHENGERTEWEIDA'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }else if($zm2_wei == 0 || $zm2_wei == 1 || $zm2_wei == 2 || $zm2_wei == 3 || $zm2_wei == 4){ //尾小
+                $playId = $this->arrPlayId['ZHENGERTEWEIXIAO'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
         }
         if($this->SB_Color($zm2) == 'R'){
             $playId = $this->arrPlayId['ZHENGERTEHONGBO'];
@@ -837,6 +860,14 @@ class ExcelLotteryLHC
             $playId = $this->arrPlayId['ZHENGSANTEHX'];
             $winCode = $gameId.$playCate.$playId;
             $ids_he->push($winCode);
+            //尾大
+            $playId = $this->arrPlayId['ZHENGSANTEWEIDA'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
+            //尾小
+            $playId = $this->arrPlayId['ZHENGSANTEWEIXIAO'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
         }else{
             if($zm3%2 == 0){ //双
                 $playId = $this->arrPlayId['ZHENGSANTESM'];
@@ -874,16 +905,15 @@ class ExcelLotteryLHC
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
             }
-        }
-        if($zm3_wei == 5 || $zm3_wei == 6 || $zm3_wei == 7 || $zm3_wei == 8 || $zm3_wei == 9){ //尾大
-            $playId = $this->arrPlayId['ZHENGSANTEWEIDA'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($zm3_wei == 0 || $zm3_wei == 1 || $zm3_wei == 2 || $zm3_wei == 3 || $zm3_wei == 4){ //尾小
-            $playId = $this->arrPlayId['ZHENGSANTEWEIXIAO'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
+            if($zm3_wei == 5 || $zm3_wei == 6 || $zm3_wei == 7 || $zm3_wei == 8 || $zm3_wei == 9){ //尾大
+                $playId = $this->arrPlayId['ZHENGSANTEWEIDA'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }else if($zm3_wei == 0 || $zm3_wei == 1 || $zm3_wei == 2 || $zm3_wei == 3 || $zm3_wei == 4){ //尾小
+                $playId = $this->arrPlayId['ZHENGSANTEWEIXIAO'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
         }
         if($this->SB_Color($zm3) == 'R'){
             $playId = $this->arrPlayId['ZHENGSANTEHONGBO'];
@@ -927,6 +957,14 @@ class ExcelLotteryLHC
             $playId = $this->arrPlayId['ZHENGSITEHX'];
             $winCode = $gameId.$playCate.$playId;
             $ids_he->push($winCode);
+            //尾大
+            $playId = $this->arrPlayId['ZHENGSITEWEIDA'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
+            //尾小
+            $playId = $this->arrPlayId['ZHENGSITEWEIXIAO'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
         }else{
             if($zm4%2 == 0){ //双
                 $playId = $this->arrPlayId['ZHENGSITESM'];
@@ -964,16 +1002,15 @@ class ExcelLotteryLHC
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
             }
-        }
-        if($zm4_wei == 5 || $zm4_wei == 6 || $zm4_wei == 7 || $zm4_wei == 8 || $zm4_wei == 9){ //尾大
-            $playId = $this->arrPlayId['ZHENGSITEWEIDA'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($zm4_wei == 0 || $zm4_wei == 1 || $zm4_wei == 2 || $zm4_wei == 3 || $zm4_wei == 4){ //尾小
-            $playId = $this->arrPlayId['ZHENGSITEWEIXIAO'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
+            if($zm4_wei == 5 || $zm4_wei == 6 || $zm4_wei == 7 || $zm4_wei == 8 || $zm4_wei == 9){ //尾大
+                $playId = $this->arrPlayId['ZHENGSITEWEIDA'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }else if($zm4_wei == 0 || $zm4_wei == 1 || $zm4_wei == 2 || $zm4_wei == 3 || $zm4_wei == 4){ //尾小
+                $playId = $this->arrPlayId['ZHENGSITEWEIXIAO'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
         }
         if($this->SB_Color($zm4) == 'R'){
             $playId = $this->arrPlayId['ZHENGSITEHONGBO'];
@@ -1017,6 +1054,14 @@ class ExcelLotteryLHC
             $playId = $this->arrPlayId['ZHENGWUTEHX'];
             $winCode = $gameId.$playCate.$playId;
             $ids_he->push($winCode);
+            //尾大
+            $playId = $this->arrPlayId['ZHENGWUTEWEIDA'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
+            //尾小
+            $playId = $this->arrPlayId['ZHENGWUTEWEIXIAO'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
         }else{
             if($zm5%2 == 0){ //双
                 $playId = $this->arrPlayId['ZHENGWUTESM'];
@@ -1054,16 +1099,15 @@ class ExcelLotteryLHC
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
             }
-        }
-        if($zm5_wei == 5 || $zm5_wei == 6 || $zm5_wei == 7 || $zm5_wei == 8 || $zm5_wei == 9){ //尾大
-            $playId = $this->arrPlayId['ZHENGWUTEWEIDA'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($zm5_wei == 0 || $zm5_wei == 1 || $zm5_wei == 2 || $zm5_wei == 3 || $zm5_wei == 4){ //尾小
-            $playId = $this->arrPlayId['ZHENGWUTEWEIXIAO'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
+            if($zm5_wei == 5 || $zm5_wei == 6 || $zm5_wei == 7 || $zm5_wei == 8 || $zm5_wei == 9){ //尾大
+                $playId = $this->arrPlayId['ZHENGWUTEWEIDA'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }else if($zm5_wei == 0 || $zm5_wei == 1 || $zm5_wei == 2 || $zm5_wei == 3 || $zm5_wei == 4){ //尾小
+                $playId = $this->arrPlayId['ZHENGWUTEWEIXIAO'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
         }
         if($this->SB_Color($zm5) == 'R'){
             $playId = $this->arrPlayId['ZHENGWUTEHONGBO'];
@@ -1107,6 +1151,14 @@ class ExcelLotteryLHC
             $playId = $this->arrPlayId['ZHENGLIUTEHX'];
             $winCode = $gameId.$playCate.$playId;
             $ids_he->push($winCode);
+            //尾大
+            $playId = $this->arrPlayId['ZHENGLIUTEWEIDA'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
+            //尾小
+            $playId = $this->arrPlayId['ZHENGLIUTEWEIXIAO'];
+            $winCode = $gameId.$playCate.$playId;
+            $ids_he->push($winCode);
         }else{
             if($zm6%2 == 0){ //双
                 $playId = $this->arrPlayId['ZHENGLIUTESM'];
@@ -1144,16 +1196,15 @@ class ExcelLotteryLHC
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
             }
-        }
-        if($zm6_wei == 5 || $zm6_wei == 6 || $zm6_wei == 7 || $zm6_wei == 8 || $zm6_wei == 9){ //尾大
-            $playId = $this->arrPlayId['ZHENGLIUTEWEIDA'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($zm6_wei == 0 || $zm6_wei == 1 || $zm6_wei == 2 || $zm6_wei == 3 || $zm6_wei == 4){ //尾小
-            $playId = $this->arrPlayId['ZHENGLIUTEWEIXIAO'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
+            if($zm6_wei == 5 || $zm6_wei == 6 || $zm6_wei == 7 || $zm6_wei == 8 || $zm6_wei == 9){ //尾大
+                $playId = $this->arrPlayId['ZHENGLIUTEWEIDA'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }else if($zm6_wei == 0 || $zm6_wei == 1 || $zm6_wei == 2 || $zm6_wei == 3 || $zm6_wei == 4){ //尾小
+                $playId = $this->arrPlayId['ZHENGLIUTEWEIXIAO'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
         }
         if($this->SB_Color($zm6) == 'R'){
             $playId = $this->arrPlayId['ZHENGLIUTEHONGBO'];
@@ -1532,9 +1583,8 @@ class ExcelLotteryLHC
         $hexiao_ids = [];
         $getHexiao = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
         foreach ($getHexiao as $item) {
-            $hexiao_open = explode(',', $tema_SX);
             $hexiao_user = explode(',', $item->bet_info);
-            $hexiao_bi = array_intersect($hexiao_open, $hexiao_user);
+            $hexiao_bi = in_array($tema_SX, $hexiao_user);
             if ($hexiao_bi) {
                 $hexiao_ids[] = $item->bet_id;
             }
