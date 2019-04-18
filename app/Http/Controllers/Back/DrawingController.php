@@ -171,7 +171,13 @@ class DrawingController extends Controller
     {
         $id  = $request->input('id');
         $msg = $request->input('msg');
-
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'addDrawingError:'.$id;
+        if($redis->exists($key)){
+            return ['status' => false,'msg' => '您提交太快，请休息20秒'];
+        }
+        $redis->setex($key,20,time());
         $getUserId = Drawing::where('id',$id)->first();
         if($getUserId->locked)
             return response()->json([
@@ -409,7 +415,7 @@ class DrawingController extends Controller
             'ciphertext' => base64_encode(json_encode($aArray)),
         ]);
     }
-    //支付2.0使用
+    //代付2.0使用
     public function getArraySignNew($iDrawing,$iPayOnlineNew,$iBank = [],$iUser = []){
         $aArray = [
             'pay_uname' => $iPayOnlineNew->payName,
@@ -420,7 +426,7 @@ class DrawingController extends Controller
             'order_no' => $iDrawing->order_id,
             'money' => $iDrawing->amount,
             'app_id' => $iPayOnlineNew->para1,
-            'callback_url' => $iPayOnlineNew->res_url,
+            'callback_url' => isset($iPayOnlineNew->res_url)?$iPayOnlineNew->res_url:env('CALLBACK_URL',env('WEBSITE_PROTOCOL','https').'://'.$_SERVER['HTTP_HOST'].'pay/order/callback/new'),
             'bank' => $iBank->eng_name,
             'gateway_address' => $iPayOnlineNew->req_url,
             'platform_id' => SystemSetting::where('id',1)->value('payment_platform_id'),
