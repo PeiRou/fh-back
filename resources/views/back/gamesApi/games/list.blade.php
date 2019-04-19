@@ -3,55 +3,102 @@
 @section('title','游戏管理')
 
 @section('content')
+    <link rel="stylesheet" href="/vendor/zTree_v3/css/metroStyle/metroStyle.css">
+    <script type="text/javascript" src="/vendor/zTree_v3/js/jquery.ztree.core.min.js"></script>
+    <script type="text/javascript" src="/vendor/zTree_v3/js/jquery.ztree.excheck.js"></script>
+    <style>
+        .tree {
+             min-height: initial;
+             max-height: initial;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+        .tree ul li {
+            margin:5px 0px;
+        }
+        .sort{
+            /*display: none;*/
+            margin:0 10px!important;
+        }
+        .ztree li a {
+            width: 100%;
+            cursor: default!important;
+        }
+        .ztree li a span {
+            width: 100%;
+            cursor: pointer;
+        }
+        .ztree li a:hover {
+             text-decoration: none;
+        }
+        .control-menu{
+        }
+        .control-menu span {
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 3px 4px;
+            margin:0 4px;
+        }
+        .control-menu span:hover{
+            background: #343434;
+            color: #fff;
+        }
+        .master{
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+    </style>
     <div class="content-top">
         <div class="breadcrumb">
             <b>位置：</b>游戏管理
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
         <div class="content-top-buttons">
+            <span onclick="save()">保存</span>
             <span onclick="add()">添加</span>
-            <span onclick="sort()">排序</span>
+            <span onclick="sort1()">排序</span>
         </div>
     </div>
+    {{--{{ p(\App\GamesList::getTreeList(), 1) }}--}}
     <div class="table-content">
-        <div class="table-quick-bar">
-            <div class="ui mini form">
-                <div class="fields">
-                    <div class="one wide field" style="width: initial!important;">
-                        <select class="ui dropdown" id="pid" style="height:32px !important">
-                            <option value="">全部</option>
-                            <option value="0" selected = "selected">一级栏目</option>
-                            @foreach($p as $v)
-                                <option value="{{ $v['id'] }}" @if(isset($data->pid) && $v['id'] == $data->pid) selected = "selected" @endif>{{ '  |'.str_repeat('__', $v['level'] + 1) }}{{ $v['name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="field">
-                        <button id="btn_search" class="fluid ui mini labeled icon teal button"><i class="search icon"></i> 查询</button>
-                    </div>
-                    <div class="field">
-                        <button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置</button>
-                    </div>
-                </div>
+        <form action="">
+            <div class="tree">
+                <ul id="treeDemo" class="ztree"></ul>
             </div>
-        </div>
-        <table id="example" class="ui small selectable celled striped table" cellspacing="0" width="100%">
-            <thead>
-            <tr>
-                <th>父级栏目</th>
-                <th>游戏ID</th>
-                <th>游戏名称</th>
-                <th>使用接口</th>
-                {{--<th>类型</th>--}}
-                <th>开关</th>
-                <th>排序</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-        </table>
+        </form>
     </div>
 @endsection
 
 @section('page-js')
     <script src="/back/js/pages/gamesList.js"></script>
+    <script>
+        var zNodes = [
+            @foreach(\App\GamesList::getGamesList() as $k=>$v)
+            {
+                name: '{!! '<input type="text" class="sort" data-id="'.$v['game_id'].'" style="margin-right:5px; width: 30px; height:20px;" value="'.$v['sort'].'">' !!}'+"<span class='master'>{{ $v['name'] }}</span>",
+                id: {{ $v['id'] }},
+                pId: {{ $v['pid'] }},
+                game_id:'{{ $v['game_id'] }}',
+                checked:@if($v['open'] == 1) true @else false @endif,
+                children: [
+                    @foreach($v['child'] as $kk=>$vv)
+                    {
+                        name: '{!! '<input type="text" class="sort" data-id="'.$vv['game_id'].'" style="margin-right:5px; width: 30px; height:20px;" value="'.$vv['sort'].'">' !!}' + "{{ $vv['name'] }}",
+                        id: {{ $vv['id'] }},
+                        pId: {{ $vv['pid'] }},
+                        game_id:'{{ $vv['game_id'] }}',
+                        checked:@if($vv['open'] == 1) true @else false @endif,
+                    },
+                    @endforeach
+                ]
+            },
+            @endforeach
+        ];
+        function addDiyDom(treeId, treeNode) {
+            var aObj = $("#" + treeNode.tId + "_a");
+            var str = '<span class="control-menu"><span onclick="edit('+treeNode.id+')">修改</span><span onclick="del('+treeNode.id+')">删除</span></span>'
+            aObj.append(str);
+        }
+    </script>
 @endsection

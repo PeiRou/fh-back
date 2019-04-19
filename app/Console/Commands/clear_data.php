@@ -198,6 +198,19 @@ class clear_data extends Command
                 $redis->setex('clear-jq-bet-his',1,'on');
             }
         }
+        //清-棋牌上下分失败数据
+        if(!$redis->exists('clear-jq-recharges')){
+            $sql = "DELETE FROM jq_recharges WHERE updated_at<='{$clearDate31}' LIMIT 5000";
+            $res = DB::connection('mysql::write')->statement($sql);
+            echo 'table jq_recharges :' . $res . PHP_EOL;
+            $res = DB::connection('mysql::write')->table('jq_recharges')->select('id')->where('updated_at','<=',$clearDate31)->first();
+            if(empty($res)){
+                $redis->setex('clear-jq-recharges',$this->time,$this->stoptime);
+            }else{
+                $num++;
+                $redis->setex('clear-jq-recharges',1,'on');
+            }
+        }
         if($num==0){
             $redis->setex('clearing',$this->time,$this->stoptime);
             writeLog('clear',$this->stoptime.'finished');
