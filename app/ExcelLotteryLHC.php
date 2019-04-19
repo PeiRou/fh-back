@@ -1763,8 +1763,8 @@ class ExcelLotteryLHC
                         $arrLm_bets['bunko'] .= " WHEN `bet_id` = $item->bet_id THEN ".$bunko;
                         break;
                     //三中二中二
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_2].'-c2-t0':
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_3].'-c2-t0':
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_2].'-c2-t1':
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_3].'-c2-t1':
                         $ids_lm[] = $item->bet_id;
                         $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_2],$item,$getPlayOdds[$lm_play_2],$arrLm_bets,$gameId,$lm_playCate);
                         break;
