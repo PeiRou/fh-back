@@ -1126,7 +1126,7 @@ class ExcelLotteryLHC
         }
         //正5====两面====结束
         //正6====两面====开始
-        if($zm5==49) { //和局退本金
+        if($zm6==49) { //和局退本金
             $playId = $this->arrPlayId['ZHENGLIUTESM'];
             $winCode = $gameId.$playCate.$playId;
             $ids_he->push($winCode);
