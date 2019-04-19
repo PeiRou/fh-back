@@ -126,7 +126,8 @@
                 success: function (e) {
                     if(e.code == 0){
                         jc1.close();
-                        dataTable.ajax.reload();
+                        location.href = location.href
+                        // dataTable.ajax.reload();
                     }else{
                         Calert(e.msg,'red')
                     }
