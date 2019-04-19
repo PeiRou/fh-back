@@ -304,6 +304,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/payAlipay', 'Back\Data\PayDataController@payAlipay');
     Route::get('/back/datatables/payWechat', 'Back\Data\PayDataController@payWechat');
     Route::get('/back/datatables/payCft', 'Back\Data\PayDataController@payCft');
+    Route::get('/back/datatables/payDetailNew', 'Back\Data\PayNewDataController@payDetail'); //充值配置新-支付排行榜
     Route::get('/back/datatables/payOnlineNew', 'Back\Data\PayNewDataController@payOnline'); //充值配置新-在线支付
     Route::get('/back/datatables/payBankNew', 'Back\Data\PayNewDataController@payBank');    //充值配置新-银行支付
     Route::get('/back/datatables/payAlipayNew', 'Back\Data\PayNewDataController@payAlipay');  //充值配置新-支付宝

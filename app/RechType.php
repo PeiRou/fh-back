@@ -10,6 +10,18 @@ class RechType extends Model
     protected $table = 'rech_type';
     public $timestamps = false;
 
+    //支付类型
+    public static $aPatType = [
+        'WY' => '网银',
+        'ZFB' => '支付宝',
+        'WX' => '微信',
+        'QQ' => 'QQ',
+        'YL' => '银联扫码',
+        'JD' => '京东钱包',
+        'BD' => '百度钱包',
+        'YLONLINE' => '银联快捷'
+    ];
+
     //修改排序
     public static function editBatchPayOnlineData($data){
         return DB::update(self::updateBatchStitching('rech_type',$data,['sort'],'id'));

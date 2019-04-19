@@ -28,6 +28,7 @@ use App\PromotionConfig;
 use App\PromotionReport;
 use App\PromotionReview;
 use App\Recharges;
+use App\RechType;
 use App\SubAccount;
 use App\SystemSetting;
 use App\User;
@@ -1122,6 +1123,11 @@ class SrcViewController extends Controller
     }
 
     //充值配置新
+    //支付排行榜
+    public function payDetailNew(){
+        $aPay = RechType::$aPatType;
+        return view('back.payNew.payDetail',compact('aPay'));
+    }
     //在线支付配置新
     public function payOnlineNew(){
         return view('back.payNew.payOnline');

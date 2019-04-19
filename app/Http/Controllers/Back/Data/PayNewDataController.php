@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back\Data;
 
 use App\Banks;
 use App\Levels;
+use App\PayDetail;
 use App\PayOnline;
 use App\PayOnlineNew;
 use App\PayType;
@@ -18,6 +19,19 @@ use Yajra\DataTables\DataTables;
 class PayNewDataController extends Controller
 {
 
+    //支付排行榜
+    public function payDetail(Request $request){
+        $aParam = $request->input();
+        $aPayDetail = PayDetail::getData($aParam);
+        return DataTables::of($aPayDetail)
+            ->editColumn('rate_money', function ($aPayDetail){
+                return round($aPayDetail->success_money/$aPayDetail->total_money*100,2).'%';
+            })
+            ->editColumn('rate_order', function ($aPayDetail){
+                return round($aPayDetail->rate_order*100,2).'%';
+            })
+            ->make(true);
+    }
 
     //在线支付配置新
     public function payOnline()
