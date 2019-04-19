@@ -1725,17 +1725,17 @@ class ExcelLotteryLHC
         $get = DB::table($table)->select('bet_id','bet_money','play_id','play_odds','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
         $open = explode(',', $openCode);
         $openZM = [$open[0],$open[1],$open[2],$open[3],$open[4],$open[5]];
-        $lm_play_2 = $this->arrPlayId['SANZHONGERZHONGER'];         //三中二中二
-        $lm_play_3 = $this->arrPlayId['SANZHONGERZHONGSAN'];        //三中二中三
-        $lm_play_ERQZ = $this->arrPlayId['ERQUANZHONG'];               //二全中
-        $lm_play_ERTEQZ = $this->arrPlayId['ERZHONGTEZHONGTE'];        //二中特中特
-        $lm_play_ERERQZ = $this->arrPlayId['ERZHONGTEZHONGER'];        //二中特中二
-        $lm_play_TEC = $this->arrPlayId['TECHUAN'];                    //特串
-        $lm_play_SANQZ = $this->arrPlayId['SANQUANZHONG'];             //三全中
-        $lm_play_SIQZ = $this->arrPlayId['SIQUANZHONG'];               //四全中
+        $lm_play_2 = 'SANZHONGERZHONGER';         //三中二中二
+        $lm_play_3 = 'SANZHONGERZHONGSAN';        //三中二中三
+        $lm_play_ERQZ = 'ERQUANZHONG';               //二全中
+        $lm_play_ERTEQZ = 'ERZHONGTEZHONGTE';        //二中特中特
+        $lm_play_ERERQZ = 'ERZHONGTEZHONGER';        //二中特中二
+        $lm_play_TEC = 'TECHUAN';                    //特串
+        $lm_play_SANQZ = 'SANQUANZHONG';             //三全中
+        $lm_play_SIQZ = 'SIQUANZHONG';               //四全中
         $ids_lm = array();
         if($get){
-            $getPlayOdds = DB::table('play')->select('ucode','odds','name')->whereIn('id',[$lm_play_3,$lm_play_ERERQZ])->get()->keyBy('ucode');
+            $getPlayOdds = DB::table('play')->select('ucode','odds','name')->whereIn('id',[$this->arrPlayId[$lm_play_2],$this->arrPlayId[$lm_play_3],$this->arrPlayId[$lm_play_ERTEQZ],$this->arrPlayId[$lm_play_ERERQZ]])->get()->keyBy('ucode');
             $arrLm['bunko'] = " bunko = CASE ";
             $arrLm['odds'] = " play_odds = CASE ";
             $arrLm['play_id'] = " play_id = CASE ";
@@ -1749,46 +1749,41 @@ class ExcelLotteryLHC
                 $bi = array_intersect($openZM, $user);
                 $te = in_array($open[6],$user)?'1':'0';
                 switch ($item->play_id.'-c'.count($bi).'-t'.$te){
-                    //二中特中特
-                    case $gameId.$lm_playCate.$lm_play_ERTEQZ.'-c1-t1':
                         //特串
-                    case $gameId.$lm_playCate.$lm_play_TEC.'-c1-t1':
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_TEC].'-c1-t1':
                         //二全中
-                    case $gameId.$lm_playCate.$lm_play_ERQZ.'-c2-t0':
-                        //三中二中二
-                    case $gameId.$lm_playCate.$lm_play_2.'-c2-t0':
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERQZ].'-c2-t0':
                         //三全中
-                    case $gameId.$lm_playCate.$lm_play_SANQZ.'-c3-t0':
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_SANQZ].'-c3-t0':
                         //四全中
-                    case $gameId.$lm_playCate.$lm_play_SIQZ.'-c4-t0':
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_SIQZ].'-c4-t0':
                         $ids_lm[] = $item->bet_id;
                         $odds = $item->play_odds;
                         $bunko = $item->bet_money * $odds;
                         $arrLm_bets['bunko'] .= " WHEN `bet_id` = $item->bet_id THEN ".$bunko;
                         break;
-                    //三中二中三
-                    case $gameId.$lm_playCate.$lm_play_2.'-c3-t0':
+                    //三中二中二
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_2].'-c2-t0':
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_3].'-c2-t0':
                         $ids_lm[] = $item->bet_id;
-                        $odds = $getPlayOdds['SANZHONGERZHONGSAN']->odds;
-                        $lm_play = $lm_play_3;
-                        $lm_play_name = $getPlayOdds['SANZHONGERZHONGSAN']->name;
-                        $bunko = $item->bet_money * $odds;
-                        $arrLm_bets['bunko'] .= " WHEN `bet_id` = $item->bet_id THEN ".$bunko;
-                        $arrLm_bets['odds'] .= " WHEN `bet_id` = $item->bet_id THEN ".$odds;               //特殊玩法需要根据已中奖的修改显示中奖的赔率
-                        $arrLm_bets['play_id'] .= " WHEN `bet_id` = $item->bet_id THEN ".$gameId.$lm_playCate.$lm_play;    //特殊玩法需要根据已中奖的修改显示中奖的玩法id
-                        $arrLm_bets['play_name'] .= " WHEN `bet_id` = $item->bet_id THEN ' - ".$lm_play_name."' ";         //特殊玩法需要根据已中奖的修改显示中奖的玩法名称
+                        $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_2],$item,$getPlayOdds[$lm_play_2],$arrLm_bets,$gameId,$lm_playCate);
                         break;
-                    //二中特中二
-                    case $gameId.$lm_playCate.$lm_play_ERTEQZ.'-c2-t0':
+                    //三中二中三
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_2].'-c3-t0':
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_3].'-c3-t0':
                         $ids_lm[] = $item->bet_id;
-                        $odds = $getPlayOdds['ERZHONGTEZHONGER']->odds;
-                        $lm_play = $lm_play_ERERQZ;
-                        $lm_play_name = $getPlayOdds['ERZHONGTEZHONGER']->name;
-                        $bunko = $item->bet_money * $odds;
-                        $arrLm_bets['bunko'] .= " WHEN `bet_id` = $item->bet_id THEN ".$bunko;
-                        $arrLm_bets['odds'] .= " WHEN `bet_id` = $item->bet_id THEN ".$odds;               //特殊玩法需要根据已中奖的修改显示中奖的赔率
-                        $arrLm_bets['play_id'] .= " WHEN `bet_id` = $item->bet_id THEN ".$gameId.$lm_playCate.$lm_play;    //特殊玩法需要根据已中奖的修改显示中奖的玩法id
-                        $arrLm_bets['play_name'] .= " WHEN `bet_id` = $item->bet_id THEN ' - ".$lm_play_name."' ";         //特殊玩法需要根据已中奖的修改显示中奖的玩法名称
+                        $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_3],$item,$getPlayOdds[$lm_play_3],$arrLm_bets,$gameId,$lm_playCate);
+                        break;
+                    //二中特中特
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERTEQZ].'-c1-t1':
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERERQZ].'-c1-t1':
+                        $ids_lm[] = $item->bet_id;
+                        $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_ERTEQZ],$item,$getPlayOdds[$lm_play_ERTEQZ],$arrLm_bets,$gameId,$lm_playCate);
+                    //二中特中二
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERTEQZ].'-c2-t0':
+                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERERQZ].'-c2-t0':
+                        $ids_lm[] = $item->bet_id;
+                        $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_ERERQZ],$item,$getPlayOdds[$lm_play_ERERQZ],$arrLm_bets,$gameId,$lm_playCate);
                         break;
                 }
             }
@@ -1808,6 +1803,18 @@ class ExcelLotteryLHC
             }
         }
         return $sql_lm;
+    }
+    //特殊玩法需要根据已中奖的修改显示中奖的信息
+    private function chgPlayOdds($lm_play,$item,$getPlayOdds,$arrLm_bets,$gameId,$lm_playCate){
+        $ids_lm[] = $item->bet_id;
+        $odds = $getPlayOdds->odds;
+        $lm_play_name = $getPlayOdds->name;
+        $bunko = $item->bet_money * $odds;
+        $arrLm_bets['bunko'] .= " WHEN `bet_id` = $item->bet_id THEN ".$bunko;
+        $arrLm_bets['odds'] .= " WHEN `bet_id` = $item->bet_id THEN ".$odds;               //特殊玩法需要根据已中奖的修改显示中奖的赔率
+        $arrLm_bets['play_id'] .= " WHEN `bet_id` = $item->bet_id THEN ".$gameId.$lm_playCate.$lm_play;    //特殊玩法需要根据已中奖的修改显示中奖的玩法id
+        $arrLm_bets['play_name'] .= " WHEN `bet_id` = $item->bet_id THEN ' - ".$lm_play_name."' ";         //特殊玩法需要根据已中奖的修改显示中奖的玩法名称
+        return $arrLm_bets;
     }
 
     private function SB_Color($num){
