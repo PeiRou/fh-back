@@ -1,8 +1,8 @@
 <?php
 /**
  * 六合彩玩法结算
- * User: jeremy
- * Date: 2019/3/14
+ * User: Zoe
+ * Date: 2019/4/17
  * Time: 下午20:01
  */
 
@@ -80,18 +80,35 @@ class ExcelLotteryLHC
         $ZH = (int)$arrOpenCode[0]+(int)$arrOpenCode[1]+(int)$arrOpenCode[2]+(int)$arrOpenCode[3]+(int)$arrOpenCode[4]+(int)$arrOpenCode[5]+(int)$arrOpenCode[6];
         //和局退本金
         if($tm==49){
-            //特码大小
+            //特码大
             $playId = $this->arrPlayId['LMTD'];
             $winCode = $gameId.$lm_playCate.$playId;
             $ids_he->push($winCode);
+            //特大双
+            $playId = $this->arrPlayId['LMTDSHUANG'];
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            //特大单
+            $playId = $this->arrPlayId['LMTDDAN'];
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            //特码小
             $playId = $this->arrPlayId['LMTX'];
             $winCode = $gameId.$lm_playCate.$playId;
             $ids_he->push($winCode);
-            //特码单双
-            $playId = $this->arrPlayId['LMTDAN'];
+            //特小双
+            $playId = $this->arrPlayId['LMTXS'];
             $winCode = $gameId.$lm_playCate.$playId;
             $ids_he->push($winCode);
+            //特小单
+            $playId = $this->arrPlayId['LMTXDAN'];
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            //特码单双
             $playId = $this->arrPlayId['LMTS'];
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            $playId = $this->arrPlayId['LMTDAN'];
             $winCode = $gameId.$lm_playCate.$playId;
             $ids_he->push($winCode);
             //特码合数大小
@@ -1801,7 +1818,6 @@ class ExcelLotteryLHC
                 if(!empty($arrLm_bets['play_name']))
                     $sql_lm .= $arrLm['play_name'].$arrLm_bets['play_name']." END, ";
                 $sql_lm .= "status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
-                \Log::info($sql_lm);
             }
         }
         return $sql_lm;

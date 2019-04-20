@@ -126,7 +126,6 @@ class Excel
         }
         //普通模式才会退水
         if(env('AGENT_MODEL',1) == 1 && !$is_status) {
-            \Log::info(1);
             if(!empty($table)&&!empty($tableid)){
                 $reWater = DB::table($table)->where('id',$tableid)->where('returnwater',0)->first();
                 if(empty($reWater))
@@ -821,7 +820,8 @@ class Excel
      * @param array $arrPlay_id
      * @return int
      */
-    public function bunko($win,$gameId,$issue,$excel=false,$arrPlay_id = []){
+    public function bunko($win,$gameId,$issue,$excel=false,$arrPlay_id = [],$is_status=false){
+        $betStatus = $is_status?3:1;
         try {
             if ($excel) {
                 $table = 'excel_bet';
@@ -848,8 +848,8 @@ class Excel
                         $sql .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                         $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
                     }
-                    $sql_upd .= $sql . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids)";
-                    $sql_upd_lose .= $sql_lose . "END, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_lose)";
+                    $sql_upd .= $sql . "END, status = ".$betStatus." , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids)";
+                    $sql_upd_lose .= $sql_lose . "END, status = ".$betStatus." , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($ids_lose)";
                     if (!isset($bunko) || empty($bunko))
                         return 0;
                     $run = empty($sql) ? 1 : DB::statement($sql_upd);
@@ -864,7 +864,7 @@ class Excel
             }
         }catch (\exception $exception){
             \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-            DB::table($table)->where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
+            DB::table($table)->where('status',$betStatus)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
             return 0;
         }
     }
