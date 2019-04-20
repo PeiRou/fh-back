@@ -212,8 +212,8 @@ class DrawingController extends Controller
         $drawingRejectCapital->money = $userAmount;
         $drawingRejectCapital->balance = $userAmount + $getUserInfo->money;
         $drawingRejectCapital->rechargesType = 3;   //加钱类型:其他
-        $drawingRejectCapital->type = 't30';    //类型:提现失败退钱
-        $drawingRejectCapital->content = '提现失败退钱';    //类型:提现失败退钱
+        $drawingRejectCapital->type = 't17';    //类型:提现失败
+        $drawingRejectCapital->content = '提现失败退钱';
         $drawingRejectCapital->operation_id = Session::get('account_id');
         DB::beginTransaction();
         $rejectDrawing = $drawingRejectCapital->save();
@@ -276,8 +276,8 @@ class DrawingController extends Controller
         $drawingRejectCapital->money = $userAmount;
         $drawingRejectCapital->balance = $userAmount + $getUserInfo->money;
         $drawingRejectCapital->rechargesType = 3;   //加钱类型:其他
-        $drawingRejectCapital->type = 't30';    //类型:提现失败退钱
-        $drawingRejectCapital->content = '提现失败退钱';    //类型:提现失败退钱
+        $drawingRejectCapital->type = 't17';    //类型:提现失败
+        $drawingRejectCapital->content = '提现失败退钱';
         $drawingRejectCapital->operation_id = Session::get('account_id');
         DB::beginTransaction();
         $rejectDrawing = $drawingRejectCapital->save();
