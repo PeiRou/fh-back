@@ -30,6 +30,17 @@ $(function () {
                     }
                     return "<div class='T_PK10' style='width: 100%'>" + txt + "</div>";
                 }},
+            {data: function (data) {        //开出号码
+                    if(data.opennum == null || data.opennum == '')
+                        return "";
+                    after = data.opennum.split(",");
+                    txt = "";
+                    for(var i =0;i<after.length;i++){
+                        var num = parseInt(after[i])+0;
+                        txt = txt + "<span><b class='b"+num+"'></b></span>";
+                    }
+                    return "<div class='T_PK10' style='width: 100%'>" + txt + "</div>";
+                }},
             {data: function (data) {        //冠亚军和
                     if(data.opennum == null || data.opennum == '')
                         return "";

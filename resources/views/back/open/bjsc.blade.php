@@ -3,7 +3,7 @@
 @section('title','历史开奖-'.$data['title'])
 
 @section('page-css')
-    <link rel="stylesheet" href="{{ asset('back/css/pages/bjkl8.css') }}">
+    <link rel="stylesheet" href="{{ asset('back/css/pages/pk10.css') }}">
 @endsection
 
 @section('content')
@@ -39,11 +39,12 @@
             <thead>
             <th width="8%">期号</th>
             <th width="10%">开奖时间</th>
-            <th align="center" width="30%">北京快乐8开出号码</th>
-            <th align="center" width="10%">pc蛋蛋开出号码</th>
-            <th width="12%">总和</th>
+            <th width="21%">北京赛车开出号码</th>
+            <th width="16%">pk10牛牛开出号码</th>
+            <th width="12%">冠亚军和</th>
+            <th width="12%">1~5龙虎</th>
             <th width="6%">状态</th>
-            <th width="12%">操作</th>
+            <th width="11%">操作</th>
             </tr>
             </thead>
         </table>
@@ -60,5 +61,5 @@
     </script>
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
-    <script src="/back/js/pages/open_bjkl8.js"></script>
+    <script src="/back/js/pages/open_bjsc.js"></script>
 @endsection
