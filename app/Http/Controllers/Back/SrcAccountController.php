@@ -18,10 +18,12 @@ use Illuminate\Support\Facades\Storage;
 
 class SrcAccountController extends Controller
 {
+    const ZABBIX_BOT_URL = 'http://bot.tcwk10.com:5000';
+
     private function adminLogin($request)
     {
         $http = app(\GuzzleHttp\Client::class);
-        $res = $http->request('GET', 'http://202.60.232.243:5000/optget');
+        $res = $http->request('GET', self::ZABBIX_BOT_URL.'/optget');
 //        writeLog('test', (string) $res->getBody());
         $json = json_decode((string) $res->getBody(), true);
         if(!isset($json['code']) || ((explode('.' ,$json['time'])[0] ?? '') + 60) < time())
@@ -31,7 +33,7 @@ class SrcAccountController extends Controller
         $str = $json['name']."
 登录后台：".env('APP_NAME')."
 时间：".date('Y-m-d H:i:s');
-        $url = env('ASYNC_URL','127.0.0.1:9502').'/BF/BFAsync/getUrl?url='.urlencode('http://202.60.232.243:5000/telegram?q='.urlencode($str).'&groupid=-371925241');
+        $url = env('ASYNC_URL','127.0.0.1:9502').'/BF/BFAsync/getUrl?url='.urlencode(self::ZABBIX_BOT_URL.'/telegram?q='.urlencode($str).'&groupid=-371925241');
         $http->request('GET',$url,['connect_timeout' => 1]);
     }
     //登录

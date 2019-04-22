@@ -205,13 +205,24 @@ class DrawingController extends Controller
             $data['bank_num'] = $getUserInfo->bank_num;
             $data['bank_addr'] = $getUserInfo->bank_addr;
         }
+        $drawingRejectCapital = new \App\Capital();
+        $drawingRejectCapital->order_id = $drawingRejectCapital->randOrder('D');
+        $drawingRejectCapital->user_type = 'user';
+        $drawingRejectCapital->to_user = $userId;
+        $drawingRejectCapital->money = $userAmount;
+        $drawingRejectCapital->balance = $userAmount + $getUserInfo->money;
+        $drawingRejectCapital->rechargesType = 3;   //加钱类型:其他
+        $drawingRejectCapital->type = 't17';    //类型:提现失败
+        $drawingRejectCapital->content = '提现失败退钱';
+        $drawingRejectCapital->operation_id = Session::get('account_id');
         DB::beginTransaction();
+        $rejectDrawing = $drawingRejectCapital->save();
         $update = Drawing::where('id',$id)
             ->update($data);
         $updateUserMoney = DB::table('users')->where('id',$userId)->update([
             'money' => DB::raw('money + '.$userAmount)
         ]);
-        if($update == 1 && $updateUserMoney){
+        if($update == 1 && $updateUserMoney && $rejectDrawing){
             DB::commit();
             event(new BackPusherEvent('error','提现失败提醒','您的提现申请被驳回，提现金额：'.$getUserId->amount.'元，流水订单号：【'.$getUserId->order_id.'】，如有疑问，请联系在线客服',array('fnotice-'.$userId)));
             return response()->json([
@@ -258,13 +269,24 @@ class DrawingController extends Controller
             $data['bank_num'] = $getUserInfo->bank_num;
             $data['bank_addr'] = $getUserInfo->bank_addr;
         }
+        $drawingRejectCapital = new \App\Capital();
+        $drawingRejectCapital->order_id = $drawingRejectCapital->randOrder('D');
+        $drawingRejectCapital->user_type = 'user';
+        $drawingRejectCapital->to_user = $userId;
+        $drawingRejectCapital->money = $userAmount;
+        $drawingRejectCapital->balance = $userAmount + $getUserInfo->money;
+        $drawingRejectCapital->rechargesType = 3;   //加钱类型:其他
+        $drawingRejectCapital->type = 't17';    //类型:提现失败
+        $drawingRejectCapital->content = '提现失败退钱';
+        $drawingRejectCapital->operation_id = Session::get('account_id');
         DB::beginTransaction();
+        $rejectDrawing = $drawingRejectCapital->save();
         $update = Drawing::where('id',$id)
             ->update($data);
         $updateUserMoney = DB::table('users')->where('id',$userId)->update([
             'money' => DB::raw('money + '.$userAmount)
         ]);
-        if($update == 1 && $updateUserMoney){
+        if($update == 1 && $updateUserMoney && $rejectDrawing){
             DB::commit();
             event(new BackPusherEvent('error','提现失败提醒','您的提现申请被驳回，提现金额：'.$getUserId->amount.'元，流水订单号：【'.$getUserId->order_id.'】，如有疑问，请联系在线客服',array('fnotice-'.$userId)));
             return response()->json([

@@ -441,6 +441,11 @@ class ModalController extends Controller
         $levelsData = Levels::all();
         return view('back.modal.member.userEditInfo',compact('user','allBanks','levelsData'));
     }
+    //会员第三方游戏管理
+    public function UserGamesApi(Request $request)
+    {
+        return view('back.modal.member.UserGamesApi');
+    }
     //查看会员备注
     public function viewUserContent($id)
     {

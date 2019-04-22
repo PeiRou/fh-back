@@ -7,8 +7,9 @@ $(function () {
         serverSide: true,
         aLengthMenu: [[50]],
         ajax: {
-            url:'/back/datatables/openHistory/bjkl8',
+            url:'/back/datatables/openHistory/sc',
             data:function (d) {
+                d.type = gameType;                                //类型
                 d.issue = $('#issue').val();                      //奖期
                 d.issuedate = $('#issuedate').val();              //开奖时间
             }
@@ -25,45 +26,44 @@ $(function () {
                         var num = parseInt(after[i])+0;
                         txt = txt + "<span><b class='b"+num+"'></b></span>";
                     }
-                    return "<div class='T_KL8' style='width: 320px'>" + txt + "</div>";
+                    return "<div class='T_PK10' style='width: 100%'>" + txt + "</div>";
                 }},
-            {data: function (data) {        //pcdd开出号码
-                    if(data.pcddOpennum == null || data.opennum == '')
+            {data: function (data) {        //牛牛开出号码
+                    if(data.niuniu == null || data.niuniu == '')
                         return "";
-                    after = data.pcddOpennum.split(",");
+                    after = data.niuniu.split(",");
                     txt = "";
+                    // for(var i =0;i<after.length;i++){
+                    //     var num = parseInt(after[i])+0;
+                    //     txt = txt + "<span>"+getnn(num)+"</span>";
+                    // }
                     for(var i =0;i<after.length;i++){
                         var num = parseInt(after[i])+0;
-                        txt = txt + "<span><b class='b"+num+"'>"+num+"</b></span>";
+                        txt = txt + "<td>"+getnn(num)+"</td>";
                     }
-                    return "<div class='PCDD' >" + txt + "</div>";
+                    return "<table height='100%' width='100%' style='table-layout:fixed'><tr>"+ txt +"</tr></table>";
+                    // return "<div class='NIUNIU' style='width: 100%'>" + txt + "</div>";
                 }},
-            {data: function (data) {        //总和
+            {data: function (data) {        //冠亚军和
                     if(data.opennum == null || data.opennum == '')
                         return "";
                     after = data.opennum.split(",");
-                    zh = 0;
-                    for(var i =0;i<after.length;i++){
-                        zh = zh + parseInt(after[i])
-                    }
-                    if(zh > 810)
-                        zhdx = "<font color='red'>大</font>";
-                    else if(zh < 810)
-                        zhdx = "小";
-                    else
-                        zhdx = 810;
-                    zhds = zh%2==1 ?"单":"<font color='red'>双</font>";
-                    if(zh >= 210 && zh<=695)
-                        zhwh = "金";
-                    else if(zh >= 696 && zh<=763)
-                        zhwh = "木";
-                    else if(zh >= 764 && zh<=855)
-                        zhwh = "水";
-                    else if(zh >= 856 && zh<=923)
-                        zhwh = "火";
-                    else if(zh >= 924 && zh<=1410)
-                        zhwh = "土";
-                    txt = "<td>" + zh + "</td>"+"<td>" + zhdx + "</td>"+"<td>" + zhds + "</td>"+"<td>" + zhwh + "</td>";
+                    gyh = parseInt(after[0]) + parseInt(after[1]);
+                    gyhds = gyh%2==1 ?"单":"<font color='red'>双</font>";
+                    gyhdx = gyh >= 12?"<font color='red'>大</font>":"小";
+                    txt = "<td>" + gyh + "</td>"+"<td>" + gyhds + "</td>"+"<td>" + gyhdx + "</td>";
+                    return "<table height='100%' width='100%' style='table-layout:fixed'><tr>"+ txt +"</tr></table>";
+                }},
+            {data: function (data) {        //1~5龙虎
+                    if(data.opennum == null || data.opennum == '')
+                        return "";
+                    after = data.opennum.split(",");
+                    lhh1 = lhh(parseInt(after[0]) , parseInt(after[9]));      //龙虎1
+                    lhh2 = lhh(parseInt(after[1]) , parseInt(after[8]));      //龙虎2
+                    lhh3 = lhh(parseInt(after[2]) , parseInt(after[7]));      //龙虎3
+                    lhh4 = lhh(parseInt(after[3]) , parseInt(after[6]));      //龙虎4
+                    lhh5 = lhh(parseInt(after[4]) , parseInt(after[5]));      //龙虎5
+                    txt = "<td>" + lhh1 + "</td>"+"<td>" + lhh2 + "</td>"+"<td>" + lhh3 + "</td>"+"<td>" + lhh4 + "</td>"+"<td>" + lhh5 + "</td>";
                     return "<table height='100%' width='100%' style='table-layout:fixed'><tr>"+ txt +"</tr></table>";
                 }},
             {data: function (data) {
@@ -93,18 +93,18 @@ $(function () {
             {data: function (data) {
                     txt = '';
                     if(data.is_open=="1"){        //已开奖
-                        txt = "<li onclick='openbjkl8("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
+                        txt = "<li onclick='openbjpk10("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
                         txt += "<li onclick='canceled("+data.issue+")'>撤单</li>";
                         txt += "<li onclick='freeze("+data.issue+")'>冻结</li>";
                     }else if(data.is_open == "0"){                      //未开奖
                         txt = "<li onclick='cancelAll("+data.id+")'>修改</li>" +
                             "<li onclick='cancel("+data.issue+")'>撤单</li>" +
-                            "<li onclick='openbjkl8("+data.id+","+data.issue+",1)'>手动开奖</li>" ;
+                            "<li onclick='openbjpk10("+data.id+","+data.issue+",1)'>手动开奖</li>" ;
                     }else if(data.is_open == "5"){
                         txt = "<li onclick='canceled("+data.issue+")'>撤单</li>" +
-                            "<li onclick='openbjkl8("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
+                            "<li onclick='openbjpk10("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
                     }else if(data.is_open == "10"){
-                        txt = "<li onclick='openbjkl8("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
+                        txt = "<li onclick='openbjpk10("+data.id+","+data.issue+",2)'>重新开奖</li>" ;
                     }else if(data.is_open == "9"){
                         txt = "<li onclick='freeze("+data.issue+")'>冻结</li>" ;
                     }else if(data.is_open == "12"){
@@ -170,13 +170,60 @@ $(function () {
     });
 });
 
+function getnn(num) {//计算牛几
+    switch (num){
+        case 1 :
+            return '牛丁'
+            break
+        case 2 :
+            return '牛二'
+            break
+        case 3 :
+            return '牛三'
+            break
+        case 4 :
+            return '牛四'
+            break
+        case 5 :
+            return '牛五'
+            break
+        case 6 :
+            return '牛六'
+            break
+        case 7 :
+            return '牛七'
+            break
+        case 8 :
+            return '牛八'
+            break
+        case 9 :
+            return '牛九'
+            break
+        case 10 :
+            return '牛牛'
+            break
+        default :
+            return '无牛'
+    }
+}
 
-function openbjkl8(id,issue,type) {
+function lhh(a,b){
+    if( a>b){
+        txt = "<font color='red'>龙</font>";
+    }else if( a<b){
+        txt = "虎";
+    }else{
+        txt = "和";
+    }
+    return txt;
+}
+
+function openbjpk10(id,issue,type) {
     jc = $.confirm({
         theme: 'material',
-        title: '北京快乐8-手动开奖',
+        title: title + '-手动开奖',
         closeIcon:true,
-        boxWidth:'700px',
+        boxWidth:'30%',
         content: 'url:/back/modal/open/'+id+'/'+gameType+'/'+cat+'/'+issue+'/'+type,
         buttons: {
             formSubmit: {
@@ -184,7 +231,7 @@ function openbjkl8(id,issue,type) {
                 btnClass: 'btn-blue',
                 action: function () {
                     $('.daterangepicker').hide();
-                    var form = this.$content.find('#openBjkl8').data('formValidation').validate().isValid();
+                    var form = this.$content.find('#openBjpk10').data('formValidation').validate().isValid();
                     if(!form){
                         return false;
                     }
@@ -220,7 +267,7 @@ function cancel(issue) {
                         dataType:'json',
                         success:function (data) {
                             if(data.status == true){
-                                alert('撤单成功');
+                                dataTable.ajax.reload();
                             }else{
                                 Calert(data.msg,'red')
                             }

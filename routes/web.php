@@ -304,6 +304,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/payAlipay', 'Back\Data\PayDataController@payAlipay');
     Route::get('/back/datatables/payWechat', 'Back\Data\PayDataController@payWechat');
     Route::get('/back/datatables/payCft', 'Back\Data\PayDataController@payCft');
+    Route::get('/back/datatables/payDetailNew', 'Back\Data\PayNewDataController@payDetail'); //充值配置新-支付排行榜
     Route::get('/back/datatables/payOnlineNew', 'Back\Data\PayNewDataController@payOnline'); //充值配置新-在线支付
     Route::get('/back/datatables/payBankNew', 'Back\Data\PayNewDataController@payBank');    //充值配置新-银行支付
     Route::get('/back/datatables/payAlipayNew', 'Back\Data\PayNewDataController@payAlipay');  //充值配置新-支付宝
@@ -592,6 +593,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/action/admin/gamesApi/sort','Back\GamesApiController@sort'); //平台接口排序
     Route::post('/action/admin/gamesApi/editParameter','Back\GamesApiController@editParameter')->name('ac.ad.GamesApi.editParameter'); //平台接口参数修改
     Route::get('/action/admin/gamesApi/allDown','Back\GamesApiController@allDown'); //下掉一个用户的所有分
+    Route::get('/action/admin/gamesApi/UserGamesApi', 'Back\GamesApiController@UserGamesApi')->middleware('check-permission')->middleware('add-log-handle')->name('m.user.GamesApi');//第三方游戏管理
 
     Route::post('/action/admin/platform/pay', 'Back\PlatformController@pay')->middleware('add-log-handle')->name('ac.ad.platform.pay');//平台费用支付
 
@@ -631,6 +633,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/userChangeFullName/{id}', 'Back\Ajax\ModalController@userChangeFullName')->middleware('check-permission')->name('m.user.editTrueName');
     Route::get('/back/modal/viewUserInfo/{id}', 'Back\Ajax\ModalController@viewUserInfo')->middleware('check-permission')->name('m.user.viewUserInfo');
     Route::get('/back/modal/editUserInfo/{id}', 'Back\Ajax\ModalController@editUserInfo')->middleware('check-permission')->name('m.user.edit');         //修改会员资料
+    Route::get('/back/modal/UserGamesApi', 'Back\Ajax\ModalController@UserGamesApi');         //会员第三方游戏管理
     Route::get('/back/modal/viewUserContent/{id}', 'Back\Ajax\ModalController@viewUserContent')->middleware('check-permission')->name('m.user.viewDetails');
     Route::get('/back/modal/changeUserMoney/{id}', 'Back\Ajax\ModalController@changeUserMoney')->middleware('check-permission')->name('m.user.changeBalance');      //修改会员馀额
     Route::get('/back/modal/addMoneyAllUser', 'Back\Ajax\ModalController@addMoneyAllUser')->middleware('check-permission')->name('m.user.addMoneyAllUser');      //批量修改会员馀额

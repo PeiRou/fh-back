@@ -89,6 +89,17 @@
                         pId: {{ $vv['pid'] }},
                         game_id:'{{ $vv['game_id'] }}',
                         checked:@if($vv['open'] == 1) true @else false @endif,
+                        children: [
+                                @foreach($vv['child'] as $kkk=>$vvv)
+                            {
+                                name: '{!! '<input type="text" class="sort" data-id="'.$vv['game_id'].'" style="margin-right:5px; width: 30px; height:20px;" value="'.$vvv['sort'].'">' !!}' + "{{ $vvv['name'] }}",
+                                id: {{ $vvv['id'] }},
+                                pId: {{ $vvv['pid'] }},
+                                game_id:'{{ $vvv['game_id'] }}',
+                                checked:@if($vvv['open'] == 1) true @else false @endif,
+                            },
+                            @endforeach
+                        ]
                     },
                     @endforeach
                 ]

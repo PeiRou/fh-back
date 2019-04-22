@@ -397,3 +397,8 @@ function allDown(user_id){
         },
     });
 }
+
+function GamesApi(user_id){
+    var url = '/back/modal/UserGamesApi/?user_id='+user_id;
+    Cmodal('第三方游戏管理','30%',url,false,'editUserForm');
+}

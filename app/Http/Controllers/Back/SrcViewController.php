@@ -28,6 +28,7 @@ use App\PromotionConfig;
 use App\PromotionReport;
 use App\PromotionReview;
 use App\Recharges;
+use App\RechType;
 use App\SubAccount;
 use App\SystemSetting;
 use App\User;
@@ -47,6 +48,7 @@ class SrcViewController extends Controller
         'k3' => 'back.open.k3', //快3类
         'ssc' => 'back.open.ssc', //时时彩
         'sc' => 'back.open.sc', //秒速赛车
+        'bjsc' => 'back.open.bjsc', //北京赛车
         'gd11x5' => 'back.open.gd11x5',//广东11选5
         'gdklsf' => 'back.open.gdklsf',//广东快乐十分
         'lhc' => 'back.open.lhc',//六合彩
@@ -460,7 +462,7 @@ class SrcViewController extends Controller
             'title' => '北京pk10',
             'activeName' => 'menu-openManage-bjpk10',
             'type' => 'pk10', //
-            'cat' => 'sc' //游戏类别 赛车
+            'cat' => 'bjsc' //游戏类别 北京赛车
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }
@@ -468,7 +470,7 @@ class SrcViewController extends Controller
     public function openManage_bjkl8()
     {
         $data = [
-            'title' => '北京快乐8',
+            'title' => '北京快乐8/pc蛋蛋',
             'activeName' => 'menu-openManage-bjkl8',
             'type' => 'bjkl8', //
             'cat' => 'bjkl8' //游戏类别
@@ -1122,6 +1124,11 @@ class SrcViewController extends Controller
     }
 
     //充值配置新
+    //支付排行榜
+    public function payDetailNew(){
+        $aPay = RechType::$aPatType;
+        return view('back.payNew.payDetail',compact('aPay'));
+    }
     //在线支付配置新
     public function payOnlineNew(){
         return view('back.payNew.payOnline');

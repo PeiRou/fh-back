@@ -48,6 +48,7 @@ class GetPayDetail extends Command
             $time = date('Y-m-d H:i:s');
             foreach ($result['data'] as $iData){
                 $aArray[] = [
+                    'third_name' => $iData['third_name'],
                     'third' => $iData['third'],
                     'type' => $iData['type'],
                     'total_money' => $iData['total_money'],
