@@ -8,9 +8,8 @@
 
 namespace App\Http\Controllers\Bet;
 
-
-use App\Bets;
 use App\Excel;
+use App\ExcelLotterySC;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 

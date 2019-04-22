@@ -1819,6 +1819,7 @@ class ExcelLotteryLHC
                     $sql_lm .= $arrLm['play_name'].$arrLm_bets['play_name']." END, ";
                 $sql_lm .= "status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
             }
+            \Log::info($sql_lm);
         }
         return $sql_lm;
     }

@@ -8,38 +8,150 @@
 
 namespace App\Http\Controllers\Bet;
 
-use App\Bets;
 use App\Excel;
+use App\ExcelLotterySSC;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
 class New_Xjssc extends Excel
 {
     protected $arrPlay_id = array(494248,494249,494250,494251,494252,494253,494254,495255,495256,495257,495258,495259,495260,495261,495262,495263,495264,495265,495266,495267,495268,496269,496270,496271,496272,496273,496274,496275,496276,496277,496278,496279,496280,496281,496282,497283,497284,497285,497286,497287,497288,497289,497290,497291,497292,497293,497294,497295,497296,498297,498298,498299,498300,498301,498302,498303,498304,498305,498306,498307,498308,498309,498310,499311,499312,499313,499314,499315,499316,499317,499318,499319,499320,499321,499322,499323,499324,4100325,4100326,4100327,4100328,4100329,4101330,4101331,4101332,4101333,4101334,4102335,4102336,4102337,4102338,4102339);
+    protected $arrPlayCate = array(
+        'ZONGHELONGHUHE' =>94,
+        'DIYIQIU' =>95,
+        'DIERQIU' =>96,
+        'DISANQIU' =>97,
+        'DISIQIU' =>98,
+        'DIWUQIU' =>99,
+        'QIANSAN' =>100,
+        'ZHONGSAN' =>101,
+        'HOUSAN' =>102,
+    );
+    protected $arrPlayId = array(
+        'ZONGHEDA' => 248,
+        'ZONGHEXIAO' => 249,
+        'ZONGHEDAN' => 250,
+        'ZONGHESHUANG' => 251,
+        'LONG' => 252,
+        'HU' => 253,
+        'HE' => 254,
+        'DIYIQIU0' => 255,
+        'DIYIQIU1' => 256,
+        'DIYIQIU2' => 257,
+        'DIYIQIU3' => 258,
+        'DIYIQIU4' => 259,
+        'DIYIQIU5' => 260,
+        'DIYIQIU6' => 261,
+        'DIYIQIU7' => 262,
+        'DIYIQIU8' => 263,
+        'DIYIQIU9' => 264,
+        'DIYIQIUDA' => 265,
+        'DIYIQIUXIAO' => 266,
+        'DIYIQIUDAN' => 267,
+        'DIYIQIUSHUANG' => 268,
+        'DIERQIU0' => 269,
+        'DIERQIU1' => 270,
+        'DIERQIU2' => 271,
+        'DIERQIU3' => 272,
+        'DIERQIU4' => 273,
+        'DIERQIU5' => 274,
+        'DIERQIU6' => 275,
+        'DIERQIU7' => 276,
+        'DIERQIU8' => 277,
+        'DIERQIU9' => 278,
+        'DIERQIUDA' => 279,
+        'DIERQIUXIAO' => 280,
+        'DIERQIUDAN' => 281,
+        'DIERQIUSHUANG' => 282,
+        'DISANQIU0' => 283,
+        'DISANQIU1' => 284,
+        'DISANQIU2' => 285,
+        'DISANQIU3' => 286,
+        'DISANQIU4' => 287,
+        'DISANQIU5' => 288,
+        'DISANQIU6' => 289,
+        'DISANQIU7' => 290,
+        'DISANQIU8' => 291,
+        'DISANQIU9' => 292,
+        'DISANQIUDA' => 293,
+        'DISANQIUXIAO' => 294,
+        'DISANQIUDAN' => 295,
+        'DISANQIUSHUANG' => 296,
+        'DISIQIU0' => 297,
+        'DISIQIU1' => 298,
+        'DISIQIU2' => 299,
+        'DISIQIU3' => 300,
+        'DISIQIU4' => 301,
+        'DISIQIU5' => 302,
+        'DISIQIU6' => 303,
+        'DISIQIU7' => 304,
+        'DISIQIU8' => 305,
+        'DISIQIU9' => 306,
+        'DISIQIUDA' => 307,
+        'DISIQIUXIAO' => 308,
+        'DISIQIUDAN' => 309,
+        'DISIQIUSHUANG' => 310,
+        'DIWUQIU0' => 311,
+        'DIWUQIU1' => 312,
+        'DIWUQIU2' => 313,
+        'DIWUQIU3' => 314,
+        'DIWUQIU4' => 315,
+        'DIWUQIU5' => 316,
+        'DIWUQIU6' => 317,
+        'DIWUQIU7' => 318,
+        'DIWUQIU8' => 319,
+        'DIWUQIU9' => 320,
+        'DIWUQIUDA' => 321,
+        'DIWUQIUXIAO' => 322,
+        'DIWUQIUDAN' => 323,
+        'DIWUQIUSHUANG' => 324,
+        'QIANSANBAOZI' => 325,
+        'QIANSANSHUNZI' => 326,
+        'QIANSANDUIZI' => 327,
+        'QIANSANBANSHUN' => 328,
+        'QIANSANZALIU' => 329,
+        'ZHONGSANBAOZI' => 330,
+        'ZHONGSANSHUNZI' => 331,
+        'ZHONGSANDUIZI' => 332,
+        'ZHONGSANBANSHUN' => 333,
+        'ZHONGSANZALIU' => 334,
+        'HOUSANBAOZI' => 335,
+        'HOUSANSHUNZI' => 336,
+        'HOUSANDUIZI' => 337,
+        'HOUSANBANSHUN' => 338,
+        'HOUSANZALIU' => 339
+    );
+
+    protected function exc_play($openCode,$gameId){
+        $win = collect([]);
+        $SSC = new ExcelLotterySSC();
+        $SSC->setArrPlay($openCode,$this->arrPlayCate,$this->arrPlayId);
+        $SSC->NUM1($gameId,$win);
+        $SSC->NUM2($gameId,$win);
+        $SSC->NUM3($gameId,$win);
+        $SSC->NUM4($gameId,$win);
+        $SSC->NUM5($gameId,$win);
+        $SSC->NUM1_DXDS($gameId,$win);
+        $SSC->NUM2_DXDS($gameId,$win);
+        $SSC->NUM3_DXDS($gameId,$win);
+        $SSC->NUM4_DXDS($gameId,$win);
+        $SSC->NUM5_DXDS($gameId,$win);
+        $SSC->ZHDXDS($gameId,$win);
+        $SSC->QIANSAN($gameId,$win);
+        $SSC->ZHONGSAN($gameId,$win);
+        $SSC->HOUSAN($gameId,$win);
+        return $win;
+    }
     public function all($openCode,$issue,$gameId,$id)
     {
-        $win = collect([]);
-        $this->NUM1($openCode,$gameId,$win);
-        $this->NUM2($openCode,$gameId,$win);
-        $this->NUM3($openCode,$gameId,$win);
-        $this->NUM4($openCode,$gameId,$win);
-        $this->NUM5($openCode,$gameId,$win);
-        $this->NUM1_DXDS($openCode,$gameId,$win);
-        $this->NUM2_DXDS($openCode,$gameId,$win);
-        $this->NUM3_DXDS($openCode,$gameId,$win);
-        $this->NUM4_DXDS($openCode,$gameId,$win);
-        $this->NUM5_DXDS($openCode,$gameId,$win);
-        $this->ZHDXDS($openCode,$gameId,$win);
-        $this->QIANSAN($openCode,$gameId,$win);
-        $this->ZHONGSAN($openCode,$gameId,$win);
-        $this->HOUSAN($openCode,$gameId,$win);
         $table = 'game_xjssc';
         $gameName = '新疆时时彩';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $bunko = $this->bunko($win,$gameId,$issue,false,$this->arrPlay_id);
+            $win = $this->exc_play($openCode,$gameId);
+            $bunko = $this->bunko($win,$gameId,$issue,false,$this->arrPlay_id,true);
             if($bunko == 1){
-                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id,true);
                 if($updateUserMoney == 1){
                     writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }
@@ -52,772 +164,27 @@ class New_Xjssc extends Excel
             writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
         }else{
             $this->stopBunko($gameId,1);
-            $agentJob = new AgentBackwaterJob($gameId,$issue);
-            $agentJob->addQueue();
-        }
-    }
-
-    private function QIANSAN($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 100;
-        $zaliu = 0;
-        $num1 = $arrOpenCode[0];
-        $num2 = $arrOpenCode[1];
-        $num3 = $arrOpenCode[2];
-        if($num1 == $num2 && $num2 == $num3){ //豹子
-            $zaliu = 1;
-            $playId = 325;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //顺子
-        $arr = [$num1,$num2,$num3];
-        sort($arr);
-        if($arr[0] == 0 && $arr[1] == 1 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = 326;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($arr[0] == 0 && $arr[1] == 8 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = 326;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = 326;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //半顺
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] !== 1 || $arr[1] - $arr[0] !== 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = 328;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //对子
-        if($arr[0] == $arr[1] || $arr[1] == $arr[2]){
-            if($arr[0] !== $arr[2]){
-                $zaliu = 1;
-                $playId = 327;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
+            //玩法退水
+            if(env('AGENT_MODEL',1) == 1) {
+                $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
+                if(!$res){
+                    \Log::info($gameName.$issue.'退水前失败！');
+                    return 0;
+                }
+                //退水
+                $res = $this->reBackUser($gameId, $issue, $gameName);
+                if(!$res){
+                    $res = DB::table($table)->where('id',$id)->where('returnwater',2)->update(['returnwater' => 1]);
+                    if(empty($res)){
+                        \Log::info($gameName.$issue.'退水中失败！');
+                        return 0;
+                    }
+                }else
+                    \Log::info($gameName.$issue.'退水前失败！');
+            }else{//代理退水
+                $agentJob = new AgentBackwaterJob($gameId,$issue);
+                $agentJob->addQueue();
             }
-        }
-        $toString = (string)$arr[0].$arr[1].$arr[2];
-        switch ($toString){
-            case '029':
-                $zaliu = 1;
-                $playId = 328;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '039':
-                $zaliu = 1;
-                $playId = 328;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '049':
-                $zaliu = 1;
-                $playId = 328;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '059':
-                $zaliu = 1;
-                $playId = 328;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '069':
-                $zaliu = 1;
-                $playId = 328;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '079':
-                $zaliu = 1;
-                $playId = 328;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //杂六
-        if($zaliu == 0){
-            $playId = 329;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-    }
-
-    private function ZHONGSAN($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 101;
-        $zaliu = 0;
-        $num1 = $arrOpenCode[1];
-        $num2 = $arrOpenCode[2];
-        $num3 = $arrOpenCode[3];
-        if($num1 == $num2 && $num2 == $num3){ //豹子
-            $zaliu = 1;
-            $playId = 330;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //顺子
-        $arr = [$num1,$num2,$num3];
-        sort($arr);
-        if($arr[0] == 0 && $arr[1] == 1 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = 331;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($arr[0] == 0 && $arr[1] == 8 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = 331;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = 331;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //半顺
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] !== 1 || $arr[1] - $arr[0] !== 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = 333;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //对子
-        if($arr[0] == $arr[1] || $arr[1] == $arr[2]){
-            if($arr[0] !== $arr[2]){
-                $zaliu = 1;
-                $playId = 332;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-        $toString = (string)$arr[0].$arr[1].$arr[2];
-        switch ($toString){
-            case '029':
-                $zaliu = 1;
-                $playId = 333;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '039':
-                $zaliu = 1;
-                $playId = 333;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '049':
-                $zaliu = 1;
-                $playId = 333;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '059':
-                $zaliu = 1;
-                $playId = 333;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '069':
-                $zaliu = 1;
-                $playId = 333;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '079':
-                $zaliu = 1;
-                $playId = 333;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //杂六
-        if($zaliu == 0){
-            $playId = 334;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-    }
-
-    private function HOUSAN($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 102;
-        $zaliu = 0;
-        $num1 = $arrOpenCode[2];
-        $num2 = $arrOpenCode[3];
-        $num3 = $arrOpenCode[4];
-        if($num1 == $num2 && $num2 == $num3){ //豹子
-            $zaliu = 1;
-            $playId = 335;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //顺子
-        $arr = [$num1,$num2,$num3];
-        sort($arr);
-        if($arr[0] == 0 && $arr[1] == 1 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = 336;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($arr[0] == 0 && $arr[1] == 8 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = 336;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = 336;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //半顺
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] !== 1 || $arr[1] - $arr[0] !== 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = 338;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //对子
-        if($arr[0] == $arr[1] || $arr[1] == $arr[2]){
-            if($arr[0] !== $arr[2]){
-                $zaliu = 1;
-                $playId = 337;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-        $toString = (string)$arr[0].$arr[1].$arr[2];
-        switch ($toString){
-            case '029':
-                $zaliu = 1;
-                $playId = 338;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '039':
-                $zaliu = 1;
-                $playId = 338;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '049':
-                $zaliu = 1;
-                $playId = 338;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '059':
-                $zaliu = 1;
-                $playId = 338;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '069':
-                $zaliu = 1;
-                $playId = 338;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '079':
-                $zaliu = 1;
-                $playId = 338;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //杂六
-        if($zaliu == 0){
-            $playId = 339;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-    }
-
-    private function ZHDXDS($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 94;
-        $num1 = $arrOpenCode[0];
-        $num2 = $arrOpenCode[1];
-        $num3 = $arrOpenCode[2];
-        $num4 = $arrOpenCode[3];
-        $num5 = $arrOpenCode[4];
-        $num_total = $num1+$num2+$num3+$num4+$num5;
-        if($num_total >= 23){ //总和大
-            $playId = 248;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($num_total <= 22){ //总和小
-            $playId = 249;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($num_total%2 == 0){ //总和双
-            $playId = 251;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else { //总和单
-            $playId = 250;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($num1 > $num5){ //龙
-            $playId = 252;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else if($num1 < $num5){ //虎
-            $playId = 253;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else if($num1 == $num5) { //和
-            $playId = 254;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-    }
-
-    private function NUM1_DXDS($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 95;
-        $num = $arrOpenCode[0];
-        //大小
-        if($num >= 5){
-            $playId = 265;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($num <= 4){
-            $playId = 266;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //单双
-        if($num%2 == 0){ //双
-            $playId = 268;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else {
-            $playId = 267;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-    }
-
-    private function NUM2_DXDS($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 96;
-        $num = $arrOpenCode[1];
-        //大小
-        if($num >= 5){
-            $playId = 279;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($num <= 4){
-            $playId = 280;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //单双
-        if($num%2 == 0){ //双
-            $playId = 282;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else {
-            $playId = 281;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-    }
-
-    private function NUM3_DXDS($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 97;
-        $num = $arrOpenCode[2];
-        //大小
-        if($num >= 5){
-            $playId = 293;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($num <= 4){
-            $playId = 294;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //单双
-        if($num%2 == 0){ //双
-            $playId = 296;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else {
-            $playId = 295;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-    }
-
-    private function NUM4_DXDS($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 98;
-        $num = $arrOpenCode[3];
-        //大小
-        if($num >= 5){
-            $playId = 307;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($num <= 4){
-            $playId = 308;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //单双
-        if($num%2 == 0){ //双
-            $playId = 310;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else {
-            $playId = 309;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-    }
-
-    private function NUM5_DXDS($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 99;
-        $num = $arrOpenCode[4];
-        //大小
-        if($num >= 5){
-            $playId = 321;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($num <= 4){
-            $playId = 322;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //单双
-        if($num%2 == 0){ //双
-            $playId = 324;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else {
-            $playId = 323;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-    }
-
-    private function NUM1($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 95;
-        $num = $arrOpenCode[0];
-        switch ($num){
-            case 0:
-                $play_id = 255;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 1:
-                $play_id = 256;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 2:
-                $play_id = 257;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 3:
-                $play_id = 258;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 4:
-                $play_id = 259;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 5:
-                $play_id = 260;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 6:
-                $play_id = 261;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 7:
-                $play_id = 262;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 8:
-                $play_id = 263;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 9:
-                $play_id = 264;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-        }
-    }
-
-    private function NUM2($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 96;
-        $num = $arrOpenCode[1];
-        switch ($num){
-            case 0:
-                $play_id = 269;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 1:
-                $play_id = 270;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 2:
-                $play_id = 271;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 3:
-                $play_id = 272;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 4:
-                $play_id = 273;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 5:
-                $play_id = 274;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 6:
-                $play_id = 275;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 7:
-                $play_id = 276;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 8:
-                $play_id = 277;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 9:
-                $play_id = 278;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-        }
-    }
-
-    private function NUM3($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 97;
-        $num = $arrOpenCode[2];
-        switch ($num){
-            case 0:
-                $play_id = 283;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 1:
-                $play_id = 284;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 2:
-                $play_id = 285;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 3:
-                $play_id = 286;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 4:
-                $play_id = 287;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 5:
-                $play_id = 288;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 6:
-                $play_id = 289;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 7:
-                $play_id = 290;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 8:
-                $play_id = 291;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 9:
-                $play_id = 292;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-        }
-    }
-
-    private function NUM4($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 98;
-        $num = $arrOpenCode[3];
-        switch ($num){
-            case 0:
-                $play_id = 297;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 1:
-                $play_id = 298;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 2:
-                $play_id = 299;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 3:
-                $play_id = 300;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 4:
-                $play_id = 301;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 5:
-                $play_id = 302;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 6:
-                $play_id = 303;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 7:
-                $play_id = 304;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 8:
-                $play_id = 305;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 9:
-                $play_id = 306;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-        }
-    }
-
-    private function NUM5($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 99;
-        $num = $arrOpenCode[4];
-        switch ($num){
-            case 0:
-                $play_id = 311;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 1:
-                $play_id = 312;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 2:
-                $play_id = 313;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 3:
-                $play_id = 314;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 4:
-                $play_id = 315;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 5:
-                $play_id = 316;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 6:
-                $play_id = 317;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 7:
-                $play_id = 318;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 8:
-                $play_id = 319;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
-            case 9:
-                $play_id = 320;
-                $winCode = $gameId.$playCate.$play_id;
-                $win->push($winCode);
-                break;
         }
     }
 }

@@ -1,14 +1,12 @@
 <?php
 /**
- * 六合彩玩法结算
+ * 赛车玩法结算
  * User: Zoe
  * Date: 2019/4/20
  * Time: 下午18:01
  */
 
 namespace App;
-
-use Illuminate\Support\Facades\DB;
 
 class ExcelLotterySC
 {
