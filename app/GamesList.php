@@ -31,6 +31,29 @@ class GamesList extends Base
         return $arr;
     }
 
+    /**
+     * 获取所有的不重复的游戏
+     * @param array $param 附加参数
+     * @return mixed
+     */
+    public static function getChildList($param = [])
+    {
+        $res = self::select(DB::raw('games_list.game_id, games_list.name, games_list.pid '))->where(function($sql){
+            isset($param['type']) &&
+            $sql->where('games_api.type', 1);
+            $sql->where('pid', '>', 0);
+        })->leftJoin('games_api', 'games_api.g_id', 'games_list.g_id')
+            ->where(function($sql) use($param){
+                (isset($param['status']) || isset($param['open'])) &&
+                $sql->whereRaw('CASE WHEN pid > 0 THEN
+                                games_api.status = 1 AND
+                                games_list.open = 1
+                            ELSE 1 END ');
+            })
+            ->orderBy('games_list.sort', 'asc')->groupBy('games_list.name')->orderBy('games_list.game_id', 'asc')->get();
+        return $res;
+    }
+
     public static function getAll($param = [])
     {
         return self::where(function($sql)use($param){
