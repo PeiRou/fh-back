@@ -8,34 +8,127 @@
 
 namespace App\Http\Controllers\Bet;
 
-use App\Bets;
 use App\Excel;
+use App\ExcelLotteryK3;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
 class New_Ahk3 extends Excel
 {
     protected $arrPlay_id = array(112304353,112304354,112304355,112304356,112304357,112304358,112304359,112304360,112304361,112304362,112304363,112304364,112304365,112304366,112304367,112304368,112304369,112304370,112304371,112304372,112314373,112314374,112314375,112314376,112314377,112324378,112324379,112324380,112324381,112324382,112324383,112324384,112334385,112334386,112334387,112334388,112334389,112334390,112344391,112344392,112344393,112344394,112344395,112344396,112344397,112344398,112344399,112344400,112354401,112354402,112354403,112354404,112354405,112354406,112354407,112354408,112354409,112354410,112354411,112354412,112354413,112354414,112364415,112364416,112364417,112364418,112364419,112364420,112374421,112374422,112374423,112374424,112374425,112374426);
+    protected $arrPlayCate = array(
+        'HZ' =>230,
+        'SLH' =>231,
+        'STH' =>232,
+        'ETH' =>233,
+        'KD' =>234,
+        'PD' =>235,
+        'BUCHM' =>236,
+        'BICHM' =>237,
+    );
+    protected $arrPlayId = array(
+        'HEZHI3' => 4353,
+        'HEZHI4' => 4354,
+        'HEZHI5' => 4355,
+        'HEZHI6' => 4356,
+        'HEZHI7' => 4357,
+        'HEZHI8' => 4358,
+        'HEZHI9' => 4359,
+        'HEZHI10' => 4360,
+        'HEZHI11' => 4361,
+        'HEZHI12' => 4362,
+        'HEZHI13' => 4363,
+        'HEZHI14' => 4364,
+        'HEZHI15' => 4365,
+        'HEZHI16' => 4366,
+        'HEZHI17' => 4367,
+        'HEZHI18' => 4368,
+        'HEZHIDA' => 4369,
+        'HEZHIXIAO' => 4370,
+        'HEZHIDAN' => 4371,
+        'HEZHISHUANG' => 4372,
+        'SANLIANHAO123' => 4373,
+        'SANLIANHAO234' => 4374,
+        'SANLIANHAO345' => 4375,
+        'SANLIANHAO456' => 4376,
+        'SANLIANTONGXUAN' => 4377,
+        'SANTONGHAO111' => 4378,
+        'SANTONGHAO222' => 4379,
+        'SANTONGHAO333' => 4380,
+        'SANTONGHAO444' => 4381,
+        'SANTONGHAO555' => 4382,
+        'SANTONGHAO666' => 4383,
+        'SANTONGTONGXUAN' => 4384,
+        'ERTONGHAO11' => 4385,
+        'ERTONGHAO22' => 4386,
+        'ERTONGHAO33' => 4387,
+        'ERTONGHAO44' => 4388,
+        'ERTONGHAO55' => 4389,
+        'ERTONGHAO66' => 4390,
+        'KUADU0' => 4391,
+        'KUADU1' => 4392,
+        'KUADU2' => 4393,
+        'KUADU3' => 4394,
+        'KUADU4' => 4395,
+        'KUADU5' => 4396,
+        'KUADUDA' => 4397,
+        'KUADUXIAO' => 4398,
+        'KUADUDAN' => 4399,
+        'KUADUSHUANG' => 4400,
+        'PAIDIAN1' => 4401,
+        'PAIDIAN2' => 4402,
+        'PAIDIAN3' => 4403,
+        'PAIDIAN4' => 4404,
+        'PAIDIAN5' => 4405,
+        'PAIDIAN6' => 4406,
+        'PAIDIAN7' => 4407,
+        'PAIDIAN8' => 4408,
+        'PAIDIAN9' => 4409,
+        'PAIDIAN10' => 4410,
+        'PAIDIANDA' => 4411,
+        'PAIDIANXIAO' => 4412,
+        'PAIDIANDAN' => 4413,
+        'PAIDIANSHUANG' => 4414,
+        'BUCHUHAOMA1' => 4415,
+        'BUCHUHAOMA2' => 4416,
+        'BUCHUHAOMA3' => 4417,
+        'BUCHUHAOMA4' => 4418,
+        'BUCHUHAOMA5' => 4419,
+        'BUCHUHAOMA6' => 4420,
+        'BICHUHAOMA1' => 4421,
+        'BICHUHAOMA2' => 4422,
+        'BICHUHAOMA3' => 4423,
+        'BICHUHAOMA4' => 4424,
+        'BICHUHAOMA5' => 4425,
+        'BICHUHAOMA6' => 4426,
+    );
+
+    protected function exc_play($openCode,$gameId){
+        $win = collect([]);
+        $K3 = new ExcelLotteryK3();
+        $K3->setArrPlay($openCode,$this->arrPlayCate,$this->arrPlayId);
+        $K3->HZ($gameId,$win); //和值
+        $K3->SLH($gameId,$win); //三连号
+        $K3->STH($gameId,$win); //三同号
+        $K3->ETH($gameId,$win); //二同号
+        $K3->KD($gameId,$win); //跨度
+        $K3->PD($gameId,$win); //牌点
+        $K3->BUCHU($openCode,$gameId,$win); //不出号码
+        $K3->BICHU($openCode,$gameId,$win); //必出号码
+        return $win;
+    }
     public function all($openCode,$issue,$gameId,$id)
     {
-        $win = collect([]);
-        $this->HZ($openCode,$gameId,$win); //和值
-        $this->SLH($openCode,$gameId,$win); //三连号
-        $this->STH($openCode,$gameId,$win); //三同号
-        $this->ETH($openCode,$gameId,$win); //二同号
-        $this->KD($openCode,$gameId,$win); //跨度
-        $this->PD($openCode,$gameId,$win); //牌点
-        $this->BUCHU($openCode,$gameId,$win); //不出号码
-        $this->BICHU($openCode,$gameId,$win); //必出号码
         $table = 'game_ahk3';
         $gameName = '安徽快3';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            $bunko = $this->bunko($win,$gameId,$issue,false,$this->arrPlay_id);
+            $win = $this->exc_play($openCode,$gameId);
+            $bunko = $this->bunko($win,$gameId,$issue,false,$this->arrPlay_id,true);
             if($bunko == 1){
-                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName);
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id,true);
                 if($updateUserMoney == 1){
-                    writeLog('New_Ahk3', $gameName . $issue . "结算出错");
+                    writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }
             }
         }
@@ -46,246 +139,26 @@ class New_Ahk3 extends Excel
             writeLog('New_Ahk3', $gameName . $issue . "结算not Finshed");
         }else{
             $this->stopBunko($gameId,1);
-            $agentJob = new AgentBackwaterJob($gameId,$issue);
-            $agentJob->addQueue();
-        }
-    }
-
-    public function HZ($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 230;
-        $HZ = (int)$arrOpenCode[0] + (int)$arrOpenCode[1] + (int)$arrOpenCode[2];
-        $TS = 0;
-
-        if((int)$arrOpenCode[0] == (int)$arrOpenCode[1] && (int)$arrOpenCode[0] == (int)$arrOpenCode[2]){ //通杀
-            $TS = 1;
-        }
-        if($HZ >= 11 && $HZ <= 18 && $TS == 0){ //大
-            $playId = 4369;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($HZ >= 3 && $HZ <= 10 && $TS == 0){ //小
-            $playId = 4370;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($HZ%2 == 0){ //双
-            $playId = 4372;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else { //单
-            $playId = 4371;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-
-        $HZDS_arr = [3=>4353,4=>4354,5=>4355,6=>4356,7=>4357,8=>4358,9=>4359,10=>4360,11=>4361,12=>4362,13=>4363,14=>4364,15=>4365,16=>4366,17=>4367,18=>4368];
-        foreach ($HZDS_arr as $k => $v){
-            if($HZ == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-    }
-
-    public function SLH($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 231;
-        $SLH_TX = 0;
-        $SLH_string = $arrOpenCode[0].$arrOpenCode[1].$arrOpenCode[2];
-        $SLH_arr = [
-            '123' => 4373,
-            '234' => 4374,
-            '345' => 4375,
-            '456' => 4376,
-        ];
-        foreach ($SLH_arr as $k => $v){
-            if($k == $SLH_string){
-                $SLH_TX += 1;
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-        if($SLH_TX !== 0){
-            $playId = 4377;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-    }
-
-    public function STH($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 232;
-        $STH_TX = 0;
-        $STH_string = $arrOpenCode[0].$arrOpenCode[1].$arrOpenCode[2];
-        $STH_arr = [
-            '111' => 4378,
-            '222' => 4379,
-            '333' => 4380,
-            '444' => 4381,
-            '555' => 4382,
-            '666' => 4383,
-        ];
-        foreach ($STH_arr as $k => $v){
-            if($k == $STH_string){
-                $STH_TX += 1;
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-        if($STH_TX !== 0){
-            $playId = 4384;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-    }
-
-    public function ETH($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 233;
-        $isBaoZi = 0;
-        $ETH_arr = [
-            1 => 4385,
-            2 => 4386,
-            3 => 4387,
-            4 => 4388,
-            5 => 4389,
-            6 => 4390,
-        ];
-        if((int)$arrOpenCode[0] == (int)$arrOpenCode[1] && (int)$arrOpenCode[0] == (int)$arrOpenCode[2]){
-            $isBaoZi = 1;
-        }
-        if((int)$arrOpenCode[0] == (int)$arrOpenCode[1] && $isBaoZi == 0){
-            foreach ($ETH_arr as $k => $v){
-                if((int)$arrOpenCode[0] == $k){
-                    $playId = $v;
-                    $winCode = $gameId.$playCate.$playId;
-                    $win->push($winCode);
+            //玩法退水
+            if(env('AGENT_MODEL',1) == 1) {
+                $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
+                if(!$res){
+                    \Log::info($gameName.$issue.'退水前失败！');
+                    return 0;
                 }
-            }
-        }
-        if((int)$arrOpenCode[1] == (int)$arrOpenCode[2] && $isBaoZi == 0){
-            foreach ($ETH_arr as $k => $v){
-                if((int)$arrOpenCode[1] == $k){
-                    $playId = $v;
-                    $winCode = $gameId.$playCate.$playId;
-                    $win->push($winCode);
-                }
-            }
-        }
-    }
-
-    public function KD($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 234;
-
-        $KD_NUM = (int)$arrOpenCode[2] - (int)$arrOpenCode[0];
-        $KD_DX_arr = [0 => 4398, 1 => 4398, 2 => 4398, 3 => 4397, 4 => 4397, 5 => 4397];
-        $KD_DS_arr = [0 => 4400, 1 => 4399, 2 => 4400, 3 => 4399, 4 => 4400, 5 => 4399];
-        $KD_KDZ_arr = [0 => 4391, 1 => 4392, 2 => 4393, 3 => 4394, 4 => 4395, 5 => 4396];
-        foreach ($KD_DX_arr as $k => $v){
-            if($KD_NUM == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-        foreach ($KD_DS_arr as $k => $v){
-            if($KD_NUM == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-        foreach ($KD_KDZ_arr as $k => $v){
-            if($KD_NUM == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-    }
-
-    public function PD($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 235;
-        $PD_NUM = (int)$arrOpenCode[0] + (int)$arrOpenCode[1] + (int)$arrOpenCode[2];
-        $PD_GEWEI = $PD_NUM % 10;
-        $PD_DX_arr = [0 => 4411, 6 => 4411, 7 => 4411, 8 => 4411, 9 => 4411, 1 => 4412, 2 => 4412, 3 => 4412, 4 => 4412, 5 => 4412];
-        $PD_PDZ_arr = [1 => 4401, 2 => 4402, 3 => 4403, 4 => 4404, 5 => 4405, 6 => 4406, 7 => 4407, 8 => 4408, 9 => 4409, 0 => 4410];
-        foreach ($PD_DX_arr as $k => $v){
-            if($PD_GEWEI == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-        if($PD_GEWEI%2 == 0){
-            $playId = 4414;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else {
-            $playId = 4413;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        foreach ($PD_PDZ_arr as $k => $v){
-            if($PD_GEWEI == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-    }
-
-    public function BUCHU($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 236;
-        $BUCHU_arr = [
-            1 => 4415,
-            2 => 4416,
-            3 => 4417,
-            4 => 4418,
-            5 => 4419,
-            6 => 4420
-        ];
-        foreach ($BUCHU_arr as $k => $v){
-            if(!in_array($k,$arrOpenCode)){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-    }
-
-    public function BICHU($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 237;
-        $BICHU_arr = [
-            1 => 4421,
-            2 => 4422,
-            3 => 4423,
-            4 => 4424,
-            5 => 4425,
-            6 => 4426
-        ];
-        foreach ($BICHU_arr as $k => $v){
-            if(in_array($k,$arrOpenCode)){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
+                //退水
+                $res = $this->reBackUser($gameId, $issue, $gameName);
+                if(!$res){
+                    $res = DB::table($table)->where('id',$id)->where('returnwater',2)->update(['returnwater' => 1]);
+                    if(empty($res)){
+                        \Log::info($gameName.$issue.'退水中失败！');
+                        return 0;
+                    }
+                }else
+                    \Log::info($gameName.$issue.'退水前失败！');
+            }else{//代理退水
+                $agentJob = new AgentBackwaterJob($gameId,$issue);
+                $agentJob->addQueue();
             }
         }
     }
