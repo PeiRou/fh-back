@@ -44,6 +44,7 @@ class PrivodeController extends Controller{
         $model = DB::table('jq_error_bet')->where('id', $id);
         $info = $model->first();
         $param = json_decode($info->param, 1);
+        $param['g_id'] = $info->g_id;
         $v = GamesApi::getQpList($param)[0];
         $res = $this->action($v->g_id, 'getBet', $param);
         $model->update([
@@ -112,7 +113,6 @@ class PrivodeController extends Controller{
                 'msg' => '缺少配置',
                 'data' => []
             ];
-
         if($getGamesApiInfo && isset($getGamesApiInfo['class_name'])){
             $instanceName = $this->getInstanceName($getGamesApiInfo['class_name']);
             $repoName= $this->getRepositoryName($getGamesApiInfo['class_name']);
