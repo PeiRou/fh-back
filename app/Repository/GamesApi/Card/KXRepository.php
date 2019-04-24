@@ -34,13 +34,14 @@ class KXRepository extends BaseRepository
                 'GameID' => $data['id'][$k],
                 'username' => str_replace($this->Config['siteID'].'_','',$data['account'][$k]),
                 'AllBet' => $data['bet'][$k],
-                'bunko' => sprintf("%.2f", $data['settlement'][$k] - $data['bet'][$k]),
+                'bunko' => sprintf("%.2f", $data['settlement'][$k] - $data['bet'][$k]), //中奖金额 - 下注金额
                 'bet_money' => $data['bet'][$k],
                 'GameStartTime' => date('Y-m-d H:i:s', $data['ctime'][$k]),
                 'GameEndTime' =>  date('Y-m-d H:i:s', $data['ctime'][$k]),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s', $data['ctime'][$k]),
                 'gameCategory' => 'PVP',
+                'serviceMoney' => 0,
             ];
             $user = $this->getUser($array['username']);
             $array['agent'] = $user->agent ?? 0;

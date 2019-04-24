@@ -935,4 +935,6 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/obtain/base/callback/{action}', 'Obtain\BaseController@callback');
 //admin账号登录
     Route::post('/obtain/login/doAction', 'Obtain\LoginController@doAction');
+//第三方游戏
+    Route::post('/obtain/login/GamesApi', 'Obtain\LoginController@doAction');
 });

@@ -43,7 +43,7 @@ $(function(){
 })
 function save(){
     if(tempDepNames.length <= 0){
-        Calert('没有任何更改','red')
+        return Calert('没有任何更改','red')
     }
     $.ajax({
         url: '/back/modal/switchGamesApiList',

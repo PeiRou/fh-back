@@ -13,6 +13,7 @@ class GamesList extends Base
 {
     protected $table = 'games_list';
     protected $primaryKey = 'id';
+    public $timestamps = false;
 
     public static function getArr($param = [])
     {

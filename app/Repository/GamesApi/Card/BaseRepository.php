@@ -61,13 +61,14 @@ class BaseRepository
                 'GameID' => $data['GameID'][$k],
                 'username' => str_replace($this->Config['agent'].'_','',$data['Accounts'][$k]),
                 'AllBet' => $data['AllBet'][$k],
-                'bunko' => $data['Profit'][$k],
+                'bunko' => $data['Profit'][$k] + $data['Revenue'][$k], //输赢 + 服务费
                 'bet_money' => $data['CellScore'][$k],
                 'GameStartTime' => $data['GameStartTime'][$k],
                 'GameEndTime' => $data['GameEndTime'][$k],
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => $data['GameStartTime'][$k],
                 'gameCategory' => 'PVP',
+                'serviceMoney' => $data['Revenue'][$k],
             ];
             $user = $this->getUser($array['username']);
             $array['user_id'] = $user->id ?? 0;
