@@ -42,7 +42,6 @@ class New_Pknn extends Excel
         $table = 'game_pknn';
         $gameName = 'PK10牛牛';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
-        $excelModel = new Excel();
         if($betCount > 0){
             $bunko = 0;
             $resData = $this->exc_play_nn($openCode,$gameId,$nn);
@@ -67,7 +66,7 @@ class New_Pknn extends Excel
         if ($update !== 1) {
             writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
         }else{
-            $excelModel->stopBunko($gameId,1);
+            $this->stopBunko($gameId,1);
             //玩法退水
             if(env('AGENT_MODEL',1) == 1) {
                 $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
