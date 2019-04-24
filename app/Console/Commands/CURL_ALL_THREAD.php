@@ -88,7 +88,6 @@ class CURL_ALL_THREAD extends Command
             $this->exeCURL('http://127.0.0.1:9500?thread=next_open_ksft');
             $this->exeCURL('http://127.0.0.1:9500?thread=next_open_ksssc');
             $this->exeCURL('http://127.0.0.1:9500?thread=next_open_twxyft');
-            $this->exeCURL('http://127.0.0.1:9500?thread=BUNKO_ahk3');
             $this->exeCURL('http://127.0.0.1:9500?thread=BUNKO_bjkl8');
             $this->exeCURL('http://127.0.0.1:9500?thread=BUNKO_bjpk10');
             $this->exeCURL('http://127.0.0.1:9500?thread=BUNKO_cqssc');
@@ -146,6 +145,9 @@ class CURL_ALL_THREAD extends Command
             $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_xyft');
             $this->exeCURL('http://127.0.0.1:9500?thread=next_open_xyft');
             $this->exeCURL('http://127.0.0.1:9500?thread=BUNKO_xyft');
+            $this->exeCURL('http://127.0.0.1:9500?thread=next_issue_ahk3');
+            $this->exeCURL('http://127.0.0.1:9500?thread=next_open_ahk3');
+            $this->exeCURL('http://127.0.0.1:9500?thread=BUNKO_ahk3');
             //清数据
             $this->exeCURL('http://127.0.0.1:9500?thread=clear_data');
         }
