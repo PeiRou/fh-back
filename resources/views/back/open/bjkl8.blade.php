@@ -39,10 +39,9 @@
             <thead>
             <th width="8%">期号</th>
             <th width="10%">开奖时间</th>
-            <th align="center" width="30%">北京快乐8开出号码</th>
-            <th align="center" width="10%">pc蛋蛋开出号码</th>
+            <th align="center" width="32%">开出号码</th>
             <th width="12%">总和</th>
-            <th width="6%">状态</th>
+            <th width="8%">状态</th>
             <th width="12%">操作</th>
             </tr>
             </thead>

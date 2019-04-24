@@ -27,17 +27,6 @@ $(function () {
                     }
                     return "<div class='T_KL8' style='width: 320px'>" + txt + "</div>";
                 }},
-            {data: function (data) {        //pcdd开出号码
-                    if(data.pcddOpennum == null || data.opennum == '')
-                        return "";
-                    after = data.pcddOpennum.split(",");
-                    txt = "";
-                    for(var i =0;i<after.length;i++){
-                        var num = parseInt(after[i])+0;
-                        txt = txt + "<span><b class='b"+num+"'>"+num+"</b></span>";
-                    }
-                    return "<div class='PCDD' >" + txt + "</div>";
-                }},
             {data: function (data) {        //总和
                     if(data.opennum == null || data.opennum == '')
                         return "";
