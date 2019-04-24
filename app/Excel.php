@@ -1070,7 +1070,18 @@ class Excel
     protected function exc_play($openCode,$gameId){
         return '';
     }
-    //试算杀率个别取用方法，用来继承的父类
+
+    /**
+     * 六合彩类结算
+     * @param $openCode
+     * @param $win
+     * @param $gameId
+     * @param $issue
+     * @param $he
+     * @param $excel
+     * @param null $LHC
+     * @return int
+     */
     protected function BUNKO_LHC($openCode, $win, $gameId, $issue, $he, $excel, $LHC = null){
         $bunko_index = 0;
         $id = [];
@@ -1218,4 +1229,90 @@ class Excel
     }
     //试算杀率个别取用方法，用来继承的父类
     protected $arrPlay_id = [];
+
+    /**
+     * 农场类结算
+     * @param $win
+     * @param $gameId
+     * @param $issue
+     * @param $openCode
+     * @param $he
+     */
+    protected function bunko_nc($win,$gameId,$issue,$openCode,$he,$NC){
+        $bunko_index = 0;
+        $id = [];
+        foreach ($win as $k=>$v){
+            $id[] = $v;
+        }
+        $table = 'bet';
+        $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        if($getUserBets){
+            $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
+            $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
+            $sql_he = "UPDATE bet SET bunko = CASE "; //和局的SQL语句
+
+            $ids = implode(',', $id);
+            $ids_lose = array_diff($this->arrPlay_id,$id);
+            $sql_bets = '';
+            $sql_bets_lose = '';
+            $sql_bets_he = '';
+            foreach ($getUserBets as $item){
+                $bunko = $item->bet_money * $item->play_odds;
+                $bunko_lose = 0-$item->bet_money;
+                $bunko_he = $item->bet_money * 1;
+                $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
+                $sql_bets_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
+            }
+            if(count($he)>0) {
+                $ids_he = [];
+                $tmpids = explode(',',$ids);
+                foreach ($he as $k=>$v){
+                    $ids_he[] = $v;
+                    unset($tmpids[$v]);
+                    unset($ids_lose[$v]);
+                }
+                $ids = implode(',', $tmpids);
+                $ids_he = implode(',', $ids_he);
+                $sql_he .= $sql_bets_he . "END, status = 3 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_he)";
+            }else
+                $sql_he = '';
+            $ids_lose = implode(',', $ids_lose);
+            $sql .= $sql_bets . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids)";
+            $sql_lose .= $sql_bets_lose . "END, status = 3 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_lose)";
+            if(!empty($sql_bets)){
+                $run = DB::statement($sql);
+                if($run == 1) {
+                    $bunko_index++;
+                }
+            }
+
+            //连码-----开始
+            $sql_lm = $NC->NC_LIANMA($openCode,$gameId,$table,$issue);
+            //连码-----结束
+
+            if(!empty($sql_he)){
+                $runhe = DB::connection('mysql::write')->statement($sql_he);
+                if($runhe == 1)
+                    $bunko_index++;
+            }
+            if(!empty($sql_bets_lose)){
+                $run2 = DB::connection('mysql::write')->statement($sql_lose);
+                if($run2 == 1)
+                    $bunko_index++;
+            }
+            if(!empty($sql_lm)){
+                $run3 = DB::connection('mysql::write')->statement($sql_lm);
+                if($run3 == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+
+            if($bunko_index !== 0){
+                return 1;
+            }
+        }
+    }
 }

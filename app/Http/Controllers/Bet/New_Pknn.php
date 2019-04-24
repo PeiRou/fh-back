@@ -17,6 +17,17 @@ use Illuminate\Support\Facades\Session;
 class New_Pknn
 {
     protected $arrPlay_id = array(901903462,901903463,901903464,901903465,901903466);
+    protected $arrPlayCate = array(
+        'NN' => 190
+    );
+    protected $arrPlayId = array(
+        'XIANYI' => 3462,
+        'XIANER' => 3463,
+        'XIANSAN' => 3464,
+        'XIANSI' => 3465,
+        'XIANWU' => 3466,
+    );
+
     public function all($openCode,$nn,$issue,$gameId,$id)
     {
         $win = collect([]);

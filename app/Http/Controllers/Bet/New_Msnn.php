@@ -18,6 +18,17 @@ use Illuminate\Support\Facades\Session;
 class New_Msnn
 {
     protected $arrPlay_id = array(911893457,911893458,911893459,911893460,911893461);
+    protected $arrPlayCate = array(
+        'NN' => 189
+    );
+    protected $arrPlayId = array(
+        'XIANYI' => 3457,
+        'XIANER' => 3458,
+        'XIANSAN' => 3459,
+        'XIANSI' => 3460,
+        'XIANWU' => 3461,
+    );
+
     public function all($openCode,$nn,$issue,$gameId,$id)
     {
         $win = collect([]);

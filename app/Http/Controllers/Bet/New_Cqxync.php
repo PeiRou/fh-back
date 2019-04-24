@@ -2,21 +2,367 @@
 
 namespace App\Http\Controllers\Bet;
 
-use App\Bets;
 use App\Excel;
+use App\ExcelLotteryNC;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 
-class New_Cqxync
+class New_Cqxync extends Excel
 {
     protected $arrPlay_id = array(6142931,6142932,6142933,6142934,6142935,6142936,6143937,6143938,6143939,6143940,6143941,6143942,6143943,6143944,6143945,6143946,6143947,6143948,6143949,6143950,6143951,6143952,6143953,6143954,6143955,6143956,6143957,6143958,6143959,6143960,6143961,6143962,6143963,6143964,6143965,6143966,6143967,6143968,6143969,6143970,6143971,6143972,6143973,6144974,6144975,6144976,6144977,6144978,6144979,6144980,6144981,6144982,6144983,6144984,6144985,6144986,6144987,6144988,6144989,6144990,6144991,6144992,6144993,6144994,6144995,6144996,6144997,6144998,6144999,61441000,61441001,61441002,61441003,61441004,61441005,61441006,61441007,61441008,61441009,61441010,61451011,61451012,61451013,61451014,61451015,61451016,61451017,61451018,61451019,61451020,61451021,61451022,61451023,61451024,61451025,61451026,61451027,61451028,61451029,61451030,61451031,61451032,61451033,61451034,61451035,61451036,61451037,61451038,61451039,61451040,61451041,61451042,61451043,61451044,61451045,61451046,61451047,61461048,61461049,61461050,61461051,61461052,61461053,61461054,61461055,61461056,61461057,61461058,61461059,61461060,61461061,61461062,61461063,61461064,61461065,61461066,61461067,61461068,61461069,61461070,61461071,61461072,61461073,61461074,61461075,61461076,61461077,61461078,61461079,61461080,61461081,61461082,61461083,61461084,61471085,61471086,61471087,61471088,61471089,61471090,61471091,61471092,61471093,61471094,61471095,61471096,61471097,61471098,61471099,61471100,61471101,61471102,61471103,61471104,61471105,61471106,61471107,61471108,61471109,61471110,61471111,61471112,61471113,61471114,61471115,61471116,61471117,61471118,61471119,61471120,61471121,61481122,61481123,61481124,61481125,61481126,61481127,61481128,61481129,61481130,61481131,61481132,61481133,61481134,61481135,61481136,61481137,61481138,61481139,61481140,61481141,61481142,61481143,61481144,61481145,61481146,61481147,61481148,61481149,61481150,61481151,61481152,61481153,61481154,61481155,61481156,61481157,61481158,61491159,61491160,61491161,61491162,61491163,61491164,61491165,61491166,61491167,61491168,61491169,61491170,61491171,61491172,61491173,61491174,61491175,61491176,61491177,61491178,61491179,61491180,61491181,61491182,61491183,61491184,61491185,61491186,61491187,61491188,61491189,61491190,61491191,61491192,61491193,61491194,61491195,61501196,61501197,61501198,61501199,61501200,61501201,61501202,61501203,61501204,61501205,61501206,61501207,61501208,61501209,61501210,61501211,61501212,61501213,61501214,61501215,61501216,61501217,61501218,61501219,61501220,61501221,61501222,61501223,61501224,61501225,61501226,61501227,61501228,61501229,61501230,61501231,61501232,61511233,61511234,61511235,61511236,61511237,61511238,61511239,61511240,61511241,61511242,61511243,61511244,61511245,61511246,61511247,61511248,61511249,61511250,61511251,61511252,61521253,61521254,61521255,61521256,61521257,61521258);
-    private function exc_play($openCode,$gameId)
+    protected $arrPlayCate = array(
+        'ZH' => 42,
+        'QIU1' => 43,
+        'QIU2' => 44,
+        'QIU3' => 45,
+        'QIU4' => 46,
+        'QIU5' => 47,
+        'QIU6' => 48,
+        'QIU7' => 49,
+        'QIU8' => 50,
+        'ZM' => 51,
+        'LM' => 52,
+    );
+    protected $arrPlayId = array(
+        'ZONGHEDA' => 931,
+        'ZONGHEXIAO' => 932,
+        'ZONGHEDAN' => 933,
+        'ZONGHESHUANG' => 934,
+        'ZONGHEWEIDA' => 935,
+        'ZONGHEWEIXIAO' => 936,
+        'DIYIQIU1' => 937,
+        'DIYIQIU2' => 938,
+        'DIYIQIU3' => 939,
+        'DIYIQIU4' => 940,
+        'DIYIQIU5' => 941,
+        'DIYIQIU6' => 942,
+        'DIYIQIU7' => 943,
+        'DIYIQIU8' => 944,
+        'DIYIQIU9' => 945,
+        'DIYIQIU10' => 946,
+        'DIYIQIU11' => 947,
+        'DIYIQIU12' => 948,
+        'DIYIQIU13' => 949,
+        'DIYIQIU14' => 950,
+        'DIYIQIU15' => 951,
+        'DIYIQIU16' => 952,
+        'DIYIQIU17' => 953,
+        'DIYIQIU18' => 954,
+        'DIYIQIU19' => 955,
+        'DIYIQIU20' => 956,
+        'DIYIQIUDA' => 957,
+        'DIYIQIUXIAO' => 958,
+        'DIYIQIUDAN' => 959,
+        'DIYIQIUSHUANG' => 960,
+        'DIYIQIUWEIDA' => 961,
+        'DIYIQIUWEIXIAO' => 962,
+        'DIYIQIUHESHUDAN' => 963,
+        'DIYIQIUHESHUSHUANG' => 964,
+        'DIYIQIUDONG' => 965,
+        'DIYIQIUNAN' => 966,
+        'DIYIQIUXI' => 967,
+        'DIYIQIUBEI' => 968,
+        'DIYIQIUZHONG' => 969,
+        'DIYIQIUFA' => 970,
+        'DIYIQIUBAI' => 971,
+        'DIYIQIULONG' => 972,
+        'DIYIQIUHU' => 973,
+        'DIERQIU1' => 974,
+        'DIERQIU2' => 975,
+        'DIERQIU3' => 976,
+        'DIERQIU4' => 977,
+        'DIERQIU5' => 978,
+        'DIERQIU6' => 979,
+        'DIERQIU7' => 980,
+        'DIERQIU8' => 981,
+        'DIERQIU9' => 982,
+        'DIERQIU10' => 983,
+        'DIERQIU11' => 984,
+        'DIERQIU12' => 985,
+        'DIERQIU13' => 986,
+        'DIERQIU14' => 987,
+        'DIERQIU15' => 988,
+        'DIERQIU16' => 989,
+        'DIERQIU17' => 990,
+        'DIERQIU18' => 991,
+        'DIERQIU19' => 992,
+        'DIERQIU20' => 993,
+        'DIERQIUDA' => 994,
+        'DIERQIUXIAO' => 995,
+        'DIERQIUDAN' => 996,
+        'DIERQIUSHUANG' => 997,
+        'DIERQIUWEIDA' => 998,
+        'DIERQIUWEIXIAO' => 999,
+        'DIERQIUHESHUDAN' => 1000,
+        'DIERQIUHESHUSHUANG' => 1001,
+        'DIERQIUDONG' => 1002,
+        'DIERQIUNAN' => 1003,
+        'DIERQIUXI' => 1004,
+        'DIERQIUBEI' => 1005,
+        'DIERQIUZHONG' => 1006,
+        'DIERQIUFA' => 1007,
+        'DIERQIUBAI' => 1008,
+        'DIERQIULONG' => 1009,
+        'DIERQIUHU' => 1010,
+        'DISANQIU1' => 1011,
+        'DISANQIU2' => 1012,
+        'DISANQIU3' => 1013,
+        'DISANQIU4' => 1014,
+        'DISANQIU5' => 1015,
+        'DISANQIU6' => 1016,
+        'DISANQIU7' => 1017,
+        'DISANQIU8' => 1018,
+        'DISANQIU9' => 1019,
+        'DISANQIU10' => 1020,
+        'DISANQIU11' => 1021,
+        'DISANQIU12' => 1022,
+        'DISANQIU13' => 1023,
+        'DISANQIU14' => 1024,
+        'DISANQIU15' => 1025,
+        'DISANQIU16' => 1026,
+        'DISANQIU17' => 1027,
+        'DISANQIU18' => 1028,
+        'DISANQIU19' => 1029,
+        'DISANQIU20' => 1030,
+        'DISANQIUDA' => 1031,
+        'DISANQIUXIAO' => 1032,
+        'DISANQIUDAN' => 1033,
+        'DISANQIUSHUANG' => 1034,
+        'DISANQIUWEIDA' => 1035,
+        'DISANQIUWEIXIAO' => 1036,
+        'DISANQIUHESHUDAN' => 1037,
+        'DISANQIUHESHUSHUANG' => 1038,
+        'DISANQIUDONG' => 1039,
+        'DISANQIUNAN' => 1040,
+        'DISANQIUXI' => 1041,
+        'DISANQIUBEI' => 1042,
+        'DISANQIUZHONG' => 1043,
+        'DISANQIUFA' => 1044,
+        'DISANQIUBAI' => 1045,
+        'DISANQIULONG' => 1046,
+        'DISANQIUHU' => 1047,
+        'DISIQIU1' => 1048,
+        'DISIQIU2' => 1049,
+        'DISIQIU3' => 1050,
+        'DISIQIU4' => 1051,
+        'DISIQIU5' => 1052,
+        'DISIQIU6' => 1053,
+        'DISIQIU7' => 1054,
+        'DISIQIU8' => 1055,
+        'DISIQIU9' => 1056,
+        'DISIQIU10' => 1057,
+        'DISIQIU11' => 1058,
+        'DISIQIU12' => 1059,
+        'DISIQIU13' => 1060,
+        'DISIQIU14' => 1061,
+        'DISIQIU15' => 1062,
+        'DISIQIU16' => 1063,
+        'DISIQIU17' => 1064,
+        'DISIQIU18' => 1065,
+        'DISIQIU19' => 1066,
+        'DISIQIU20' => 1067,
+        'DISIQIUDA' => 1068,
+        'DISIQIUXIAO' => 1069,
+        'DISIQIUDAN' => 1070,
+        'DISIQIUSHUANG' => 1071,
+        'DISIQIUWEIDA' => 1072,
+        'DISIQIUWEIXIAO' => 1073,
+        'DISIQIUHESHUDAN' => 1074,
+        'DISIQIUHESHUSHUANG' => 1075,
+        'DISIQIUDONG' => 1076,
+        'DISIQIUNAN' => 1077,
+        'DISIQIUXI' => 1078,
+        'DISIQIUBEI' => 1079,
+        'DISIQIUZHONG' => 1080,
+        'DISIQIUFA' => 1081,
+        'DISIQIUBAI' => 1082,
+        'DISIQIULONG' => 1083,
+        'DISIQIUHU' => 1084,
+        'DIWUQIU1' => 1085,
+        'DIWUQIU2' => 1086,
+        'DIWUQIU3' => 1087,
+        'DIWUQIU4' => 1088,
+        'DIWUQIU5' => 1089,
+        'DIWUQIU6' => 1090,
+        'DIWUQIU7' => 1091,
+        'DIWUQIU8' => 1092,
+        'DIWUQIU9' => 1093,
+        'DIWUQIU10' => 1094,
+        'DIWUQIU11' => 1095,
+        'DIWUQIU12' => 1096,
+        'DIWUQIU13' => 1097,
+        'DIWUQIU14' => 1098,
+        'DIWUQIU15' => 1099,
+        'DIWUQIU16' => 1100,
+        'DIWUQIU17' => 1101,
+        'DIWUQIU18' => 1102,
+        'DIWUQIU19' => 1103,
+        'DIWUQIU20' => 1104,
+        'DIWUQIUDA' => 1105,
+        'DIWUQIUXIAO' => 1106,
+        'DIWUQIUDAN' => 1107,
+        'DIWUQIUSHUANG' => 1108,
+        'DIWUQIUWEIDA' => 1109,
+        'DIWUQIUWEIXIAO' => 1110,
+        'DIWUQIUHESHUDAN' => 1111,
+        'DIWUQIUHESHUSHUANG' => 1112,
+        'DIWUQIUDONG' => 1113,
+        'DIWUQIUNAN' => 1114,
+        'DIWUQIUXI' => 1115,
+        'DIWUQIUBEI' => 1116,
+        'DIWUQIUZHONG' => 1117,
+        'DIWUQIUFA' => 1118,
+        'DIWUQIUBAI' => 1119,
+        'DIWUQIULONG' => 1120,
+        'DIWUQIUHU' => 1121,
+        'DILIUQIU1' => 1122,
+        'DILIUQIU2' => 1123,
+        'DILIUQIU3' => 1124,
+        'DILIUQIU4' => 1125,
+        'DILIUQIU5' => 1126,
+        'DILIUQIU6' => 1127,
+        'DILIUQIU7' => 1128,
+        'DILIUQIU8' => 1129,
+        'DILIUQIU9' => 1130,
+        'DILIUQIU10' => 1131,
+        'DILIUQIU11' => 1132,
+        'DILIUQIU12' => 1133,
+        'DILIUQIU13' => 1134,
+        'DILIUQIU14' => 1135,
+        'DILIUQIU15' => 1136,
+        'DILIUQIU16' => 1137,
+        'DILIUQIU17' => 1138,
+        'DILIUQIU18' => 1139,
+        'DILIUQIU19' => 1140,
+        'DILIUQIU20' => 1141,
+        'DILIUQIUDA' => 1142,
+        'DILIUQIUXIAO' => 1143,
+        'DILIUQIUDAN' => 1144,
+        'DILIUQIUSHUANG' => 1145,
+        'DILIUQIUWEIDA' => 1146,
+        'DILIUQIUWEIXIAO' => 1147,
+        'DILIUQIUHESHUDAN' => 1148,
+        'DILIUQIUHESHUSHUANG' => 1149,
+        'DILIUQIUDONG' => 1150,
+        'DILIUQIUNAN' => 1151,
+        'DILIUQIUXI' => 1152,
+        'DILIUQIUBEI' => 1153,
+        'DILIUQIUZHONG' => 1154,
+        'DILIUQIUFA' => 1155,
+        'DILIUQIUBAI' => 1156,
+        'DILIUQIULONG' => 1157,
+        'DILIUQIUHU' => 1158,
+        'DIQIQIU1' => 1159,
+        'DIQIQIU2' => 1160,
+        'DIQIQIU3' => 1161,
+        'DIQIQIU4' => 1162,
+        'DIQIQIU5' => 1163,
+        'DIQIQIU6' => 1164,
+        'DIQIQIU7' => 1165,
+        'DIQIQIU8' => 1166,
+        'DIQIQIU9' => 1167,
+        'DIQIQIU10' => 1168,
+        'DIQIQIU11' => 1169,
+        'DIQIQIU12' => 1170,
+        'DIQIQIU13' => 1171,
+        'DIQIQIU14' => 1172,
+        'DIQIQIU15' => 1173,
+        'DIQIQIU16' => 1174,
+        'DIQIQIU17' => 1175,
+        'DIQIQIU18' => 1176,
+        'DIQIQIU19' => 1177,
+        'DIQIQIU20' => 1178,
+        'DIQIQIUDA' => 1179,
+        'DIQIQIUXIAO' => 1180,
+        'DIQIQIUDAN' => 1181,
+        'DIQIQIUSHUANG' => 1182,
+        'DIQIQIUWEIDA' => 1183,
+        'DIQIQIUWEIXIAO' => 1184,
+        'DIQIQIUHESHUDAN' => 1185,
+        'DIQIQIUHESHUSHUANG' => 1186,
+        'DIQIQIUDONG' => 1187,
+        'DIQIQIUNAN' => 1188,
+        'DIQIQIUXI' => 1189,
+        'DIQIQIUBEI' => 1190,
+        'DIQIQIUZHONG' => 1191,
+        'DIQIQIUFA' => 1192,
+        'DIQIQIUBAI' => 1193,
+        'DIQIQIULONG' => 1194,
+        'DIQIQIUHU' => 1195,
+        'DIBAQIU1' => 1196,
+        'DIBAQIU2' => 1197,
+        'DIBAQIU3' => 1198,
+        'DIBAQIU4' => 1199,
+        'DIBAQIU5' => 1200,
+        'DIBAQIU6' => 1201,
+        'DIBAQIU7' => 1202,
+        'DIBAQIU8' => 1203,
+        'DIBAQIU9' => 1204,
+        'DIBAQIU10' => 1205,
+        'DIBAQIU11' => 1206,
+        'DIBAQIU12' => 1207,
+        'DIBAQIU13' => 1208,
+        'DIBAQIU14' => 1209,
+        'DIBAQIU15' => 1210,
+        'DIBAQIU16' => 1211,
+        'DIBAQIU17' => 1212,
+        'DIBAQIU18' => 1213,
+        'DIBAQIU19' => 1214,
+        'DIBAQIU20' => 1215,
+        'DIBAQIUDA' => 1216,
+        'DIBAQIUXIAO' => 1217,
+        'DIBAQIUDAN' => 1218,
+        'DIBAQIUSHUANG' => 1219,
+        'DIBAQIUWEIDA' => 1220,
+        'DIBAQIUWEIXIAO' => 1221,
+        'DIBAQIUHESHUDAN' => 1222,
+        'DIBAQIUHESHUSHUANG' => 1223,
+        'DIBAQIUDONG' => 1224,
+        'DIBAQIUNAN' => 1225,
+        'DIBAQIUXI' => 1226,
+        'DIBAQIUBEI' => 1227,
+        'DIBAQIUZHONG' => 1228,
+        'DIBAQIUFA' => 1229,
+        'DIBAQIUBAI' => 1230,
+        'DIBAQIULONG' => 1231,
+        'DIBAQIUHU' => 1232,
+        'ZHENGMA1' => 1233,
+        'ZHENGMA2' => 1234,
+        'ZHENGMA3' => 1235,
+        'ZHENGMA4' => 1236,
+        'ZHENGMA5' => 1237,
+        'ZHENGMA6' => 1238,
+        'ZHENGMA7' => 1239,
+        'ZHENGMA8' => 1240,
+        'ZHENGMA9' => 1241,
+        'ZHENGMA10' => 1242,
+        'ZHENGMA11' => 1243,
+        'ZHENGMA12' => 1244,
+        'ZHENGMA13' => 1245,
+        'ZHENGMA14' => 1246,
+        'ZHENGMA15' => 1247,
+        'ZHENGMA16' => 1248,
+        'ZHENGMA17' => 1249,
+        'ZHENGMA18' => 1250,
+        'ZHENGMA19' => 1251,
+        'ZHENGMA20' => 1252,
+        'RENXUANER' => 1253,
+        'XUANERLIANZU' => 1254,
+        'RENXUANSAN' => 1255,
+        'XUANSANQIANZU' => 1256,
+        'RENXUANSI' => 1257,
+        'RENXUANWU' => 1258,
+    );
+
+    protected function exc_play($openCode,$gameId)
     {
         $win = collect([]);
         $ids_he = collect([]);
-        $this->LM($openCode,$gameId,$win,$ids_he);
-        $this->ZM($openCode,$gameId,$win);
-        return array('win'=>$win,'ids_he'=>$ids_he);
+        $NC = new ExcelLotteryNC();
+        $NC->setArrPlay($openCode,$this->arrPlayCate,$this->arrPlayId);
+        $NC->LM($gameId,$win,$ids_he);
+        $NC->ZM($openCode,$gameId,$win);
+        return array('win'=>$win,'ids_he'=>$ids_he,'NC'=>$NC);
     }
     public function all($openCode,$issue,$gameId,$id)
     {
@@ -29,14 +375,15 @@ class New_Cqxync
             $resData = $this->exc_play($openCode,$gameId);
             $win = @$resData['win'];
             $he = isset($resData['ids_he'])?$resData['ids_he']:array();
+            $NC = isset($resData['NC'])?$resData['NC']:null;
             try{
-                $bunko = $this->bunko_nc($win,$gameId,$issue,$openCode,$he);
+                $bunko = $this->bunko_nc($win,$gameId,$issue,$openCode,$he,$NC);
             }catch (\exception $exception){
                 writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['status' => 0,'bunko' => 0]);
             }
             if($bunko == 1){
-                $updateUserMoney = $excelModel->updateUserMoney($gameId,$issue,$gameName);
+                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id,true);
                 if($updateUserMoney == 1){
                     writeLog('New_Bet', $gameName . $issue . "结算出错");
                 }
@@ -49,1804 +396,26 @@ class New_Cqxync
             writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
         }else{
             $excelModel->stopBunko($gameId,1);
-            $agentJob = new AgentBackwaterJob($gameId,$issue);
-            $agentJob->addQueue();
-        }
-    }
-
-    //两面部分结算
-    private function LM($openCode,$gameId,$win,$ids_he){
-        $arrOpenCode = explode(',',$openCode);
-        $playCate = 42;
-        $num1 = (int)$arrOpenCode[0];
-        $num2 = (int)$arrOpenCode[1];
-        $num3 = (int)$arrOpenCode[2];
-        $num4 = (int)$arrOpenCode[3];
-        $num5 = (int)$arrOpenCode[4];
-        $num6 = (int)$arrOpenCode[5];
-        $num7 = (int)$arrOpenCode[6];
-        $num8 = (int)$arrOpenCode[7];
-        $numsTotal = (int)$num1 + (int)$num2 + (int)$num3 + (int)$num4 + (int)$num5 + (int)$num6 + (int)$num7 + (int)$num8;
-        $zhongArr = [1,2,3,4,5,6,7]; //中
-        $faArr = [8,9,10,11,12,13,14]; //发
-        $baiArr = [15,16,17,18,19,20]; //白
-        $dongArr = [1,5,9,13,17]; //东
-        $nanArr = [2,6,10,14,18]; //南
-        $xiArr = [3,7,11,15,19]; //西
-        $beiArr = [4,8,12,16,20]; //北
-
-        //总和大小-Start
-        if($numsTotal == 84){ //总和等于84视为和局  //和局退本金
-            $playId = 931;
-            $winCode = $gameId.$playCate.$playId;
-            $ids_he->push($winCode);
-            $playId = 932;
-            $winCode = $gameId.$playCate.$playId;
-            $ids_he->push($winCode);
-        }
-        if($numsTotal >= 85 && $numsTotal <= 132){ //总和大
-            $playId = 931;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }else if($numsTotal >= 36 && $numsTotal <= 83){ //总和小
-            $playId = 932;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //总和大小-End
-
-        //总和单双-Start
-        if($numsTotal%2 == 0){
-            $playId = 934;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else {
-            $playId = 933;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //总和单双-End
-
-        //总和尾大、尾小-Start
-        $totalStrSplit = str_split($numsTotal);
-        if(count($totalStrSplit) == 3){
-            $totalWei = (int)$totalStrSplit[2];
-        }
-        if(count($totalStrSplit) == 2){
-            $totalWei = (int)$totalStrSplit[1];
-        }
-
-        if($totalWei >= 5){
-            $playId = 935;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($totalWei <= 4){
-            $playId = 936;
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //总和尾大、尾小-End
-
-        //第一球两面-Start
-        $Q1PlayCate = 43;
-        if($num1 >= 11){ //大
-            $playId = 957;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num1 <= 10){ //小
-            $playId = 958;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num1%2 == 0){ //双
-            $playId = 960;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
-            $playId = 959;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        $num1_add_zero = str_pad($num1,2,"0",STR_PAD_LEFT); //十位补零
-        $num1_over = str_split($num1_add_zero); //拆分个位 十位
-        $num1_tou = (int)$num1_over[0];
-        $num1_wei = (int)$num1_over[1];
-        $num1Total = $num1_wei+$num1_tou;
-        if($num1_wei >= 5){ //尾大
-            $playId = 961;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num1_wei <= 4){ //尾小
-            $playId = 962;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num1Total%2 == 0){ //合数双
-            $playId = 964;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        } else { //合数单
-            $playId = 963;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num1 > $num8){ //龙
-            $playId = 972;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        } else { //虎
-            $playId = 973;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num1,$zhongArr)){ //中
-            $playId = 969;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num1,$faArr)){ //发
-            $playId = 970;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num1,$baiArr)){ //白
-            $playId = 971;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num1,$dongArr)){ //东
-            $playId = 965;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num1,$nanArr)){ //南
-            $playId = 966;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num1,$xiArr)){ //西
-            $playId = 967;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num1,$beiArr)){ //北
-            $playId = 968;
-            $winCode = $gameId.$Q1PlayCate.$playId;
-            $win->push($winCode);
-        }
-        //第一球两面-End
-        //第一球单号-Start
-        switch ($num1){
-            case 1:
-                $playId = 937;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 2:
-                $playId = 938;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 3:
-                $playId = 939;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 4:
-                $playId = 940;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 5:
-                $playId = 941;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 6:
-                $playId = 942;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 7:
-                $playId = 943;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 8:
-                $playId = 944;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 9:
-                $playId = 945;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 10:
-                $playId = 946;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 11:
-                $playId = 947;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 12:
-                $playId = 948;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 13:
-                $playId = 949;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 14:
-                $playId = 950;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 15:
-                $playId = 951;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 16:
-                $playId = 952;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 17:
-                $playId = 953;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 18:
-                $playId = 954;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 19:
-                $playId = 955;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 20:
-                $playId = 956;
-                $winCode = $gameId.$Q1PlayCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //第一球单号-End
-
-        //第二球两面-Start
-        $Q2PlayCate = 44;
-        if($num2 >= 11){ //大
-            $playId = 994;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num2 <= 10){ //小
-            $playId = 995;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num2%2 == 0){ //双
-            $playId = 997;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
-            $playId = 996;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        $num2_add_zero = str_pad($num2,2,"0",STR_PAD_LEFT); //十位补零
-        $num2_over = str_split($num2_add_zero); //拆分个位 十位
-        $num2_tou = (int)$num2_over[0];
-        $num2_wei = (int)$num2_over[1];
-        $num2Total = $num2_wei+$num2_tou;
-        if($num2_wei >= 5){ //尾大
-            $playId = 998;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num2_wei <= 4){ //尾小
-            $playId = 999;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num2Total%2 == 0){ //合数双
-            $playId = 1001;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        } else { //合数单
-            $playId = 1000;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num2 > $num7){ //龙
-            $playId = 1009;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        } else { //虎
-            $playId = 1010;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num2,$zhongArr)){ //中
-            $playId = 1006;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num2,$faArr)){ //发
-            $playId = 1007;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num2,$baiArr)){ //白
-            $playId = 1008;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num2,$dongArr)){ //东
-            $playId = 1002;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num2,$nanArr)){ //南
-            $playId = 1003;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num2,$xiArr)){ //西
-            $playId = 1004;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num2,$beiArr)){ //北
-            $playId = 1005;
-            $winCode = $gameId.$Q2PlayCate.$playId;
-            $win->push($winCode);
-        }
-        //第二球两面-End
-        //第二球单号-Start
-        switch ($num2){
-            case 1:
-                $playId = 974;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 2:
-                $playId = 975;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 3:
-                $playId = 976;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 4:
-                $playId = 977;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 5:
-                $playId = 978;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 6:
-                $playId = 979;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 7:
-                $playId = 980;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 8:
-                $playId = 981;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 9:
-                $playId = 982;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 10:
-                $playId = 983;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 11:
-                $playId = 984;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 12:
-                $playId = 985;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 13:
-                $playId = 986;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 14:
-                $playId = 987;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 15:
-                $playId = 988;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 16:
-                $playId = 989;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 17:
-                $playId = 990;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 18:
-                $playId = 991;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 19:
-                $playId = 992;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 20:
-                $playId = 993;
-                $winCode = $gameId.$Q2PlayCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //第二球单号-End
-
-        //第三球两面-Start
-        $Q3PlayCate = 45;
-        if($num3 >= 11){ //大
-            $playId = 1031;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num3 <= 10){ //小
-            $playId = 1032;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num3%2 == 0){ //双
-            $playId = 1034;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
-            $playId = 1033;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        $num3_add_zero = str_pad($num3,2,"0",STR_PAD_LEFT); //十位补零
-        $num3_over = str_split($num3_add_zero); //拆分个位 十位
-        $num3_tou = (int)$num3_over[0];
-        $num3_wei = (int)$num3_over[1];
-        $num3Total = $num3_wei+$num3_tou;
-        if($num3_wei >= 5){ //尾大
-            $playId = 1035;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num3_wei <= 4){ //尾小
-            $playId = 1036;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num3Total%2 == 0){ //合数双
-            $playId = 1038;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        } else { //合数单
-            $playId = 1037;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num3 > $num6){ //龙
-            $playId = 1046;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        } else { //虎
-            $playId = 1047;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num3,$zhongArr)){ //中
-            $playId = 1043;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num3,$faArr)){ //发
-            $playId = 1044;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num3,$baiArr)){ //白
-            $playId = 1045;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num3,$dongArr)){ //东
-            $playId = 1039;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num3,$nanArr)){ //南
-            $playId = 1040;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num3,$xiArr)){ //西
-            $playId = 1041;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num3,$beiArr)){ //北
-            $playId = 1042;
-            $winCode = $gameId.$Q3PlayCate.$playId;
-            $win->push($winCode);
-        }
-        //第三球两面-End
-        //第三球单号-Start
-        switch ($num3){
-            case 1:
-                $playId = 1011;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 2:
-                $playId = 1012;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 3:
-                $playId = 1013;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 4:
-                $playId = 1014;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 5:
-                $playId = 1015;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 6:
-                $playId = 1016;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 7:
-                $playId = 1017;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 8:
-                $playId = 1018;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 9:
-                $playId = 1019;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 10:
-                $playId = 1020;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 11:
-                $playId = 1021;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 12:
-                $playId = 1022;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 13:
-                $playId = 1023;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 14:
-                $playId = 1024;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 15:
-                $playId = 1025;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 16:
-                $playId = 1026;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 17:
-                $playId = 1027;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 18:
-                $playId = 1028;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 19:
-                $playId = 1029;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 20:
-                $playId = 1030;
-                $winCode = $gameId.$Q3PlayCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //第三球单号-End
-
-        //第四球两面-Start
-        $Q4PlayCate = 46;
-        if($num4 >= 11){ //大
-            $playId = 1068;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num4 <= 10){ //小
-            $playId = 1069;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num4%2 == 0){ //双
-            $playId = 1071;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
-            $playId = 1070;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        $num4_add_zero = str_pad($num4,2,"0",STR_PAD_LEFT); //十位补零
-        $num4_over = str_split($num4_add_zero); //拆分个位 十位
-        $num4_tou = (int)$num4_over[0];
-        $num4_wei = (int)$num4_over[1];
-        $num4Total = $num4_wei+$num4_tou;
-        if($num4_wei >= 5){ //尾大
-            $playId = 1072;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num4_wei <= 4){ //尾小
-            $playId = 1073;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num4Total%2 == 0){ //合数双
-            $playId = 1075;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        } else { //合数单
-            $playId = 1074;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num4 > $num5){ //龙
-            $playId = 1083;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        } else { //虎
-            $playId = 1084;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num4,$zhongArr)){ //中
-            $playId = 1080;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num4,$faArr)){ //发
-            $playId = 1081;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num4,$baiArr)){ //白
-            $playId = 1082;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num4,$dongArr)){ //东
-            $playId = 1076;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num4,$nanArr)){ //南
-            $playId = 1077;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num4,$xiArr)){ //西
-            $playId = 1078;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num4,$beiArr)){ //北
-            $playId = 1079;
-            $winCode = $gameId.$Q4PlayCate.$playId;
-            $win->push($winCode);
-        }
-        //第四球两面-End
-        //第四球单号-Start
-        switch ($num4){
-            case 1:
-                $playId = 1048;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 2:
-                $playId = 1049;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 3:
-                $playId = 1050;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 4:
-                $playId = 1051;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 5:
-                $playId = 1052;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 6:
-                $playId = 1053;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 7:
-                $playId = 1054;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 8:
-                $playId = 1055;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 9:
-                $playId = 1056;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 10:
-                $playId = 1057;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 11:
-                $playId = 1058;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 12:
-                $playId = 1059;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 13:
-                $playId = 1060;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 14:
-                $playId = 1061;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 15:
-                $playId = 1062;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 16:
-                $playId = 1063;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 17:
-                $playId = 1064;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 18:
-                $playId = 1065;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 19:
-                $playId = 1066;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 20:
-                $playId = 1067;
-                $winCode = $gameId.$Q4PlayCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //第四球单号-End
-
-        //第五球两面-Start
-        $Q5PlayCate = 47;
-        if($num5 >= 11){ //大
-            $playId = 1105;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num5 <= 10){ //小
-            $playId = 1106;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num5%2 == 0){ //双
-            $playId = 1108;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
-            $playId = 1107;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        $num5_add_zero = str_pad($num5,2,"0",STR_PAD_LEFT); //十位补零
-        $num5_over = str_split($num5_add_zero); //拆分个位 十位
-        $num5_tou = (int)$num5_over[0];
-        $num5_wei = (int)$num5_over[1];
-        $num5Total = $num5_wei+$num5_tou;
-        if($num5_wei >= 5){ //尾大
-            $playId = 1109;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num5_wei <= 4){ //尾小
-            $playId = 1110;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num5Total%2 == 0){ //合数双
-            $playId = 1112;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        } else { //合数单
-            $playId = 1111;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num5,$zhongArr)){ //中
-            $playId = 1117;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num5,$faArr)){ //发
-            $playId = 1118;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num5,$baiArr)){ //白
-            $playId = 1119;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num5,$dongArr)){ //东
-            $playId = 1113;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num5,$nanArr)){ //南
-            $playId = 1114;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num5,$xiArr)){ //西
-            $playId = 1115;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num5,$beiArr)){ //北
-            $playId = 1116;
-            $winCode = $gameId.$Q5PlayCate.$playId;
-            $win->push($winCode);
-        }
-        //第五球两面-End
-        //第五球单号-Start
-        switch ($num5){
-            case 1:
-                $playId = 1085;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 2:
-                $playId = 1086;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 3:
-                $playId = 1087;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 4:
-                $playId = 1088;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 5:
-                $playId = 1089;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 6:
-                $playId = 1090;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 7:
-                $playId = 1091;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 8:
-                $playId = 1092;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 9:
-                $playId = 1093;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 10:
-                $playId = 1094;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 11:
-                $playId = 1095;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 12:
-                $playId = 1096;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 13:
-                $playId = 1097;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 14:
-                $playId = 1098;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 15:
-                $playId = 1099;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 16:
-                $playId = 1100;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 17:
-                $playId = 1101;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 18:
-                $playId = 1102;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 19:
-                $playId = 1103;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 20:
-                $playId = 1104;
-                $winCode = $gameId.$Q5PlayCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //第五球单号-End
-
-        //第六球两面-Start
-        $Q6PlayCate = 48;
-        if($num6 >= 11){ //大
-            $playId = 1142;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num6 <= 10){ //小
-            $playId = 1143;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num6%2 == 0){ //双
-            $playId = 1145;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
-            $playId = 1144;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        $num6_add_zero = str_pad($num6,2,"0",STR_PAD_LEFT); //十位补零
-        $num6_over = str_split($num6_add_zero); //拆分个位 十位
-        $num6_tou = (int)$num6_over[0];
-        $num6_wei = (int)$num6_over[1];
-        $num6Total = $num6_wei+$num6_tou;
-        if($num6_wei >= 5){ //尾大
-            $playId = 1146;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num6_wei <= 4){ //尾小
-            $playId = 1147;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num6Total%2 == 0){ //合数双
-            $playId = 1149;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        } else { //合数单
-            $playId = 1148;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num6,$zhongArr)){ //中
-            $playId = 1154;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num6,$faArr)){ //发
-            $playId = 1155;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num6,$baiArr)){ //白
-            $playId = 1156;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num6,$dongArr)){ //东
-            $playId = 1150;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num6,$nanArr)){ //南
-            $playId = 1151;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num6,$xiArr)){ //西
-            $playId = 1152;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num6,$beiArr)){ //北
-            $playId = 1153;
-            $winCode = $gameId.$Q6PlayCate.$playId;
-            $win->push($winCode);
-        }
-        //第六球两面-End
-        //第六球单号-Start
-        switch ($num6){
-            case 1:
-                $playId = 1122;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 2:
-                $playId = 1123;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 3:
-                $playId = 1124;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 4:
-                $playId = 1125;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 5:
-                $playId = 1126;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 6:
-                $playId = 1127;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 7:
-                $playId = 1128;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 8:
-                $playId = 1129;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 9:
-                $playId = 1130;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 10:
-                $playId = 1131;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 11:
-                $playId = 1132;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 12:
-                $playId = 1133;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 13:
-                $playId = 1134;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 14:
-                $playId = 1135;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 15:
-                $playId = 1136;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 16:
-                $playId = 1137;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 17:
-                $playId = 1138;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 18:
-                $playId = 1139;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 19:
-                $playId = 1140;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 20:
-                $playId = 1141;
-                $winCode = $gameId.$Q6PlayCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //第六球单号-End
-
-        //第七球两面-Start
-        $Q7PlayCate = 49;
-        if($num7 >= 11){ //大
-            $playId = 1179;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num7 <= 10){ //小
-            $playId = 1180;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num7%2 == 0){ //双
-            $playId = 1182;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
-            $playId = 1181;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        $num7_add_zero = str_pad($num7,2,"0",STR_PAD_LEFT); //十位补零
-        $num7_over = str_split($num7_add_zero); //拆分个位 十位
-        $num7_tou = (int)$num7_over[0];
-        $num7_wei = (int)$num7_over[1];
-        $num7Total = $num7_wei+$num7_tou;
-        if($num7_wei >= 5){ //尾大
-            $playId = 1183;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num7_wei <= 4){ //尾小
-            $playId = 1184;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num7Total%2 == 0){ //合数双
-            $playId = 1186;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        } else { //合数单
-            $playId = 1185;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num7,$zhongArr)){ //中
-            $playId = 1191;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num7,$faArr)){ //发
-            $playId = 1192;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num7,$baiArr)){ //白
-            $playId = 1193;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num7,$dongArr)){ //东
-            $playId = 1187;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num7,$nanArr)){ //南
-            $playId = 1188;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num7,$xiArr)){ //西
-            $playId = 1189;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num7,$beiArr)){ //北
-            $playId = 1190;
-            $winCode = $gameId.$Q7PlayCate.$playId;
-            $win->push($winCode);
-        }
-        //第七球两面-End
-        //第七球单号-Start
-        switch ($num7){
-            case 1:
-                $playId = 1159;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 2:
-                $playId = 1160;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 3:
-                $playId = 1161;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 4:
-                $playId = 1162;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 5:
-                $playId = 1163;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 6:
-                $playId = 1164;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 7:
-                $playId = 1165;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 8:
-                $playId = 1166;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 9:
-                $playId = 1167;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 10:
-                $playId = 1168;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 11:
-                $playId = 1169;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 12:
-                $playId = 1170;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 13:
-                $playId = 1171;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 14:
-                $playId = 1172;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 15:
-                $playId = 1173;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 16:
-                $playId = 1174;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 17:
-                $playId = 1175;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 18:
-                $playId = 1176;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 19:
-                $playId = 1177;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 20:
-                $playId = 1178;
-                $winCode = $gameId.$Q7PlayCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //第七球单号-End
-
-        //第八球两面-Start
-        $Q8PlayCate = 50;
-        if($num8 >= 11){ //大
-            $playId = 1216;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num8 <= 10){ //小
-            $playId = 1217;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num8%2 == 0){ //双
-            $playId = 1219;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        } else { //单
-            $playId = 1218;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        $num8_add_zero = str_pad($num8,2,"0",STR_PAD_LEFT); //十位补零
-        $num8_over = str_split($num8_add_zero); //拆分个位 十位
-        $num8_tou = (int)$num8_over[0];
-        $num8_wei = (int)$num8_over[1];
-        $num8Total = $num8_wei+$num8_tou;
-        if($num8_wei >= 5){ //尾大
-            $playId = 1220;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num8_wei <= 4){ //尾小
-            $playId = 1221;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if($num8Total%2 == 0){ //合数双
-            $playId = 1223;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        } else { //合数单
-            $playId = 1222;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num8,$zhongArr)){ //中
-            $playId = 1228;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num8,$faArr)){ //发
-            $playId = 1229;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num8,$baiArr)){ //白
-            $playId = 1230;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num8,$dongArr)){ //东
-            $playId = 1224;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num8,$nanArr)){ //南
-            $playId = 1225;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num8,$xiArr)){ //西
-            $playId = 1226;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($num8,$beiArr)){ //北
-            $playId = 1227;
-            $winCode = $gameId.$Q8PlayCate.$playId;
-            $win->push($winCode);
-        }
-        //第八球两面-End
-        //第八球单号-Start
-        switch ($num8){
-            case 1:
-                $playId = 1196;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 2:
-                $playId = 1197;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 3:
-                $playId = 1198;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 4:
-                $playId = 1199;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 5:
-                $playId = 1200;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 6:
-                $playId = 1201;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 7:
-                $playId = 1202;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 8:
-                $playId = 1203;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 9:
-                $playId = 1204;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 10:
-                $playId = 1205;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 11:
-                $playId = 1206;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 12:
-                $playId = 1207;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 13:
-                $playId = 1208;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 14:
-                $playId = 1209;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 15:
-                $playId = 1210;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 16:
-                $playId = 1211;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 17:
-                $playId = 1212;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 18:
-                $playId = 1213;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 19:
-                $playId = 1214;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-            case 20:
-                $playId = 1215;
-                $winCode = $gameId.$Q8PlayCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //第八球单号-End
-    }
-
-    //正码
-    private function ZM($openCode,$gameId,$win)
-    {
-        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
-        $playCate = 51;
-        $ZM1 = $arrOpenCode[0];
-        $ZM2 = $arrOpenCode[1];
-        $ZM3 = $arrOpenCode[2];
-        $ZM4 = $arrOpenCode[3];
-        $ZM5 = $arrOpenCode[4];
-        $ZM6 = $arrOpenCode[5];
-        $ZM7 = $arrOpenCode[6];
-        $ZM8 = $arrOpenCode[7];
-        $nums = ['1'=>'1233','2'=>'1234','3'=>'1235','4'=>'1236','5'=>'1237','6'=>'1238','7'=>'1239','8'=>'1240','9'=>'1241','10'=>'1242','11'=>'1243','12'=>'1244','13'=>'1245','14'=>'1246','15'=>'1247','16'=>'1248','17'=>'1249','18'=>'1250','19'=>'1251','20'=>'1252'];
-        foreach ($nums as $k => $v){
-            if($ZM1 == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-            if($ZM2 == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-            if($ZM3 == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-            if($ZM4 == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-            if($ZM5 == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-            if($ZM6 == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-            if($ZM7 == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-            if($ZM8 == $k){
-                $playId = $v;
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-    }
-
-    private function bunko_nc($win,$gameId,$issue,$openCode,$he){
-        $bunko_index = 0;
-        $openCodeArr = explode(',',$openCode);
-        $id = [];
-        foreach ($win as $k=>$v){
-            $id[] = $v;
-        }
-        $table = 'bet';
-        $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        if($getUserBets){
-            $sql = "UPDATE bet SET bunko = CASE "; //中奖的SQL语句
-            $sql_lose = "UPDATE bet SET bunko = CASE "; //未中奖的SQL语句
-            $sql_he = "UPDATE bet SET bunko = CASE "; //和局的SQL语句
-
-            $ids = implode(',', $id);
-            $ids_lose = array_diff($this->arrPlay_id,$id);
-            $sql_bets = '';
-            $sql_bets_lose = '';
-            $sql_bets_he = '';
-            foreach ($getUserBets as $item){
-                $bunko = $item->bet_money * $item->play_odds;
-                $bunko_lose = 0-$item->bet_money;
-                $bunko_he = $item->bet_money * 1;
-                $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
-                $sql_bets_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
-            }
-            if(count($he)>0) {
-                $ids_he = [];
-                $tmpids = explode(',',$ids);
-                foreach ($he as $k=>$v){
-                    $ids_he[] = $v;
-                    unset($tmpids[$v]);
-                    unset($ids_lose[$v]);
+            //玩法退水
+            if(env('AGENT_MODEL',1) == 1) {
+                $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
+                if(!$res){
+                    \Log::info($gameName.$issue.'退水前失败！');
+                    return 0;
                 }
-                $ids = implode(',', $tmpids);
-                $ids_he = implode(',', $ids_he);
-                $sql_he .= $sql_bets_he . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_he)";
-            }else
-                $sql_he = '';
-            $ids_lose = implode(',', $ids_lose);
-            $sql .= $sql_bets . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids)";
-            $sql_lose .= $sql_bets_lose . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_lose)";
-            if(!empty($sql_bets)){
-                $run = DB::statement($sql);
-                if($run == 1) {
-                    $bunko_index++;
-                }
-            }
-
-            //连码- Start
-            $lm_playCate = 52; //连码分类ID
-            $lm_ids = [];
-            $lm_lose_ids = [];
-            $get = DB::table($table)->select('bet_id','bet_info','play_name')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
-            $lm_open = explode(',', $openCode);
-            foreach ($get as $item) {
-                $explodeBetInfo = explode(',',$item->bet_info);
-                if(count($explodeBetInfo) == 2 && $item->play_name == '任选二'){
-                    $diff2 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff2) == 2){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
+                //退水
+                $res = $this->reBackUser($gameId, $issue, $gameName);
+                if(!$res){
+                    $res = DB::table($table)->where('id',$id)->where('returnwater',2)->update(['returnwater' => 1]);
+                    if(empty($res)){
+                        \Log::info($gameName.$issue.'退水中失败！');
+                        return 0;
                     }
-                }
-                if(count($explodeBetInfo) == 3 && $item->play_name == '任选三'){
-                    $diff3 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff3) == 3){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-                if(count($explodeBetInfo) == 4 && $item->play_name == '任选四'){
-                    $diff4 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff4) == 4){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-                if(count($explodeBetInfo) == 5 && $item->play_name == '任选五'){
-                    $diff5 = array_intersect($lm_open, $explodeBetInfo);
-                    if(count($diff5) == 5){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-                if(count($explodeBetInfo) == 2 && $item->play_name == '选二连组'){
-                    $pattern = '/('.$item->bet_info.')/u';
-                    $matches = preg_match($pattern, $openCode);
-                    if($matches){
-                        $lm_ids[] = $item->bet_id;
-                    }else{
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-                if(count($explodeBetInfo) == 3 && $item->play_name == '选三前组'){
-                    if($explodeBetInfo[0] == $openCodeArr[0] && $explodeBetInfo[1] == $openCodeArr[1] && $explodeBetInfo[2] == $openCodeArr[2]){
-                        $lm_ids[] = $item->bet_id;
-                    } else {
-                        $lm_lose_ids[] = $item->bet_id;
-                    }
-                }
-            }
-            $ids_lm = implode(',', $lm_ids);
-            if($ids_lm){
-                $sql_lm = "UPDATE bet SET bunko = bet_money * play_odds, status = 1 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
-            } else {
-                $sql_lm = 0;
-            }
-            //连码- End
-
-            if(!empty($sql_he)){
-                $runhe = DB::connection('mysql::write')->statement($sql_he);
-                if($runhe == 1)
-                    $bunko_index++;
-            }
-            if(!empty($sql_bets_lose)){
-                $run2 = DB::connection('mysql::write')->statement($sql_lose);
-                if($run2 == 1)
-                    $bunko_index++;
-            }
-            if($sql_lm !== 0){
-                $run3 = DB::connection('mysql::write')->statement($sql_lm);
-                if($run3 == 1){
-                    $bunko_index++;
-                }
-            } else {
-                $bunko_index++;
-            }
-
-            if($bunko_index !== 0){
-                return 1;
+                }else
+                    \Log::info($gameName.$issue.'退水前失败！');
+            }else{//代理退水
+                $agentJob = new AgentBackwaterJob($gameId,$issue);
+                $agentJob->addQueue();
             }
         }
     }
