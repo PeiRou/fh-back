@@ -256,14 +256,3 @@
 .T_KL8 .b80 {
     background-position:0 -1817px
 }
-.PCDD span{
-    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAMAAADzN3VRAAAAV1BMVEVHcExfzPJQpc8cgLsvq+2kxMew2u3t8/L18/jK5vPX8v57tc8KhvSd0OoOi/jx7vOR8vTn5+lIk7gnU/FmrtSH/fj///8UcsGVz+4UotYimMMTi8oDjNx+CB1HAAAAFnRSTlMA/ftf/hn+/cv7sv6Ky7tiN4n+MraI3RBD0QAAAOFJREFUKM99ktkSgyAMRSNEE1a7Irb9/+9ssNYizvTyANwzhMkCsOk0ik7QqreUFpHtd+AsPn3XuXrAROIQMy2I+xoQL+Hoc16R3fyN2QWMxhhOlViMsRDZTdqpOCWNYRh4T1gsSewuW2ok1h0g5GxbYnMOAF3XcUtYzH8EEY9ETICIePwHMQJ4RNUShegB9DFcCaYl1TjPzSM1z7FUR2f1CjUIL5X1UlKT8vP2q/XtmZNZ++PIqEf49Cc8lCG3tS6a5KbpotRlmlwysRoF7/K0Kju/nx3/Jb4/DNZVi67b9Q1beh5YVfnwXgAAAABJRU5ErkJggg==") no-repeat;
-    font-size: 13px;
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    text-align: center;
-    line-height: 25px;
-    font-weight: 700;
-    margin-right: 8px;
-}

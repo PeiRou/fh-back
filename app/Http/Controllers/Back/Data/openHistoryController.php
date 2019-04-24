@@ -38,10 +38,10 @@ class openHistoryController extends Controller
                     $query->where("issue",$issue);
                 }
             })
-            ->where(function ($query) use ($arrayIssuedate, $table){        //
+            ->where(function ($query) use ($arrayIssuedate){        //
                 if(isset($arrayIssuedate) && !empty($arrayIssuedate)){
-                    $query->where($table.".opentime",'<=',$arrayIssuedate['start']);
-                    $query->where($table.".opentime",'>=',$arrayIssuedate['end']);
+                    $query->where("opentime",'<=',$arrayIssuedate['start']);
+                    $query->where("opentime",'>=',$arrayIssuedate['end']);
                 }
             });
         return $HIS;
@@ -75,10 +75,7 @@ class openHistoryController extends Controller
         $length = $request->get('length');
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
-        $HIS = $HISModel
-            ->select('game_bjpk10.*', 'game_pknn.niuniu as niuniu')
-            ->leftJoin('game_pknn', 'game_bjpk10.issue', 'game_pknn.issue')
-            ->orderBy('id','desc')->skip($start)->take($length)->get();
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
         return DataTables::of($HIS)
             ->setTotalRecords($HISCount)
             ->skipPaging()
@@ -245,12 +242,7 @@ class openHistoryController extends Controller
         $table = 'game_bjkl8';
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
-
-        $HIS = $HISModel
-            ->select('game_bjkl8.*', 'game_pcdd.opennum as pcddOpennum')
-            ->leftJoin('game_pcdd', 'game_bjkl8.issue', 'game_pcdd.issue')
-            ->orderBy('id','desc')->skip($start)->take($length)->get();
-
+        $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();
         return DataTables::of($HIS)
             ->setTotalRecords($HISCount)
             ->skipPaging()
