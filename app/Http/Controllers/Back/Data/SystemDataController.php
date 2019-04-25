@@ -90,11 +90,11 @@ class SystemDataController extends Controller
         $data = Feedback::where(function ($sql) use ($params){
             if(isset($params['type']) && array_key_exists('type',$params)){
                 $sql->where('type','=',$params['type']);
+            }else{
+                $sql->whereIn('type',[1,2,3,4,5]);
             }
             if(isset($params['status']) && array_key_exists('status',$params)){
                 $sql->where('status','=',$params['status']);
-            }else{
-                $sql->whereIn('status',[1,2,3,4,5]);
             }
             if(isset($params['user_account']) && array_key_exists('user_account',$params)){
                 $sql->where('user_account','=',$params['user_account']);
