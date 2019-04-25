@@ -41,7 +41,7 @@ class KXRepository extends BaseRepository
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s', $data['ctime'][$k]),
                 'gameCategory' => 'PVP',
-                'serviceMoney' => 0,
+                'service_money' => 0,
             ];
             $user = $this->getUser($array['username']);
             $array['agent'] = $user->agent ?? 0;

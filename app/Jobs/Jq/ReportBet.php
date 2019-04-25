@@ -61,6 +61,7 @@ class ReportBet implements ShouldQueue
                 'date_time' => $time,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
+                'service_money' => JqReportBet::serviceMoney($iBet->game_id, $iBet->bet_bunko)//平台需要交的服务费
             ];
         }
         foreach ($aCapital as $iCapital) {
@@ -86,6 +87,7 @@ class ReportBet implements ShouldQueue
                     'date_time' => $time,
                     'created_at' => $dateTime,
                     'updated_at' => $dateTime,
+                    'service_money' => 0//平台需要交的服务费
                 ];
             }
         }

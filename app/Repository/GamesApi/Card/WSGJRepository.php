@@ -66,7 +66,7 @@ class WSGJRepository extends BaseRepository
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['betOrderNo'],   //投注订单编号
                 'username' => $v['username'],   //玩家账号
-                'AllBet' => $v['betAmount'],//投注金额
+                'AllBet' => abs($v['netPnl']),//投注金额
                 'bunko' => $v['netPnl'],       //净输赢
                 'GameStartTime' => $v['betTime'] ?? $v['endTime'],//投注时间
                 'GameEndTime' => $v['endTime'] ?? '',  //游戏结束时间

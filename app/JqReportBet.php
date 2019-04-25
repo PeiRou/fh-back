@@ -90,7 +90,7 @@ class JqReportBet extends Model
     }
 
     public static function reportQuerySum($aParam){
-        $aSql = "SELECT SUM(`up_fraction`) AS `up_fraction`,SUM(`down_fraction`) AS `down_fraction`,SUM(`bet_bunko`) AS `bet_bunko`,SUM(`bet_money`) AS `bet_money`,`game_id` FROM `jq_report_bet` WHERE 1";
+        $aSql = "SELECT SUM(`up_fraction`) AS `up_fraction`,SUM(`service_money`) AS `service_money`,SUM(`down_fraction`) AS `down_fraction`,SUM(`bet_bunko`) AS `bet_bunko`,SUM(`bet_money`) AS `bet_money`,`game_id` FROM `jq_report_bet` WHERE 1";
         $aArray = [];
         if(isset($aParam['user_account']) && array_key_exists('user_account',$aParam)){
             $aSql .= " AND `user_account` = :user_account ";
@@ -135,6 +135,25 @@ class JqReportBet extends Model
         }
         $aSql .= " GROUP BY `user_id`,`game_id` ORDER BY `user_id`";
         return DB::select($aSql,$aArray);
+    }
+
+    /**
+     * 计算平台抽点
+     */
+    public static function serviceMoney($g_id, $bunko)
+    {
+        if($bunko >= 0) return 0;
+        $bunko = abs($bunko);
+        switch ($g_id){
+            case 15: //开元、龙城、乐游不计算
+            case 16: //开元、龙城、乐游不计算
+            case 21: //开元、龙城、乐游不计算
+                return 0;
+            default:
+                $ratio = 8; //其它平台都是8个点
+                break;
+        }
+        return $bunko * ($ratio / 100);
     }
 
 }
