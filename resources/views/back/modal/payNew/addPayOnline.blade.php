@@ -9,6 +9,9 @@
         display: flex;
         align-items: center;
     }
+    #res_url::-webkit-input-placeholder {
+        color: 	#C63300;
+    }
 </style>
 <form id="addPayOnlineForm" class="ui mini form" action="{{ url('/action/admin/new/addPayOnline') }}">
     <div class="field">
@@ -120,13 +123,10 @@
             <input type="text" name="req_url"/>
         </div>
     </div>
-    <div class="field" style="color:red; ">
-        (返回地址在平台最初部属已绑定，暂无需填写)
-    </div>
     <div class="field">
         <label>返回地址</label>
         <div class="ui input icon">
-            <input type="text" name="res_url" placeholder="http://pay.****.com"/>
+            <input type="text" name="res_url" id="res_url" placeholder="(返回地址在平台最初部属已绑定，暂无需填写)"/>
         </div>
     </div>
 

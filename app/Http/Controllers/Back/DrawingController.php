@@ -448,7 +448,7 @@ class DrawingController extends Controller
             'order_no' => $iDrawing->order_id,
             'money' => $iDrawing->amount,
             'app_id' => $iPayOnlineNew->para1,
-            'callback_url' => isset($iPayOnlineNew->res_url)?$iPayOnlineNew->res_url:env('CALLBACK_URL',env('WEBSITE_PROTOCOL','https').'://'.$_SERVER['HTTP_HOST'].'pay/order/callback/new'),
+            'callback_url' => isset($iPayOnlineNew->res_url)?$iPayOnlineNew->res_url:(env('FRONT_URL')?env('FRONT_URL').'/pay/withdrawal/callback/new':''),  //小回调异步通知平台代付地址
             'bank' => $iBank->eng_name,
             'gateway_address' => $iPayOnlineNew->req_url,
             'platform_id' => SystemSetting::where('id',1)->value('payment_platform_id'),

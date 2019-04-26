@@ -120,13 +120,10 @@
             <input type="text" name="req_url" value="{{ $payOnline->req_url }}"/>
         </div>
     </div>
-    <div class="field" style="color:red; ">
-        (返回地址在平台最初部属已绑定，暂无需填写)
-    </div>
     <div class="field">
         <label>返回地址</label>
         <div class="ui input icon">
-            <input type="text" name="res_url" placeholder="http://pay.****.com" value="{{ $payOnline->res_url }}"/>
+            <input type="text" name="res_url" placeholder="{{$payOnline->payCode=='DF'?(env('FRONT_URL')?env('FRONT_URL').'/pay/withdrawal/callback/new':'联系平台配置'):(env('FRONT_URL')?env('FRONT_URL').'/pay/order/callback/new':'联系平台配置')}}" value="{{ $payOnline->res_url }}"/>
         </div>
     </div>
 
