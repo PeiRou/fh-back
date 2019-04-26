@@ -111,20 +111,49 @@ class GamesList extends Base
         3 => 'PT',
     ];
 
+    /**
+     * 天成游戏下productType对应的东西
+     * name 名称
+     * games 下面包含的游戏
+     * ratio 默认抽点 单位（%） --总后台会设置，如果没取到就拿这里的
+     */
+
     public static $productTypeList = [
         4 => [
-            'name' => 'AG',
-            'games' => ['FISH','RNG','LIVE']
+            'name' => 'AG',  //名称
+            'games' => ['FISH','RNG','LIVE'],
+            'ratio' => 10
         ],
         17 => [
             'name' => 'Ameba(AE)',
-            'games' => ['RNG']
+            'games' => ['RNG'],
+            'ratio' => 8
         ],
-        25 => ['name' => 'Lotus','games' => ['RNG','LIVE']],
-        30 => ['name' => 'IBC(沙巴)','games' => ['SPORTS']],
-        47 => ['name' => 'BTI','games' => ['SPORTS']],
-        43 => ['name' => 'MG','games' => ['RNG']],
-        3 => ['name' => 'PT','games' => ['FISH','RNG','LIVE']],
+        25 => [
+            'name' => 'Lotus',
+            'games' => ['RNG','LIVE'],
+            'ratio' => 8
+        ],
+        30 => [
+            'name' => 'IBC(沙巴)',
+            'games' => ['SPORTS'],
+            'ratio' => 17
+        ],
+        47 => [
+            'name' => 'BTI',
+            'games' => ['SPORTS'],
+            'ratio' => 15
+        ],
+        43 => [
+            'name' => 'MG',
+            'games' => ['RNG'],
+            'ratio' => 12
+        ],
+        3 => [
+            'name' => 'PT',
+            'games' => ['FISH','RNG','LIVE'],
+            'ratio' => 15
+        ],
     ];
 
     public static $gameCategory = [

@@ -598,9 +598,6 @@ class ReportDataController extends Controller
         $aParam = $request->all();
         if(strtotime($aParam['startTime']) == strtotime(date('Y-m-d'))){
             $aData = JqBet::reportQuerySum($aParam);
-            foreach ($aData as $k=>$v){
-                $aData[$k]->service_money = JqReportBet::serviceMoney($v->game_id, $v->bet_bunko);
-            }
         }else {
             $aData = JqReportBet::reportQuerySum($aParam);
         }
