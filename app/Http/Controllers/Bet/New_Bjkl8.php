@@ -134,6 +134,7 @@ class New_Bjkl8 extends Excel
         $KL8->ZH($openCode,$gameId,$win);
         $KL8->QHH($openCode,$gameId,$win);
         $KL8->DSH($openCode,$gameId,$win);
+        $KL8->WX($openCode,$gameId,$win);
         return $win;
     }
     public function all($openCode,$issue,$gameId,$id)

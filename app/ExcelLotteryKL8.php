@@ -158,23 +158,19 @@ class ExcelLotteryKL8
             $playId = $this->arrPlayId['JIN'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        if($sum >= 696 && $sum <= 763){ //木
+        }else if($sum >= 696 && $sum <= 763){ //木
             $playId = $this->arrPlayId['MU'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        if($sum >= 764 && $sum <= 855){ //水
+        }else if($sum >= 764 && $sum <= 855){ //水
             $playId = $this->arrPlayId['SHUI'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        if($sum >= 856 && $sum <= 923){ //火
+        }else if($sum >= 856 && $sum <= 923){ //火
             $playId = $this->arrPlayId['HUO'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        if($sum >= 924 && $sum <= 1410){ //土
+        }else if($sum >= 924 && $sum <= 1410){ //土
             $playId = $this->arrPlayId['TU'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
