@@ -55,7 +55,7 @@ class next_open_msjsk3 extends Command
         $issuenum = substr($needOpenIssue,-4);
 
         //---kill start
-        $opencode = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
+        $opencode = $excel->kill_count($table,$needOpenIssue,$this->gameId,@$res->opencode);
         //---kill end
         if(empty($opencode))
             return 'Fail';

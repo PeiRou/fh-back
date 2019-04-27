@@ -58,7 +58,7 @@ class next_open_paoma extends Command
         $issuenum = substr($needOpenIssue,-3);
 
         //---kill start
-        $opencode = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
+        $opencode = $excel->kill_count($table,$needOpenIssue,$this->gameId,@$res->opencode);
         //---kill end
         if(empty($opencode))
             return 'Fail';

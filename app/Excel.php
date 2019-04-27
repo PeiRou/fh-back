@@ -268,9 +268,9 @@ class Excel
     public function kill_count($table,$issue,$gameId,$opencode){
         $killopennum = DB::connection('mysql::write')->table($table)->select('excel_opennum')->where('issue',$issue)->first();
         $is_killopen = DB::connection('mysql::write')->table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win','is_user')->where('game_id',$gameId)->first();
-        $opennum = '';
 
         if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1) && $is_killopen->is_user){
+            $opencode = empty($opencode)?$this->opennum($table):$opencode;
             writeLog('serfKill',$table.' 获取KILL'.$issue.'--'.@$killopennum->excel_opennum);
             $opennum = isset($killopennum->excel_opennum)&&!empty($killopennum->excel_opennum)?$killopennum->excel_opennum:$this->opennum($table);
             $total = $is_killopen->bet_lose + $is_killopen->bet_win;

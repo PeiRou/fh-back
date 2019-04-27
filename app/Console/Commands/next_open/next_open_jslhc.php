@@ -57,7 +57,7 @@ class next_open_jslhc extends Command
         $openTime = $res->opentime;
 
         //---kill start
-        $opencode = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
+        $opencode = $excel->kill_count($table,$needOpenIssue,$this->gameId,@$res->opencode);
         //---kill end
         if(empty($opencode))
             return 'Fail';
