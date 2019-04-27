@@ -1284,7 +1284,7 @@ class Excel
             }else
                 $sql_he = '';
             $ids_lose = implode(',', $ids_lose);
-            $sql .= $sql_bets . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids)";
+            $sql .= $sql_bets . "END, status = 3 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids)";
             $sql_lose .= $sql_bets_lose . "END, status = 3 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_lose)";
             if(!empty($sql_bets)){
                 $run = DB::statement($sql);
