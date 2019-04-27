@@ -1758,7 +1758,7 @@ class ExcelLotteryLHC
             $arrLm['play_id'] = " play_id = CASE ";
             $arrLm['play_name'] = " play_name = CASE ";
             $arrLm_bets['bunko'] = "";
-            $arrLm_bets['odds'] = "";
+            $arrLm_bets['play_odds'] = "";
             $arrLm_bets['play_id'] = "";
             $arrLm_bets['play_name'] = "";
             foreach ($get as $item) {
@@ -1830,7 +1830,7 @@ class ExcelLotteryLHC
         $lm_play_name = $getPlayOdds->name;
         $bunko = $item->bet_money * $odds;
         $arrLm_bets['bunko'] .= " WHEN `bet_id` = $item->bet_id THEN ".$bunko;
-        $arrLm_bets['odds'] .= " WHEN `bet_id` = $item->bet_id THEN ".$odds;               //特殊玩法需要根据已中奖的修改显示中奖的赔率
+        $arrLm_bets['play_odds'] .= " WHEN `bet_id` = $item->bet_id THEN ".$odds;               //特殊玩法需要根据已中奖的修改显示中奖的赔率
         $arrLm_bets['play_id'] .= " WHEN `bet_id` = $item->bet_id THEN ".$gameId.$lm_playCate.$lm_play;    //特殊玩法需要根据已中奖的修改显示中奖的玩法id
         $arrLm_bets['play_name'] .= " WHEN `bet_id` = $item->bet_id THEN ' - ".$lm_play_name."' ";         //特殊玩法需要根据已中奖的修改显示中奖的玩法名称
         return $arrLm_bets;
