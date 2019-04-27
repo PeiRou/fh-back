@@ -1754,7 +1754,7 @@ class ExcelLotteryLHC
         if($get){
             $getPlayOdds = DB::table('play')->select('ucode','odds','name')->whereIn('id',[$this->arrPlayId[$lm_play_2],$this->arrPlayId[$lm_play_3],$this->arrPlayId[$lm_play_ERTEQZ],$this->arrPlayId[$lm_play_ERERQZ]])->get()->keyBy('ucode');
             $arrLm['bunko'] = " bunko = CASE ";
-            $arrLm['odds'] = " play_odds = CASE ";
+            $arrLm['play_odds'] = " play_odds = CASE ";
             $arrLm['play_id'] = " play_id = CASE ";
             $arrLm['play_name'] = " play_name = CASE ";
             $arrLm_bets['bunko'] = "";
@@ -1810,13 +1810,13 @@ class ExcelLotteryLHC
                 $ids_lm = implode(',',$ids_lm);
                 $sql_lm = "UPDATE ".$table." SET ";
                 if(!empty($arrLm_bets['bunko']))
-                    $sql_lm .= $arrLm['bunko'].$arrLm_bets['bunko']." END, ";
-                if(!empty($arrLm_bets['odds']))
-                    $sql_lm .= $arrLm['odds'].$arrLm_bets['odds']." END, ";
+                    $sql_lm .= $arrLm['bunko'].$arrLm_bets['bunko']." ELSE bunko END, ";
+                if(!empty($arrLm_bets['play_odds']))
+                    $sql_lm .= $arrLm['play_odds'].$arrLm_bets['play_odds']." ELSE play_odds END, ";
                 if(!empty($arrLm_bets['play_id']))
-                    $sql_lm .= $arrLm['play_id'].$arrLm_bets['play_id']." END, ";
+                    $sql_lm .= $arrLm['play_id'].$arrLm_bets['play_id']." ELSE play_id END, ";
                 if(!empty($arrLm_bets['play_name']))
-                    $sql_lm .= $arrLm['play_name'].$arrLm_bets['play_name']." END, ";
+                    $sql_lm .= $arrLm['play_name'].$arrLm_bets['play_name']." ELSE play_name END, ";
                 $sql_lm .= "status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
             }
             \Log::info($sql_lm);
