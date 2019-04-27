@@ -66,7 +66,8 @@ class WSRepository extends BaseRepository
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['betOrderNo'],   //游戏代码
                 'username' => $v['username'],   //玩家账号
-                'AllBet' => abs($v['netPnl']),//总下注
+                'AllBet' => $v['validBetAmount'],//总下注
+//                'AllBet' => abs($v['netPnl']),//总下注
                 'bet_money' => abs($v['netPnl']),//总下注
                 'bunko' => $v['netPnl'],       //盈利
                 'GameStartTime' => $v['betTime'] ?? $v['endTime'],//游戏开始时间
@@ -74,7 +75,14 @@ class WSRepository extends BaseRepository
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => $v['betTime'] ?? $v['endTime'],
                 'gameCategory' => 'PVP',
+                'service_money' => 0
             ];
+
+            $array['ratio_money'] = \App\GamesApi::getRatioMoney(
+                $array['bunko'] + $array['service_money'],
+                ['g_id' => $this->gameInfo->g_id]
+            ); //计算平台抽点
+
             $user = $this->getUser($array['username']);
             $array['user_id'] = $user->id ?? 0;
             $array['agent'] = $user->agent ?? 0;

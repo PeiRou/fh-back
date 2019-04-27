@@ -607,7 +607,7 @@ class ReportDataController extends Controller
         $iDownFraction = 0;
         $iBetBunko = 0;
         $iBetMoney = 0;
-        $AllServiceMoney = 0;
+        $AllRatioMoney = 0;
         foreach ($aData as $iData){
             if(isset($aArray[$iData->game_id]) && array_key_exists($iData->game_id,$aArray)){
                 $aArray[$iData->game_id]['up_fraction'] += $iData->up_fraction;
@@ -619,20 +619,20 @@ class ReportDataController extends Controller
                 $iDownFraction += $iData->down_fraction;
                 $iBetBunko += $iData->bet_bunko;
                 $iBetMoney += $iData->bet_money;
-                $AllServiceMoney += $iData->service_money;
+                $AllRatioMoney += $iData->ratio_money;
             }else{
                 $aArray[$iData->game_id] = [
                     'up_fraction' => $iData->up_fraction,
                     'down_fraction' => $iData->down_fraction,
                     'bet_bunko' => $iData->bet_bunko,
                     'bet_money' => $iData->bet_money,
-                    'service_money' => $iData->service_money,
+                    'ratio_money' => $iData->ratio_money,
                 ];
                 $iUpFraction += $iData->up_fraction;
                 $iDownFraction += $iData->down_fraction;
                 $iBetBunko += $iData->bet_bunko;
                 $iBetMoney += $iData->bet_money;
-                $AllServiceMoney += $iData->service_money;
+                $AllRatioMoney += $iData->ratio_money;
             }
         }
 
@@ -647,7 +647,7 @@ class ReportDataController extends Controller
                                 下分：" . round($aArray[$iGame->g_id]['down_fraction'],2) . "<br/>
                                 投注额：" . round($aArray[$iGame->g_id]['bet_money'],2) . "<br/>
                                 输赢：" . round($aArray[$iGame->g_id]['bet_bunko'],2) . "<br/>
-                                抽成：" . round($aArray[$iGame->g_id]['service_money'],2) . "<br/>",
+                                抽成：" . round($aArray[$iGame->g_id]['ratio_money'],2) . "<br/>",
                 ];
             }else{
                 $aData[] = [
@@ -667,7 +667,7 @@ class ReportDataController extends Controller
             'betMoney' => round($iDownFraction,2),
             'betBunko' => round($iBetBunko,2),
             'betMoney1' => round($iBetMoney,2),
-            'AllServiceMoney' => round($AllServiceMoney,2),
+            'AllServiceMoney' => round($AllRatioMoney,2),
         ];
     }
 

@@ -43,6 +43,12 @@ class KXRepository extends BaseRepository
                 'gameCategory' => 'PVP',
                 'service_money' => 0,
             ];
+
+            $array['ratio_money'] = \App\GamesApi::getRatioMoney(
+                $array['bunko'] + $array['service_money'],
+                ['g_id' => $this->gameInfo->g_id]
+            ); //计算平台抽点
+
             $user = $this->getUser($array['username']);
             $array['agent'] = $user->agent ?? 0;
             $array['user_id'] = $user->id ?? 0;

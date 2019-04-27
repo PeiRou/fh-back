@@ -310,4 +310,55 @@ class GamesApi extends Model
     public static function getOpenData(){
         return self::where('status',1)->OrderBy('g_id')->get();
     }
+
+    /**
+     * 计算平台抽点
+     * @param $bunko 输赢
+     * @param $param
+     * g_id  --接口id
+     * productType --天成接口字段
+     */
+    public static function getRatioMoney($bunko, $aParam)
+    {
+        static $gamesApis;
+        is_null($gamesApis) && $gamesApis = self::select('g_id', 'ratio')->pluck('ratio', 'g_id')->toArray();
+        $ratio = $gamesApis[$aParam['g_id']] ?? 0;
+        //处理tcg接口的抽成
+        if($aParam['g_id'] == 19 && $aParam['productType']){
+            $ratio = self::getTcRatio($aParam['productType']);
+        }
+        if($bunko >= 0)
+            return 0;
+        $bunko = abs($bunko);
+        return $bunko * ($ratio / 100);
+    }
+
+    //取天成的抽成点
+    public static function getTcRatio($productType)
+    {
+        //取附加参数里的抽成配置，如果没有取默认的
+        return @json_decode(self::getOtherParamTc()[$productType], 1)['ratio'] ?? GamesList::$productTypeList[$productType]['ratio'] ?? 0;
+    }
+
+
+    //取得天成下的所有附加参数
+    public static function getOtherParamTc()
+    {
+        static $otherParamTc;
+        is_null($otherParamTc) && $otherParamTc = self::getOtherParam([
+            'key' => 'productType',
+            ])->pluck('param', 'value')->toArray();
+        return $otherParamTc;
+    }
+
+    //附加参数
+    public static function getOtherParam($param)
+    {
+        static $otherParam;
+        is_null($otherParam) && $otherParam = DB::table('games_api_other_param')->where(function($sql) use($param){
+            foreach ($param as $k=>$v)
+                $sql->where($k, $v);
+        })->get();
+        return $otherParam;
+    }
 }

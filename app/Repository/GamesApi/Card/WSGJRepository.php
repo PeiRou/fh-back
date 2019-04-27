@@ -57,7 +57,6 @@ class WSGJRepository extends BaseRepository
                 select GameID from jq_bet_his
                 where 1 and '.$where));
         }
-
         $arr = [];
         foreach ($data as $v){
             if(in_array($v['betOrderNo'], $GameIDs))
@@ -66,12 +65,13 @@ class WSGJRepository extends BaseRepository
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['betOrderNo'],   //投注订单编号
                 'username' => $v['username'],   //玩家账号
-                'AllBet' => abs($v['netPnl']),//投注金额
+                'AllBet' => ($v['validBetAmount']),//投注金额
                 'bunko' => $v['netPnl'],       //净输赢
                 'GameStartTime' => $v['betTime'] ?? $v['endTime'],//投注时间
                 'GameEndTime' => $v['endTime'] ?? '',  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => $v['betTime'] ?? $v['endTime'],
+                'service_money' => 0,
 
                 'bet_money' => $v['validBetAmount'] ?? '',  //有效投注金额
                 'productType' => $v['productType'] ?? '',  //产品类别
@@ -79,6 +79,10 @@ class WSGJRepository extends BaseRepository
                 'sessionId' => $v['sessionId'] ?? '',  //会话标识
                 'bet_info' => json_encode($v['additionalDetails'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?? '',  //额外细节
             ];
+            $array['ratio_money'] = \App\GamesApi::getRatioMoney(
+                $array['bunko'] + $array['service_money'],
+                ['g_id' => $this->gameInfo->g_id, 'productType' => $v['productType']
+            ]); //计算平台抽点
             $user = $this->getUser($array['username']);
             $array['agent'] = $user->agent ?? 0;
             $array['user_id'] = $user->id ?? 0;

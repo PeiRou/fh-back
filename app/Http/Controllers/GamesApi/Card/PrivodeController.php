@@ -32,7 +32,7 @@ class PrivodeController extends Controller{
 //            DB::table($tableName)->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 60))->delete();
             $res = $this->action($v->g_id, 'getBet', $param);
             if(isset($res['code']) && $res['code'] != 0){
-                $this->insertError($v, $res['code'], $res['msg'], $this->repo->param);
+                $this->insertError($v, $res['code'], $res['msg'], $this->repo->param ?? $param);
                 echo $v->name.'更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
             }
         }

@@ -54,7 +54,7 @@ class GamesApiController extends BaseController
         $other_param = $data['other_param'];
         $g_id = $info['g_id'];
 
-        unset($info['g_id'], $info['sort'], $info['open'], $info['status'], $info['platform_id']);
+        unset($info['g_id'], $info['sort'], $info['open'], $info['platform_id']);
 
         $configArr = [];
         foreach ($config as $k=>$v){
@@ -108,9 +108,15 @@ class GamesApiController extends BaseController
                 'msg' => '修改失败',
             ]);
         }
+    }
 
+    private function GamesApiGet($aParam)
+    {
+        $data['games_api'] = DB::table('games_api')->get();
+        $data['games_api_config'] = DB::table('games_api_config')->get();
+        $data['games_api_other_param'] = DB::table('games_api_other_param')->get();
 
-
+        $this->show(0, $data);
     }
 
 }

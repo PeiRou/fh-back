@@ -7,6 +7,7 @@
  */
 
 namespace App\Repository\GamesApi\Card;
+use App\GamesApi;
 use Illuminate\Support\Facades\DB;
 
 class BaseRepository
@@ -70,6 +71,11 @@ class BaseRepository
                 'gameCategory' => 'PVP',
                 'service_money' => $data['Revenue'][$k],// + 服务费
             ];
+            $array['ratio_money'] = \App\GamesApi::getRatioMoney(
+                $array['bunko'] + $array['service_money'],
+                ['g_id' => $this->gameInfo->g_id]
+            ); //计算平台抽点
+
             $user = $this->getUser($array['username']);
             $array['user_id'] = $user->id ?? 0;
             $array['agent'] = $user->agent ?? 0;

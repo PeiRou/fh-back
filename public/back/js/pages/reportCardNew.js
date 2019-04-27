@@ -133,7 +133,7 @@ function footerTotal() {
             $('#betMoney').text(data.betMoney);
             $('#betMoney1').text(data.betMoney1);
             $('#betBunko').text(data.betBunko);
-            $('#AllServiceMoney').text(data.AllServiceMoney);
+            $('#AllRatioMoney').text(data.AllRatioMoney);
         }
     });
 }
