@@ -1694,60 +1694,94 @@ class ExcelLotteryNC
     public function NC_LIANMA($openCode,$gameId,$table,$issue){
         $lm_playCate = $this->arrPlayCate['LM']; //连码分类ID
         $lm_ids = [];
-        $lm_lose_ids = [];
         $sql_lm = '';
-        $get = DB::table($table)->select('bet_id','bet_info','play_name')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
+        $get = DB::table($table)->select('bet_id','bet_info','play_id')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
         $lm_open = explode(',', $openCode);
+        $arr2num = [];
+        foreach ($lm_open as $k =>$v){
+            $v2 = @$lm_open[$k+1];
+            if(empty($v2))
+                break;
+            $arr2num[] = $v<$v2?$v.','.$v2:$v2.','.$v;
+        }
         foreach ($get as $item) {
-            $explodeBetInfo = explode(',',$item->bet_info);
-            if(count($explodeBetInfo) == 2 && $item->play_name == '任选二'){
-                $diff2 = array_intersect($lm_open, $explodeBetInfo);
-                if(count($diff2) == 2){
+            $user = explode(',', $item->bet_info);
+            $bi = array_intersect($lm_open, $user);
+            sort($user);
+            $userStr = implode(',',$user);
+            switch ($item->play_id.'-c'.count($bi)){
+                //任选二
+                case $gameId.$lm_playCate.$this->arrPlayId['RENXUANER'].'-c2':
+                //任选三
+                case $gameId.$lm_playCate.$this->arrPlayId['XUANERLIANZU'].'-c3':
+                //任选四
+                case $gameId.$lm_playCate.$this->arrPlayId['RENXUANSI'].'-c4':
+                //任选五
+                case $gameId.$lm_playCate.$this->arrPlayId['RENXUANWU'].'-c5':
                     $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
+                    break;
+                //选二连组
+                case $gameId.$lm_playCate.$this->arrPlayId['XUANERLIANZU'].'-c2':
+                    if(in_array($userStr,$arr2num))
+                        $lm_ids[] = $item->bet_id;
+                    break;
+                //选三前组
+                case $gameId.$lm_playCate.$this->arrPlayId['XUANSANQIANZU'].'-c3':
+                    $qsan = [$this->num_1,$this->num_2,$this->num_3];
+                    sort($qsan);
+                    $qsanStr = implode(',',$qsan);
+                    if($userStr==$qsanStr)
+                        $lm_ids[] = $item->bet_id;
+                    break;
             }
-            if(count($explodeBetInfo) == 3 && $item->play_name == '任选三'){
-                $diff3 = array_intersect($lm_open, $explodeBetInfo);
-                if(count($diff3) == 3){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            }
-            if(count($explodeBetInfo) == 4 && $item->play_name == '任选四'){
-                $diff4 = array_intersect($lm_open, $explodeBetInfo);
-                if(count($diff4) == 4){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            }
-            if(count($explodeBetInfo) == 5 && $item->play_name == '任选五'){
-                $diff5 = array_intersect($lm_open, $explodeBetInfo);
-                if(count($diff5) == 5){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            }
-            if(count($explodeBetInfo) == 2 && $item->play_name == '选二连组'){
-                $pattern = '/('.$item->bet_info.')/u';
-                $matches = preg_match($pattern, $openCode);
-                if($matches){
-                    $lm_ids[] = $item->bet_id;
-                }else{
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            }
-            if(count($explodeBetInfo) == 3 && $item->play_name == '选三前组'){
-                if($explodeBetInfo[0] == $this->num_1 && $explodeBetInfo[1] == $this->num_2 && $explodeBetInfo[2] == $this->num_3){
-                    $lm_ids[] = $item->bet_id;
-                } else {
-                    $lm_lose_ids[] = $item->bet_id;
-                }
-            }
+//            if(count($explodeBetInfo) == 2 && $item->play_name == '任选二'){
+//                $diff2 = array_intersect($lm_open, $explodeBetInfo);
+//                if(count($diff2) == 2){
+//                    $lm_ids[] = $item->bet_id;
+//                } else {
+//                    $lm_lose_ids[] = $item->bet_id;
+//                }
+//            }
+//            if(count($explodeBetInfo) == 3 && $item->play_name == '任选三'){
+//                $diff3 = array_intersect($lm_open, $explodeBetInfo);
+//                if(count($diff3) == 3){
+//                    $lm_ids[] = $item->bet_id;
+//                } else {
+//                    $lm_lose_ids[] = $item->bet_id;
+//                }
+//            }
+//            if(count($explodeBetInfo) == 4 && $item->play_name == '任选四'){
+//                $diff4 = array_intersect($lm_open, $explodeBetInfo);
+//                if(count($diff4) == 4){
+//                    $lm_ids[] = $item->bet_id;
+//                } else {
+//                    $lm_lose_ids[] = $item->bet_id;
+//                }
+//            }
+//            if(count($explodeBetInfo) == 5 && $item->play_name == '任选五'){
+//                $diff5 = array_intersect($lm_open, $explodeBetInfo);
+//                if(count($diff5) == 5){
+//                    $lm_ids[] = $item->bet_id;
+//                } else {
+//                    $lm_lose_ids[] = $item->bet_id;
+//                }
+//            }
+//            if(count($explodeBetInfo) == 2 && $item->play_name == '选二连组'){
+//                $pattern = '/('.$item->bet_info.')/u';
+//                $matches = preg_match($pattern, $openCode);
+//                if($matches){
+//                    $lm_ids[] = $item->bet_id;
+//                }else{
+//                    $lm_lose_ids[] = $item->bet_id;
+//                }
+//            }
+//            if(count($explodeBetInfo) == 3 && $item->play_name == '选三前组'){
+//                if($explodeBetInfo[0] == $this->num_1 && $explodeBetInfo[1] == $this->num_2 && $explodeBetInfo[2] == $this->num_3){
+//                    $lm_ids[] = $item->bet_id;
+//                } else {
+//                    $lm_lose_ids[] = $item->bet_id;
+//                }
+//            }
         }
         $ids_lm = implode(',', $lm_ids);
         if($ids_lm){
