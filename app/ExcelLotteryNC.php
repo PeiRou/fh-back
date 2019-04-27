@@ -1734,54 +1734,6 @@ class ExcelLotteryNC
                         $lm_ids[] = $item->bet_id;
                     break;
             }
-//            if(count($explodeBetInfo) == 2 && $item->play_name == '任选二'){
-//                $diff2 = array_intersect($lm_open, $explodeBetInfo);
-//                if(count($diff2) == 2){
-//                    $lm_ids[] = $item->bet_id;
-//                } else {
-//                    $lm_lose_ids[] = $item->bet_id;
-//                }
-//            }
-//            if(count($explodeBetInfo) == 3 && $item->play_name == '任选三'){
-//                $diff3 = array_intersect($lm_open, $explodeBetInfo);
-//                if(count($diff3) == 3){
-//                    $lm_ids[] = $item->bet_id;
-//                } else {
-//                    $lm_lose_ids[] = $item->bet_id;
-//                }
-//            }
-//            if(count($explodeBetInfo) == 4 && $item->play_name == '任选四'){
-//                $diff4 = array_intersect($lm_open, $explodeBetInfo);
-//                if(count($diff4) == 4){
-//                    $lm_ids[] = $item->bet_id;
-//                } else {
-//                    $lm_lose_ids[] = $item->bet_id;
-//                }
-//            }
-//            if(count($explodeBetInfo) == 5 && $item->play_name == '任选五'){
-//                $diff5 = array_intersect($lm_open, $explodeBetInfo);
-//                if(count($diff5) == 5){
-//                    $lm_ids[] = $item->bet_id;
-//                } else {
-//                    $lm_lose_ids[] = $item->bet_id;
-//                }
-//            }
-//            if(count($explodeBetInfo) == 2 && $item->play_name == '选二连组'){
-//                $pattern = '/('.$item->bet_info.')/u';
-//                $matches = preg_match($pattern, $openCode);
-//                if($matches){
-//                    $lm_ids[] = $item->bet_id;
-//                }else{
-//                    $lm_lose_ids[] = $item->bet_id;
-//                }
-//            }
-//            if(count($explodeBetInfo) == 3 && $item->play_name == '选三前组'){
-//                if($explodeBetInfo[0] == $this->num_1 && $explodeBetInfo[1] == $this->num_2 && $explodeBetInfo[2] == $this->num_3){
-//                    $lm_ids[] = $item->bet_id;
-//                } else {
-//                    $lm_lose_ids[] = $item->bet_id;
-//                }
-//            }
         }
         $ids_lm = implode(',', $lm_ids);
         if($ids_lm){
