@@ -281,7 +281,8 @@ class Excel
             writeLog('serfKill',$table.' 获取origin开奖'.$issue.'--'.$opencode);
         }else if(isset($is_killopen->is_user) && $is_killopen->is_user == 0){//增加统一杀率，如果是此栏位为0时，为统一控制杀率
             $opennum = $this->opennum($table,$is_killopen->is_user,$issue);
-        }
+        }else
+            $opennum = $this->opennum($table);
         return $opennum;
     }
     //取得杀率信息

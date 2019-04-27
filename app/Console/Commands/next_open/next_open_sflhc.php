@@ -55,12 +55,12 @@ class next_open_sflhc extends Command
         //當期獎期
         $needOpenIssue = $res->issue;
         $openTime = $res->opentime;
-        $res->opencode = $excel->opennum($table);
 
         //---kill start
-        $opennum = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
+        $opencode = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
         //---kill end
-        $opencode = empty($opennum)?$res->opencode:$opennum;
+        if(empty($opencode))
+            return 'Fail';
 
         try {
             //清除昨天长龙，在录第一期的时候清掉

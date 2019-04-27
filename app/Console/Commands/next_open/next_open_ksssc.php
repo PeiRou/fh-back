@@ -56,12 +56,10 @@ class next_open_ksssc extends Command
         $needOpenIssue = $res->issue;
         $openTime = $res->opentime;
         $issuenum = substr($needOpenIssue,-3);
-        $res->opencode = $excel->opennum($table);
 
         //---kill start
-        $opennum = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
+        $opencode = $excel->kill_count($table,$needOpenIssue,$this->gameId,$res->opencode);
         //---kill end
-        $opencode = empty($opennum)?$res->opencode:$opennum;
         if(empty($opencode))
             return 'Fail';
 
