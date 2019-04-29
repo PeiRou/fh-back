@@ -74,17 +74,17 @@ class GamesList extends Base
         return $arr;
     }
 
-    public static function getTreeGroup($array, &$list = [], $pid =0, $level = 0){
-        $list = [];
-        foreach ($array as $key => $value){
-            if ($value['pid'] == $pid){
-                $list[$value['game_id']] = $value;
-                unset($array[$key]);
-                static::getTreeGroup($array, $list[$value['game_id']]['child'], $value['game_id'], $level);
-            }
-        }
-        return $list;
-    }
+//    public static function getTreeGroup($array, &$list = [], $pid =0, $level = 0){
+//        $list = [];
+//        foreach ($array as $key => $value){
+//            if ($value['pid'] == $pid){
+//                $list[$value['game_id']] = $value;
+//                unset($array[$key]);
+//                static::getTreeGroup($array, $list[$value['game_id']]['child'], $value['game_id'], $level);
+//            }
+//        }
+//        return $list;
+//    }
     //获取的游戏
     public static function getList($param = [])
     {

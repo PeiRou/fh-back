@@ -546,7 +546,7 @@ class openHistoryController extends Controller
             $sql->where('GameStartTime', '<=', date('Y-m-d',strtotime($request->endTime)).' 23:59:59');
         });
         $totalModel = clone $model;
-        $TotalSum = $totalModel->select(DB::raw(' COUNT(username) as BetCountSum, SUM(AllBet) as AllBet, SUM(bet_money) as bet_money, SUM(bunko) as bunkoSum '))->first();
+        $TotalSum = $totalModel->select(DB::raw(' COUNT(username) as BetCountSum, SUM(AllBet) as AllBet, SUM(bet_money) as bet_money, SUM(bunko) as bunkoSum, SUM(service_money) as service_moneySum '))->first();
         foreach ($TotalSum as &$v){
             $v = sprintf('%.2f', $v) * 1;
         }

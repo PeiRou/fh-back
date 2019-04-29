@@ -65,7 +65,7 @@ function save(){
 function add() {
     jc1 = $.confirm({
         theme: 'material',
-        title: '添加权限',
+        title: '添加',
         closeIcon:true,
         boxWidth:'25%',
         content: 'url:/back/modal/addGamesApiList',
@@ -129,7 +129,7 @@ function del(id) {
 function edit(id) {
     jc1 = $.confirm({
         theme: 'material',
-        title: '修改权限',
+        title: '修改',
         closeIcon:true,
         boxWidth:'25%',
         content: 'url:/back/modal/addGamesApiList?id='+id,

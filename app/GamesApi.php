@@ -361,4 +361,24 @@ class GamesApi extends Model
         })->get();
         return $otherParam;
     }
+
+    //删除一个接口
+    public static function delGamesApi(int $g_id)
+    {
+        try{
+            DB::beginTransaction();
+            $games_api = DB::table('games_api')->where('g_id', $g_id);
+            $games_api_config = DB::table('games_api_config')->where('g_id', $g_id);
+            $games_api_other_param = DB::table('games_api_other_param')->where('g_id', $g_id);
+
+            $games_api->delete();
+            $games_api_config->delete();
+            $games_api_other_param->delete();
+            DB::commit();
+            return true;
+        }catch (\Throwable $e){
+            DB::rollback();
+            throw $e;
+        }
+    }
 }

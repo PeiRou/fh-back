@@ -22,6 +22,7 @@ function createTable() {
                 $('#AllBet').html(e.TotalSum.AllBet);
                 $('#bet_money').html(e.TotalSum.bet_money);
                 $('#bunkoSum').html(e.TotalSum.bunkoSum);
+                $('#service_moneySum').html(e.TotalSum.service_moneySum);
                 return e.data;
             }
         },
@@ -35,6 +36,7 @@ function createTable() {
             {data: 'AllBet',title:'下注金额'},
             {data: 'bet_money',title:'有效投注金额'},
             {data: 'bunko',title:'会员输赢'},
+            {data: 'service_money',title:'服务费'},
             // {data: 'productType',title:'产品'},
         ],
         footerCallback:function(e,data, c, d){

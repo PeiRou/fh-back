@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Obtain;
 
 use App\Feedback;
 use App\FeedbackMessage;
+use App\GamesApi;
 use App\GamesList;
 use Illuminate\Support\Facades\DB;
 
@@ -117,6 +118,15 @@ class GamesApiController extends BaseController
         $data['games_api_other_param'] = DB::table('games_api_other_param')->get();
 
         $this->show(0, $data);
+    }
+
+    private function GamesApiDel($aParam)
+    {
+        if(!isset($aParam['g_id']) || !($g_id = (int)$aParam['g_id']))
+            return $this->show(1);
+
+        GamesApi::delGamesApi($g_id);
+        $this->show(0, [], 'ok');
     }
 
 }

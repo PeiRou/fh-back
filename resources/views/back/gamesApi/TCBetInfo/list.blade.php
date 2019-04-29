@@ -80,6 +80,7 @@
                     <th id="AllBet"></th>
                     <th id="bet_money"></th>
                     <th id="bunkoSum"></th>
+                    <th id="service_moneySum"></th>
                 </tr>
             </tfoot>
         </table>
