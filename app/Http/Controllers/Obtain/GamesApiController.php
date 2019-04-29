@@ -30,12 +30,9 @@ class GamesApiController extends BaseController
     private function GamesListSave($aParam)
     {
         if(!isset($aParam['list']))
-            $this->returnAction([
-                'code' => 1,
-                'msg' => $this->code[1],
-            ]);
+            $aParam['list'] = [];
         GamesList::where(function($sql){})->update(['weihu' => 0]);
-        if(!GamesList::whereRaw('game_id in ('.$aParam['list'].')')->update(['weihu' => 1]))
+        if(count($aParam['list']) > 0 && !GamesList::whereRaw('game_id in ('.$aParam['list'].')')->update(['weihu' => 1]))
             return $this->returnAction([
                 'code' => 6,
                 'msg' => '修改失败',

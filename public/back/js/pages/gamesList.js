@@ -31,6 +31,7 @@ $(function(){
     zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes,);
     function zTreeOnCheck(){
         var nodes = zTreeObj.getCheckedNodes(true);
+        tempDepNames = new Array;
         $(nodes).each(function(index, obj) {
             tempDepNames.push(obj.game_id)
         });
@@ -42,9 +43,6 @@ $(function(){
     })
 })
 function save(){
-    if(tempDepNames.length <= 0){
-        return Calert('没有任何更改','red')
-    }
     $.ajax({
         url: '/back/modal/switchGamesApiList',
         data:{
