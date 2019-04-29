@@ -36,51 +36,47 @@ class ExcelLotteryKL8
         for($i=0;$i<count($arrOpenCode);$i++){
             $sum += (int)$arrOpenCode[$i];
         }
-        if($sum > 810){ //总和大
-            $playId = $this->arrPlayId['ZONGHEDA'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else { //总和小
-            $playId = $this->arrPlayId['ZONGHEXIAO'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-
-        if($sum%2 == 0) {
-            $playId = $this->arrPlayId['ZONGHESHUANG']; //总和双
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        } else {
-            $playId = $this->arrPlayId['ZONGHEDAN']; //总和单
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-
-        if($sum == 810){
+        if($sum==810){
             $playId = $this->arrPlayId['ZONGHE810']; //和值
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
+        }else{
+            if($sum > 810){ //总和大
+                $playId = $this->arrPlayId['ZONGHEDA'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            } else { //总和小
+                $playId = $this->arrPlayId['ZONGHEXIAO'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
 
-        if($sum%2 == 0 && $sum > 810){ //大双
-            $playId = $this->arrPlayId['ZONGDASHUANG'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($sum%2 == 0 && $sum < 810){ //小双
-            $playId = $this->arrPlayId['ZONGXIAOSHUANG'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($sum%2 !== 0 && $sum > 810){ //大单
-            $playId = $this->arrPlayId['ZONGDADAN'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($sum%2 !== 0 && $sum < 810){ //小单
-            $playId = $this->arrPlayId['ZONGXIAODAN'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
+            if($sum%2 == 0) {
+                $playId = $this->arrPlayId['ZONGHESHUANG']; //总和双
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            } else {
+                $playId = $this->arrPlayId['ZONGHEDAN']; //总和单
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
+            if($sum%2 == 0 && $sum > 810){ //大双
+                $playId = $this->arrPlayId['ZONGDASHUANG'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }else if($sum%2 == 0 && $sum < 810){ //小双
+                $playId = $this->arrPlayId['ZONGXIAOSHUANG'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }else if($sum%2 !== 0 && $sum > 810){ //大单
+                $playId = $this->arrPlayId['ZONGDADAN'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }else if($sum%2 !== 0 && $sum < 810){ //小单
+                $playId = $this->arrPlayId['ZONGXIAODAN'];
+                $winCode = $gameId.$playCate.$playId;
+                $win->push($winCode);
+            }
         }
     }
 
