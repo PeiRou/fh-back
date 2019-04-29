@@ -1754,11 +1754,11 @@ class ExcelLotteryLHC
         if($get){
             $getPlayOdds = DB::table('play')->select('ucode','odds','name')->whereIn('id',[$this->arrPlayId[$lm_play_2],$this->arrPlayId[$lm_play_3],$this->arrPlayId[$lm_play_ERTEQZ],$this->arrPlayId[$lm_play_ERERQZ]])->get()->keyBy('ucode');
             $arrLm['bunko'] = " bunko = CASE ";
-            $arrLm['odds'] = " play_odds = CASE ";
+            $arrLm['play_odds'] = " play_odds = CASE ";
             $arrLm['play_id'] = " play_id = CASE ";
             $arrLm['play_name'] = " play_name = CASE ";
             $arrLm_bets['bunko'] = "";
-            $arrLm_bets['odds'] = "";
+            $arrLm_bets['play_odds'] = "";
             $arrLm_bets['play_id'] = "";
             $arrLm_bets['play_name'] = "";
             foreach ($get as $item) {
@@ -1810,13 +1810,13 @@ class ExcelLotteryLHC
                 $ids_lm = implode(',',$ids_lm);
                 $sql_lm = "UPDATE ".$table." SET ";
                 if(!empty($arrLm_bets['bunko']))
-                    $sql_lm .= $arrLm['bunko'].$arrLm_bets['bunko']." END, ";
-                if(!empty($arrLm_bets['odds']))
-                    $sql_lm .= $arrLm['odds'].$arrLm_bets['odds']." END, ";
+                    $sql_lm .= $arrLm['bunko'].$arrLm_bets['bunko']." ELSE bunko END, ";
+                if(!empty($arrLm_bets['play_odds']))
+                    $sql_lm .= $arrLm['play_odds'].$arrLm_bets['play_odds']." ELSE play_odds END, ";
                 if(!empty($arrLm_bets['play_id']))
-                    $sql_lm .= $arrLm['play_id'].$arrLm_bets['play_id']." END, ";
+                    $sql_lm .= $arrLm['play_id'].$arrLm_bets['play_id']." ELSE play_id END, ";
                 if(!empty($arrLm_bets['play_name']))
-                    $sql_lm .= $arrLm['play_name'].$arrLm_bets['play_name']." END, ";
+                    $sql_lm .= $arrLm['play_name'].$arrLm_bets['play_name']." ELSE play_name END, ";
                 $sql_lm .= "status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
             }
             \Log::info($sql_lm);
@@ -1830,7 +1830,7 @@ class ExcelLotteryLHC
         $lm_play_name = $getPlayOdds->name;
         $bunko = $item->bet_money * $odds;
         $arrLm_bets['bunko'] .= " WHEN `bet_id` = $item->bet_id THEN ".$bunko;
-        $arrLm_bets['odds'] .= " WHEN `bet_id` = $item->bet_id THEN ".$odds;               //特殊玩法需要根据已中奖的修改显示中奖的赔率
+        $arrLm_bets['play_odds'] .= " WHEN `bet_id` = $item->bet_id THEN ".$odds;               //特殊玩法需要根据已中奖的修改显示中奖的赔率
         $arrLm_bets['play_id'] .= " WHEN `bet_id` = $item->bet_id THEN ".$gameId.$lm_playCate.$lm_play;    //特殊玩法需要根据已中奖的修改显示中奖的玩法id
         $arrLm_bets['play_name'] .= " WHEN `bet_id` = $item->bet_id THEN ' - ".$lm_play_name."' ";         //特殊玩法需要根据已中奖的修改显示中奖的玩法名称
         return $arrLm_bets;

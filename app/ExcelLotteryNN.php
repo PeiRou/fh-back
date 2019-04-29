@@ -72,7 +72,7 @@ class ExcelLotteryNN
         } else {
             $playId = $this->arrPlayId['XIANER'];//$playId = 3463;
             $numCode = $gamePlay.$playId;
-            $win->push([$numCode,(int)$banker_nn]);
+            $win->push([$numCode,(int)$player2_nn]);
             //\Log::info('闲二赢');
         }
 
@@ -94,7 +94,7 @@ class ExcelLotteryNN
         } else {
             $playId = $this->arrPlayId['XIANSAN'];//$playId = 3464;
             $numCode = $gamePlay.$playId;
-            $win->push([$numCode,(int)$banker_nn]);
+            $win->push([$numCode,(int)$player3_nn]);
             //\Log::info('闲三赢');
         }
 
@@ -116,7 +116,7 @@ class ExcelLotteryNN
         } else {
             $playId = $this->arrPlayId['XIANSI'];//$playId = 3465;
             $numCode = $gamePlay.$playId;
-            $win->push([$numCode,(int)$banker_nn]);
+            $win->push([$numCode,(int)$player4_nn]);
             //\Log::info('闲四赢');
         }
 
@@ -138,7 +138,7 @@ class ExcelLotteryNN
         } else {
             $playId = $this->arrPlayId['XIANWU'];//$playId = 3466;
             $numCode = $gamePlay.$playId;
-            $win->push([$numCode,(int)$banker_nn]);
+            $win->push([$numCode,(int)$player5_nn]);
             //\Log::info('闲五赢');
         }
     }

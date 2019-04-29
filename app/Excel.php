@@ -268,9 +268,9 @@ class Excel
     public function kill_count($table,$issue,$gameId,$opencode){
         $killopennum = DB::connection('mysql::write')->table($table)->select('excel_opennum')->where('issue',$issue)->first();
         $is_killopen = DB::connection('mysql::write')->table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win','is_user')->where('game_id',$gameId)->first();
-        $opennum = '';
 
         if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1) && $is_killopen->is_user){
+            $opencode = empty($opencode)?$this->opennum($table):$opencode;
             writeLog('serfKill',$table.' 获取KILL'.$issue.'--'.@$killopennum->excel_opennum);
             $opennum = isset($killopennum->excel_opennum)&&!empty($killopennum->excel_opennum)?$killopennum->excel_opennum:$this->opennum($table);
             $total = $is_killopen->bet_lose + $is_killopen->bet_win;
@@ -281,7 +281,8 @@ class Excel
             writeLog('serfKill',$table.' 获取origin开奖'.$issue.'--'.$opencode);
         }else if(isset($is_killopen->is_user) && $is_killopen->is_user == 0){//增加统一杀率，如果是此栏位为0时，为统一控制杀率
             $opennum = $this->opennum($table,$is_killopen->is_user,$issue);
-        }
+        }else
+            $opennum = $this->opennum($table);
         return $opennum;
     }
     //取得杀率信息
@@ -1284,7 +1285,7 @@ class Excel
             }else
                 $sql_he = '';
             $ids_lose = implode(',', $ids_lose);
-            $sql .= $sql_bets . "END, status = 1 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids)";
+            $sql .= $sql_bets . "END, status = 3 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND  `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids)";
             $sql_lose .= $sql_bets_lose . "END, status = 3 , updated_at ='" . date('Y-m-d H:i:s') . "' WHERE `status` = 0 AND `issue` = $issue AND `game_id` = $gameId AND `play_id` IN ($ids_lose)";
             if(!empty($sql_bets)){
                 $run = DB::statement($sql);
