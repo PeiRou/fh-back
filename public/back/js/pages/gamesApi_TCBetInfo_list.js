@@ -36,7 +36,7 @@ function createTable() {
             {data: 'AllBet',title:'下注金额'},
             {data: 'bet_money',title:'有效投注金额'},
             {data: 'bunko',title:'会员输赢'},
-            {data: 'service_money',title:'服务费'},
+            // {data: 'service_money',title:'服务费'},
             // {data: 'productType',title:'产品'},
         ],
         footerCallback:function(e,data, c, d){
