@@ -125,14 +125,14 @@ class ExcelLotterySSC
     public function ZHONGSAN($gameId,$win){
         $playCate = $this->arrPlayCate['ZHONGSAN'];
         $zaliu = 0;
-        if($this->num_1 == $this->num_2 && $this->num_2 == $this->num_3){ //豹子
+        if($this->num_2 == $this->num_3 && $this->num_3 == $this->num_4){ //豹子
             $zaliu = 1;
             $playId = $this->arrPlayId['ZHONGSANBAOZI'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }
         //顺子
-        $arr = [$this->num_1,$this->num_2,$this->num_3];
+        $arr = [$this->num_2,$this->num_3,$this->num_4];
         sort($arr);
         if($arr[0] == 0 && $arr[1] == 1 && $arr[2] == 9){
             $zaliu = 1;
@@ -218,14 +218,14 @@ class ExcelLotterySSC
     public function HOUSAN($gameId,$win){
         $playCate = $this->arrPlayCate['HOUSAN'];
         $zaliu = 0;
-        if($this->num_1 == $this->num_2 && $this->num_2 == $this->num_3){ //豹子
+        if($this->num_3 == $this->num_4 && $this->num_4 == $this->num_5){ //豹子
             $zaliu = 1;
             $playId = $this->arrPlayId['HOUSANBAOZI'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }
         //顺子
-        $arr = [$this->num_1,$this->num_2,$this->num_3];
+        $arr = [$this->num_3,$this->num_4,$this->num_5];
         sort($arr);
         if($arr[0] == 0 && $arr[1] == 1 && $arr[2] == 9){
             $zaliu = 1;

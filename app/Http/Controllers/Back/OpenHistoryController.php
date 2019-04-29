@@ -1291,9 +1291,15 @@ class OpenHistoryController extends Controller
                 DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['is_open' => 5]);
             if(!empty($aBetAll)){
                 Users::editBatchUserMoneyDataFreeze($aBetAll);
-                Users::editBatchUserMoneyDataBackWater($aBetAll);
                 if(!empty($aCapital))    Capital::insert($aCapital);
-                if(!empty($aCapitalBack)) Capital::insert($aCapitalBack);
+                if(!empty($aCapitalBack)){
+                    Users::editBatchUserMoneyDataBackWater($aBetAll);
+                    Capital::insert($aCapitalBack);
+                    if(in_array($type,['msnn']))
+                        DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['nn_returnwater' => 0]);
+                    else
+                        DB::table('game_' . Games::$aCodeGameName[$type])->where('issue',$issue)->update(['returnwater' => 0]);
+                }
             }
             if(!empty($aBet)) {
                 Users::editBatchUserMoneyDataWithdraw($aBet);
