@@ -31,10 +31,9 @@ class ISSUE_SEED_PK10 extends Command
         $redis->setex($key, 60, 'on');
 
         $checkUpdate = DB::table('issue_seed')->where('id',1)->first();
-//        $checkLastIssue = DB::table('game_bjpk10')->select(DB::raw('MAX(id) as maxid'),'issue')->where('opentime',date('Y-m-d 23:50:00',strtotime('-1 days')))->first();
-//        $lastIssue = @$checkLastIssue->issue;
-        $checkLastIssue = DB::table('game_bjpk10')->max('issue');
-        $lastIssue = $checkLastIssue?$checkLastIssue:0;
+        $lastIssue = @DB::table('game_bjpk10')->select(DB::raw('MAX(id) as maxid'),'issue')->where('opentime',date('Y-m-d 23:50:00',strtotime('-1 days')))->first()->issue;
+//        $checkLastIssue = DB::table('game_bjpk10')->max('issue');
+//        $lastIssue = $checkLastIssue?$checkLastIssue:0;
         if(empty($lastIssue)){
             writeLog('ISSUE_SEED', date('Y-m-d').$this->signature.'期数不可为0');
             echo '期数不可为0';
