@@ -667,7 +667,7 @@ class ReportDataController extends Controller
             'betMoney' => round($iDownFraction,2),
             'betBunko' => round($iBetBunko,2),
             'betMoney1' => round($iBetMoney,2),
-            'AllServiceMoney' => round($AllRatioMoney,2),
+            'AllRatioMoney' => round($AllRatioMoney,2),
         ];
     }
 
