@@ -113,8 +113,10 @@ class Excel
             if($capIns != 1){
                 return 1;
             }
-            foreach ($push as $key => $val){
-                @event(new BackPusherEvent('win','中奖通知',$val['notice'],array('fnotice-'.$val['userid'])));
+            if(!empty(env('PUSHER_APP_ID',''))){
+                foreach ($push as $key => $val){
+                    @event(new BackPusherEvent('win','中奖通知',$val['notice'],array('fnotice-'.$val['userid'])));
+                }
             }
         } else {
             \Log::info($gameName.'已结算过，已阻止！');
