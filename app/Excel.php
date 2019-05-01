@@ -1004,40 +1004,43 @@ class Excel
                     writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
                     $randRate = rand(1000,1999)/1000;
                     if($lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
-                        $iLimit = count($arrLimit)>=2?2:1;
-                        if($iLimit!=1){
-                            $tmpVal = 0;
-                            foreach ($arrLimit as $key2 =>$va2){
+                        $openCode = $this->opennum($table,$exeBase->is_user,$issue,$i);
+//                        $iLimit = count($arrLimit)>=2?2:1;
+//                        if($iLimit!=1){
+//                            $tmpVal = 0;
+//                            foreach ($arrLimit as $key2 =>$va2){
+//                                $ii++;
+//                                if($ii==$iLimit) {
+//                                    $tmpVal = $key2;
+//                                    break;
+//                                }
+//                            }
+//                            $tmpNum = $exeBase->bet_lose-($exeBase->bet_win+$tmpVal);
+//                            $lose_losewin_rate = $total>0?($tmpNum)/$total:0;
+//                            writeLog('New_Kill',$table.' :'.$issue.' lastBunko: '.$tmpNum .'share :'.$tmpVal);
+//                            if(($lose_losewin_rate <= $exeBase->kill_rate) || (($exeBase->bet_lose-($exeBase->bet_win+$tmpVal)) <= $tmpVal))
+//                                $iLimit = 1;
+//                            $ii = 0;
+//                        }
+//                        foreach ($arrLimit as $key2 =>$va2){
+//                            $ii++;
+//                            if($ii==$iLimit) {
+//                                $openCode = $va2;
+//                                break;
+//                            }
+//                        }
+                    }else{
+                        if($lose_losewin_rate<=0.1 || (!in_array($randNum,array(2,4,9)))) {                        //如果当日的输赢比低于0，则选平台最好的营利值
+                            $iLimit = 1;
+                            foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
                                 $ii++;
                                 if($ii==$iLimit) {
-                                    $tmpVal = $key2;
+                                    $openCode = $va2;
                                     break;
                                 }
                             }
-                            $tmpNum = $exeBase->bet_lose-($exeBase->bet_win+$tmpVal);
-                            $lose_losewin_rate = $total>0?($tmpNum)/$total:0;
-                            writeLog('New_Kill',$table.' :'.$issue.' lastBunko: '.$tmpNum .'share :'.$tmpVal);
-                            if(($lose_losewin_rate <= $exeBase->kill_rate) || (($exeBase->bet_lose-($exeBase->bet_win+$tmpVal)) <= $tmpVal))
-                                $iLimit = 1;
-                            $ii = 0;
-                        }
-                        foreach ($arrLimit as $key2 =>$va2){
-                            $ii++;
-                            if($ii==$iLimit) {
-                                $openCode = $va2;
-                                break;
-                            }
-                        }
-                    }else{
-                        if($lose_losewin_rate<0 || (!in_array($randNum,array(2,4,9))))                        //如果当日的输赢比低于0，则选平台最好的营利值
-                            $iLimit = 1;
-                        foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
-                            $ii++;
-                            if($ii==$iLimit) {
-                                $openCode = $va2;
-                                break;
-                            }
-                        }
+                        }else
+                            $openCode = $this->opennum($table,$exeBase->is_user,$issue,$i);
                     }
                 }else{                                        //如果当日的尚未计算，则给中间值
                     foreach ($arrLimit as $key2 =>$va2){
