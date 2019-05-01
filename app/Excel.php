@@ -993,11 +993,11 @@ class Excel
                 }
                 ksort($arrLimit);                //将计算后的杀率值，由小到大排序
                 writeLog('New_Kill', $table.' :'.$issue.' s-to-b-'.json_encode($arrLimit));
-                $iLimit = count($arrLimit)>=2?2:1;
+//                $iLimit = count($arrLimit)>=2?2:1;
                 $ii = 0;
                 $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
-                if($randNum<=5)
-                    $iLimit = 1;
+//                if($randNum<=5)
+//                    $iLimit = 1;
                 if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
                     $total = $exeBase->bet_lose + $exeBase->bet_win;
                     $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
@@ -1030,7 +1030,7 @@ class Excel
 //                            }
 //                        }
                     }else{
-                        if($lose_losewin_rate<=0.1 || (!in_array($randNum,array(2,4,9)))) {                        //如果当日的输赢比低于0，则选平台最好的营利值
+                        if($lose_losewin_rate<=0.1 || (!in_array($randNum,array(3,5,7)))) {                        //如果当日的输赢比低于0，则选平台最好的营利值
                             $iLimit = 1;
                             foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
                                 $ii++;
