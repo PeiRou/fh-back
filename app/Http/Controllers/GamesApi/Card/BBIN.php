@@ -25,8 +25,6 @@ class BBIN extends Base{
                     $method = 'WagersRecordBy'.$this->repo->param['gamekind'];
                     $this->WagersRecordBy($method);
                 }
-
-//                $this->BetRecord();
             }
         }
     }
@@ -43,27 +41,10 @@ class BBIN extends Base{
                 }
             }
         }
-//        p($res, 1);
+
         $code = $res['data']['Code'] ?? 500;
         $codeMsg = $res['data']['Message'] ?? '超时！';
-        $this->repo->insertError($code, $codeMsg);
-    }
-    //体育
-    private function WagersRecordBy1()
-    {
-        if(!empty($res = $this->repo->{__FUNCTION__}())){
-            writeLog('WagersRecordBy1', json_encode($res, 3));
-            if($res['result'] == 1){
-                $this->repo->createData($res['data']);
-                if(count($res['data']) >= $this->repo->param['pagelimit'] ){
-                    $this->repo->param['page'] ++;
-                    $this->{__FUNCTION__}();
-                }
-            }
-        }
-        $code = $res['data']['Code'] ?? 500;
-        $codeMsg = $res['data']['Message'] ?? '超时！';
-        $this->repo->insertError($code, $codeMsg);
+        (($res['result'] ?? 0) != 1) && $this->repo->insertError($code, $codeMsg);
     }
 
     //除了体育
@@ -81,7 +62,7 @@ class BBIN extends Base{
         }
         $code = $res['data']['Code'] ?? 500;
         $codeMsg = $res['data']['Message'] ?? '超时！';
-        (($res['result'] ?? 0) !== 1) && $this->repo->insertError($code, $codeMsg);
+        (($res['result'] ?? 0) != 1) && $this->repo->insertError($code, $codeMsg);
     }
 
 }

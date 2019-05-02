@@ -81,6 +81,7 @@ class PrivodeController extends Controller{
         if($code == 9999){
             return null;
         }
+
         if(($g_info->g_id == 15 || $g_info->g_id == 16)){
             if($code == 16){
                 return null;
@@ -90,9 +91,7 @@ class PrivodeController extends Controller{
                 return null;
             }
         }elseif($g_info->g_id == 22){
-            if($code == 40014){
-                return null;
-            }
+            return null;
         }
 
 
