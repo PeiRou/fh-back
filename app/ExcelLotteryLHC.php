@@ -1831,8 +1831,8 @@ class ExcelLotteryLHC
             if(!empty($arrLm_bets['play_name']))
                 $sql_lm .= $arrLm['play_name'].$arrLm_bets['play_name']." ELSE play_name END, ";
             $sql_lm .= "status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
+            \Log::info($sql_lm);
         }
-        \Log::info($sql_lm);
         return $sql_lm;
     }
     //特殊玩法需要根据已中奖的修改显示中奖的信息
