@@ -39,7 +39,9 @@ class PrivodeController extends Controller{
     public function reGetBet($id)
     {
         $model = DB::table('jq_error_bet')->where('id', $id);
-        $info = $model->first();
+        if(!$info = $model->first()){
+            return show(400, '没有此单');
+        }
         $param = json_decode($info->param, 1);
         $param['g_id'] = $info->g_id;
         $v = GamesApi::getQpList($param)[0];
