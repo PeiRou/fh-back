@@ -982,7 +982,7 @@ class Excel
                     $this->setKillIssueNum($table,$issue,$dataExcGame['excel_num'],$openCode,$excBunko);
             }
         }
-        //开启智慧杀率
+        //开启智能杀率
         if(isset($exeBase->is_ai)&&$exeBase->is_ai){
             if($exeBase->is_open==1){
                 $exeData = DB::table('excel_game')->select(DB::raw('opennum,issue,bunko'))->where('game_id',$gameId)->where('issue',$issue)->groupBy('issue','excel_num')->get();

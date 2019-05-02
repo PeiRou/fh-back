@@ -126,9 +126,9 @@ class GameDataController extends Controller
                         $str = $str . "<li onclick='openKill(" . $iData->excel_base_idx . ")'><span class='status-1'>开启</span></li>";
                     }
                     if ($iData->is_ai == 1) {         //----关闭
-                        $str = $str . "<li onclick='closeKillai(" . $iData->excel_base_idx . ")'><span class='status-3'>智慧模式关闭</span></li>";
+                        $str = $str . "<li onclick='closeKillai(" . $iData->excel_base_idx . ")'><span class='status-3'>智能模式关闭</span></li>";
                     } else if ($iData->is_ai == 0) {
-                        $str = $str . "<li onclick='openKillai(" . $iData->excel_base_idx . ")'><span class='status-1'>智慧模式开启</span></li>";
+                        $str = $str . "<li onclick='openKillai(" . $iData->excel_base_idx . ")'><span class='status-1'>智能模式开启</span></li>";
                     }
                 }
 

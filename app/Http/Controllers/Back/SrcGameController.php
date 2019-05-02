@@ -141,7 +141,7 @@ class SrcGameController extends Controller
             ]);
         }
     }
-    //修改智慧模式-杀率开启和停用状态
+    //修改智能模式-杀率开启和停用状态
     public function killaiStatus(Request $request)
     {
         $id = $request->get('id');
