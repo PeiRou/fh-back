@@ -1104,7 +1104,7 @@ class Excel
         }else{
             $table = 'bet';
         }
-        $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        $getUserBets = DB::connection('mysql::write')->table($table)->select('bet_id','bet_money','play_odds','playcate_id','play_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
 
         if($getUserBets){
             $sql = "UPDATE ".$table." SET bunko = CASE "; //中奖的SQL语句
@@ -1116,6 +1116,7 @@ class Excel
             $sql_bets = '';
             $sql_bets_lose = '';
             $sql_bets_he = '';
+            $arrLHC_Cate = [];
             foreach ($getUserBets as $item){
                 $bunko = ($item->bet_money * $item->play_odds);
                 $bunko_lose = (0-$item->bet_money);
@@ -1123,6 +1124,7 @@ class Excel
                 $sql_bets .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
                 $sql_bets_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko_lose ";
                 $sql_bets_he .= "WHEN `bet_id` = $item->bet_id THEN $bunko_he ";
+                $arrLHC_Cate[$item->playcate_id][] = $item;
             }
             if(count($he)>0) {
                 $ids_he = [];
@@ -1152,79 +1154,62 @@ class Excel
             }
 
             //自选不中------开始
-            $sql_zxb = $LHC->LHC_ZXBZH($openCode,$gameId,$table,$issue);
+            $playCate = $this->arrPlayCate['ZIXUANBUZHONG']; //特码分类ID
+            $ids_else = array();
+            if(isset($arrLHC_Cate[$playCate]))
+                $ids_else = $LHC->LHC_ZXBZH($openCode,$ids_else,$arrLHC_Cate[$playCate]);
             //自选不中------结束
             //合肖-----开始
-            $sql_hexiao = $LHC->LHC_HX($gameId,$table,$issue);
+            $playCate = $this->arrPlayCate['HEXIAO']; //分类ID
+            if(isset($arrLHC_Cate[$playCate]))
+                $ids_else = $LHC->LHC_HX($ids_else,$arrLHC_Cate[$playCate]);
             //合肖-----结束
             //正肖-----开始
-            $zx_sql = $LHC->LHC_ZX($gameId,$table,$issue);
+            $playCate = $this->arrPlayCate['ZHENGXIAO']; //分类ID
+            $sql_zx = '';
+            if(isset($arrLHC_Cate[$playCate]))
+                $sql_zx = $LHC->LHC_ZX($gameId,$table,$playCate,$arrLHC_Cate[$playCate]);
             //正肖-----结束
-
             //连肖连尾-----开始
-            $res = $LHC->LHC_LXLW($gameId,$table,$issue);
-            $sql_lx = @$res['lx'];
-            $sql_lw = @$res['lw'];
+            $playCate = $this->arrPlayCate['LIANXIAOLIANWEI']; //分类ID
+            if(isset($arrLHC_Cate[$playCate]))
+                $ids_else = $LHC->LHC_LXLW($gameId,$ids_else,$playCate,$arrLHC_Cate[$playCate]);
             //连肖连尾-----结束
 
             //连码-----开始
-            $sql_lm = $LHC->LHC_LIANMA($openCode,$gameId,$table,$issue);
+            $playCate = $this->arrPlayCate['LIANMA']; //分类ID
+            $sql_lm = '';
+            if(isset($arrLHC_Cate[$playCate]))
+                $sql_lm = $LHC->LHC_LIANMA($openCode,$gameId,$table,$arrLHC_Cate[$playCate]);
             //连码-----结束
 
             if(!empty($sql_bets_lose)){
-                $run2 = DB::connection('mysql::write')->statement($sql_lose);
-                if($run2 == 1){
+                $run = DB::connection('mysql::write')->statement($sql_lose);
+                if($run == 1){
                     $bunko_index++;
                 }
             }
-            if(!empty($sql_zxb)){
-                $run3 = DB::connection('mysql::write')->statement($sql_zxb);
-                if($run3 == 1){
-                    $bunko_index++;
-                }
-            } else {
-                $bunko_index++;
-            }
-
-            if(!empty($sql_hexiao)){
-                $run4 = DB::connection('mysql::write')->statement($sql_hexiao);
-                if($run4 == 1){
+            if(!empty($sql_zx)){
+                $run = DB::connection('mysql::write')->statement($sql_zx);
+                if($run == 1){
                     $bunko_index++;
                 }
             } else {
                 $bunko_index++;
             }
-
-            if(!empty($zx_sql)){
-                $run5 = DB::connection('mysql::write')->statement($zx_sql);
-                if($run5 == 1){
-                    $bunko_index++;
-                }
-            } else {
-                $bunko_index++;
-            }
-
-            if(!empty($sql_lx)){
-                $run6 = DB::connection('mysql::write')->statement($sql_lx);
-                if($run6 == 1){
-                    $bunko_index++;
-                }
-            } else {
-                $bunko_index++;
-            }
-
-            if(!empty($sql_lw)){
-                $run7 = DB::connection('mysql::write')->statement($sql_lw);
-                if($run7 == 1){
-                    $bunko_index++;
-                }
-            } else {
-                $bunko_index++;
-            }
-
             if(!empty($sql_lm)){
-                $run7 = DB::connection('mysql::write')->statement($sql_lm);
-                if($run7 == 1){
+                $run = DB::connection('mysql::write')->statement($sql_lm);
+                if($run == 1){
+                    $bunko_index++;
+                }
+            } else {
+                $bunko_index++;
+            }
+            if(count($ids_else)>0){
+                $ids_else = implode(',', $ids_else);
+                $sql_else = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_else)"; //中奖的SQL语句
+                $run3 = DB::connection('mysql::write')->statement($sql_else);
+                if($run3 == 1){
                     $bunko_index++;
                 }
             } else {
@@ -1239,6 +1224,7 @@ class Excel
     }
     //试算杀率个别取用方法，用来继承的父类
     protected $arrPlay_id = [];
+    protected $arrPlayCate = [];
 
     /**
      * 农场类结算
@@ -1487,9 +1473,6 @@ class Excel
     {
         $bunko_index = 0;
         $openCodeArr = explode(',',$openCode);
-        $OPEN_QIAN_2 = $openCodeArr[0].','.$openCodeArr[1];
-        $OPEN_QIAN_3 = $openCodeArr[0].','.$openCodeArr[1].','.$openCodeArr[2];
-        $open_total = (int)$openCodeArr[0]+(int)$openCodeArr[1]+(int)$openCodeArr[2]+(int)$openCodeArr[3]+(int)$openCodeArr[4];
 
         $id = [];
         foreach ($win as $k=>$v){

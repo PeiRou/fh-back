@@ -15,6 +15,7 @@ class ExcelLotteryLHC
 {
     public $arrPlayCate;
     public $arrPlayId;
+    public $tm;
     public $sx1;
     public $sx2;
     public $sx3;
@@ -30,11 +31,13 @@ class ExcelLotteryLHC
     public $wei6;
     public $wei7;
 
+
     public function setArrPlay($openCode,$arrPlayCate=array(),$arrPlayId=array()){
         $this->arrPlayCate = $arrPlayCate;
         $this->arrPlayId = $arrPlayId;
         $arrOpenCode = explode(',',$openCode); // 分割开奖号码
         $LHC_SX = new LHC_SX();
+        $this->tm = $arrOpenCode[6]; //特码号码
         $this->sx1 = $LHC_SX->shengxiao($arrOpenCode[0]);
         $this->sx2 = $LHC_SX->shengxiao($arrOpenCode[1]);
         $this->sx3 = $LHC_SX->shengxiao($arrOpenCode[2]);
@@ -52,10 +55,9 @@ class ExcelLotteryLHC
     }
 
     //特码A-B
-    public function LHC_TM($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+    public function LHC_TM($gameId,$win){
         $tm_playCate = $this->arrPlayCate['TEMA']; //特码分类ID
-        $tm = $arrOpenCode[6]; //特码号码
+        $tm = $this->tm; //特码号码
         if($tm >= 1 && $tm < 10){
             $playId_B = $this->arrPlayId['TMB_0'.$tm];
             $winCode_B = $gameId.$tm_playCate.$playId_B;
@@ -1573,55 +1575,43 @@ class ExcelLotteryLHC
         }
     }
     //自选不中-ZIXUANBUZHONG
-    public function LHC_ZXBZH($openCode,$gameId,$table,$issue){
-        $zxbz_playCate = $this->arrPlayCate['ZIXUANBUZHONG']; //特码分类ID
-        $zxbz_ids = [];
-        $get = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$zxbz_playCate)->where('bunko','=',0.00)->get();
-        foreach ($get as $item) {
+    public function LHC_ZXBZH($openCode,$ids_else,$arrCat){
+        foreach ($arrCat as $item) {
             $open = explode(',', $openCode);
             $user = explode(',', $item->bet_info);
             $bi = array_intersect($open, $user);
             if (empty($bi)) {
-                $zxbz_ids[] = $item->bet_id;
+                $ids_else[] = $item->bet_id;
             }
         }
-        $ids_zxbz = implode(',', $zxbz_ids);
-        if($ids_zxbz){
-            $sql_zxb = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_zxbz)"; //中奖的SQL语句
-        } else {
-            $sql_zxb = "";
-        }
-        return $sql_zxb;
+        return $ids_else;
     }
-    //合宵
-    public function LHC_HX($gameId,$table,$issue){
-        $tema_SX = $this->sx7; //特码生肖
-        $hexiao_playCate = $this->arrPlayCate['HEXIAO']; //分类ID
-        $hexiao_ids = [];
-        $getHexiao = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$hexiao_playCate)->where('bunko','=',0.00)->get();
-        foreach ($getHexiao as $item) {
-            $hexiao_user = explode(',', $item->bet_info);
-            $hexiao_bi = in_array($tema_SX, $hexiao_user);
-            if ($hexiao_bi) {
-                $hexiao_ids[] = $item->bet_id;
+    //合肖
+    public function LHC_HX($ids_else,$arrCat){
+        if($this->tm!=49){
+            $tema_SX = $this->sx7; //特码生肖
+            foreach ($arrCat as $item) {
+                $hexiao_user = explode(',', $item->bet_info);
+                $hexiao_bi = in_array($tema_SX, $hexiao_user);
+                if ($hexiao_bi) {
+                    $ids_else[] = $item->bet_id;
+                }
             }
         }
-        $ids_hexiao = implode(',', $hexiao_ids);
-        if($ids_hexiao){
-            $sql_hexiao = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_hexiao)"; //中奖的SQL语句
-        } else {
-            $sql_hexiao = 0;
-        }
-        return $sql_hexiao;
+        return $ids_else;
     }
-    //正宵
-    public function LHC_ZX($gameId,$table,$issue){
-        $zx_playCate = $this->arrPlayCate['ZHENGXIAO']; //分类ID
+    //正肖
+    public function LHC_ZX($gameId,$table,$playCate,$arrCat){
+        $zx_playCate = $playCate; //分类ID
         $zx_id = [];
         $zx_plays = ['鼠'=>$this->arrPlayId['ZXIAOSHU'],'牛'=>$this->arrPlayId['ZXIAONIU'],'虎'=>$this->arrPlayId['ZXIAOHU'],'兔'=>$this->arrPlayId['ZXIAOTU'],'龙'=>$this->arrPlayId['ZXIAOLONG'],'蛇'=>$this->arrPlayId['ZXIAOSHE'],'马'=>$this->arrPlayId['ZXIAOMA'],'羊'=>$this->arrPlayId['ZXIAOYANG'],'猴'=>$this->arrPlayId['ZXIAOHOU'],'鸡'=>$this->arrPlayId['ZXIAOJI'],'狗'=>$this->arrPlayId['ZXIAOGOU'],'猪'=>$this->arrPlayId['ZXIAOZHU']];
         $openSX = [$this->sx1,$this->sx2,$this->sx3,$this->sx4,$this->sx5,$this->sx6];
         $countOpen = array_count_values($openSX);
         $zx_sql = "UPDATE ".$table." SET bunko = CASE play_id ";
+        foreach ($arrCat as $k =>$v){
+            $ids_Cat[] = $v->bet_id;
+        }
+        $ids = implode(',',$ids_Cat);
         foreach ($countOpen as $kk => $vv){
             foreach ($zx_plays as $k => $v){
                 if ($kk == $k){
@@ -1633,113 +1623,136 @@ class ExcelLotteryLHC
         }
         $zx_ids = implode(',',$zx_id);
         if($zx_ids && isset($zx_ids)){
-            $zx_sql .= "END, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `game_id` = $gameId AND `issue` = $issue AND play_id IN ($zx_ids)";
+            $zx_sql .= "END, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE 1 AND bet_id IN ($ids) AND play_id IN ($zx_ids)";
         } else {
             $zx_sql = "";
         }
         return $zx_sql;
     }
     //连肖连尾
-    public function LHC_LXLW($gameId,$table,$issue){
-        $lxlw_playCate = $this->arrPlayCate['LIANXIAOLIANWEI']; //分类ID
+    public function LHC_LXLW($gameId,$ids_else,$playCate,$arrCat){
         $uniqueSX = array_unique([$this->sx1,$this->sx2,$this->sx3,$this->sx4,$this->sx5,$this->sx6,$this->sx7]);
-        //二连肖
-        $lx_ids = [];
-        $get2LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%二连肖%')->where('bunko','=',0.00)->get();
-        foreach ($get2LX as $item) {
-            $userBetInfoSX = explode(',',$item->bet_info);
-            $bi = array_intersect($uniqueSX, $userBetInfoSX);
-            if(count($bi) == 2){
-                $lx_ids[] = $item->bet_id;
+        foreach ($arrCat as $item) {
+            $user = explode(',',$item->bet_info);
+            $bi = array_intersect($uniqueSX, $user);
+            switch ($item->play_id.'-c'.count($bi)){
+                //二连肖
+                case $gameId.$playCate.$this->arrPlayId['ELXSHU'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['ELXNIU'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['ELXHU'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['ELXTU'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['ELXLONG'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['ELXSHE'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['ELXMA'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['ELXYANG'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['ELXHOU'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['ELXJI'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['ELXGOU'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['ELXZHU'].'-c2':
+                //三连肖
+                case $gameId.$playCate.$this->arrPlayId['SLXSHU'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SLXNIU'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SLXHU'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SLXTU'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SLXLONG'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SLXSHE'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SLXMA'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SLXYANG'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SLXHOU'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SLXJI'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SLXGOU'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SLXZHU'].'-c3':
+                //四连肖
+                case $gameId.$playCate.$this->arrPlayId['SILXSHU'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILXNIU'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILXHU'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILXTU'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILXLONG'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILXSHE'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILXMA'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILXYANG'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILXHOU'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILXJI'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILXGOU'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILXZHU'].'-c4':
+                //五连肖
+                case $gameId.$playCate.$this->arrPlayId['WLXSHU'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WLXNIU'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WLXHU'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WLXTU'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WLXLONG'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WLXSHE'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WLXMA'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WLXYANG'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WLXHOU'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WLXJI'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WLXGOU'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WLXZHU'].'-c5':
+                    $ids_else[] = $item->bet_id;
+                    break;
             }
-        }
-        //三连肖
-        $get3LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%三连肖%')->where('bunko','=',0.00)->get();
-        foreach ($get3LX as $item) {
-            $userBetInfoSX_3 = explode(',',$item->bet_info);
-            $bi = array_intersect($uniqueSX, $userBetInfoSX_3);
-            if(count($bi) == 3){
-                $lx_ids[] = $item->bet_id;
-            }
-        }
-        //四连肖
-        $get4LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%四连肖%')->where('bunko','=',0.00)->get();
-        foreach ($get4LX as $item) {
-            $userBetInfoSX_4 = explode(',',$item->bet_info);
-            $bi = array_intersect($uniqueSX, $userBetInfoSX_4);
-            if(count($bi) == 4){
-                $lx_ids[] = $item->bet_id;
-            }
-        }
-        //五连肖
-        $get5LX = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('issue',$issue)->where('play_name','like','%五连肖%')->where('bunko','=',0.00)->get();
-        foreach ($get5LX as $item) {
-            $userBetInfoSX_5 = explode(',',$item->bet_info);
-            $bi = array_intersect($uniqueSX, $userBetInfoSX_5);
-            if(count($bi) == 5){
-                $lx_ids[] = $item->bet_id;
-            }
-        }
-        $ids_lx = implode(',', $lx_ids);
-        if($ids_lx){
-            $sql_lx = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lx)"; //中奖的SQL语句
-        } else {
-            $sql_lx = "";
         }
         //连尾
         $uniqueWei = array_unique([$this->wei1,$this->wei2,$this->wei3,$this->wei4,$this->wei5,$this->wei6,$this->wei7]);
-        $lw_ids = [];
-        //二连尾
-        $get2LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%二连尾%')->where('bunko','=',0.00)->get();
-        foreach ($get2LW as $item) {
-            $userBetInfoWei = explode(',',$item->bet_info);
-            $bi = array_intersect($uniqueWei, $userBetInfoWei);
-            if(count($bi) == 2){
-                $lw_ids[] = $item->bet_id;
+        foreach ($arrCat as $item) {
+            $user = explode(',',$item->bet_info);
+            $bi = array_intersect($uniqueWei, $user);
+            switch ($item->play_id.'-c'.count($bi)){
+                //二连尾
+                case $gameId.$playCate.$this->arrPlayId['EELW0'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['EELW1'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['EELW2'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['EELW3'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['EELW4'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['EELW5'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['EELW6'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['EELW7'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['EELW8'].'-c2':
+                case $gameId.$playCate.$this->arrPlayId['EELW9'].'-c2':
+                //三连尾
+                case $gameId.$playCate.$this->arrPlayId['SSLW0'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SSLW1'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SSLW2'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SSLW3'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SSLW4'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SSLW5'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SSLW6'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SSLW7'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SSLW8'].'-c3':
+                case $gameId.$playCate.$this->arrPlayId['SSLW9'].'-c3':
+                //四连尾
+                case $gameId.$playCate.$this->arrPlayId['SILW0'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILW1'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILW2'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILW3'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILW4'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILW5'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILW6'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILW7'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILW8'].'-c4':
+                case $gameId.$playCate.$this->arrPlayId['SILW9'].'-c4':
+                //五连尾
+                case $gameId.$playCate.$this->arrPlayId['WULW0'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WULW1'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WULW2'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WULW3'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WULW4'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WULW5'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WULW6'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WULW7'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WULW8'].'-c5':
+                case $gameId.$playCate.$this->arrPlayId['WULW9'].'-c5':
+                    $ids_else[] = $item->bet_id;
+                    break;
             }
         }
-        //三连尾
-        $get3LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%三连尾%')->where('bunko','=',0.00)->get();
-        foreach ($get3LW as $item) {
-            $userBetInfoWei_3 = explode(',',$item->bet_info);
-            $bi = array_intersect($uniqueWei, $userBetInfoWei_3);
-            if(count($bi) == 3){
-                $lw_ids[] = $item->bet_id;
-            }
-        }
-        //四连尾
-        $get4LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%四连尾%')->where('bunko','=',0.00)->get();
-        foreach ($get4LW as $item) {
-            $userBetInfoWei_4 = explode(',',$item->bet_info);
-            $bi = array_intersect($uniqueWei, $userBetInfoWei_4);
-            if(count($bi) == 4){
-                $lw_ids[] = $item->bet_id;
-            }
-        }
-        //五连尾
-        $get5LW = DB::table($table)->select('bet_id','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lxlw_playCate)->where('play_name','like','%五连尾%')->where('bunko','=',0.00)->get();
-        foreach ($get5LW as $item) {
-            $userBetInfoWei_5 = explode(',',$item->bet_info);
-            $bi = array_intersect($uniqueWei, $userBetInfoWei_5);
-            if(count($bi) == 5){
-                $lw_ids[] = $item->bet_id;
-            }
-        }
-
-        $ids_lw = implode(',', $lw_ids);
-        if($ids_lw){
-            $sql_lw = "UPDATE ".$table." SET bunko = bet_money * play_odds, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lw)"; //中奖的SQL语句
-        } else {
-            $sql_lw = "";
-        }
-        return array('lx'=>$sql_lx,'lw'=>$sql_lw);
+        return $ids_else;
     }
     //连码
-    public function LHC_LIANMA($openCode,$gameId,$table,$issue){
+    public function LHC_LIANMA($openCode,$gameId,$table,$arrCat){
         $lm_playCate = $this->arrPlayCate['LIANMA']; //分类ID
         $arrLm = [];
         $sql_lm = "";
-        $get = DB::table($table)->select('bet_id','bet_money','play_id','play_odds','bet_info')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('playcate_id',$lm_playCate)->where('bunko','=',0.00)->get();
         $open = explode(',', $openCode);
         $openZM = [$open[0],$open[1],$open[2],$open[3],$open[4],$open[5]];
         $lm_play_2 = 'SANZHONGERZHONGER';         //三中二中二
@@ -1751,76 +1764,75 @@ class ExcelLotteryLHC
         $lm_play_SANQZ = 'SANQUANZHONG';             //三全中
         $lm_play_SIQZ = 'SIQUANZHONG';               //四全中
         $ids_lm = array();
-        if($get){
-            $getPlayOdds = DB::table('play')->select('ucode','odds','name')->whereIn('id',[$this->arrPlayId[$lm_play_2],$this->arrPlayId[$lm_play_3],$this->arrPlayId[$lm_play_ERTEQZ],$this->arrPlayId[$lm_play_ERERQZ]])->get()->keyBy('ucode');
-            $arrLm['bunko'] = " bunko = CASE ";
-            $arrLm['play_odds'] = " play_odds = CASE ";
-            $arrLm['play_id'] = " play_id = CASE ";
-            $arrLm['play_name'] = " play_name = CASE ";
-            $arrLm_bets['bunko'] = "";
-            $arrLm_bets['play_odds'] = "";
-            $arrLm_bets['play_id'] = "";
-            $arrLm_bets['play_name'] = "";
-            foreach ($get as $item) {
-                $user = explode(',', $item->bet_info);
-                $bi = array_intersect($openZM, $user);
-                $te = in_array($open[6],$user)?'1':'0';
-                switch ($item->play_id.'-c'.count($bi).'-t'.$te){
-                        //特串
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_TEC].'-c1-t1':
-                        //二全中
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERQZ].'-c2-t0':
-                        //三全中
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_SANQZ].'-c3-t0':
-                        //四全中
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_SIQZ].'-c4-t0':
-                        $ids_lm[] = $item->bet_id;
-                        $odds = $item->play_odds;
-                        $bunko = $item->bet_money * $odds;
-                        $arrLm_bets['bunko'] .= " WHEN `bet_id` = $item->bet_id THEN ".$bunko;
-                        break;
-                    //三中二中二
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_2].'-c2-t0':
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_3].'-c2-t0':
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_2].'-c2-t1':
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_3].'-c2-t1':
-                        $ids_lm[] = $item->bet_id;
-                        $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_2],$item,$getPlayOdds[$lm_play_2],$arrLm_bets,$gameId,$lm_playCate);
-                        break;
-                    //三中二中三
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_2].'-c3-t0':
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_3].'-c3-t0':
-                        $ids_lm[] = $item->bet_id;
-                        $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_3],$item,$getPlayOdds[$lm_play_3],$arrLm_bets,$gameId,$lm_playCate);
-                        break;
-                    //二中特中特
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERTEQZ].'-c1-t1':
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERERQZ].'-c1-t1':
-                        $ids_lm[] = $item->bet_id;
-                        $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_ERTEQZ],$item,$getPlayOdds[$lm_play_ERTEQZ],$arrLm_bets,$gameId,$lm_playCate);
-                    //二中特中二
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERTEQZ].'-c2-t0':
-                    case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERERQZ].'-c2-t0':
-                        $ids_lm[] = $item->bet_id;
-                        $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_ERERQZ],$item,$getPlayOdds[$lm_play_ERERQZ],$arrLm_bets,$gameId,$lm_playCate);
-                        break;
-                }
+
+        $getPlayOdds = DB::table('play')->select('ucode','odds','name')->whereIn('id',[$this->arrPlayId[$lm_play_2],$this->arrPlayId[$lm_play_3],$this->arrPlayId[$lm_play_ERTEQZ],$this->arrPlayId[$lm_play_ERERQZ]])->get()->keyBy('ucode');
+        $arrLm['bunko'] = " bunko = CASE ";
+        $arrLm['play_odds'] = " play_odds = CASE ";
+        $arrLm['play_id'] = " play_id = CASE ";
+        $arrLm['play_name'] = " play_name = CASE ";
+        $arrLm_bets['bunko'] = "";
+        $arrLm_bets['play_odds'] = "";
+        $arrLm_bets['play_id'] = "";
+        $arrLm_bets['play_name'] = "";
+        foreach ($arrCat as $item) {
+            $user = explode(',', $item->bet_info);
+            $bi = array_intersect($openZM, $user);
+            $te = in_array($open[6],$user)?'1':'0';
+            switch ($item->play_id.'-c'.count($bi).'-t'.$te){
+                //特串
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_TEC].'-c1-t1':
+                    //二全中
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERQZ].'-c2-t0':
+                    //三全中
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_SANQZ].'-c3-t0':
+                    //四全中
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_SIQZ].'-c4-t0':
+                    $ids_lm[] = $item->bet_id;
+                    $odds = $item->play_odds;
+                    $bunko = $item->bet_money * $odds;
+                    $arrLm_bets['bunko'] .= " WHEN `bet_id` = $item->bet_id THEN ".$bunko;
+                    break;
+                //三中二中二
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_2].'-c2-t0':
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_3].'-c2-t0':
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_2].'-c2-t1':
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_3].'-c2-t1':
+                    $ids_lm[] = $item->bet_id;
+                    $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_2],$item,$getPlayOdds[$lm_play_2],$arrLm_bets,$gameId,$lm_playCate);
+                    break;
+                //三中二中三
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_2].'-c3-t0':
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_3].'-c3-t0':
+                    $ids_lm[] = $item->bet_id;
+                    $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_3],$item,$getPlayOdds[$lm_play_3],$arrLm_bets,$gameId,$lm_playCate);
+                    break;
+                //二中特中特
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERTEQZ].'-c1-t1':
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERERQZ].'-c1-t1':
+                    $ids_lm[] = $item->bet_id;
+                    $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_ERTEQZ],$item,$getPlayOdds[$lm_play_ERTEQZ],$arrLm_bets,$gameId,$lm_playCate);
+                //二中特中二
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERTEQZ].'-c2-t0':
+                case $gameId.$lm_playCate.$this->arrPlayId[$lm_play_ERERQZ].'-c2-t0':
+                    $ids_lm[] = $item->bet_id;
+                    $arrLm_bets = $this->chgPlayOdds($this->arrPlayId[$lm_play_ERERQZ],$item,$getPlayOdds[$lm_play_ERERQZ],$arrLm_bets,$gameId,$lm_playCate);
+                    break;
             }
-            if(count($ids_lm)>0){
-                $ids_lm = implode(',',$ids_lm);
-                $sql_lm = "UPDATE ".$table." SET ";
-                if(!empty($arrLm_bets['bunko']))
-                    $sql_lm .= $arrLm['bunko'].$arrLm_bets['bunko']." ELSE bunko END, ";
-                if(!empty($arrLm_bets['play_odds']))
-                    $sql_lm .= $arrLm['play_odds'].$arrLm_bets['play_odds']." ELSE play_odds END, ";
-                if(!empty($arrLm_bets['play_id']))
-                    $sql_lm .= $arrLm['play_id'].$arrLm_bets['play_id']." ELSE play_id END, ";
-                if(!empty($arrLm_bets['play_name']))
-                    $sql_lm .= $arrLm['play_name'].$arrLm_bets['play_name']." ELSE play_name END, ";
-                $sql_lm .= "status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
-            }
-            \Log::info($sql_lm);
         }
+        if(count($ids_lm)>0){
+            $ids_lm = implode(',',$ids_lm);
+            $sql_lm = "UPDATE ".$table." SET ";
+            if(!empty($arrLm_bets['bunko']))
+                $sql_lm .= $arrLm['bunko'].$arrLm_bets['bunko']." ELSE bunko END, ";
+            if(!empty($arrLm_bets['play_odds']))
+                $sql_lm .= $arrLm['play_odds'].$arrLm_bets['play_odds']." ELSE play_odds END, ";
+            if(!empty($arrLm_bets['play_id']))
+                $sql_lm .= $arrLm['play_id'].$arrLm_bets['play_id']." ELSE play_id END, ";
+            if(!empty($arrLm_bets['play_name']))
+                $sql_lm .= $arrLm['play_name'].$arrLm_bets['play_name']." ELSE play_name END, ";
+            $sql_lm .= "status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE `bet_id` IN ($ids_lm)"; //中奖的SQL语句
+        }
+        \Log::info($sql_lm);
         return $sql_lm;
     }
     //特殊玩法需要根据已中奖的修改显示中奖的信息

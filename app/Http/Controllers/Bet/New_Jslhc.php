@@ -804,7 +804,7 @@ class New_Jslhc extends Excel
         $ids_he = collect([]);
         $LHC = new ExcelLotteryLHC();
         $LHC->setArrPlay($openCode,$this->arrPlayCate,$this->arrPlayId);
-        $LHC->LHC_TM($openCode,$gameId,$win);
+        $LHC->LHC_TM($gameId,$win);
         $LHC->LHC_LM($openCode,$gameId,$win,$ids_he);
         $LHC->LHC_SB($openCode,$gameId,$win,$ids_he);
         $LHC->LHC_TX($openCode,$gameId,$win);
