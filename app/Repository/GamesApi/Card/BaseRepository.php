@@ -9,9 +9,13 @@
 namespace App\Repository\GamesApi\Card;
 use App\GamesApi;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class BaseRepository
 {
+    const SwJobsKey = 'JqErrorBet'; //重新拉取注单的队列key
+    const SwJobsKeyDb = 12; //队列使用的redis库
+
     protected $otherModel;
     public $Utils = null; //依赖类
     public $gameInfo = []; //游戏信息
@@ -252,6 +256,56 @@ class BaseRepository
     public function getAgent($a_id)
     {
         return app(Report::class)->getAgent($a_id);
+    }
+
+    public function insertError($code, $codeMsg, $param = null)
+    {
+        //不记录失败信息的
+        if($code == 9999){
+            return null;
+        }
+
+        if(($this->gameInfo->g_id == 15 || $this->gameInfo->g_id == 16) && $code == 16){
+            return null;
+        }elseif ($this->gameInfo->g_id == 21 && $code == 16){
+            return null;
+        }
+
+        $id = DB::table('jq_error_bet')->insertGetId([
+            'g_id' => $this->gameInfo->g_id,
+            'g_name' => $this->gameInfo->name,
+            'code' => $code,
+            'codeMsg' => $codeMsg,
+            'param' => json_encode($param ?? $this->param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+        if($code == 500){
+            $this->addJob($id);
+        }
+        //删除7天以前的
+        DB::table('jq_error_bet')->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
+    }
+    public function addJob($id){
+        if($resNum = DB::table('jq_error_bet')->where('id', $id)->value('resNum'))
+            if($resNum > 10) return '';
+        $redis = Redis::connection();
+        $redis->select(self::SwJobsKeyDb);
+        $redis->Rpush(self::SwJobsKey, $id);
+    }
+
+    //东美时区转上海
+    public function getDate($date = null)
+    {
+        is_null($date) && $date = date('Y-m-d H:i:s');
+        return date('Y-m-d H:i:s', strtotime($date) + 60 * 60 * 12);
+    }
+
+    //东美时区时间戳
+    public function getTime($time = null)
+    {
+        is_null($time) && $time = time();
+        return $time - 60 * 60 * 12;
     }
 
 }

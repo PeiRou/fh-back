@@ -27,9 +27,6 @@ class PrivodeController extends Controller{
     public function getBet($param = []){
         $list = GamesApi::getBetList(array_merge($param,['open' => 1]));
         foreach ($list as $k=>$v){
-            //删除六十天以前的
-//            $tableName = 'jq_'.strtolower($v->alias).'_bet';
-//            DB::table($tableName)->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 60))->delete();
             $res = $this->action($v->g_id, 'getBet', $param);
             if(isset($res['code']) && $res['code'] != 0){
                 $this->insertError($v, $res['code'], $res['msg'], $this->repo->param ?? $param);
@@ -82,11 +79,20 @@ class PrivodeController extends Controller{
         if($code == 9999){
             return null;
         }
-        if(($g_info->g_id == 15 || $g_info->g_id == 16) && $code == 16){
-            return null;
-        }elseif ($g_info->g_id == 21 && $code == 16){
-            return null;
+        if(($g_info->g_id == 15 || $g_info->g_id == 16)){
+            if($code == 16){
+                return null;
+            }
+        }elseif ($g_info->g_id == 21){
+            if($code == 16){
+                return null;
+            }
+        }elseif($g_info->g_id == 22){
+            if($code == 40014){
+                return null;
+            }
         }
+
 
         $id = DB::table('jq_error_bet')->insertGetId([
             'g_id' => $g_info->g_id,
