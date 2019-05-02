@@ -288,12 +288,26 @@ class BaseRepository
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
-        if($code == 500){
+        if($this->isAdd($code))
             $this->addJob($id);
-        }
+
+//        if($code == 500){
+//            $this->addJob($id);
+//        }
         //删除7天以前的
         DB::table('jq_error_bet')->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
     }
+
+    public function isAdd($code)
+    {
+        $is = false;
+        if($code == 500)
+            return true;
+        if($this->gameInfo->g_id == 19 && $code == 23)
+            return true;
+        return $is;
+    }
+
     public function addJob($id){
         if($resNum = DB::table('jq_error_bet')->where('id', $id)->value('resNum'))
             if($resNum > 10) return '';

@@ -92,6 +92,8 @@ class PrivodeController extends Controller{
             }
         }elseif($g_info->g_id == 22){
             return null;
+        }elseif($g_info->g_id == 22){
+            return null;
         }
 
 

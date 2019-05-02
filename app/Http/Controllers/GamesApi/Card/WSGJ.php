@@ -29,7 +29,10 @@ class WSGJ extends Base{
                 return $this->getBet();
             }
         }else{
-            return $this->show($res['code'] ?? 500, '第'.($this->repo->param['page']??1).'页数据获取失败:'.($res['msg']??'error'));
+            $code = $res['code'] ?? 500;
+            $msg = '第'.($this->repo->param['page']??1).'页数据获取失败:'.($res['msg']??'error');
+            $this->repo->insertError($code, $msg);
+            return $this->show($code, $msg);
         }
     }
     private function getTime($param = []){
