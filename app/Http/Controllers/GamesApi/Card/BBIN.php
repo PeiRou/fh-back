@@ -81,7 +81,7 @@ class BBIN extends Base{
         }
         $code = $res['data']['Code'] ?? 500;
         $codeMsg = $res['data']['Message'] ?? '超时！';
-        $this->repo->insertError($code, $codeMsg);
+        (($res['result'] ?? 0) !== 1) && $this->repo->insertError($code, $codeMsg);
     }
 
 }

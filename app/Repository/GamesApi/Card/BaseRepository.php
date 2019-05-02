@@ -264,11 +264,19 @@ class BaseRepository
         if($code == 9999){
             return null;
         }
-
-        if(($this->gameInfo->g_id == 15 || $this->gameInfo->g_id == 16) && $code == 16){
-            return null;
-        }elseif ($this->gameInfo->g_id == 21 && $code == 16){
-            return null;
+        $g_info = $this->gameInfo;
+        if(($g_info->g_id == 15 || $g_info->g_id == 16)){
+            if($code == 16){
+                return null;
+            }
+        }elseif ($g_info->g_id == 21){
+            if($code == 16){
+                return null;
+            }
+        }elseif($g_info->g_id == 22){
+            if($code == 40014){
+                return null;
+            }
         }
 
         $id = DB::table('jq_error_bet')->insertGetId([
