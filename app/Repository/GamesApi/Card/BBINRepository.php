@@ -11,7 +11,6 @@ class BBINRepository extends BaseRepository
 {
     public $Configs;
 
-    public $UsersArr_;
     const gamekind = [
         1 => [
             'gameCategory' => 'SPORTS'
@@ -129,11 +128,9 @@ class BBINRepository extends BaseRepository
         return $GameIDs;
     }
 
-    public function getUser($username)
+    public function getUser($username, $key = null)
     {
-        if(empty($this->UsersArr_->get($username)))
-            $this->UsersArr_->put($username, Users::where('othername_bbin',$username)->first());
-        return $this->UsersArr_->get($username);
+        return parent::getUser($username, 'othername_bbin');
     }
     //------------------------------------------------------------------------------------------------------------
     public function BetRecord()

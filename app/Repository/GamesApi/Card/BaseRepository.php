@@ -8,6 +8,7 @@
 
 namespace App\Repository\GamesApi\Card;
 use App\GamesApi;
+use App\Users;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
@@ -24,6 +25,7 @@ class BaseRepository
     public $user = []; //用户信息
     public $ConfigPrefix = ''; //试玩用户会加上前缀
     public $resData = null; //请求返回数据
+    public $UsersArr_;
     public function __construct($config, $name = 'Utils'){
         $class = 'App\\Repository\\GamesApi\\Card\\Utils\\'.$name;
         $this->Utils = new $class($config);
@@ -249,10 +251,16 @@ class BaseRepository
         return $codeMessage;
     }
 
-    public function getUser($username)
+    public function getUser($username, $other = null)
     {
-        return app(Report::class)->getUser($username);
+        if(is_null($other)){
+            return app(Report::class)->getUser($username);
+        }
+        if(empty($this->UsersArr_->get($username)))
+            $this->UsersArr_->put($username, Users::where($other,$username)->first());
+        return $this->UsersArr_->get($username);
     }
+
     public function getAgent($a_id)
     {
         return app(Report::class)->getAgent($a_id);

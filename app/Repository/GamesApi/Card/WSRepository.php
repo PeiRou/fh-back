@@ -83,7 +83,8 @@ class WSRepository extends BaseRepository
                 ['g_id' => $this->gameInfo->g_id]
             ); //计算平台抽点
 
-            $user = $this->getUser($array['username']);
+            $user = $this->getUser($array['username'], 'othername_ws');
+            $array['username'] = $user->username ?? $array['username'];
             $array['user_id'] = $user->id ?? 0;
             $array['agent'] = $user->agent ?? 0;
             $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';

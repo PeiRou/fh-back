@@ -58,14 +58,18 @@ class PrivodeController extends Controller{
         $param['g_id'] = $info->g_id;
         $v = GamesApi::getQpList($param)[0];
         $res = $this->action($v->g_id, 'getBet', $param);
-        $model->update([
-            'code' => $res['code'] ?? 0,
-            'codeMsg' => $res['msg'] ?? 'OK',
-            'resNum' => DB::raw('resNum + 1'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
-        if($res['code'] == 500)
-            $this->addJob($id);
+
+        //
+        if($v->g_id != 19){
+            $model->update([
+                'code' => $res['code'] ?? 0,
+                'codeMsg' => $res['msg'] ?? 'OK',
+                'resNum' => DB::raw('resNum + 1'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+            if($res['code'] == 500)
+                $this->addJob($id);
+        }
         return show($res['code'], $res['msg']);
     }
 
@@ -107,7 +111,6 @@ class PrivodeController extends Controller{
         }elseif($g_info->g_id == 19){
             return null;
         }
-
 
         $id = DB::table('jq_error_bet')->insertGetId([
             'g_id' => $g_info->g_id,
