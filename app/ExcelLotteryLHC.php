@@ -133,6 +133,30 @@ class ExcelLotteryLHC
             $playId = $this->arrPlayId['LMTWX'];
             $winCode = $gameId.$lm_playCate.$playId;
             $ids_he->push($winCode);
+            //特天肖
+            $playId = $this->arrPlayId['LMTTX'];
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            //特地肖
+            $playId = $this->arrPlayId['LMTDX'];
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            //特前肖
+            $playId = $this->arrPlayId['LMTQX'];
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            //特后肖
+            $playId = $this->arrPlayId['LMTHOUX'];
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            //特家肖
+            $playId = $this->arrPlayId['LMTJX'];
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
+            //特野肖
+            $playId = $this->arrPlayId['LMTYX'];
+            $winCode = $gameId.$lm_playCate.$playId;
+            $ids_he->push($winCode);
         }else{
             if($tm >= 25 && $tm <= 48){ //大
                 $playId = $this->arrPlayId['LMTD'];
@@ -199,8 +223,7 @@ class ExcelLotteryLHC
                 $playId = $this->arrPlayId['LMTTX'];
                 $winCode = $gameId.$lm_playCate.$playId;
                 $win->push($winCode);
-            }
-            if($TTX == '蛇' || $TTX == '羊' || $TTX == '鸡' || $TTX == '狗' || $TTX == '鼠' || $TTX == '虎'){ //地肖
+            }else if($TTX == '蛇' || $TTX == '羊' || $TTX == '鸡' || $TTX == '狗' || $TTX == '鼠' || $TTX == '虎'){ //地肖
                 $playId = $this->arrPlayId['LMTDX'];
                 $winCode = $gameId.$lm_playCate.$playId;
                 $win->push($winCode);
@@ -211,8 +234,7 @@ class ExcelLotteryLHC
                 $playId = $this->arrPlayId['LMTQX'];
                 $winCode = $gameId.$lm_playCate.$playId;
                 $win->push($winCode);
-            }
-            if($TQH == '马' || $TQH == '羊' || $TQH == '猴' || $TQH == '鸡' || $TQH == '狗' || $TQH == '猪'){ //后肖
+            }else if($TQH == '马' || $TQH == '羊' || $TQH == '猴' || $TQH == '鸡' || $TQH == '狗' || $TQH == '猪'){ //后肖
                 $playId = $this->arrPlayId['LMTHOUX'];
                 $winCode = $gameId.$lm_playCate.$playId;
                 $win->push($winCode);
@@ -223,8 +245,7 @@ class ExcelLotteryLHC
                 $playId = $this->arrPlayId['LMTJX'];
                 $winCode = $gameId.$lm_playCate.$playId;
                 $win->push($winCode);
-            }
-            if($TJX == '鼠' || $TJX == '虎' || $TJX == '兔' || $TJX == '龙' || $TJX == '蛇' || $TJX == '猴'){ //野肖
+            }else if($TJX == '鼠' || $TJX == '虎' || $TJX == '兔' || $TJX == '龙' || $TJX == '蛇' || $TJX == '猴'){ //野肖
                 $playId = $this->arrPlayId['LMTYX'];
                 $winCode = $gameId.$lm_playCate.$playId;
                 $win->push($winCode);
@@ -310,8 +331,7 @@ class ExcelLotteryLHC
                     $win->push($winCode);
                 }
             }
-        }
-        if($tm == 3 || $tm == 4 || $tm == 9 || $tm == 10 || $tm == 14 || $tm == 15 || $tm == 20 || $tm == 25 || $tm == 26 || $tm == 31 || $tm == 36 || $tm == 37 || $tm == 41 || $tm == 42 || $tm == 47 || $tm == 48){ //蓝波
+        }else if($tm == 3 || $tm == 4 || $tm == 9 || $tm == 10 || $tm == 14 || $tm == 15 || $tm == 20 || $tm == 25 || $tm == 26 || $tm == 31 || $tm == 36 || $tm == 37 || $tm == 41 || $tm == 42 || $tm == 47 || $tm == 48){ //蓝波
             $playId = $this->arrPlayId['LANBO'];
             $winCode = $gameId.$sb_playCate.$playId;
             $win->push($winCode);
@@ -353,8 +373,7 @@ class ExcelLotteryLHC
                     $win->push($winCode);
                 }
             }
-        }
-        if($tm == 5 || $tm == 6 || $tm == 11 || $tm == 16 || $tm == 17 || $tm == 21 || $tm == 22 || $tm == 27 || $tm == 28 || $tm == 32 || $tm == 33 || $tm == 38 || $tm == 39 || $tm == 43 || $tm == 44 || $tm == 49){ //绿波
+        }else if($tm == 5 || $tm == 6 || $tm == 11 || $tm == 16 || $tm == 17 || $tm == 21 || $tm == 22 || $tm == 27 || $tm == 28 || $tm == 32 || $tm == 33 || $tm == 38 || $tm == 39 || $tm == 43 || $tm == 44 || $tm == 49){ //绿波
             $playId = $this->arrPlayId['LUBO'];
             $winCode = $gameId.$sb_playCate.$playId;
             $win->push($winCode);
