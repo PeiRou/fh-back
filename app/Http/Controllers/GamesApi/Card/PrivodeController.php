@@ -60,16 +60,14 @@ class PrivodeController extends Controller{
         $res = $this->action($v->g_id, 'getBet', $param);
 
         //
-        if($v->g_id != 19){
-            $model->update([
-                'code' => $res['code'] ?? 0,
-                'codeMsg' => $res['msg'] ?? 'OK',
-                'resNum' => DB::raw('resNum + 1'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
-            if($res['code'] == 500)
-                $this->addJob($id);
-        }
+        $model->update([
+            'code' => $res['code'] ?? 0,
+            'codeMsg' => $res['msg'] ?? 'OK',
+            'resNum' => DB::raw('resNum + 1'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+        if($res['code'] == 500)
+            $this->addJob($id);
         return show($res['code'], $res['msg']);
     }
 
