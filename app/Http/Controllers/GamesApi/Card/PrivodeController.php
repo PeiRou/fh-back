@@ -5,6 +5,7 @@ namespace App\Http\Controllers\GamesApi\Card;
 use App\Http\Controllers\Controller;
 use App\GamesApi;
 use App\GamesApiConfig;
+use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -13,6 +14,14 @@ class PrivodeController extends Controller{
 
     const SwJobsKey = 'JqErrorBet'; //重新拉取注单的队列key
     const SwJobsKeyDb = 12; //队列使用的redis库
+
+    public function __construct()
+    {
+        //绑定一个单例，传一些数据
+        Container::getInstance()->bind('obj', function(){
+            return new \stdClass();
+        }, true);
+    }
 
     public function test ()
     {
@@ -42,6 +51,9 @@ class PrivodeController extends Controller{
         if(!$info = $model->first()){
             return show(400, '没有此单');
         }
+
+        app('obj')->jq_error_bet_id = $id;
+
         $param = json_decode($info->param, 1);
         $param['g_id'] = $info->g_id;
         $v = GamesApi::getQpList($param)[0];

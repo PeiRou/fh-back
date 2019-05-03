@@ -42,7 +42,7 @@ class BBINRepository extends BaseRepository
     public function createData($data){
         $arr = [];
         $GameIDs = $this->distinct($data);
-        foreach ($data as $v) {
+        foreach ($data as $v) { 
             if (in_array($v['WagersID'], $GameIDs)) continue;
             if($this->resultStatus($v)) continue;
             $array = [
@@ -53,7 +53,7 @@ class BBINRepository extends BaseRepository
                 'bunko' => $v['Payoff'],       //盈利 输赢
                 'bet_money' => $v['Commissionable'],//有效投注额
                 'GameStartTime' => $this->getDate($v['WagersDate']),//游戏开始时间
-                'GameEndTime' => $this->getDate($v['WagersDate']),  //游戏结束时间
+                'GameEndTime' => $this->getDate($v['ModifiedDate'] ?? $v['UPTIME'] ?? $v['WagersDate']),  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => $this->getDate($v['ModifiedDate'] ?? $v['UPTIME'] ?? $v['WagersDate']),
                 'gameCategory' => self::gamekind[$this->param['gamekind']]['gameCategory'] ?? '',
