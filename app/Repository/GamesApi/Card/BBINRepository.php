@@ -34,7 +34,6 @@ class BBINRepository extends BaseRepository
 
     public function __construct($config){
         parent::__construct($config);
-        $this->UsersArr_ = collect([]);
     }
 
     //格式化数据  插入数据库

@@ -30,6 +30,7 @@ class BaseRepository
         $class = 'App\\Repository\\GamesApi\\Card\\Utils\\'.$name;
         $this->Utils = new $class($config);
         $this->Config = $config;
+        $this->UsersArr_ = collect([]);
 //        $this->param['ip'] = realIp();
     }
     public function getOtherModel($model){
