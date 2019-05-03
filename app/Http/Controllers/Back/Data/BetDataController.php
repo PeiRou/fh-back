@@ -273,7 +273,7 @@ class BetDataController extends Controller
     {
         $bet = BetHis::betHistory($request);
         $betCount = BetHis::betHistoryCount($request);
-        $betMoney = BetHis::betHistoryBetMoney($request);
+//        $betMoney = BetHis::betHistoryBetMoney($request);
         $currentIssue = '';
         $currentColor = '';
         $betModel = new Bets();
@@ -338,7 +338,7 @@ class BetDataController extends Controller
             ->rawColumns(['user','play','issue','bunko','bet_money','platform','control'])
             ->setTotalRecords($betCount[0]->count)
             ->skipPaging()
-            ->with('betMoney',$betMoney)
+//            ->with('betMoney',$betMoney)
             ->make(true);
     }
     
