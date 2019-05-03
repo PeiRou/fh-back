@@ -288,14 +288,7 @@ class BaseRepository
             }
         }
         $model = DB::table('jq_error_bet');
-        if(($jq_error_bet_id = @app('obj')->jq_error_bet_id) > 0){
-            $model->where('id', $jq_error_bet_id)->update([
-                'code' => $code ?? 0,
-                'codeMsg' => $codeMsg ?? 'OK',
-                'resNum' => DB::raw('resNum + 1'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
-        }else{
+        if(!($jq_error_bet_id = @app('obj')->jq_error_bet_id)){
             $jq_error_bet_id = $model->insertGetId([
                 'g_id' => $this->gameInfo->g_id,
                 'g_name' => $this->gameInfo->name,
@@ -305,13 +298,11 @@ class BaseRepository
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
+            if($this->isAdd($code))
+                $this->addJob($jq_error_bet_id);
+            //删除7天以前的
+            $model->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
         }
-
-        if($this->isAdd($code))
-            $this->addJob($jq_error_bet_id);
-
-        //删除7天以前的
-        $model->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
     }
 
     public function isAdd($code)
