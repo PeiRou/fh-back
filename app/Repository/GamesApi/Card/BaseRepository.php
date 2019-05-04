@@ -254,10 +254,17 @@ class BaseRepository
 
     public function getUser($username)
     {
-        $res = \App\GamesApiUserName::getGidOtherName([
-            'g_id' => $this->gameInfo->g_id,
-            'username' => $username,
-        ]);
+        if(in_array($this->gameInfo->g_id, [
+            17,22,19
+        ])){
+            $res = \App\GamesApiUserName::getGidOtherName([
+                'g_id' => $this->gameInfo->g_id,
+                'username' => $username,
+            ]);
+        }else{
+            return app(Report::class)->getUser($username);
+        }
+
         return $res;
     }
 
