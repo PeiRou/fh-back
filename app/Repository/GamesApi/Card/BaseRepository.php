@@ -285,6 +285,9 @@ class BaseRepository
             'resNum' => DB::raw('resNum + 1'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
+        if($this->isAdd($code))
+            $this->addJob(app('obj')->jq_error_bet_id);
+
     }
     public function insertError($code, $codeMsg, $param = null)
     {
@@ -322,7 +325,6 @@ class BaseRepository
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
-
         if($this->isAdd($code))
             $this->addJob($jq_error_bet_id);
 
