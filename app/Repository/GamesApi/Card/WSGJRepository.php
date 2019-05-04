@@ -83,7 +83,7 @@ class WSGJRepository extends BaseRepository
                 $array['bunko'] + $array['service_money'],
                 ['g_id' => $this->gameInfo->g_id, 'productType' => $v['productType']
             ]); //计算平台抽点
-            $user = $this->getUser($array['username'], 'othername_tcg');
+            $user = $this->getUser($array['username']);
             $array['username'] = $user->username ?? $array['username'];
             $array['agent'] = $user->agent ?? 0;
             $array['user_id'] = $user->id ?? 0;

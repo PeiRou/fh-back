@@ -252,28 +252,53 @@ class BaseRepository
         return $codeMessage;
     }
 
-    public function getUser($username, $other = null)
+    public function getUser($username)
     {
-        if(is_null($other)){
-            return app(Report::class)->getUser($username);
-        }
-        if(empty($this->UsersArr_->get($username)))
-            $this->UsersArr_->put($username, Users::where($other,$username)->first());
-        return $this->UsersArr_->get($username);
+        $res = \App\GamesApiUserName::getGidOtherName([
+            'g_id' => $this->gameInfo->g_id,
+            'username' => $username,
+        ]);
+        return $res;
     }
+
+//    public function getUser($username, $other = null)
+//    {
+//        if(is_null($other)){
+//            return app(Report::class)->getUser($username);
+//        }
+//        if(empty($this->UsersArr_->get($username)))
+//            $this->UsersArr_->put($username, Users::where($other,$username)->first());
+//        return $this->UsersArr_->get($username);
+//    }
 
     public function getAgent($a_id)
     {
         return app(Report::class)->getAgent($a_id);
     }
 
+    public function updateError($code, $codeMsg, $param = null)
+    {
+        $model = DB::table('jq_error_bet');
+        $model->where('id', app('obj')->jq_error_bet_id)->update([
+            'code' => $code ?? 0,
+            'codeMsg' => $codeMsg ?? 'OK',
+            'resNum' => DB::raw('resNum + 1'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+    }
     public function insertError($code, $codeMsg, $param = null)
     {
+        if(($jq_error_bet_id = @app('obj')->jq_error_bet_id) <= 0 && $code == 0)
+            return null;
+        if($jq_error_bet_id > 0){
+            return $this->updateError($code, $codeMsg, $param);
+        }
         //不记录失败信息的
         if($code == 9999){
             return null;
         }
         $g_info = $this->gameInfo;
+        echo $g_info->name.'更新失败：'.$codeMsg.'。错误码：'.$code."\n";
         if(($g_info->g_id == 15 || $g_info->g_id == 16)){
             if($code == 16){
                 return null;
@@ -282,13 +307,12 @@ class BaseRepository
             if($code == 16){
                 return null;
             }
-        }elseif($g_info->g_id == 22){
+        }elseif($g_info->g_id == 22 && $jq_error_bet_id <= 0){
             if($code == 40014){
                 return null;
             }
         }
         $model = DB::table('jq_error_bet');
-        if(!($jq_error_bet_id = @app('obj')->jq_error_bet_id)){
             $jq_error_bet_id = $model->insertGetId([
                 'g_id' => $this->gameInfo->g_id,
                 'g_name' => $this->gameInfo->name,
@@ -298,11 +322,12 @@ class BaseRepository
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
-            if($this->isAdd($code))
-                $this->addJob($jq_error_bet_id);
-            //删除7天以前的
-            $model->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
-        }
+
+        if($this->isAdd($code))
+            $this->addJob($jq_error_bet_id);
+
+        //删除7天以前的
+        $model->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
     }
 
     public function isAdd($code)

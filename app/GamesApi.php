@@ -13,6 +13,15 @@ class GamesApi extends Model
         '1' => '棋牌游戏',
         '2' => '天成'
     ];
+    public static function getCaCheInstance($path = 'Cache')
+    {
+        static $Cache = [];
+        if(empty($Cache[$path])){
+            $Cache[$path] = new \Illuminate\Cache\FileStore(new \Illuminate\Filesystem\Filesystem(), storage_path('GamesApi/'.$path));
+        }
+        return $Cache[$path];
+    }
+
     //获取游戏信息
     public static function getGamesApiInfo($g_id){
         return self::where('g_id', $g_id)->first();

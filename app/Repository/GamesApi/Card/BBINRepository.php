@@ -60,7 +60,7 @@ class BBINRepository extends BaseRepository
             ];
 
             $user = $this->getUser($array['username']);
-            $array['username'] = $user->username;
+            $array['username'] = $user->username ?? $array['username'];
             $array['agent'] = $user->agent ?? 0;
             $array['user_id'] = $user->id ?? 0;
             $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';
@@ -125,11 +125,6 @@ class BBINRepository extends BaseRepository
                 where 1 and '.$where));
         }
         return $GameIDs;
-    }
-
-    public function getUser($username, $key = null)
-    {
-        return parent::getUser($username, 'othername_bbin');
     }
     //------------------------------------------------------------------------------------------------------------
     public function BetRecord()
@@ -292,7 +287,7 @@ class BBINRepository extends BaseRepository
             ($param['username'] ?? '').
             ($param['remitno'] ?? '').
             $this->getVal($keyName).
-            date('Ymd')
+            date('Ymd', $this->getTime())
         );
         $c =  $this->getRandomStr($ci);
         return $a.$b.$c;
@@ -314,11 +309,6 @@ class BBINRepository extends BaseRepository
         return $str;
     }
     //-------------------------------------------------------------------------------------------------------------------
-    public function getUserName()
-    {
-        return preg_replace("/[_]/","",$this->user['username']).$this->getVal('UsernameSuffix');
-    }
-
     public function getVal($key = '')
     {
         return $this->getConfigs()->get($key)->value ?? '';
