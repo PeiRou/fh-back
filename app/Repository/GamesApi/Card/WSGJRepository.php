@@ -70,7 +70,7 @@ class WSGJRepository extends BaseRepository
                 'GameStartTime' => $v['betTime'] ?? $v['endTime'],//投注时间
                 'GameEndTime' => $v['endTime'] ?? '',  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => $v['betTime'] ?? $v['endTime'],
+                'updated_at' => $v['endTime'] ?? $v['betTime'],
                 'service_money' => 0,
 
                 'bet_money' => $v['validBetAmount'] ?? '',  //有效投注金额

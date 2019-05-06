@@ -74,7 +74,7 @@ class BaseRepository
                 'GameStartTime' => $data['GameStartTime'][$k],
                 'GameEndTime' => $data['GameEndTime'][$k],
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => $data['GameStartTime'][$k],
+                'updated_at' => $data['GameEndTime'][$k] ?? $data['GameStartTime'][$k],
                 'gameCategory' => 'PVP',
                 'service_money' => $data['Revenue'][$k],// + 服务费
             ];
