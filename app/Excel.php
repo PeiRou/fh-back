@@ -134,7 +134,7 @@ class Excel
                     return 0;
                 $res = DB::table($table)->where('id',$tableid)->where('returnwater',0)->update(['returnwater' => 2]);
                 if(empty($res)){
-                    \Log::info($gameName.$issue.'退水前失败！');
+                    writeLog('New_Bet', $gameName . $issue . "退水前失败！");
                     return 0;
                 }
             }
@@ -149,7 +149,7 @@ class Excel
                     }
                 }
             }else
-                \Log::info($gameName.$issue.'退水前失败！');
+                writeLog('New_Bet', $gameName . $issue . "退水前失败！");
         }
         return 0;
     }

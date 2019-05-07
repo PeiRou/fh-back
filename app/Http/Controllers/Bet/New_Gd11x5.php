@@ -174,7 +174,7 @@ class New_Gd11x5 extends Excel
             if(env('AGENT_MODEL',1) == 1) {
                 $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
                 if(!$res){
-                    \Log::info($gameName.$issue.'退水前失败！');
+                    writeLog('New_Bet', $gameName . $issue . "退水前失败！");
                     return 0;
                 }
                 //退水
@@ -186,7 +186,7 @@ class New_Gd11x5 extends Excel
                         return 0;
                     }
                 }else
-                    \Log::info($gameName.$issue.'退水前失败！');
+                    writeLog('New_Bet', $gameName . $issue . "退水前失败！");
             }else{//代理退水
                 $agentJob = new AgentBackwaterJob($gameId,$issue);
                 $agentJob->addQueue();
