@@ -263,7 +263,6 @@ class Excel
     }
     private function countAllLoseWin($gameId,$where=''){
         $strSql = "SELECT sum(bet_money) as sumBet_money,sum(case when bunko >0 then bunko-bet_money else 0 end) as sumBunkoWin,sum(case when bunko < 0 then bunko else 0 end) as sumBunkoLose FROM bet WHERE game_id = '{$gameId}' and testFlag = 0 ".$where;
-        \Log::info($strSql);
         $sql = DB::connection('mysql::write')->select($strSql);
         return $sql;
     }
