@@ -220,7 +220,7 @@ class Excel
         if(empty($exceBase->count_date) || $exceBase->count_date!=date("Y-m-d")){
             $todaystart = date("Y-m-d 00:00:00");
             $todayend = date("Y-m-d 23:59:59");
-            $where = " and created_at BETWEEN '{$todaystart}' and '{$todayend}' and bunko != 0 ";
+            $where = " and created_at BETWEEN '{$todaystart}' and '{$todayend}' and status >= 1 ";
             $tmp = $this->countAllLoseWin($gameId,$where);
             foreach ($tmp as&$todayBet){
                 $data = array();
