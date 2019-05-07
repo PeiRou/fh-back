@@ -615,6 +615,10 @@ GROUP BY g.ga_id LIMIT $start,$length";
                     $gd .= "<li onclick='changeAgent(\"$users->uid\",\"$users->user_username\")'>更换代理</li>";
                     $j = true;
                 }
+                if(in_array('game.tradeSetting',$this->permissionArray)) {
+                    $gd .= "<li class='red-hover' onclick='setPlay(\"$users->uid\")'>个人交易</li>";
+                    $j = true;
+                }
                 if(in_array('m.user.delUser',$this->permissionArray)) {
                     $gd .= "<li class='red-hover' onclick='delUser(\"$users->uid\",\"$users->user_username\")'>删除会员</li>";
                     $j = true;

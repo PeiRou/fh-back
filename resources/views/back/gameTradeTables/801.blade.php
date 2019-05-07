@@ -24,6 +24,7 @@
     }
 </style>
 <form id="game801Form" action="{{ url('/game/trade/table/save/kssc') }}">
+    <input type="hidden" name="userId" value="{{ $userId }}">
 <table align="center" class="ui celled small table selectable">
     <tbody>
     <tr class="firstRow">

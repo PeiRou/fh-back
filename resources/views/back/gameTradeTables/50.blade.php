@@ -24,6 +24,7 @@
     }
 </style>
 <form id="game50Form" action="{{ url('/game/trade/table/save/bjpk10') }}">
+    <input type="hidden" name="userId" value="{{ $userId }}">
     <table align="center" class="ui celled small table selectable">
         <tbody>
         <tr class="firstRow">

@@ -32,6 +32,7 @@ use App\RechType;
 use App\SubAccount;
 use App\SystemSetting;
 use App\User;
+use App\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
@@ -933,9 +934,12 @@ class SrcViewController extends Controller
         return view('back.gameManage.gameSetting');
     }
     //交易设定
-    public function tradeSetting()
+    public function tradeSetting(Request $request)
     {
-        return view('back.gameManage.tradeSetting');
+        $userId = $request->input('userId',0);
+        if(!empty($userId))
+            $userInfo = Users::where('id',$userId)->first();
+        return view('back.gameManage.tradeSetting',compact('userInfo','userId'));
     }
     //盘口设定
     public function handicapSetting()
