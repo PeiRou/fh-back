@@ -220,7 +220,7 @@ class Excel
         if(empty($exceBase->count_date) || $exceBase->count_date!=date("Y-m-d")){
             $todaystart = date("Y-m-d 00:00:00");
             $todayend = date("Y-m-d 23:59:59");
-            $where = " and created_at BETWEEN '{$todaystart}' and '{$todayend}' and bunko != 0 ";
+            $where = " and created_at BETWEEN '{$todaystart}' and '{$todayend}' and status >= 1 ";
             $tmp = $this->countAllLoseWin($gameId,$where);
             foreach ($tmp as&$todayBet){
                 $data = array();
@@ -263,6 +263,7 @@ class Excel
     }
     private function countAllLoseWin($gameId,$where=''){
         $strSql = "SELECT sum(bet_money) as sumBet_money,sum(case when bunko >0 then bunko-bet_money else 0 end) as sumBunkoWin,sum(case when bunko < 0 then bunko else 0 end) as sumBunkoLose FROM bet WHERE game_id = '{$gameId}' and testFlag = 0 ".$where;
+        \Log::info($strSql);
         $sql = DB::connection('mysql::write')->select($strSql);
         return $sql;
     }
