@@ -349,7 +349,7 @@ class Excel
             return false;
         $today = date('Y-m-d H:i:s',time());
 //        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0)");
-        $tmp = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 2 order by id desc LIMIT 1");
+        $tmp = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0 order by id desc LIMIT 1");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
