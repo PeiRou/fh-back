@@ -33,4 +33,13 @@ class PromotionConfig extends Model
         return $array;
     }
 
+    //获取推广层级
+    public static function getPromotionList(){
+        $aData = self::select('level','proportion')->get();
+        $aArray =[];
+        foreach ($aData as $iData)
+            $aArray[$iData->level]= $iData->proportion;
+        return $aArray;
+    }
+
 }
