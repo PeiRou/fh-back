@@ -958,9 +958,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
         foreach ($keys as $item){
             $redisUser = $redis->get($item);
             $redisUser = (array)json_decode($redisUser,true);
-            if($platform>0 && $platform != $redisUser['platform'])
-                continue;
-            if(isset($redisUser['user_id']))
+            if($platform && $platform == $redisUser['platform'] && @$redisUser['user_id'])
                 $onlineUser[] = $redisUser['user_id'];
         }
         $user = User::select()
@@ -1004,17 +1002,12 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 return "<span class='".$redClass."'><i class='iconfont'>&#xe627;</i> $user->login_ip_info  <span  class=\"refreshIp\"  onclick='refreshIp({$user->id},\"{$user->login_ip}\", this)' >刷新</span></span>";
             })
             ->editColumn('login_client',function ($user){
-                if($user->login_client == 1){
-                    return "<i class='iconfont'>&#xe696;</i> PC端";
-                } else if($user->login_client == 2){
-                    return "<i class='iconfont'>&#xe686;</i> H5端";
-                } else if($user->login_client == 3){
-                    return "<i class='Hui-iconfont'>&#xe64a;</i> IOS";
-                } else if($user->login_client == 4){
-                    return "<i class='Hui-iconfont'>&#xe6a2;</i> Android";
-                } else {
-                    return "<i class='Hui-iconfont'>&#xe69c;</i> 其它";
-                }
+                return [
+                    1 => "<i class='iconfont'>&#xe696;</i> PC端",
+                    2 => "<i class='iconfont'>&#xe686;</i> H5端",
+                    3 => "<i class='Hui-iconfont'>&#xe64a;</i> IOS",
+                    4 => "<i class='Hui-iconfont'>&#xe6a2;</i> Android"
+                    ][$user->login_client]??"<i class='Hui-iconfont'>&#xe69c;</i> 其它";
             })
             ->editColumn('control',function ($user){
                 if(in_array('ac.ad.getOutUser',$this->permissionArray))
