@@ -134,7 +134,7 @@ class Excel
                     return 0;
                 $res = DB::table($table)->where('id',$tableid)->where('returnwater',0)->update(['returnwater' => 2]);
                 if(empty($res)){
-                    \Log::info($gameName.$issue.'退水前失败！');
+                    writeLog('New_Bet', $gameName . $issue . "退水前失败！");
                     return 0;
                 }
             }
@@ -149,7 +149,7 @@ class Excel
                     }
                 }
             }else
-                \Log::info($gameName.$issue.'退水前失败！');
+                writeLog('New_Bet', $gameName . $issue . "退水前失败！");
         }
         return 0;
     }
@@ -220,7 +220,7 @@ class Excel
         if(empty($exceBase->count_date) || $exceBase->count_date!=date("Y-m-d")){
             $todaystart = date("Y-m-d 00:00:00");
             $todayend = date("Y-m-d 23:59:59");
-            $where = " and created_at BETWEEN '{$todaystart}' and '{$todayend}' and bunko != 0 ";
+            $where = " and created_at BETWEEN '{$todaystart}' and '{$todayend}' and status >= 1 ";
             $tmp = $this->countAllLoseWin($gameId,$where);
             foreach ($tmp as&$todayBet){
                 $data = array();
@@ -321,7 +321,8 @@ class Excel
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time());
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0)");
+//        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0)");
+        $tmp = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 order by id desc LIMIT 1");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -334,7 +335,8 @@ class Excel
             return false;
         $today = date('Y-m-d H:i:s',time());
 //        writeLog('New_Bet1',  "SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 2)");
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 2)");
+//        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 2)");
+        $tmp = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 2 order by id desc LIMIT 1");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -346,19 +348,8 @@ class Excel
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time());
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0)");
-        if(empty($tmp))
-            return false;
-        foreach ($tmp as&$value)
-            $res = $value;
-        return $res;
-    }
-    //取得最新的开奖奖期
-    public function getOpenIssue($table){
-        if(empty($table))
-            return false;
-        $today = date('Y-m-d H:i:s',time());
-        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1)");
+//        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0)");
+        $tmp = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0 order by id desc LIMIT 1");
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)

@@ -444,7 +444,25 @@ class FinanceDataController extends Controller
             ->select('drawing.created_at as dr_created_at','drawing.bank_name as dr_bank_name','drawing.fullName as dr_fullName','drawing.bank_num as dr_bank_num','drawing.bank_addr as dr_bank_addr','drawing.process_date as dr_process_date','users.rechLevel as user_rechLevel','drawing.user_id as dr_uid','drawing.amount as dr_amount','users.fullName as user_fullName','users.bank_name as user_bank_name','users.bank_num as user_bank_num','users.bank_addr as user_bank_addr','drawing.fullName as draw_fullName','drawing.levels as levels','drawing.bank_name as draw_bank_name','drawing.bank_num as draw_bank_num','drawing.bank_addr as draw_bank_addr','drawing.ip_info as dr_ip_info','drawing.ip as dr_ip','drawing.draw_type as dr_draw_type','drawing.status as dr_status','drawing.msg as dr_msg','drawing.platform as dr_platform','drawing.id as dr_id','users.username as user_username','drawing.balance as dr_balance','drawing.order_id as dr_order_id','drawing.operation_account as dr_operation_account','level.name as level_name','users.DrawTimes as user_DrawTimes','drawing.total_bet as dr_total_bet')
             ->where(function ($q) use ($killTestUser){
                 if(isset($killTestUser) && $killTestUser){
-                    $q->where('users.agent','!=',2);
+                    $q->where('users.testFlag',0);
+                }
+            })
+            ->where(function ($q) use ($startTime,$endTime,$dateType) {
+                $dateTypeName = 'created_at';
+                if(isset($dateType) && $dateType == 1){//报表时间
+                    $dateTypeName = 'updated_at';
+                }else if(isset($dateType) && $dateType == 2){//添加时间
+                    $dateTypeName = 'created_at';
+                }
+                if(isset($startTime) && $startTime || isset($endTime) && $endTime){
+                    $q->whereBetween('drawing.'.$dateTypeName,[$startTime.' 00:00:00', $endTime.' 23:59:59']);
+                } else {
+                    $q->whereDate('drawing.'.$dateTypeName,date('Y-m-d'));
+                }
+            })
+            ->where(function ($q) use ($draw_type){
+                if(isset($draw_type) && $draw_type!=''){
+                    $q->where('drawing.draw_type',$draw_type);
                 }
             })
             ->where(function ($q) use ($status){
@@ -454,11 +472,6 @@ class FinanceDataController extends Controller
                     } else {
                         $q->where('drawing.status',$status);
                     }
-                }
-            })
-            ->where(function ($q) use ($draw_type){
-                if(isset($draw_type) && $draw_type!=''){
-                    $q->where('drawing.draw_type',$draw_type);
                 }
             })
             ->where(function ($q) use ($rechLevel,$account_param,$account_type){
@@ -504,19 +517,6 @@ class FinanceDataController extends Controller
                     if(!empty($max)){
                         $q->where('drawing.amount','<=',$max);
                     }
-                }
-            })
-            ->where(function ($q) use ($startTime,$endTime,$dateType) {
-                $dateTypeName = 'created_at';
-                if(isset($dateType) && $dateType == 1){//报表时间
-                    $dateTypeName = 'updated_at';
-                }else if(isset($dateType) && $dateType == 2){//添加时间
-                    $dateTypeName = 'created_at';
-                }
-                if(isset($startTime) && $startTime || isset($endTime) && $endTime){
-                    $q->whereBetween('drawing.'.$dateTypeName,[$startTime.' 00:00:00', $endTime.' 23:59:59']);
-                } else {
-                    $q->whereDate('drawing.'.$dateTypeName,date('Y-m-d'));
                 }
             })
             ->orderBy('drawing.created_at','desc')->orderBy('drawing.id','desc');

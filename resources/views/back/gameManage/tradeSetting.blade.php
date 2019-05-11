@@ -1,11 +1,18 @@
 @extends('back.master')
-
-@section('title','交易设定')
+@if($userId == 0)
+    @section('title','交易设定')
+@else
+    @section('title',$userInfo->username.'的交易设定')
+@endif
 
 @section('content')
     <div class="content-top">
         <div class="breadcrumb">
-            <b>位置：</b>交易设定
+            @if($userId == 0)
+                <b>位置：</b>交易设定
+            @else
+                <b>位置：</b>{{ $userInfo->username }}的交易设定
+            @endif
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
     </div>
@@ -121,5 +128,8 @@
 @endsection
 
 @section('page-js')
+    <script>
+        var userId = '{{ $userId }}';
+    </script>
     <script src="/back/js/pages/game_trade.js"></script>
 @endsection
