@@ -362,8 +362,20 @@ if(!function_exists('writeLog')) {
     function writeLog($path = '', ...$args)
     {
         //如果资料夹不存在，则创建资料夹
-        if(!file_exists(storage_path().'/logs/'.$path))
-            mkdir(storage_path().'/logs/'.$path);
+//        if(!file_exists(storage_path().'/logs/'.$path))
+//            mkdir(storage_path().'/logs/'.$path);
+
+        $file = storage_path().'/logs/'.$path;
+        if(!file_exists($file)){
+            $paths = explode('/',$file);
+            array_pop($paths);
+            $p = '';
+            foreach ($paths as $path){
+                $p .= '/'.$path;
+                if(!file_exists($p))
+                    mkdir($p);
+            }
+        }
 
         if(isset($args[0]) && (is_array($args[0]) || is_object($args[0])))
             $args[0] = json_encode($args[0], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -372,7 +384,7 @@ if(!function_exists('writeLog')) {
 
         try {
             $log = new \Monolog\Logger('back');
-            $log->pushHandler(new \Monolog\Handler\StreamHandler(storage_path('logs/' . $path . '/' . date('Y-m-d').'.log'), \Monolog\Logger::DEBUG));
+            $log->pushHandler(new \Monolog\Handler\StreamHandler($file . '/' . date('Y-m-d').'.log', \Monolog\Logger::DEBUG));
             $log->info(...$args);
         } catch (\Exception $e) {
             \Log::info('日志记录失败：' . $e->getMessage());

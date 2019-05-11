@@ -39,7 +39,7 @@ class BBINRepository extends BaseRepository
     //格式化数据  插入数据库
     public function createData($data){
         $arr = [];
-        $GameIDs = $this->distinct($data);
+        $GameIDs = $this->distinct($data, 'WagersID');
         foreach ($data as $v) { 
             if (in_array($v['WagersID'], $GameIDs)) continue;
             if($this->resultStatus($v)) continue;
@@ -105,26 +105,6 @@ class BBINRepository extends BaseRepository
             ]))
                 return true;
 
-    }
-
-    //找出重复id
-    public function distinct($data)
-    {
-        $GameID = array_map(function($v){
-            return $v['WagersID'];
-        },$data);
-        $GameIDs = [];
-        if(count($GameID)){
-            $where = ' g_id = '.$this->gameInfo->g_id.' and GameID in ("'.implode('","', $GameID).'")';
-            $GameIDs = array_map(function($v){
-                return $v->GameID;
-            },DB::select('select GameID from jq_bet
-                where 1 and '.$where.'
-                union
-                select GameID from jq_bet_his
-                where 1 and '.$where));
-        }
-        return $GameIDs;
     }
     //------------------------------------------------------------------------------------------------------------
     public function BetRecord()

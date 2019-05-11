@@ -59,10 +59,6 @@ class ReportGameBet implements ShouldQueue
                 'gameCategory' => $iBet->gameCategory,
                 'productType' => $iBet->productType ?? '',
             ];
-            $arr['ratio_money'] = \App\GamesApi::getRatioMoney($arr['bet_bunko'], [
-                'g_id' => $arr['game_id'],
-                'productType' => $arr['productType'],
-            ]);
             $data[] = $arr;
         }
         $aArray = array_chunk($data,1000);

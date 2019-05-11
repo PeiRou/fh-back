@@ -143,7 +143,9 @@ class PrivodeController extends Controller{
             if(count($param))
                 app('obj')->repo->param = $param;
             $res = app('obj')->instance->action($action, $param);
-            if($getGamesApiInfo->g_id !== 22){
+            if(!in_array($getGamesApiInfo->g_id, [
+                22, 23
+            ])){
                 app('obj')->instance->repo->insertError($res['code'], $res['msg'], $param);
             }
 //            if(isset($res['code']) && $res['code'] != 0){

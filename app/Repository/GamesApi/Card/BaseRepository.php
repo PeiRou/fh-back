@@ -33,6 +33,12 @@ class BaseRepository
         $this->UsersArr_ = collect([]);
 //        $this->param['ip'] = realIp();
     }
+    public function __get($value)
+    {
+        if($value == 'UsersArr_')
+            $this->$value = collect([]);
+        return $this->$value ?? null;
+    }
     public function getOtherModel($model){
         if(empty($this->otherModel->$model)) {
             $model = '\App\\'.ucfirst($model);
@@ -40,14 +46,37 @@ class BaseRepository
         }
         return $this->otherModel->$model;
     }
+
+    /**
+     * 更新数据库
+     * @param $data
+     * @param null $whereField 更新或新增
+     */
+    public function saveDB($data, $whereField = null){
+        $table = 'jq_bet';
+        if(!$whereField){
+            $a = '插入';
+            $res = DB::table($table)->insert($data);
+            $num = count($data);
+        }else{
+            $a = '更新';
+            $num = $res = \App\GamesApi::batchUpdate($data, $whereField,$table);
+        }
+        if($res){
+            echo $this->gameInfo->name.$a.$num.'条数据'.PHP_EOL;
+        }else{
+            echo $this->gameInfo->name.$a.count($data).'条数据失败'.PHP_EOL;
+        }
+    }
     //插入数据库
     public function insertDB($data){
-        $table = DB::table('jq_bet');
-        if($table->insert($data)){
-            echo $this->gameInfo->name.'插入'.count($data).'条数据'.PHP_EOL;
-        }else{
-            echo $this->gameInfo->name.'插入'.count($data).'条数据失败'.PHP_EOL;
-        }
+//        $table = DB::table('jq_bet');
+        $this->saveDB($data);
+//        if($table->insert($data)){
+//            echo $this->gameInfo->name.'插入'.count($data).'条数据'.PHP_EOL;
+//        }else{
+//            echo $this->gameInfo->name.'插入'.count($data).'条数据失败'.PHP_EOL;
+//        }
     }
     //格式化数据  插入数据库
     public function createData($data){
@@ -61,7 +90,6 @@ class BaseRepository
         $res['GameID'] = array_diff($data['GameID'],array_map(function($v){
             return $v->GameID;
         },$GameIDs));
-
         $arr = [];
         foreach ($res['GameID'] as $k => $k){
             $array = [
@@ -252,14 +280,16 @@ class BaseRepository
         return $codeMessage;
     }
 
-    public function getUser($username)
+    public function getUser($username, $key = '', $v = '')
     {
         if(in_array($this->gameInfo->g_id, [
-            17,22,19
+            17,22,19,23
         ])){
             $res = \App\GamesApiUserName::getGidOtherName([
                 'g_id' => $this->gameInfo->g_id,
                 'username' => $username,
+                'key' => $key,
+                'value' => $v,
             ]);
         }else{
             return app(Report::class)->getUser($username);
@@ -369,6 +399,40 @@ class BaseRepository
     {
         is_null($time) && $time = time();
         return $time - 60 * 60 * 12;
+    }
+
+    protected function getConfig($val = null)
+    {
+        if(is_null($val)) return $this->Config;
+        return $this->Config[$val] ?? '';
+    }
+
+    public function WriteLog(...$args){
+        writeLog('Card/'.($this->gameInfo->name ?? $this->gameInfo->g_id), ...$args);
+    }
+
+    //找出重复id
+    public function distinct($data, $val = '')
+    {
+        $GameID = array_map(function($v)use($val){
+            return $v[$val];
+        },$data);
+        return $this->getExists($GameID);
+    }
+    public function getExists($ids = [])
+    {
+        $GameIDs = [];
+        if(count($ids)) {
+            $where = ' g_id = ' . $this->gameInfo->g_id . ' and GameID in ("' . implode('","', $ids) . '")';
+            $GameIDs = array_map(function($v){
+                return $v->GameID;
+            },DB::select('select GameID from jq_bet
+                where 1 and '.$where.'
+                union
+                select GameID from jq_bet_his
+                where 1 and '.$where));
+        }
+        return $GameIDs;
     }
 
 }

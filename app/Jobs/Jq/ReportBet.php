@@ -61,7 +61,6 @@ class ReportBet implements ShouldQueue
                 'date_time' => $time,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
-                'ratio_money' => $iBet->ratio_money
             ];
         }
         foreach ($aCapital as $iCapital) {
@@ -87,7 +86,6 @@ class ReportBet implements ShouldQueue
                     'date_time' => $time,
                     'created_at' => $dateTime,
                     'updated_at' => $dateTime,
-                    'ratio_money' => 0//平台需要交的服务费
                 ];
             }
         }

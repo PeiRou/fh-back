@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Jq;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
 class ReportBet extends Command
 {
@@ -28,6 +29,10 @@ class ReportBet extends Command
     public function handle()
     {
         ini_set('memory_limit','2048M');
+
+        //先生成jq_report_bet_game表
+        Artisan::call('JqReportGameBet:BetTotalSettlement', $this->arguments());
+
         $startTime = empty($this->argument('startTime'))?date('Y-m-d',strtotime('-1 day')):$this->argument('startTime');
         $endTime = empty($this->argument('endTime'))?date('Y-m-d',strtotime('-1 day')):$this->argument('endTime');
         $aDate = $this->getSpanDays($startTime,$endTime);

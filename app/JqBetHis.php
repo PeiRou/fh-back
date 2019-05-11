@@ -44,12 +44,10 @@ class JqBetHis extends Model
                     SUM(`bet_count`) AS `bet_count`,
                     SUM(`bet_bunko`) AS `bet_bunko`,
                     SUM(`bet_money`) AS `bet_money`,
-                    SUM(`ratio_money`) AS `ratio_money`,
                     `agent_account`,
                     `agent_name`,
                     `game_id`,
                     `game_name`,
-                    `ratio_money` ,
                     `gameCategory`,
                     `productType`
                 FROM jq_report_bet_game
