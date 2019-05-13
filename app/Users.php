@@ -272,6 +272,26 @@ WHERE 1 ";
         return $aSql;
     }
 
+    //多行修改拼接
+    public static function updateUserBatchStitching($table,$data){
+        $aSql = 'UPDATE '. $table . ' SET ';
+        $str1 = '`money` = `money` + CASE `id` ';
+        foreach ($data as $key => $value){
+            $str1 .= 'WHEN \'' . $value['to_user'] . '\' THEN \'' . $value['money'] . '\' ';
+        }
+        $str1 .= 'END , ';
+        $aSql .= $str1;
+        $aSql = substr($aSql,0,strlen($aSql)-2);
+        $endStr = 'WHERE `id` IN (';
+        foreach ($data as $key => $value){
+            $endStr .= '\''.$value['to_user'] . '\',';
+        }
+        $endStr = substr($endStr,0,strlen($endStr)-1);
+        $endStr .= ')';
+        $aSql .= $endStr;
+        return $aSql;
+    }
+
     public static function getRegisteredCount($date){
         return self::where('created_at','>=',$date)->where('created_at','<=',$date.' 23:59:59')->count();
     }

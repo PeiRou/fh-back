@@ -179,6 +179,7 @@ class clear_data extends Command
                     $res = DB::connection('mysql::write')->statement($sql);
                     writeLog('clear','table delete jq_bet :'.$res);
                 }catch (\Exception $e){
+                    writeLog('clear','error :'.$e->getMessage());
                     writeLog('clear','table insert into jq_bet_his :fail');
                 }
                 $num++;
