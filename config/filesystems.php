@@ -74,6 +74,10 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
+        'GamesApi' => [
+            'driver' => 'local',
+            'root' => storage_path('GamesApi'),
+        ],
 
         's3' => [
             'driver' => 's3',

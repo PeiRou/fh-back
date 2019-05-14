@@ -37,7 +37,7 @@ class VGRepository extends BaseRepository
                 'GameID' => $v['id'],   //游戏代码
                 'username' => str_replace($this->Config['agent'].'_','',$v['username']),  //玩家账号
                 'AllBet' => $v['betamount'],//总下注
-                'bunko' => $v['money'],       //盈利 输赢
+                'bunko' => $v['money'] + $v['servicemoney'],       //盈利 输赢 servicemoney一般是负的  所以直接+
                 'bet_money' => $v['betamount'],//有效投注额
                 'GameStartTime' => $v['begintime'],//游戏开始时间
                 'GameEndTime' => $v['endtime'],  //游戏结束时间
@@ -47,10 +47,10 @@ class VGRepository extends BaseRepository
                 'service_money' => $v['servicemoney'], // + 服务费
             ];
 
-            $array['ratio_money'] = \App\GamesApi::getRatioMoney(
-                $array['bunko'] + $array['service_money'],
-                ['g_id' => $this->gameInfo->g_id]
-            ); //计算平台抽点
+//            $array['ratio_money'] = \App\GamesApi::getRatioMoney(
+//                $array['bunko'] + $array['service_money'],
+//                ['g_id' => $this->gameInfo->g_id]
+//            ); //计算平台抽点
 
             $user = $this->getUser($array['username']);
             $array['agent'] = $user->agent ?? 0;

@@ -8,10 +8,15 @@
 
 namespace App\Repository\GamesApi\Card;
 use App\GamesApi;
+use App\Users;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class BaseRepository
 {
+    const SwJobsKey = 'JqErrorBet'; //重新拉取注单的队列key
+    const SwJobsKeyDb = 12; //队列使用的redis库
+
     protected $otherModel;
     public $Utils = null; //依赖类
     public $gameInfo = []; //游戏信息
@@ -20,11 +25,19 @@ class BaseRepository
     public $user = []; //用户信息
     public $ConfigPrefix = ''; //试玩用户会加上前缀
     public $resData = null; //请求返回数据
+    public $UsersArr_;
     public function __construct($config, $name = 'Utils'){
         $class = 'App\\Repository\\GamesApi\\Card\\Utils\\'.$name;
         $this->Utils = new $class($config);
         $this->Config = $config;
+        $this->UsersArr_ = collect([]);
 //        $this->param['ip'] = realIp();
+    }
+    public function __get($value)
+    {
+        if($value == 'UsersArr_')
+            $this->$value = collect([]);
+        return $this->$value ?? null;
     }
     public function getOtherModel($model){
         if(empty($this->otherModel->$model)) {
@@ -33,14 +46,37 @@ class BaseRepository
         }
         return $this->otherModel->$model;
     }
+
+    /**
+     * 更新数据库
+     * @param $data
+     * @param null $whereField 更新或新增
+     */
+    public function saveDB($data, $whereField = null){
+        $table = 'jq_bet';
+        if(!$whereField){
+            $a = '插入';
+            $res = DB::table($table)->insert($data);
+            $num = count($data);
+        }else{
+            $a = '更新';
+            $num = $res = \App\GamesApi::batchUpdate($data, $whereField,$table);
+        }
+        if($res){
+            echo $this->gameInfo->name.$a.$num.'条数据'.PHP_EOL;
+        }else{
+            echo $this->gameInfo->name.$a.count($data).'条数据失败'.PHP_EOL;
+        }
+    }
     //插入数据库
     public function insertDB($data){
-        $table = DB::table('jq_bet');
-        if($table->insert($data)){
-            echo $this->gameInfo->name.'插入'.count($data).'条数据'.PHP_EOL;
-        }else{
-            echo $this->gameInfo->name.'插入'.count($data).'条数据失败'.PHP_EOL;
-        }
+//        $table = DB::table('jq_bet');
+        $this->saveDB($data);
+//        if($table->insert($data)){
+//            echo $this->gameInfo->name.'插入'.count($data).'条数据'.PHP_EOL;
+//        }else{
+//            echo $this->gameInfo->name.'插入'.count($data).'条数据失败'.PHP_EOL;
+//        }
     }
     //格式化数据  插入数据库
     public function createData($data){
@@ -54,7 +90,6 @@ class BaseRepository
         $res['GameID'] = array_diff($data['GameID'],array_map(function($v){
             return $v->GameID;
         },$GameIDs));
-
         $arr = [];
         foreach ($res['GameID'] as $k => $k){
             $array = [
@@ -71,10 +106,6 @@ class BaseRepository
                 'gameCategory' => 'PVP',
                 'service_money' => $data['Revenue'][$k],// + 服务费
             ];
-            $array['ratio_money'] = \App\GamesApi::getRatioMoney(
-                $array['bunko'] + $array['service_money'],
-                ['g_id' => $this->gameInfo->g_id]
-            ); //计算平台抽点
 
             $user = $this->getUser($array['username']);
             $array['user_id'] = $user->id ?? 0;
@@ -245,13 +276,159 @@ class BaseRepository
         return $codeMessage;
     }
 
-    public function getUser($username)
+    public function getUser($username, $key = '', $v = '')
     {
-        return app(Report::class)->getUser($username);
+        if(in_array($this->gameInfo->g_id, [
+            17,22,19,23
+        ])){
+            $res = \App\GamesApiUserName::getGidOtherName([
+                'g_id' => $this->gameInfo->g_id,
+                'username' => $username,
+                'key' => $key,
+                'value' => $v,
+            ]);
+        }else{
+            return app(Report::class)->getUser($username);
+        }
+
+        return $res;
     }
+
+//    public function getUser($username, $other = null)
+//    {
+//        if(is_null($other)){
+//            return app(Report::class)->getUser($username);
+//        }
+//        if(empty($this->UsersArr_->get($username)))
+//            $this->UsersArr_->put($username, Users::where($other,$username)->first());
+//        return $this->UsersArr_->get($username);
+//    }
+
     public function getAgent($a_id)
     {
         return app(Report::class)->getAgent($a_id);
+    }
+
+    public function updateError($code, $codeMsg, $param = null)
+    {
+        $model = DB::table('jq_error_bet');
+        $model->where('id', app('obj')->jq_error_bet_id)->update([
+            'code' => $code ?? 0,
+            'codeMsg' => $codeMsg ?? 'OK',
+            'resNum' => DB::raw('resNum + 1'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+        if($this->isAdd($code))
+            $this->addJob(app('obj')->jq_error_bet_id);
+
+    }
+    public function insertError($code, $codeMsg, $param = null)
+    {
+        if(($jq_error_bet_id = @app('obj')->jq_error_bet_id) <= 0 && $code == 0)
+            return null;
+        if($jq_error_bet_id > 0){
+            return $this->updateError($code, $codeMsg, $param);
+        }
+        //不记录失败信息的
+        if($code == 9999){
+            return null;
+        }
+        $g_info = $this->gameInfo;
+        echo $g_info->name.'更新失败：'.$codeMsg.'。错误码：'.$code."\n";
+        if(($g_info->g_id == 15 || $g_info->g_id == 16)){
+            if($code == 16){
+                return null;
+            }
+        }elseif ($g_info->g_id == 21){
+            if($code == 16){
+                return null;
+            }
+        }elseif($g_info->g_id == 22 && $jq_error_bet_id <= 0){
+            if($code == 40014){
+                return null;
+            }
+        }
+        $model = DB::table('jq_error_bet');
+            $jq_error_bet_id = $model->insertGetId([
+                'g_id' => $this->gameInfo->g_id,
+                'g_name' => $this->gameInfo->name,
+                'code' => $code,
+                'codeMsg' => $codeMsg,
+                'param' => json_encode($param ?? $this->param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+        if($this->isAdd($code))
+            $this->addJob($jq_error_bet_id);
+
+        //删除7天以前的
+        $model->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
+    }
+
+    public function isAdd($code)
+    {
+        $is = false;
+        if($code == 500)
+            return true;
+        if($this->gameInfo->g_id == 19 && $code == 23)
+            return true;
+        return $is;
+    }
+
+    public function addJob($id){
+        if($resNum = DB::table('jq_error_bet')->where('id', $id)->value('resNum'))
+            if($resNum > 10) return '';
+        $redis = Redis::connection();
+        $redis->select(self::SwJobsKeyDb);
+        $redis->Rpush(self::SwJobsKey, $id);
+    }
+
+    //东美时区转上海
+    public function getDate($date = null)
+    {
+        is_null($date) && $date = date('Y-m-d H:i:s');
+        return date('Y-m-d H:i:s', strtotime($date) + 60 * 60 * 12);
+    }
+
+    //东美时区时间戳
+    public function getTime($time = null)
+    {
+        is_null($time) && $time = time();
+        return $time - 60 * 60 * 12;
+    }
+
+    protected function getConfig($val = null)
+    {
+        if(is_null($val)) return $this->Config;
+        return $this->Config[$val] ?? '';
+    }
+
+    public function WriteLog(...$args){
+        writeLog('Card/'.($this->gameInfo->name ?? $this->gameInfo->g_id), ...$args);
+    }
+
+    //找出重复id
+    public function distinct($data, $val = '')
+    {
+        $GameID = array_map(function($v)use($val){
+            return $v[$val];
+        },$data);
+        return $this->getExists($GameID);
+    }
+    public function getExists($ids = [])
+    {
+        $GameIDs = [];
+        if(count($ids)) {
+            $where = ' g_id = ' . $this->gameInfo->g_id . ' and GameID in ("' . implode('","', $ids) . '")';
+            $GameIDs = array_map(function($v){
+                return $v->GameID;
+            },DB::select('select GameID from jq_bet
+                where 1 and '.$where.'
+                union
+                select GameID from jq_bet_his
+                where 1 and '.$where));
+        }
+        return $GameIDs;
     }
 
 }

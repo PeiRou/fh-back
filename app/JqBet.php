@@ -132,7 +132,7 @@ class JqBet extends Model
     }
 
     public static function reportQuerySum($aParam){
-        $aSql = "SELECT `jq`.`bet_bunko`,`jq`.`bet_money`,`jq`.game_id,`jq`.ratio_money,`capital`.`up_fraction`,`capital`.`down_fraction` FROM (SELECT SUM(`bunko`) AS `bet_bunko`,SUM(`ratio_money`) AS `ratio_money`,SUM(`bet_money`) AS `bet_money`,`g_id` AS `game_id` FROM `jq_bet` WHERE 1";
+        $aSql = "SELECT `jq`.`bet_bunko`,`jq`.`bet_money`,`jq`.game_id,`capital`.`up_fraction`,`capital`.`down_fraction` FROM (SELECT SUM(`bunko`) AS `bet_bunko`,SUM(`bet_money`) AS `bet_money`,`g_id` AS `game_id` FROM `jq_bet` WHERE 1";
         $aArray =[];
         $aSql1 = '';
         if(isset($aParam['user_account']) && array_key_exists('user_account',$aParam)){

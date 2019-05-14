@@ -13,6 +13,55 @@ class GamesApi extends Model
         '1' => '棋牌游戏',
         '2' => '天成'
     ];
+
+    //更新一个表
+    public static function batchUpdate(array $update, $whereField = 'id', $table)
+    {
+        try {
+            if (empty($update)) {
+                throw new \Exception("数据不能为空");
+            }
+            $tableName = $table; // 表名
+            $firstRow  = current($update);
+            $updateColumn = array_keys($firstRow);
+            $referenceColumn = isset($firstRow[$whereField]) ? $whereField : current($updateColumn);
+            // 拼接sql语句
+            $updateSql = "UPDATE " . $tableName . " SET ";
+            $sets      = [];
+            $bindings  = [];
+            foreach ($updateColumn as $uColumn) {
+                if($uColumn == $referenceColumn) continue;
+                $setSql = "`" . $uColumn . "` = CASE ";
+                foreach ($update as $data) {
+                    $setSql .= "WHEN `" . $referenceColumn . "` = ? THEN ? ";
+                    $bindings[] = $data[$referenceColumn];
+                    $bindings[] = $data[$uColumn];
+                }
+                $setSql .= "ELSE `" . $uColumn . "` END ";
+                $sets[] = $setSql;
+            }
+            $updateSql .= implode(', ', $sets);
+            $whereIn   = collect($update)->pluck($referenceColumn)->values()->all();
+            $bindings  = array_merge($bindings, $whereIn);
+            $whereIn   = rtrim(str_repeat('?,', count($whereIn)), ',');
+            $updateSql = rtrim($updateSql, ", ") . " WHERE `" . $referenceColumn . "` IN (" . $whereIn . ")";
+            // 传入预处理sql语句和对应绑定数据
+            return DB::update($updateSql, $bindings);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    public static function getCaCheInstance($path = '')
+    {
+        $path = 'Cache/' . $path;
+        static $Cache = [];
+        if(empty($Cache[$path])){
+            $Cache[$path] = new \Illuminate\Cache\FileStore(new \Illuminate\Filesystem\Filesystem(), storage_path('GamesApi/'.$path));
+        }
+        return $Cache[$path];
+    }
+
     //获取游戏信息
     public static function getGamesApiInfo($g_id){
         return self::where('g_id', $g_id)->first();
@@ -380,5 +429,37 @@ class GamesApi extends Model
             DB::rollback();
             throw $e;
         }
+    }
+
+    public static function mkPath($newpath)
+    {
+        if(!file_exists($newpath)){
+            $paths = explode('/',$newpath);
+            array_pop($paths);
+            $p = '';
+            foreach ($paths as $path){
+                $p .= '/'.$path;
+                if(!file_exists($p))
+                    mkdir($p);
+            }
+        }
+    }
+    public static function deleteDir($dir)
+    {
+        if (!$handle = @opendir($dir)) {
+            return false;
+        }
+        while (false !== ($file = readdir($handle))) {
+            if ($file !== "." && $file !== "..") {       //排除当前目录与父级目录
+                $file = $dir . '/' . $file;
+                if (is_dir($file)) {
+                    self::deleteDir($file);
+                } else {
+                    @unlink($file);
+                }
+            }
+
+        }
+        @rmdir($dir);
     }
 }

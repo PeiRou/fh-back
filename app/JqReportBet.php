@@ -90,7 +90,7 @@ class JqReportBet extends Model
     }
 
     public static function reportQuerySum($aParam){
-        $aSql = "SELECT SUM(`up_fraction`) AS `up_fraction`,SUM(`ratio_money`) AS `ratio_money`,SUM(`down_fraction`) AS `down_fraction`,SUM(`bet_bunko`) AS `bet_bunko`,SUM(`bet_money`) AS `bet_money`,`game_id` FROM `jq_report_bet` WHERE 1";
+        $aSql = "SELECT SUM(`up_fraction`) AS `up_fraction`,SUM(`down_fraction`) AS `down_fraction`,SUM(`bet_bunko`) AS `bet_bunko`,SUM(`bet_money`) AS `bet_money`,`game_id` FROM `jq_report_bet` WHERE 1";
         $aArray = [];
         if(isset($aParam['user_account']) && array_key_exists('user_account',$aParam)){
             $aSql .= " AND `user_account` = :user_account ";

@@ -29,6 +29,8 @@ class KXRepository extends BaseRepository
         },$GameIDs));
         $arr = [];
         foreach ($res['GameID'] as $k => $k){
+            if(!preg_match('/'.$this->Config['siteID'].'_'.'/', $data['account'][$k]))
+                continue;
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $data['id'][$k],
@@ -43,11 +45,6 @@ class KXRepository extends BaseRepository
                 'gameCategory' => 'PVP',
                 'service_money' => 0,
             ];
-
-            $array['ratio_money'] = \App\GamesApi::getRatioMoney(
-                $array['bunko'] + $array['service_money'],
-                ['g_id' => $this->gameInfo->g_id]
-            ); //计算平台抽点
 
             $user = $this->getUser($array['username']);
             $array['agent'] = $user->agent ?? 0;
