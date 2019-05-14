@@ -52,8 +52,9 @@ class GamesApi extends Model
         }
     }
 
-    public static function getCaCheInstance($path = 'Cache')
+    public static function getCaCheInstance($path = '')
     {
+        $path = 'Cache/' . $path;
         static $Cache = [];
         if(empty($Cache[$path])){
             $Cache[$path] = new \Illuminate\Cache\FileStore(new \Illuminate\Filesystem\Filesystem(), storage_path('GamesApi/'.$path));

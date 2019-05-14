@@ -23,7 +23,7 @@ class GamesApiUserName extends Model
         $key = $param['username'].($param['key'] ?? '').($param['value'] ?? '');
         if(isset($collects[$param['g_id']]) && ($val = @$collects[$param['g_id']]->get($key)))
             return $val;
-        $Cache = GamesApi::getCaCheInstance();
+        $Cache = GamesApi::getCaCheInstance('NameCache');
         $CacheKay = self::CacheKay.$param['g_id'];
         if((!$collects[$param['g_id']] = $Cache->get($CacheKay)) || !($val = $collects[$param['g_id']]->get($key))){
             $res = self::getGidAll($param);

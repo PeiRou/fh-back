@@ -219,7 +219,8 @@ class AGRepository extends BaseRepository
             !isset($this->ftp) &&
             $this->ftp = new \App\Repository\GamesApi\Card\Utils\Ftp($this->getConfig('ftpH'),$this->getConfig('ftpU'),$this->getConfig('ftpP'));
         }catch (\Throwable $e){
-            die($e->getMessage());
+            $this->insertError(2, 'FTP链接失败'.$e->getMessage());
+            $this->WriteLog($e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
         }
         if(!isset($this->param['platformType']))
             return $this->All();
