@@ -112,7 +112,7 @@ class PlatformOfferRepository extends BaseRepository
             'data' => json_encode($data),
             'type' => $type
         ]);
-        $res = $baseController->sendParameter('pay/pay/defray');
+        $res = $baseController->sendParameter('Children/PlatformOffer/save');
         p($res, 1);
     }
 

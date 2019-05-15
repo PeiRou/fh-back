@@ -71,7 +71,7 @@ class AGRepository extends BaseRepository
                     'GameEndTime' => $v['recalcuTime'] ?? $v['betTime'],  //游戏结束时间
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => $v['recalcuTime'] ?? $v['betTime'],
-                    'gameCategory' => 'PVP', //棋牌
+                    'gameCategory' => $this->getCategory($v['platformType']), //棋牌
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
                     'flag' => $v['flag'] == '1' ? 'ok' : $v['flag'],
@@ -87,6 +87,19 @@ class AGRepository extends BaseRepository
             count($update) && $this->saveDB($update, 'GameID');
         }
     }
+    private function getCategory($platformType)
+    {
+        switch ($platformType){
+            case 'SBTA':
+                $name = 'SPORTS';
+                break;
+            default:
+                $name = 'PVP';
+                break;
+        }
+        return $name;
+    }
+
     //捕鱼王場景的下注记录"HSR"
     private function HSR($aData)
     {

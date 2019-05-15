@@ -24,7 +24,6 @@ class SendController extends BaseController
         ];
         $result = CurlService::getInstance()->post(env('GENERAL_INTERFACE_URL').'/'.$url,
             $aArray);
-        p($result, 1);
         return json_decode($result,true);
     }
 
