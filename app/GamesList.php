@@ -164,5 +164,4 @@ class GamesList extends Base
         'SPORTS' => '体育',
     ];
 
-
 }

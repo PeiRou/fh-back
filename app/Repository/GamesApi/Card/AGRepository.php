@@ -58,6 +58,8 @@ class AGRepository extends BaseRepository
             $insert = [];
             $update = [];
             foreach ($data as $v) {
+                if(!preg_match("/^".$this->getVal('agent')."/", $v['playerName']))
+                    continue;
                 $array = [
                     'g_id' => $this->gameInfo->g_id,
                     'GameID' => $v['billNo'],   //游戏代码
@@ -94,6 +96,8 @@ class AGRepository extends BaseRepository
             $insert = [];
             $update = [];
             foreach ($data as $v) {
+                if(!preg_match("/^".$this->getVal('agent')."/", $v['playerName']))
+                    continue;
                 $array = [
                     'g_id' => $this->gameInfo->g_id,
                     'GameID' => $v['ID'],   //游戏代码
@@ -130,6 +134,8 @@ class AGRepository extends BaseRepository
             $insert = [];
             $update = [];
             foreach ($data as $v) {
+                if(!preg_match("/^".$this->getVal('agent')."/", $v['playerName']))
+                    continue;
                 $array = [
                     'g_id' => $this->gameInfo->g_id,
                     'GameID' => $v['billNo'],   //游戏代码
@@ -283,7 +289,6 @@ class AGRepository extends BaseRepository
                 'remote_file' => $v,
                 'open_size' => 0, //标记文件指针位置
             ];
-
             if(!$this->all && !$this->param['clear']){
                 if(file_exists($newPath))
                     $array['open_size'] = filesize($newPath);

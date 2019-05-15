@@ -2,11 +2,16 @@
 
 namespace App;
 
+use App\Http\Services\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Cache\TaggedCache;
+use Illuminate\Cache\TagSet;
+use Illuminate\Cache\FileStore;
 
 class GamesApi extends Model
 {
+    use Cache;
     protected $table = 'games_api';
     protected $primaryKey = 'g_id';
     public $statusArr = [
@@ -52,15 +57,23 @@ class GamesApi extends Model
         }
     }
 
-    public static function getCaCheInstance($path = '')
+    /**
+     * 暂时用文件缓存
+     * @param string $path 路径
+     * @return mixed
+     */
+    public static function getCaCheInstance($path = '', $storage_path = 'GamesApi/')
     {
-        $path = 'Cache/' . $path;
+        $path =  'Cache/'.$path;
         static $Cache = [];
         if(empty($Cache[$path])){
-            $Cache[$path] = new \Illuminate\Cache\FileStore(new \Illuminate\Filesystem\Filesystem(), storage_path('GamesApi/'.$path));
+            $store = new FileStore(new \Illuminate\Filesystem\Filesystem(), storage_path($storage_path.$path));
+            $TagSet = new TagSet($store);
+            $Cache[$path] = new TaggedCache($store, $TagSet);
         }
         return $Cache[$path];
     }
+
 
     //获取游戏信息
     public static function getGamesApiInfo($g_id){
@@ -104,7 +117,9 @@ class GamesApi extends Model
     }
     //获取所有游戏名称
     public static function getGamesNameList(){
-        return self::pluck('name', 'g_id');
+        return self::HandleCacheData(function(){
+            return self::pluck('name', 'g_id');
+        }, 5);
     }
     //组合sql
     public static function card_betInfoSql1($request, $type_id = 111){

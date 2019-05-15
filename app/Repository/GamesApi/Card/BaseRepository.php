@@ -430,5 +430,9 @@ class BaseRepository
         }
         return $GameIDs;
     }
+    public function getVal($key = '')
+    {
+        return $this->Config[$key] ?? '';
+    }
 
 }
