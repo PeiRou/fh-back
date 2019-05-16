@@ -123,7 +123,6 @@ class ExcelLotteryK3
     public function ETH($gameId,$win)
     {
         $playCate = $this->arrPlayCate['ETH'];
-        $isBaoZi = 0;
         $ETH_arr = [
             1 => $this->arrPlayId['ERTONGHAO11'],
             2 => $this->arrPlayId['ERTONGHAO22'],
@@ -151,7 +150,7 @@ class ExcelLotteryK3
                 }
             }else if((int)$this->num_1 == (int)$this->num_3){
                 foreach ($ETH_arr as $k => $v){
-                    if((int)$this->num_2 == $k){
+                    if((int)$this->num_1 == $k){
                         $playId = $v;
                         $winCode = $gameId.$playCate.$playId;
                         $win->push($winCode);
