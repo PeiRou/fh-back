@@ -132,7 +132,7 @@ class ExcelLotteryK3
             5 => $this->arrPlayId['ERTONGHAO55'],
             6 => $this->arrPlayId['ERTONGHAO66'],
         ];
-        if((!(int)$this->num_1 == (int)$this->num_2 && (int)$this->num_1 == (int)$this->num_3)){
+        if(!((int)$this->num_1 == (int)$this->num_2 && (int)$this->num_1 == (int)$this->num_3)){
             if((int)$this->num_1 == (int)$this->num_2){
                 foreach ($ETH_arr as $k => $v){
                     if((int)$this->num_1 == $k){
