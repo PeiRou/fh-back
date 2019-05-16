@@ -21,3 +21,4 @@ class ISSUE_SEED_JNDSSC extends Issue_seed_jnd
         $this->main();
     }
 }
+w

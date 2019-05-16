@@ -132,24 +132,30 @@ class ExcelLotteryK3
             5 => $this->arrPlayId['ERTONGHAO55'],
             6 => $this->arrPlayId['ERTONGHAO66'],
         ];
-        if((int)$this->num_1 == (int)$this->num_2 && (int)$this->num_1 == (int)$this->num_3){
-            $isBaoZi = 1;
-        }
-        if((int)$this->num_1 == (int)$this->num_2 && $isBaoZi == 0){
-            foreach ($ETH_arr as $k => $v){
-                if((int)$this->num_1 == $k){
-                    $playId = $v;
-                    $winCode = $gameId.$playCate.$playId;
-                    $win->push($winCode);
+        if((!(int)$this->num_1 == (int)$this->num_2 && (int)$this->num_1 == (int)$this->num_3)){
+            if((int)$this->num_1 == (int)$this->num_2){
+                foreach ($ETH_arr as $k => $v){
+                    if((int)$this->num_1 == $k){
+                        $playId = $v;
+                        $winCode = $gameId.$playCate.$playId;
+                        $win->push($winCode);
+                    }
                 }
-            }
-        }
-        if((int)$this->num_2 == (int)$this->num_3 && $isBaoZi == 0){
-            foreach ($ETH_arr as $k => $v){
-                if((int)$this->num_2 == $k){
-                    $playId = $v;
-                    $winCode = $gameId.$playCate.$playId;
-                    $win->push($winCode);
+            }else if((int)$this->num_2 == (int)$this->num_3){
+                foreach ($ETH_arr as $k => $v){
+                    if((int)$this->num_2 == $k){
+                        $playId = $v;
+                        $winCode = $gameId.$playCate.$playId;
+                        $win->push($winCode);
+                    }
+                }
+            }else if((int)$this->num_1 == (int)$this->num_3){
+                foreach ($ETH_arr as $k => $v){
+                    if((int)$this->num_2 == $k){
+                        $playId = $v;
+                        $winCode = $gameId.$playCate.$playId;
+                        $win->push($winCode);
+                    }
                 }
             }
         }
