@@ -48,7 +48,8 @@ class PlatformOffer extends Command
         if($action == 'all' || $action == 'lottery')
             $arr['lottery'] = $obj->instance->lottery($param);
 
-        $obj->instance->saveDB($obj->instance->generate($arr));
+        if($obj->instance->saveDB($obj->instance->generate($arr)))
+            echo 'OK';
 
     }
 }

@@ -240,6 +240,7 @@ class AGRepository extends BaseRepository
         }catch (\Throwable $e){
             $this->insertError(2, 'FTP链接失败'.$e->getMessage());
             $this->WriteLog($e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            return false;
         }
         if(!isset($this->param['platformType']))
             return $this->All();

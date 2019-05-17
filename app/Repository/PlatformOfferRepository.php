@@ -203,6 +203,7 @@ class PlatformOfferRepository extends BaseRepository
                     ]);
             $model::insert($data);
             DB::commit();
+            return true;
             # 平台更新成功
         }catch (\Throwable $e){
             DB::rollback();
