@@ -26,18 +26,20 @@ $(function () {
                 d.status = $('#status').val();
                 d.startTime = $('#timeStart').val();
                 d.endTime = $('#timeEnd').val();
+                d.is_delete = $('#is_delete').val();
                 d.monthTime = $(".active").siblings("input[name='monthTime']").val();
             }
         },
         columns: [
-            {data:'id',title:'id'},
+            // {data:'id',title:'id'},
             {data:'order_id',title:'订单号'},
             {data:'money',title:'费用'},
             {data:'status',title:'状态'},
             {data:'paystatus',title:'支付状态'},
             {data:'typestr',title:'费用类型'},
+            {data:'date',title:'时间'},
             {data:'content',title:'备注'},
-            {data:'created_at',title:'时间'},
+            // {data:'created_at',title:'时间'},
             {data:'overstayed',title:'支付到期时间'},
             {data:'control',title:'操作'},
         ],

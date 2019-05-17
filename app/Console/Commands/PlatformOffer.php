@@ -15,7 +15,7 @@ class PlatformOffer extends Command
      * clear 是否清除对应旧数据 默认1清除
      * jq    第三方游戏  默认1
      */
-    protected $signature = 'PlatformOffer:Settlement {date?} {--clear=1}';
+    protected $signature = 'PlatformOffer:Settlement {date?} {--clear=1} {--action=all}';
 
     protected $description = '计算平台费用';
 
@@ -33,12 +33,22 @@ class PlatformOffer extends Command
     public function handle()
     {
         ini_set('memory_limit','1024M');
-        $param = $this->options();
+        $param = [
+            'clear' => $this->option('clear')
+        ];
         $this->argument('date') && $param['date'] = strtotime($this->argument('date'));
         $obj = new \stdClass();
         $obj->instance = new \App\Repository\PlatformOfferRepository($param);
+        $arr = [];
+        $action = $this->option('action');
         //第三方游戏
-        $obj->instance->jq($param);
+        if($action == 'all' || $action == 'jq')
+            $arr['jq'] = $obj->instance->jq($param);
+        //彩票
+        if($action == 'all' || $action == 'lottery')
+            $arr['lottery'] = $obj->instance->lottery($param);
+
+        $obj->instance->saveDB($obj->instance->generate($arr));
 
     }
 }

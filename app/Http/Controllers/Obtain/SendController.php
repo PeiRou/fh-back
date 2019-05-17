@@ -27,6 +27,17 @@ class SendController extends BaseController
         return json_decode($result,true);
     }
 
+    public function sendPlatformOffer($url)
+    {
+        $paramStr = json_encode($this->aParam);
+        $aArray = [
+            'platform_id' => $this->aParam['platform_id'],
+            'data' => $this->rsaPublicEncrypt($paramStr)
+        ];
+        $result = CurlService::getInstance()->post(env('GENERAL_INTERFACE_URL').'/'.$url,
+            $aArray);
+        return json_decode($result,true) ?? $result;
+    }
 
 
 }

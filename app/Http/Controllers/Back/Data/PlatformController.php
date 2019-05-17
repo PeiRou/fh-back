@@ -15,6 +15,8 @@ class PlatformController extends Controller
     {
         $model = \App\Offer::class;
         $res = $model::where(function ($sql) use ($request) {
+            if(isset($request->is_delete))
+                $sql->where('is_delete', $request->is_delete);
             if(isset($request->status))
                 $sql->where('status', $request->status);
             if(isset($request->startTime, $request->endTime))
@@ -25,6 +27,9 @@ class PlatformController extends Controller
         return DataTables::of($res)
             ->editColumn('status',function ($val) use ($model) {
                 return  $model::$status[$val->status];
+            })
+            ->editColumn('date',function ($val) {
+                return  substr($val->date, 0, 7);
             })
             ->editColumn('paystatus',function ($val) use ($model) {
                 return  $model::$paystatus[$val->paystatus];

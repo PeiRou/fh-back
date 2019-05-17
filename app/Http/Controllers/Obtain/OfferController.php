@@ -33,7 +33,7 @@ class OfferController extends BaseController
             'order_id' => addslashes($aParam['order_id']),
             'money' => (float)$aParam['money'],
             'status' => 0,
-            'type' => (int)$aParam['money'],
+            'type' => (int)$aParam['type'],
             'typestr' => addslashes($aParam['typestr']),
             'content' => addslashes($aParam['content'] ?? ''),
             'created_at' => date('Y-m-d H:i:s', strtotime($aParam['created_at'])),
