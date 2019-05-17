@@ -48,8 +48,11 @@ class PlatformOffer extends Command
         if($action == 'all' || $action == 'lottery')
             $arr['lottery'] = $obj->instance->lottery($param);
 
-        if($obj->instance->saveDB($obj->instance->generate($arr)))
+        try{
+            $obj->instance->saveDB($obj->instance->generate($arr));
             echo 'OK';
-
+        }catch (\Throwable $e){
+            echo $e->getMessage();
+        }
     }
 }

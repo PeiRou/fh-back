@@ -184,10 +184,11 @@ class PlatformOfferRepository extends BaseRepository
     public function saveDB($array)
     {
         if (!is_array($array))
-            return false;
+            throw new \Exception('返回数据异常！');
+
         extract($array);
         if(!isset($data, $typeIn))
-            return false;
+            throw new \Exception('返回数据异常2！');
         foreach ($data as &$v){
             unset($v['platform_id']);
             unset($v['send_status']);
@@ -207,9 +208,8 @@ class PlatformOfferRepository extends BaseRepository
             # 平台更新成功
         }catch (\Throwable $e){
             DB::rollback();
-            echo $e->getMessage();
             writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
-            return false;
+            throw $e;
         }
     }
 
