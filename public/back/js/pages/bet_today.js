@@ -154,9 +154,9 @@ $(function () {
                     if(data[c].bet_game_id == 91 || data[c].bet_game_id == 90){
                         var tmpBet_bet_money = intVal(data[c].bet_nn_view_money);
                     }else {
-                        var tmpBet_bet_money = intVal(data[c].bet_bunko) > 0 ? intVal(data[c].bet_bet_money) : 0;
+                        var tmpBet_bet_money = (parseFloat(intVal(data[c].bet_bunko) - intVal(data.bet_bunko)>0?intVal(data.bet_bet_money):0)).toFixed(3);
                     }
-                    return parseFloat((intVal(a) + intVal(data[c].bet_bunko) - tmpBet_bet_money).toFixed(2));
+                    return parseFloat((intVal(a) + tmpBet_bet_money).toFixed(2));
                 }, 0 );
             // Update footer by showing the total with the reference of the column index
             $( api.column( 0 ).footer() ).html('总计');
