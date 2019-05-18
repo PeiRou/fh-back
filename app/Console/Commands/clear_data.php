@@ -44,7 +44,7 @@ class clear_data extends Command
         $sql = "delete from users where testFlag = 1 and loginTime <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         writeLog('clear','clear users testFlag:'.json_encode($res));
-        $sql = "delete from chat_user where chat_role = 1 and loginTime <='".$clearDate1."' LIMIT 1000";
+        $sql = "delete from chat_users where chat_role = 1 and created_at <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         writeLog('clear','clear chat_user role is yk:'.json_encode($res));
         if(!$redis->exists('clear-bet')){
