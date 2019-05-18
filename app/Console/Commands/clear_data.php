@@ -44,6 +44,9 @@ class clear_data extends Command
         $sql = "delete from users where testFlag = 1 and loginTime <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         writeLog('clear','clear users testFlag:'.json_encode($res));
+        $sql = "delete from chat_user where chat_role = 1 and loginTime <='".$clearDate1."' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        writeLog('clear','clear chat_user role is yk:'.json_encode($res));
         if(!$redis->exists('clear-bet')){
             $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
             writeLog('clear','clear bet :'.json_encode($res));
@@ -156,6 +159,11 @@ class clear_data extends Command
             $num_else = $this->clrGameTables('game_twxyft', $clearDate62, $num_else);
             $num_else = $this->clrGameTables('game_xjssc', $clearDate62, $num_else);
             $num_else = $this->clrGameTables('game_xylhc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_sfsc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_sfssc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_sflhc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_jslhc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_xyft', $clearDate62, $num_else);
             if($num_else==0){
                 $this->time = strtotime($this->stoptime) - time();
                 $redis->setex('clear-else',$this->time,$this->stoptime);
