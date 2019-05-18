@@ -185,8 +185,10 @@ class PlatformOfferRepository extends BaseRepository
     {
         if (!is_array($array))
             throw new \Exception('返回数据异常！');
+        if(!isset($array['code']) || $array['code'] !== 0)
+            throw new \Exception($array['msg'] ?? '');
 
-        extract($array);
+        extract($array['data'] ?? []);
         if(!isset($data, $typeIn))
             throw new \Exception('返回数据异常2！');
         foreach ($data as &$v){
