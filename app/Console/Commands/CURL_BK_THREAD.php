@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class CURL_BK_THREAD extends Command
 {
 
-    protected $signature = 'CURL_ALL_THREAD';
+    protected $signature = 'CURL_BK_THREAD';
 
     protected $description = '执行所有的定时任务';
 
