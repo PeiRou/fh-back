@@ -545,7 +545,7 @@ class BetDataController extends Controller
                     $query->where('game_id',$game);
                 }
             })
-            ->where('testFlag',0)->sum('bet_money');
+            ->where('testFlag',0)->sum(DB::raw("CASE WHEN `game_id` IN(90,91) THEN `nn_view_money` ELSE `bunko` END"));
         return $total;
     }
 
