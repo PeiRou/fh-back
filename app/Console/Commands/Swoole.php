@@ -89,7 +89,7 @@ class Swoole extends Command
         });
         $this->ws->on('request', function ($serv) {
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
-            $data['post'] = @$serv;
+//            $data['post'] = @$serv;
 
             $this->timer = $this->serv->tick(1000, function($id) use ($data){
                 $redis = Redis::connection();
@@ -114,10 +114,13 @@ class Swoole extends Command
         if(!isset($data['thread']) || empty($data['thread']))
             $this->serv->clearTimer($id);
         try{
-            switch ($data['thread']){
+            $thread = explode('-',$data['thread']);
+            switch ($thread[0]){
                 case 'PARAM_PUSH_WIN':                                  //特殊请求-中奖推送消息
-                    $post['notice'] = $data['post']->post['notice'];
-                    $post['userid'] = $data['post']->post['userid'];
+//                    $post['notice'] = $data['post']->post['notice'];
+//                    $post['userid'] = $data['post']->post['userid'];
+                    $post['notice'] = $thread[1];
+                    $post['userid'] = $thread[2];
                     writeLog('pusher','swoole:'.json_encode($post));
                     Artisan::call('PARAM_PUSH_WIN',$post);
                     $this->num[$id]=59;
