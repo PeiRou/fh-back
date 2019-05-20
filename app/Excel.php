@@ -154,15 +154,23 @@ class Excel
     }
     //中奖推送
     private function pushWinInfo($pushData){
-        writeLog('pusher','excel:'.$pushData);
+//        $curl = curl_init();
+//        curl_setopt($curl, CURLOPT_URL, "http://127.0.0.1:9500?thread=PARAM_PUSH_WIN".$pushData);
+//        curl_setopt($curl, CURLOPT_HEADER, 0);
+//        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
+//        curl_setopt($curl, CURLOPT_POST, true);
+//        curl_setopt($curl, CURLOPT_POSTFIELDS, $pushData);
+//        curl_exec($curl);
+//        curl_close($curl);
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, "http://127.0.0.1:9500?thread=PARAM_PUSH_WIN".$pushData);
+        $url = "http://127.0.0.1:9500?thread=PARAM_PUSH_WIN".$pushData;
+        writeLog('pusher','excel: '.$url);
+        curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 1);
-//        curl_setopt($curl, CURLOPT_POST, true);
-//        curl_setopt($curl, CURLOPT_POSTFIELDS, $pushData);
-        curl_exec($curl);
+        $tmpInfo = curl_exec($curl);
         curl_close($curl);
     }
     //反水
