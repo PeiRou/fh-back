@@ -104,7 +104,8 @@ class Excel
                     continue;
                 $redis->setex($keyEx,60,'on');
                 $content = ' 第'.$i->issue.'期 '.$i->playcate_name.' '.$i->play_name;
-                $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content. '已中奖，中奖金额 <span style="color:#8d71ff">' .round($winBunko,3).'元</span></div>';
+//                $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content. '已中奖，中奖金额 <span style="color:#8d71ff">' .round($winBunko,3).'元</span></div>';
+                $tmpContent = "<div><span style='color: red'>".$gameName."</span>".$content. "已中奖，中奖金额 <span style='color:#8d71ff'>" .round($winBunko,3)."元</span></div>";
                 $push[] = array('userid'=>$i->user_id,'notice'=>$tmpContent);
             }
             krsort($capData);
@@ -170,7 +171,7 @@ class Excel
         $err = curl_errno($curl);
         curl_close($curl);
         if (($err) || (!in_array($httpcode,array(200,500))))
-            writeLog('pusher','res: no');
+            writeLog('pusher','res: no'.$err.$httpcode);
         else
             writeLog('pusher','res: yes');
     }
