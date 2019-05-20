@@ -114,11 +114,10 @@ class Swoole extends Command
         if(!isset($data['thread']) || empty($data['thread']))
             $this->serv->clearTimer($id);
         try{
-            $thread = explode('-',$data['thread']);
-            switch ($thread[0]){
+            switch ($data['thread']){
                 case 'PARAM_PUSH_WIN':                                  //特殊请求-中奖推送消息
-                    $post['notice'] = $data['post']->post['notice'];
-                    $post['userid'] = $data['post']->post['userid'];
+                    $post['notice'] = @$data['post']->post['notice'];
+                    $post['userid'] = @$data['post']->post['userid'];
                     writeLog('pusher','swoole:'.json_encode($post));
                     Artisan::call('PARAM_PUSH_WIN',$post);
                     $this->num[$id]=59;
