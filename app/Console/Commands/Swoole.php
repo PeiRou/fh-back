@@ -89,6 +89,7 @@ class Swoole extends Command
         });
         $this->ws->on('request', function ($serv) {
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
+            $data['post'] = @$serv;
 
             $this->timer = $this->serv->tick(1000, function($id) use ($data){
                 $redis = Redis::connection();
@@ -113,23 +114,33 @@ class Swoole extends Command
         if(!isset($data['thread']) || empty($data['thread']))
             $this->serv->clearTimer($id);
         try{
-            if(env('IS_CLOUD',0)==0){       //如果非云主机
-                DB::disconnect();
-                Artisan::call($data['thread']);
-            }else{
-                $redis->select(0);
-                $key = 'Artisan:'.$data['thread'];
-                if(!$redis->exists($key)){
-                    $redis->setex($key, 60,'on');
-                    DB::disconnect();
-                    Artisan::call($data['thread']);
+            switch ($data['thread']){
+                case 'PARAM_PUSH_WIN':                                  //特殊请求-中奖推送消息
+                    $post['notice'] = $data['post']->post['notice'];
+                    $post['userid'] = $data['post']->post['userid'];
+                    Artisan::call('PARAM_PUSH_WIN',$post);
+                    $this->num[$id]=59;
+                    break;
+                default:
+                    if(env('IS_CLOUD',0)==0){       //如果非云主机
+                        DB::disconnect();
+                        Artisan::call($data['thread']);
+                    }else{
+                        $redis->select(0);
+                        $key = 'Artisan:'.$data['thread'];
+                        if(!$redis->exists($key)){
+                            $redis->setex($key, 60,'on');
+                            DB::disconnect();
+                            Artisan::call($data['thread']);
 //                $redis->setex($key,1,'on');
-                    $redis->del($key);
-                }
+                            $redis->del($key);
+                        }
+                    }
+                    break;
             }
         }catch (\exception $exception){
-            \Log::info($exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-            \Log::info('this commands error :'.$data['thread']);
+            writeLog('error',$exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            writeLog('error','this commands error :'.$data['thread']);
         }
         if($this->num[$id]>=59)
             $this->serv->clearTimer($id);

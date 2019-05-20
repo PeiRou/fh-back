@@ -79,13 +79,13 @@ class DailyReconciliationTotal extends Command
             try{
                 DB::table('totalreport')->insert([$datatotalreport]);
             } catch (\Exception $exception){
-                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 $this->error('insert to totalreport error');
             }
-            \Log::info('memberquota: '.$datatotalreport['memberquota']);
-            \Log::info('memberquotayday: '.$datatotalreport['memberquotayday']);
+            writeLog('DailyReconTotal','memberquota: '.$datatotalreport['memberquota']);
+            writeLog('DailyReconTotal','memberquotayday: '.$datatotalreport['memberquotayday']);
             $this->info('insert to totalreport successfully');
-            \Log::info('系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
+            writeLog('DailyReconTotal','系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
 
             die;
         }
@@ -192,7 +192,7 @@ INNER JOIN (select type, case capital.type when 't04' then '返利/手续费' wh
 GROUP BY rechName";
         $capital = DB::select($capitalsql,[$date.' 00:00:00',$date.' 23:59:59']);
 //        $capital = array_merge($echarges,$capital);
-        \Log::info('$capital: '.json_encode($capital));
+        writeLog('DailyReconTotal','$capital: '.json_encode($capital));
 
         /*今日盈亏*/
         //to1（充值）--已包含后台加钱
@@ -268,10 +268,10 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
             }else{
                 $unsettlementsql = "SELECT data FROM totalreport WHERE daytstrot = ".strtotime($date);
                 $unsettlement = DB::select($unsettlementsql);
-                \Log::info('执行的语法: '.$unsettlementsql);
+                writeLog('DailyReconTotal','执行的语法: '.$unsettlementsql);
                 $dataunsettlement = unserialize($unsettlement[0]->data)[$date];
                 if(isset($dataunsettlement['todayprofitlossitem'])){
-                    \Log::info('捞到今日盈亏的数据: '.json_encode($dataunsettlement['todayprofitlossitem']));
+                    writeLog('DailyReconTotal','捞到今日盈亏的数据: '.json_encode($dataunsettlement['todayprofitlossitem']));
                     foreach ($dataunsettlement['todayprofitlossitem'] as $k=>$v){
                         if($v->rechname == "未结算"){
                             $val = empty($v->amount)?$val:$v->amount;
@@ -284,7 +284,7 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                         ->where('daytstrot', $daytstrot)
                         ->update($updateunsetamount);
                 } catch (\Exception $exception){
-                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                    writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                     $this->error('update to totalreport error');
                 }
                 $this->info('「重新执行」按钮执行并自动更新 新栏位`unsetamount` 的值为 '.$val);
@@ -296,7 +296,7 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                 "amount" => $val
             ]
         ];
-        \Log::info('未结算 最后处理好的值 '.json_encode($unsettlement));
+        writeLog('DailyReconTotal','未结算 最后处理好的值 '.json_encode($unsettlement));
 
         $merge1 = array_merge($echarges,$capitallittle);
         $merge2 = array_merge($merge1,$bunkofact);
@@ -393,11 +393,11 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                         ->where('daytstrot', $daytstrot)
                         ->update($datatotalreport);
                 } catch (\Exception $exception){
-                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                    writeLog('DailyReconTotal',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                     $this->error('update to totalreport error');
                 }
                 $this->info('system update to totalreport successfully');
-                \Log::info('系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
+                writeLog('DailyReconTotal','系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
             }else{
                 /*今日会员馀额*/
                 $useramountsql = "SELECT SUM(A.money) AS 'amount' FROM (select id,money from users where testFlag = '0') AS A";
@@ -428,13 +428,13 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                 try{
                     DB::table('totalreport')->insert([$datatotalreport]);
                 } catch (\Exception $exception){
-                    \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                    writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                     $this->error('insert to totalreport error');
                 }
-                \Log::info('data: '.$datatotalreport['data']);
-                \Log::info('memberquota: '.$datatotalreport['memberquota']);
-                \Log::info('memberquotayday: '.$datatotalreport['memberquotayday']);
-                \Log::info('系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
+                writeLog('DailyReconTotal','data: '.$datatotalreport['data']);
+                writeLog('DailyReconTotal','memberquota: '.$datatotalreport['memberquota']);
+                writeLog('DailyReconTotal','memberquotayday: '.$datatotalreport['memberquotayday']);
+                writeLog('DailyReconTotal','系统  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
 */
                 $this->info('不该进来这段的！表示定时任务没有设定 php artisan Member:DailyReconTotal insert');
                 $this->info('**********************************************************************************');
@@ -452,10 +452,10 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                     ->where('daytstrot', $daytstrot)
                     ->update($datatotalreport);
             } catch (\Exception $exception){
-                \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 $this->error('update to totalreport error');
             }
-            \Log::info('操作人：'.$this->argument('user').'  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
+            writeLog('DailyReconTotal','操作人：'.$this->argument('user').'  执行「会员对帐」功能 （daytstrot：'.$daytstrot.'）');
             $this->info($this->argument('user').' update to totalreport successfully');
         }
     }
