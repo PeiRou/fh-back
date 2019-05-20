@@ -1713,7 +1713,7 @@ class ExcelLotteryNC
                 //任选二
                 case $gameId.$lm_playCate.$this->arrPlayId['RENXUANER'].'-c2':
                 //任选三
-                case $gameId.$lm_playCate.$this->arrPlayId['XUANERLIANZU'].'-c3':
+                case $gameId.$lm_playCate.$this->arrPlayId['RENXUANSAN'].'-c3':
                 //任选四
                 case $gameId.$lm_playCate.$this->arrPlayId['RENXUANSI'].'-c4':
                 //任选五

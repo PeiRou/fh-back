@@ -99,12 +99,11 @@ class ExcelLotteryKL8
             $playId = $this->arrPlayId['QIAN_DUO']; //前多
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        } else {
+        } else if($qian < $hou){
             $playId = $this->arrPlayId['HOU_DUO']; //后多
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        if($qian == $hou){
+        }else if($qian == $hou){
             $playId = $this->arrPlayId['QIANHOUHE']; //前后和
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
