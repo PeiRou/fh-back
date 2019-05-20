@@ -159,23 +159,11 @@ class Excel
     }
     //中奖推送
     private function pushWinInfo($pushData){
-        Artisan::call("PARAM_PUSH_WIN",$pushData);
-//        writeLog('pusher','excel:'.json_encode($pushData));
-//        $curl = curl_init();
-//        curl_setopt($curl, CURLOPT_URL, "http://127.0.0.1:9500?thread=PARAM_PUSH_WIN");
-//        curl_setopt($curl, CURLOPT_HEADER, 0);
-//        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
-//        curl_setopt($curl, CURLOPT_POST, true);
-//        curl_setopt($curl, CURLOPT_POSTFIELDS, $pushData);
-//        $tmp = curl_exec($curl);
-//        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-//        $err = curl_errno($curl);
-//        curl_close($curl);
-//        if (($err) || (!in_array($httpcode,array(200,500))))
-//            writeLog('pusher','res: no'.$err.'==='.$httpcode);
-//        else
-//            writeLog('pusher','res: yes');
+        try{
+            Artisan::call("PARAM_PUSH_WIN",$pushData);
+        }catch (\Exception $exception){
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+        }
     }
     //反水
     public function reBackUser($gameId,$issue,$gameName=''){
