@@ -17,7 +17,7 @@ class PARAM_PUSH_WIN extends Command
 
     public function handle()
     {
-        if(!empty($this->argument('notice'))&&!empty($this->argument('userid')))
+        if(!empty($this->argument('notice')) && !empty($this->argument('userid')))
             event(new BackPusherEvent('win','中奖通知',$this->argument('notice'),array('fnotice-'.$this->argument('userid'))));
     }
 }
