@@ -170,9 +170,9 @@ class Excel
         $err = curl_errno($curl);
         curl_close($curl);
         if (($err) || (!in_array($httpcode,array(200,500))))
-            writeLog('pusher','excel:'.$tmp);
+            writeLog('pusher','res: no');
         else
-            writeLog('pusher','excel:'.$tmp);
+            writeLog('pusher','res: yes');
     }
     //反水
     public function reBackUser($gameId,$issue,$gameName=''){
