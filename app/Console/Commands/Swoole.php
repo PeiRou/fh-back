@@ -117,10 +117,8 @@ class Swoole extends Command
             $thread = explode('-',$data['thread']);
             switch ($thread[0]){
                 case 'PARAM_PUSH_WIN':                                  //特殊请求-中奖推送消息
-//                    $post['notice'] = $data['post']->post['notice'];
-//                    $post['userid'] = $data['post']->post['userid'];
-                    $post['notice'] = $thread[1];
-                    $post['userid'] = $thread[2];
+                    $post['notice'] = $data['post']->post['notice'];
+                    $post['userid'] = $data['post']->post['userid'];
                     writeLog('pusher','swoole:'.json_encode($post));
                     Artisan::call('PARAM_PUSH_WIN',$post);
                     $this->num[$id]=59;
