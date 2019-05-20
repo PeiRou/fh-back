@@ -118,7 +118,7 @@ class Swoole extends Command
                 case 'PARAM_PUSH_WIN':                                  //特殊请求-中奖推送消息
                     $post['notice'] = $data['post']->post['notice'];
                     $post['userid'] = $data['post']->post['userid'];
-                    writeLog('pusher',$post);
+                    writeLog('pusher','swoole:'.json_encode($post));
                     Artisan::call('PARAM_PUSH_WIN',$post);
                     $this->num[$id]=59;
                     break;
