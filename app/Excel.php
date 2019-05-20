@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Artisan;
 
 class Excel
 {
@@ -158,20 +159,7 @@ class Excel
     }
     //中奖推送
     private function pushWinInfo($pushData){
-        $url = "http://127.0.0.1:9500?thread=PARAM_PUSH_WIN";
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
-        curl_exec($curl);
-        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $err = curl_errno($curl);
-        curl_close($curl);
-        if (($err) || (!in_array($httpcode,array(200,500))))
-            writeLog('pusher','res: no'.$err.'==='.$httpcode);
-        else
-            writeLog('pusher','res: yes');
+        Artisan::call("PARAM_PUSH_WIN",$pushData);
 //        writeLog('pusher','excel:'.json_encode($pushData));
 //        $curl = curl_init();
 //        curl_setopt($curl, CURLOPT_URL, "http://127.0.0.1:9500?thread=PARAM_PUSH_WIN");
