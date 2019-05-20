@@ -268,23 +268,30 @@ class Excel
     }
     //计算是否开杀
     public function kill_count($table,$issue,$gameId,$opencode){
-        $killopennum = DB::connection('mysql::write')->table($table)->select('excel_opennum')->where('issue',$issue)->first();
-        $is_killopen = DB::connection('mysql::write')->table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win','is_user')->where('game_id',$gameId)->first();
+        try{
+            $killopennum = DB::connection('mysql::write')->table($table)->select('excel_opennum','is_useropen','useropennum')->where('issue',$issue)->first();
+            $is_killopen = DB::connection('mysql::write')->table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win','is_user')->where('game_id',$gameId)->first();
 
-        if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1) && $is_killopen->is_user){
-            $opencode = empty($opencode)?$this->opennum($table):$opencode;
-            writeLog('serfKill',$table.' 获取KILL'.$issue.'--'.@$killopennum->excel_opennum);
-            $opennum = isset($killopennum->excel_opennum)&&!empty($killopennum->excel_opennum)?$killopennum->excel_opennum:$this->opennum($table);
-            $total = $is_killopen->bet_lose + $is_killopen->bet_win;
-            $lose_losewin_rate = $total>0?($is_killopen->bet_lose-$is_killopen->bet_win)/$total:0;
-            writeLog('serfKill',$table.':杀率设置'.json_encode($is_killopen));
-            writeLog('serfKill',$table.':输赢比 '.$lose_losewin_rate);
-            writeLog('serfKill',$table.' 获取KILL开奖'.$issue.'--'.$opennum);
-            writeLog('serfKill',$table.' 获取origin开奖'.$issue.'--'.$opencode);
-        }else if(isset($is_killopen->is_user) && $is_killopen->is_user == 0){//增加统一杀率，如果是此栏位为0时，为统一控制杀率
-            $opennum = $this->opennum($table,$is_killopen->is_user,$issue);
-        }else
+            if($killopennum->is_useropen==1 && !empty($killopennum->useropennum) && $is_killopen->is_user==1) {
+                $opennum = $killopennum->useropennum;
+            }else if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1) && $is_killopen->is_user){
+                $opencode = empty($opencode)?$this->opennum($table):$opencode;
+                writeLog('serfKill',$table.' 获取KILL'.$issue.'--'.@$killopennum->excel_opennum);
+                $opennum = isset($killopennum->excel_opennum)&&!empty($killopennum->excel_opennum)?$killopennum->excel_opennum:$this->opennum($table);
+                $total = $is_killopen->bet_lose + $is_killopen->bet_win;
+                $lose_losewin_rate = $total>0?($is_killopen->bet_lose-$is_killopen->bet_win)/$total:0;
+                writeLog('serfKill',$table.':杀率设置'.json_encode($is_killopen));
+                writeLog('serfKill',$table.':输赢比 '.$lose_losewin_rate);
+                writeLog('serfKill',$table.' 获取KILL开奖'.$issue.'--'.$opennum);
+                writeLog('serfKill',$table.' 获取origin开奖'.$issue.'--'.$opencode);
+            }else if(isset($is_killopen->is_user) && $is_killopen->is_user == 0){//增加统一杀率，如果是此栏位为0时，为统一控制杀率
+                $opennum = $this->opennum($table,$is_killopen->is_user,$issue);
+            }else
+                $opennum = $this->opennum($table);
+        }catch (\Exception $exception){
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             $opennum = $this->opennum($table);
+        }
         return $opennum;
     }
     //取得杀率信息
