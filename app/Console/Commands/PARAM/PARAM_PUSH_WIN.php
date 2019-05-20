@@ -17,10 +17,9 @@ class PARAM_PUSH_WIN extends Command
 
     public function handle()
     {
-        writeLog('pusher','PARAM_PUSH_WIN:'.$this->argument('notice').'+++'.$this->argument('userid'));
         if(!empty($this->argument('notice')) && !empty($this->argument('userid')))
             event(new BackPusherEvent('win','中奖通知',$this->argument('notice'),array('fnotice-'.$this->argument('userid'))));
         else
-            writeLog('pusher','error:'.$this->argument('notice').'+++'.$this->argument('userid'));
+            writeLog('error','pusher:'.$this->argument('notice').'+++'.$this->argument('userid'));
     }
 }
