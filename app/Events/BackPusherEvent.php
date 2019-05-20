@@ -38,7 +38,7 @@ class BackPusherEvent extends Event implements ShouldBroadcast
     {
         return ['type' => $this->type, 'title' => $this->title, 'info' => $this->info];
     }
-    public function broadcast(array $channels, $event, array $payload = [])
+    public function broadcast()
     {
         try{
             parent::broadcast(...func_get_args());
