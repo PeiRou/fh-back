@@ -171,7 +171,7 @@ class Excel
         $err = curl_errno($curl);
         curl_close($curl);
         if (($err) || (!in_array($httpcode,array(200,500))))
-            writeLog('pusher','res: no'.$err.$httpcode);
+            writeLog('pusher','res: no'.$err.'==='.$httpcode);
         else
             writeLog('pusher','res: yes');
     }
