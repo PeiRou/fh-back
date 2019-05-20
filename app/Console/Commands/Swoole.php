@@ -89,7 +89,7 @@ class Swoole extends Command
         });
         $this->ws->on('request', function ($serv) {
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
-//            $data['post'] = @$serv;
+            $data['post'] = @$serv;
 
             $this->timer = $this->serv->tick(1000, function($id) use ($data){
                 $redis = Redis::connection();
