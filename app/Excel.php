@@ -157,7 +157,7 @@ class Excel
     }
     //中奖推送
     private function pushWinInfo($pushData){
-        writeLog('pusher','escel:'.$pushData);
+        writeLog('pusher','excel:'.json_encode($pushData));
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, "http://127.0.0.1:9500?thread=PARAM_PUSH_WIN");
         curl_setopt($curl, CURLOPT_HEADER, 0);
