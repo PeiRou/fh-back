@@ -389,7 +389,7 @@ function edit(id) {
 }
 function addMoneyAllUser(){
     var url = '/back/modal/addMoneyAllUser/';
-    Cmodal('批量添加会员','22%',url,true,'changeUserMoneyForm');
+    Cmodal('批量修改会员余额','22%',url,true,'changeUserMoneyForm');
 }
 
 function allDown(user_id){
