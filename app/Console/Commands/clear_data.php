@@ -27,19 +27,25 @@ class clear_data extends Command
         $redis->select(5);
 //        $keyEx = 'clearing';
         if($redis->exists('clearing')){
-            echo "ing...";
             return "";
         }
         $redis->setex('clearing',300,'on');
-        $this->stoptime = date('Y-m-d 23:59:59');                                 //卡redis时间
-        $this->time = strtotime($this->stoptime) - time();                                     //卡redis时间
+        $this->stoptime = date('Y-m-d H:i:s',strtotime(date('Y-m-d 23:59:59'))+7200);                                 //卡redis时间，改成两点之后才开始移数据
+        $this->time = strtotime($this->stoptime) - time();                                                      //卡redis时间，剩馀时间
+        if($this->time<=0)                                 //剩馀时间若是非有效秒数，则返回不继续往下做
+            return "";
         $clearDate1 = date('Y-m-d 23:59:59',strtotime("-1 days"));        //1天
         $clearDate31 = date('Y-m-d 23:59:59',strtotime("-31 days")-300);        //31天
         $clearDate62 = date('Y-m-d 23:59:59',strtotime("-62 days")-300);        //62天
         $clearDate93 = date('Y-m-d 23:59:59',strtotime("-93 days")-300);        //93天
+        $clearDate120 = date('Y-m-d 23:59:59',strtotime("-120 days")-300);        //100
+        echo "clear 卡redis时间:".$this->stoptime.PHP_EOL;
+        echo "clear 卡redis剩馀时间:".$this->time.PHP_EOL;
         echo "clear Date1:".$clearDate1.PHP_EOL;
         echo "clear Date31:".$clearDate31.PHP_EOL;
         echo "clear Date62:".$clearDate62.PHP_EOL;
+        echo "clear Date93:".$clearDate93.PHP_EOL;
+        echo "clear Date120:".$clearDate120.PHP_EOL;
         //清-游客
         $sql = "delete from users where testFlag = 1 and loginTime <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
@@ -103,12 +109,12 @@ class clear_data extends Command
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table capital :' . $res . PHP_EOL;
             //清-充值
-//        $sql = "DELETE FROM recharges WHERE created_at<='{$clearDate}' LIMIT 1000";
-//        $res = DB::connection('mysql::write')->statement($sql);
+            $sql = "DELETE FROM recharges WHERE created_at<='{$clearDate120}' LIMIT 1000";
+            $res = DB::connection('mysql::write')->statement($sql);
             echo 'table recharges :' . $res . PHP_EOL;
             //清-提款
-//        $sql = "DELETE FROM drawing WHERE created_at<='{$clearDate}' LIMIT 1000";
-//        $res = DB::connection('mysql::write')->statement($sql);
+            $sql = "DELETE FROM drawing WHERE created_at<='{$clearDate120}' LIMIT 1000";
+            $res = DB::connection('mysql::write')->statement($sql);
             echo 'table drawing :' . $res . PHP_EOL;
             //清-活动
             $sql = "DELETE FROM activity_send WHERE created_at<='{$clearDate62}' LIMIT 1000";
