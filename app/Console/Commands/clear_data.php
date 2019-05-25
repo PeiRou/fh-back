@@ -49,13 +49,16 @@ class clear_data extends Command
         //清-游客
         $sql = "delete from users where testFlag = 1 and loginTime <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
-        writeLog('clear','clear users testFlag:'.json_encode($res));
+        writeLog('clear','1 clear users testFlag:'.json_encode($res));
         $sql = "delete from chat_users where chat_role = 1 and created_at <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
-        writeLog('clear','clear chat_user role is yk:'.json_encode($res));
+        writeLog('clear','2 clear chat_user role is yk:'.json_encode($res));
         if(!$redis->exists('clear-bet')){
+            writeLog('clear','3 clear bet ing...');
+            $redis->setex('clear-bet',5,'on');
+            writeLog('clear','4 clear bet begin...');
             $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
-            writeLog('clear','clear bet :'.json_encode($res));
+            writeLog('clear','5 clear bet :'.json_encode($res));
             if(empty($res)){
                 $redis->setex('clear-bet',$this->time,$this->stoptime);
             }else{
@@ -74,8 +77,10 @@ class clear_data extends Command
                         $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE bet_id in (".$strIds.")";
                         $res = DB::statement($sql);
                         writeLog('clear','table insert into bet_his :'.$res);
-                        $res = DB::table('bet')->whereIn('bet_id', $arrIds)->delete();
-                        writeLog('clear','table delete bet :'.$res);
+                        if($res){
+                            $res = DB::table('bet')->whereIn('bet_id', $arrIds)->delete();
+                            writeLog('clear','table delete bet :'.$res);
+                        }
                         DB::commit();
                     }catch (\Exception $e){
                         DB::rollback();
@@ -83,7 +88,7 @@ class clear_data extends Command
                         writeLog('clear','table insert into bet_his :fail');
                     }
                     $num++;
-                    $redis->setex('clear-bet',1,'on');
+                    $redis->del('clear-bet');
                 }
             }
         }

@@ -149,7 +149,7 @@ class CURL_ALL_THREAD extends Command
             $this->exeCURL('http://127.0.0.1:9500?thread=next_open_ahk3');
             $this->exeCURL('http://127.0.0.1:9500?thread=BUNKO_ahk3');
             //清数据
-            $this->exeCURL('http://127.0.0.1:9500?thread=clear_data');
+//            $this->exeCURL('http://127.0.0.1:9500?thread=clear_data');
         }
     }
     private function exeCURL($url){

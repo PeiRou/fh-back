@@ -86,7 +86,7 @@ class CURL_BK_THREAD extends Command
             $this->exeCURL('http://127.0.0.1:9500?thread=KILL_jslhc');
             $this->exeCURL('http://127.0.0.1:9500?thread=KILL_sflhc');
             //清数据
-            $this->exeCURL('http://127.0.0.1:9500?thread=clear_data');
+//            $this->exeCURL('http://127.0.0.1:9500?thread=clear_data');
         }
     }
     private function exeCURL($url){

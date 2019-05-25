@@ -18,7 +18,7 @@ class clear_file_lock extends Command
      *
      * @var string
      */
-    protected $description = '清楚文件锁的文件';
+    protected $description = '清除文件锁的文件';
 
     /**
      * Create a new command instance.
