@@ -128,8 +128,8 @@ class Swoole extends Command
                 }
             }
         }catch (\exception $exception){
-            \Log::info($exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-            \Log::info('this commands error :'.$data['thread']);
+            writeLog('error',$exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            writeLog('error','this commands error :'.$data['thread']);
         }
         if($this->num[$id]>=59)
             $this->serv->clearTimer($id);

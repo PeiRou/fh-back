@@ -2,11 +2,11 @@
 
 namespace App;
 
-use App\Events\BackPusherEvent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Artisan;
 
 class Excel
 {
@@ -105,7 +105,8 @@ class Excel
                     continue;
                 $redis->setex($keyEx,60,'on');
                 $content = ' 第'.$i->issue.'期 '.$i->playcate_name.' '.$i->play_name;
-                $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content. '已中奖，中奖金额 <span style="color:#8d71ff">' .round($winBunko,3).'元</span></div>';
+//                $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content. '已中奖，中奖金额 <span style="color:#8d71ff">' .round($winBunko,3).'元</span></div>';
+                $tmpContent = "<div><span style='color: red'>".$gameName."</span>".$content. "已中奖，中奖金额 <span style='color:#8d71ff'>" .round($winBunko,3)."元</span></div>";
                 $push[] = array('userid'=>$i->user_id,'notice'=>$tmpContent);
             }
             krsort($capData);
@@ -115,16 +116,19 @@ class Excel
             }
             if(!empty(env('PUSHER_APP_ID',''))){
                 foreach ($push as $key => $val){
-                    @event(new BackPusherEvent('win','中奖通知',$val['notice'],array('fnotice-'.$val['userid'])));
+//                    @event(new BackPusherEvent('win','中奖通知',$val['notice'],array('fnotice-'.$val['userid'])));
+                    $pushData['notice'] = $val['notice'];
+                    $pushData['userid'] = $val['userid'];
+                    $this->pushWinInfo($pushData);
                 }
             }
         } else {
-            \Log::info($gameName.'已结算过，已阻止！');
+            writeLog('New_Bet',$gameName.'已结算过，已阻止！');
         }
         if($is_status){
             $res = DB::table('bet')->where('status',$betStatus)->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 1]);
             if(!$res)
-                \Log::info($gameName.$issue.'返钱失败！');
+                writeLog('New_Bet',$gameName.$issue.'返钱失败！');
         }
         //普通模式才会退水
         if(env('AGENT_MODEL',1) == 1 && !$is_status) {
@@ -144,7 +148,7 @@ class Excel
                 if(!empty($table)&&!empty($tableid)){
                     $res = DB::table($table)->where('id',$tableid)->where('returnwater',2)->update(['returnwater' => 1]);
                     if(empty($res)){
-                        \Log::info($gameName.$issue.'退水中失败！');
+                        writeLog('New_Bet',$gameName.$issue.'退水中失败！');
                         return 0;
                     }
                 }
@@ -153,6 +157,15 @@ class Excel
         }
         return 0;
     }
+    //中奖推送
+    private function pushWinInfo($pushData){
+        try{
+            Artisan::call("PARAM_PUSH_WIN",$pushData);
+        }catch (\Exception $exception){
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+        }
+    }
+    //反水
     public function reBackUser($gameId,$issue,$gameName=''){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00000001)->groupBy('user_id')->get();
         if($get){
@@ -207,7 +220,7 @@ class Excel
                 return 1;
             }
         } else {
-            \Log::info($gameName.'已结算过，已阻止！');
+            writeLog('New_Bet',$gameName.'已结算过，已阻止！');
         }
         return 0;
     }
@@ -864,7 +877,7 @@ class Excel
                 }
             }
         }catch (\exception $exception){
-            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             DB::table($table)->where('status',$betStatus)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
             return 0;
         }

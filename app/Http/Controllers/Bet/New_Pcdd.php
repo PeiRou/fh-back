@@ -110,7 +110,7 @@ class New_Pcdd extends Excel
                 if(!$res){
                     $res = DB::table($table)->where('id',$id)->where('returnwater',2)->update(['returnwater' => 1]);
                     if(empty($res)){
-                        \Log::info($gameName.$issue.'退水中失败！');
+                        writeLog('New_Bet',$gameName.$issue.'退水中失败！');
                         return 0;
                     }
                 }else
