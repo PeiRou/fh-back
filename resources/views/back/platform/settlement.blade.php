@@ -64,10 +64,31 @@
                     <input type="hidden" name="" id="is_delete" value="0">
                 </div>
             </div>
+            <div class="total-nums">
+                <span class="tips-icon tips-info" style="cursor:pointer "><i class="iconfont" style="color: #717171"></i></span>
+                总计：<span style="font-size: 13pt;" id="totalMoney">0</span>
+            </div>
         </div>
         <table id="capitalDetailsTable" class="ui small table" cellspacing="0" width="100%">
             <thead>
 
+            </thead>
+        </table>
+        <table id="" class="ui small table" style="margin-bottom: 0" cellspacing="0" width="100%">
+            <thead>
+            <tr role="row">
+                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 201.143px;">待支付</th>
+                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 57.1429px;"></th>
+                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 47.1429px;"></th>
+                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 61.1429px;"></th>
+                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 104.143px;"></th>
+                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 61.1429px;"></th>
+                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 80.143px;"></th>
+                <th class="sorting_disabled" id="unpaidMoney" rowspan="1" colspan="1" style="width: 80.143px;color: red;"></th>
+                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 50.1429px;">
+                    <ul class="control-menu"><li style="font-weight: 100!important;" onclick="unpaid()">支付</li></ul>
+                </th>
+            </tr>
             </thead>
         </table>
     </div>

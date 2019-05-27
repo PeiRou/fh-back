@@ -61,6 +61,8 @@ class WSGJRepository extends BaseRepository
         foreach ($data as $v){
             if(in_array($v['betOrderNo'], $GameIDs))
                 continue;
+            if(!preg_match('/'.$this->Config['agent'].'/', $v['username']))
+                continue;
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['betOrderNo'],   //投注订单编号

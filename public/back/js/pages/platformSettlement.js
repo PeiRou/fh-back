@@ -23,11 +23,12 @@ $(function () {
         ajax: {
             url:'/back/datatables/platform/settlement',
             data:function (d) {
-                d.status = $('#status').val();
-                d.startTime = $('#timeStart').val();
-                d.endTime = $('#timeEnd').val();
-                d.is_delete = $('#is_delete').val();
-                d.monthTime = $(".active").siblings("input[name='monthTime']").val();
+                getParam(d);
+            },
+            dataSrc:function (e) {
+                $('#totalMoney').html(e.totalMoney);
+                $('#unpaidMoney').html(e.unpaidMoney);
+                return e.data;
             }
         },
         columns: [
@@ -117,7 +118,14 @@ $(function () {
         }
     });
 });
-
+function getParam(d){
+    d.status = $('#status').val();
+    d.startTime = $('#timeStart').val();
+    d.endTime = $('#timeEnd').val();
+    d.is_delete = $('#is_delete').val();
+    d.monthTime = $(".active").siblings("input[name='monthTime']").val();
+    return d;
+}
 function settlement() {
     $.ajax({
         url:'/action/admin/addPlatformSettlement',
@@ -135,6 +143,53 @@ function settlement() {
             if(e.status == 403)
             {
                 Calert('您没有此项权限！无法继续！','red')
+            }
+        }
+    });
+}
+//统一支付未支付的
+function unpaid()
+{
+    var isRun = false;
+    var data = {};
+    getParam(data);
+    jc = $.confirm({
+        theme: 'material',
+        title: '确认订单',
+        method: 'post',
+        closeIcon:true,
+        boxWidth:'25%',
+        content: function(){
+            var self = this;
+            return $.ajax({
+                url: '/back/modal/payPlatformSettleOfferUnpaid',
+                method: 'get',
+                data:data
+            }).done(function (response) {
+                self.setContent(response);
+            }).fail(function(){
+                self.setContent('error');
+            });
+        },
+        buttons: {
+            formSubmit: {
+                text:'确定',
+                btnClass: 'btn-blue',
+                action: function () {
+                    var form = this.$content.find('#formData').data('formValidation').validate().isValid();
+                    if(!form){
+                        return false;
+                    }
+                    return false;
+                }
+            }
+        },
+        contentLoaded: function(data, status, xhr){
+            $('.jconfirm-content').css('overflow','hidden');
+            if(data.status == 403)
+            {
+                this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
+                $('.jconfirm-buttons').hide();
             }
         }
     });

@@ -1251,6 +1251,31 @@ class ModalController extends Controller
         return view('back.modal.platform.settleOffer',compact('iInfo','aPay'));
     }
 
+    //后台支付页面 一次性支付多个订单
+    public function payPlatformSettleOfferUnpaid(Request $request)
+    {
+        $model = app(\App\Http\Controllers\Back\Data\PlatformController::class)->settlementModel($request);
+        $model = $model->where('paystatus', 0);
+        $orders = $model->pluck('order_id')->toArray(); # 获取需要支付的订单
+        if(count($orders)){
+            $aArray = [
+                'platform_id' => SystemSetting::getValueByRemark1('payment_platform_id'),
+                'timestamp' => time(),
+                'orders' => implode(',', $orders),
+                'pay_type' => 'offer'
+            ];
+            $baseController = new SendController($aArray);
+            $res = $baseController->sendParameter('pay/pay/payCreateOrder');
+            if($res['code'] === 0){
+                DB::table('offer')->whereIn('order_id', explode(',', $res['data']['orders']))->update(['order_no' => $res['data']['order_no']]);
+                return view('back.modal.platform.settleOfferUnpaid',[
+                    'data' => $res['data']
+                ]);
+            }
+        }
+        return 'error';
+    }
+
     //棋牌投注报表-添加报表
     public function addReportCard()
     {

@@ -596,6 +596,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/action/admin/gamesApi/UserGamesApi', 'Back\GamesApiController@UserGamesApi')->middleware('check-permission')->middleware('add-log-handle')->name('m.user.GamesApi');//第三方游戏管理
 
     Route::post('/action/admin/platform/pay', 'Back\PlatformController@pay')->middleware('add-log-handle')->name('ac.ad.platform.pay');//平台费用支付
+    Route::post('/action/admin/platform/payUnpaid', 'Back\PlatformController@payUnpaid');//平台费用支付 - 多订单支付
 
 //Modal
     Route::get('/back/modal/alert', 'Back\Ajax\ModalController@alert'); //添加权限
@@ -722,6 +723,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/gameAgentOddsSet/{agentId}', 'Back\Ajax\ModalController@gameAgentOddsSet'); //代理赔率设置-模板
     Route::get('/back/modal/editGameApi', 'Back\Ajax\ModalController@editGameApi'); //添加编辑平台接口页面
     Route::get('/back/modal/payPlatformSettleOffer/{id}', 'Back\Ajax\ModalController@payPlatformSettleOffer')->middleware('check-permission')->name('ac.ad.payPlatformSettleOffer'); //后台支付页面
+    Route::get('/back/modal/payPlatformSettleOfferUnpaid', 'Back\Ajax\ModalController@payPlatformSettleOfferUnpaid'); //后台支付页面 - 一次性支付多个订单
 
     Route::get('/back/modal/exportReportUser','Back\Ajax\ModalController@exportReportUser'); //导出会员报表-模板
     Route::get('/back/modal/exportReportAgent','Back\Ajax\ModalController@exportReportAgent'); //导出代理报表-模板
