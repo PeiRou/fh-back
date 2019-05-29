@@ -289,10 +289,11 @@ class AGRepository extends BaseRepository
     public function getFileList()
     {
         $ftp = $this->ftp;
+
         $files = $ftp->files($this->remote_directory);
 
         $this->files = [];
-        if(!$this->all)
+        if(!$this->all && count($files))
             $files = array_slice($files, -12);
         foreach ($files as $v){
             $fileName = str_replace($this->remote_directory.'/', '', $v);
