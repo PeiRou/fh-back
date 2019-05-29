@@ -36,9 +36,6 @@ class clear_daily extends Command
      */
     public function handle()
     {
-        $time = date('Y-m-d H:i:s',strtotime("-5 hours"));
-        $sql = "DELETE FROM users WHERE testFlag = 1 AND created_at<='{$time}'";
-        $res = DB::connection('mysql::write')->statement($sql);
         //---将 杀率 的ID重置
         $this->resetId('excel_game');
         //---将 长龙 的ID重置
@@ -59,16 +56,27 @@ class clear_daily extends Command
         $this->resetId('game_hbk3');
         $this->resetId('game_hebeik3');
         $this->resetId('game_jsk3');
+        $this->resetId('game_ksft');
+        $this->resetId('game_kssc');
+        $this->resetId('game_ksssc');
         $this->resetId('game_lhc');
         $this->resetId('game_msft');
         $this->resetId('game_msjsk3');
+        $this->resetId('game_msqxc');
         $this->resetId('game_mssc');
         $this->resetId('game_msssc');
         $this->resetId('game_paoma');
         $this->resetId('game_pcdd');
         $this->resetId('game_pknn');
+        $this->resetId('game_qqffc');
+        $this->resetId('game_twxyft');
         $this->resetId('game_xjssc');
         $this->resetId('game_xylhc');
+        $this->resetId('game_sfsc');
+        $this->resetId('game_sfssc');
+        $this->resetId('game_sflhc');
+        $this->resetId('game_jslhc');
+        $this->resetId('game_xyft');
     }
     private function resetId($table,$field = 'id'){
         $sql = 'SET @num := 0';
