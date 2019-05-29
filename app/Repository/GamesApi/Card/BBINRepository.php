@@ -43,7 +43,7 @@ class BBINRepository extends BaseRepository
         foreach ($data as $v) { 
             if (in_array($v['WagersID'], $GameIDs)) continue;
             if($this->resultStatus($v)) continue;
-            if(!preg_match('/'.$this->Config['UsernameSuffix'].'$/', $v['UserName']))
+            if(!preg_match('/'.strtolower($this->Config['UsernameSuffix']).'$/', $v['UserName']))
                 continue;
             $array = [
                 'g_id' => $this->gameInfo->g_id,
