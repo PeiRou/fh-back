@@ -73,7 +73,6 @@ class SrcNoticeController extends Controller
         $id = $request->get('id');
         $del = Notices::where('id', $id)->delete();
         if ($del == 1) {
-            $this->writeToFile();
             return response()->json([
                 'status' => true,
             ]);
