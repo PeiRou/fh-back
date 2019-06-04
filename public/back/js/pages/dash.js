@@ -1,83 +1,83 @@
 var msg_alert_val=new Array();
 var msg_alert_notice=new Array();
 var msg_alert_download=new Array();
-$(function () {
-    var url = 'https://info.platform.wuxianplay.com/dash_info.json';
-    $.ajax({
-        url:url,
-        dataType:"JSONP",
-        jsonp:"callback",
-        jsonpCallback:"success_jsonpCallback",
-        success:function(data){
-            var updateInfo = data.updateInfoItems;
-            var downLoadInfo = data.downLoadItems;
-            var noticeInfo = data.noticeItems;
-            var updateInfoText = "";
-            var downLoadText = "";
-            var noticeText = "";
-            var msg_alert = "";
-
-            var ii = 0;
-            noticeInfo.forEach(function (value) {
-                if(value.url != "#"){
-                    var target = "target='_blank'";
-                } else {
-                    var target = "";
-                }
-                if(value.hasOwnProperty('click')){
-                    msg_alert = "msg_alert_notice";
-                    msg_alert_notice[ii] = value.click;
-                } else {
-                    msg_alert = "";
-                    msg_alert_notice[ii] = "";
-
-                }
-                noticeText += "<a href='"+value.url+"' "+target+" class='dash_link "+ msg_alert +"' id='not_" + ii + "'>【"+value.time+"】 "+value.title+"</a>"
-                ii = ii + 1;
-            });
-            var ii = 0;
-            updateInfo.forEach(function (value) {
-                if(value.url != "#"){
-                    var target = "target='_blank'";
-                } else {
-                    var target = "";
-                }
-                if(value.hasOwnProperty('click')){
-                    msg_alert = "msg_alert";
-                    msg_alert_val[ii] = value.click;
-                } else {
-                    msg_alert = "";
-                    msg_alert_val[ii] = "";
-
-                }
-                updateInfoText += "<a href='"+value.url+"' "+target+" class='dash_link "+ msg_alert +"' id='msg_" + ii + "'>【"+value.time+"】 "+value.title+"</a>"
-                ii = ii + 1;
-            });
-            var ii = 0;
-            downLoadInfo.forEach(function (value) {
-                if(value.url != "#"){
-                    var target = "target='_blank'";
-                } else {
-                    var target = "";
-                }
-                if(value.hasOwnProperty('click')){
-                    msg_alert = "msg_alert_download";
-                    msg_alert_download[ii] = value.click;
-                } else {
-                    msg_alert = "";
-                    msg_alert_download[ii] = "";
-
-                }
-                downLoadText += "<a href='"+value.url+"' "+target+" class='dash_link "+ msg_alert +"' id='down_" + ii + "'>【"+value.time+"】 "+value.title+"</a>"
-                ii = ii + 1;
-            });
-            $('#noticeMessageBox').html(noticeText);
-            $('#systemUpdateMessageBox').html(updateInfoText);
-            $('#downloadMessageBox').html(downLoadText);
-            baseInit();
-        }
-    });
-});
+// $(function () {
+//     var url = 'https://info.platform.wuxianplay.com/dash_info.json';
+//     $.ajax({
+//         url:url,
+//         dataType:"JSONP",
+//         jsonp:"callback",
+//         jsonpCallback:"success_jsonpCallback",
+//         success:function(data){
+//             var updateInfo = data.updateInfoItems;
+//             var downLoadInfo = data.downLoadItems;
+//             var noticeInfo = data.noticeItems;
+//             var updateInfoText = "";
+//             var downLoadText = "";
+//             var noticeText = "";
+//             var msg_alert = "";
+//
+//             var ii = 0;
+//             noticeInfo.forEach(function (value) {
+//                 if(value.url != "#"){
+//                     var target = "target='_blank'";
+//                 } else {
+//                     var target = "";
+//                 }
+//                 if(value.hasOwnProperty('click')){
+//                     msg_alert = "msg_alert_notice";
+//                     msg_alert_notice[ii] = value.click;
+//                 } else {
+//                     msg_alert = "";
+//                     msg_alert_notice[ii] = "";
+//
+//                 }
+//                 noticeText += "<a href='"+value.url+"' "+target+" class='dash_link "+ msg_alert +"' id='not_" + ii + "'>【"+value.time+"】 "+value.title+"</a>"
+//                 ii = ii + 1;
+//             });
+//             var ii = 0;
+//             updateInfo.forEach(function (value) {
+//                 if(value.url != "#"){
+//                     var target = "target='_blank'";
+//                 } else {
+//                     var target = "";
+//                 }
+//                 if(value.hasOwnProperty('click')){
+//                     msg_alert = "msg_alert";
+//                     msg_alert_val[ii] = value.click;
+//                 } else {
+//                     msg_alert = "";
+//                     msg_alert_val[ii] = "";
+//
+//                 }
+//                 updateInfoText += "<a href='"+value.url+"' "+target+" class='dash_link "+ msg_alert +"' id='msg_" + ii + "'>【"+value.time+"】 "+value.title+"</a>"
+//                 ii = ii + 1;
+//             });
+//             var ii = 0;
+//             downLoadInfo.forEach(function (value) {
+//                 if(value.url != "#"){
+//                     var target = "target='_blank'";
+//                 } else {
+//                     var target = "";
+//                 }
+//                 if(value.hasOwnProperty('click')){
+//                     msg_alert = "msg_alert_download";
+//                     msg_alert_download[ii] = value.click;
+//                 } else {
+//                     msg_alert = "";
+//                     msg_alert_download[ii] = "";
+//
+//                 }
+//                 downLoadText += "<a href='"+value.url+"' "+target+" class='dash_link "+ msg_alert +"' id='down_" + ii + "'>【"+value.time+"】 "+value.title+"</a>"
+//                 ii = ii + 1;
+//             });
+//             $('#noticeMessageBox').html(noticeText);
+//             $('#systemUpdateMessageBox').html(updateInfoText);
+//             $('#downloadMessageBox').html(downLoadText);
+//             baseInit();
+//         }
+//     });
+// });
 function baseInit() {
     $('.msg_alert_notice').click(function () {
         var type = "msg";
