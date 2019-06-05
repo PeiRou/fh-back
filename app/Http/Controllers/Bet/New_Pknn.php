@@ -16,9 +16,10 @@ use Illuminate\Support\Facades\Session;
 
 class New_Pknn extends Excel
 {
-    protected $arrPlay_id = array(901903462,901903463,901903464,901903465,901903466);
+    protected $arrPlay_id = array(901903462,901903463,901903464,901903465,901903466,901914229,901914230,901914231,901914232,901914233);
     protected $arrPlayCate = array(
-        'NN' => 190
+        'NN' => 190,
+        'NN1' => 190
     );
     protected $arrPlayId = array(
         'XIANYI' => 3462,
@@ -26,6 +27,11 @@ class New_Pknn extends Excel
         'XIANSAN' => 3464,
         'XIANSI' => 3465,
         'XIANWU' => 3466,
+        'XIANYI1' => 4229,
+        'XIANER1' => 4230,
+        'XIANSAN1' => 4231,
+        'XIANSI1' => 4232,
+        'XIANWU1' => 4233
     );
 
     protected function exc_play_nn($openCode,$gameId,$nn){
