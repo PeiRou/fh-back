@@ -429,6 +429,15 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="user_reg_message_info" data-c="用户注册成功平台向用户发送的消息内容" class="edit-link">修改</td>
             </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">推广返佣层级设置</td>
+                <td valign="top" style="word-break: break-all;text-align: center;">
+                    <div class="ui input">
+                        <input type="text" name="" style="width: 700px;height: 28px;" value="{{ $set->promotion_level }}" data-id-input="promotion_level"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="promotion_level" data-c="推广返佣层级设置" class="edit-link">修改</td>
+            </tr>
             {{--<tr>--}}
                 {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">除六合彩外，所有游戏的早上封盘时间，最小从7点开始，为空不设置，格式hh:mm:ss,如：07:25:00</td>--}}
                 {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
