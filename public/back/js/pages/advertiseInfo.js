@@ -124,7 +124,7 @@ function edit(id) {
 
 function del(id) {
     jc = $.confirm({
-        title: '确定要删除吗1？',
+        title: '确定要删除吗？',
         theme: 'material',
         type: 'red',
         boxWidth:'25%',
