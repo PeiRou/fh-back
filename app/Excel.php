@@ -1348,7 +1348,7 @@ class Excel
                 foreach ($getUserBets as $item){
                     foreach ($win as $k=>$v){
                         $v[1] = (int)$v[1];
-                        if($v[0] == $item->play_id && (int)$v[1] >=1 && $v[1] <=10){
+                        if($v[0] == $item->play_id){
                             $rate = 1;
                             if($this->arrPlayCate['NN'] == $item->playcate_id){
                                 switch ($v[1]) {
@@ -1398,7 +1398,7 @@ class Excel
                 foreach ($getUserBets as $item){
                     foreach ($lose as $k=>$v){
                         $v[1] = (int)$v[1];
-                        if($v[0] == $item->play_id && (int)$v[1] >=1 && $v[1] <=10){
+                        if($v[0] == $item->play_id){
                             if((int)$v[1] <= 6){
                                 $bunko = ($item->bet_money+$item->freeze_money)-$item->bet_money;
                                 $unfreeze = $item->freeze_money;
