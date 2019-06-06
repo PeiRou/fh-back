@@ -1380,6 +1380,7 @@ class Excel
                     $sql_win .= "END ";
                     $sql_nn_money .= "END ";
                     $sql_unfreeze_win .= "END, status = 3, updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($WinListIn)";
+                    writeLog('bunko_nn', 'win:'.$sql_win.$sql_nn_money.$sql_unfreeze_win);
                     $run = DB::statement($sql_win.$sql_nn_money.$sql_unfreeze_win);
                     if($run == 1){
                         $in++;
@@ -1429,6 +1430,7 @@ class Excel
                     $sql_lose .= "END ";
                     $sql_nn_money .= "END ";
                     $sql_unfreeze_lose .= "END, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($LoseListIn)";
+                    writeLog('bunko_nn', 'lose:'.$sql_lose.$sql_nn_money.$sql_unfreeze_lose);
                     $run = DB::statement($sql_lose.$sql_nn_money.$sql_unfreeze_lose);
                     if($run == 1){
                         $in++;
