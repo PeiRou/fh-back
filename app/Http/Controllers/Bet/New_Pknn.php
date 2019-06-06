@@ -57,7 +57,7 @@ class New_Pknn extends Excel
                 $bunko = $this->bunko_nn($win,$lose,$gameId,$issue);
             }catch (\exception $exception){
                 writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-//                DB::table('bet')->where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
+                DB::table('bet')->where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
             }
             if($bunko == 1){
                 $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id,true);
