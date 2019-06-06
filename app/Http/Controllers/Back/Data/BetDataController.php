@@ -332,7 +332,7 @@ class BetDataController extends Controller
                 }
             })
             ->editColumn('control',function ($bet){
-                if($bet->bet_bunko ==0)
+                if($bet->status ==0)
                     return '<a href="javascript:;" onclick="cancel(\''.$bet->bet_order_id.'\')">取消注单</a>';
             })
             ->rawColumns(['user','play','issue','bunko','bet_money','platform','control'])
