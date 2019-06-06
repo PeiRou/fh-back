@@ -576,7 +576,8 @@ class ReportDataController extends Controller
         }
         return $DataTables
             ->editColumn('user_account', function ($iArray){
-                 return $iArray['user_account'].(empty($iArray['user_name'])?'':'('.$iArray['user_name'].')');
+                return $iArray['user_account'];
+//                 return $iArray['user_account'].(empty($iArray['user_name'])?'':'('.$iArray['user_name'].')');
             })
             ->editColumn('agent_account', function ($iArray){
                 return $iArray['agent_account'].(empty($iArray['agent_name'])?'':'('.$iArray['agent_name'].')');
