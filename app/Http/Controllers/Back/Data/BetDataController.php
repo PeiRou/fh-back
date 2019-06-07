@@ -228,13 +228,13 @@ class BetDataController extends Controller
                 break;
             foreach ($bet as $k=>$v){
                 $money = '';
-                if($v->bet_bunko == 0){
+                if($v->status == 0){
                     $money = '未结算';
                 }else{
                     if($v->bet_bunko > 0 && $v->bet_bunko != $v->bet_bet_money){
                         $tmpBet_bet_money = ($v->bet_bunko) > 0 ? ($v->bet_bet_money) : 0;
                         $lastMoney = ($v->bet_bunko) - $tmpBet_bet_money;
-                        if($lastMoney==0)
+                        if($v->status==2)
                             $money = '已撤单';
                         else
                             $money = sprintf("%.2f",$lastMoney);
