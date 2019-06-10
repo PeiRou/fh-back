@@ -11,6 +11,7 @@ use App\GameOddsCategory;
 use App\GeneralAgent;
 use App\Recharges;
 use App\SubAccount;
+use App\SystemSetting;
 use App\User;
 use App\Users;
 use Illuminate\Database\Eloquent\Model;
@@ -740,6 +741,9 @@ class SrcMemberController extends Controller
                                 'money' => DB::raw('money + '.$money)
                             ]);
                             if($updateUserMoney == 1){
+                                # 增加打码量限制
+                                SystemSetting::addDrawingMoneyCheckAdminMoney($uid, $money, $adminAddMoney);
+
                                 return response()->json([
                                     'status'=>true,
                                     'msg'=>'ok'

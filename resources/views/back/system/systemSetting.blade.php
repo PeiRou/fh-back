@@ -240,6 +240,25 @@
                 </td>
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="drawing_money_check_code" data-c="提现检查打码量(参数是充值金额的倍数)" class="edit-link">修改</td>
             </tr>
+            <tr>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-tooltip="此选项只有提现检查打码量是开启时才生效，后台加钱勾选的选项会计算在提现打码量里" data-position="right center">提现检查打码量（包含后台加钱的选项）</td>
+                <td valign="top" style="word-break: break-all;text-align: center;" >
+                    <div class="ui input">
+                    <?php
+                        $drawing_money_check_admin_moneyArr = explode(',', $set->drawing_money_check_admin_money);
+                    ?>
+                    @foreach(\App\Recharges::$rechargesType as $k => $v)
+                        <label for="">
+                            {{ $v }}
+                            <input type="checkbox" class="rechargesType" @if(in_array($k, $drawing_money_check_admin_moneyArr)) checked="checked" @endif value="{{ $k }}">&nbsp;&nbsp;&nbsp;&nbsp;
+                        </label>
+                    @endforeach
+                    <input type="hidden" id="drawing_money_check_admin_money" name="drawing_money_check_admin_money" style="width: 700px;height: 28px;" value="{{ $set->drawing_money_check_admin_money }}" data-id-input="drawing_money_check_admin_money"/>
+                    </div>
+                </td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="drawing_money_check_admin_money" data-c="提现检查打码量（包含后台加钱的选项）" class="edit-link">修改</td>
+            </tr>
+
             {{--<tr>--}}
                 {{--<td valign="top" style="word-break: break-all;vertical-align: middle;">网页验证码开关：0-关闭，1-开启</td>--}}
                 {{--<td valign="top" style="word-break: break-all;text-align: center;">--}}
