@@ -83,7 +83,7 @@ class RechargeController extends Controller
                     }
 
                     //增加用户提款所需要的打码量
-                    SystemSetting::addDrawingMoneyCheckCode($userId, $amout);
+                    SystemSetting::addDrawingMoneyCheckCode($userId, $amout + ($rebate_or_fee ?? 0));
 
                     event(new BackPusherEvent('success','充值成功提醒','您的充值订单</br>【'.$getInfo->orderNum.'】已到账，充值金额：'.$amout.'元',array('fnotice-'.$userId)));
                     return response()->json([
