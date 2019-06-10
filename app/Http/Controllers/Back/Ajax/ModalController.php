@@ -687,24 +687,33 @@ class ModalController extends Controller
                 ->first();
             //获取棋牌投注资金
             //获取所有的棋牌游戏
-            $gamesList = GamesApi::where(function($aSql){
-                $aSql->where('type_id', 111);
-            })->get();
-            if(count($gamesList)){
-                $sqlArr = [];
-                foreach ($gamesList as $k=>$v){
-                    $table = 'jq_'.strtolower($v->alias).'_bet';
-                    $where = ' 1 ';
-                    $name = $user->username;
-                    if($v->alias == 'WS'){//无双的账户名处理过
-                        $name = substr(preg_replace("/[_]/","",$user->username), 0, 16);
-                    }
-                    $where .= " AND `Accounts` = '{$name}' ";
-                    $sqlArr[] = " (SELECT SUM(`AllBet`) AS `AllBet`,'{$v->name}' as `name` FROM `{$table}` WHERE {$where} ) ";
-                }
-                $sql = 'SELECT SUM(`AllBet`) AS `ALLBet` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a ';
-                $jqBetMoney = (float)DB::select($sql)[0]->ALLBet;
-            }
+            $jqBetMoney = DB::table('jq_bet')
+                ->whereRaw('updated_at > DATE_SUB("'.($dTime ?? 'NOW()').'", INTERVAL 48 HOUR)')
+                ->where('user_id', $uid)
+                ->sum('AllBet');
+
+            $jqBetMoney = $jqBetMoney + DB::table('jq_bet_his')
+                    ->whereRaw('updated_at > DATE_SUB("'.($dTime ?? 'NOW()').'", INTERVAL 48 HOUR)')
+                    ->where('user_id', $uid)
+                    ->sum('AllBet');
+//            $gamesList = GamesApi::where(function($aSql){
+//                $aSql->where('type_id', 111);
+//            })->get();
+//            if(count($gamesList)){
+//                $sqlArr = [];
+//                foreach ($gamesList as $k=>$v){
+//                    $table = 'jq_'.strtolower($v->alias).'_bet';
+//                    $where = ' 1 ';
+//                    $name = $user->username;
+//                    if($v->alias == 'WS'){//无双的账户名处理过
+//                        $name = substr(preg_replace("/[_]/","",$user->username), 0, 16);
+//                    }
+//                    $where .= " AND `Accounts` = '{$name}' ";
+//                    $sqlArr[] = " (SELECT SUM(`AllBet`) AS `AllBet`,'{$v->name}' as `name` FROM `{$table}` WHERE {$where} ) ";
+//                }
+//                $sql = 'SELECT SUM(`AllBet`) AS `ALLBet` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a ';
+//                $jqBetMoney = (float)DB::select($sql)[0]->ALLBet;
+//            }
 
             $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
