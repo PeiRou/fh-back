@@ -57,7 +57,7 @@ $(function () {
         bLengthChange: false,
         processing: true,
         serverSide: true,
-        ordering: true,
+        ordering: false,
         "order": [],
         aLengthMenu: [[100]],
         ajax: {
