@@ -46,7 +46,7 @@ class ExcelLotteryNN
             $playId = $this->arrPlayId['XIANYI1'];
             $numCode = $gamePlay1.$playId;
             $win->push([$numCode,(int)$player1_nn]);
-            writeLog('bunko_nn', '闲一赢');
+//            writeLog('bunko_nn', '闲一赢');
         }
 
         if(((int)$banker_nn > (int)$player2_nn) || ((int)$banker_nn == (int)$player2_nn && (int)$banker_nn <= 6) || ((int)$banker_nn == (int)$player2_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[2])){
