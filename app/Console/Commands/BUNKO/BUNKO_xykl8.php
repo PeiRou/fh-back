@@ -41,7 +41,7 @@ class BUNKO_xykl8 extends Command
                 'bunko' => 2
             ]);
             if($update)
-                event(new RunXykl8($get->opennum, $get->issue, $this->gameId, $get->id)); //新--结算
+                event(new RunXykl8($get->opennum, $get->issue, $this->gameId, $get->id,false)); //新--结算
         }
     }
 }
