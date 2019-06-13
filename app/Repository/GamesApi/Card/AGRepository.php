@@ -273,6 +273,8 @@ class AGRepository extends BaseRepository
     private function delFile($path = '')
     {
         try{
+            if(!$this->file->isDirectory($path))
+                return true;
             foreach ($this->file->directories($path) as $k=>$v){
                 $a = explode('/', $v);
                 $name = array_pop($a);
