@@ -28,7 +28,7 @@ class RunXykl8EventListener
      */
     public function handle(RunXykl8 $event)
     {
-        $up = $this->xykl8->all($event->openCode,$event->openIssue,$event->gameId,$event->id);
+        $up = $this->xykl8->all($event->openCode,$event->openIssue,$event->gameId,$event->id,$event->excel);
         return $up;
     }
 }

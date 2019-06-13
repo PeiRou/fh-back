@@ -24,12 +24,13 @@ class RunXykl8
      *
      * @return void
      */
-    public function __construct($openCode,$openIssue,$gameId,$id)
+    public function __construct($openCode,$openIssue,$gameId,$id,$excel)
     {
         $this->openCode  = $openCode;
         $this->openIssue = $openIssue;
         $this->gameId    = $gameId;
         $this->id    = $id;
+        $this->excel = $excel;
     }
 
     /**
