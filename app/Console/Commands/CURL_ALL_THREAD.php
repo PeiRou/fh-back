@@ -145,6 +145,22 @@ class CURL_ALL_THREAD extends Command
             $this->pushData('http://127.0.0.1:9500?thread=next_issue_ahk3');
             $this->pushData('http://127.0.0.1:9500?thread=next_open_ahk3');
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_ahk3');
+            $this->pushData('http://127.0.0.1:9500?thread=next_issue_xykl8');
+            $this->pushData('http://127.0.0.1:9500?thread=next_issue_xylsc');
+            $this->pushData('http://127.0.0.1:9500?thread=next_issue_xylft');
+            $this->pushData('http://127.0.0.1:9500?thread=next_issue_xylssc');
+            $this->pushData('http://127.0.0.1:9500?thread=KILL_xykl8');
+            $this->pushData('http://127.0.0.1:9500?thread=KILL_xylsc');
+            $this->pushData('http://127.0.0.1:9500?thread=KILL_xylft');
+            $this->pushData('http://127.0.0.1:9500?thread=KILL_xylssc');
+            $this->pushData('http://127.0.0.1:9500?thread=next_open_xykl8');
+            $this->pushData('http://127.0.0.1:9500?thread=next_open_xylsc');
+            $this->pushData('http://127.0.0.1:9500?thread=next_open_xylft');
+            $this->pushData('http://127.0.0.1:9500?thread=next_open_xylssc');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_xykl8');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_xylsc');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_xylft');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_xylssc');
 
             //组装后一起发送
             $this->sendUrl();
