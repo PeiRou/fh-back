@@ -234,6 +234,30 @@ class SaveGameOddsController extends Controller
         return $this->updateBatch($data,904);
     }
 
+    public function xykl8(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,83);
+    }
+
+    public function xylsc(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,905);
+    }
+
+    public function xylft(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,906);
+    }
+
+    public function xylssc(Request $request)
+    {
+        $data = $request->all();
+        return $this->updateBatch($data,907);
+    }
+
     function updateBatch($data,$id)
     {
         $sqlOdds = "UPDATE play SET odds = CASE ";
@@ -358,6 +382,10 @@ class SaveGameOddsController extends Controller
                 'name' => ['1_5_odds','1_5_rebate','2face_odds','2face_rebate','longhu_odds','longhu_rebate','he_odds','he_rebate','q3z3h3_baozi_odds','q3z3h3_baozi_rebate','q3z3h3_shunzi_odds','q3z3h3_shunzi_rebate','q3z3h3_duizi_odds','q3z3h3_duizi_rebate','q3z3h3_banshun_odds','q3z3h3_banshun_rebate','q3z3h3_zaliu_odds','q3z3h3_zaliu_rebate'],
                 'view' => 'cqssc'
             ],
+            '907' => [
+                'name' => ['1_5_odds','1_5_rebate','2face_odds','2face_rebate','longhu_odds','longhu_rebate','he_odds','he_rebate','q3z3h3_baozi_odds','q3z3h3_baozi_rebate','q3z3h3_shunzi_odds','q3z3h3_shunzi_rebate','q3z3h3_duizi_odds','q3z3h3_duizi_rebate','q3z3h3_banshun_odds','q3z3h3_banshun_rebate','q3z3h3_zaliu_odds','q3z3h3_zaliu_rebate'],
+                'view' => 'cqssc'
+            ],
             '21' => [
                 'name' => ['1_5_odds','1_5_rebate','YZY_odds','YZY_rebate','2face_odds','2face_rebate','ZHDS_dan_odds','ZHDS_dan_rebate','ZHDS_shuang_odds','ZHDS_shuang_rebate','ZHWS_da_odds','ZHWS_da_rebate','ZHWS_xiao_odds','ZHWS_xiao_rebate','rx2_odds','rx2_rebate','rx3_odds','rx3_rebate','rx4_odds','rx4_rebate','rx5_odds','rx5_rebate','rx6_odds','rx6_rebate','rx7_odds','rx7_rebate','rx8_odds','rx8_rebate','q2zx_odds','q2zx_rebate','q3zx_odds','q3zx_rebate','q2zhix_odds','q2zhix_rebate','q3zhix_odds','q3zhix_rebate'],
                 'view' => 'gd11x5'
@@ -410,6 +438,10 @@ class SaveGameOddsController extends Controller
                 'name' => ['ZM_odds','ZM_rebate','jin_tu_odds','jin_tu_rebate','mu_huo_odds','mu_huo_rebate','shui_odds','shui_rebate','2face_odds','2face_rebate','heju_odds','heju_rebate','guoguan_odds','guoguan_rebate','qianhou_odds','qianhou_rebate','qianhouhe_odds','qianhouhe_rebate','danshuang_odds','danshuang_rebate','danshuanghe_odds','danshuanghe_rebate'],
                 'view' => 'bjkl8'
             ],
+            '83' => [
+                'name' => ['ZM_odds','ZM_rebate','jin_tu_odds','jin_tu_rebate','mu_huo_odds','mu_huo_rebate','shui_odds','shui_rebate','2face_odds','2face_rebate','heju_odds','heju_rebate','guoguan_odds','guoguan_rebate','qianhou_odds','qianhou_rebate','qianhouhe_odds','qianhouhe_rebate','danshuang_odds','danshuang_rebate','danshuanghe_odds','danshuanghe_rebate'],
+                'view' => 'bjkl8'
+            ],
             '50' => [
                 'name' => ['GYD_odds','GYD_rebate','GYX_odds','GYX_rebate','GYDan_odds','GYDan_rebate','GYS_odds','GYS_rebate','1_10_odds','1_10_rebate','2face_odds','2face_rebate','341819_odds','341819_rebate','561617_odds','561617_rebate','781415_odds','781415_rebate','9101213_odds','9101213_rebate','11_odds','11_rebate'],
                 'view' => 'bjpk10'
@@ -443,6 +475,14 @@ class SaveGameOddsController extends Controller
                 'view' => 'bjpk10'
             ],
             '802' => [
+                'name' => ['GYD_odds','GYD_rebate','GYX_odds','GYX_rebate','GYDan_odds','GYDan_rebate','GYS_odds','GYS_rebate','341819_odds','341819_rebate','561617_odds','561617_rebate','781415_odds','781415_rebate','9101213_odds','9101213_rebate','11_odds','11_rebate','1_10_odds','1_10_rebate','2face_odds','2face_rebate'],
+                'view' => 'bjpk10'
+            ],
+            '905' => [
+                'name' => ['GYD_odds','GYD_rebate','GYX_odds','GYX_rebate','GYDan_odds','GYDan_rebate','GYS_odds','GYS_rebate','341819_odds','341819_rebate','561617_odds','561617_rebate','781415_odds','781415_rebate','9101213_odds','9101213_rebate','11_odds','11_rebate','1_10_odds','1_10_rebate','2face_odds','2face_rebate'],
+                'view' => 'bjpk10'
+            ],
+            '906' => [
                 'name' => ['GYD_odds','GYD_rebate','GYX_odds','GYX_rebate','GYDan_odds','GYDan_rebate','GYS_odds','GYS_rebate','341819_odds','341819_rebate','561617_odds','561617_rebate','781415_odds','781415_rebate','9101213_odds','9101213_rebate','11_odds','11_rebate','1_10_odds','1_10_rebate','2face_odds','2face_rebate'],
                 'view' => 'bjpk10'
             ],

@@ -9,6 +9,7 @@ $(function () {
         ajax: {
             url:'/back/datatables/openHistory/bjkl8',
             data:function (d) {
+                d.type = gameType;                                //类型
                 d.issue = $('#issue').val();                      //奖期
                 d.issuedate = $('#issuedate').val();              //开奖时间
             }
@@ -163,7 +164,7 @@ $(function () {
 function openbjkl8(id,issue,type) {
     jc = $.confirm({
         theme: 'material',
-        title: '北京快乐8-手动开奖',
+        title: title +'-手动开奖',
         closeIcon:true,
         boxWidth:'700px',
         content: 'url:/back/modal/open/'+id+'/'+gameType+'/'+cat+'/'+issue+'/'+type,

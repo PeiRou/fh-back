@@ -764,6 +764,50 @@ class SrcViewController extends Controller
         ];
         return view($this->viewArr[$data['cat']],compact('data'));
     }
+    //幸運快乐8
+    public function openManage_xykl8()
+    {
+        $data = [
+            'title' => '幸运快乐8',
+            'activeName' => 'menu-openManage-xykl8',
+            'type' => 'xykl8',
+            'cat' => 'bjkl8' //游戏类别  kl8
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //匈牙利赛车
+    public function openManage_xylsc()
+    {
+        $data = [
+            'title' => '匈牙利赛车',
+            'activeName' => 'menu-openManage-xylsc',
+            'type' => 'xylsc',
+            'cat' => 'sc' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //匈牙利飞艇
+    public function openManage_xylft()
+    {
+        $data = [
+            'title' => '匈牙利飞艇',
+            'activeName' => 'menu-openManage-xylft',
+            'type' => 'xylft',
+            'cat' => 'sc' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
+    //匈牙利时时彩
+    public function openManage_xylssc()
+    {
+        $data = [
+            'title' => '匈牙利时时彩',
+            'activeName' => 'menu-openManage-xylssc',
+            'type' => 'xylssc',
+            'cat' => 'ssc' //游戏类别
+        ];
+        return view($this->viewArr[$data['cat']],compact('data'));
+    }
     
     //报表管理
     //总代理报表

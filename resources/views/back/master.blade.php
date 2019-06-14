@@ -343,6 +343,18 @@
                 @if($hasPermission->hasPermission('historyLottery.xyft') == "has")
                     <li id="menu-openManage-xyft"><a href="{{ route('historyLottery.xyft') }}"><cite></cite><span>幸运飞艇</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('historyLottery.xykl8') == "has")
+                    <li id="menu-openManage-xykl8"><a href="{{ route('historyLottery.xykl8') }}"><cite></cite><span>幸运快乐8</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.xylsc') == "has")
+                    <li id="menu-openManage-xylsc"><a href="{{ route('historyLottery.xylsc') }}"><cite></cite><span>匈牙利赛车</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.xylft') == "has")
+                    <li id="menu-openManage-xylft"><a href="{{ route('historyLottery.xylft') }}"><cite></cite><span>匈牙利飞艇</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.xylssc') == "has")
+                    <li id="menu-openManage-xylssc"><a href="{{ route('historyLottery.xylssc') }}"><cite></cite><span>匈牙利时时彩</span></a></li>
+                @endif
             </ul>
         </li>
         @endif

@@ -126,6 +126,7 @@
         </select>
     </div>
     <input type="hidden" name="id" id="id" value="{{ $data->id }}">
+    <input type="hidden" id="type" value="{{ $type }}">
 </form>
 
 <script>
@@ -208,7 +209,7 @@
         $('.modal-mask').fadeIn();
         $('.getBtn').html('获取中...');
         $.ajax({
-            url:'/back/openData/bjkl8/'+date+'/'+issue,
+            url:'/back/openData/{{ $type }}/'+date+'/'+issue,
             type:'get',
             dataType:'json',
             success:function (result) {

@@ -165,8 +165,12 @@ class OpenHistoryController extends Controller
     //添加北京快乐8开奖数据
     public function addBjkl8Data(Request $request)
     {
+        if(!$gameType = $request->get('type')){
+            return response()->json(['status' => false,'msg' => '参数不为空！']);
+        }
+        $table = 'game_'.Games::$aCodeGameName[$gameType];
         $id = $this->notTen($request->get('id'));
-        $info = DB::table('game_bjkl8')->select('opentime','issue')->where('id',$id)->first();
+        $info = DB::table($table)->select('opentime','issue')->where('id',$id)->first();
         if(strtotime($info->opentime) > time())
             return response()->json(['status' => false,'msg' => '请勿提早开奖']);
         $n1 = $this->notTen($request->get('n1'));
@@ -206,16 +210,25 @@ class OpenHistoryController extends Controller
             'day'=>  date('d',strtotime($info->opentime)),
             'is_open' => 1
         ];
-        $update = DB::table('game_bjkl8')->where('id',$id)->update($data);
-        //处理pc蛋蛋
-        $data['opennum'] = implode(',',$this->exePCdd($openNum));
-        $update1 = DB::table('game_pcdd')->where('issue',$info->issue)->update($data);
-        if(!$update1){
-            return response()->json([
-                'status' => false,
-                'msg' => 'PC蛋蛋开奖数据添加失败！'
-            ]);
+        $update = DB::table($table)->where('id',$id)->update($data);
+
+        //处理蛋蛋
+        switch ($table){
+            case'game_bjkl8';
+                //处理pc蛋蛋
+                $data['opennum'] = implode(',',$this->exePCdd($openNum));
+                $update1 = DB::table('game_pcdd')->where('issue',$info->issue)->update($data);
+                if(!$update1){
+                    return response()->json([
+                        'status' => false,
+                        'msg' => 'PC蛋蛋开奖数据添加失败！'
+                    ]);
+                }
+                break;
+            default:
+                break;
         }
+
         if($update == 1){
             return response()->json([
                 'status' => true
