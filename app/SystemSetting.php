@@ -36,4 +36,33 @@ class SystemSetting extends Model
             ]);
         }
     }
+
+    //减少会员打码量限制
+    public static function decDrawingMoneyCheckCode($arr, $moneyColumn = 'AllBet')
+    {
+        try{
+            $str = '';
+            $ids = [];
+            foreach ($arr as $v){
+                $str .= "WHEN {$v['user_id']} THEN (CASE 
+                            WHEN cheak_drawing - {$v['$column']} < 0 THEN 0
+                            ELSE cheak_drawing - {$v['$column']}
+                    END)";
+                $ids[] = $v['user_id'];
+            }
+            if(!count($ids))
+                return false;
+            $sql = "UPDATE `users` SET `cheak_drawing` = CASE `id` 
+                    {$str}
+                    ELSE `cheak_drawing`
+                    END
+                    WHERE `id` IN(". implode(',', $ids) .")";
+            return DB::select($sql);
+        }catch (\Throwable $e){
+            writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
+            return false;
+        }
+    }
+
+
 }

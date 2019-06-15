@@ -8,6 +8,7 @@
 
 namespace App\Repository\GamesApi\Card;
 use App\GamesApi;
+use App\SystemSetting;
 use App\Users;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -56,6 +57,8 @@ class BaseRepository
         $table = 'jq_bet';
         if(!$whereField){
             $a = '插入';
+            # 修改提款打码量
+            SystemSetting::decDrawingMoneyCheckCode($data, 'AllBet');
             $res = DB::table($table)->insert($data);
             $num = count($data);
         }else{
@@ -70,13 +73,7 @@ class BaseRepository
     }
     //插入数据库
     public function insertDB($data){
-//        $table = DB::table('jq_bet');
         $this->saveDB($data);
-//        if($table->insert($data)){
-//            echo $this->gameInfo->name.'插入'.count($data).'条数据'.PHP_EOL;
-//        }else{
-//            echo $this->gameInfo->name.'插入'.count($data).'条数据失败'.PHP_EOL;
-//        }
     }
     //格式化数据  插入数据库
     public function createData($data){
