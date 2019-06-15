@@ -4,6 +4,7 @@
 namespace App\Repository\GamesApi\Card;
 
 
+use App\SystemSetting;
 use App\Users;
 use Illuminate\Support\Facades\DB;
 
