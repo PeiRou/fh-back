@@ -90,8 +90,20 @@ class AGRepository extends BaseRepository
     private function getCategory($platformType)
     {
         switch ($platformType){
+            case 'SABAH':
+                $name = 'SPORTS';
+                break;
             case 'SBTA':
                 $name = 'SPORTS';
+                break;
+            case 'XIN':
+                $name = 'RNG';
+                break;
+            case 'HUNTER':
+                $name = 'FISH';
+                break;
+            case 'YOPLAY':
+                $name = 'RNG';
                 break;
             default:
                 $name = 'PVP';
