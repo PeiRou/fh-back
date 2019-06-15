@@ -27,6 +27,22 @@ class SystemSetting extends Model
         }
     }
 
+
+    //修改会员打码量限制 如果修改了倍数 会员之前的倍数也要修改
+    public static function upDrawingMoneyCheckCode($nowCode, $drawing_money_check_code)
+    {
+        $code = ($nowCode && $drawing_money_check_code) ? $nowCode / $drawing_money_check_code : 0;
+        try{
+            DB::table('users')->where('cheak_drawing', '>', 0)
+                ->update([
+                    'cheak_drawing' => DB::raw(" (`cheak_drawing` * ".$code." ) ")
+                ]);
+        }catch (\Throwable $e){
+            writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            return false;
+        }
+    }
+
     //增加会员打码量限制
     public static function addDrawingMoneyCheckCode($userId, $amout)
     {

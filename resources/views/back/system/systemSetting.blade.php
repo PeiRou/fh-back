@@ -226,7 +226,7 @@
                 <td valign="top" style="word-break: break-all;vertical-align: middle;" data-id="drawing_time" data-c="提现间隔时间" class="edit-link">修改</td>
             </tr>
             <tr>
-                <td valign="top" style="word-break: break-all;vertical-align: middle;">提现检查打码量(参数是充值金额的倍数,不包含棋牌游戏)</td>
+                <td valign="top" style="word-break: break-all;vertical-align: middle;">提现检查打码量(参数是充值金额的倍数)</td>
                 <td valign="top" style="word-break: break-all;text-align: center;">
                     <div class="ui input" style="width: 700px; height: 28px">
                         <select class="ui fluid dropdown" id="drawing_money_check_code" style="height: 30px">
