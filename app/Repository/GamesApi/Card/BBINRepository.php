@@ -76,6 +76,8 @@ class BBINRepository extends BaseRepository
     public function insertDB($data){
         $table = DB::table('jq_bet');
         if($table->insert($data)){
+            # 修改提款打码量
+            SystemSetting::decDrawingMoneyCheckCode($data, 'AllBet');
             echo $this->gameInfo->name.'_'.(self::gamekind[$this->param['gamekind']]['gameCategory'] ?? '').$this->param['subgamekind'].'插入'.count($data).'条数据'.PHP_EOL;
         }else{
             echo $this->gameInfo->name.'_'.(self::gamekind[$this->param['gamekind']]['gameCategory'] ?? '').$this->param['subgamekind'].'插入'.count($data).'条数据失败'.PHP_EOL;
