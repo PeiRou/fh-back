@@ -45,8 +45,8 @@ class SystemSetting extends Model
             $ids = [];
             foreach ($arr as $v){
                 $str .= "WHEN {$v['user_id']} THEN (CASE 
-                            WHEN cheak_drawing - {$v['$column']} < 0 THEN 0
-                            ELSE cheak_drawing - {$v['$column']}
+                            WHEN cheak_drawing - {$v[$moneyColumn]} < 0 THEN 0
+                            ELSE cheak_drawing - {$v[$moneyColumn]}
                     END)";
                 $ids[] = $v['user_id'];
             }
