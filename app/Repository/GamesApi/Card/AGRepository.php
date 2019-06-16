@@ -67,10 +67,10 @@ class AGRepository extends BaseRepository
                     'AllBet' => $v['betAmount'],//总下注
                     'bunko' => $v['netAmount'],       //盈利-下注
                     'bet_money' => $v['validBetAmount'],//有效投注额
-                    'GameStartTime' => $v['betTime'],//游戏开始时间
-                    'GameEndTime' => $v['recalcuTime'] ?? $v['betTime'],  //游戏结束时间
+                    'GameStartTime' => $this->getDate($v['betTime']),//游戏开始时间
+                    'GameEndTime' => $this->getDate($v['recalcuTime'] ?? $v['betTime']),  //游戏结束时间
                     'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => $v['recalcuTime'] ?? $v['betTime'],
+                    'updated_at' => $this->getDate($v['recalcuTime'] ?? $v['betTime']),
                     'gameCategory' => $this->getCategory($v['platformType']), //棋牌
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
