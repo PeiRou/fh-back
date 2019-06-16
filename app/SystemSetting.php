@@ -57,33 +57,31 @@ class SystemSetting extends Model
     public static function decDrawingMoneyCheckCode($arr, $moneyColumn = 'AllBet')
     {
         try{
+            $array = [];
             foreach ($arr as $v){
-                DB::connection('mysql::write')->table('users')->where('id' , $v['user_id'])->update([
-                    'cheak_drawing' => DB::raw(" 
-                        CASE 
-                            WHEN cheak_drawing - {$v[$moneyColumn]} < 0 THEN 0
-                            ELSE cheak_drawing - {$v[$moneyColumn]}
-                        END
-                    ")
-                ]);
+                if(isset($array[$v['user_id']])){
+                    $array[$v['user_id']] += $v[$moneyColumn];
+                }else{
+                    $array[$v['user_id']] = $v[$moneyColumn];
+                }
             }
-//            $str = '';
-//            $ids = [];
-//            foreach ($arr as $v){
-//                $str .= "WHEN {$v['user_id']} THEN (CASE
-//                            WHEN cheak_drawing - {$v[$moneyColumn]} < 0 THEN 0
-//                            ELSE cheak_drawing - {$v[$moneyColumn]}
-//                    END)";
-//                $ids[] = $v['user_id'];
-//            }
-//            if(!count($ids))
-//                return false;
-//            $sql = "UPDATE `users` SET `cheak_drawing` = CASE `id`
-//                    {$str}
-//                    ELSE `cheak_drawing`
-//                    END
-//                    WHERE `id` IN(". implode(',', $ids) .")";
-//            return DB::select($sql);
+            $str = '';
+            $ids = [];
+            foreach ($array as $k=>$v){
+                $str .= "WHEN {$k} THEN (CASE
+                            WHEN cheak_drawing - {$v} < 0 THEN 0
+                            ELSE cheak_drawing - {$v}
+                    END)";
+                $ids[] = $k;
+            }
+            if(!count($ids))
+                return false;
+            $sql = "UPDATE `users` SET `cheak_drawing` = CASE `id`
+                    {$str}
+                    ELSE `cheak_drawing`
+                    END
+                    WHERE `id` IN(". implode(',', $ids) .")";
+            return DB::select($sql);
         }catch (\Throwable $e){
             writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
             return false;
