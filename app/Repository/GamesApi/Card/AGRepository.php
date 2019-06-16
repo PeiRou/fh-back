@@ -307,7 +307,7 @@ class AGRepository extends BaseRepository
         $files = $ftp->files($this->remote_directory);
 
         $this->files = [];
-        if(!$this->all && count($files))
+        if(!$this->all && $files && count($files))
             $files = array_slice($files, -12);
         foreach ($files as $v){
             $fileName = str_replace($this->remote_directory.'/', '', $v);
