@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\DB;
 
 class KXRepository extends BaseRepository
 {
+
+    const rtype = [
+        0 => '无类型',
+        1 => '初级',
+        2 => '中极',
+        3 => '高级',
+    ];
+
     public function __construct($config){
 
         $this->Config = $config;
@@ -43,6 +51,7 @@ class KXRepository extends BaseRepository
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s', $data['ctime'][$k]),
                 'gameCategory' => 'PVP',
+                'game_type' => $this->getGameType($data['gtype'][$k]).self::rtype[$data['rtype'][$k]],
                 'service_money' => 0,
             ];
 
@@ -220,5 +229,28 @@ class KXRepository extends BaseRepository
         '500' => '超时',
     ];
 
+    public function getGameType($key)
+    {
+        return [
+            3600=>'德州扑克新手房',
+            1=>'炸金花',
+            2=>'百人牛牛',
+            3=>'极速百家乐',
+            4=>'斗地主',
+            5=>'万人水果机',
+            6=>'黄金轮',
+            7=>'财神老虎机',
+            8=>'捕鱼',
+            9=>'港式赛马',
+            11=>'抢庄牛牛',
+            12=>'三公',
+            13=>'二八杠',
+            14=>'牌九',
+            15=>'十三水',
+            16=>'二十一点',
+            17=>'德州扑克',
+            18=>'梭哈',
+        ][$key] ?? '';
+    }
 
 }
