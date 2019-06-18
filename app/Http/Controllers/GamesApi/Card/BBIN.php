@@ -42,7 +42,7 @@ class BBIN extends Base{
 
     private function f($method)
     {
-        $r = $method == 'BetRecord' ? 'BetRecord' : $method;
+        $r = $method == 'BetRecord' ? 'BetRecord' : 'WagersRecordBy';
         if(!empty($res = $this->repo->{$r}($method))){
 //            writeLog($method, json_encode($res, 3));
             if($res['result'] == 1){
