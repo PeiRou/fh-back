@@ -77,7 +77,8 @@ class WSRepository extends BaseRepository
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => $v['endTime'] ?? $v['betTime'],
                 'gameCategory' => 'PVP',
-                'service_money' => 0
+                'service_money' => 0,
+                'game_type' => '棋牌游戏',
             ];
 
             $user = $this->getUser($array['username']);

@@ -44,13 +44,9 @@ class VGRepository extends BaseRepository
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => $v['endtime'] ?? $v['begintime'],
                 'gameCategory' => 'PVP',
+                'game_type' => $this->getGameType($v['gametype']),
                 'service_money' => $v['servicemoney'], // + 服务费
             ];
-
-//            $array['ratio_money'] = \App\GamesApi::getRatioMoney(
-//                $array['bunko'] + $array['service_money'],
-//                ['g_id' => $this->gameInfo->g_id]
-//            ); //计算平台抽点
 
             $user = $this->getUser($array['username']);
             $array['agent'] = $user->agent ?? 0;
@@ -160,5 +156,31 @@ class VGRepository extends BaseRepository
         '-200' => '操作失败:(可能是因为参数为空)',
     ];
 
+    public function getGameType($key)
+    {
+        return [
+            1=>'斗地主',
+            3=>'抢庄牛牛',
+            4=>'百人牛牛',
+            5=>'龙王捕鱼',
+            6=>'多财多福',
+            7=>'竞咪楚汉德州',
+            8=>'推筒子',
+            9=>'加倍斗地主',
+            10=>'保险楚汉德州',
+            11=>'血战麻将',
+            12=>'炸金花',
+            13=>'必下德州',
+            14=>'百人三公',
+            15=>'十三水',
+            998=>'竞咪楚汉福袋',
+            999=>'JACKPOT',
+                19=>'开心摇摇乐',
+                20=>'通比牛牛',
+                22=>'百家乐',
+                23=>'二八杠',
+                24=>'广东推倒胡',
+        ][$key] ?? '';
+    }
 
 }

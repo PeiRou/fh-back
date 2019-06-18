@@ -1344,7 +1344,6 @@ class Excel
         $winArr = [];
 
         $getUserBets = DB::table('bet')->select('bet_id','play_id','playcate_id','bet_money','freeze_money')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
-        echo json_encode($win).PHP_EOL;
         if($getUserBets){
             if(count($win) !== 0){
                 $sql_win = "UPDATE bet SET bunko = CASE ";
@@ -1385,7 +1384,7 @@ class Excel
                     $sql_win .= "END ";
                     $sql_nn_money .= "END ";
                     $sql_unfreeze_win .= "END, status = 3, updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($WinListIn)";
-                    writeLog('bunko_nn', 'win:'.$sql_win.$sql_nn_money.$sql_unfreeze_win);
+//                    writeLog('bunko_nn', 'win:'.$sql_win.$sql_nn_money.$sql_unfreeze_win);
                     $run = DB::statement($sql_win.$sql_nn_money.$sql_unfreeze_win);
                     if($run == 1){
                         $in++;
@@ -1395,7 +1394,6 @@ class Excel
                 }
 
             }
-echo json_encode($lose).PHP_EOL;
             if(count($lose) !== 0){
                 $sql_lose = "UPDATE bet SET bunko = CASE ";
                 $sql_nn_money = " , nn_view_money = CASE ";
@@ -1444,13 +1442,13 @@ echo json_encode($lose).PHP_EOL;
                         }
                     }
                 }
-                writeLog('bunko_nn_lose', 'lose:'.$sql_lose);
+//                writeLog('bunko_nn_lose', 'lose:'.$sql_lose);
                 $LoseListIn = implode(',', $loseArr);
                 if($LoseListIn && isset($LoseListIn)){
                     $sql_lose .= "END ";
                     $sql_nn_money .= "END ";
                     $sql_unfreeze_lose .= "END, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($LoseListIn)";
-                    writeLog('bunko_nn', 'lose:'.$sql_lose.$sql_nn_money.$sql_unfreeze_lose);
+//                    writeLog('bunko_nn', 'lose:'.$sql_lose.$sql_nn_money.$sql_unfreeze_lose);
                     $run = DB::statement($sql_lose.$sql_nn_money.$sql_unfreeze_lose);
                     if($run == 1){
                         $in++;
@@ -1464,8 +1462,6 @@ echo json_encode($lose).PHP_EOL;
                 return 1;
             }
         }
-        echo 3;
-        die;
     }
 
     /**

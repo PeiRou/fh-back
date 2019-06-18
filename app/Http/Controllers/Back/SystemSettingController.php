@@ -22,11 +22,18 @@ class SystemSettingController extends Controller
         $id = $request->id;
         $data = $request->data;
         if($request){
+            # 如果修改了检查打码量的倍数 所有会员的检查打码量都要改
+            if($id == 'drawing_money_check_code') # 先吧之前的倍数拿出来
+                $drawing_money_check_code = SystemSetting::value('drawing_money_check_code');
+
             $update = SystemSetting::where('id',1)
                 ->update([
                     $id => $data
                 ]);
             if($update == 1){
+                # 如果修改了检查打码量的倍数 所有会员的检查打码量都要改
+                if($id == 'drawing_money_check_code' && $drawing_money_check_code !== 0)
+                    SystemSetting::upDrawingMoneyCheckCode($data, $drawing_money_check_code);
                 $saveToFile = $this->saveConfigToFile();
                 if($saveToFile == 1){
                     return response()->json([

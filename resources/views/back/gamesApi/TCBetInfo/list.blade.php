@@ -77,6 +77,7 @@
                     <th id="BetCountSum"></th>
                     <th id=""></th>
                     <th id=""></th>
+                    <th id=""></th>
                     <th id="AllBet"></th>
                     <th id="bet_money"></th>
                     <th id="bunkoSum"></th>

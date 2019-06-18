@@ -150,9 +150,9 @@
                 @if($hasPermission->hasPermission('report.bet') == "has")
                     <li id="menu-reportManage-bet"><a href="{{ route('report.bet') }}"><cite></cite><span>投注报表</span></a></li>
                 @endif
-                @if($hasPermission->hasPermission('report.Card') == "has")
-                    <li id="menu-reportManage-Card"><a href="{{ route('report.Card') }}"><cite></cite><span>棋牌投注报表</span></a></li>
-                @endif
+                {{--@if($hasPermission->hasPermission('report.Card') == "has")--}}
+                    {{--<li id="menu-reportManage-Card"><a href="{{ route('report.Card') }}"><cite></cite><span>棋牌投注报表</span></a></li>--}}
+                {{--@endif--}}
                 @if($hasPermission->hasPermission('report.CardNew') == "has")
                     <li id="menu-reportManage-CardNew"><a href="{{ route('report.CardNew') }}"><cite></cite><span>棋牌报表</span></a></li>
                 @endif
