@@ -448,6 +448,12 @@ class ModalController extends Controller
     {
         return view('back.modal.member.UserGamesApi');
     }
+    //用户打码量清零
+    public function cleanCheckDrawing($id)
+    {
+        $user = User::find($id);
+        return view('back.modal.member.cleanCheckDrawing',compact('user'));
+    }
     //查看会员备注
     public function viewUserContent($id)
     {

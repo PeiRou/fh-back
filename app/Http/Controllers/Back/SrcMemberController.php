@@ -574,7 +574,7 @@ class SrcMemberController extends Controller
             ]);
         }
      }
-     //用户修改真实姓名
+    //用户修改真实姓名
     public function userChangeFullName(Request $request)
     {
         $uid = $request->input('uid');
@@ -817,6 +817,25 @@ class SrcMemberController extends Controller
             return response()->json([
                 'status'=>false,
                 'msg'=>'同一个用户同资金61秒内无法重复操作，请稍后再试！'
+            ]);
+        }
+    }
+    //用户打码量清零
+    public function cleanCheckDrawing(Request $request){
+        $userid = $request->input('uid');
+        $update = User::where('id',$userid)
+            ->update([
+                'cheak_drawing'=>'0'
+            ]);
+        if($update == 1){
+            return response()->json([
+                'status'=>true,
+                'msg'=>'用户打码量清零成功'
+            ]);
+        }else{
+            return response()->json([
+                'status'=>false,
+                'msg'=>'用户打码量清零失败！'
             ]);
         }
     }
