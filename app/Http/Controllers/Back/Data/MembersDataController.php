@@ -630,6 +630,8 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 if(in_array('m.user.GamesApi',$this->permissionArray)) {
                     $str .= '<li onclick=\'GamesApi('.$users->uid.')\'>第三方游戏</li>';
                 }
+                if(in_array('m.user.cleanCheckDrawing',$this->permissionArray))
+                    $str .= "<li onclick='cleanCheckDrawing(\"$users->uid\")'>清打码量</li>";
                 if(Session::get('account') == 'admin'){
                     $str .= '<li onclick=\'allDown('.$users->uid.')\'>下所有分</li>';
                 }

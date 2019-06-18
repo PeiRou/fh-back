@@ -19,7 +19,7 @@ class New_Pknn extends Excel
     protected $arrPlay_id = array(901903462,901903463,901903464,901903465,901903466,901914229,901914230,901914231,901914232,901914233);
     protected $arrPlayCate = array(
         'NN' => 190,
-        'NN1' => 190
+        'NN1' => 191
     );
     protected $arrPlayId = array(
         'XIANYI' => 3462,

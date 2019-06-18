@@ -18,9 +18,11 @@ use App\Feedback;
 use App\FeedbackMessage;
 use App\GameOddsCategory;
 use App\Games;
+use App\GamesList;
 use App\GeneralAgent;
 use App\Http\Controllers\Obtain\BaseController;
 use App\Http\Controllers\Obtain\SendController;
+use App\JqBet;
 use App\Levels;
 use App\Notices;
 use App\Offer;
@@ -446,6 +448,12 @@ class ModalController extends Controller
     {
         return view('back.modal.member.UserGamesApi');
     }
+    //用户打码量清零
+    public function cleanCheckDrawing($id)
+    {
+        $user = User::find($id);
+        return view('back.modal.member.cleanCheckDrawing',compact('user'));
+    }
     //查看会员备注
     public function viewUserContent($id)
     {
@@ -685,35 +693,39 @@ class ModalController extends Controller
                 ->whereRaw('created_at > DATE_SUB("'.($dTime ?? 'NOW()').'", INTERVAL 48 HOUR)')
                 ->where('user_id', $uid)
                 ->first();
-            //获取棋牌投注资金
-            //获取所有的棋牌游戏
-            $jqBetMoney = DB::table('jq_bet')
-                ->whereRaw('updated_at > DATE_SUB("'.($dTime ?? 'NOW()').'", INTERVAL 48 HOUR)')
-                ->where('user_id', $uid)
-                ->sum('AllBet');
+            //获取所有第三方游戏
+            $jqList = JqBet::getCategoryBet([
+                'time48' => $dTime ?? date('Y-m-d H:i:s'),
+                'user_id' => $uid
+            ]);
+            $jq = '';
+            $totalBetMoney = $hours48Bet->sum;
+            $totalBunkoMoney = $hours48Bet->sumBunko;
 
-            $jqBetMoney = $jqBetMoney + DB::table('jq_bet_his')
-                    ->whereRaw('updated_at > DATE_SUB("'.($dTime ?? 'NOW()').'", INTERVAL 48 HOUR)')
-                    ->where('user_id', $uid)
-                    ->sum('AllBet');
-//            $gamesList = GamesApi::where(function($aSql){
-//                $aSql->where('type_id', 111);
-//            })->get();
-//            if(count($gamesList)){
-//                $sqlArr = [];
-//                foreach ($gamesList as $k=>$v){
-//                    $table = 'jq_'.strtolower($v->alias).'_bet';
-//                    $where = ' 1 ';
-//                    $name = $user->username;
-//                    if($v->alias == 'WS'){//无双的账户名处理过
-//                        $name = substr(preg_replace("/[_]/","",$user->username), 0, 16);
-//                    }
-//                    $where .= " AND `Accounts` = '{$name}' ";
-//                    $sqlArr[] = " (SELECT SUM(`AllBet`) AS `AllBet`,'{$v->name}' as `name` FROM `{$table}` WHERE {$where} ) ";
-//                }
-//                $sql = 'SELECT SUM(`AllBet`) AS `ALLBet` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a ';
-//                $jqBetMoney = (float)DB::select($sql)[0]->ALLBet;
-//            }
+            foreach ($jqList as $v){
+                $totalBetMoney += $v->bet_money;
+                $totalBunkoMoney += $v->bunko;
+                $jq .= '<tr>
+                            <td valign="top" style="word-break: break-all;">'.(GamesList::$gameCategory[$v->gameCategory] ?? '').'下注金额：</td>
+                            <td valign="top" style="word-break: break-all;">'.($v->bet_money ?? 0).'</td>
+                            <td valign="top" style="word-break: break-all;">输赢：</td>
+                            <td valign="top" style="word-break: break-all;">'.$v->bunko.'</td>
+                        </tr>';
+            }
+
+            //获取所有的棋牌游戏
+
+
+//            $jqBetMoney = DB::table('jq_bet')
+//                ->whereRaw('updated_at > DATE_SUB("'.($dTime ?? 'NOW()').'", INTERVAL 48 HOUR)')
+//                ->where('user_id', $uid)
+//                ->sum('AllBet');
+//
+//            $jqBetMoney = $jqBetMoney + DB::table('jq_bet_his')
+//                    ->whereRaw('updated_at > DATE_SUB("'.($dTime ?? 'NOW()').'", INTERVAL 48 HOUR)')
+//                    ->where('user_id', $uid)
+//                    ->sum('AllBet');
+
 
             $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
@@ -748,12 +760,6 @@ class ModalController extends Controller
                             <td valign="top" style="word-break: break-all;">' . $user->drawMoneyCount . '</td>
                         </tr>
                         <tr>
-                            <td valign="top" style="word-break: break-all;">下注总金额：</td>
-                            <td valign="top" style="word-break: break-all;">' . $hours48Bet->sum . '</td>
-                            <td valign="top" style="word-break: break-all;">输赢总金额：</td>
-                            <td valign="top" style="word-break: break-all;">' . $hours48Bet->sumBunko . '</td>
-                        </tr>
-                        <tr>
                             <td valign="top" style="word-break: break-all;">退水总金额：</td>
                             <td valign="top" style="word-break: break-all;">0</td>
                             <td valign="top" style="word-break: break-all;">未结算金额：</td>
@@ -772,10 +778,17 @@ class ModalController extends Controller
                             <td valign="top" style="word-break: break-all;">0</td>
                         </tr>
                         <tr>
-                            <td valign="top" style="word-break: break-all;">棋牌投注：</td>
-                            <td valign="top" style="word-break: break-all;">'.($jqBetMoney ?? 0).'</td>
-                            <td valign="top" style="word-break: break-all;"></td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">彩票下注金额：</td>
+                            <td valign="top" style="word-break: break-all;">' . $hours48Bet->sum . '</td>
+                            <td valign="top" style="word-break: break-all;">输赢：</td>
+                            <td valign="top" style="word-break: break-all;">' . $hours48Bet->sumBunko . '</td>
+                        </tr>
+                        '.$jq.'
+                        <tr>
+                            <td valign="top" style="word-break: break-all;">下注总金额：</td>
+                            <td valign="top" style="word-break: break-all;">' . $totalBetMoney . '</td>
+                            <td valign="top" style="word-break: break-all;">输赢总金额</td>
+                            <td valign="top" style="word-break: break-all;">'.$totalBunkoMoney.'</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;" rowspan="1" colspan="4">备注：</td>

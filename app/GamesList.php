@@ -162,6 +162,7 @@ class GamesList extends Base
         'LIVE' => '真人',
         'FISH' => '捕鱼',
         'SPORTS' => '体育',
+        'YOPLAY' => 'YOPLAY',
     ];
 
 }

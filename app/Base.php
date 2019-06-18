@@ -2,11 +2,14 @@
 
 namespace App;
 
+use App\Http\Services\Cache;
 use Illuminate\Database\Eloquent\Model;
 use SebastianBergmann\CodeCoverage\Report\PHP;
 
 class Base extends Model
 {
+    use Cache;
+
     public $selfRes = null;
 
     public function getSelfRes(){

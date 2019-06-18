@@ -19,6 +19,7 @@ class WSGJ extends Base{
 //        $this->repo->param['time'] = '201811251845,201811251860';
         $res = $this->repo->getBet();
         if(isset($res['code']) && $res['code'] == 0){
+
             $res = $res['data'];
             $page_info = $res['page_info'];
             $data = $res['details'];
