@@ -407,3 +407,34 @@ function GamesApi(user_id){
     var url = '/back/modal/UserGamesApi/?user_id='+user_id;
     Cmodal('第三方游戏管理','30%',url,false,'editUserForm');
 }
+
+function cleanCheckDrawing(id) {
+    jc = $.confirm({
+        theme: 'material',
+        title: '執行清会员打碼量',
+        closeIcon:true,
+        boxWidth:'20%',
+        content: 'url:/back/modal/cleanCheckDrawing/'+id,
+        buttons: {
+            formSubmit: {
+                text:'确定執行',
+                btnClass: 'btn-blue',
+                action: function () {
+                    var form = this.$content.find('#cleanCheckDrawingForm').data('formValidation').validate().isValid();
+                    if(!form){
+                        return false;
+                    }
+                    return false;
+                }
+            }
+        },
+        contentLoaded: function(data, status, xhr){
+            $('.jconfirm-content').css('overflow','hidden');
+            if(data.status == 403)
+            {
+                this.setContent('<div class="modal-error"><span class="error403">403</span><br><span>您无权进行此操作</span></div>');
+                $('.jconfirm-buttons').hide();
+            }
+        }
+    });
+}

@@ -388,6 +388,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/userChangeFullName', 'Back\SrcMemberController@userChangeFullName')->middleware('add-log-handle')->name('ac.ad.userChangeFullName');//会员更换真实姓名
     Route::post('/action/admin/editUser', 'Back\SrcMemberController@editUser')->middleware('add-log-handle')->name('ac.ad.editUser');//修改会员资料
     Route::post('/action/admin/changeUserMoney', 'Back\SrcMemberController@changeUserMoney')->middleware('add-log-handle')->name('ac.ad.changeUserMoney');//修改会员余额
+    Route::post('/action/admin/cleanCheckDrawing', 'Back\SrcMemberController@cleanCheckDrawing')->middleware('add-log-handle')->name('ac.ad.cleanCheckDrawing');//執行会员打码量清零
     Route::post('/action/admin/addMoneyAllUser', 'Back\SrcMemberController@addMoneyAllUser')->middleware('add-log-handle')->name('m.user.addMoneyAllUser');//批量修改会员余额
     Route::post('/action/admin/delUser/{id}', 'Back\SrcMemberController@delUser')->middleware(['check-permission','add-log-handle'])->name('m.user.delUser');//删除会员账号
     Route::post('/action/admin/editUserLevels', 'Back\SrcMemberController@editUserLevels')->middleware('add-log-handle')->name('ac.ad.editUserLevels');//删除会员层级
@@ -634,10 +635,11 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/viewUserInfo/{id}', 'Back\Ajax\ModalController@viewUserInfo')->middleware('check-permission')->name('m.user.viewUserInfo');
     Route::get('/back/modal/editUserInfo/{id}', 'Back\Ajax\ModalController@editUserInfo')->middleware('check-permission')->name('m.user.edit');         //修改会员资料
     Route::get('/back/modal/UserGamesApi', 'Back\Ajax\ModalController@UserGamesApi');         //会员第三方游戏管理
+    Route::get('/back/modal/cleanCheckDrawing/{id}', 'Back\Ajax\ModalController@cleanCheckDrawing')->middleware('check-permission')->name('m.user.cleanCheckDrawing'); //会员打码量清零(view)
     Route::get('/back/modal/viewUserContent/{id}', 'Back\Ajax\ModalController@viewUserContent')->middleware('check-permission')->name('m.user.viewDetails');
     Route::get('/back/modal/changeUserMoney/{id}', 'Back\Ajax\ModalController@changeUserMoney')->middleware('check-permission')->name('m.user.changeBalance');      //修改会员馀额
     Route::get('/back/modal/addMoneyAllUser', 'Back\Ajax\ModalController@addMoneyAllUser')->middleware('check-permission')->name('m.user.addMoneyAllUser');      //批量修改会员馀额
-    Route::get('/back/modal/userCapitalHistory/{id}', 'Back\Ajax\ModalController@userCapitalHistory')->middleware('check-permission')->name('m.user.CapitalHistory');
+    Route::get('/back/modal/userCapitalHistory/{id}', 'Back\Ajax\ModalController@userCapitalHistory')->middleware('check-permission')->name('m.user.CapitalHistory'); //资金明细
     Route::get('/back/modal/addNotice', 'Back\Ajax\ModalController@addNotice');     //公告管理-添加公告
     Route::get('/back/modal/editNotice/{id}', 'Back\Ajax\ModalController@editNotice');     //公告管理-修改公告
     Route::get('/back/modal/addSendMessage', 'Back\Ajax\ModalController@addSendMessage');
