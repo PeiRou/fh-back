@@ -495,7 +495,7 @@ class AGRepository extends BaseRepository
             'YMLD'=>['name'=>'福星推筒子','gameCategory'=>'YOPLAY'],
             'YMGG'=>['name'=>'YP刮刮卡','gameCategory'=>'YOPLAY'],
             'YMFW'=>['name'=>'财富转盘','gameCategory'=>'YOPLAY'],
-        ][$key];
+        ][$key] ?? [];
     }
 
     public function getPlayType($key = '')
