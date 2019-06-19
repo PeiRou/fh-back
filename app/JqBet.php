@@ -85,6 +85,9 @@ class JqBet extends Base
         if(!empty($userId)){
             $aSql .= " AND `user_id` IN (".$userId.")";
             $aSql1 .= " AND `userid` IN (".$userId.")";
+        }else{
+            $aSql = " AND `user_id` = 0 ";
+            $aSql1 = " AND `userid` = 0";
         }
         if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam)){
             $aSql .= " AND `updated_at` >= :startTime ";
