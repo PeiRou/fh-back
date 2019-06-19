@@ -51,7 +51,7 @@
         <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZH810_turnMax" value="{{ $mm['GAME65_ZH810_turnMax'] }}"></td>
     </tr>
     <tr>
-        <td width="190" valign="top" class="small-padding">总和大、小、单、双</td>
+        <td width="190" valign="top" class="small-padding">总和大单、大双、小单、小双</td>
         <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZHDXDS_min" value="{{ $mm['GAME65_ZHDXDS_min'] }}"></td>
         <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZHDXDS_max" value="{{ $mm['GAME65_ZHDXDS_max'] }}"></td>
         <td width="190" valign="top" class="small-padding"><input type="text" name="GAME65_ZHDXDS_turnMax" value="{{ $mm['GAME65_ZHDXDS_turnMax'] }}"></td>
