@@ -180,10 +180,13 @@
             n19:$('#n19').val(),
             n20:$('#n20').val(),
         }
-        if(gameType == 'bjkl8'){
-            if(!checkRepeatValue(data)){
-                return Calert('请勿提交重复号码','red');
-            }
+        switch (gameType) {
+            case 'bjkl8':
+            case 'xykl8':
+                if(!checkRepeatValue(data)){
+                    return Calert('请勿提交重复号码','red');
+                }
+                break;
         }
         data.msg = $('#msg').val();
         data.id = $('#id').val();
@@ -196,10 +199,9 @@
                 if(result.status == true){
                     jc.close();
                     $('#datTable').DataTable().ajax.reload(null,false);
+                    Calert(result.msg,'green');
                 } else {
                     Calert(result.msg,'red');
-                    // jc.close();
-                    // $('#datTable').DataTable().ajax.reload(null,false);
                 }
             }
         });
