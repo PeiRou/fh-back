@@ -79,6 +79,7 @@ class WSRepository extends BaseRepository
                 'gameCategory' => 'PVP',
                 'service_money' => 0,
                 'game_type' => '棋牌游戏',
+                'flag' => 1,
             ];
 
             $user = $this->getUser($array['username']);

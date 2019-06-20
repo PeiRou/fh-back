@@ -103,6 +103,7 @@ class BaseRepository
                 'gameCategory' => 'PVP',
                 'game_type' => $this->getGameType($data['ServerID'][$k]),
                 'service_money' => $data['Revenue'][$k],// + 服务费
+                'flag' => 1,
             ];
 
             $user = $this->getUser($array['username']);
