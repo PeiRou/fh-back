@@ -72,7 +72,7 @@ class AGRepository extends BaseRepository
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => $this->getDate($v['recalcuTime'] ?? $v['betTime']),
                     'gameCategory' => $this->getGameType($v['gameType'] ?? '')['gameCategory'] ?? $this->getCategory($v['platformType']), //
-                    'game_type' => $this->getGameType($v['gameType'] ?? '')['gameType'] ?? '',
+                    'game_type' => $this->getGameType($v['gameType'] ?? '')['name'] ?? '',
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
                     'flag' => $v['flag'] == '1' ? 'ok' : $v['flag'],
@@ -136,7 +136,7 @@ class AGRepository extends BaseRepository
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => $v['SceneEndTime'] ?? $v['SceneStartTime'],
                     'gameCategory' => $this->getGameType($v['gameType'] ?? '')['gameCategory'] ?? 'FISH', //
-                    'game_type' => $this->getGameType($v['gameType'] ?? '')['gameType'] ?? '捕鱼',
+                    'game_type' => $this->getGameType($v['gameType'] ?? '')['name'] ?? '捕鱼',
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
                     'flag' => $v['flag'] == '0' ? 'ok' : $v['flag'],
@@ -175,7 +175,7 @@ class AGRepository extends BaseRepository
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => $v['recalcuTime'] ?? $v['betTime'],
                     'gameCategory' => $this->getGameType($v['gameType'] ?? '')['gameCategory'] ?? 'RNG', //
-                    'game_type' => $this->getGameType($v['gameType'] ?? '')['gameType'] ?? '',
+                    'game_type' => $this->getGameType($v['gameType'] ?? '')['name'] ?? '',
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
                     'flag' => $v['flag'] == 1 ? 'ok' : $v['flag'],
@@ -495,7 +495,7 @@ class AGRepository extends BaseRepository
             'YMLD'=>['name'=>'福星推筒子','gameCategory'=>'YOPLAY'],
             'YMGG'=>['name'=>'YP刮刮卡','gameCategory'=>'YOPLAY'],
             'YMFW'=>['name'=>'财富转盘','gameCategory'=>'YOPLAY'],
-        ][$key];
+        ][$key] ?? [];
     }
 
     public function getPlayType($key = '')
