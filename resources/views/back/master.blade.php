@@ -558,7 +558,10 @@
                         {{--<li id="menu-GamesApi-cardBetInfo"><a href="{{ route('cardGame.cardBetInfo') }}"><cite></cite><span>棋牌下注查询</span></a></li>--}}
                     {{--@endif--}}
                     @if($hasPermission->hasPermission('cardGame.TCBetInfo') == "has")
-                        <li id="menu-GamesApi-TCBetInfo"><a href="{{ route('cardGame.TCBetInfo') }}"><cite></cite><span>下注查询</span></a></li>
+                        <li id="menu-GamesApi-TCBetInfo"><a href="{{ route('cardGame.TCBetInfo') }}"><cite></cite><span>今日下注查询</span></a></li>
+                    @endif
+                    @if($hasPermission->hasPermission('cardGame.BetInfoHis') == "has")
+                        <li id="menu-GamesApi-BetInfoHis"><a href="{{ route('cardGame.BetInfoHis') }}"><cite></cite><span>历史下注查询</span></a></li>
                     @endif
                     @if($hasPermission->hasPermission('cardGame.recharges') == "has")
                         <li id="menu-GamesApi-recharges"><a href="{{ route('cardGame.recharges') }}"><cite></cite><span>资金转账记录</span></a></li>

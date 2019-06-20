@@ -1,6 +1,6 @@
 @extends('back.master')
 
-@section('title','今日下注查询')
+@section('title','历史下注查询')
 
 @section('page-css')
     <link rel="stylesheet" href="{{ asset('back/css/pages/k3.css') }}">
@@ -14,7 +14,7 @@
     </style>
     <div class="content-top">
         <div class="breadcrumb">
-            <b>位置：</b>今日下注查询
+            <b>位置：</b>历史下注查询
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
     </div>
@@ -45,15 +45,15 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="one wide field" style="width:7.25%!important; display: none;">
+                        <div class="one wide field" style="width:7.25%!important">
                             <div class="ui calendar timeStart" id="tcStart">
                                 <div class="ui input left">
                                     <input type="text" id="startTime" placeholder="起始日期" value="{{ date('Y-m-d') }}">
                                 </div>
                             </div>
                         </div>
-                        <div style="line-height: 32px; display: none;">-</div>
-                        <div class="one wide field"  style="width:7.25%!important; display: none;">
+                        <div style="line-height: 32px;">-</div>
+                        <div class="one wide field"  style="width:7.25%!important">
                             <div class="ui calendar timeEnd" id="tcEnd">
                                 <div class="ui input left">
                                     <input type="text" id="endTime" placeholder="结束日期" value="{{ date('Y-m-d') }}">
@@ -91,5 +91,5 @@
 @section('page-js')
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
-    <script src="/back/js/pages/gamesApi_TCBetInfo_list.js"></script>
+    <script src="/back/js/pages/gamesApi_BetInfoHis_list.js"></script>
 @endsection
