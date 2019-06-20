@@ -700,7 +700,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $start = $request->get('start');
         $length = $request->get('length');
         $aSql = "SELECT SUM(CASE WHEN `payType` = 'onlinePayment' THEN `amount` ELSE 0 END) AS `payOnline`,
-                  SUM(CASE WHEN `payType` IN ('bankTransfer','alipay','weixin','cft') THEN `amount` ELSE 0 END) AS `payOffline`,
+                  SUM(CASE WHEN `payType` IN ('bankTransfer','alipay','weixin','cft','alipaySm') THEN `amount` ELSE 0 END) AS `payOffline`,
                   SUM(CASE WHEN `payType` = 'adminAddMoney' THEN `amount` ELSE 0 END) AS `payManual`,
                   SUM(`rebate_or_fee`) AS `payFormalities` FROM `recharges` WHERE `userId` = $id AND `status` = 2";
 
