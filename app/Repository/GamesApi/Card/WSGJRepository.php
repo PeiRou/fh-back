@@ -86,6 +86,7 @@ class WSGJRepository extends BaseRepository
                 'gameCategory' => $v['gameCategory'] ?? '',  //游戏类别
                 'sessionId' => $v['sessionId'] ?? '',  //会话标识
                 'bet_info' => json_encode($v['additionalDetails'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?? '',  //额外细节
+                'flag' => 1,
             ];
 
             $user = $this->getUser($array['username']);

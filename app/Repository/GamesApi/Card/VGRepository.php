@@ -46,6 +46,7 @@ class VGRepository extends BaseRepository
                 'gameCategory' => 'PVP',
                 'game_type' => $this->getGameType($v['gametype']),
                 'service_money' => $v['servicemoney'], // + 服务费
+                'flag' => 1,
             ];
 
             $user = $this->getUser($array['username']);

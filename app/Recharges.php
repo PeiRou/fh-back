@@ -129,7 +129,7 @@ class Recharges extends Model
     public static function getOfflineMemberToday($date){
         $aSql = "SELECT COUNT(`re`.`userId`) AS `count` FROM
                   (SELECT `userId` FROM `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId`
-                    WHERE `users`.`testFlag` = 0 AND `recharges`.`payType` IN('alipay','bankTransfer','cft','weixin') AND `recharges`.`status` = 2
+                    WHERE `users`.`testFlag` = 0 AND `recharges`.`payType` IN('alipay','bankTransfer','cft','weixin','alipaySm') AND `recharges`.`status` = 2
                     AND `recharges`.`created_at` >= :startTime
                     AND `recharges`.`created_at` <= :endTime
                     GROUP BY `recharges`.`userId`) AS `re`";
@@ -207,7 +207,7 @@ class Recharges extends Model
             if(isset($payType) && $payType){
                 $where .= " and recharges.payType = '".$payType."'";
             }else{
-                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
+                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft','alipaySm')";
             }
         }else{
             if(isset($status) && $status){

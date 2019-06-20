@@ -31,7 +31,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::group(['prefix' => 'back/control/cardGameManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('up_down', 'Back\SrcViewController@upDownSearch')->name('cardGame.upDownSearch'); // 上下分记录查询
         Route::get('card_bet', 'Back\SrcViewController@cardBetInfo')->name('cardGame.cardBetInfo'); // 棋牌下注查询
-        Route::get('TCBetInfo', 'Back\SrcViewController@TCBetInfo')->name('cardGame.TCBetInfo'); // TC下注查询
+        Route::get('TCBetInfo', 'Back\SrcViewController@TCBetInfo')->name('cardGame.TCBetInfo'); // 今日下注查询
+        Route::get('BetInfoHis', 'Back\SrcViewController@BetInfoHis')->name('cardGame.BetInfoHis'); // 历史下注查询
+
         Route::get('errorBet', 'Back\SrcViewController@errorBet')->name('cardGame.errorBet'); // 第三方投注记录失败列表
         Route::get('recharges', 'Back\SrcViewController@recharges')->name('cardGame.recharges'); // 第三方资金转账记录
     });

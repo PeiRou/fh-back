@@ -61,6 +61,7 @@ class BBINRepository extends BaseRepository
                 'game_type' => $this->getGameType($v['GameType'] ?? ''),
                 'service_money' => 0, // + 服务费
                 'bet_info' => json_encode($v, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'flag' => 1,
             ];
 
             $user = $this->getUser($array['username']);

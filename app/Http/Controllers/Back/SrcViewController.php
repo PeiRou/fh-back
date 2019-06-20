@@ -1389,5 +1389,9 @@ class SrcViewController extends Controller
     {
         return view('back.gamesApi.TCBetInfo.list');
     }
+    public function BetInfoHis()
+    {
+        return view('back.gamesApi.BetInfoHis.list');
+    }
 
 }
