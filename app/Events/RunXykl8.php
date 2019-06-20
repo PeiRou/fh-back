@@ -18,6 +18,7 @@ class RunXykl8
     public $openIssue;
     public $gameId;
     public $id;
+    public $excel;
 
     /**
      * Create a new event instance.
