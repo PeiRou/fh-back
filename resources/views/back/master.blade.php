@@ -421,9 +421,9 @@
                 @if($hasPermission->hasPermission('system.systemSetting') == "has")
                 <li id="menu-systemManage-setting"><a href="{{ route('system.systemSetting') }}"><cite></cite><span>系统参数配置</span></a></li>
                 @endif
-                @if($hasPermission->hasPermission('system.articleManage') == "has")
-                <li id="menu-systemManage-article"><a href="{{ route('system.articleManage') }}"><cite></cite><span>文章管理</span></a></li>
-                @endif
+                {{--@if($hasPermission->hasPermission('system.articleManage') == "has")--}}
+                {{--<li id="menu-systemManage-article"><a href="{{ route('system.articleManage') }}"><cite></cite><span>文章管理</span></a></li>--}}
+                {{--@endif--}}
                 @if($hasPermission->hasPermission('system.whitelist') == "has")
                     <li id="menu-systemManage-whitelist"><a href="{{ route('system.whitelist') }}"><cite></cite><span>ip白名单设置</span></a></li>
                 @endif
