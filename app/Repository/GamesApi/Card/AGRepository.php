@@ -75,7 +75,7 @@ class AGRepository extends BaseRepository
                     'game_type' => $this->getGameType($v['gameType'] ?? '')['name'] ?? '',
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
-                    'flag' => $v['flag'] == '1' ? 1 : $v['flag'],
+                    'flag' => $v['flag'] === '1' ? 1 : $v['flag'],
                     'productType' => $v['platformType']
                 ];
                 $this->arrInfo($array, $v, 'AGIN');
@@ -139,7 +139,7 @@ class AGRepository extends BaseRepository
                     'game_type' => $this->getGameType($v['gameType'] ?? '')['name'] ?? '捕鱼',
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
-                    'flag' => $v['flag'] == '0' ? 1 : 0,
+                    'flag' => $v['flag'] === '0' ? 1 : 0,
                     'productType' => $v['platformType']
                 ];
                 $this->arrInfo($array, $v);
@@ -178,7 +178,7 @@ class AGRepository extends BaseRepository
                     'game_type' => $this->getGameType($v['gameType'] ?? '')['name'] ?? '',
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
-                    'flag' => $v['flag'] == 1 ? 'ok' : $v['flag'],
+                    'flag' => $v['flag'] === '1' ? 1 : $v['flag'],
                     'productType' => $v['platformType']
                 ];
                 $this->arrInfo($array, $v);
@@ -308,7 +308,6 @@ class AGRepository extends BaseRepository
         $ftp = $this->ftp;
 
         $files = $ftp->files($this->remote_directory);
-
         $this->files = [];
         if(!$this->all && $files && count($files))
             $files = array_slice($files, -12);
