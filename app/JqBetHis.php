@@ -75,6 +75,7 @@ class JqBetHis extends Model
                         (SELECT `g_id`,`user_id`,`username`,'' AS `name`,`agent` AS `a_id`,`agent_account`,`agent_name`,
                             COUNT(`id`) AS `bet_count`,SUM(`bunko`) AS `bet_bunko`,SUM(`bet_money`) AS `bet_money`, `gameCategory`,`productType`
                             FROM `jq_bet_his` WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime 
+		                    AND `flag` = '1'
                             GROUP BY `user_id`,`g_id`,`gameCategory`,`productType`
                             ) AS `jq`
                     JOIN `games_api` ON `games_api`.`g_id` = `jq`.`g_id`";
