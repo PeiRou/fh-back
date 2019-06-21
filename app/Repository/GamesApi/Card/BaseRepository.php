@@ -64,6 +64,9 @@ class BaseRepository
         }else{
             $a = '更新';
             $num = $res = \App\GamesApi::batchUpdate($data, $whereField,$table);
+            if(!$res){
+                $num = $res = \App\GamesApi::batchUpdate($data, $whereField,'jq_bet_his');
+            }
         }
         if($res){
             echo $this->gameInfo->name.$a.$num.'条数据'.PHP_EOL;
