@@ -229,11 +229,17 @@ class AGRepository extends BaseRepository
     public function getOne()
     {
         try{
+            $this->delFile($this->newPath.$this->param['platformType'].'/');
             $this->directory = substr($this->param['time'], 0, 8);
             $this->remote_directory = $this->param['platformType'].'/'.($this->param['lostAndfoundPath']??'').substr($this->param['time'], 0, 8);
             //获取需要的文件列表
             $files = $this->getFileList();
-            $this->delFile($this->newPath.$this->param['platformType'].'/');
+            if(substr($this->param['time'], 0, 8) !== substr($this->param['startTime'], 0, 8)){
+                $this->directory = substr($this->param['startTime'], 0, 8);
+                $this->remote_directory = $this->param['platformType'].'/'.($this->param['lostAndfoundPath']??'').substr($this->param['startTime'], 0, 8);
+                $f = $this->getFileList();
+                $files = array_merge($f, $files);
+            }
             foreach ($files as $v){
                 $str = $this->readFile($v);
                 $this->createData($this->resolveXml($str));
