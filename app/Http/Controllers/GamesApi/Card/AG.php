@@ -11,6 +11,7 @@ class AG extends Base{
             $this->repo->param['clear'] = true;
         }
         $this->repo->param['time'] = $this->repo->param['time'] ?? $this->getTime($param);
+        $this->repo->param['startTime'] = date('YmdHi', strtotime($this->repo->param['time']) - 60 * 60);
         $this->repo->getBet();
         if(!isset($param['lostAndfoundPath'])){
             $this->repo->param['lostAndfoundPath'] = 'lostAndfound/';

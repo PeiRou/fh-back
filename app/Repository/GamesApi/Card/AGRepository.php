@@ -234,7 +234,6 @@ class AGRepository extends BaseRepository
             //获取需要的文件列表
             $files = $this->getFileList();
             $this->delFile($this->newPath.$this->param['platformType'].'/');
-
             foreach ($files as $v){
                 $str = $this->readFile($v);
                 $this->createData($this->resolveXml($str));
@@ -311,7 +310,7 @@ class AGRepository extends BaseRepository
         $this->files = [];
         if(!$this->all && $files && count($files))
             $files = array_slice($files, -12);
-        foreach ($files as $v){
+        foreach ($files ?: [] as $v){
             $fileName = str_replace($this->remote_directory.'/', '', $v);
             $newPath = $this->newPath.$this->param['platformType'].'/'.$this->directory.'/'.$fileName;
             $array = [
