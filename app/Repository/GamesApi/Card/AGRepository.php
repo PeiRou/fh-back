@@ -312,6 +312,9 @@ class AGRepository extends BaseRepository
             $files = array_slice($files, -12);
         foreach ($files ?: [] as $v){
             $fileName = str_replace($this->remote_directory.'/', '', $v);
+            $t = str_replace('.xml', '', $fileName);
+            if($t < $this->param['startTime'] || $t > $this->param['time'])
+                continue;
             $newPath = $this->newPath.$this->param['platformType'].'/'.$this->directory.'/'.$fileName;
             $array = [
                 'name' => $fileName,
