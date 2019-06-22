@@ -258,11 +258,9 @@ class FinanceDataController extends Controller
             $where .= ' and recharges.rechargeType = '.$rechargeType;
         if(isset($account_param) && $account_param){
             if ($account_type == 'agent_account'){
-                $userIds = DB::select("select id from users where agent = (select a_id from agent where account = '$account_param' limit 1)");
-                if ($userIds){
-                    $userIds = implode(',',array_column(json_decode(json_encode($userIds),true),'id'));
-                    $where .= " and recharges.userId in ($userIds)";
-                }
+                $userIds = DB::select("select id from users where agent = (select a_id from agent where account = '$account_param' limit 1)")?:[['id'=>0]];
+                $userIds = implode(',',array_column(json_decode(json_encode($userIds),true),'id'));
+                $where .= " and recharges.userId in ($userIds)";
             } else {
                 $field = ['account'=>'username', 'orderNum'=>'orderNum', 'operation_account'=>'operation_account', 'sysOrderNum'=>'sysPayOrder'][$account_type];
                 $where .= " and recharges.$field = '$account_param'";
