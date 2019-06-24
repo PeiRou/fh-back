@@ -391,31 +391,35 @@ function errorOnlinePay(id){
 
 $('#recharge_type').on('change',function () {
     var rechargeType = $(this).val();
-    if(rechargeType == ""){
+    if(rechargeType == "adminAddMoney") {
         $('#onlineTypeDiv').hide();
-        $('#pay_online_id').val('');
-    } else if(rechargeType == "adminAddMoney") {
-        $('#onlineTypeDiv').hide();
+        $('#account_type').append($('<option value="agent_account">代理账号</option>'))
     } else {
-        $.ajax({
-            url:'/recharge/selectData/payOnline/'+rechargeType,
-            type:'get',
-            dataType:'json',
-            success:function (result) {
-                $('#onlineTypeDiv').show();
-                $('#pay_online_id').empty();
-                var str = '<option value="">全部</option>';
-                result.forEach(function(item){
-                    // str += $("#pay_online_id").append($("<option/>").text(item.payeeName).attr("value",item.id));
-                    if(item.status == 1){
-                        str += '<option value="'+item.id+'">[√] '+item.payeeName+'</option>';
-                    } else {
-                        str += '<option value="'+item.id+'">[X] '+item.payeeName+'</option>';
-                    }
-                });
-                $("#pay_online_id").html(str);
-            }
-        });
+        $('#account_type > option[value="agent_account"]').remove();
+        if(rechargeType == ""){
+            $('#onlineTypeDiv').hide();
+            $('#pay_online_id').val('');
+        } else {
+            $.ajax({
+                url:'/recharge/selectData/payOnline/'+rechargeType,
+                type:'get',
+                dataType:'json',
+                success:function (result) {
+                    $('#onlineTypeDiv').show();
+                    $('#pay_online_id').empty();
+                    var str = '<option value="">全部</option>';
+                    result.forEach(function(item){
+                        // str += $("#pay_online_id").append($("<option/>").text(item.payeeName).attr("value",item.id));
+                        if(item.status == 1){
+                            str += '<option value="'+item.id+'">[√] '+item.payeeName+'</option>';
+                        } else {
+                            str += '<option value="'+item.id+'">[X] '+item.payeeName+'</option>';
+                        }
+                    });
+                    $("#pay_online_id").html(str);
+                }
+            });
+        }
     }
 });
 

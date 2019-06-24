@@ -95,7 +95,6 @@
                             <option value="orderNum">订单号</option>
                             <option value="sysOrderNum">商户订单号</option>
                             <option value="operation_account">操作人账号</option>
-                            <option value="agent_account">代理账号</option>
                         </select>
                     </div>
                     <div class="one wide field">
