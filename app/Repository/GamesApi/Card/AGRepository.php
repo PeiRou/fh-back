@@ -75,7 +75,7 @@ class AGRepository extends BaseRepository
                     'game_type' => $this->getGameType($v['gameType'] ?? '')['name'] ?? '',
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
-                    'flag' => $v['flag'] == '1' ? 1 : $v['flag'],
+                    'flag' => $v['flag'] === '1' ? 1 : $v['flag'],
                     'productType' => $v['platformType']
                 ];
                 $this->arrInfo($array, $v, 'AGIN');
@@ -139,7 +139,7 @@ class AGRepository extends BaseRepository
                     'game_type' => $this->getGameType($v['gameType'] ?? '')['name'] ?? '捕鱼',
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
-                    'flag' => $v['flag'] == '0' ? 1 : 0,
+                    'flag' => $v['flag'] === '0' ? 1 : 0,
                     'productType' => $v['platformType']
                 ];
                 $this->arrInfo($array, $v);
@@ -178,7 +178,7 @@ class AGRepository extends BaseRepository
                     'game_type' => $this->getGameType($v['gameType'] ?? '')['name'] ?? '',
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
-                    'flag' => $v['flag'] == 1 ? 'ok' : $v['flag'],
+                    'flag' => $v['flag'] === '1' ? 1 : $v['flag'],
                     'productType' => $v['platformType']
                 ];
                 $this->arrInfo($array, $v);
@@ -229,12 +229,17 @@ class AGRepository extends BaseRepository
     public function getOne()
     {
         try{
+            $this->delFile($this->newPath.$this->param['platformType'].'/');
             $this->directory = substr($this->param['time'], 0, 8);
             $this->remote_directory = $this->param['platformType'].'/'.($this->param['lostAndfoundPath']??'').substr($this->param['time'], 0, 8);
             //获取需要的文件列表
             $files = $this->getFileList();
-            $this->delFile($this->newPath.$this->param['platformType'].'/');
-
+            if(substr($this->param['time'], 0, 8) !== substr($this->param['startTime'], 0, 8)){
+                $this->directory = substr($this->param['startTime'], 0, 8);
+                $this->remote_directory = $this->param['platformType'].'/'.($this->param['lostAndfoundPath']??'').substr($this->param['startTime'], 0, 8);
+                $f = $this->getFileList();
+                $files = array_merge($f, $files);
+            }
             foreach ($files as $v){
                 $str = $this->readFile($v);
                 $this->createData($this->resolveXml($str));
@@ -308,12 +313,14 @@ class AGRepository extends BaseRepository
         $ftp = $this->ftp;
 
         $files = $ftp->files($this->remote_directory);
-
         $this->files = [];
         if(!$this->all && $files && count($files))
             $files = array_slice($files, -12);
-        foreach ($files as $v){
+        foreach ($files ?: [] as $v){
             $fileName = str_replace($this->remote_directory.'/', '', $v);
+            $t = str_replace('.xml', '', $fileName);
+            if($t < $this->param['startTime'] || $t > $this->param['time'])
+                continue;
             $newPath = $this->newPath.$this->param['platformType'].'/'.$this->directory.'/'.$fileName;
             $array = [
                 'name' => $fileName,

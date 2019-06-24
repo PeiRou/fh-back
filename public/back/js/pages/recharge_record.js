@@ -433,19 +433,8 @@ $('#date_param').on('change',function () {
 });
 
 $('#account_type').on('change',function () {
-    var account_type = $(this).val();
-    if(account_type == "account"){
-        $('#account_param').attr('placeholder','用户账号');
-    }
-    if(account_type == "orderNum"){
-        $('#account_param').attr('placeholder','订单号');
-    }
-    if(account_type == "operation_account"){
-        $('#account_param').attr('placeholder','操作人账号');
-    }          
-    if(account_type == "sysOrderNum"){
-    	$('#account_param').attr('placeholder','商户订单号');
-    }
+    var placeholders = {'account':'用户账号','orderNum':'订单号','operation_account':'操作人账号','sysOrderNum':'商户订单号','agent_account':'代理账号'};
+    $('#account_param').attr('placeholder',placeholders[$(this).val()]);
 });
 
 function excelRecharges() {
