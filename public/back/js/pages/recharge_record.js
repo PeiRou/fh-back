@@ -396,6 +396,7 @@ $('#recharge_type').on('change',function () {
         $('#account_type').append($('<option value="agent_account">代理账号</option>'))
     } else {
         $('#account_type > option[value="agent_account"]').remove();
+        $('#account_param').attr('placeholder','用户账号');
         if(rechargeType == ""){
             $('#onlineTypeDiv').hide();
             $('#pay_online_id').val('');
