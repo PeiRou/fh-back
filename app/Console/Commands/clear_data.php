@@ -188,8 +188,8 @@ class clear_data extends Command
             //清-计画试算
             $num_else = $this->clrGameTables('plan_record', $clearDate2, $num_else,'updated_at');
             //清-推送消息
-            $num_else = $this->clrGameTables('message_push', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('user_messages', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('message_push', $clearDate62, $num_else,'updated_at');
+            $num_else = $this->clrGameTables('user_messages', $clearDate62, $num_else,'created_at');
 
             if($num_else==0){
                 $this->time = strtotime($this->stoptime) - time();
