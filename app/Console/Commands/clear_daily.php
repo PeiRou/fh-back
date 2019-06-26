@@ -84,7 +84,7 @@ class clear_daily extends Command
         ///---将 计画试算 的ID重置
         $this->resetId('plan_record');
         ///---将 推送消息 的ID重置
-        $this->resetId('message_push');
+//        $this->resetId('message_push');
         $this->resetId('user_messages');
     }
     private function resetId($table,$field = 'id'){
