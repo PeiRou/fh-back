@@ -276,7 +276,7 @@ class clear_data extends Command
                 $redis->setex('clear-'.$table,$this->time,$this->stoptime);
                 writeLog('clear',$table.'=>0');
             }else{
-                $sql = "DELETE FROM {$table} WHERE opentime<='{$clearDate62}' LIMIT 1000";
+                $sql = "DELETE FROM {$table} WHERE {$fielddname}<='{$clearDate62}' LIMIT 1000";
                 $res = DB::connection('mysql::write')->statement($sql);
                 writeLog('clear',$table.'=>'.$res);
                 $num_else ++;
