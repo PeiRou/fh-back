@@ -249,9 +249,11 @@ class clear_data extends Command
         }
         if($num==0){
             $redis->setex('clearing',$this->time,$this->stoptime);
+            echo 'finished'.PHP_EOL;
             writeLog('clear',$this->stoptime.'finished');
         }else{
             $redis->setex('clearing',1,'on');
+            echo 'continue...'.PHP_EOL;
             writeLog('clear','have program num :'.$num.','.$this->stoptime.'continue...');
         }
         writeLog('clear','Ok');
