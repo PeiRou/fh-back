@@ -822,7 +822,7 @@ class SrcViewController extends Controller
         $zd = $request->get('zd');            //总代帐号
         $start = $request->get('start');
         $end = $request->get('end');
-        $games = Games::where('status',1)->get();
+        $games = Games::where('status',1)->where('game_id','<>',111)->get();
         return view('back.reportAgent',compact('games','zd','start','end'));
     }
     //棋牌投注报表
