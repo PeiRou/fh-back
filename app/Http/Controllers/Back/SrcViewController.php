@@ -813,7 +813,7 @@ class SrcViewController extends Controller
     //总代理报表
     public function reportGagent()
     {
-        $games = Games::where('status',1)->get();
+        $games = Games::where('status',1)->where('game_id','<>',111)->get();
         return view('back.reportGagent',compact('games'));
     }
     //代理报表
@@ -850,7 +850,7 @@ class SrcViewController extends Controller
         $ag = $request->get('ag');            //代理帐号
         $start = $request->get('start');
         $end = $request->get('end');
-        $games = Games::where('status',1)->get();
+        $games = Games::where('status',1)->where('game_id','<>',111)->get();
         return view('back.reportUser',compact('games','ag','start','end'));
     }
     //报表统计

@@ -434,7 +434,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $start = empty($request->get('start'))?0:$request->get('start');
         $length = empty($request->get('length'))?50:$request->get('length');
 
-        $sql1 = 'select id,agent,testFlag,users.bank_num AS user_bank_num,users.mobile as user_mobile,users.qq as user_qq,users.promoter as user_promoter ,users.id as uid,users.rechLevel as user_rechLevel,users.created_at as user_created_at,users.updated_at as user_updated_at,users.username as user_username,users.email as user_email,users.fullName as user_fullName,users.money as user_money,users.status as user_status,users.PayTimes as user_PayTimes,users.DrawTimes as user_DrawTimes,users.saveMoneyCount as user_saveMoneyCount,users.drawMoneyCount as user_drawMoneyCount,users.lastLoginTime as user_lastLoginTime,users.content as user_content 
+        $sql1 = 'select id,agent,testFlag,users.bank_num AS user_bank_num,users.mobile as user_mobile,users.qq as user_qq,users.promoter as user_promoter ,users.id as uid,users.rechLevel as user_rechLevel,users.created_at as user_created_at,users.updated_at as user_updated_at,users.username as user_username,users.email as user_email,concat(left(users.fullName,1),"***") as user_fullName,users.money as user_money,users.status as user_status,users.PayTimes as user_PayTimes,users.DrawTimes as user_DrawTimes,users.saveMoneyCount as user_saveMoneyCount,users.drawMoneyCount as user_drawMoneyCount,users.lastLoginTime as user_lastLoginTime,users.content as user_content 
                         from users ';
 
         $where = ' where 1 ';
@@ -502,7 +502,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
             left Join users as p_Users on p_Users.id = u_fileds.user_promoter 
              		ORDER BY
 		                user_rechLevel asc,'.$order.' u_fileds.id desc ';
-        $users = DB::select('select u_fileds.*,lv.*,ag.*,p_Users.username as pusername,p_Users.fullName as pfullName  '.$sql);
+        $users = DB::select('select u_fileds.*,lv.*,ag.*,p_Users.username as pusername,concat(left(p_Users.fullName,1),"***") as pfullName  '.$sql);
 //        var_dump('select u_fileds.*,lv.*,ag.*,p_Users.username as pusername,p_Users.fullName as pfullName  '.$sql);die();
         $usersCount = DB::select('select count(id) AS count from users '.$where);
         $TotalMoney = DB::select('select SUM(money) AS money from users '.$where);

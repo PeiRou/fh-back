@@ -11,7 +11,7 @@ class ReportMember extends Model
     protected $primaryKey = 'id';
 
     public static function reportQuery($aParam){
-        $aSql = "SELECT `user_id`,`user_account`,`user_name`,`agent_id`, 
+        $aSql = "SELECT `user_id`,`user_account`,concat(left(user_name,1),'***') user_name,`agent_id`, 
                   SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,`agent_account`,SUM(`bet_amount`) AS `bet_amount`,
                   SUM(`fact_bet_bunko`) AS `fact_bet_bunko`,SUM(`bet_bunko`) AS `bet_bunko`,
                   SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,

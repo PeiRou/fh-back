@@ -416,6 +416,7 @@ class ModalController extends Controller
     public function viewUserInfo($id)
     {
         $user = User::find($id);
+        $user->fullName = mb_substr($user->fullName,0,1).'***';
         if($user->bank_id){
             $bank = Banks::find($user->bank_id);
             $bankName = $bank->name;
@@ -439,6 +440,7 @@ class ModalController extends Controller
     public function editUserInfo($id)
     {
         $user = User::find($id);
+        $user->fullName = mb_substr($user->fullName,0,1).'***';
         $allBanks = Banks::where('status',1)->get();
         $levelsData = Levels::all();
         return view('back.modal.member.userEditInfo',compact('user','allBanks','levelsData'));
