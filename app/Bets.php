@@ -684,7 +684,7 @@ sum(b.fact_return_amount) AS fact_return_amount";
     }
 
     public static function UserToday($aParam){
-        $aSql1 = "SELECT u.id AS user_id,u.username AS user_account,concat(left(u.fullName,1),'***') user_name,u.agent AS agent_account,count(b.bet_id) as bet_count,sum(b.bet_money) as bet_money,ag.account as agent_account,
+        $aSql1 = "SELECT u.id AS user_id,u.username AS user_account,u.fullName AS user_name,u.agent AS agent_account,count(b.bet_id) as bet_count,sum(b.bet_money) as bet_money,ag.account as agent_account,
 sum(case WHEN b.game_id in (90,91) then (case WHEN nn_view_money > 0 then bet_money else 0 end) else(case WHEN bunko >0 then bet_money else 0 end) end) as bet_amount,
 sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as fact_bet_bunko,
 sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 then bunko-bet_money else bunko end)end) as bet_bunko,
