@@ -579,19 +579,13 @@ class SrcMemberController extends Controller
     {
         $uid = $request->input('uid');
         $fullName = $request->input('fullName');
-        $oldFullName = $request->input('oldFullName');
         //真名匹配
         $pattern = '/^[\x{4e00}-\x{9fa5}]+$/u';
-        $matches = preg_match($pattern, $oldFullName) && preg_match($pattern, $fullName);
+        $matches = preg_match($pattern, $fullName);
         if(!$matches)
             return response()->json([
                 'status' => false ,
                 'msg'  => '请输入中文姓名！'
-            ]);
-        if(User::where('id',$uid)->value('fullName')!==$oldFullName)
-            return response()->json([
-                'status' => false ,
-                'msg'  => '原真实姓名验证失败！'
             ]);
         $update = User::where('id',$uid)
             ->update([

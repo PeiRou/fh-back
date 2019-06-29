@@ -99,8 +99,8 @@
                             message: '真实姓名必须填写'
                         },
                         regexp: {
-                            regexp: /^[\u4e00-\u9fa5]+$/,
-                            message: '真实姓名必须为汉字'
+                            regexp: /^[\u4e00-\u9fa5]{2,15}$/,
+                            message: '真实姓名必须为2到15个汉字'
                         }
                     }
                 }
