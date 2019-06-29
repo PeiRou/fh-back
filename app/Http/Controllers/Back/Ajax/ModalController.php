@@ -416,7 +416,6 @@ class ModalController extends Controller
     public function viewUserInfo($id)
     {
         $user = User::find($id);
-//        $user->fullName = mb_substr($user->fullName,0,1).'***';
         if($user->bank_id){
             $bank = Banks::find($user->bank_id);
             $bankName = $bank->name;

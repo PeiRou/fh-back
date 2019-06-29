@@ -3,15 +3,9 @@
         <label>会员账号: <span style="color: #888;font-weight: normal;">{{ $user->username }}</span></label>
     </div>
     <div class="field">
-        <label>原真实姓名</label>
+        <label>真实姓名</label>
         <div class="ui input icon">
-            <input type="text" name="oldFullName" value=""/>
-        </div>
-    </div>
-    <div class="field">
-        <label>新真实姓名</label>
-        <div class="ui input icon">
-            <input type="text" name="fullName" value=""/>
+            <input type="text" name="fullName" value="{{ $user->fullName }}"/>
         </div>
     </div>
     <input type="hidden" name="uid" value="{{ $user->id }}">
@@ -27,17 +21,14 @@
                     validating: 'refresh icon'
                 },
                 fields: {
-                    oldFullName: {
-                        validators: {
-                            notEmpty: {
-                                message: '原真实姓名必须填写'
-                            }
-                        }
-                    },
                     fullName: {
                         validators: {
                             notEmpty: {
-                                message: '新真实姓名必须填写'
+                                message: '真实姓名必须填写'
+                            },
+                            regexp: {
+                                regexp: /^([\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*){2,15}$/,
+                                message: '无效格式的中文姓名,2-15汉字,可含"·"'
                             }
                         }
                     }
