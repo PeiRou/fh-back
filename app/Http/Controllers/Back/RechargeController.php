@@ -40,7 +40,7 @@ class RechargeController extends Controller
 
         $nowMoney = $userMoney+$amout+$rebate_or_fee;
         $nowUserPayTimes = $userPayTimes+1;
-        $nowUserSaveMoneyCount = $userSaveMoneyCount + $amout + $rebate_or_fee;
+        $nowUserSaveMoneyCount = $userSaveMoneyCount + $amout;
 
         if($getInfo->addMoney == 1){
             return response()->json([
