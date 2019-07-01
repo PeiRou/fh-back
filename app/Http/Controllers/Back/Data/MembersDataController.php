@@ -320,7 +320,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
             if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam))
                 $q->where('capital_agent.created_at','>=',$aParam['startTime']);
             if(isset($aParam['endTime']) && array_key_exists('endTime',$aParam))
-                $q->where('capital_agent.created_at','<=',aParam['endTime'].' 23:59:59');
+                $q->where('capital_agent.created_at','<=',$aParam['endTime'].' 23:59:59');
         })->where('capital_agent.agent_id',$id);
         $capitalCount = $capitalModel->count();
         $capital = $capitalModel->select('capital_agent.type','capital_agent.money','capital_agent.order_id','capital_agent.balance','capital_agent.issue','capital_agent.game_id','capital_agent.play_type','capital_agent.game_name','capital_agent.created_at','capital_agent.content','sub_account.account as sub_account','sub_account.name as sub_name')
