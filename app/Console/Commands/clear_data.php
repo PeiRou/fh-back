@@ -136,7 +136,7 @@ class clear_data extends Command
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table log_abnormal :' . $res . PHP_EOL;
             //清-操作日志
-            $sql = "DELETE FROM log_handle WHERE create_at<='{$clearDate62}' LIMIT 1000";
+            $sql = "DELETE FROM log_handle WHERE created_at<='{$clearDate62}' LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table log_handle :' . $res . PHP_EOL;
             //清-会员登陆日志
