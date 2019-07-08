@@ -32,7 +32,7 @@ class SrcAccountController extends Controller
         if((str_replace(' ', '', $json['code']))!== $request->otp)
             throw new \Exception('OTP验证失败', 200);
         $str = $json['name']."
-".env('APP_NAME')."
+".env('APP_NAME')."|
 ".date('Y-m-d H:i:s');
 
         $url = env('ASYNC_URL','127.0.0.1:9502').'/BF/BFAsync/getUrl?url='.urlencode(self::ZABBIX_BOT_URL.'/telegram?q='.urlencode($str).'&groupid=-371925241');
