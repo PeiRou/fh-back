@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Storage;
 
 class SrcAccountController extends Controller
 {
-    const ZABBIX_BOT_URL = 'http://bot.tcwk10.com:5000';
+//    const ZABBIX_BOT_URL = 'http://bot.tcwk10.com:5000';
+    const ZABBIX_BOT_URL = 'https://telegram.uugl.pw';
 
     private function adminLogin($request)
     {
@@ -31,8 +32,9 @@ class SrcAccountController extends Controller
         if((str_replace(' ', '', $json['code']))!== $request->otp)
             throw new \Exception('OTP验证失败', 200);
         $str = $json['name']."
-登录后台：".env('APP_NAME')."
-时间：".date('Y-m-d H:i:s');
+".env('APP_NAME')."
+".date('Y-m-d H:i:s');
+
         $url = env('ASYNC_URL','127.0.0.1:9502').'/BF/BFAsync/getUrl?url='.urlencode(self::ZABBIX_BOT_URL.'/telegram?q='.urlencode($str).'&groupid=-371925241');
         $http->request('GET',$url,['connect_timeout' => 1]);
     }
