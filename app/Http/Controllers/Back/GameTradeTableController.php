@@ -155,7 +155,7 @@ class GameTradeTableController extends Controller
     //幸运快乐8
     public function gameTradeTable83(Request $request)
     {
-        $filter = ['GAME83_ZM_min','GAME83_ZM_max','GAME83_ZM_turnMax','GAME83_LM_min','GAME83_LM_max','GAME83_LM_turnMax','GAME83_ZH810_min','GAME83_ZH810_max','GAME83_ZH810_turnMax','GAME83_WX_turnMax','GAME83_WX_min','GAME83_WX_max'];
+        $filter = ['GAME83_ZH810_min','GAME83_ZH810_max','GAME83_ZH810_turnMax','GAME83_ZM_turnMax','GAME83_ZM_min','GAME83_ZM_max','GAME83_JIN_min','GAME83_JIN_max','GAME83_JIN_turnMax','GAME83_MU_min','GAME83_MU_max','GAME83_MU_turnMax','GAME83_SHUI_min','GAME83_SHUI_max','GAME83_SHUI_turnMax','GAME83_HUO_min','GAME83_HUO_max','GAME83_HUO_turnMax','GAME83_TU_min','GAME83_TU_max','GAME83_TU_turnMax','GAME83_ZHDXDS_turnMax','GAME83_ZHDXDS_min','GAME83_ZHDXDS_max','GAME83_QHHDSH_turnMax','GAME83_QHHDSH_min','GAME83_QHHDSH_max','GAME83_DXDS_turnMax','GAME83_DXDS_min','GAME83_DXDS_max'];
         return $this->gameTradeTable(83,$filter,$request->input('userId',0));
     }
 
@@ -233,6 +233,27 @@ class GameTradeTableController extends Controller
     {
         $filter = ['GAME902_DXDSLHH_min','GAME902_DXDSLHH_max','GAME902_DXDSLHH_turnMax','GAME902_1D5_min','GAME902_1D5_max','GAME902_1D5_turnMax','GAME902_BAOZI_min','GAME902_BAOZI_max','GAME902_BAOZI_turnMax','GAME902_SHUNZI_min','GAME902_SHUNZI_max','GAME902_SHUNZI_turnMax','GAME902_DBZ_min','GAME902_DBZ_max','GAME902_DBZ_turnMax'];
         return $this->gameTradeTable(902,$filter,$request->input('userId',0));
+    }
+
+    //匈牙利赛车
+    public function gameTradeTable905(Request $request)
+    {
+        $filter = ['GAME905_1D10_min','GAME905_1D10_max','GAME905_1D10_turnMax','GAME905_GYZH_min','GAME905_GYZH_max','GAME905_GYZH_turnMax','GAME905_GYDXDS_turnMax','GAME905_GYDXDS_min','GAME905_GYDXDS_max','GAME905_DXDSLH_min','GAME905_DXDSLH_max','GAME905_DXDSLH_turnMax'];
+        return $this->gameTradeTable(905,$filter,$request->input('userId',0));
+    }
+
+    //匈牙利飞艇
+    public function gameTradeTable906(Request $request)
+    {
+        $filter = ['GAME906_1D10_min','GAME906_1D10_max','GAME906_1D10_turnMax','GAME906_GYZH_min','GAME906_GYZH_max','GAME906_GYZH_turnMax','GAME906_GYDXDS_turnMax','GAME906_GYDXDS_min','GAME906_GYDXDS_max','GAME906_DXDSLH_min','GAME906_DXDSLH_max','GAME906_DXDSLH_turnMax'];
+        return $this->gameTradeTable(906,$filter,$request->input('userId',0));
+    }
+
+    //匈牙利时时彩
+    public function gameTradeTable907(Request $request)
+    {
+        $filter = ['GAME907_DXDSLHH_min','GAME907_DXDSLHH_max','GAME907_DXDSLHH_turnMax','GAME907_1D5_min','GAME907_1D5_max','GAME907_1D5_turnMax','GAME907_BAOZI_min','GAME907_BAOZI_max','GAME907_BAOZI_turnMax','GAME907_SHUNZI_min','GAME907_SHUNZI_max','GAME907_SHUNZI_turnMax','GAME907_DBZ_min','GAME907_DBZ_max','GAME907_DBZ_turnMax'];
+        return $this->gameTradeTable(907,$filter,$request->input('userId',0));
     }
 
     //交易设定总

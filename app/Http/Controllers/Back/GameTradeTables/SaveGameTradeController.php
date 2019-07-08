@@ -298,6 +298,30 @@ class SaveGameTradeController extends Controller
             return $this->updateUserPlay($data,904,$data['userId']);
     }
 
+    public function xylsc(Request $request){
+        $data = $request->all();
+        if(empty($data['userId']))
+            return $this->updateBatch($data,905);
+        else
+            return $this->updateUserPlay($data,905,$data['userId']);
+    }
+
+    public function xylft(Request $request){
+        $data = $request->all();
+        if(empty($data['userId']))
+            return $this->updateBatch($data,906);
+        else
+            return $this->updateUserPlay($data,906,$data['userId']);
+    }
+
+    public function xylssc(Request $request){
+        $data = $request->all();
+        if(empty($data['userId']))
+            return $this->updateBatch($data,907);
+        else
+            return $this->updateUserPlay($data,907,$data['userId']);
+    }
+
 
     function updateBatch($data,$id){
         unset($data['userId']);

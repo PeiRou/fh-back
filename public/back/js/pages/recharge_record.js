@@ -391,31 +391,36 @@ function errorOnlinePay(id){
 
 $('#recharge_type').on('change',function () {
     var rechargeType = $(this).val();
-    if(rechargeType == ""){
+    if(rechargeType == "adminAddMoney") {
         $('#onlineTypeDiv').hide();
-        $('#pay_online_id').val('');
-    } else if(rechargeType == "adminAddMoney") {
-        $('#onlineTypeDiv').hide();
+        $('#account_type').append($('<option value="agent_account">代理账号</option>'))
     } else {
-        $.ajax({
-            url:'/recharge/selectData/payOnline/'+rechargeType,
-            type:'get',
-            dataType:'json',
-            success:function (result) {
-                $('#onlineTypeDiv').show();
-                $('#pay_online_id').empty();
-                var str = '<option value="">全部</option>';
-                result.forEach(function(item){
-                    // str += $("#pay_online_id").append($("<option/>").text(item.payeeName).attr("value",item.id));
-                    if(item.status == 1){
-                        str += '<option value="'+item.id+'">[√] '+item.payeeName+'</option>';
-                    } else {
-                        str += '<option value="'+item.id+'">[X] '+item.payeeName+'</option>';
-                    }
-                });
-                $("#pay_online_id").html(str);
-            }
-        });
+        $('#account_type > option[value="agent_account"]').remove();
+        $('#account_param').attr('placeholder','用户账号');
+        if(rechargeType == ""){
+            $('#onlineTypeDiv').hide();
+            $('#pay_online_id').val('');
+        } else {
+            $.ajax({
+                url:'/recharge/selectData/payOnline/'+rechargeType,
+                type:'get',
+                dataType:'json',
+                success:function (result) {
+                    $('#onlineTypeDiv').show();
+                    $('#pay_online_id').empty();
+                    var str = '<option value="">全部</option>';
+                    result.forEach(function(item){
+                        // str += $("#pay_online_id").append($("<option/>").text(item.payeeName).attr("value",item.id));
+                        if(item.status == 1){
+                            str += '<option value="'+item.id+'">[√] '+item.payeeName+'</option>';
+                        } else {
+                            str += '<option value="'+item.id+'">[X] '+item.payeeName+'</option>';
+                        }
+                    });
+                    $("#pay_online_id").html(str);
+                }
+            });
+        }
     }
 });
 
@@ -433,19 +438,8 @@ $('#date_param').on('change',function () {
 });
 
 $('#account_type').on('change',function () {
-    var account_type = $(this).val();
-    if(account_type == "account"){
-        $('#account_param').attr('placeholder','用户账号');
-    }
-    if(account_type == "orderNum"){
-        $('#account_param').attr('placeholder','订单号');
-    }
-    if(account_type == "operation_account"){
-        $('#account_param').attr('placeholder','操作人账号');
-    }          
-    if(account_type == "sysOrderNum"){
-    	$('#account_param').attr('placeholder','商户订单号');
-    }
+    var placeholders = {'account':'用户账号','orderNum':'订单号','operation_account':'操作人账号','sysOrderNum':'商户订单号','agent_account':'代理账号'};
+    $('#account_param').attr('placeholder',placeholders[$(this).val()]);
 });
 
 function excelRecharges() {

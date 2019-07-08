@@ -439,6 +439,7 @@ class ModalController extends Controller
     public function editUserInfo($id)
     {
         $user = User::find($id);
+//        $user->fullName = mb_substr($user->fullName,0,1).'***';
         $allBanks = Banks::where('status',1)->get();
         $levelsData = Levels::all();
         return view('back.modal.member.userEditInfo',compact('user','allBanks','levelsData'));
@@ -984,7 +985,7 @@ class ModalController extends Controller
             case 'gd11x5':  //广东11选5
                 $view = 'back.modal.open.openGd11x5';
                 break;
-            case 'bjkl8':  //北京快乐8
+            case 'bjkl8':  //北京快乐8 幸运快乐8
                 $view = 'back.modal.open.openBJKL8';
                 break;
             default:

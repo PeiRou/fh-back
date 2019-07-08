@@ -562,11 +562,14 @@ class Excel
                 case 'game_msft':
                 case 'game_mssc':
                 case 'game_sfsc':
+                case 'game_xylsc':
+                case 'game_xylft':
                     return $this->opennum_pk10();
                     break;
                 case 'game_msssc':
                 case 'game_qqffc':
                 case 'game_sfssc':
+                case 'game_xylssc':
                     return $this->opennum_ssc($num);
                     break;
                 case 'game_msqxc':
@@ -579,6 +582,7 @@ class Excel
                     return $this->opennum_xync();
                     break;
                 case 'game_bjkl8':
+                case 'game_xykl8':
                     return $this->opennum_kl8();
                 case 'game_xylhc':
                 case 'game_sflhc':
@@ -603,17 +607,17 @@ class Excel
     }
 
     private $kill_lottery = array(
-        'game_mssc' => array('id'=>80,'api'=>'mssc'),     //秒速赛车
-        'game_msft' => array('id'=>82,'api'=>'msft'),     //秒速飞艇
+        'game_mssc' => array('id'=>80,'api'=>'mssc'),       //秒速赛车
+        'game_msft' => array('id'=>82,'api'=>'msft'),       //秒速飞艇
         'game_msssc' => array('id'=>81,'api'=>'msssc'),     //秒速时时彩
         'game_paoma' => array('id'=>99,'api'=>'paoma'),     //香港跑马
         'game_xylhc' => array('id'=>85,'api'=>'xylhc'),     //幸运六合彩
-        'game_msjsk3' => array('id'=>86,'api'=>'msjsk3'),     //秒速快三
-        'game_qqffc' => array('id'=>113,'api'=>'qqffc'),     //QQ分分彩
-        'game_kssc' => array('id'=>801,'api'=>'kssc'),     //快速赛车
-        'game_ksft' => array('id'=>802,'api'=>'ksft'),     //快速飞艇
+        'game_msjsk3' => array('id'=>86,'api'=>'msjsk3'),   //秒速快三
+        'game_qqffc' => array('id'=>113,'api'=>'qqffc'),    //QQ分分彩
+        'game_kssc' => array('id'=>801,'api'=>'kssc'),      //快速赛车
+        'game_ksft' => array('id'=>802,'api'=>'ksft'),      //快速飞艇
         'game_ksssc' => array('id'=>803,'api'=>'ksssc'),    //快速时时彩
-        'game_twxyft' => array('id'=>804,'api'=>'twxyft'),    //台湾幸运飞艇
+        'game_twxyft' => array('id'=>804,'api'=>'twxyft'),  //台湾幸运飞艇
     );
 
     private function opennum_pk10($num=0){

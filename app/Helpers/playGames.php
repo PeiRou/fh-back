@@ -496,3 +496,17 @@ if(!function_exists('mylog')) {
         $monolog->setHandlers($handlers);
     }
 }
+//返回最近执行的sql
+if (!function_exists('sql')) {
+    function sql()
+    {
+        $DB = '\Illuminate\Support\Facades\DB';
+        if ($sql = $DB::getQueryLog()) {
+            foreach ($sql as $k => $v) {
+                $sql[$k] = vsprintf(str_replace('?', "'%s'", $v['query']), $v['bindings']);
+            }
+            return $sql;
+        }
+        $DB::enableQueryLog();
+    }
+}

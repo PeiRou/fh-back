@@ -35,6 +35,7 @@ class clear_data extends Command
         if($this->time<=0)                                 //剩馀时间若是非有效秒数，则返回不继续往下做
             return "";
         $clearDate1 = date('Y-m-d 23:59:59',strtotime("-1 days"));        //1天
+        $clearDate2 = date('Y-m-d 23:59:59',strtotime("-2 days"));        //1天
         $clearDate31 = date('Y-m-d 23:59:59',strtotime("-31 days")-300);        //31天
         $clearDate62 = date('Y-m-d 23:59:59',strtotime("-62 days")-300);        //62天
         $clearDate93 = date('Y-m-d 23:59:59',strtotime("-93 days")-300);        //93天
@@ -42,6 +43,7 @@ class clear_data extends Command
         echo "clear 卡redis时间:".$this->stoptime.PHP_EOL;
         echo "clear 卡redis剩馀时间:".$this->time.PHP_EOL;
         echo "clear Date1:".$clearDate1.PHP_EOL;
+        echo "clear Date2:".$clearDate2.PHP_EOL;
         echo "clear Date31:".$clearDate31.PHP_EOL;
         echo "clear Date62:".$clearDate62.PHP_EOL;
         echo "clear Date93:".$clearDate93.PHP_EOL;
@@ -134,11 +136,15 @@ class clear_data extends Command
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table log_abnormal :' . $res . PHP_EOL;
             //清-操作日志
-            $sql = "DELETE FROM log_handle WHERE create_at<='{$clearDate62}' LIMIT 1000";
+            $sql = "DELETE FROM log_handle WHERE created_at<='{$clearDate62}' LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table log_handle :' . $res . PHP_EOL;
             //清-会员登陆日志
             $sql = "DELETE FROM log_login WHERE login_time<='{$clearDate62}' LIMIT 1000";
+            $res = DB::connection('mysql::write')->statement($sql);
+            echo 'table log_login :' . $res . PHP_EOL;
+            //清-游客投注数据
+            $sql = "DELETE FROM bet_his WHERE testFlag = 1 LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table log_login :' . $res . PHP_EOL;
             $num_else = $this->clrGameTables('game_ahk3', $clearDate62, $num_else);
@@ -175,6 +181,16 @@ class clear_data extends Command
             $num_else = $this->clrGameTables('game_sflhc', $clearDate62, $num_else);
             $num_else = $this->clrGameTables('game_jslhc', $clearDate62, $num_else);
             $num_else = $this->clrGameTables('game_xyft', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_xykl8', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_xylft', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_xylsc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_xylssc', $clearDate62, $num_else);
+            //清-计画试算
+            $num_else = $this->clrGameTables('plan_record', $clearDate2, $num_else,'updated_at');
+            //清-推送消息
+            $num_else = $this->clrGameTables('message_push', $clearDate62, $num_else,'updated_at');
+            $num_else = $this->clrGameTables('user_messages', $clearDate62, $num_else,'created_at');
+
             if($num_else==0){
                 $this->time = strtotime($this->stoptime) - time();
                 $redis->setex('clear-else',$this->time,$this->stoptime);
@@ -233,9 +249,11 @@ class clear_data extends Command
         }
         if($num==0){
             $redis->setex('clearing',$this->time,$this->stoptime);
+            echo 'finished'.PHP_EOL;
             writeLog('clear',$this->stoptime.'finished');
         }else{
             $redis->setex('clearing',1,'on');
+            echo 'continue...'.PHP_EOL;
             writeLog('clear','have program num :'.$num.','.$this->stoptime.'continue...');
         }
         writeLog('clear','Ok');
@@ -248,19 +266,19 @@ class clear_data extends Command
      * @param string $clearDate62
      * @return int
      */
-    private function clrGameTables($table='',$clearDate62='',$num_else){
+    private function clrGameTables($table='',$clearDate62='',$num_else,$fielddname='opentime'){
         if(empty($table) || empty($clearDate62))
             return 0;
         $redis = Redis::connection();
         $redis->select(5);
         if(!$redis->exists('clear-'.$table)){
-            $res = DB::connection('mysql::write')->table($table)->select('id')->where('opentime','<=',$clearDate62)->first();
+            $res = DB::connection('mysql::write')->table($table)->select('id')->where($fielddname,'<=',$clearDate62)->first();
             if(empty($res)){
                 $this->time = strtotime($this->stoptime) - time();
                 $redis->setex('clear-'.$table,$this->time,$this->stoptime);
                 writeLog('clear',$table.'=>0');
             }else{
-                $sql = "DELETE FROM {$table} WHERE opentime<='{$clearDate62}' LIMIT 1000";
+                $sql = "DELETE FROM {$table} WHERE {$fielddname}<='{$clearDate62}' LIMIT 1000";
                 $res = DB::connection('mysql::write')->statement($sql);
                 writeLog('clear',$table.'=>'.$res);
                 $num_else ++;

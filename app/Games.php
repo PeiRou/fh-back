@@ -43,7 +43,7 @@ class Games extends Model
         'lhc' => 'lhc',         //香港六合彩
         'xync' => 'cqxync',     //重庆幸运农场
         'xylhc' => 'xylhc',     //幸运六合彩
-        'xykl8' => '',          //幸运快乐8
+        'xykl8' => 'xykl8',     //幸运快乐8
         'pcdd' => 'pcdd',       //PC蛋蛋
         'gd11x5' => 'gd11x5',   //广东11选5
         'jsk3' => 'jsk3',       //江苏快3
@@ -52,7 +52,7 @@ class Games extends Model
         'fc3d' => 'fc3d',       //福彩3D
         'tjssc' => '',          //天津时时彩
         'xjssc' => 'xjssc',     //新疆时时彩
-        'xyft' => 'xyft',           //幸运飞艇
+        'xyft' => 'xyft',       //幸运飞艇
         'paoma' => 'paoma',     //香港跑马
         'pk10nn' => 'pknn',     //PK10牛牛
         'msnn' => 'mssc',       //秒速牛牛
@@ -60,19 +60,22 @@ class Games extends Model
         'gxk3' => 'gxk3',       //广西快3
         'hbk3' => 'hbk3',       //湖北快3
         'msjsk3' => 'msjsk3',   //秒速快3
-        'hebeik3' => 'hebeik3',   //河北快3
+        'hebeik3' => 'hebeik3', //河北快3
         'gzk3' => 'gzk3',       //贵州快3
         'gsk3' => 'gsk3',       //甘肃快3
-        'qqffc' => 'qqffc',       //QQ分分彩
-        'msqxc' => 'msqxc',       //秒速七星彩
-        'ksssc' => 'ksssc',       //快速时时彩
+        'qqffc' => 'qqffc',     //QQ分分彩
+        'msqxc' => 'msqxc',     //秒速七星彩
+        'ksssc' => 'ksssc',     //快速时时彩
         'ksft' => 'ksft',       //快速飞艇
         'kssc' => 'kssc',       //快速赛车
-        'twxyft' => 'twxyft',       //台湾幸运飞艇
+        'twxyft' => 'twxyft',   //台湾幸运飞艇
         'sfsc' => 'sfsc',       //三分赛车
-        'sfssc' => 'sfssc',       //三分时时彩
-        'jslhc' => 'jslhc',       //极速六合彩
-        'sflhc' => 'sflhc',       //三分六合彩
+        'sfssc' => 'sfssc',     //三分时时彩
+        'jslhc' => 'jslhc',     //极速六合彩
+        'sflhc' => 'sflhc',     //三分六合彩
+        'xylsc' => 'xylsc',     //匈牙利赛车
+        'xylft' => 'xylft',     //匈牙利飞艇
+        'xylssc' => 'xylssc',   //匈牙利时时彩
     ];
 
     public static $aCodeBindingGame = [
@@ -85,15 +88,15 @@ class Games extends Model
         //快3类
         'k3' => ['jsk3','ahk3','gxk3','hbk3','msjsk3','hebeik3','gzk3','gsk3'],
         //时时彩
-        'ssc' => ['jsssc','cqssc','tjssc','xjssc','qqffc','ksssc','sfssc'],
+        'ssc' => ['jsssc','cqssc','tjssc','xjssc','qqffc','ksssc','sfssc','xylssc'],
         //赛车
-        'sc' => ['jspk10','pk10','jsft','xyft','paoma','jspk10','kssc','ksft','twxyft','sfsc'],
+        'sc' => ['jspk10','pk10','jsft','xyft','paoma','jspk10','kssc','ksft','twxyft','sfsc','xylsc','xylft'],
         //幸运农场 快乐十分
         'xync' => ['gdkl10','xync'],
         //广东11选5
         'gd11x5' => ['gd11x5'],
         //北京快乐8
-        'bjkl8' => ['bjkl8'],
+        'bjkl8' => ['bjkl8','xykl8'],
         //香港六合彩
         'lhc' => ['lhc','xylhc','jslhc','sflhc'],
     ];
@@ -108,7 +111,7 @@ class Games extends Model
         70 => 'lhc',
         61 => 'cqxync',
         85 => 'xylhc',
-        83 => '',
+        83 => 'xykl8',
         66 => 'pcdd',
         21 => 'gd11x5',
         10 => 'jsk3',
@@ -140,5 +143,8 @@ class Games extends Model
         902 => 'sfssc',
         903 => 'jslhc',
         904 => 'sflhc',
+        905 => 'xylsc',
+        906 => 'xylft',
+        907 => 'xylssc',
     ];
 }

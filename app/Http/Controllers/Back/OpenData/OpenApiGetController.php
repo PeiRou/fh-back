@@ -142,6 +142,7 @@ class OpenApiGetController extends Controller
             case "cqssc":   //重庆时时彩
             case "sfssc":   //三分时时彩
             case "xjssc":   //新疆时时彩
+            case "xylssc":  //匈牙利时时彩
                 return [
                     'code' => 200,
                     'data'=> [],
@@ -197,6 +198,8 @@ class OpenApiGetController extends Controller
             case "twxyft":  //台湾幸运飞艇
             case "sfsc":    //三分赛车
             case "xyft":    //幸运飞艇
+            case "xylsc":   //匈牙利赛车
+            case "xylft":   //匈牙利飞艇
                 return [
                     'code' => 200,
                     'data'=> [],
@@ -215,6 +218,7 @@ class OpenApiGetController extends Controller
                 ];
                 break;
             case "bjkl8":  //北京快乐8
+            case "xykl8":  //幸运快乐8
                 return [
                     'code' => 200,
                     'data'=> [],

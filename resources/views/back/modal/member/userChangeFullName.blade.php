@@ -25,6 +25,10 @@
                         validators: {
                             notEmpty: {
                                 message: '真实姓名必须填写'
+                            },
+                            regexp: {
+                                regexp: /^([\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*){2,15}$/,
+                                message: '无效格式的中文姓名,2-15汉字,可含"·"'
                             }
                         }
                     }

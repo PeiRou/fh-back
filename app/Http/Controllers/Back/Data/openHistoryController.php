@@ -235,11 +235,14 @@ class openHistoryController extends Controller
     //北京快乐8-表格数据
     public function bjkl8(Request $request)
     {
+        if(!($gameType = $request->get('type'))){
+            return false;
+        }
+        $table = 'game_'.Games::$aCodeGameName[$gameType];
         $issue = $request->get('issue');
         $issuedate = $request->get('issuedate');
         $start = $request->get('start');
         $length = $request->get('length');
-        $table = 'game_bjkl8';
         $HISModel = $this->getPostData($table,$issue,$issuedate);
         $HISCount = $HISModel->count();
         $HIS = $HISModel->orderBy('id','desc')->skip($start)->take($length)->get();

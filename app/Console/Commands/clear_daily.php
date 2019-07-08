@@ -77,6 +77,15 @@ class clear_daily extends Command
         $this->resetId('game_sflhc');
         $this->resetId('game_jslhc');
         $this->resetId('game_xyft');
+        $this->resetId('game_xykl8');
+        $this->resetId('game_xylft');
+        $this->resetId('game_xylsc');
+        $this->resetId('game_xylssc');
+        ///---将 计画试算 的ID重置
+        $this->resetId('plan_record');
+        ///---将 推送消息 的ID重置
+//        $this->resetId('message_push');
+        $this->resetId('user_messages');
     }
     private function resetId($table,$field = 'id'){
         $sql = 'SET @num := 0';

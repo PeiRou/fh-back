@@ -12,6 +12,7 @@ use App\Drawing;
 use App\GeneralAgent;
 use App\Levels;
 use App\Recharges;
+use App\ReportRecharge;
 use App\Roles;
 use App\SubAccount;
 use App\User;
@@ -319,7 +320,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
             if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam))
                 $q->where('capital_agent.created_at','>=',$aParam['startTime']);
             if(isset($aParam['endTime']) && array_key_exists('endTime',$aParam))
-                $q->where('capital_agent.created_at','<=',aParam['endTime'].' 23:59:59');
+                $q->where('capital_agent.created_at','<=',$aParam['endTime'].' 23:59:59');
         })->where('capital_agent.agent_id',$id);
         $capitalCount = $capitalModel->count();
         $capital = $capitalModel->select('capital_agent.type','capital_agent.money','capital_agent.order_id','capital_agent.balance','capital_agent.issue','capital_agent.game_id','capital_agent.play_type','capital_agent.game_name','capital_agent.created_at','capital_agent.content','sub_account.account as sub_account','sub_account.name as sub_name')
@@ -674,7 +675,8 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $lastMonthRegUsers = DB::table('users')->where('testFlag',0)->whereRaw('PERIOD_DIFF( date_format( now( ) , "%Y%m" ) , date_format( created_at, "%Y%m" ) ) =1')->count();
 //        $todayRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereDate('created_at',date('Y-m-d'))->count();
         $todayRechargesUser = \App\Recharges::todayRechargesUser();
-        $yesterdayRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereDate('created_at',Carbon::now()->addDays(-1)->toDateString())->count();
+//        $yesterdayRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereDate('created_at',Carbon::now()->addDays(-1)->toDateString())->count();
+        $yesterdayRechargesUser = ReportRecharge::where('date',date('Y-m-d',time()-24*60*60))->value('recharge_first') ?? 0;
         $monthRechargesUser = DB::table('users')->where('testFlag',0)->where('PayTimes',1)->whereRaw('DATE_FORMAT(created_at, "%Y%m" ) = DATE_FORMAT( CURDATE( ) , "%Y%m" )')->count();
         return response()->json([
             'allUser' => $allUser,
@@ -710,15 +712,15 @@ GROUP BY g.ga_id LIMIT $start,$length";
         $aDrawingSql = "SELECT SUM(`amount`) AS `payDrawing` FROM `drawing` WHERE status = 2 AND `user_id` = $id ";
         if(isset($param['startTime']) && array_key_exists('startTime', $param)){
             $aSql .= " AND `updated_at` >= '".$param['startTime']."'";
-            $aBetSql .= " AND `created_at` >= '".$param['startTime']."'";
-            $aBet_hisSql .= " AND `created_at` >= '".$param['startTime']."'";
+            $aBetSql .= " AND `updated_at` >= '".$param['startTime']."'";
+            $aBet_hisSql .= " AND `updated_at` >= '".$param['startTime']."'";
             $aDrawingSql .= " AND `updated_at` >= '".$param['startTime']."'";
         }
         if(isset($param['endTime']) && array_key_exists('endTime', $param)){
             $aSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
-            $aBetSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
+            $aBetSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
             $aDrawingSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
-            $aBet_hisSql .= " AND `created_at` <= '".$param['endTime']." 23:59:59'";
+            $aBet_hisSql .= " AND `updated_at` <= '".$param['endTime']." 23:59:59'";
         }
         $aBetSql = "SELECT SUM(`payBetting`) AS `payBetting` FROM (
           ({$aBetSql}) UNION ALL ({$aBet_hisSql}) 
@@ -810,26 +812,7 @@ GROUP BY g.ga_id LIMIT $start,$length";
                 return $playTypeOptions[$capital->type];
             })
             ->editColumn('money', function($capital){
-                if($capital->type=='t05') {
-                    if ($capital->game_id > 0) {
-                        if ($capital->game_id == 90 || $capital->game_id == 91) {
-                            if ($capital->nn_view_money < 0)
-                                return '<span class="green-text">下注:' . $capital->nn_view_money . '</span>' . '<span class="gary-text">(冻结:' . $capital->freeze_money . ')</span>' . '<span class="gary-text">(解冻:' . $capital->freeze_money . ')</span>';
-                            else
-                                return '<span class="red-text">下注:' . $capital->nn_view_money . '</span>' . '<span class="gary-text">(冻结:' . $capital->freeze_money . ')</span>' . '<span class="gary-text">(解冻:' . $capital->freeze_money . ')</span>';
-                        } else {
-                            return '<span class="green-text">-' . $capital->money . '</span>';
-                        }
-                    } else {
-                        if ($capital->money < 0) {
-                            return '<span class="green-text">' . $capital->money . '</span>';
-                        } else {
-                            return '<span class="red-text">' . $capital->money . '</span>';
-                        }
-                    }
-                }else{
-                    return '<span class="red-text">' . $capital->money . '</span>';
-                }
+                return '<span class="red-text">' . $capital->money . '</span>';
             })
             ->editColumn('balance', function($capital){
                 if(empty($capital->balance))
