@@ -207,9 +207,9 @@ INNER JOIN (select type, case capital.type when 't04' then '返利/手续费' wh
 GROUP BY rechName";
         $capitallittle = DB::select($capitallittlesql,[$date.' 00:00:00',$date.' 23:59:59']);
         $today = date('Y-m-d');
-        $yesterday = date('Y-m-d',strtotime('-1 day'));
+//        $yesterday = date('Y-m-d',strtotime('-1 day'));
         //会员输赢（含退水）---amount会员输赢（不含退水）/ back_money(退水)
-        if($date == $today || $date == $yesterday){
+        if($date == $today){ // || $date == $yesterday  (bet表 每晚12点过后都要搬到bet_his表里，条件是:非未结算的状态都搬到bet_his)
             $bunkofactsql = "SELECT '会员输赢（含退水）' AS 'rechname',SUM(A.amount+A.back_money) AS amount FROM(
 SELECT SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money
 ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) 
