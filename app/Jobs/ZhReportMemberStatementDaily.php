@@ -141,7 +141,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                         'game_id' => $iJqBet->game_id,
                         'game_name' => $iJqBet->game_name,
                         'user_id' => $iJqBet->user_id,
-                        'bet_bunko' => $iJqBet->bet_bunko,
+                        'bet_bunko' => empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko,
                         'date' => $this->aDateTime,
                         'dateTime' => $time,
                         'created_at' => $dateTime,
