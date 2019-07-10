@@ -68,7 +68,6 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                 'user_account' => $iUser->userAccount,
                 'user_name' => $iUser->userName,
                 'user_id' => $iUser->userId,
-                'user_test_flag' => $iUser->userTestFlag,
                 'agent_account' => $iUser->agentAccount,
                 'agent_name' => $iUser->agentName,
                 'agent_id' => $iUser->agentId,
