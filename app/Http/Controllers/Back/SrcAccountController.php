@@ -31,7 +31,7 @@ class SrcAccountController extends Controller
             throw new \Exception('OTP已失效', 200);
         if((str_replace(' ', '', $json['code']))!== $request->otp)
             throw new \Exception('OTP验证失败', 200);
-        $str = $json['name']."
+        $str = $json['name']."|
 ".env('APP_NAME')."|
 ".date('Y-m-d H:i:s');
 
