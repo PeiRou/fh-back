@@ -49,7 +49,7 @@ class JqReportBetGame extends Model
     }
 
     //获取总代理棋牌投注
-    public static function betGeneralReportData(){
+    public static function betGeneralReportData($startTime = '',$endTime = ''){
         $aSql = "SELECT SUM(`jq_report_bet_game`.`bet_count`) AS `bet_count`,SUM(`jq_report_bet_game`.`bet_bunko`) AS `bet_bunko`,
                      `jq_report_bet_game`.`game_id`,`jq_report_bet_game`.`game_name`,`agent`.`gagent_id`
                     FROM `jq_report_bet_game` 
