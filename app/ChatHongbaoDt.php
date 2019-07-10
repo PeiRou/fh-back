@@ -15,11 +15,11 @@ class ChatHongbaoDt extends Model
                     WHERE `hongbao_dt_status` = 2 ";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= ' `getdatetime` >= :startTime';
+            $aSql .= ' AND `getdatetime` >= :startTime';
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= ' `getdatetime` >= :endTime';
+            $aSql .= ' AND `getdatetime` >= :endTime';
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `users_id` ORDER BY `getdatetimes` ASC";
@@ -33,11 +33,11 @@ class ChatHongbaoDt extends Model
                     WHERE `hongbao_dt_status` = 2 ";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= ' `chat_hongbao_dt`.`getdatetime` >= :startTime';
+            $aSql .= ' AND `chat_hongbao_dt`.`getdatetime` >= :startTime';
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= ' `chat_hongbao_dt`.`getdatetime` >= :endTime';
+            $aSql .= ' AND `chat_hongbao_dt`.`getdatetime` <= :endTime';
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `users`.agent ORDER BY `chat_hongbao_dt`.`getdatetimes` ASC";
@@ -52,11 +52,11 @@ class ChatHongbaoDt extends Model
                     WHERE `hongbao_dt_status` = 2 ";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= ' `chat_hongbao_dt`.`getdatetime` >= :startTime';
+            $aSql .= ' AND `chat_hongbao_dt`.`getdatetime` >= :startTime';
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= ' `chat_hongbao_dt`.`getdatetime` >= :endTime';
+            $aSql .= ' AND `chat_hongbao_dt`.`getdatetime` <= :endTime';
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `agent`.gagent_id ORDER BY `chat_hongbao_dt`.`getdatetimes` ASC";
