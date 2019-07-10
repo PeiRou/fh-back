@@ -34,9 +34,6 @@ class JqBetHis extends Model
         $startTime = strtotime($startTime);
         $endTime = strtotime($endTime);
         $aSql = "SELECT 
-                    `bet_money`,
-                    `bet_bunko`,
-                    `bet_count`,
                     `user_name`,
                     `user_id`,
                     `user_account`,
