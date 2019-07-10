@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Agent;
 use App\Recharges;
+use App\RechargesTimes;
 use App\ReportRecharge;
 use App\Users;
 use Illuminate\Bus\Queueable;
@@ -42,9 +43,9 @@ class ReportRechargeDaily implements ShouldQueue
         //注册代理数
         $register_agent = Agent::getRegisteredCount($this->aDateTime);
         //首充人数
-        $recharge_first = Recharges::getFirstChargeUsersCount($this->aDateTime);
+        $recharge_first = RechargesTimes::getFirstChargeUsersCount($this->aDateTime);
         //第二次充值人数
-        $recharge_second = Recharges::getSecondChargeUsersCount($this->aDateTime);
+        $recharge_second = RechargesTimes::getSecondChargeUsersCount($this->aDateTime);
         //当前注册充值人数
         $current_count = Recharges::getCurrentChargeUsersCount($this->aDateTime);
         //当前注册充值金额
