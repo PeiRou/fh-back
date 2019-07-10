@@ -37,11 +37,11 @@ class JqReportBetGame extends Model
                     FROM `jq_report_bet_game` WHERE 1";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " `date` >= :startTime";
+            $aSql .= " AND `date` >= :startTime";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " `date` >= :endTime";
+            $aSql .= " AND `date` >= :endTime";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `agent_id`,`game_id`";
@@ -57,11 +57,11 @@ class JqReportBetGame extends Model
                     WHERE 1";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " `jq_report_bet_game`.`date` >= :startTime";
+            $aSql .= " AND `jq_report_bet_game`.`date` >= :startTime";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " `jq_report_bet_game`.`date` >= :endTime";
+            $aSql .= " AND `jq_report_bet_game`.`date` >= :endTime";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `agent`.`gagent_id`,`jq_report_bet_game`.`game_id`";
