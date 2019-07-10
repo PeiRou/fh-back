@@ -132,7 +132,7 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
                     $aArrayBunko[] = [
                         'game_id' => $iJqBet->game_id,
                         'game_name' => $iJqBet->game_name,
-                        'agent_id' => $iJqBet->gagent_id,
+                        'general_id' => $iJqBet->gagent_id,
                         'bet_bunko' => $aArray[$kArray]['bet_bunko'],
                         'date' => $this->aDateTime,
                         'dateTime' => $time,
