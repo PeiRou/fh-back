@@ -124,7 +124,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                         'game_id' => 0,
                         'game_name' => '彩票',
                         'user_id' => $iBet->user_id,
-                        'bet_bunko' => $aArray[$kArray]['bet_bunko'],
+                        'bet_bunko' => round($sumBunko + $back_money,2),
                         'date' => $iBet->date,
                         'dateTime' => $time,
                         'created_at' => $dateTime,
