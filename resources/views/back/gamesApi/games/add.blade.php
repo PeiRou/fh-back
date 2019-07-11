@@ -32,6 +32,22 @@
         </div>
     </div>
     <div class="field">
+        <label>电脑端图片</label>
+        <div class="ui input icon">
+            {{--<input type="text" name="qrCode"  placeholder=""/>--}}
+            <textarea style="display: none" id="logo_pc" name="logo_pc">{{$data->logo_pc??''}}</textarea>
+            <input type="file" id="file_logo_pc">
+        </div>
+    </div>
+    <div class="field">
+        <label>移动端图片</label>
+        <div class="ui input icon">
+            {{--<input type="text" name="qrCode"  placeholder=""/>--}}
+            <textarea style="display: none" id="logo_mobile" name="logo_mobile">{{$data->logo_mobile??''}}</textarea>
+            <input type="file" id="file_logo_mobile">
+        </div>
+    </div>
+    <div class="field">
         <label>使用接口</label>
         <div class="ui input icon">
             <select class="ui dropdown" name="g_id" id="g_id" style='height:32px !important'>
@@ -82,7 +98,41 @@
     </div>
 </script>
 <script>
-
+    $(function(){
+        function checkImage (file) {
+            if(!/image\/\w+/.test(file.type)){
+                return '图片类型不对';
+            }
+            if(file.size > 1024 * 1024 * 3){
+                return '文件过大';
+            }
+            return false;
+        }
+        $('#file_logo_pc').change(function(){
+            var file = this.files[0];
+            var info = checkImage(file)
+            if(info){
+                return alert(info);
+            }
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                $('#logo_pc').val(this.result);
+            }
+        })
+        $('#file_logo_mobile').change(function(){
+            var file = this.files[0];
+            var info = checkImage(file)
+            if(info){
+                return alert(info);
+            }
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                $('#logo_mobile').val(this.result);
+            }
+        })
+    });
     $('#chkOpenOpen').change(function () {
         if($(this).prop( "checked" )==true){
             $('#dvOpenOpenOn').show();
