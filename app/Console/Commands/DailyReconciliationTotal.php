@@ -53,15 +53,20 @@ class DailyReconciliationTotal extends Command
                 'onlinePayment' => [],
                 'bankTransfer' => [],
                 'alipay'=> [],
+                'alipaySm'=> [],
                 'weixin' => [],
                 'cft' => [],
+                'ysf' => [],
+                'draw' => [],
+                'activity' => [],
+                'redEnvelope' => [],
+                'capital' => [],
                 'adminAddMoney_reissue' => [],
                 'adminAddMoney_pluscolor' => [],
                 'adminAddMoney_other' => [],
                 'adminAddMoney' => [],
-                'draw' => [],
-                'capital' => [],
                 'bunko' => [],
+                'thirdbunkofact' => [],
                 'todayprofitloss' => [],
                 'todayprofitlossitem' => [],
             ];
@@ -95,11 +100,11 @@ class DailyReconciliationTotal extends Command
         $daytstrot = strtotime($date);
 
         /*在线支付*/
-       /* $onlinePaymentsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount'
-FROM(SELECT B.id AS 'id',B.rechName AS 'rechName',A.amount AS 'amount',A.rebate_or_fee AS 'rebate_or_fee',A.updated_at AS 'updated_at',A.status AS 'status'
-FROM(select username,pay_online_id,payType,amount,rebate_or_fee,updated_at,status from recharges where username = (select username from users where testFlag = '0' and recharges.username = users.username) and payType = 'onlinePayment' and status ='2' and updated_at BETWEEN ? AND ? ) AS A
-INNER JOIN (select id ,rechName from pay_online_new where rechType ='onlinePayment') AS B ON A.pay_online_id = B.id) AS C
-GROUP BY rechName";*/
+        /* $onlinePaymentsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount'
+ FROM(SELECT B.id AS 'id',B.rechName AS 'rechName',A.amount AS 'amount',A.rebate_or_fee AS 'rebate_or_fee',A.updated_at AS 'updated_at',A.status AS 'status'
+ FROM(select username,pay_online_id,payType,amount,rebate_or_fee,updated_at,status from recharges where username = (select username from users where testFlag = '0' and recharges.username = users.username) and payType = 'onlinePayment' and status ='2' and updated_at BETWEEN ? AND ? ) AS A
+ INNER JOIN (select id ,rechName from pay_online_new where rechType ='onlinePayment') AS B ON A.pay_online_id = B.id) AS C
+ GROUP BY rechName";*/
         $onlinePaymentsql = "SELECT  id,shou_info AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount' FROM(
 select username,pay_online_id AS 'id',shou_info,payType,amount,rebate_or_fee,updated_at,status from recharges 
  where username = (select username from users where testFlag = '0' and recharges.username = users.username) and payType = 'onlinePayment' and status ='2' and updated_at  BETWEEN ? AND ? )AS A GROUP BY id";
@@ -127,6 +132,14 @@ INNER JOIN (select id ,payeeName from pay_online_new where rechType ='alipay') A
 GROUP BY rechName";
         $alipay = DB::select($alipaysql,[$date.' 00:00:00',$date.' 23:59:59']);
 
+        /*支付宝扫码*/
+        $alipaySmsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount'
+FROM(SELECT B.id AS 'id',B.payeeName AS 'rechName',A.amount AS 'amount',A.rebate_or_fee AS 'rebate_or_fee',A.updated_at AS 'updated_at',A.status AS 'status'
+FROM(select username,pay_online_id,payType,amount,rebate_or_fee,updated_at,status from recharges where username = (select username from users where testFlag = '0' and recharges.username = users.username) and payType = 'alipaySm' and status ='2' AND updated_at BETWEEN ? AND ? ) AS A
+INNER JOIN (select id ,payeeName from pay_online_new where rechType ='alipaySm') AS B ON A.pay_online_id = B.id) AS C
+GROUP BY rechName";
+        $alipaySm = DB::select($alipaySmsql,[$date.' 00:00:00',$date.' 23:59:59']);
+
         /*微信支付*/
         $weixinsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount'
 FROM(SELECT B.id AS 'id',B.payeeName AS 'rechName',A.amount AS 'amount',A.rebate_or_fee AS 'rebate_or_fee',A.updated_at AS 'updated_at',A.status AS 'status'
@@ -143,7 +156,38 @@ INNER JOIN (select id ,payeeName from pay_online_new where rechType ='cft') AS B
 GROUP BY rechName";
         $cft = DB::select($cftsql,[$date.' 00:00:00',$date.' 23:59:59']);
 
-        /*充值(无须语法，直接前五项加总)*/
+        /*云闪付*/
+        $ysfsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount'
+FROM(SELECT B.id AS 'id',B.payeeName AS 'rechName',A.amount AS 'amount',A.rebate_or_fee AS 'rebate_or_fee',A.updated_at AS 'updated_at',A.status AS 'status'
+FROM(select username,pay_online_id,payType,amount,rebate_or_fee,updated_at,status from recharges where username = (select username from users where testFlag = '0' and recharges.username = users.username) and payType = 'ysf' and status ='2' AND updated_at BETWEEN ? AND ? ) AS A
+INNER JOIN (select id ,payeeName from pay_online_new where rechType ='ysf') AS B ON A.pay_online_id = B.id) AS C
+GROUP BY rechName";
+        $ysf = DB::select($ysfsql,[$date.' 00:00:00',$date.' 23:59:59']);
+
+        /*充值(无须语法，直接前七项加总)*/
+
+        /*提款*/
+        $drawsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount'
+FROM(SELECT B.rechName AS 'rechName',A.amount AS 'amount',A.updated_at AS 'updated_at',A.status AS 'status'
+FROM(select user_id,amount,draw_type,status,updated_at from drawing where user_id = (select id from users where testFlag = '0' and drawing.user_id = users.id)and status = '2' and updated_at BETWEEN ? AND ? ) AS A
+INNER JOIN (select draw_type , case drawing.draw_type when '0' then '自动出款' when '1' then '手动出款' when '2' then '后台扣钱' end as 'rechName' from drawing where status = '2' GROUP BY draw_type)AS B ON A.draw_type = B.draw_type) AS C
+GROUP BY rechName";
+        $draw = DB::select($drawsql,[$date.' 00:00:00',$date.' 23:59:59']);
+
+        /*资金明细*/
+        /*//to1（充值）
+        $echargessql = "SELECT '充值' AS 'rechname',SUM(A.amount) AS amount
+FROM (select username,amount,updated_at,status from recharges where username = (select username from users where testFlag = '0' and recharges.username = users.username) and status = '2' and updated_at BETWEEN ? AND ?  ) AS A";
+        $echarges = DB::select($echargessql,[$date.' 00:00:00',$date.' 23:59:59']);*/
+        //t02~t27
+        $capitalsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount'
+FROM(SELECT B.rechName AS 'rechName',A.money AS 'amount',A.updated_at AS 'updated_at'
+FROM(select to_user,type,money,updated_at from capital where to_user = (select id from users where testFlag = '0' and capital.to_user = users.id) and updated_at BETWEEN ? AND ? ) AS A
+INNER JOIN (select type, case capital.type when 't04' then '返利/手续费' when 't05' then '下注' when 't06' then '重新开奖[中奖金额]' when 't07' then '重新开奖[退水金额]' when 't08' then '活动' when 't09' then '奖金' when 't10' then '代理结算佣金' when 't11' then '代理佣金提现' when 't12' then '代理佣金提现失败退回' when 't13' then '聊天室红包' when 't14' then '退水' when 't15' then '提现' when 't16' then '撤单' when 't17' then '提现失败' when 't18' then '后台加钱' when 't19' then '后台扣钱' when 't23' then '第三方游戏上分' when 't24' then '第三方游戏下分' when 't25' then '冻结提现金额' when 't26' then '解冻金额' when 't27' then '冻结金额' when 't28' then '推广人佣金' when 't29' then '冻结[退水金额]' end as 'rechName' from capital WHERE type in ('t04','t05','t06','t07','t08','t13','t15','t16','17','t19','t23','t24','t28')  GROUP BY type)AS B ON A.type = B.type) AS C
+GROUP BY rechName";
+        $capital = DB::select($capitalsql,[$date.' 00:00:00',$date.' 23:59:59']);
+//        $capital = array_merge($echarges,$capital);
+        writeLog('DailyReconTotal','$capital: '.json_encode($capital));
 
         /*后台加钱-掉单补发*/
         $adminAddMoney_reissuesql ="SELECT rechname,amount FROM(
@@ -171,58 +215,31 @@ INNER JOIN (select admin_add_money,case recharges.admin_add_money when '1' then 
 GROUP BY rechName";
         $adminAddMoney = DB::select($adminAddMoneysql,[$date.' 00:00:00',$date.' 23:59:59']);
 
-        /*提款*/
-        $drawsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount'
-FROM(SELECT B.rechName AS 'rechName',A.amount AS 'amount',A.updated_at AS 'updated_at',A.status AS 'status'
-FROM(select user_id,amount,draw_type,status,updated_at from drawing where user_id = (select id from users where testFlag = '0' and drawing.user_id = users.id)and status = '2' and updated_at BETWEEN ? AND ? ) AS A
-INNER JOIN (select draw_type , case drawing.draw_type when '0' then '自动出款' when '1' then '手动出款' when '2' then '后台扣钱' end as 'rechName' from drawing where status = '2' GROUP BY draw_type)AS B ON A.draw_type = B.draw_type) AS C
-GROUP BY rechName";
-        $draw = DB::select($drawsql,[$date.' 00:00:00',$date.' 23:59:59']);
-
-        /*资金明细*/
-        /*//to1（充值）
-        $echargessql = "SELECT '充值' AS 'rechname',SUM(A.amount) AS amount
-FROM (select username,amount,updated_at,status from recharges where username = (select username from users where testFlag = '0' and recharges.username = users.username) and status = '2' and updated_at BETWEEN ? AND ?  ) AS A";
-        $echarges = DB::select($echargessql,[$date.' 00:00:00',$date.' 23:59:59']);*/
-        //t02~t27
-        $capitalsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount'
-FROM(SELECT B.rechName AS 'rechName',A.money AS 'amount',A.updated_at AS 'updated_at'
-FROM(select to_user,type,money,updated_at from capital where to_user = (select id from users where testFlag = '0' and capital.to_user = users.id) and updated_at BETWEEN ? AND ? ) AS A
-INNER JOIN (select type, case capital.type when 't04' then '返利/手续费' when 't05' then '下注' when 't06' then '重新开奖[中奖金额]' when 't07' then '重新开奖[退水金额]' when 't08' then '活动' when 't09' then '奖金' when 't10' then '代理结算佣金' when 't11' then '代理佣金提现' when 't12' then '代理佣金提现失败退回' when 't13' then '抢到红包' when 't14' then '退水' when 't15' then '提现' when 't16' then '撤单' when 't17' then '提现失败' when 't18' then '后台加钱' when 't19' then '后台扣钱' when 't23' then '棋牌上分' when 't24' then '棋牌下分' when 't25' then '冻结提现金额' when 't26' then '解冻金额' when 't27' then '冻结金额' when 't28' then '推广人佣金' when 't29' then '冻结[退水金额]' end as 'rechName' from capital WHERE type in ('t04','t05','t06','t07','t08','t13','t15','t16','17','t19','t23','t24','t28')  GROUP BY type)AS B ON A.type = B.type) AS C
-GROUP BY rechName";
-        $capital = DB::select($capitalsql,[$date.' 00:00:00',$date.' 23:59:59']);
-//        $capital = array_merge($echarges,$capital);
-        writeLog('DailyReconTotal','$capital: '.json_encode($capital));
-
         /*今日盈亏*/
         //to1（充值）--已包含后台加钱
         $echargessql = "SELECT '充值' AS 'rechname',SUM(A.amount) AS amount
 FROM (select username,amount,updated_at,status from recharges where username = (select username from users where testFlag = '0' and recharges.username = users.username) and status = '2' and updated_at BETWEEN ? AND ?  ) AS A";
         $echarges = DB::select($echargessql,[$date.' 00:00:00',$date.' 23:59:59']);
-        //t04(返利/手续费),t08(活动),t13(抢到红包),t14(退水),t23(棋牌上分),t24(棋牌下分)
+        //t04(返利/手续费),t08(活动),t13(聊天室红包),t14(退水),t23(第三方游戏上分),t24(第三方游戏下分)
         $capitallittlesql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount'
 FROM(SELECT B.rechName AS 'rechName',A.money AS 'amount',A.updated_at AS 'updated_at'
 FROM(select to_user,type,money,updated_at from capital where to_user = (select id from users where testFlag = '0' and capital.to_user = users.id) and updated_at BETWEEN ? AND ? ) AS A
-INNER JOIN (select type, case capital.type when 't04' then '返利/手续费' when 't05' then '下注' when 't06' then '重新开奖[中奖金额]' when 't07' then '重新开奖[退水金额]' when 't08' then '活动' when 't09' then '奖金' when 't10' then '代理结算佣金' when 't11' then '代理佣金提现' when 't12' then '代理佣金提现失败退回' when 't13' then '抢到红包' when 't14' then '退水' when 't15' then '提现' when 't16' then '撤单' when 't17' then '提现失败' when 't18' then '后台加钱' when 't19' then '后台扣钱' when 't23' then '棋牌上分' when 't24' then '棋牌下分' when 't25' then '冻结提现金额' when 't26' then '解冻金额' when 't27' then '冻结金额' when 't28' then '推广人佣金' when 't29' then '冻结[退水金额]' end as 'rechName' from capital WHERE type in ('t04','t08','t13','t14','t23','t24')  GROUP BY type)AS B ON A.type = B.type) AS C
+INNER JOIN (select type, case capital.type when 't04' then '返利/手续费' when 't05' then '下注' when 't06' then '重新开奖[中奖金额]' when 't07' then '重新开奖[退水金额]' when 't08' then '活动' when 't09' then '奖金' when 't10' then '代理结算佣金' when 't11' then '代理佣金提现' when 't12' then '代理佣金提现失败退回' when 't13' then '聊天室红包' when 't14' then '退水' when 't15' then '提现' when 't16' then '撤单' when 't17' then '提现失败' when 't18' then '后台加钱' when 't19' then '后台扣钱' when 't23' then '第三方游戏上分' when 't24' then '第三方游戏下分' when 't25' then '冻结提现金额' when 't26' then '解冻金额' when 't27' then '冻结金额' when 't28' then '推广人佣金' when 't29' then '冻结[退水金额]' end as 'rechName' from capital WHERE type in ('t04','t08','t13','t14','t23','t24')  GROUP BY type)AS B ON A.type = B.type) AS C
 GROUP BY rechName";
         $capitallittle = DB::select($capitallittlesql,[$date.' 00:00:00',$date.' 23:59:59']);
-        $today = date('Y-m-d');
-//        $yesterday = date('Y-m-d',strtotime('-1 day'));
-        //会员输赢（含退水）---amount会员输赢（不含退水）/ back_money(退水)
-        if($date == $today){ // || $date == $yesterday  (bet表 每晚12点过后都要搬到bet_his表里，条件是:非未结算的状态都搬到bet_his)
-            $bunkofactsql = "SELECT '会员输赢（含退水）' AS 'rechname',SUM(A.amount+A.back_money) AS amount FROM(
-SELECT SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money
-ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) 
-END) AS amount ,SUM(bet.bet_money * bet.play_rebate) AS back_money
-FROM bet WHERE 1 AND testFlag =0 AND status = 1 AND updated_at BETWEEN ? AND ? ) AS A";
+        /*彩票会员输赢（含退水）& 第三方今日输赢*/
+        $bunkoday='2019-07-12'; //彩票会员输赢时间分界点
+        $bunkodaytstrot=strtotime($bunkoday);
+        if($bunkodaytstrot > $daytstrot){
+            $bunkofactdata = $this->bunkofactdata($date);
+            $bunkofactsql = $bunkofactdata[0];
+            $thirdbunkofactsql = $bunkofactdata[1];
         }else{
-            $bunkofactsql = "SELECT '会员输赢（含退水）' AS 'rechname',SUM(A.amount+A.back_money) AS amount FROM(
-SELECT SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money
-ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) 
-END) AS amount ,SUM(bet_his.bet_money * bet_his.play_rebate) AS back_money
-FROM bet_his WHERE 1 AND testFlag =0 AND updated_at BETWEEN ? AND ? ) AS A";
+            $bunkofactsql = "SELECT (CASE game_name WHEN '彩票' THEN '彩票会员输赢（含退水）' ELSE game_name END) AS 'rechname',SUM(bet_bunko) AS 'amount' FROM `zh_report_general_bunko` WHERE game_id=0 AND updated_at BETWEEN ? AND ? GROUP BY game_id";
+            $thirdbunkofactsql = "SELECT (CASE game_name WHEN '彩票' THEN '彩票会员输赢（含退水）' ELSE game_name END) AS 'rechname',SUM(bet_bunko) AS 'amount' FROM `zh_report_general_bunko` WHERE game_id<>0 AND updated_at BETWEEN ? AND ? GROUP BY game_id";
         }
         $bunkofact = DB::select($bunkofactsql,[$date.' 00:00:00',$date.' 23:59:59']);
+        $thirdbunkofact = DB::select($thirdbunkofactsql,[$date.' 00:00:00',$date.' 23:59:59']);
 
         /*//未结算试算，有点问题
            $datetom = date('Y-m-d',strtotime($date."+1 days"));
@@ -301,10 +318,12 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
         $merge1 = array_merge($echarges,$capitallittle);
         $merge2 = array_merge($merge1,$bunkofact);
         $merge3 = array_merge($merge2,$unsettlement);
-        $todayprofitlossitem = array_merge($merge3,$draw);
-        $profitlosstal = 0;
-        $actuallywinlose = $bunkofact[0]->amount;  //今日实际输赢（含退水）= 会员输赢（含退水）+ 红包金额 + 返利/手续费 + 活动金额
-        foreach ($todayprofitlossitem as $k=>$v){
+        $merge4 = array_merge($merge3,$draw);
+        $activity = 0;
+        $redEnvelope = 0;
+        $profitlosstal = 0;                         //彩票今日盈亏(根据业务逻辑的金额)
+        $actuallywinlose = $bunkofact[0]->amount;   //彩票今日实际输赢（含退水）= 彩票会员输赢（含退水）+ 红包金额 + 返利/手续费 + 活动金额
+        foreach ($merge4 as $k=>$v){
             if($v ->rechname == '充值') {
                 $profitlosstal += $v ->amount;
             }
@@ -315,20 +334,22 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
             if($v ->rechname == '活动') {
                 $profitlosstal += $v ->amount;
                 $actuallywinlose += $v ->amount;
+                $activity += $v ->amount;
             }
-            if($v ->rechname == '抢到红包') {
+            if($v ->rechname == '聊天室红包') {
                 $profitlosstal += $v ->amount;
                 $actuallywinlose += $v ->amount;
+                $redEnvelope += $v ->amount;
             }
             /*if($v ->rechname == '退水') {
             }*/
-            if($v ->rechname == '棋牌上分') {
+            if($v ->rechname == '第三方游戏上分') {
                 $profitlosstal -= $v ->amount;
             }
-            if($v ->rechname == '棋牌下分') {
+            if($v ->rechname == '第三方游戏下分') {
                 $profitlosstal += $v ->amount;
             }
-            if($v ->rechname == '会员输赢（含退水）') {
+            if($v ->rechname == '彩票会员输赢（含退水）') {
                 $profitlosstal += $v ->amount;
             }
             if($v ->rechname == '未结算') {
@@ -345,41 +366,66 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
                 $profitlosstal -= $v ->amount;
             }
         }
-        $todayprofitloss=[
+        $activityarray = [
             (object)[
-                "rechname" => "今日盈亏",
-                "amount" => $profitlosstal,
+                "rechname" => "活动",
+                "amount" => $activity
+            ]
+        ];
+        $redEnvelopearray = [
+            (object)[
+                "rechname" => "聊天室红包",
+                "amount" => $redEnvelope
             ]
         ];
         $actuallywinlosearay =[
             (object)[
-                "rechname" => "今日实际输赢（含退水）",
+                "rechname" => "彩票今日实际输赢（含退水）",
                 "amount" => $actuallywinlose
             ]
         ];
 
+        /*处理坏帐*/
+        $ispresencesql = 'SELECT * FROM totalreport WHERE daytstrot = \''.$daytstrot.'\'';
+        $ispresence = DB::select($ispresencesql);
+        $todayprofitloss=[
+            (object)[
+                "rechname" => "彩票今日盈亏",
+                "amount" => $ispresence[0]->memberquota -  $ispresence[0]->memberquotayday,  //今日会员余额 - 昨日会员余额
+            ]
+        ];
+        $badDebt = [
+            (object)[
+                "rechname" => "坏帐",
+                "amount" => $ispresence[0]->memberquota -  $ispresence[0]->memberquotayday - $profitlosstal //今日会员余额 - 昨日会员余额 - 彩票今日盈亏(根据业务逻辑的金额)
+            ]
+        ];
+        $todayprofitlossitem = array_merge($merge4,$badDebt);
+
         $data[$date] = [
-            'onlinePayment' => $this->arrayunset($onlinePayment),
-            'bankTransfer' => $this->arrayunset($bankTransfer),
-            'alipay'=> $this->arrayunset($alipay),
-            'weixin' => $this->arrayunset($weixin),
-            'cft' => $this->arrayunset($cft),
-            'adminAddMoney_reissue' => $this->arrayunset($adminAddMoney_reissue),
-            'adminAddMoney_pluscolor' => $this->arrayunset($adminAddMoney_pluscolor),
-            'adminAddMoney_other' => $this->arrayunset($adminAddMoney_other),
-            'adminAddMoney' => $this->arrayunset($adminAddMoney),
-            'draw' => $this->arrayunset($draw),
-            'capital' => $this->arrayunset($capital),
-            'bunko' => $actuallywinlosearay,
-            'todayprofitloss' => $todayprofitloss,
-            'todayprofitlossitem' => $todayprofitlossitem,
+            'onlinePayment' => $this->arrayunset($onlinePayment),   //在线支付
+            'bankTransfer' => $this->arrayunset($bankTransfer),     //银行汇款
+            'alipay'=> $this->arrayunset($alipay),                  //支付宝支付
+            'alipaySm'=> $this->arrayunset($alipaySm),              //支付宝扫码
+            'weixin' => $this->arrayunset($weixin),                 //微信支付
+            'cft' => $this->arrayunset($cft),                       //财付通
+            'ysf' => $this->arrayunset($ysf),                       //云闪付
+            'draw' => $this->arrayunset($draw),                     //提款
+            'activity' => $activityarray,                           //活动
+            'redEnvelope' => $redEnvelopearray,                     //聊天室红包
+            'capital' => $this->arrayunset($capital),               //资金明细
+            'adminAddMoney_reissue' => $this->arrayunset($adminAddMoney_reissue),       //后台加钱-掉单补发
+            'adminAddMoney_pluscolor' => $this->arrayunset($adminAddMoney_pluscolor),   //后台加钱-加彩金
+            'adminAddMoney_other' => $this->arrayunset($adminAddMoney_other),           //后台加钱-其他
+            'adminAddMoney' => $this->arrayunset($adminAddMoney),                       //后台加钱
+            'bunko' => $actuallywinlosearay,                        //彩票今日实际输赢（含退水）
+            'thirdbunkofact' => $thirdbunkofact,                    //第三方今日输赢
+            'todayprofitloss' => $todayprofitloss,                  //彩票今日盈亏(今日会员余额 - 昨日会员余额)
+            'todayprofitlossitem' => $todayprofitlossitem,          //彩票今日盈亏(明细)
         ];
         $serdata =  serialize($data);
 
         if(empty($this->argument('dayTime'))){
-            $ispresencesql = 'SELECT * FROM totalreport WHERE daytstrot = \''.$daytstrot.'\'';
-            $ispresence = DB::select($ispresencesql);
-
             $datatotalreport['data']=$serdata;
             $datatotalreport['updated_at']=date('Y-m-d H:i:s');
 
@@ -470,5 +516,32 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
             }
         }
         return $array;
+    }
+
+    //彩票会员输赢（含退水）--重新执行，综合盘报表没有数据才进来这里
+    private function bunkofactdata($date){
+        //---amount彩票会员输赢（不含退水）/ back_money(退水)
+        $today = date('Y-m-d');
+//        $yesterday = date('Y-m-d',strtotime('-1 day'));
+        if($date == $today){  // || $date == $yesterday  (bet表 每晚12点过后都要搬到bet_his表里，条件是:非未结算的状态都搬到bet_his)
+            $bunkofactsql = "SELECT '彩票会员输赢（含退水）' AS 'rechname',SUM(A.amount+A.back_money) AS amount FROM(
+SELECT SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money
+ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) 
+END) AS amount ,SUM(bet.bet_money * bet.play_rebate) AS back_money
+FROM bet WHERE 1 AND testFlag =0 AND status = 1 AND updated_at BETWEEN ? AND ? ) AS A";
+            $thirdbunkofactsql="SELECT `rechname`,`amount` FROM(
+SELECT JB.g_id AS `id`,GA.name AS `rechname`,JB.bunko AS `amount` FROM jq_bet AS JB LEFT JOIN games_api AS GA on JB.g_id = GA.g_id WHERE JB.flag=1 and JB.updated_at BETWEEN ? AND ?
+) AS A GROUP BY A.id";
+        }else{
+            $bunkofactsql = "SELECT '彩票会员输赢（含退水）' AS 'rechname',SUM(A.amount+A.back_money) AS amount FROM(
+SELECT SUM(CASE WHEN game_id IN(90,91) THEN nn_view_money
+ELSE(CASE WHEN bunko > 0 THEN (bunko - bet_money) ELSE bunko END) 
+END) AS amount ,SUM(bet_his.bet_money * bet_his.play_rebate) AS back_money
+FROM bet_his WHERE 1 AND testFlag =0 AND updated_at BETWEEN ? AND ? ) AS A";
+            $thirdbunkofactsql="SELECT `rechname`,`amount` FROM(
+SELECT JB.g_id AS `id`,GA.name AS `rechname`,JB.bunko AS `amount` FROM jq_bet_his AS JB LEFT JOIN games_api AS GA on JB.g_id = GA.g_id WHERE JB.flag=1 and JB.updated_at BETWEEN ? AND ?
+) AS A GROUP BY A.id";
+        }
+        return [$bunkofactsql,$thirdbunkofactsql];
     }
 }
