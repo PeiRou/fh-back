@@ -186,6 +186,7 @@ class RGRepository extends BaseRepository
     }
 
     public function getOrder($param=""){
+        dd($param);
         $data = [
             'sign' => $this->Config['access_code'],
             'client_id' => $param['order_id'],
