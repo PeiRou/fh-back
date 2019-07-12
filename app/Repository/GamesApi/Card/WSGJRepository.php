@@ -41,7 +41,19 @@ class WSGJRepository extends BaseRepository
     totalCount: xx   //总数据
     }
      */
-
+    public function matchName($name)
+    {
+        return preg_match('/^'.$this->Config['agent'].'/', $name);
+    }
+    public function arrInfo(&$array)
+    {
+        $user = $this->getUser($array['username']);
+        $array['username'] = $user->username ?? $array['username'];
+        $array['agent'] = $user->agent ?? 0;
+        $array['user_id'] = $user->id ?? 0;
+        $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';
+        $array['agent_name'] = $this->getAgent($user->agent ?? 0)->name ?? '';
+    }
     //格式化数据  插入数据库
     public function createData($data){
         $GameID = array_map(function($v){
