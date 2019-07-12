@@ -173,6 +173,7 @@ class ExcelLotteryK3
                 $playId = $v;
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
+                break;
             }
         }
         foreach ($KD_DS_arr as $k => $v){
@@ -180,6 +181,7 @@ class ExcelLotteryK3
                 $playId = $v;
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
+                break;
             }
         }
         foreach ($KD_KDZ_arr as $k => $v){
@@ -187,6 +189,7 @@ class ExcelLotteryK3
                 $playId = $v;
                 $winCode = $gameId.$playCate.$playId;
                 $win->push($winCode);
+                break;
             }
         }
     }
