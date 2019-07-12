@@ -239,7 +239,7 @@ WHERE 1 ";
         return $aSql;
     }
 
-    public static function betMemberReportData(){
+    public static function betMemberReportData($testFlag = true){
         $aSql = "SELECT `users`.`id` AS `userId`,`users`.`username` AS `userAccount`,`users`.`fullName` AS `userName`,
                   `agent`.`account` AS `agentAccount`,`agent`.`a_id` AS `agentId`,`agent`.`name` AS `agentName`,
                   `general_agent`.`account` AS `generalAccount`,`general_agent`.`ga_id` AS `generalId`,`general_agent`.`name` AS `generalName`,
@@ -247,7 +247,11 @@ WHERE 1 ";
                   FROM `users` 
                   LEFT JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
                   LEFT JOIN `general_agent` ON `general_agent`.`ga_id` = `agent`.`gagent_id`
-                  WHERE `users`.`testFlag` IN(0,2) ";
+                  WHERE `users`.`testFlag` ";
+        if($testFlag)
+            $aSql .= " IN(0,2) ";
+        else
+            $aSql .= " = 0 ";
         return DB::select($aSql);
     }
 
