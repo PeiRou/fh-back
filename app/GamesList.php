@@ -231,5 +231,13 @@ class GamesList extends Base
             ]
         ],
     ];
+    public static function getNameArray(){
+        $aData = self::select('game_id','name')->where('pid','>',0)->get();
+        $aArray = [];
+        foreach ($aData as $iData){
+            $aArray[$iData->game_id] = $iData->name;
+        }
+        return $aData;
+    }
 
 }

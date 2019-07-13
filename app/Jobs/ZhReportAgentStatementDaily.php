@@ -8,6 +8,7 @@ use App\Bets;
 use App\Capital;
 use App\ChatHongbaoDt;
 use App\Drawing;
+use App\GamesList;
 use App\JqReportBetGame;
 use App\Recharges;
 use App\ZhReportAgent;
@@ -17,6 +18,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use SameClass\Config\GamesListConfig\GamesListConfig;
 
 class ZhReportAgentStatementDaily implements ShouldQueue
 {
@@ -58,6 +60,10 @@ class ZhReportAgentStatementDaily implements ShouldQueue
             $aBet = BetHis::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取棋牌投注
         $aJqBet = JqReportBetGame::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        //棋牌游戏分类字符
+        $aGameCategory = GamesListConfig::$aGameCode;
+        //获取游戏名
+        $aGameName = GamesList::getNameArray();
         $aArray = [];
         $aArrayBunko = [];
         $dateTime = date('Y-m-d H:i:s');
@@ -118,6 +124,11 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                         'game_id' => 0,
                         'game_name' => '彩票',
                         'agent_id' => $iBet->agentId,
+                        'agent_account' => $iArray['agent_account'],
+                        'agent_name' => $iArray['agent_name'],
+                        'general_account' => $iArray['general_account'],
+                        'general_name' => $iArray['general_name'],
+                        'general_id' => $iArray['general_id'],
                         'bet_bunko' => round($sumBunko + $back_money,2),
                         'date' => $iBet->date,
                         'dateTime' => $time,
@@ -132,9 +143,14 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                     $aArray[$kArray]['bet_count'] += empty($iJqBet->bet_count)?0:$iJqBet->bet_count;
                     $aArray[$kArray]['bet_bunko'] += empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko;
                     $aArrayBunko[] = [
-                        'game_id' => $iJqBet->game_id,
-                        'game_name' => $iJqBet->game_name,
+                        'game_id' => empty($iJqBet->gameslist_id)?-1:$iJqBet->gameslist_id,
+                        'game_name' => ($aGameCategory[$iJqBet->gameCategory]?:'未知分类').'_'.($aGameName[$iJqBet->gameslist_id]?:'未知游戏'),
                         'agent_id' => $iJqBet->agent_id,
+                        'agent_account' => $iArray['agent_account'],
+                        'agent_name' => $iArray['agent_name'],
+                        'general_account' => $iArray['general_account'],
+                        'general_name' => $iArray['general_name'],
+                        'general_id' => $iArray['general_id'],
                         'bet_bunko' => empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko,
                         'date' => $this->aDateTime,
                         'dateTime' => $time,

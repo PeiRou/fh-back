@@ -45,6 +45,12 @@ class GamesApiListController extends Controller
             ->editColumn('g_id',function ($res)use($apis){
                 return $apis[$res->g_id] ?? '';
             })
+            ->editColumn('logo_pc',function ($res){
+                return "<img src='".$res->logo_pc."' width='100px'>";
+            })
+            ->editColumn('logo_mobile',function ($res){
+                return "<img src='".$res->logo_mobile."' width='100px'>";
+            })
             ->editColumn('sort',function ($res){
                 return '<input type="text" class="sort" data-id="'.$res->id.'" style="width: 30px; height:20px;" oninput="this.value=value.replace(/[^\d]/g,\'\')" value="'.$res->sort.'">';
             })
@@ -56,13 +62,13 @@ class GamesApiListController extends Controller
                 else
                     $switch .= '<li onclick="editSwitch('.$res->id.',1)"><span class="status-3">关闭</span></li>';
 
-                if(Session::get('account') == 'admin')
+//                if(Session::get('account') == 'admin')
                     $edit .= '<li onclick="edit('.$res->id.')">修改</li><li onclick="del('.$res->id.')">删除</li>';
                 $str = '<ul class="control-menu">'.$switch.$edit.'</ul>';
                 return $str;
             })
             ->setTotalRecords($resCount)
-            ->rawColumns(['sort','control','open'])
+            ->rawColumns(['sort','control','open','logo_pc', 'logo_mobile'])
             ->skipPaging()
             ->make();
     }
@@ -127,6 +133,8 @@ class GamesApiListController extends Controller
 //        if(count($val) && count($keys))
 //            while ($keys)
 //                $param[array_shift($keys)] = array_shift($val) ?? '';
+        //ALTER TABLE `games_list` ADD `logo_pc` TEXT NULL AFTER `g_id`;
+        //ALTER TABLE `games_list` ADD `logo_mobile` TEXT NULL AFTER `logo_pc`;
         $data = [
             'pid' => (int)$request->pid,
             'name' => $request->name,
@@ -135,6 +143,8 @@ class GamesApiListController extends Controller
 //            'param' => json_encode($param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'type' => (int)$request->type,
             'open' => $request->open == 'on' ? 1 : 0,
+            'logo_pc' => $request->logo_pc??'',
+            'logo_mobile' => $request->logo_mobile??'',
 //            'sort' => 0,
         ];
         if(isset($request->id)){

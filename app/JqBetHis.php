@@ -62,6 +62,37 @@ class JqBetHis extends Model
         return DB::select($aSql,$aArray);
     }
 
+    public static function memberReportDataUser($startTime,$endTime){
+        $startTime = strtotime($startTime);
+        $endTime = strtotime($endTime);
+        $aSql = "SELECT 
+                    `user_name`,
+                    `user_id`,
+                    `user_account`,
+                    `agent_id`,
+                    SUM(`bet_count`) AS `bet_count`,
+                    SUM(`bet_bunko`) AS `bet_bunko`,
+                    SUM(`bet_money`) AS `bet_money`,
+                    `agent_account`,
+                    `agent_name`,
+                    `gameslist_id`,
+                    `gameCategory`,
+                    `productType`
+                FROM jq_report_bet_game
+                WHERE
+                  `date_time` >= :startTime 
+                  AND `date_time` <= :endTime 
+                GROUP BY
+                    `user_id`,`gameslist_id` 
+                ";
+        $aArray = [
+            'startTime' => $startTime,
+            'endTime' => $endTime,
+        ];
+
+        return DB::select($aSql,$aArray);
+    }
+
     //根据游戏类别进行分组
     public static function jqReportGameData($startTime,$endTime){
         $aSql = "SELECT `jq`.`bet_money`,`jq`.`bet_bunko`,`jq`.`bet_count`,
