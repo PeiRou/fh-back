@@ -322,7 +322,7 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
         $activity = 0;
         $redEnvelope = 0;
         $profitlosstal = 0;                         //彩票今日盈亏(根据业务逻辑的金额)
-        $actuallywinlose = $bunkofact[0]->amount;   //彩票今日实际输赢（含退水）= 彩票会员输赢（含退水）+ 红包金额 + 返利/手续费 + 活动金额
+        $actuallywinlose = empty($bunkofact)?0:$bunkofact[0]->amount;   //彩票今日实际输赢（含退水）= 彩票会员输赢（含退水）+ 红包金额 + 返利/手续费 + 活动金额
         foreach ($merge4 as $k=>$v){
             if($v ->rechname == '充值') {
                 $profitlosstal += $v ->amount;
