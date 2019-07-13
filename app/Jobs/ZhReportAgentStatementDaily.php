@@ -145,7 +145,7 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                     $aArray[$kArray]['bet_bunko'] += empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko;
                     $aArrayBunko[] = [
                         'game_id' => empty($iJqBet->gameslist_id)?-1:$iJqBet->gameslist_id,
-                        'game_name' => ($aGameCategory[$iJqBet->gameCategory]?:'未知分类').'_'.($aGameName[$iJqBet->gameslist_id]?:'未知游戏'),
+                        'game_name' => (isset($aGameCategory[$iJqBet->gameCategory])?$aGameCategory[$iJqBet->gameCategory]:'默认分类').'_'.(isset($aGameName[$iJqBet->gameslist_id])?$aGameName[$iJqBet->gameslist_id]:'默认游戏'),
                         'agent_id' => $iJqBet->agent_id,
                         'gameCategory' => $iJqBet->gameCategory,
                         'agent_account' => $iArray['agent_account'],
