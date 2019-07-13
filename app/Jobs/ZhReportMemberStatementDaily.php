@@ -153,7 +153,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                     $aArray[$kArray]['bet_count'] += empty($iJqBet->bet_count)?0:$iJqBet->bet_count;
                     $aArray[$kArray]['bet_bunko'] += empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko;
                     $aArrayBunko[] = [
-                        'game_id' => $iJqBet->game_id,
+                        'game_id' => empty($iJqBet->gameslist_id)?-1:$iJqBet->gameslist_id,
                         'game_name' => ($aGameCategory[$iJqBet->gameCategory]?:'未知分类').'_'.($aGameName[$iJqBet->gameslist_id]?:'未知游戏'),
                         'user_id' => $iJqBet->user_id,
                         'user_account' => $iArray['user_account'],
