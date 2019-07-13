@@ -19,6 +19,9 @@ class AGRepository extends BaseRepository
     public $all = true; //是否要所有文件
     public $newPath;
 
+    public function createData($data){
+        $this->senterCreateData($data);
+    }
 
     /**
      * 下注记录"BR"
@@ -30,7 +33,7 @@ class AGRepository extends BaseRepository
      * 游戏结果"GR"备注: 游戏结果"GR"仅导出 AGIN 平台的真人视讯游戏相关数据
      * YOPLAY 下注记录"BR" (platformType 为 YOPLAY 时, 请使用这解析)
      */
-    public function createData($data){
+    public function createData1($data){
         $data = $this->splitCate($data);
         foreach ($data as $k=>$v){
             if(in_array($k, [
@@ -134,7 +137,7 @@ class AGRepository extends BaseRepository
                     'GameStartTime' => $v['SceneStartTime'],//游戏开始时间
                     'GameEndTime' => $v['SceneEndTime'] ?? $v['SceneStartTime'],  //游戏结束时间
                     'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => $v['SceneEndTime'] ?? $v['SceneStartTime'],
+                    'updated_at' => $this->getDate($v['SceneEndTime'] ?? $v['SceneStartTime']),
                     'gameCategory' => $this->getGameType($v['gameType'] ?? '')['gameCategory'] ?? 'FISH', //
                     'game_type' => $this->getGameType($v['gameType'] ?? '')['name'] ?? '捕鱼',
                     'service_money' => 0, // + 服务费
@@ -173,7 +176,7 @@ class AGRepository extends BaseRepository
                     'GameStartTime' => $v['betTime'],//游戏开始时间
                     'GameEndTime' => $v['recalcuTime'] ?? $v['betTime'],  //游戏结束时间
                     'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => $v['recalcuTime'] ?? $v['betTime'],
+                    'updated_at' => $this->getDate($v['recalcuTime'] ?? $v['betTime']),
                     'gameCategory' => $this->getGameType($v['gameType'] ?? '')['gameCategory'] ?? 'RNG', //
                     'game_type' => $this->getGameType($v['gameType'] ?? '')['name'] ?? '',
                     'service_money' => 0, // + 服务费
@@ -192,7 +195,12 @@ class AGRepository extends BaseRepository
         }
     }
 
-    private function arrInfo(&$array, $v, $key = 'AGIN')
+    public function matchName($name)
+    {
+        return preg_match("/^".$this->getVal('agent')."/", $name);
+    }
+
+    public function arrInfo(&$array, $v, $key = 'AGIN')
     {
         $user = $this->getUser($array['username'], 'platformType', $key);
         $array['username'] = $user->username ?? $array['username'];

@@ -2,9 +2,17 @@
 /* AG */
 namespace App\Http\Controllers\GamesApi\Card;
 
+use App\Http\Controllers\Obtain\SendController;
+use App\SystemSetting;
+
 class AG extends Base{
 
     public function getBet($param = [])
+    {
+        return $this->repo->senterGetBet($param);
+    }
+
+    public function getBet1($param = [])
     {
        $this->repo->param = $param;
         if($jq_error_bet_id = @app('obj')->jq_error_bet_id > 0){

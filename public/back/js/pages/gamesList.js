@@ -17,6 +17,7 @@ $(function(){
                 enable: true
             }
         },
+<<<<<<< HEAD
         view: {
             expandSpeed: "",
             showIcon: false,
@@ -25,6 +26,39 @@ $(function(){
         },
         callback: {
             onCheck: zTreeOnCheck//复选框选中
+=======
+        columns: [
+            {data: 'pid'},
+            {data: 'game_id'},
+            {data: 'name'},
+            {data: 'logo_pc'},
+            {data: 'logo_mobile'},
+            {data: 'g_id'},
+            // {data: 'type'},
+            {data: 'open'},
+            {data: 'sort'},
+            {data: 'control'},
+        ],
+         language: {
+             "zeroRecords": "暂无数据",
+             "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",
+             "infoEmpty": "没有记录",
+             "loadingRecords": "请稍后...",
+             "processing":     "读取中...",
+             "paginate": {
+                 "first":      "首页",
+                 "last":       "尾页",
+                 "next":       "下一页",
+                 "previous":   "上一页"
+             }
+         }
+    });
+
+    $(document).keyup(function(e){
+        var key = e.which;
+        if(key == 13 || key == 32){
+            dataTable.ajax.reload();
+>>>>>>> 89175fa434c6cd516d1b9ffbaf1685cebebccfb7
         }
     };
 

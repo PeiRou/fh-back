@@ -8,6 +8,7 @@
 
 namespace App\Repository\GamesApi\Card;
 use App\GamesApi;
+use App\Http\Controllers\Obtain\SendController;
 use App\SystemSetting;
 use App\Users;
 use Illuminate\Support\Facades\DB;
@@ -296,15 +297,83 @@ class BaseRepository
         return $res;
     }
 
-//    public function getUser($username, $other = null)
-//    {
-//        if(is_null($other)){
-//            return app(Report::class)->getUser($username);
-//        }
-//        if(empty($this->UsersArr_->get($username)))
-//            $this->UsersArr_->put($username, Users::where($other,$username)->first());
-//        return $this->UsersArr_->get($username);
-//    }
+    public function senterGetBet($param = [])
+    {
+        $this->param['endTime'] = $this->param['endTime'] ?? $param['toTime'] ?? time();
+        $this->param['startTime'] = $this->param['endTime'] - 15 * 60;
+        $platform_id = SystemSetting::getValueByRemark1('payment_platform_id');
+        $this->param['remark'] = $this->getVal('agent');
+        $this->param['g_id'] = $this->gameInfo->g_id;
+        $baseController = new SendController([
+            'platform_id' => $platform_id,
+            'data' => json_encode([
+                'data' => $this->param,
+            ]),
+        ]);
+        $data = $baseController->sendPlatformOffer('Children/GamesApiGetBet');
+        if(isset($data['code']) && $data['code'] == 0){
+            $this->senterCreateData($data['data']);
+        }else{
+            try{
+                if(is_null(@app('obj')->jq_error_bet_id)) {
+                    $message_error = [
+                        'info' => [
+                            'title' => 'zabbix告警通知',
+                            'token' => 'bot619423079:AAFPQuGFbCwH8O3jSefntGa8rd0Tr_Wq_zs',
+                            'chatid' => '-391676419',
+                        ],
+                        'data' => [['告警详情', $this->gameInfo->name.'拉取总后台第三方游戏数据异常'.($data['code']??'')], ['问题主机', env('APP_NAME', '')]]
+                    ];
+                    $http = app(\GuzzleHttp\Client::class);
+                    $http->request('POST', 'https://telegram.uugl.pw/xiaotang/xiaotang', [
+                        'connect_timeout' => 1,
+                        'body' => json_encode($message_error)
+                    ]);
+                }
+            }catch (\Throwable $e){
+                writeLog('bot_error', '机器人推送失败');
+            }
+        }
+        $this->insertError($data['code'] ?? 500, $data['msg'] ?? 'error', $this->param);
+        return  $this->show($data['code'] ?? 500, $data['msg'] ?? 'error', $this->param);
+    }
+
+    //总后台的数据插入数据库
+    public function senterCreateData($data)
+    {
+        $GameIDs = $this->distinct($data, 'GameID');
+        $insert = [];
+        $update = [];
+        foreach ($data as $v) {
+            if(!$this->matchName($v['username']))
+                continue;
+            $array = [
+                'g_id' => $this->gameInfo->g_id,
+                'GameID' => $v['GameID'],   //游戏代码
+                'username' => $v['username'],  //玩家账号
+                'AllBet' => $v['AllBet'],//总下注
+                'bunko' => $v['bunko'],       //盈利-下注
+                'bet_money' => $v['bet_money'],//有效投注额
+                'GameStartTime' => $v['GameStartTime'],//游戏开始时间
+                'GameEndTime' => $v['GameStartTime'],  //游戏结束时间
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => $v['updated_at'],
+                'gameCategory' => $v['gameCategory'], //
+                'game_type' => $v['game_type'],
+                'service_money' => $v['service_money'], // + 服务费
+                'bet_info' => $v['bet_info'],
+                'flag' => $v['flag'],
+                'productType' => $v['productType']
+            ];
+            $this->arrInfo($array, $v);
+            if (in_array($v['GameID'], $GameIDs))
+                $update[] = $array;
+            else
+                $insert[] = $array;
+        }
+        count($insert) && $this->saveDB($insert);
+        count($update) && $this->saveDB($update, 'GameID');
+    }
 
     public function getAgent($a_id)
     {
