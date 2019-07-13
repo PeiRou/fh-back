@@ -7,6 +7,7 @@ use App\Bets;
 use App\Capital;
 use App\ChatHongbaoDt;
 use App\Drawing;
+use App\GamesList;
 use App\JqBetHis;
 use App\Recharges;
 use App\Users;
@@ -17,6 +18,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use SameClass\Config\GamesListConfig\GamesListConfig;
 
 class ZhReportMemberStatementDaily implements ShouldQueue
 {
@@ -53,12 +55,16 @@ class ZhReportMemberStatementDaily implements ShouldQueue
         $aHongBao = ChatHongbaoDt::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取彩票投注
         if(strtotime($this->aDateTime) >= strtotime(date('Y-m-d')))
-            $aBet = Bets::memberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+            $aBet = Bets::memberReportDataUser($this->aDateTime,$this->aDateTime.' 23:59:59');
         else
-            $aBet = BetHis::memberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+            $aBet = BetHis::memberReportDataUser($this->aDateTime,$this->aDateTime.' 23:59:59');
 
         //获取第三方投注
-        $aJqBet = JqBetHis::jqReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        $aJqBet = JqBetHis::memberReportDataUser($this->aDateTime,$this->aDateTime.' 23:59:59');
+        //棋牌游戏分类字符
+        $aGameCategory = GamesListConfig::$aGameCode;
+        //获取游戏名
+        $aGameName = GamesList::getNameArray();
         $aArray = [];
         $aArrayBunko = [];
         $dateTime = date('Y-m-d H:i:s');
@@ -124,6 +130,15 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                         'game_id' => 0,
                         'game_name' => '彩票',
                         'user_id' => $iBet->user_id,
+                        'user_account' => $iArray['user_account'],
+                        'user_name' => $iArray['user_name'],
+                        'agent_account' => $iArray['agent_account'],
+                        'agent_name' => $iArray['agent_name'],
+                        'agent_id' => $iArray['agent_id'],
+                        'general_account' => $iArray['general_account'],
+                        'general_name' => $iArray['general_name'],
+                        'general_id' => $iArray['general_id'],
+                        'gameCategory' => $iBet->gameCategory,
                         'bet_bunko' => round($sumBunko + $back_money,2),
                         'date' => $iBet->date,
                         'dateTime' => $time,
@@ -139,8 +154,17 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                     $aArray[$kArray]['bet_bunko'] += empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko;
                     $aArrayBunko[] = [
                         'game_id' => $iJqBet->game_id,
-                        'game_name' => $iJqBet->game_name,
+                        'game_name' => ($aGameCategory[$iJqBet->gameCategory]?:'未知分类').'_'.($aGameName[$iJqBet->gameslist_id]?:'未知游戏'),
                         'user_id' => $iJqBet->user_id,
+                        'user_account' => $iArray['user_account'],
+                        'user_name' => $iArray['user_name'],
+                        'agent_account' => $iArray['agent_account'],
+                        'agent_name' => $iArray['agent_name'],
+                        'agent_id' => $iArray['agent_id'],
+                        'general_account' => $iArray['general_account'],
+                        'general_name' => $iArray['general_name'],
+                        'general_id' => $iArray['general_id'],
+                        'gameCategory' => $iJqBet->gameCategory,
                         'bet_bunko' => empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko,
                         'date' => $this->aDateTime,
                         'dateTime' => $time,
@@ -161,6 +185,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
             if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0)
                 ZhReportMemberStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('zhReportMemberStatementInsert'));
         }
+
     }
 
     //队列真实名

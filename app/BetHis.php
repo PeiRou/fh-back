@@ -429,6 +429,25 @@ class BetHis extends Model
         return DB::select($aSql,$aArray);
     }
 
+    public static function memberReportDataUser($startTime = '',$endTime = ''){
+        $aSql = "SELECT LEFT(`updated_at`,10) AS `date`,`user_id`,`game_id`,COUNT(`bet_id`) AS `idCount`,SUM(`bet_money`) AS `betMoneySum`,
+                  SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bet_money` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bet_money` ELSE 0 END) END) AS `sumWinbet`,
+                  SUM(CASE WHEN `game_id` IN(90,91) THEN `nn_view_money` ELSE (CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE `bunko` END) END) AS `sumBunko`,
+                  SUM(`bet_money` * `play_rebate`) AS `back_money` 
+                  FROM `bet_his` WHERE 1 AND `testFlag` IN(0,2) AND `bet_his`.`status` = 1 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `updated_at` >= :startTime";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `updated_at` <= :endTime";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `date`,`user_id` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
     public static function betMemberReportData($startTime = '',$endTime = ''){
         $aSql = "SELECT LEFT(`updated_at`,10) AS `date`,`user_id`,COUNT(`bet_id`) AS `idCount`,SUM(`bet_money`) AS `betMoneySum`,
                   SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bet_money` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bet_money` ELSE 0 END) END) AS `sumWinbet`,
