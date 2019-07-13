@@ -165,4 +165,71 @@ class GamesList extends Base
         'YOPLAY' => 'YOPLAY',
     ];
 
+    const Config = [
+        //Lotus - 真人
+        '20' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 25,
+                'gameType' => 'LIVE',
+            ]
+        ],
+        //Ameba（AE）- 电子
+        '22' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 17,
+                'gameType' => 'RNG',
+            ]
+        ],
+        //Lotus - 电子
+        '23' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 25,
+                'gameType' => 'RNG',
+            ]
+        ],
+        //IBC（沙巴） - 体育
+        '25' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 30,
+                'gameType' => 'SPORTS',
+            ]
+        ],
+        //PT - 真人
+        '26' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 3,
+                'gameType' => 'LIVE',
+            ]
+        ],
+        //PT - 电子
+        '27' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 3,
+                'gameType' => 'RNG',
+            ]
+        ],
+        //PT - 捕鱼
+        '28' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 3,
+                'gameType' => 'FISH',
+            ]
+        ],
+        //MG - 电子
+        '29' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 43,
+                'gameType' => 'RNG',
+            ]
+        ],
+    ];
+
 }

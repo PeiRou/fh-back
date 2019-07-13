@@ -80,6 +80,7 @@ class WSRepository extends BaseRepository
                 'service_money' => 0,
                 'game_type' => '棋牌游戏',
                 'flag' => 1,
+                'game_id' => 17,
             ];
 
             $user = $this->getUser($array['username']);

@@ -3,6 +3,7 @@
 
 namespace App\Repository\GamesApi\Card;
 
+use App\GamesList;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -99,6 +100,7 @@ class WSGJRepository extends BaseRepository
                 'sessionId' => $v['sessionId'] ?? '',  //会话标识
                 'bet_info' => json_encode($v['additionalDetails'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?? '',  //额外细节
                 'flag' => 1,
+                'game_id' => $this->getGameId($v),
             ];
 
             $user = $this->getUser($array['username']);
@@ -112,6 +114,16 @@ class WSGJRepository extends BaseRepository
         return $this->insertDB($arr);
     }
 
+    public function getGameId($data = [])
+    {
+        $res = GamesList::Config;
+        foreach ($res as $k=>$v){
+            if($data['gameCategory'] == $v['param']['gameType']){
+                return $k;
+            }
+        }
+        return 0;
+    }
 
     protected function errorMessage($code){
         $code = (int)$code;
