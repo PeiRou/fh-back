@@ -171,7 +171,7 @@ class GamesList extends Base
         foreach ($aData as $iData){
             $aArray[$iData->game_id] = $iData->name;
         }
-        return $aData;
+        return $aArray;
     }
 
 }
