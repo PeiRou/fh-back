@@ -63,7 +63,7 @@ class AddLogHandle
 //            }
             //细化操作日志
             try{
-                $request->HandleLogInstance = new \App\Repository\HandleLog\BaseRepository($request, $id, $data, $table);
+//                $request->HandleLogInstance = new \App\Repository\HandleLog\BaseRepository($request, $id, $data, $table);
             }catch (\Exception $e){
                 //修改日志失败
                 writeLog('error', print_r($e->getPrevious(), 1));
