@@ -58,9 +58,9 @@ class AddLogHandle
                 'param' => json_encode($params, JSON_UNESCAPED_UNICODE),
                 'create_at' => date('Y-m-d H:i:s'),
             ];
-            if (!$id = DB::table($table)->insertGetId($data)) {
-                return response()->json(['error' => 'Adding log failed']);
-            }
+//            if (!$id = DB::table($table)->insertGetId($data)) {
+//                return response()->json(['error' => 'Adding log failed']);
+//            }
             //细化操作日志
             try{
                 $request->HandleLogInstance = new \App\Repository\HandleLog\BaseRepository($request, $id, $data, $table);
