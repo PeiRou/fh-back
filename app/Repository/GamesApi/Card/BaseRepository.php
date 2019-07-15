@@ -108,6 +108,7 @@ class BaseRepository
                 'game_type' => $this->getGameType($data['ServerID'][$k]),
                 'service_money' => $data['Revenue'][$k],// + 服务费
                 'flag' => 1,
+                'game_id' => $this->getGameId([]),
             ];
 
             $user = $this->getUser($array['username']);
@@ -363,7 +364,8 @@ class BaseRepository
                 'service_money' => $v['service_money'], // + 服务费
                 'bet_info' => $v['bet_info'],
                 'flag' => $v['flag'],
-                'productType' => $v['productType']
+                'productType' => $v['productType'],
+                'game_id' => $this->getGameId($v),
             ];
             $this->arrInfo($array, $v);
             if (in_array($v['GameID'], $GameIDs))
@@ -373,6 +375,11 @@ class BaseRepository
         }
         count($insert) && $this->saveDB($insert);
         count($update) && $this->saveDB($update, 'GameID');
+    }
+
+    public function getGameId($data = [])
+    {
+        return $this->gameInfo->g_id;
     }
 
     public function getAgent($a_id)

@@ -221,6 +221,20 @@ class AGRepository extends BaseRepository
         }
         return $r;
     }
+
+    public function getGameId($data = [])
+    {
+        if($data['gameCategory'] == 'LIVE'){
+            return 19;
+        }elseif ($data['gameCategory'] == 'RNG'){
+            return 21;
+        }elseif ($data['gameCategory'] == 'FISH'){
+            return 24;
+        }else{
+            return 0;
+        }
+    }
+
     /** ************************************************************************************************* */
     public function All()
     {

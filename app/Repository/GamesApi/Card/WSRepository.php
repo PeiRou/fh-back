@@ -68,8 +68,8 @@ class WSRepository extends BaseRepository
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['betOrderNo'],   //游戏代码
                 'username' => $v['username'],   //玩家账号
-                'AllBet' => $v['validBetAmount'],//总下注
-//                'AllBet' => abs($v['netPnl']),//总下注
+//                'AllBet' => $v['validBetAmount'],//总下注
+                'AllBet' => abs($v['netPnl']) + $v['rake'],//总下注
                 'bet_money' => abs($v['netPnl']),//总下注
                 'bunko' => $v['netPnl'],       //盈利
                 'GameStartTime' => $v['betTime'] ?? $v['endTime'],//游戏开始时间
@@ -80,6 +80,7 @@ class WSRepository extends BaseRepository
                 'service_money' => 0,
                 'game_type' => '棋牌游戏',
                 'flag' => 1,
+                'game_id' => 17,
             ];
 
             $user = $this->getUser($array['username']);

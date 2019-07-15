@@ -54,6 +54,7 @@ class KXRepository extends BaseRepository
                 'game_type' => $this->getGameType($data['gtype'][$k]).self::rtype[$data['rtype'][$k]],
                 'service_money' => 0,
                 'flag' => 1,
+                'game_id' => 30,
             ];
 
             $user = $this->getUser($array['username']);

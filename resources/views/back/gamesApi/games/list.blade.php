@@ -66,27 +66,7 @@
             <div class="tree">
                 <ul id="treeDemo" class="ztree"></ul>
             </div>
-<<<<<<< HEAD
         </form>
-=======
-        </div>
-        <table id="example" class="ui small selectable celled striped table" cellspacing="0" width="100%">
-            <thead>
-            <tr>
-                <th>父级栏目</th>
-                <th>游戏ID</th>
-                <th>游戏名称</th>
-                <th>预览图(电脑端)</th>
-                <th>预览图(手机端)</th>
-                <th>使用接口</th>
-                {{--<th>类型</th>--}}
-                <th>开关</th>
-                <th>排序</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-        </table>
->>>>>>> 89175fa434c6cd516d1b9ffbaf1685cebebccfb7
     </div>
 @endsection
 

@@ -62,6 +62,7 @@ class BBINRepository extends BaseRepository
                 'service_money' => 0, // + 服务费
                 'bet_info' => json_encode($v, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
                 'flag' => 1,
+                'game_id' => $this->getGameId($v),
             ];
 
             $user = $this->getUser($array['username']);
@@ -75,6 +76,20 @@ class BBINRepository extends BaseRepository
 
         return $this->insertDB($arr);
     }
+
+    public function getGameId($data = [])
+    {
+        if($data['gameCategory'] == 'SPORTS'){
+            return 32;
+        }elseif($data['gameCategory'] == 'LIVE'){
+            return 33;
+        }elseif($data['gameCategory'] == 'RNG'){
+            return 34;
+        }else{
+            return 0;
+        }
+    }
+
     //插入数据库
     public function insertDB($data){
         $table = DB::table('jq_bet');
