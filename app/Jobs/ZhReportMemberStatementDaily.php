@@ -150,7 +150,6 @@ class ZhReportMemberStatementDaily implements ShouldQueue
             }
 
             foreach ($aJqBet as $iJqBet){
-                Log::info($iJqBet->gameslist_id);
                 if($iArray['user_id'] == $iJqBet->user_id && !empty($iJqBet->gameslist_id)){
                     $aArray[$kArray]['bet_count'] += empty($iJqBet->bet_count)?0:$iJqBet->bet_count;
                     $aArray[$kArray]['bet_bunko'] += empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko;
