@@ -12,6 +12,11 @@ class Capital extends Model
     protected $primaryKey = 'capital_id';
 
     //类型选项
+    //游戏类型选项包括
+
+    public static $includePlayTypeOption = [
+        't05'
+    ];
     public static $playTypeOption = [
         't01' => '充值',
         't02' => '退本金',
@@ -42,11 +47,7 @@ class Capital extends Model
         't27' => '冻结',
         't28' => '推广人佣金',
         't29' => '冻结[退水金额]',
-    ];
-
-    //游戏类型选项包括
-    public static $includePlayTypeOption = [
-        't05'
+        't30' => '第三方游戏上分失败退回',
     ];
 
     //明细时间
