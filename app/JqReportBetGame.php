@@ -34,7 +34,7 @@ class JqReportBetGame extends Model
     //获取代理棋牌投注
     public static function betAgentReportData($startTime = '',$endTime = ''){
         $aSql = "SELECT SUM(`bet_count`) AS `bet_count`,SUM(`bet_bunko`) AS `bet_bunko`,`agent_id`,`gameslist_id`,`gameCategory`
-                    FROM `jq_report_bet_game` WHERE 1";
+                    FROM `jq_report_bet_game` WHERE gameslist_id > 0";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `date` >= :startTime";
@@ -54,7 +54,7 @@ class JqReportBetGame extends Model
                      `jq_report_bet_game`.`gameslist_id`,`jq_report_bet_game`.`gameCategory`,`agent`.`gagent_id`
                     FROM `jq_report_bet_game` 
                     JOIN `agent` ON `agent`.a_id = `jq_report_bet_game`.agent_id
-                    WHERE 1";
+                    WHERE `jq_report_bet_game`.`gameslist_id` > 0";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `jq_report_bet_game`.`date` >= :startTime";
