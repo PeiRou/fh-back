@@ -82,6 +82,7 @@ class JqBetHis extends Model
                 WHERE
                   `date_time` >= :startTime 
                   AND `date_time` <= :endTime 
+                  AND `gameslist_id` > 0
                 GROUP BY
                     `user_id`,`gameslist_id` 
                 ";

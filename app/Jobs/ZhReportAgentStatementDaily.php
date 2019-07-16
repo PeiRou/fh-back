@@ -140,11 +140,11 @@ class ZhReportAgentStatementDaily implements ShouldQueue
             }
 
             foreach ($aJqBet as $iJqBet){
-                if($iArray['agent_id'] == $iJqBet->agent_id){
+                if($iArray['agent_id'] == $iJqBet->agent_id && !empty($iJqBet->gameslist_id)){
                     $aArray[$kArray]['bet_count'] += empty($iJqBet->bet_count)?0:$iJqBet->bet_count;
                     $aArray[$kArray]['bet_bunko'] += empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko;
                     $aArrayBunko[] = [
-                        'game_id' => empty($iJqBet->gameslist_id)?-1:$iJqBet->gameslist_id,
+                        'game_id' => $iJqBet->gameslist_id,
                         'game_name' => (isset($aGameCategory[$iJqBet->gameCategory])?$aGameCategory[$iJqBet->gameCategory]:'默认分类').'_'.(isset($aGameName[$iJqBet->gameslist_id])?$aGameName[$iJqBet->gameslist_id]:'默认游戏'),
                         'agent_id' => $iJqBet->agent_id,
                         'gameCategory' => $iJqBet->gameCategory,
