@@ -238,6 +238,7 @@ class RGRepository extends BaseRepository
                     'bet_info' => '',
                     'flag' => $v['state'] == 1 ? 1 : $v['flag'],
                     'productType' => null,
+                    'game_id' => 35,
                 ];
                 $this->arrInfo($array, $v);
                 if (in_array($v['id'], $GameIDs))
