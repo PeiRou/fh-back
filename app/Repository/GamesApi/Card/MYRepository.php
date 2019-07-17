@@ -9,6 +9,8 @@
 namespace App\Repository\GamesApi\Card;
 
 
+use Illuminate\Support\Facades\DB;
+
 class MYRepository extends BaseRepository
 {
     public $userTag = 1; //默认是正式账户
@@ -243,10 +245,125 @@ class MYRepository extends BaseRepository
 
 
     public function betList(){
+        /*-------------确定局号开始----------------*/
+        $StartGameSequenceID = 0;
+        if(isset($this->param['toTime'])){
+            $time = date('Y-m-d H:i:s',$this->param['toTime']);
+            $res = DB::table('jq_bet')->where('GameStartTime',$time)->where('g_id',$this->gameInfo->g_id)->first();
+            if(!empty($res)){
+                $StartGameSequenceID = $res->GameID;
+            }
+        }else {
+            $res = DB::table('jq_bet')->where('g_id',$this->gameInfo->g_id)->orderByDesc('GameID')->get();
+            if(!$res->isEmpty()){
+                $StartGameSequenceID = $res->max('GameID');
+            }
+        }
+        /*-------------确定局号结束----------------*/
+        $res = $this->getBetList($StartGameSequenceID); //拉取注单
+        $res = json_decode($res,true);
+        return $res;
+    }
+
+    private function getBetList($StartGameSequenceID=""){
         $data = [
             'VenderNo' => $this->Config['vender_no'],
             'SiteNo' => $this->Config['agent'],
-            'StartGameSequenceID'
+            'StartGameSequenceID' => $StartGameSequenceID,
+            'BetCodeLanguage' => 'zh_cn',
+            'NowDateTime' => $this->NowDateTime,
         ];
+        $sign = $this->sign($data);
+        unset($data['NowDateTime']);
+        $url = $this->Config['get_game_detail_api'].'?'.http_build_query($data).'&NowDateTime='.$this->NowDateTime.'&MD5DATA='.$sign;
+        $res = $this->curl_get($url);
+        return $res;
+    }
+
+    public function createData($aData){
+        $GameIDs = $this->distinct($aData, 'GameSequenceID');
+        $aArray = array_chunk($aData,1000);
+        foreach ($aArray as $data) {
+            $insert = [];
+            $update = [];
+            foreach ($data as $v) {
+                if(!preg_match("/^".$this->getVal('agent')."/", $v['MemberName']))
+                    continue;
+                $array = [
+                    'g_id' => $this->gameInfo->g_id,
+                    'GameID' => $v['GameSequenceID'],   //游戏代码
+                    'username' => $v['MemberName'],  //玩家账号
+                    'AllBet' => $v['BetMoney'],//总下注
+                    'bunko' => $v['WinLoseMoney'],       //盈利-下注
+                    'bet_money' => $v['ValidBetMoney'],//有效投注额
+                    'GameStartTime' => $v['BetDateTime'],//游戏开始时间
+                    'GameEndTime' => $v['CountDateTime'] ?? $v['BetDateTime'],  //游戏结束时间
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => $v['CountDateTime'] ?? $v['BetDateTime'],
+                    'gameCategory' => 'LIVE', //
+                    'game_type' => $this->getGameType($v['GameID']),
+                    'service_money' => 0, // + 服务费
+                    'bet_info' => '',
+                    'flag' => $v['State'] == 2 ? 1 : $v['State'],
+                    'productType' => null,
+                    'game_id' => 36,
+                ];
+                $this->arrInfo($array, $v);
+                if (in_array($v['GameSequenceID'], $GameIDs))
+                    $update[] = $array;
+                else
+                    $insert[] = $array;
+            }
+            count($insert) && $this->saveDB($insert);
+            count($update) && $this->saveDB($update, 'GameID');
+        }
+    }
+    private function arrInfo(&$array, $v, $key = 'MY')
+    {
+        $user = $this->getUser($array['username'], 'platformType', $key);
+        $array['username'] = $user->username ?? $array['username'];
+        $array['agent'] = $user->agent ?? 0;
+        $array['user_id'] = $user->id ?? 0;
+        $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';
+        $array['agent_name'] = $this->getAgent($user->agent ?? 0)->name ?? '';
+    }
+    public function distinct($data, $val = '')
+    {
+        $GameID = array_map(function($v)use($val){
+            return $v[$val] ?? '';
+        },$data);
+        return $this->getExists($GameID);
+    }
+
+    public function getExists($ids = [])
+    {
+        $GameIDs = [];
+        if(count($ids)) {
+            $where = ' g_id = ' . $this->gameInfo->g_id . ' and GameID in ("' . implode('","', $ids) . '")';
+            $GameIDs = array_map(function($v){
+                return $v->GameID;
+            },DB::select('select GameID from jq_bet
+                where 1 and '.$where.'
+                union
+                select GameID from jq_bet_his
+                where 1 and '.$where));
+        }
+        return $GameIDs;
+    }
+
+    public function getGameType($key)
+    {
+        $data = [
+            'Baccarat' => '百家乐',
+            'Roulette' => '轮盘',
+            'LongHu' => '龙虎',
+            'BIDBaccarat' => '竞眯百家乐',
+            'VipBaccarat' => '百家乐包桌',
+            'Dice' => '骰子',
+            'INSBaccarat' => '保险百家乐',
+            'NiuNiu' => '牛牛',
+            'ThreeCardPoker' => '三王牌',
+        ];
+        return $data[$key];
     }
 }
