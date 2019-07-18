@@ -55,6 +55,7 @@ class DailyReconciliationTotal extends Command
                 'alipay'=> [],
                 'alipaySm'=> [],
                 'weixin' => [],
+                'weixinSm'=> [],
                 'cft' => [],
                 'ysf' => [],
                 'draw' => [],
@@ -146,6 +147,14 @@ FROM(select username,pay_online_id,payType,amount,rebate_or_fee,updated_at,statu
 INNER JOIN (select id ,payeeName from pay_online_new where rechType ='weixin') AS B ON A.pay_online_id = B.id) AS C
 GROUP BY rechName";
         $weixin = DB::select($weixinsql,[$date.' 00:00:00',$date.' 23:59:59']);
+
+        /*微信支付扫码*/
+        $weixinSmsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount'
+FROM(SELECT B.id AS 'id',B.payeeName AS 'rechName',A.amount AS 'amount',A.rebate_or_fee AS 'rebate_or_fee',A.updated_at AS 'updated_at',A.status AS 'status'
+FROM(select username,pay_online_id,payType,amount,rebate_or_fee,updated_at,status from recharges where username = (select username from users where testFlag = '0' and recharges.username = users.username) and payType = 'weixinSm' and status ='2' AND updated_at BETWEEN ? AND ? ) AS A
+INNER JOIN (select id ,payeeName from pay_online_new where rechType ='weixinSm') AS B ON A.pay_online_id = B.id) AS C
+GROUP BY rechName";
+        $weixinSm = DB::select($weixinSmsql,[$date.' 00:00:00',$date.' 23:59:59']);
 
         /*财付通*/
         $cftsql = "SELECT rechName AS 'rechname',SUM(amount) AS 'amount',SUM(rebate_or_fee) AS 'giftamount'
@@ -410,6 +419,7 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
             'alipay'=> $this->arrayunset($alipay),                  //支付宝支付
             'alipaySm'=> $this->arrayunset($alipaySm),              //支付宝扫码
             'weixin' => $this->arrayunset($weixin),                 //微信支付
+            'weixinSm' => $this->arrayunset($weixinSm),             //微信扫码
             'cft' => $this->arrayunset($cft),                       //财付通
             'ysf' => $this->arrayunset($ysf),                       //云闪付
             'draw' => $this->arrayunset($draw),                     //提款
@@ -520,7 +530,7 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
         return $array;
     }
 
-    //彩票会员输赢（含退水）--重新执行，综合盘报表没有数据才进来这里
+    //彩票会员输赢（含退水）--重新执行，综合报表没有数据才进来这里
     private function bunkofactdata($date){
         //---amount彩票会员输赢（不含退水）/ back_money(退水)
         $today = date('Y-m-d');
