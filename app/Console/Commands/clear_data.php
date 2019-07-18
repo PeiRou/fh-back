@@ -210,10 +210,10 @@ class clear_data extends Command
                 $redis->setex('clear-jq-bet',$this->time,$this->stoptime);
             }else{
                 try {
-                    $sql = "INSERT INTO jq_bet_his SELECT * FROM jq_bet WHERE  updated_at <= '{$clearDate1}' LIMIT 1000";
+                    $sql = "INSERT INTO jq_bet_his SELECT * FROM jq_bet WHERE `flag` = 1 AND  updated_at <= '{$clearDate1}' LIMIT 1000";
                     $res = DB::connection('mysql::write')->statement($sql);
                     writeLog('clear','table insert into jq_bet_his :'.$res);
-                    $sql = "DELETE FROM jq_bet WHERE  updated_at <= '{$clearDate1}' LIMIT 1000";
+                    $sql = "DELETE FROM jq_bet WHERE `flag` = 1 AND  updated_at <= '{$clearDate1}' LIMIT 1000";
                     $res = DB::connection('mysql::write')->statement($sql);
                     writeLog('clear','table delete jq_bet :'.$res);
                 }catch (\Exception $e){
