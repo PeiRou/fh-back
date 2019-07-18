@@ -64,9 +64,10 @@ class BaseRepository
             $num = count($data);
         }else{
             $a = '更新';
-            $num = $res = \App\GamesApi::batchUpdate($data, $whereField,$table);
-            if(!$res){
-                $num = $res = \App\GamesApi::batchUpdate($data, $whereField,'jq_bet_his');
+            $res = \App\GamesApi::batchUpdate($data, $whereField,$table);
+            $num = count($data);
+            if(!$res || $res < $num){
+                \App\GamesApi::batchUpdate($data, $whereField,'jq_bet_his');
             }
         }
         if($res){
