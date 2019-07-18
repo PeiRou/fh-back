@@ -92,6 +92,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                 'bet_bunko' => 0.00,
                 'handling_fee' => 0.00,
                 'envelope_money' => 0.00,
+                'bet_money' => 0.00
             ];
         }
 
@@ -124,6 +125,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
             foreach ($aBet as $iBet){
                 if($iArray['user_id'] == $iBet->user_id && $iArray['date'] == $iBet->date){
                     $aArray[$kArray]['bet_count'] = empty($iBet->idCount)?0:$iBet->idCount;
+                    $aArray[$kArray]['bet_money'] = empty($iBet->betMoneySum)?0:$iBet->betMoneySum;
                     $sumBunko = empty($iBet->sumBunko)?0.00:$iBet->sumBunko;
                     $back_money = empty($iBet->back_money)?0.00:$iBet->back_money;
                     $aArray[$kArray]['bet_bunko'] = round($sumBunko + $back_money,2);
@@ -141,6 +143,8 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                         'general_id' => $iArray['general_id'],
                         'gameCategory' => 'CP',
                         'bet_bunko' => round($sumBunko + $back_money,2),
+                        'bet_money' => empty($iBet->betMoneySum)?0.00:$iBet->betMoneySum,
+                        'bet_count' => empty($iBet->idCount)?0:$iBet->idCount,
                         'date' => $iBet->date,
                         'dateTime' => $time,
                         'created_at' => $dateTime,
@@ -153,6 +157,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                 if($iArray['user_id'] == $iJqBet->user_id && !empty($iJqBet->gameslist_id)){
                     $aArray[$kArray]['bet_count'] += empty($iJqBet->bet_count)?0:$iJqBet->bet_count;
                     $aArray[$kArray]['bet_bunko'] += empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko;
+                    $aArray[$kArray]['bet_money'] += empty($iJqBet->bet_money)?0.00:$iJqBet->bet_money;
                     $aArrayBunko[] = [
                         'game_id' => $iJqBet->gameslist_id,
                         'game_name' => (isset($aGameCategory[$iJqBet->gameCategory])?$aGameCategory[$iJqBet->gameCategory]:'默认分类').'_'.(isset($aGameName[$iJqBet->gameslist_id])?$aGameName[$iJqBet->gameslist_id]:'默认游戏'),
@@ -167,6 +172,8 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                         'general_id' => $iArray['general_id'],
                         'gameCategory' => $iJqBet->gameCategory,
                         'bet_bunko' => empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko,
+                        'bet_money' => empty($iJqBet->bet_money)?0.00:$iJqBet->bet_money,
+                        'bet_count' => empty($iJqBet->bet_count)?0:$iJqBet->bet_count,
                         'date' => $this->aDateTime,
                         'dateTime' => $time,
                         'created_at' => $dateTime,

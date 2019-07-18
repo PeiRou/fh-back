@@ -33,7 +33,7 @@ class JqReportBetGame extends Model
 
     //获取代理棋牌投注
     public static function betAgentReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT SUM(`bet_count`) AS `bet_count`,SUM(`bet_bunko`) AS `bet_bunko`,`agent_id`,`gameslist_id`,`gameCategory`
+        $aSql = "SELECT SUM(`bet_count`) AS `bet_count`, SUM(`bet_money`) AS `bet_money`,SUM(`bet_bunko`) AS `bet_bunko`,`agent_id`,`gameslist_id`,`gameCategory`
                     FROM `jq_report_bet_game` WHERE gameslist_id > 0";
         $aArray = [];
         if(!empty($startTime)){
@@ -50,7 +50,7 @@ class JqReportBetGame extends Model
 
     //获取总代理棋牌投注
     public static function betGeneralReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT SUM(`jq_report_bet_game`.`bet_count`) AS `bet_count`,SUM(`jq_report_bet_game`.`bet_bunko`) AS `bet_bunko`,
+        $aSql = "SELECT SUM(`jq_report_bet_game`.`bet_count`) AS `bet_count`, SUM(`jq_report_bet_game`.`bet_money`) AS `bet_money`,SUM(`jq_report_bet_game`.`bet_bunko`) AS `bet_bunko`,
                      `jq_report_bet_game`.`gameslist_id`,`jq_report_bet_game`.`gameCategory`,`agent`.`gagent_id`
                     FROM `jq_report_bet_game` 
                     JOIN `agent` ON `agent`.a_id = `jq_report_bet_game`.agent_id
