@@ -230,6 +230,8 @@ class AGRepository extends BaseRepository
             return 21;
         }elseif ($data['gameCategory'] == 'FISH'){
             return 24;
+        }elseif ($data['gameCategory'] == 'YOPLAY'){
+            return 21;
         }else{
             return 0;
         }

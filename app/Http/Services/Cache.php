@@ -34,7 +34,7 @@ trait Cache
         $cache = self::CaCheInstance();
         if(!($val = $cache->get($key, false))){
             $val = call_user_func($closure, ...$args);
-            if(!$nullIsCache && (empty($val) || !$val || !count($val)))
+            if(!$nullIsCache && (empty($val) || !$val || !count((array)$val)))
                 return $val;
             $cache->put($key, $val, $time);
         }
