@@ -84,7 +84,8 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
                 'activity_money' => 0.00,
                 'envelope_money' => 0.00,
                 'handling_fee' => 0.00,
-                'bet_bunko' => 0.00
+                'bet_bunko' => 0.00,
+                'bet_money' => 0.00
             ];
         }
         foreach ($aArray as $kArray => $iArray){
