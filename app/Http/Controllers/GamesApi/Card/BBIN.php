@@ -15,7 +15,7 @@ class BBIN extends Base{
 
             foreach ($gamekind as $k => $v) {
                 foreach ($v['subgamekinds'] ?? [0] as $kk => $vv) {
-                    $this->repo->param['rounddate'] = $this->repo->param['rounddate'] ?? date('Y-m-d', $param['toTime'] ?? ($this->repo->getTime() - 60 * 10));//防止前一天最后5分钟没拉
+                    $this->repo->param['rounddate'] = $this->repo->param['rounddate'] ?? date('Y-m-d', ($param['toTime'] - 60 * 5) ?? ($this->repo->getTime() - 60 * 10));//防止前一天最后5分钟没拉
                     $this->repo->param['gamekind'] = $k;
                     $this->repo->param['subgamekind'] = $vv;
                     $this->repo->param['page'] = 0;
