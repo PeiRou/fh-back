@@ -8,6 +8,7 @@ use App\AgentReportBase;
 use App\AgentReportReview;
 use App\Bets;
 use App\Http\Proxy\GetDate;
+use App\ZhReportMemberBunko;
 use Illuminate\Console\Command;
 
 class AgentSettle extends Command
@@ -50,14 +51,15 @@ class AgentSettle extends Command
         //$currentMonth = ['start'=>'2018-05-01','end'=>'2018-06-30'];
         $yearMonth = date('Y-m',strtotime($currentMonth['start']));
         $yearMonthDay = date('Y-m-d H:i:s',strtotime($currentMonth['start']));
+        //获取平台配置
+        $aAgentBaseInfo = AgentReportBase::getAgentBaseInfo();
         //获取上月的前两月时间段
         $beforeMonth = $date->beforeTwoMonthDate();
         //获取上月的前两月统计数据
         $aMemberBeforeDatas = AgentReport::getAccordingDateData($beforeMonth);
         //获取需要统计的会员
-        $aMemberDatas = Bets::preliminaryManualSettlement($currentMonth);
-        //获取平台配置
-        $aAgentBaseInfo = AgentReportBase::getAgentBaseInfo();
+//        $aMemberDatas = Bets::preliminaryManualSettlement($currentMonth);
+        $aMemberDatas = ZhReportMemberBunko::getDataMemberBunko($currentMonth,json_decode($aAgentBaseInfo->statistics_game,true));
         //获取所有代理商
         $aAgentAlls = Agent::getAgentAllBunko();
         //代理结算信息整合
