@@ -143,8 +143,6 @@ class GamesApiListController extends Controller
 //            'param' => json_encode($param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'type' => (int)$request->type,
             'open' => $request->open == 'on' ? 1 : 0,
-            'logo_pc' => $request->logo_pc??'',
-            'logo_mobile' => $request->logo_mobile??'',
 //            'sort' => 0,
         ];
         if(isset($request->id)){

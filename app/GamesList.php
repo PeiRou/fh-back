@@ -17,7 +17,7 @@ class GamesList extends Base
 
     public static function getArr($param = [])
     {
-        $arr = self::select('id', 'pid', 'name')->get();
+        $arr = self::select('game_id', 'pid', 'name')->get();
         return self::getTree($arr->toArray());
     }
     public static function getTreeList($param = [])

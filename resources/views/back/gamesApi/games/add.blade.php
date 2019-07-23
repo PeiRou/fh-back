@@ -14,7 +14,7 @@
             <select class="ui dropdown" name="pid" id="pid" style='height:32px !important'>
                 <option value="0">无父级</option>
                 @foreach($p as $v)
-                    <option value="{{ $v['id'] }}" @if(isset($data->pid) && $v['id'] == $data->pid) selected = "selected" @endif>{{ '  |'.str_repeat('__', $v['level'] + 1) }}{{ $v['name'] }}</option>
+                    <option value="{{ $v['game_id'] }}" @if(isset($data->pid) && $v['game_id'] == $data->pid) selected = "selected" @endif>{{ '  |'.str_repeat('__', $v['level'] + 1) }}{{ $v['name'] }}</option>
                 @endforeach
             </select>
         </div>
@@ -29,22 +29,6 @@
         <label>游戏名称</label>
         <div class="ui input icon">
             <input type="text" name="name" id="name"  value="{{ $data->name ?? '' }}"/>
-        </div>
-    </div>
-    <div class="field">
-        <label>电脑端图片</label>
-        <div class="ui input icon">
-            {{--<input type="text" name="qrCode"  placeholder=""/>--}}
-            <textarea style="display: none" id="logo_pc" name="logo_pc">{{$data->logo_pc??''}}</textarea>
-            <input type="file" id="file_logo_pc">
-        </div>
-    </div>
-    <div class="field">
-        <label>移动端图片</label>
-        <div class="ui input icon">
-            {{--<input type="text" name="qrCode"  placeholder=""/>--}}
-            <textarea style="display: none" id="logo_mobile" name="logo_mobile">{{$data->logo_mobile??''}}</textarea>
-            <input type="file" id="file_logo_mobile">
         </div>
     </div>
     <div class="field">
