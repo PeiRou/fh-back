@@ -254,11 +254,14 @@ class MYRepository extends BaseRepository
                 $StartGameSequenceID = $res->GameID;
             }
         }else {
-            $res = DB::table('jq_bet')->where('g_id',$this->gameInfo->g_id)->orderByDesc('GameID')->get();
+//            $res = DB::table('jq_bet')->where('g_id',$this->gameInfo->g_id)->orderByDesc('GameID')->get();
+            $res = DB::table('jq_bet_his')->where('g_id',$this->gameInfo->g_id)->orderByDesc('GameID')->get();
+//            dd($res);
             if(!$res->isEmpty()){
                 $StartGameSequenceID = $res->max('GameID');
             }
         }
+//        dd($StartGameSequenceID);
         /*-------------确定局号结束----------------*/
         $res = $this->getBetList($StartGameSequenceID); //拉取注单
         $res = json_decode($res,true);
