@@ -161,6 +161,18 @@ class CURL_ALL_THREAD extends Command
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_xylsc');
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_xylft');
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_xylssc');
+            $this->pushData('http://127.0.0.1:9500?thread=next_issue_xy28');
+            $this->pushData('http://127.0.0.1:9500?thread=next_issue_twbgc');
+            $this->pushData('http://127.0.0.1:9500?thread=next_issue_twbg28');
+            $this->pushData('http://127.0.0.1:9500?thread=next_issue_hlsx');
+            $this->pushData('http://127.0.0.1:9500?thread=next_open_xy28');
+            $this->pushData('http://127.0.0.1:9500?thread=next_open_twbgc');
+            $this->pushData('http://127.0.0.1:9500?thread=next_open_twbg28');
+            $this->pushData('http://127.0.0.1:9500?thread=next_open_hlsx');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_xy28');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_twbgc');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_twbg28');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_hlsx');
 
             //组装后一起发送
             $this->sendUrl();

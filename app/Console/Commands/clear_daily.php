@@ -81,6 +81,10 @@ class clear_daily extends Command
         $this->resetId('game_xylft');
         $this->resetId('game_xylsc');
         $this->resetId('game_xylssc');
+        $this->resetId('game_xy28');
+        $this->resetId('game_twbgc');
+        $this->resetId('game_twbg28');
+        $this->resetId('game_hlsx');
         ///---将 计画试算 的ID重置
         $this->resetId('plan_record');
         ///---将 推送消息 的ID重置

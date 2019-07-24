@@ -185,6 +185,10 @@ class clear_data extends Command
             $num_else = $this->clrGameTables('game_xylft', $clearDate62, $num_else);
             $num_else = $this->clrGameTables('game_xylsc', $clearDate62, $num_else);
             $num_else = $this->clrGameTables('game_xylssc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_xy28', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_twbgc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_twbg28', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_hlsx', $clearDate62, $num_else);
             //清-计画试算
             $num_else = $this->clrGameTables('plan_record', $clearDate2, $num_else,'updated_at');
             //清-推送消息

@@ -130,11 +130,23 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunXylsc' => [
             'App\Listeners\RunXylscEventListener',
         ],
-	'App\Events\RunXylft' => [
+	    'App\Events\RunXylft' => [
             'App\Listeners\RunXylftEventListener',
         ],
         'App\Events\RunXylssc' => [
             'App\Listeners\RunXylsscEventListener',
+        ],
+        'App\Events\RunXy28' => [
+            'App\Listeners\RunXy28EventListener',
+        ],
+        'App\Events\RunTwbgc' => [
+            'App\Listeners\RunTwbgcEventListener',
+        ],
+        'App\Events\RunTwbg28' => [
+            'App\Listeners\RunTwbg28EventListener',
+        ],
+        'App\Events\RunHlsx' => [
+            'App\Listeners\RunHlsxEventListener',
         ],
         'App\Events\BackPusherEvent' => [
             'App\Listeners\BackPusherEventListener',

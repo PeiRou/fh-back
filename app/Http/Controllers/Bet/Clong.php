@@ -38,6 +38,13 @@
             'xylsc' => array('id'=>905,'type'=>'car'),  //匈牙利赛车
             'xylft' => array('id'=>906,'type'=>'car'),  //匈牙利飞艇
             'xylssc' => array('id'=>907,'type'=>'ssc'), //匈牙利时时彩
+            'xy28' => array('id'=>84,'type'=>'pcdd'),   //幸运28
+            'twbgc' => array('id'=>42,'type'=>'bjkl8'), //台湾宾果彩
+            'twbg28' => array('id'=>43,'type'=>'pcdd'), //台湾宾果28
+            'hlsx' => array('id'=>2,'type'=>'ssc'),     //欢乐生肖
+            'jndhl8' => array('id'=>40,'type'=>'bjkl8'),//加拿大快乐八
+            'jndssc' => array('id'=>3,'type'=>'ssc'),   //加拿大时时彩
+            'jnd28' => array('id'=>41,'type'=>'pcdd'),  //加拿大28
         );
         //开奖第一行
         private $clong_kaijian1 = array(
