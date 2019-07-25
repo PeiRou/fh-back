@@ -193,10 +193,10 @@ class FYDJRepository extends BaseRepository
                     'AllBet' => $v['BetAmount'],//总下注
                     'bunko' => $v['Money'],       //盈利-下注
                     'bet_money' => $v['BetMoney'],//有效投注额
-                    'GameStartTime' => $v['StartAt'],//游戏开始时间
-                    'GameEndTime' => $v['UpdateAt'] ?? $v['StartAt'],  //游戏结束时间
+                    'GameStartTime' => $v['CreateAt'],//游戏开始时间
+                    'GameEndTime' => $v['UpdateAt'] ?? $v['CreateAt'],  //游戏结束时间
                     'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => $v['UpdateAt'] ?? $v['StartAt'],
+                    'updated_at' => $v['UpdateAt'] ?? $v['CreateAt'],
                     'gameCategory' => 'ELSP', //
                     'game_type' => $v['Category'],
                     'service_money' => 0, // + 服务费
