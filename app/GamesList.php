@@ -163,6 +163,7 @@ class GamesList extends Base
         'FISH' => '捕鱼',
         'SPORTS' => '体育',
         'YOPLAY' => 'YOPLAY',
+        'ELSP' => '电竞',
     ];
 
     const Config = [
