@@ -172,8 +172,8 @@ class FYDJRepository extends BaseRepository
     }
 
     public function createData($aData){
-        $oData = $aData;
-        $aData = $aData['list'];
+//        $oData = $aData;
+//        $aData = $aData['list'];
         $GameIDs = $this->distinct($aData, 'OrderID');
         $aArray = array_chunk($aData,1000);
         foreach ($aArray as $data) {
