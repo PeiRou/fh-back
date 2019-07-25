@@ -26,11 +26,11 @@ class FYDJ extends Base
     public function getBet($param = [])
     {
         $res = $this->repo->betList();
-        if(isset($res['success']) && $res['success'] == 1){
-            $this->repo->createData($res['info']);//组合数据  插入数据库
-            return $this->repo->show(0, 'ok');
-        }else{
+        if(isset($res['error']) && $res['error'] == true){
             return $this->repo->show($res['success'] ?? 500, $res['msg'] ?? 'error');
+        }else{
+            $this->repo->createData($res);//组合数据  插入数据库
+            return $this->repo->show(0, 'ok');
         }
     }
 

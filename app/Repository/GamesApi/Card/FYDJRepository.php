@@ -160,20 +160,24 @@ class FYDJRepository extends BaseRepository
         ];
         $res = $this->curl_post($this->Config['get_log_api'],$data);
         $res = json_decode($res,true);
-        if(!empty($res['info']['list'])){
-            foreach ($res['info']['list'] as $k=>$v){
-                array_push($resData,$v);
+        if($res['success'] == 1) {
+            if (!empty($res['info']['list'])) {
+                foreach ($res['info']['list'] as $k => $v) {
+                    array_push($resData, $v);
+                }
             }
-        }
-        if(count($res['info']['list']) == 20){
-            $PageIndex += 1;
-            $this->toGetBetList($startDate,$endDate,$PageIndex,$resData);
+            if (count($res['info']['list']) == 20) {
+                $PageIndex += 1;
+                $this->toGetBetList($startDate, $endDate, $PageIndex, $resData);
+            }
+        }else{
+            $resData = [
+                'error' => true,
+            ];
         }
     }
 
     public function createData($aData){
-//        $oData = $aData;
-//        $aData = $aData['list'];
         $GameIDs = $this->distinct($aData, 'OrderID');
         $aArray = array_chunk($aData,1000);
         foreach ($aArray as $data) {
@@ -202,7 +206,7 @@ class FYDJRepository extends BaseRepository
                     'game_id' => 38,
                 ];
                 $this->arrInfo($array, $v);
-                if (in_array($v['GameSequenceID'], $GameIDs))
+                if (in_array($v['OrderID'], $GameIDs))
                     $update[] = $array;
                 else
                     $insert[] = $array;
@@ -213,8 +217,8 @@ class FYDJRepository extends BaseRepository
     }
     private function arrInfo(&$array, $v, $key = 'FYDJ')
     {
-        $user = $this->getUser($array['UserName'], 'platformType', $key);
-        $array['username'] = $user->username ?? $array['UserName'];
+        $user = $this->getUser($array['username'], 'platformType', $key);
+        $array['username'] = $user->username ?? $array['username'];
         $array['agent'] = $user->agent ?? 0;
         $array['user_id'] = $user->id ?? 0;
         $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';
