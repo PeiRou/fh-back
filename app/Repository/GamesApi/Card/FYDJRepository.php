@@ -94,9 +94,9 @@ class FYDJRepository extends BaseRepository
             'ID' => $this->param['orderid'],
         ];
         $res = $this->curl_post($this->Config['transfer_api'],$data);
-//        if(empty($res)){
+        if(empty($res)){
             return $this->show(500,$this->code500);
-//        }
+        }
         $res = json_decode($res,true);
         if($res['success'] == 1){
             return  $this->show(0,'',['money'=>$this->param['money']]);
@@ -144,7 +144,7 @@ class FYDJRepository extends BaseRepository
         if(isset($this->param['toTime'])){
             $endDate = date("Y/m/d H:i:s",$this->param['toTime']);
         }
-        $startDate = date("Y/m/d H:i:s",strtotime($endDate) - 3*60);
+        $startDate = date("Y/m/d 00:00:00",strtotime($endDate));
         /*-----------------确定时间结束------------------------*/
         $this->toGetBetList($startDate,$endDate,1,$resData);
         return $resData;
