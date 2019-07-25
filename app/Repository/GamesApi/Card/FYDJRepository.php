@@ -197,7 +197,7 @@ class FYDJRepository extends BaseRepository
                     'GameEndTime' => $v['UpdateAt'] ?? $v['CreateAt'],  //游戏结束时间
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => $v['UpdateAt'] ?? $v['CreateAt'],
-                    'gameCategory' => 'ELSP', //
+                    'gameCategory' => 'YOPLAY', //
                     'game_type' => $v['Category'],
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
