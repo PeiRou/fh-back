@@ -45,6 +45,7 @@ class BBIN extends Base{
         $r = $method == 'BetRecord' ? 'BetRecord' : 'WagersRecordBy';
         if(!empty($res = $this->repo->{$r}($method))){
 //            writeLog($method, json_encode($res, 3));
+            p($res['pagination']);
             if($res['result'] == 1){
                 $this->repo->createData($res['data']);
                 if(count($res['data']) >= $this->repo->param['pagelimit'] ){
