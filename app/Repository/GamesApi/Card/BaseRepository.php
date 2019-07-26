@@ -304,7 +304,6 @@ class BaseRepository
         $this->param['endTime'] = $this->param['endTime'] ?? $param['toTime'] ?? time();
         $this->param['endTime'] = $this->param['endTime'] - 30 * 60;
         $this->param['startTime'] = $this->param['endTime'] - 5 * 60;
-        var_dump($this->param);
         $platform_id = SystemSetting::getValueByRemark1('payment_platform_id');
         $this->param['remark'] = $this->getVal('agent');
         $this->param['g_id'] = $this->gameInfo->g_id;
@@ -315,8 +314,6 @@ class BaseRepository
             ]),
         ]);
         $data = $baseController->sendPlatformOffer('Children/GamesApiGetBet');
-        var_dump(count($data['data']));
-
         if(isset($data['code']) && $data['code'] == 0){
             $this->senterCreateData($data['data']);
         }else{

@@ -36,7 +36,6 @@ class PrivodeController extends Controller{
     public function getBet($param = []){
         $list = GamesApi::getBetList(array_merge($param,['open' => 1]));
         foreach ($list as $k=>$v){
-            p($v->g_id);
             $res = $this->action($v->g_id, 'getBet', $param);
 //            if(isset($res['code']) && $res['code'] != 0){
 //                $this->insertError($v, $res['code'], $res['msg'], $this->repo->param ?? $param);
