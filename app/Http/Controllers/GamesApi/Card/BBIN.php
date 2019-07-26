@@ -12,7 +12,7 @@ class BBIN extends Base{
             $this->sgssdfjk();
         }else {
             $gamekind = isset($this->repo::gamekind[@$param['gamekind']]) ? [$param['gamekind'] => $this->repo::gamekind[@$param['gamekind']]] : $this->repo::gamekind;
-            isset($param['toTime']) && $param['toTime'] = $param['toTime'] - 60 * 5;
+            isset($param['toTime']) && $param['toTime'] = $param['toTime'] - (60 * 5 + 60 * 60 * 12);
             foreach ($gamekind as $k => $v) {
                 foreach ($v['subgamekinds'] ?? [0] as $kk => $vv) {
                     $this->repo->param['rounddate'] = $this->repo->param['rounddate'] ?? date('Y-m-d', ($param['toTime']) ?? ($this->repo->getTime() - 60 * 10));//防止前一天最后5分钟没拉
