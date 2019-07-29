@@ -30,279 +30,63 @@ class ExcelLotterySSC
     }
     //前三
     public function QIANSAN($gameId,$win){
-        $playCate = $this->arrPlayCate['QIANSAN'];
-        $zaliu = 0;
-        if($this->num_1 == $this->num_2 && $this->num_2 == $this->num_3){ //豹子
-            $zaliu = 1;
-            $playId = $this->arrPlayId['QIANSANBAOZI'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //顺子
+        $txt = 'QIANSAN';
+        $playCate = $this->arrPlayCate[$txt];
         $arr = [$this->num_1,$this->num_2,$this->num_3];
         sort($arr);
-        if($arr[0] == 0 && $arr[1] == 1 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['QIANSANSHUNZI'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($arr[0] == 0 && $arr[1] == 8 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['QIANSANSHUNZI'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['QIANSANSHUNZI'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //半顺
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] !== 1 || $arr[1] - $arr[0] !== 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['QIANSANBANSHUN'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //对子
-        if($arr[0] == $arr[1] || $arr[1] == $arr[2]){
-            if($arr[0] !== $arr[2]){
-                $zaliu = 1;
-                $playId = $this->arrPlayId['QIANSANDUIZI'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-        $toString = (string)$arr[0].$arr[1].$arr[2];
-        switch ($toString){
-            case '029':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['QIANSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '039':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['QIANSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '049':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['QIANSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '059':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['QIANSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '069':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['QIANSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '079':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['QIANSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //杂六
-        if($zaliu == 0){
-            $playId = $this->arrPlayId['QIANSANZALIU'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
+        //选三判断豹子。顺子。对子。半顺。杂六。
+        $this->choSan($txt,$arr,$gameId,$playCate,$win);
     }
     //中三
     public function ZHONGSAN($gameId,$win){
-        $playCate = $this->arrPlayCate['ZHONGSAN'];
-        $zaliu = 0;
-        if($this->num_2 == $this->num_3 && $this->num_3 == $this->num_4){ //豹子
-            $zaliu = 1;
-            $playId = $this->arrPlayId['ZHONGSANBAOZI'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //顺子
+        $txt = 'ZHONGSAN';
+        $playCate = $this->arrPlayCate[$txt];
         $arr = [$this->num_2,$this->num_3,$this->num_4];
         sort($arr);
-        if($arr[0] == 0 && $arr[1] == 1 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['ZHONGSANSHUNZI'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($arr[0] == 0 && $arr[1] == 8 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['ZHONGSANSHUNZI'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['ZHONGSANSHUNZI'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //半顺
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] !== 1 || $arr[1] - $arr[0] !== 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['ZHONGSANBANSHUN'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //对子
-        if($arr[0] == $arr[1] || $arr[1] == $arr[2]){
-            if($arr[0] !== $arr[2]){
-                $zaliu = 1;
-                $playId = $this->arrPlayId['ZHONGSANDUIZI'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-        $toString = (string)$arr[0].$arr[1].$arr[2];
-        switch ($toString){
-            case '029':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['ZHONGSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '039':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['ZHONGSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '049':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['ZHONGSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '059':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['ZHONGSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '069':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['ZHONGSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '079':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['ZHONGSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //杂六
-        if($zaliu == 0){
-            $playId = $this->arrPlayId['ZHONGSANZALIU'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
+        //选三判断豹子。顺子。对子。半顺。杂六。
+        $this->choSan($txt,$arr,$gameId,$playCate,$win);
     }
     //后三
     public function HOUSAN($gameId,$win){
-        $playCate = $this->arrPlayCate['HOUSAN'];
-        $zaliu = 0;
-        if($this->num_3 == $this->num_4 && $this->num_4 == $this->num_5){ //豹子
-            $zaliu = 1;
-            $playId = $this->arrPlayId['HOUSANBAOZI'];
-            $winCode = $gameId.$playCate.$playId;
-            $win->push($winCode);
-        }
-        //顺子
+        $txt = 'HOUSAN';
+        $playCate = $this->arrPlayCate[$txt];
         $arr = [$this->num_3,$this->num_4,$this->num_5];
         sort($arr);
-        if($arr[0] == 0 && $arr[1] == 1 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['HOUSANSHUNZI'];
+        //选三判断豹子。顺子。对子。半顺。杂六。
+        $this->choSan($txt,$arr,$gameId,$playCate,$win);
+    }
+    //选三判断豹子。顺子。对子。半顺。杂六。
+    private function choSan($txt,$arr,$gameId,$playCate,$win){
+        //豹子
+        if($arr[0] == $arr[1] && $arr[1] == $arr[2])
+        {
+            $playId = $this->arrPlayId[$txt.'BAOZI'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        if($arr[0] == 0 && $arr[1] == 8 && $arr[2] == 9){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['HOUSANSHUNZI'];
+        }//顺子
+        elseif( ($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] == 1)
+            || implode("",$arr) == '019' || implode("",$arr) == '089')
+        {
+            $playId = $this->arrPlayId[$txt.'SHUNZI'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['HOUSANSHUNZI'];
+        }//对子
+        elseif ($arr[0] == $arr[1] || $arr[1] == $arr[2])
+        {
+            $playId = $this->arrPlayId[$txt.'DUIZI'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        //半顺
-        if($arr[1] - $arr[0] == 1 && $arr[2] - $arr[1] !== 1 || $arr[1] - $arr[0] !== 1 && $arr[2] - $arr[1] == 1){
-            $zaliu = 1;
-            $playId = $this->arrPlayId['HOUSANBANSHUN'];
+        }//半顺
+        elseif($arr[1] - $arr[0] == 1 || $arr[2] - $arr[1] == 1
+            || in_array(implode("",$arr),array('029','039','049','059','069','079')))
+        {
+            $playId = $this->arrPlayId[$txt.'DUIZI'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
-        }
-        //对子
-        if($arr[0] == $arr[1] || $arr[1] == $arr[2]){
-            if($arr[0] !== $arr[2]){
-                $zaliu = 1;
-                $playId = $this->arrPlayId['HOUSANDUIZI'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-            }
-        }
-        $toString = (string)$arr[0].$arr[1].$arr[2];
-        switch ($toString){
-            case '029':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['HOUSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '039':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['HOUSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '049':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['HOUSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '059':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['HOUSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '069':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['HOUSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-            case '079':
-                $zaliu = 1;
-                $playId = $this->arrPlayId['HOUSANBANSHUN'];
-                $winCode = $gameId.$playCate.$playId;
-                $win->push($winCode);
-                break;
-        }
-        //杂六
-        if($zaliu == 0){
-            $playId = $this->arrPlayId['HOUSANZALIU'];
+        }//杂六
+        else
+        {
+            $playId = $this->arrPlayId[$txt.'ZALIU'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }
