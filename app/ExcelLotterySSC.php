@@ -80,7 +80,7 @@ class ExcelLotterySSC
         elseif($arr[1] - $arr[0] == 1 || $arr[2] - $arr[1] == 1
             || in_array(implode("",$arr),array('029','039','049','059','069','079')))
         {
-            $playId = $this->arrPlayId[$txt.'DUIZI'];
+            $playId = $this->arrPlayId[$txt.'BANSHUN'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }//杂六
