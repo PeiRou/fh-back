@@ -67,7 +67,7 @@ class BaseRepository
             $res = \App\GamesApi::batchUpdate($data, $whereField,$table);
             $num = count($data);
             if(!$res || $res < $num){
-                \App\GamesApi::batchUpdate($data, $whereField,'jq_bet_his');
+                $res = \App\GamesApi::batchUpdate($data, $whereField,'jq_bet_his');
             }
         }
         if($res){
@@ -302,7 +302,8 @@ class BaseRepository
     public function senterGetBet($param = [])
     {
         $this->param['endTime'] = $this->param['endTime'] ?? $param['toTime'] ?? time();
-        $this->param['startTime'] = $this->param['endTime'] - 15 * 60;
+        $this->param['endTime'] = $this->param['endTime'] - 30 * 60;
+        $this->param['startTime'] = $this->param['endTime'] - 5 * 60;
         $platform_id = SystemSetting::getValueByRemark1('payment_platform_id');
         $this->param['remark'] = $this->getVal('agent');
         $this->param['g_id'] = $this->gameInfo->g_id;

@@ -107,7 +107,7 @@ class AGRepository extends BaseRepository
                 $name = 'FISH';
                 break;
             case 'YOPLAY':
-                $name = 'RNG';
+                $name = 'YOPLAY';
                 break;
             default:
                 $name = 'PVP';
