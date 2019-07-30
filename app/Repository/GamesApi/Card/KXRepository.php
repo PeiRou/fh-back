@@ -42,6 +42,7 @@ class KXRepository extends BaseRepository
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $data['id'][$k],
+                'sessionId' => $data['roundID'][$k] ?? '',
                 'username' => str_replace($this->Config['siteID'].'_','',$data['account'][$k]),
                 'AllBet' => $data['bet'][$k],
                 'bunko' => sprintf("%.2f", $data['settlement'][$k] - $data['bet'][$k]), //中奖金额 - 下注金额
