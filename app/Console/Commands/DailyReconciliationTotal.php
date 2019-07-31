@@ -242,12 +242,14 @@ GROUP BY rechName";
             $bunkofactdata = $this->bunkofactdata($date);
             $bunkofactsql = $bunkofactdata[0];
             $thirdbunkofactsql = $bunkofactdata[1];
+            $bunkofact = DB::select($bunkofactsql,[$date.' 00:00:00',$date.' 23:59:59']);
+            $thirdbunkofact = DB::select($thirdbunkofactsql,[$date.' 00:00:00',$date.' 23:59:59']);
         }else{
             $bunkofactsql = "SELECT (CASE game_name WHEN '彩票' THEN '彩票会员输赢（含退水）' ELSE game_name END) AS 'rechname',SUM(bet_bunko) AS 'amount' FROM `zh_report_general_bunko` WHERE game_id=0 AND dateTime = ? GROUP BY game_id";
             $thirdbunkofactsql = "SELECT (CASE game_name WHEN '彩票' THEN '彩票会员输赢（含退水）' ELSE game_name END) AS 'rechname',SUM(bet_bunko) AS 'amount' FROM `zh_report_general_bunko` WHERE game_id<>0 AND dateTime = ? GROUP BY game_id";
+            $bunkofact = DB::select($bunkofactsql,[$daytstrot]);
+            $thirdbunkofact = DB::select($thirdbunkofactsql,[$daytstrot]);
         }
-        $bunkofact = DB::select($bunkofactsql,[$daytstrot]);
-        $thirdbunkofact = DB::select($thirdbunkofactsql,[$daytstrot]);
 
         /*//未结算试算，有点问题
            $datetom = date('Y-m-d',strtotime($date."+1 days"));
