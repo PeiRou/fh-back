@@ -243,11 +243,11 @@ GROUP BY rechName";
             $bunkofactsql = $bunkofactdata[0];
             $thirdbunkofactsql = $bunkofactdata[1];
         }else{
-            $bunkofactsql = "SELECT (CASE game_name WHEN '彩票' THEN '彩票会员输赢（含退水）' ELSE game_name END) AS 'rechname',SUM(bet_bunko) AS 'amount' FROM `zh_report_general_bunko` WHERE game_id=0 AND updated_at BETWEEN ? AND ? GROUP BY game_id";
-            $thirdbunkofactsql = "SELECT (CASE game_name WHEN '彩票' THEN '彩票会员输赢（含退水）' ELSE game_name END) AS 'rechname',SUM(bet_bunko) AS 'amount' FROM `zh_report_general_bunko` WHERE game_id<>0 AND updated_at BETWEEN ? AND ? GROUP BY game_id";
+            $bunkofactsql = "SELECT (CASE game_name WHEN '彩票' THEN '彩票会员输赢（含退水）' ELSE game_name END) AS 'rechname',SUM(bet_bunko) AS 'amount' FROM `zh_report_general_bunko` WHERE game_id=0 AND dateTime = ? GROUP BY game_id";
+            $thirdbunkofactsql = "SELECT (CASE game_name WHEN '彩票' THEN '彩票会员输赢（含退水）' ELSE game_name END) AS 'rechname',SUM(bet_bunko) AS 'amount' FROM `zh_report_general_bunko` WHERE game_id<>0 AND dateTime = ? GROUP BY game_id";
         }
-        $bunkofact = DB::select($bunkofactsql,[$date.' 00:00:00',$date.' 23:59:59']);
-        $thirdbunkofact = DB::select($thirdbunkofactsql,[$date.' 00:00:00',$date.' 23:59:59']);
+        $bunkofact = DB::select($bunkofactsql,[$daytstrot]);
+        $thirdbunkofact = DB::select($thirdbunkofactsql,[$daytstrot]);
 
         /*//未结算试算，有点问题
            $datetom = date('Y-m-d',strtotime($date."+1 days"));
@@ -263,7 +263,7 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
             $unsettlementsql= "SELECT SUM(CASE WHEN game_id IN(90,91) THEN freeze_money+bet_money ELSE bet_money END) AS amount FROM bet WHERE 1 AND testFlag ='0' AND status='0' AND updated_at BETWEEN ? AND ?";
             $unsettlement = DB::select($unsettlementsql,[$date.' 00:00:00',$date.' 23:59:59']);
 
-            $unsetamountsql = "SELECT unsetamount FROM totalreport WHERE daytstrot = ".strtotime($date);
+            $unsetamountsql = "SELECT unsetamount FROM totalreport WHERE daytstrot = ".$daytstrot;
             $unsetamount = DB::select($unsetamountsql);
             if(empty($unsetamount)){
                 $this->info('不该进来这段的！表示定时任务没有设定 php artisan Member:DailyReconTotal insert');
@@ -284,14 +284,14 @@ FROM bet WHERE 1 AND testFlag ='0' AND `created_at` BETWEEN ? AND ? AND updated_
             }
 
         }else{                                            //「重新执行」按钮执行
-            $unsetamountsql = "SELECT unsetamount FROM totalreport WHERE daytstrot = ".strtotime($date);
+            $unsetamountsql = "SELECT unsetamount FROM totalreport WHERE daytstrot = ".$daytstrot;
             $unsetamount = DB::select($unsetamountsql);
             if(empty($unsetamount)){
                 $this->info('没有'.$date.'的这笔资料可以重新执行');
             }else if(!empty($unsetamount) && $unsetamount[0]->unsetamount != "0.00"){
                 $val = $unsetamount[0]->unsetamount;
             }else{
-                $unsettlementsql = "SELECT data FROM totalreport WHERE daytstrot = ".strtotime($date);
+                $unsettlementsql = "SELECT data FROM totalreport WHERE daytstrot = ".$daytstrot;
                 $unsettlement = DB::select($unsettlementsql);
                 writeLog('DailyReconTotal','执行的语法: '.$unsettlementsql);
                 $dataunsettlement = unserialize($unsettlement[0]->data)[$date];
