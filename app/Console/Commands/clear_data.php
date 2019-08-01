@@ -112,7 +112,7 @@ class clear_data extends Command
         //清-资金明细
         if(!$redis->exists('clear-else')) {
             $num_else = 0;
-            $sql = "DELETE FROM capital WHERE created_at <= '{$clearDate93}' LIMIT 1000";
+            $sql = "DELETE FROM capital WHERE created_at <= '{$clearDate120}' LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table capital :' . $res . PHP_EOL;
             //清-充值
