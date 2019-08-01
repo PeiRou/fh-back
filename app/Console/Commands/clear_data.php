@@ -124,11 +124,11 @@ class clear_data extends Command
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table drawing :' . $res . PHP_EOL;
             //清-活动
-            $sql = "DELETE FROM activity_send WHERE created_at<='{$clearDate62}' LIMIT 1000";
+            $sql = "DELETE FROM activity_send WHERE created_at<='{$clearDate120}' LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table activity_send :' . $res . PHP_EOL;
             //清-活动
-            $sql = "DELETE FROM activity_sign_qiandao WHERE created_at<='{$clearDate62}' LIMIT 1000";
+            $sql = "DELETE FROM activity_sign_qiandao WHERE created_at<='{$clearDate120}' LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table activity_sign_qiandao :' . $res . PHP_EOL;
             //清-错误日志
