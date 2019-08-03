@@ -381,6 +381,14 @@ class BaseRepository
 
     public function getGameId($data = [])
     {
+        switch ($this->gameInfo->g_id){
+            case 15:
+                return 15;
+            case 16:
+                return 16;
+            case 21:
+                return 31;
+        }
         return $this->gameInfo->g_id;
     }
 
