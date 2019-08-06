@@ -297,6 +297,6 @@ WHERE 1 ";
     }
 
     public static function getRegisteredCount($date){
-        return self::where('created_at','>=',$date)->where('created_at','<=',$date.' 23:59:59')->count();
+        return self::where('created_at','>=',$date)->where('created_at','<=',$date.' 23:59:59')->where('testFlag','=','0')->count();
     }
 }
