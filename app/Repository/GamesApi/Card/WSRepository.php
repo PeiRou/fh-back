@@ -93,8 +93,23 @@ class WSRepository extends BaseRepository
         }
         return $this->insertDB($arr);
     }
-
-
+    public function getGameId($data = [])
+    {
+        return 17;
+    }
+    public function matchName($name)
+    {
+        return preg_match('/^'.$this->Config['agent'].'/', $name);
+    }
+    public function arrInfo(&$array)
+    {
+        $user = $this->getUser($array['username']);
+        $array['username'] = $user->username ?? $array['username'];
+        $array['agent'] = $user->agent ?? 0;
+        $array['user_id'] = $user->id ?? 0;
+        $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';
+        $array['agent_name'] = $this->getAgent($user->agent ?? 0)->name ?? '';
+    }
     protected function errorMessage($code){
         $code = (int)$code;
         $data = [

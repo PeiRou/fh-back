@@ -13,8 +13,13 @@ class WS extends Base{
         parent::__construct($repo);
     }
 
+    public function getBet($param = [])
+    {
+        return $this->repo->senterGetBet($param);
+    }
+
     //获取棋牌投注详情
-    public function getBet($param = []){
+    public function getBet1($param = []){
         $this->repo->param['time'] = $this->repo->param['time'] ?? $this->getTime($param);
 //        $this->repo->param['time'] = '201811251845,201811251860';
         $res = $this->repo->getBet();
