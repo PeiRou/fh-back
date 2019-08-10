@@ -132,7 +132,7 @@ class GamesApiController extends BaseController
         try{
             $data = json_decode($aParam['data'], 1);
             $orderNum = $data['orderNum'];
-            if($orderInfo = DB::table('jq_platform_capital')->where('orderNum', $orderNum)->first()){
+            if($orderInfo = DB::table('platform_capital')->where('orderNum', $orderNum)->first()){
                 $this->show(0, ['money' => $orderInfo->plat_amount], 'ok');
             }
             if((float)$data['amount'] === 0){
@@ -154,7 +154,7 @@ class GamesApiController extends BaseController
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
-            if(!DB::table('jq_platform_capital')->insert($arr) ){
+            if(!DB::table('platform_capital')->insert($arr) ){
                 throw new \Exception('增加资金明细失败', 1);
             }
             if(!(DB::table('system_setting')->where('id', 1)->update(['gamesapi_amount' => DB::raw(' `gamesapi_amount` + ' . $data['amount'])]))){
