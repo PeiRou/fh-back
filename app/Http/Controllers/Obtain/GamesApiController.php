@@ -126,4 +126,47 @@ class GamesApiController extends BaseController
         $this->show(0, [], 'ok');
     }
 
+    //修改第三方余额
+    private function GamesPlatQuota($aParam)
+    {
+        try{
+            $data = json_decode($aParam['data'], 1);
+            $orderNum = $data['orderNum'];
+            if($orderInfo = DB::table('platform_capital')->where('orderNum', $orderNum)->first()){
+                $this->show(0, ['money' => $orderInfo->plat_amount], 'ok');
+            }
+            if((float)$data['amount'] === 0){
+                $this->show(10, [], '金额不能为0');
+            }
+            $nowMoney = DB::table('system_setting')->value('gamesapi_amount');
+            $upMoney = $nowMoney + $data['amount'];
+            DB::beginTransaction();
+            $arr = [
+                'orderNum' => $data['orderNum'],
+                'type_id' => $data['type_id'],
+                'type' => $data['type'],
+                'type_updown' => (int)$data['type_updown'],
+                'amount' => (float)$data['amount'],
+                'plat_amount' => $upMoney, //帐变后的金额
+                'admin_id' => $data['admin_id'],
+                'admin_account' => $data['admin_account'],
+                'content' => $data['content'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+
+            if(!DB::table('platform_capital')->insert($arr) || !(DB::table('system_setting')->where('id', 1)->update(['gamesapi_amount' => DB::raw(' `gamesapi_amount` + ' . $data['amount'])]))){
+                throw new \Exception('修改金额失败', 1);
+            }
+            DB::commit();
+            $this->show(0, ['money' => $upMoney], 'ok');
+        }catch (\Throwable $e){
+            DB::rollback();
+            if(!$e->getCode()){
+                writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            }
+            $this->show(15, '',  'error'.$e->getMessage());
+        }
+    }
+
 }
