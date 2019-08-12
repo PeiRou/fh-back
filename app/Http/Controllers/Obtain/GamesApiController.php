@@ -207,7 +207,7 @@ class GamesApiController extends BaseController
             }
             $this->show(15, [],  'error'.$e->getMessage());
         }
-        return  $this->show(0, [], 'ok');
+        return  $this->show(15, [], 'error');
     }
 
     private function getPlatformCapital($aParam)
@@ -224,6 +224,19 @@ class GamesApiController extends BaseController
             'data' => $res,
             'money' => $money
         ], 'ok');
+    }
+
+    private function someinformation($aParam)
+    {
+        if(!isset($aParam['data']))
+            return  $this->show(1);
+        try{
+            if(DB::table('system_setting')->update(['contac_information' => htmlspecialchars($aParam['data'])]))
+                return  $this->show(0, []);
+        }catch (\Throwable $e){
+            return  $this->show(15, [], $e->getMessage());
+        }
+        return $this->show(15, [],  'error');
     }
 
 }
