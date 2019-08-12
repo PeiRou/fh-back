@@ -167,8 +167,59 @@ class GamesApiController extends BaseController
             if(!$e->getCode()){
                 writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
             }
-            $this->show(15, '',  'error'.$e->getMessage());
+            $this->show(15, [],  'error'.$e->getMessage());
         }
+    }
+
+    //获取第三方配置的余额
+    private function getGamesPlatQuotaMoney($aParam)
+    {
+        $money = DB::table('system_setting')->value('gamesapi_amount');
+        return  $this->show(0, ['money' => $money], 'ok');
+    }
+
+    //设置平台收支
+    private function setPlatjqpoint($aParam)
+    {
+        try{
+            $data = json_decode($aParam['data'], 1);
+            $arr = [];
+            foreach ($data as $v){
+                $arr[] = [
+                    'jq_game_id' => $v['jq_game_id'],
+                    'jq_game_name' => $v['jq_game_name'],
+                    'jq_point' => $v['jq_point'],
+                    'admin_id' => $v['admin_id'],
+                    'admin_account' => $v['admin_account'],
+                    'created_at' => $v['created_at'],
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ];
+            }
+            DB::transaction(function () use($arr){
+                DB::table('platform_jqpoint')->truncate();
+                if(!DB::table('platform_jqpoint')->insert($arr))
+                    throw new \Exception('platform_jqpoint插入失败');
+            });
+            $this->show(0, [], 'ok');
+        }catch (\Throwable $e){
+            if(!$e->getCode()){
+                writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            }
+            $this->show(15, [],  'error'.$e->getMessage());
+        }
+        return  $this->show(0, [], 'ok');
+    }
+
+    private function getPlatformCapital($aParam)
+    {
+        if(!isset($aParam['endTime'], $aParam['startTime']))
+            return  $this->show(1);
+//        $aParam['endTime'] = date('Y-m-d H:i:s', strtotime($aParam['endTime']));
+//        $aParam['startTime'] = date('Y-m-d H:i:s', strtotime($aParam['startTime']));
+        if(strtotime($aParam['endTime']) - strtotime($aParam['startTime']) > 60 * 15)
+            return  $this->show(15, '时间间隔过大');
+        $res = DB::table('platform_capital')->whereBetween('updated_at', [$aParam['startTime'], $aParam['endTime']])->get();
+        return  $this->show(0, $res, 'ok');
     }
 
 }
