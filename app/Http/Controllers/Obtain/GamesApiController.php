@@ -219,7 +219,11 @@ class GamesApiController extends BaseController
         if(strtotime($aParam['endTime']) - strtotime($aParam['startTime']) > 60 * 15)
             return  $this->show(15, '时间间隔过大');
         $res = DB::table('platform_capital')->whereBetween('updated_at', [$aParam['startTime'], $aParam['endTime']])->get();
-        return  $this->show(0, $res, 'ok');
+        $money = DB::table('system_setting')->value('gamesapi_amount');
+        return  $this->show(0, [
+            'data' => $res,
+            'money' => $money
+        ], 'ok');
     }
 
 }
