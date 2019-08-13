@@ -325,7 +325,7 @@ class BaseRepository
                             'token' => 'bot619423079:AAFPQuGFbCwH8O3jSefntGa8rd0Tr_Wq_zs',
                             'chatid' => '-391676419',
                         ],
-                        'data' => [['告警详情', $this->gameInfo->name.'拉取总后台第三方游戏数据异常'.($data['code']??'')], ['问题主机', env('APP_NAME', '')]]
+                        'data' => [['告警详情', $this->gameInfo->name.'拉取总后台第三方游戏数据异常'.($data['code']??'')], ['问题主机', env('APP_NAME', '').realIp()]]
                     ];
                     $http = app(\GuzzleHttp\Client::class);
                     $http->request('POST', 'https://telegram.uugl.pw/xiaotang/xiaotang', [
