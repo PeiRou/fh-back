@@ -231,8 +231,8 @@ class GamesApiController extends BaseController
         if(!isset($aParam['data']))
             return  $this->show(1);
         try{
-            if(DB::table('system_setting')->update(['contac_information' => htmlspecialchars($aParam['data'])]))
-                return  $this->show(0, []);
+            DB::table('system_setting')->update(['contac_information' => htmlspecialchars($aParam['data'])]);
+            return  $this->show(0, []);
         }catch (\Throwable $e){
             return  $this->show(15, [], $e->getMessage());
         }
