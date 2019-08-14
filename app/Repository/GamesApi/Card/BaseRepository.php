@@ -334,7 +334,7 @@ class BaseRepository
                     ]);
                 }
             }catch (\Throwable $e){
-                writeLog('bot_error', '机器人推送失败');
+                writeLog('bot_error', '机器人推送失败'.$e->getMessage());
             }
         }
         $this->insertError($data['code'] ?? 500, $data['msg'] ?? 'error', $this->param);
