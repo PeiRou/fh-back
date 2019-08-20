@@ -250,9 +250,9 @@ class RGRepository extends BaseRepository
             count($update) && $this->saveDB($update, 'GameID');
         }
     }
-    private function arrInfo(&$array, $v, $key = 'RG')
+    private function arrInfo(&$array, $v, $key = '')
     {
-        $user = $this->getUser($array['username'], 'platformType', $key);
+        $user = $this->getUser($array['username'], '', $key);
         $array['username'] = $user->username ?? $array['username'];
         $array['agent'] = $user->agent ?? 0;
         $array['user_id'] = $user->id ?? 0;
