@@ -284,7 +284,7 @@ class BaseRepository
     public function getUser($username, $key = '', $v = '')
     {
         if(in_array($this->gameInfo->g_id, [
-            17,22,19,23
+            17,22,19,23,24,25,26
         ])){
             $res = \App\GamesApiUserName::getGidOtherName([
                 'g_id' => $this->gameInfo->g_id,
