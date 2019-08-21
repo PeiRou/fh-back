@@ -2,11 +2,24 @@
 /* BBIN */
 namespace App\Http\Controllers\GamesApi\Card;
 
+use Illuminate\Support\Facades\Redis;
+
 class BBIN extends Base{
 
     //获取棋牌投注详情
     public function getBet($param = []){
-
+        try{
+            $redis = Redis::connection();
+            $redis->select(5);
+            $key = 'GameApiGetBet:'.$this->repo->gameInfo->g_id;
+            if($redis->exists($key)){
+                echo '重复执行';
+                return '';
+            }
+            $redis->setex($key, 20, 'on');
+        }catch (\Throwable $e){
+            $this->repo->WriteLog($e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+        }
         if(($jq_error_bet_id = @app('obj')->jq_error_bet_id) > 0){
             $this->repo->param = $param;
             $this->sgssdfjk();
@@ -21,7 +34,7 @@ class BBIN extends Base{
                     $this->repo->param['page'] = 0;
                     $this->repo->param['pagelimit'] = 200;
                     isset($param['toTime']) && $this->repo->param['endtime'] = date('H:i:s', ($param['toTime']));
-                    $this->repo->param['endtime'] = $this->repo->param['endtime'] ?? date('H:i:s', $param['toTime'] ?? ($this->repo->getTime() - 60 * 10));
+                    $this->repo->param['endtime'] = $this->repo->param['endtime'] ?? date('H:i:s', $param['toTime'] ?? ($this->repo->getTime() - 60 * 5));
                     $this->repo->param['starttime'] = date('H:i:s', strtotime($this->repo->param['endtime']) - 60 * 5);
                     $this->sgssdfjk();
                 }
