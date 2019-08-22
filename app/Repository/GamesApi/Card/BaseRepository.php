@@ -322,7 +322,7 @@ class BaseRepository
                     $message_error = [
                         'info' => [
                             'title' => 'zabbix告警通知',
-                            'token' => 'bot619423079:AAFPQuGFbCwH8O3jSefntGa8rd0Tr_Wq_zs',
+                            'token' => 'bot927487364:AAExwRP53SbKdhx5r5n5YEOHOnxtM4cHTI4',
                             'chatid' => '-391676419',
                         ],
                         'data' => [['告警详情', $this->gameInfo->name.'拉取总后台第三方游戏数据异常'.($data['code']??'')], ['问题主机', env('APP_NAME', '')]]

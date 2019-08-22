@@ -253,6 +253,10 @@ class BBINRepository extends BaseRepository
 
     function curl_get_content($url, $data, $conn_timeout=7, $timeout=5, $user_agent=null)
     {
+        if(isset($this->is_proxy_pass) && $this->is_proxy_pass && env('PROXY_PASS_ADDRESS', false)){
+            $data['proxy_pass_url'] = $url;
+            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php');
+        }
         $url = $url.'?'.http_build_query($data);
         $headers = array(
             "Accept: application/json",
