@@ -29,7 +29,7 @@ class GamesApiUserName extends Model
             $res = self::getGidAll($param);
             $collects[$param['g_id']] = collect([]);
             foreach ($res as $k=>$v){
-                if($v->g_id == 22){
+                if(in_array($v->g_id, [17, 19, 22, 23])){
                     $v->othername = strtolower($v->othername);
                 }
                 $collects[$param['g_id']]->put($v->othername.$v->key.$v->value, $v);
