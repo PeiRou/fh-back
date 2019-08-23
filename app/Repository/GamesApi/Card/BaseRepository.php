@@ -28,6 +28,7 @@ class BaseRepository
     public $ConfigPrefix = ''; //试玩用户会加上前缀
     public $resData = null; //请求返回数据
     public $UsersArr_;
+    public $is_proxy_pass = false; //这个游戏是否使用代理那台服务器
     public function __construct($config, $name = 'Utils'){
         $class = 'App\\Repository\\GamesApi\\Card\\Utils\\'.$name;
         $this->Utils = new $class($config);
@@ -146,7 +147,11 @@ class BaseRepository
                     'param' => $this->Utils->desEncode($this->Config[$this->ConfigPrefix.'desKey'], $param),
                     'key' => md5($this->Config[$this->ConfigPrefix.'agent'].$timestamp.($this->Config[$this->ConfigPrefix.'md5Key']))
                 ));
-            $res = json_decode($this->Utils->curl_get_content($url), true);
+
+            $this->is_proxy_pass = true;
+            $res = $this->curl_get_content($url);
+            $res = json_decode($res, true);
+//            $res = json_decode($this->Utils->curl_get_content($url), true);
 //            \Log::info($this->gameInfo->name.json_encode($res));
             if(!empty($res)){
                 if(isset($res['d']['code']) && $res['d']['code'] == 0){
@@ -158,6 +163,41 @@ class BaseRepository
         }catch (\Exception $e){
             return $this->show(1, $e->getMessage());
         }
+    }
+
+    function curl_get_content($url, $data = [], $user_agent=null, $headers = null, $conn_timeout=7,$timeout=10)
+    {
+        count($data) > 0 && ($url = $url.'?'.http_build_query($data));
+        if(isset($this->is_proxy_pass) && $this->is_proxy_pass && env('PROXY_PASS_ADDRESS', false)){
+            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php').'?'.http_build_query(['proxy_pass_url' => $url]);
+        }
+        !$headers && $headers = array(
+//            "Accept: application/json",
+            "Accept-Encoding: deflate,sdch",
+            "Accept-Charset: utf-8;q=1"
+        );
+        if ($user_agent === null) {
+            $user_agent = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36';
+        }
+        $headers[] = $user_agent;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $conn_timeout);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_ENCODING, "");
+        $res = curl_exec($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $err = curl_errno($ch);
+        if (($err) || ($httpcode !== 200)) {
+            $this->WriteLog($this->gameInfo->name.'   http状态码：'.$httpcode.'失败信息：'.$err.'返回信息：'.$res);
+            return null;
+        }
+        curl_close($ch);
+        return $res;
     }
 
     //获取时间

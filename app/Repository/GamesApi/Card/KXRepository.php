@@ -76,7 +76,10 @@ class KXRepository extends BaseRepository
         $aes->set_key($this->Config['GAME_API_AESKEY']);
         $aes->require_pkcs5();
         $token = $aes->encrypt(json_encode($parms,JSON_UNESCAPED_UNICODE));
-        $res = $this->curl_get($this->Config['GAME_API_URL'].'?m='.$this->Config['GAME_API_MERCHANT_ID'].'&token='.urlencode($token));
+//        $res = $this->curl_get($this->Config['GAME_API_URL'].'?m='.$this->Config['GAME_API_MERCHANT_ID'].'&token='.urlencode($token));
+        $headerArray =array("Content-type:application/json;","Accept:application/json");
+        $res = $this->curl_get_content($this->Config['GAME_API_URL'].'?m='.$this->Config['GAME_API_MERCHANT_ID'].'&token='.urlencode($token), [], null, $headerArray);
+
         if(empty($res = @json_decode($res, 1))){
             return $this->show(500);
         }
