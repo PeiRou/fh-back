@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 class FYDJRepository extends BaseRepository
 {
     public $password = "123456";
+    public $is_proxy_pass = true; //这个游戏是否使用代理那台服务器
     public function login(){
         if(is_null($username = $this->getUserName(false))){
             $username = $this->getUserName();
@@ -56,6 +57,7 @@ class FYDJRepository extends BaseRepository
     }
 
     protected function curl_post($url,$data){
+        return $this->curl_post_content($url, $data, null, ['Authorization:'. $this->Config['Authorization']]);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
