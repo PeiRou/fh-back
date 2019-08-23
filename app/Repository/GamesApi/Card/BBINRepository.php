@@ -251,38 +251,38 @@ class BBINRepository extends BaseRepository
         return $res;
     }
 
-    function curl_get_content($url, $data, $conn_timeout=7, $timeout=5, $user_agent=null)
-    {
-        if(isset($this->is_proxy_pass) && $this->is_proxy_pass && env('PROXY_PASS_ADDRESS', false)){
-            $data['proxy_pass_url'] = $url;
-            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php');
-        }
-        $url = $url.'?'.http_build_query($data);
-        $headers = array(
-            "Accept: application/json",
-            "Accept-Encoding: deflate,sdch",
-            "Accept-Charset: utf-8;q=1"
-        );
-        if ($user_agent === null) {
-            $user_agent = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36';
-        }
-        $headers[] = $user_agent;
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $conn_timeout);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_ENCODING, "");
-        $res = curl_exec($ch);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $err = curl_errno($ch);
-        curl_close($ch);
-
-        return $res;
-    }
+//    function curl_get_content($url, $data, $conn_timeout=7, $timeout=5, $user_agent=null)
+//    {
+//        if(isset($this->is_proxy_pass) && $this->is_proxy_pass && env('PROXY_PASS_ADDRESS', false)){
+//            $data['proxy_pass_url'] = $url;
+//            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php');
+//        }
+//        $url = $url.'?'.http_build_query($data);
+//        $headers = array(
+//            "Accept: application/json",
+//            "Accept-Encoding: deflate,sdch",
+//            "Accept-Charset: utf-8;q=1"
+//        );
+//        if ($user_agent === null) {
+//            $user_agent = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36';
+//        }
+//        $headers[] = $user_agent;
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, $url);
+////        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($ch, CURLOPT_HEADER, 0);
+//        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $conn_timeout);
+//        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+//        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+//        curl_setopt($ch, CURLOPT_ENCODING, "");
+//        $res = curl_exec($ch);
+//        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//        $err = curl_errno($ch);
+//        curl_close($ch);
+//
+//        return $res;
+//    }
 
     public function createKey($keyName, $ai = 6, $ci = 2, $param = [])
     {
