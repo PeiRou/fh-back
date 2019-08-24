@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 class RGRepository extends BaseRepository
 {
     private $password='123456';
+    public $is_proxy_pass = true; //这个游戏是否使用代理那台服务器
+
     public function trial(){
         $login_url = '';
         if(is_null($username = $this->getUserName(false))){
@@ -92,6 +94,7 @@ class RGRepository extends BaseRepository
     }
 
     private function curl_get($url){
+        return $this->curl_get_content($url);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_HEADER,0);
