@@ -15,6 +15,8 @@ class MYRepository extends BaseRepository
 {
     public $userTag = 1; //默认是正式账户
     public $NowDateTime = null;
+    public $is_proxy_pass = true; //这个游戏是否使用代理那台服务器
+
     public function __construct($config, $name = 'Utils')
     {
         $this->NowDateTime = date('YmdHis');
@@ -279,7 +281,8 @@ class MYRepository extends BaseRepository
         $sign = $this->sign($data);
         unset($data['NowDateTime']);
         $url = $this->Config['get_game_detail_api'].'?'.http_build_query($data).'&NowDateTime='.$this->NowDateTime.'&MD5DATA='.$sign;
-        $res = $this->curl_get($url);
+//        $res = $this->curl_get($url);
+        $res = $this->curl_get_content($url);
         return $res;
     }
 
