@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 class BBINRepository extends BaseRepository
 {
     public $Configs;
+    public $is_proxy_pass = true; //这个游戏是否使用代理那台服务器
 
     const gamekind = [
         1 => [
