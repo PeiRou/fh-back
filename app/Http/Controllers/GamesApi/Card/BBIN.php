@@ -32,7 +32,7 @@ class BBIN extends Base{
                     $this->repo->param['gamekind'] = $k;
                     $this->repo->param['subgamekind'] = $vv;
                     $this->repo->param['page'] = 0;
-                    $this->repo->param['pagelimit'] = 200;
+                    $this->repo->param['pagelimit'] = 1000;
                     isset($param['toTime']) && $this->repo->param['endtime'] = date('H:i:s', ($param['toTime']));
                     $this->repo->param['endtime'] = $this->repo->param['endtime'] ?? date('H:i:s', $param['toTime'] ?? ($this->repo->getTime() - 60 * 5));
                     $this->repo->param['starttime'] = date('H:i:s', strtotime($this->repo->param['endtime']) - 60 * 5);
