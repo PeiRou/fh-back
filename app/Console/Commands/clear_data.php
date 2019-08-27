@@ -205,12 +205,19 @@ class clear_data extends Command
         }
         //清-棋牌昨日数据
         if(!$redis->exists('clear-jq-bet')){
-            $res = DB::connection('mysql::write')->table('jq_bet')->select('id')
-                ->where('updated_at','<=',$clearDate1)
-                ->where('flag',1)
-                ->first();
-            writeLog('clear','clear jq bet :'.json_encode($res));
-            if(empty($res)){
+//            $res = DB::connection('mysql::write')->table('jq_bet')->select('id')
+//                ->where('updated_at','<=',$clearDate1)
+//                ->where('flag',1)
+//                ->first();
+            $sql = "SELECT id FROM jq_bet WHERE `flag` = 1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
+            $tmp = DB::select($sql);
+            $arrIds = array();
+            foreach ($tmp as&$value)
+                $arrIds[] = $value->id;
+
+            DB::table('jq_bet_his')->whereIn('id', $arrIds)->delete();
+            writeLog('clear','clear jq bet :'.json_encode($arrIds));
+            if(count($arrIds)==0){
                 $redis->setex('clear-jq-bet',$this->time,$this->stoptime);
             }else{
                 try {

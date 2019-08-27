@@ -538,14 +538,14 @@ class BaseRepository
     public function isAdd($code)
     {
         $is = false;
+        if($this->gameInfo->g_id == 22)
+            return false;
         if($code == 500)
             return true;
         if($this->gameInfo->g_id == 19 && $code == 23)
             return true;
 //        if($this->gameInfo->g_id == 22 && $code == 44003)
 //            return true;
-        if($this->gameInfo->g_id == 22)
-            return false;
         return $is;
     }
 
