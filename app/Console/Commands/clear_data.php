@@ -205,10 +205,6 @@ class clear_data extends Command
         }
         //清-棋牌昨日数据
         if(!$redis->exists('clear-jq-bet')){
-//            $res = DB::connection('mysql::write')->table('jq_bet')->select('id')
-//                ->where('updated_at','<=',$clearDate1)
-//                ->where('flag',1)
-//                ->first();
             $sql = "SELECT id FROM jq_bet WHERE `flag` = 1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
             $tmp = DB::select($sql);
             $arrIds = array();
@@ -221,10 +217,11 @@ class clear_data extends Command
                 $redis->setex('clear-jq-bet',$this->time,$this->stoptime);
             }else{
                 try {
-                    $sql = "INSERT INTO jq_bet_his SELECT * FROM jq_bet WHERE `flag` = 1 AND  updated_at <= '{$clearDate1}' LIMIT 1000";
+                    $strIds = implode(',',$arrIds);
+                    $sql = "INSERT INTO jq_bet_his SELECT * FROM jq_bet WHERE `id` in (".$strIds.")";
                     $res = DB::connection('mysql::write')->statement($sql);
                     writeLog('clear','table insert into jq_bet_his :'.$res);
-                    $sql = "DELETE FROM jq_bet WHERE `flag` = 1 AND  updated_at <= '{$clearDate1}' LIMIT 1000";
+                    $sql = "DELETE FROM jq_bet WHERE `id` in (".$strIds.")";
                     $res = DB::connection('mysql::write')->statement($sql);
                     writeLog('clear','table delete jq_bet :'.$res);
                 }catch (\Exception $e){
