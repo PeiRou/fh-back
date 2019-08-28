@@ -9,6 +9,7 @@
 namespace App\Repository\GamesApi\Card;
 use App\GamesApi;
 use App\Http\Controllers\Obtain\SendController;
+use App\Repository\GamesApi\Card\Content\KY;
 use App\SystemSetting;
 use App\Users;
 use Illuminate\Support\Facades\DB;
@@ -98,6 +99,7 @@ class BaseRepository
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $data['GameID'][$k],
+                'round_id' => $data['GameID'][$k],
                 'username' => str_replace($this->Config['agent'].'_','',$data['Accounts'][$k]),
                 'AllBet' => $data['AllBet'][$k],
                 'bunko' => $data['Profit'][$k], //输赢
@@ -110,9 +112,14 @@ class BaseRepository
                 'game_type' => $this->getGameType($data['ServerID'][$k]),
                 'service_money' => $data['Revenue'][$k],// + 服务费
                 'flag' => 1,
+                'bet_info' => $data['CardValue'][$k],
                 'game_id' => $this->getGameId([]),
+                'sessionId' => json_encode([
+                    'ChannelID' =>  $data['ChannelID'][$k], //渠道id
+                    'LineCode' =>  $data['LineCode'][$k],  //所属站点
+                ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             ];
-
+            $array['content'] = $this->aContent($array, $data, $k) ?: $array['game_type'];
             $user = $this->getUser($array['username']);
             $array['user_id'] = $user->id ?? 0;
             $array['agent'] = $user->agent ?? 0;
@@ -121,6 +128,26 @@ class BaseRepository
             $arr[] = $array;
         }
         return $this->insertDB($arr);
+    }
+
+    public function aContent($array, $data, $k)
+    {
+        try{
+            $object = KY::getInstance();
+            $func = 'f'.$data['KindID'][$k];
+            if(method_exists($object, $func)){
+                $CardValue = $data['KindID'][$k];
+                $a = call_user_func([$object, $func], $array, $data, $k, $CardValue);
+                if(!$a){
+                    $a = call_user_func([$object, 'comm'], $array, $data, $k, $CardValue);
+                }
+                return $a;
+            }
+            return false;
+        }catch (\Throwable $e){
+            $this->WriteLog($e->getMessage().$e->getFile().'('.$e->getLine().')'.PHP_EOL.var_export($e->getTraceAsString(), 1));
+            return false;
+        }
     }
 
     //拼接请求数据
