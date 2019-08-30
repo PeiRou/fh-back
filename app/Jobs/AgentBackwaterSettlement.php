@@ -48,7 +48,6 @@ class AgentBackwaterSettlement implements ShouldQueue
         if(empty($table)){
             return false;
         }
-
         $table = 'game_'.$table;
         if(in_array($this->gameId,[91]))
            $backwater = DB::connection('mysql::write')->table($table)->where('issue',$this->issue)->value('nn_backwater');
@@ -68,6 +67,7 @@ class AgentBackwaterSettlement implements ShouldQueue
 
         $aArray = [];
         $aUserArray = [];
+        $aRecord = [];
         $promotionLevel = SystemSetting::where('id',1)->value('promotion_level');
         $promotionConfig = PromotionConfig::getPromotionList();
         $time = date('Y-m-d H:i:s');
@@ -75,11 +75,24 @@ class AgentBackwaterSettlement implements ShouldQueue
             if (!empty($iData->agnet_odds)) {
                 $promotionArray = explode(',', $iData->agnet_odds);
                 $promotionCount = count($promotionArray);
-                if ($promotionLevel > $promotionCount)
+                if ($promotionLevel >= $promotionCount){
                     $iCount = $promotionCount;
-                else
+                }else{
                     $iCount = $promotionLevel;
+                }
                 for ($i = 1; $i <= $iCount; $i++) {
+                    $aRecord[] = [
+                        'to_user' => $promotionArray[$promotionCount - $i],
+                        'form_user' => $iData->user_id,
+                        'game_id' => $this->gameId,
+                        'game_name' => $iData->game_name,
+                        'issue' => $this->issue,
+                        'money' => $iData->bet_money * $promotionConfig[$i] / 100,
+                        'game_money' => $iData->bet_money ,
+                        'promotion' => $promotionConfig[$i],
+                        'created_at' => $time,
+                        'updated_at' => $time,
+                    ];
                     if (isset($aArray[$promotionArray[$promotionCount - $i]]) && array_key_exists($promotionArray[$promotionCount - $i], $aArray))
                         $aArray[$promotionArray[$promotionCount - $i]]['money'] += $iData->bet_money * $promotionConfig[$i] / 100;
                     else
@@ -93,7 +106,7 @@ class AgentBackwaterSettlement implements ShouldQueue
                             'issue' => $this->issue,
                             'created_at' => $time,
                             'updated_at' => $time,
-                            'content' => '会员('.$iData->username.')->'.$iData->game_name.'的第'.$this->issue.'期'
+                            'content' => $iData->game_name.'的第'.$this->issue.'期'
                         ];
                     if (!in_array($promotionArray[$promotionCount - $i], $aUserArray))
                         $aUserArray[] = $promotionArray[$promotionCount - $i];
@@ -121,12 +134,12 @@ class AgentBackwaterSettlement implements ShouldQueue
                 DB::table($table)->where('issue',$this->issue)->update(['nn_backwater' => 2]);
             else
                 DB::table($table)->where('issue',$this->issue)->update(['backwater' => 2]);
-
+            if(!empty($aRecord)){
+                DB::table('promotion_record')->insert($aRecord);
+            }
             DB::commit();
-//            $Common->customWriteLog('agentBackwater','success..游戏id：'.$this->gameId.' 期号：'.$this->issue);
         }catch (\Exception $e){
             DB::rollback();
-//            $Common->customWriteLog('agentBackwater','failure..游戏id：'.$this->gameId.' 期号：'.$this->issue);
         }
     }
 }
