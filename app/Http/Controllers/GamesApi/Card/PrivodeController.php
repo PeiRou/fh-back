@@ -50,6 +50,7 @@ class PrivodeController extends Controller{
     //重新获取拉取失败的
     public function reGetBet($id)
     {
+        ob_start();
         $model = DB::table('jq_error_bet')->where('id', $id);
         if(!$info = $model->first()){
             return show(400, '没有此单');
@@ -61,17 +62,8 @@ class PrivodeController extends Controller{
         $param['g_id'] = $info->g_id;
         $v = GamesApi::getQpList($param)[0];
         $res = $this->action($v->g_id, 'getBet', $param);
-
-        //
-//        $model->update([
-//            'code' => $res['code'] ?? 0,
-//            'codeMsg' => $res['msg'] ?? 'OK',
-//            'resNum' => DB::raw('resNum + 1'),
-//            'updated_at' => date('Y-m-d H:i:s'),
-//        ]);
-//        if($res['code'] == 500)
-//            $this->addJob($id);
-        return show($res['code'], $res['msg']);
+        $r = ob_get_clean();
+        return show($res['code'] ?? 0, $res['msg'] ?? $r);
     }
 
     //重新检查第三方上下分失败订单 - 使用前台的接口
