@@ -9,7 +9,6 @@
 namespace App\Repository\GamesApi\Card;
 use App\GamesApi;
 use App\Http\Controllers\Obtain\SendController;
-use App\Repository\GamesApi\Card\Content\KY;
 use App\SystemSetting;
 use App\Users;
 use Illuminate\Support\Facades\DB;
@@ -133,17 +132,9 @@ class BaseRepository
     public function aContent($array, $data, $k)
     {
         try{
-            $object = KY::getInstance();
-            $func = 'f'.$data['KindID'][$k];
-            if(method_exists($object, $func)){
-                $CardValue = $data['KindID'][$k];
-                $a = call_user_func([$object, $func], $array, $data, $k, $CardValue);
-                if(!$a){
-                    $a = call_user_func([$object, 'comm'], $array, $data, $k, $CardValue);
-                }
-                return $a;
-            }
-            return false;
+            $str = '局号：'.$array['round_id'].'<br />';
+            $str .= '下注前余额：'.$data['CellScore'][$k];
+            return $str;
         }catch (\Throwable $e){
             $this->WriteLog($e->getMessage().$e->getFile().'('.$e->getLine().')'.PHP_EOL.var_export($e->getTraceAsString(), 1));
             return false;
@@ -476,6 +467,8 @@ class BaseRepository
                 'bet_info' => $v['bet_info'],
                 'flag' => $v['flag'],
                 'productType' => $v['productType'],
+                'content' => $v['content'],
+                'round_id' => $v['round_id'],
                 'game_id' => $this->getGameId($v),
             ];
             $this->arrInfo($array, $v);

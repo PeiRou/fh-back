@@ -37,7 +37,7 @@ class KXRepository extends BaseRepository
             return $v->GameID;
         },$GameIDs));
         $arr = [];
-        foreach ($res['GameID'] as $k => $k){
+        foreach ($res['GameID'] as $k => $v){
             if(!preg_match('/'.$this->Config['siteID'].'_'.'/', $data['account'][$k]))
                 continue;
             $array = [
