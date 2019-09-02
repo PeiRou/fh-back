@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class KXRepository extends BaseRepository
 {
 
+    public $is_proxy_pass = true; //这个游戏是否使用代理那台服务器
     const rtype = [
         0 => '无类型',
         1 => '初级',
@@ -76,7 +77,10 @@ class KXRepository extends BaseRepository
         $aes->set_key($this->Config['GAME_API_AESKEY']);
         $aes->require_pkcs5();
         $token = $aes->encrypt(json_encode($parms,JSON_UNESCAPED_UNICODE));
-        $res = $this->curl_get($this->Config['GAME_API_URL'].'?m='.$this->Config['GAME_API_MERCHANT_ID'].'&token='.urlencode($token));
+//        $res = $this->curl_get($this->Config['GAME_API_URL'].'?m='.$this->Config['GAME_API_MERCHANT_ID'].'&token='.urlencode($token));
+        $headerArray =array("Content-type:application/json;","Accept:application/json");
+        $res = $this->curl_get_content($this->Config['GAME_API_URL'].'?m='.$this->Config['GAME_API_MERCHANT_ID'].'&token='.urlencode($token), [], null, $headerArray);
+
         if(empty($res = @json_decode($res, 1))){
             return $this->show(500);
         }

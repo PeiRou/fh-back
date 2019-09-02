@@ -29,6 +29,9 @@ class GamesApiUserName extends Model
             $res = self::getGidAll($param);
             $collects[$param['g_id']] = collect([]);
             foreach ($res as $k=>$v){
+                if(in_array($v->g_id, [17, 19, 22, 23])){
+                    $v->othername = strtolower($v->othername);
+                }
                 $collects[$param['g_id']]->put($v->othername.$v->key.$v->value, $v);
             }
             $Cache->put($CacheKay, $collects[$param['g_id']], 3600 * 2); //缓存两天
@@ -39,7 +42,7 @@ class GamesApiUserName extends Model
 
     public static function getGidAll($param = [])
     {
-        $res = self::select('users.id','users.agent','users.username','games_api_user_name.name as othername','games_api_user_name.key','games_api_user_name.value')
+        $res = self::select('games_api_user_name.g_id','users.id','users.agent','users.username','games_api_user_name.name as othername','games_api_user_name.key','games_api_user_name.value')
             ->where(function($sql) use($param){
                 isset($param['g_id']) && $sql->where('g_id', $param['g_id']);
             })

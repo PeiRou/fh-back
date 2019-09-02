@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 class RGRepository extends BaseRepository
 {
     private $password='123456';
+    public $is_proxy_pass = true; //这个游戏是否使用代理那台服务器
+
     public function trial(){
         $login_url = '';
         if(is_null($username = $this->getUserName(false))){
@@ -92,11 +94,12 @@ class RGRepository extends BaseRepository
     }
 
     private function curl_get($url){
+        return $this->curl_get_content($url);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_HEADER,0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch,CURLOPT_TIMEOUT,20);
+        curl_setopt($ch,CURLOPT_TIMEOUT,10);
         $result = curl_exec($ch);
         $code = curl_getinfo($ch,CURLINFO_HTTP_CODE);
         if ($code >= 400){
@@ -236,7 +239,7 @@ class RGRepository extends BaseRepository
                     'game_type' => $this->getGameType($v['game_type']),
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
-                    'flag' => $v['state'] == 1 ? 1 : $v['flag'],
+                    'flag' => $v['state'] == 1 ? 1 : $v['state'],
                     'productType' => null,
                     'game_id' => 35,
                 ];
@@ -250,9 +253,9 @@ class RGRepository extends BaseRepository
             count($update) && $this->saveDB($update, 'GameID');
         }
     }
-    private function arrInfo(&$array, $v, $key = 'RG')
+    private function arrInfo(&$array, $v, $key = '')
     {
-        $user = $this->getUser($array['username'], 'platformType', $key);
+        $user = $this->getUser($array['username'], '', $key);
         $array['username'] = $user->username ?? $array['username'];
         $array['agent'] = $user->agent ?? 0;
         $array['user_id'] = $user->id ?? 0;

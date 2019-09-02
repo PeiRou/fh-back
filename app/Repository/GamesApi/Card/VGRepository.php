@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 class VGRepository extends BaseRepository
 {
     public $Config = [];
+    public $is_proxy_pass = true; //这个游戏是否使用代理那台服务器
 
     public function __construct($config){
         parent::__construct($config);
@@ -93,7 +94,10 @@ class VGRepository extends BaseRepository
         if(!method_exists($this, $name))
             return '';
         $url = call_user_func([$this,$name], ...$arguments);
-        return $this->curl_get_content($url);
+        $res = $this->curl_get_content($url);
+        if(count($json = @json_decode($res, 1)))
+            return $json;
+        return json_decode(json_encode(simplexml_load_string($res)), 1);
     }
 
     public function __get ($value)
@@ -105,36 +109,36 @@ class VGRepository extends BaseRepository
         return null;
     }
 
-    function curl_get_content($url, $conn_timeout=7, $timeout=10)
-    {
-        $headers = array(
-            "Accept: application/json",
-            "Accept-Encoding: deflate,sdch",
-            "Accept-Charset: utf-8;q=1"
-        );
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $conn_timeout);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_ENCODING, "");
-        $res = curl_exec($ch);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $err = curl_errno($ch);
-        curl_close($ch);
-        //记录日志
-        if (($err) || ($httpcode !== 200)) {
-            return null;
-        }
-        if(empty($res))
-            return null;
-        if(count($json = @json_decode($res, 1)))
-            return $json;
-        return json_decode(json_encode(simplexml_load_string($res)), 1);
-    }
+//    function curl_get_content($url, $conn_timeout=7, $timeout=10)
+//    {
+//        $headers = array(
+//            "Accept: application/json",
+//            "Accept-Encoding: deflate,sdch",
+//            "Accept-Charset: utf-8;q=1"
+//        );
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, $url);
+//        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($ch, CURLOPT_HEADER, 0);
+//        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $conn_timeout);
+//        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+//        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+//        curl_setopt($ch, CURLOPT_ENCODING, "");
+//        $res = curl_exec($ch);
+//        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//        $err = curl_errno($ch);
+//        curl_close($ch);
+//        //记录日志
+//        if (($err) || ($httpcode !== 200)) {
+//            return null;
+//        }
+//        if(empty($res))
+//            return null;
+//        if(count($json = @json_decode($res, 1)))
+//            return $json;
+//        return json_decode(json_encode(simplexml_load_string($res)), 1);
+//    }
 
     public $code = [
         '1' => '不合法的用户名',

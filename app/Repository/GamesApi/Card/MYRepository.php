@@ -15,6 +15,8 @@ class MYRepository extends BaseRepository
 {
     public $userTag = 1; //默认是正式账户
     public $NowDateTime = null;
+    public $is_proxy_pass = true; //这个游戏是否使用代理那台服务器
+
     public function __construct($config, $name = 'Utils')
     {
         $this->NowDateTime = date('YmdHis');
@@ -175,7 +177,7 @@ class MYRepository extends BaseRepository
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_HEADER,0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch,CURLOPT_TIMEOUT,20);
+        curl_setopt($ch,CURLOPT_TIMEOUT,10);
         $result = curl_exec($ch);
         $code = curl_getinfo($ch,CURLINFO_HTTP_CODE);
         if ($code >= 400){
@@ -279,7 +281,8 @@ class MYRepository extends BaseRepository
         $sign = $this->sign($data);
         unset($data['NowDateTime']);
         $url = $this->Config['get_game_detail_api'].'?'.http_build_query($data).'&NowDateTime='.$this->NowDateTime.'&MD5DATA='.$sign;
-        $res = $this->curl_get($url);
+//        $res = $this->curl_get($url);
+        $res = $this->curl_get_content($url);
         return $res;
     }
 
@@ -321,9 +324,9 @@ class MYRepository extends BaseRepository
             count($update) && $this->saveDB($update, 'GameID');
         }
     }
-    private function arrInfo(&$array, $v, $key = 'MY')
+    private function arrInfo(&$array, $v, $key = '')
     {
-        $user = $this->getUser($array['username'], 'platformType', $key);
+        $user = $this->getUser($array['username'], '', $key);
         $array['username'] = $user->username ?? $array['username'];
         $array['agent'] = $user->agent ?? 0;
         $array['user_id'] = $user->id ?? 0;
