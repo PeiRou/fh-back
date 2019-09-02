@@ -34,7 +34,10 @@ class PrivodeController extends Controller{
 //            echo '更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
     }
     public function getBet($param = []){
-        $list = GamesApi::getBetList(array_merge($param,['open' => 1]));
+        $where = ['open' => 1];
+        if(!isset($param['g_id']))
+            $where['allbet'] = 1;
+        $list = GamesApi::getBetList(array_merge($param,$where));
         foreach ($list as $k=>$v){
             $res = $this->action($v->g_id, 'getBet', $param);
 //            if(isset($res['code']) && $res['code'] != 0){
