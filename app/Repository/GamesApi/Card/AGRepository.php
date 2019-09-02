@@ -197,7 +197,7 @@ class AGRepository extends BaseRepository
 
     public function matchName($name)
     {
-        return preg_match("/^".$this->getVal('agent')."/", $name);
+        return preg_match("/^".strtolower($this->getVal('agent'))."/", $name);
     }
 
     public function arrInfo(&$array, $v, $key = 'AGIN')
