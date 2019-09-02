@@ -90,6 +90,7 @@ class NNRepository extends BaseRepository
     {
         try{
             $str = '局号：'.$v['gameNo'].'<br />';
+            $str .= '下注前余额：'.$v['enterGold'].'<br />';
             return $str;
         }catch (\Throwable $e){
             writeLog('error', var_export($e->getTraceAsString(), 1));
