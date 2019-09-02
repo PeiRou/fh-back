@@ -98,6 +98,7 @@ class BaseRepository
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $data['GameID'][$k],
+                'round_id' => $data['GameID'][$k],
                 'username' => str_replace($this->Config['agent'].'_','',$data['Accounts'][$k]),
                 'AllBet' => $data['AllBet'][$k],
                 'bunko' => $data['Profit'][$k], //输赢
@@ -110,9 +111,14 @@ class BaseRepository
                 'game_type' => $this->getGameType($data['ServerID'][$k]),
                 'service_money' => $data['Revenue'][$k],// + 服务费
                 'flag' => 1,
+                'bet_info' => $data['CardValue'][$k],
                 'game_id' => $this->getGameId([]),
+                'sessionId' => json_encode([
+                    'ChannelID' =>  $data['ChannelID'][$k], //渠道id
+                    'LineCode' =>  $data['LineCode'][$k],  //所属站点
+                ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             ];
-
+            $array['content'] = $this->aContent($array, $data, $k) ?: $array['game_type'];
             $user = $this->getUser($array['username']);
             $array['user_id'] = $user->id ?? 0;
             $array['agent'] = $user->agent ?? 0;
@@ -121,6 +127,18 @@ class BaseRepository
             $arr[] = $array;
         }
         return $this->insertDB($arr);
+    }
+
+    public function aContent($array, $data, $k)
+    {
+        try{
+            $str = '局号：'.$array['round_id'].'<br />';
+            $str .= '下注前余额：'.$data['CellScore'][$k];
+            return $str;
+        }catch (\Throwable $e){
+            $this->WriteLog($e->getMessage().$e->getFile().'('.$e->getLine().')'.PHP_EOL.var_export($e->getTraceAsString(), 1));
+            return false;
+        }
     }
 
     //拼接请求数据
@@ -449,6 +467,8 @@ class BaseRepository
                 'bet_info' => $v['bet_info'],
                 'flag' => $v['flag'],
                 'productType' => $v['productType'],
+                'content' => $v['content'],
+                'round_id' => $v['round_id'],
                 'game_id' => $this->getGameId($v),
             ];
             $this->arrInfo($array, $v);

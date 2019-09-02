@@ -49,8 +49,9 @@ class VGRepository extends BaseRepository
                 'service_money' => $v['servicemoney'], // + 服务费
                 'flag' => 1,
                 'game_id' => 18,
+                'round_id' => $v['roundid'] ?? '',  //场景号
             ];
-
+            $array['content'] = $this->content($v, $array) ?: $array['game_type'];
             $user = $this->getUser($array['username']);
             $array['agent'] = $user->agent ?? 0;
             $array['user_id'] = $user->id ?? 0;
@@ -59,6 +60,20 @@ class VGRepository extends BaseRepository
             $arr[] = $array;
         }
         return $this->insertDB($arr);
+    }
+
+    public function content($v, $array)
+    {
+        try{
+            $str = '局号：'.$array['round_id'].'<br />';
+            if($v['gametype'] == 22){
+//                $str .= '投注内容：'.($v['isbanker'] == 1 ? '庄' : '闲').'<br />';
+            }
+            $str .= '下注前余额：'.$v['beforebalance'];
+            return $str;
+        }catch (\Throwable $e){
+            return false;
+        }
     }
 
     //获取注单
