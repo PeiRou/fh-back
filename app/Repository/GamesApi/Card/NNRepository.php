@@ -23,7 +23,7 @@ class NNRepository extends BaseRepository
         }
     }
 
-    public function getBet()
+    public function getBet1()
     {
         $param = [
             'data' => [
@@ -39,6 +39,11 @@ class NNRepository extends BaseRepository
         }
         $this->insertError($res['code'] == 0 ? 1 : $res['code'], $this->code($res['code']) ?? $res['msg']);
 //        return $this->show($res['code'] == 0 ? 1 : ($this->code($res['code']) ?? $res['msg']), '');
+    }
+
+    public function getBet()
+    {
+        return $this->hook('getBet1');
     }
 
     public function createData($aData)
@@ -68,7 +73,9 @@ class NNRepository extends BaseRepository
                 'service_money' => $v['fee'] ?? 0,
                 'flag' => 1,
                 'game_id' => 10,
+                'round_id' => $v['gameNo'] ?? '',  //局号
             ];
+            $array['content'] = $this->content($v) ?: $array['game_type'];
             $user = $this->getUser($array['username']);
             $array['agent'] = $user->agent ?? 0;
             $array['user_id'] = $user->id ?? 0;
@@ -77,6 +84,17 @@ class NNRepository extends BaseRepository
             $insert[] = $array;
         }
         return count($insert) && $this->insertDB($insert);
+    }
+
+    public function content($v)
+    {
+        try{
+            $str = '局号：'.$v['gameNo'].'<br />';
+            return $str;
+        }catch (\Throwable $e){
+            writeLog('error', var_export($e->getTraceAsString(), 1));
+            return false;
+        }
     }
 
     public function getUserName()
@@ -116,7 +134,7 @@ class NNRepository extends BaseRepository
 
     private function request($uri, $param)
     {
-        $res = $this->curl_post_content($this->getConfig('apiUrl').$uri, $param, null, ['Content-Type: application/json']);
+        $res = $this->curl_post_content($this->getConfig('apiUrl').$uri, json_encode($param), null, ['Content-Type: application/json']);
         if($res = json_decode($res, 1)){
             return $res;
         }

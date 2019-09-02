@@ -744,44 +744,4 @@ class BaseRepository
         ][$key] ?? '';
     }
 
-    function curl_post_content($url, $data = [], $user_agent=null, $headers = null, $conn_timeout=7, $timeout=10)
-    {
-        !$headers && $headers = array(
-//            'Content-Type: application/json',
-//            'Accept-Encoding: deflate',
-            'Accept-Charset: utf-8;q=1'
-        );
-        if ($user_agent === null) {
-            $user_agent = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36';
-        }
-
-        $this->WriteLog($this->gameInfo->name.$url.json_encode($data));
-        $user_agent && ($headers[] = $user_agent);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $conn_timeout);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 跳过证书检查
-        if ($data) {
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        }
-        $res = curl_exec($ch);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $err = curl_errno($ch);
-        if(empty($res)){
-            $this->WriteLog($this->gameInfo->name.'('.$httpcode.')'.'回传值为：'.var_export($res, 1));
-        }
-//        $this->WriteLog($this->user['username'].$this->gameInfo->name.'('.$httpcode.')'.$res);
-        if (($err) || ($httpcode !== 200)) {
-            $this->WriteLog($this->gameInfo->name.'   http状态码：'.$httpcode.'失败信息：'.$err.'返回信息：'.$res);
-            return null;
-        }
-        return $res;
-    }
-
 }
