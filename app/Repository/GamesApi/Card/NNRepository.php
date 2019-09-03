@@ -55,6 +55,9 @@ class NNRepository extends BaseRepository
                 continue;
             if(in_array($v['id'], $GameIDs))
                 continue;
+            if(isset($v['is_try']) && $v['is_try'] == 1){
+                continue;
+            }
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['id'],

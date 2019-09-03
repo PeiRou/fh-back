@@ -63,7 +63,8 @@ class PrivodeController extends Controller{
         $v = GamesApi::getQpList($param)[0];
         $res = $this->action($v->g_id, 'getBet', $param);
         $r = ob_get_clean();
-        return show($res['code'] ?? 0, $res['msg'] ?? $r);
+        preg_match('/数据/', $r) && $code = 0;
+        return show($res['code'] ?? $code ?? 1, $res['msg'] ?? $r);
     }
 
     //重新检查第三方上下分失败订单 - 使用前台的接口
