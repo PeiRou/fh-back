@@ -27,12 +27,13 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('sub_account', 'Back\SrcViewController@subAccount')->name('m.subAccount'); // 子账号
         Route::get('userBetList/{userId}', 'Back\SrcViewController@userBetList')->name('m.user.viewDetails'); //用户注单明细
     });
-
 //第三方游戏管理
     Route::group(['prefix' => 'back/control/cardGameManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
         Route::get('up_down', 'Back\SrcViewController@upDownSearch')->name('cardGame.upDownSearch'); // 上下分记录查询
         Route::get('card_bet', 'Back\SrcViewController@cardBetInfo')->name('cardGame.cardBetInfo'); // 棋牌下注查询
-        Route::get('TCBetInfo', 'Back\SrcViewController@TCBetInfo')->name('cardGame.TCBetInfo'); // TC下注查询
+        Route::get('TCBetInfo', 'Back\SrcViewController@TCBetInfo')->name('cardGame.TCBetInfo'); // 今日下注查询
+        Route::get('BetInfoHis', 'Back\SrcViewController@BetInfoHis')->name('cardGame.BetInfoHis'); // 历史下注查询
+
         Route::get('errorBet', 'Back\SrcViewController@errorBet')->name('cardGame.errorBet'); // 第三方投注记录失败列表
         Route::get('recharges', 'Back\SrcViewController@recharges')->name('cardGame.recharges'); // 第三方资金转账记录
     });
@@ -127,6 +128,10 @@ Route::group(['middleware'=>['check-ip']],function () {
         Route::get('jslhc', 'Back\SrcViewController@openManage_jslhc')->name('historyLottery.jslhc'); //极速六合彩
         Route::get('sflhc', 'Back\SrcViewController@openManage_sflhc')->name('historyLottery.sflhc'); //三分六合彩
         Route::get('xyft', 'Back\SrcViewController@openManage_xyft')->name('historyLottery.xyft'); //幸运飞艇
+        Route::get('xykl8', 'Back\SrcViewController@openManage_xykl8')->name('historyLottery.xykl8'); //幸运快乐8
+        Route::get('xylsc', 'Back\SrcViewController@openManage_xylsc')->name('historyLottery.xylsc'); //匈牙利赛车
+        Route::get('xylft', 'Back\SrcViewController@openManage_xylft')->name('historyLottery.xylft'); //匈牙利飞艇
+        Route::get('xylssc', 'Back\SrcViewController@openManage_xylssc')->name('historyLottery.xylssc'); //匈牙利时时彩
     });
 
 //系统管理
@@ -323,7 +328,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/openHistory/gdklsf', 'Back\Data\openHistoryController@gdklsf'); //历史开奖 - 广东快乐十分
     Route::get('/back/datatables/openHistory/cqxync', 'Back\Data\openHistoryController@cqxync'); //历史开奖 - 重庆幸运农场
     Route::get('/back/datatables/openHistory/gd11x5', 'Back\Data\openHistoryController@gd11x5'); //历史开奖 - 广东11选5
-    Route::get('/back/datatables/openHistory/bjkl8', 'Back\Data\openHistoryController@bjkl8'); //历史开奖 - 北京快乐8
+    Route::get('/back/datatables/openHistory/bjkl8', 'Back\Data\openHistoryController@bjkl8'); //历史开奖 - 北京快乐8 幸运快乐8
     Route::get('/back/datatables/openHistory/lhc', 'Back\Data\openHistoryController@lhc'); //历史开奖 - 六合彩
     Route::get('/back/datatables/openHistory/xylhc', 'Back\Data\openHistoryController@xylhc'); //历史开奖 - 幸运六合彩
     Route::get('/back/datatables/openHistory/sc', 'Back\Data\openHistoryController@sc'); //历史开奖 - 赛车
@@ -389,6 +394,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/action/admin/userChangeFullName', 'Back\SrcMemberController@userChangeFullName')->middleware('add-log-handle')->name('ac.ad.userChangeFullName');//会员更换真实姓名
     Route::post('/action/admin/editUser', 'Back\SrcMemberController@editUser')->middleware('add-log-handle')->name('ac.ad.editUser');//修改会员资料
     Route::post('/action/admin/changeUserMoney', 'Back\SrcMemberController@changeUserMoney')->middleware('add-log-handle')->name('ac.ad.changeUserMoney');//修改会员余额
+    Route::post('/action/admin/cleanCheckDrawing', 'Back\SrcMemberController@cleanCheckDrawing')->middleware('add-log-handle')->name('ac.ad.cleanCheckDrawing');//執行会员打码量清零
     Route::post('/action/admin/addMoneyAllUser', 'Back\SrcMemberController@addMoneyAllUser')->middleware('add-log-handle')->name('m.user.addMoneyAllUser');//批量修改会员余额
     Route::post('/action/admin/delUser/{id}', 'Back\SrcMemberController@delUser')->middleware(['check-permission','add-log-handle'])->name('m.user.delUser');//删除会员账号
     Route::post('/action/admin/editUserLevels', 'Back\SrcMemberController@editUserLevels')->middleware('add-log-handle')->name('ac.ad.editUserLevels');//删除会员层级
@@ -596,6 +602,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/action/admin/gamesApi/UserGamesApi', 'Back\GamesApiController@UserGamesApi')->middleware('check-permission')->middleware('add-log-handle')->name('m.user.GamesApi');//第三方游戏管理
 
     Route::post('/action/admin/platform/pay', 'Back\PlatformController@pay')->middleware('add-log-handle')->name('ac.ad.platform.pay');//平台费用支付
+    Route::post('/action/admin/platform/payUnpaid', 'Back\PlatformController@payUnpaid');//平台费用支付 - 多订单支付
 
 //Modal
     Route::get('/back/modal/alert', 'Back\Ajax\ModalController@alert'); //添加权限
@@ -634,10 +641,11 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/viewUserInfo/{id}', 'Back\Ajax\ModalController@viewUserInfo')->middleware('check-permission')->name('m.user.viewUserInfo');
     Route::get('/back/modal/editUserInfo/{id}', 'Back\Ajax\ModalController@editUserInfo')->middleware('check-permission')->name('m.user.edit');         //修改会员资料
     Route::get('/back/modal/UserGamesApi', 'Back\Ajax\ModalController@UserGamesApi');         //会员第三方游戏管理
+    Route::get('/back/modal/cleanCheckDrawing/{id}', 'Back\Ajax\ModalController@cleanCheckDrawing')->middleware('check-permission')->name('m.user.cleanCheckDrawing'); //会员打码量清零(view)
     Route::get('/back/modal/viewUserContent/{id}', 'Back\Ajax\ModalController@viewUserContent')->middleware('check-permission')->name('m.user.viewDetails');
     Route::get('/back/modal/changeUserMoney/{id}', 'Back\Ajax\ModalController@changeUserMoney')->middleware('check-permission')->name('m.user.changeBalance');      //修改会员馀额
     Route::get('/back/modal/addMoneyAllUser', 'Back\Ajax\ModalController@addMoneyAllUser')->middleware('check-permission')->name('m.user.addMoneyAllUser');      //批量修改会员馀额
-    Route::get('/back/modal/userCapitalHistory/{id}', 'Back\Ajax\ModalController@userCapitalHistory')->middleware('check-permission')->name('m.user.CapitalHistory');
+    Route::get('/back/modal/userCapitalHistory/{id}', 'Back\Ajax\ModalController@userCapitalHistory')->middleware('check-permission')->name('m.user.CapitalHistory'); //资金明细
     Route::get('/back/modal/addNotice', 'Back\Ajax\ModalController@addNotice');     //公告管理-添加公告
     Route::get('/back/modal/editNotice/{id}', 'Back\Ajax\ModalController@editNotice');     //公告管理-修改公告
     Route::get('/back/modal/addSendMessage', 'Back\Ajax\ModalController@addSendMessage');
@@ -722,6 +730,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/gameAgentOddsSet/{agentId}', 'Back\Ajax\ModalController@gameAgentOddsSet'); //代理赔率设置-模板
     Route::get('/back/modal/editGameApi', 'Back\Ajax\ModalController@editGameApi'); //添加编辑平台接口页面
     Route::get('/back/modal/payPlatformSettleOffer/{id}', 'Back\Ajax\ModalController@payPlatformSettleOffer')->middleware('check-permission')->name('ac.ad.payPlatformSettleOffer'); //后台支付页面
+    Route::get('/back/modal/payPlatformSettleOfferUnpaid', 'Back\Ajax\ModalController@payPlatformSettleOfferUnpaid'); //后台支付页面 - 一次性支付多个订单
 
     Route::get('/back/modal/exportReportUser','Back\Ajax\ModalController@exportReportUser'); //导出会员报表-模板
     Route::get('/back/modal/exportReportAgent','Back\Ajax\ModalController@exportReportAgent'); //导出代理报表-模板
@@ -779,6 +788,10 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/tables/902', 'Back\GameTableController@gameTable902'); //三分时时彩
     Route::get('/game/tables/903', 'Back\GameTableController@gameTable903'); //极速六合彩
     Route::get('/game/tables/904', 'Back\GameTableController@gameTable904'); //三分六合彩
+    Route::get('/game/tables/83', 'Back\GameTableController@gameTable83'); //幸运快乐8
+    Route::get('/game/tables/905', 'Back\GameTableController@gameTable905'); //匈牙利赛车
+    Route::get('/game/tables/906', 'Back\GameTableController@gameTable906'); //匈牙利飞艇
+    Route::get('/game/tables/907', 'Back\GameTableController@gameTable907'); //匈牙利时时彩
 
     //不同层级的代理赔率
     Route::get('/game/agent/tables/{gameId}/{agentId}', 'Back\GameAgentTableController@gameTable');
@@ -818,6 +831,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/game/trade/tables/902', 'Back\GameTradeTableController@gameTradeTable902'); //三分时时彩
     Route::get('/game/trade/tables/903', 'Back\GameTradeTableController@gameTradeTable903'); //极速六合彩
     Route::get('/game/trade/tables/904', 'Back\GameTradeTableController@gameTradeTable904'); //三分六合彩
+    Route::get('/game/trade/tables/905', 'Back\GameTradeTableController@gameTradeTable905'); //匈牙利赛车
+    Route::get('/game/trade/tables/906', 'Back\GameTradeTableController@gameTradeTable906'); //匈牙利飞艇
+    Route::get('/game/trade/tables/907', 'Back\GameTradeTableController@gameTradeTable907'); //匈牙利时时彩
 
     //保存游戏赔率表格数据
     Route::post('/game/table/save/bjpk10', 'Back\GameTables\SaveGameOddsController@bjpk10');
@@ -856,6 +872,10 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/table/save/sfssc', 'Back\GameTables\SaveGameOddsController@sfssc'); // 三分时时彩
     Route::post('/game/table/save/jslhc', 'Back\GameTables\SaveGameOddsController@jslhc'); // 极速六合彩
     Route::post('/game/table/save/sflhc', 'Back\GameTables\SaveGameOddsController@sflhc'); // 三分六合彩
+    Route::post('/game/table/save/xykl8', 'Back\GameTables\SaveGameOddsController@xykl8'); // 幸运快乐八
+    Route::post('/game/table/save/xylsc', 'Back\GameTables\SaveGameOddsController@xylsc'); // 匈牙利赛车
+    Route::post('/game/table/save/xylft', 'Back\GameTables\SaveGameOddsController@xylft'); // 匈牙利飞艇
+    Route::post('/game/table/save/xylssc', 'Back\GameTables\SaveGameOddsController@xylssc'); // 匈牙利时时彩
 
 
     //保存设置的代理赔率表
@@ -897,6 +917,9 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/game/trade/table/save/sfssc','Back\GameTradeTables\SaveGameTradeController@sfssc'); //保存三分时时彩
     Route::post('/game/trade/table/save/jslhc','Back\GameTradeTables\SaveGameTradeController@jslhc'); //保存极速六合彩
     Route::post('/game/trade/table/save/sflhc','Back\GameTradeTables\SaveGameTradeController@sflhc'); //保存三分六合彩
+    Route::post('/game/trade/table/save/xylsc','Back\GameTradeTables\SaveGameTradeController@xylsc'); //保存匈牙利赛车
+    Route::post('/game/trade/table/save/xylft','Back\GameTradeTables\SaveGameTradeController@xylft'); //保存匈牙利飞艇
+    Route::post('/game/trade/table/save/xylssc','Back\GameTradeTables\SaveGameTradeController@xylssc'); //保存匈牙利时时彩
 
 //error
     Route::get('/error/403', function () {

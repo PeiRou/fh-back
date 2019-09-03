@@ -2,11 +2,14 @@
 
 namespace App;
 
+use App\Http\Services\Cache;
 use Illuminate\Database\Eloquent\Model;
 use SebastianBergmann\CodeCoverage\Report\PHP;
 
 class Base extends Model
 {
+    use Cache;
+
     public $selfRes = null;
 
     public function getSelfRes(){
@@ -20,9 +23,9 @@ class Base extends Model
         foreach ($array as $key => $value){
             if ($value['pid'] == $pid){
                 $value['level'] = $level;
-                $list[$value['id']] = $value;
+                $list[$value['game_id']] = $value;
                 unset($array[$key]);
-                static::getTreeGroup($array, $list[$value['id']]['child'], $value['id'], $level+1);
+                static::getTreeGroup($array, $list[$value['game_id']]['child'], $value['game_id'], $level+1);
             }
         }
         return $list;
@@ -35,7 +38,7 @@ class Base extends Model
                 $value['level'] = $level;
                 $list[] = $value;
                 unset($array[$key]);
-                static::getTree($array, $value['id'], $level+1);
+                static::getTree($array, $value['game_id'], $level+1);
             }
         }
         return $list;

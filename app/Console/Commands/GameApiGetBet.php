@@ -19,9 +19,9 @@ class GameApiGetBet extends Command
     {
         $param = [];
         if($g_id = $this->argument('g_id'))
-        $param['g_id'] = $g_id;
+            $param['g_id'] = $g_id;
         if($endTime = $this->argument('endTime'))
-        $param['toTime'] = strtotime($endTime);
+            $param['toTime'] = strtotime($endTime);
         $param['clear'] = $this->option('clear');
         (new PrivodeController())->getBet($param);
     }

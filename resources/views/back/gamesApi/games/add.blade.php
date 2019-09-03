@@ -14,7 +14,7 @@
             <select class="ui dropdown" name="pid" id="pid" style='height:32px !important'>
                 <option value="0">无父级</option>
                 @foreach($p as $v)
-                    <option value="{{ $v['id'] }}" @if(isset($data->pid) && $v['id'] == $data->pid) selected = "selected" @endif>{{ '  |'.str_repeat('__', $v['level'] + 1) }}{{ $v['name'] }}</option>
+                    <option value="{{ $v['game_id'] }}" @if(isset($data->pid) && $v['game_id'] == $data->pid) selected = "selected" @endif>{{ '  |'.str_repeat('__', $v['level'] + 1) }}{{ $v['name'] }}</option>
                 @endforeach
             </select>
         </div>
@@ -82,7 +82,41 @@
     </div>
 </script>
 <script>
-
+    $(function(){
+        function checkImage (file) {
+            if(!/image\/\w+/.test(file.type)){
+                return '图片类型不对';
+            }
+            if(file.size > 1024 * 1024 * 3){
+                return '文件过大';
+            }
+            return false;
+        }
+        $('#file_logo_pc').change(function(){
+            var file = this.files[0];
+            var info = checkImage(file)
+            if(info){
+                return alert(info);
+            }
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                $('#logo_pc').val(this.result);
+            }
+        })
+        $('#file_logo_mobile').change(function(){
+            var file = this.files[0];
+            var info = checkImage(file)
+            if(info){
+                return alert(info);
+            }
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                $('#logo_mobile').val(this.result);
+            }
+        })
+    });
     $('#chkOpenOpen').change(function () {
         if($(this).prop( "checked" )==true){
             $('#dvOpenOpenOn').show();

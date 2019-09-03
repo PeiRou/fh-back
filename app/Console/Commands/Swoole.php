@@ -87,9 +87,14 @@ class Swoole extends Command
             $this->serv = $serv;
             $this->num = array();
         });
-        $this->ws->on('request', function ($serv) {
+        $this->ws->on('request', function ($serv, $response) {
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
-
+            if($data['thread'] == 'GameApiGetBet'){
+                ob_start();
+                Artisan::call($data['thread']);
+                $response->end(ob_get_clean());
+                return '';
+            }
             $this->timer = $this->serv->tick(1000, function($id) use ($data){
                 $redis = Redis::connection();
 
@@ -128,8 +133,8 @@ class Swoole extends Command
                 }
             }
         }catch (\exception $exception){
-            \Log::info($exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-            \Log::info('this commands error :'.$data['thread']);
+            writeLog('error',$exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            writeLog('error','this commands error :'.$data['thread']);
         }
         if($this->num[$id]>=59)
             $this->serv->clearTimer($id);

@@ -150,9 +150,9 @@
                 @if($hasPermission->hasPermission('report.bet') == "has")
                     <li id="menu-reportManage-bet"><a href="{{ route('report.bet') }}"><cite></cite><span>投注报表</span></a></li>
                 @endif
-                @if($hasPermission->hasPermission('report.Card') == "has")
-                    <li id="menu-reportManage-Card"><a href="{{ route('report.Card') }}"><cite></cite><span>棋牌投注报表</span></a></li>
-                @endif
+                {{--@if($hasPermission->hasPermission('report.Card') == "has")--}}
+                    {{--<li id="menu-reportManage-Card"><a href="{{ route('report.Card') }}"><cite></cite><span>棋牌投注报表</span></a></li>--}}
+                {{--@endif--}}
                 @if($hasPermission->hasPermission('report.CardNew') == "has")
                     <li id="menu-reportManage-CardNew"><a href="{{ route('report.CardNew') }}"><cite></cite><span>棋牌报表</span></a></li>
                 @endif
@@ -343,6 +343,18 @@
                 @if($hasPermission->hasPermission('historyLottery.xyft') == "has")
                     <li id="menu-openManage-xyft"><a href="{{ route('historyLottery.xyft') }}"><cite></cite><span>幸运飞艇</span></a></li>
                 @endif
+                @if($hasPermission->hasPermission('historyLottery.xykl8') == "has")
+                    <li id="menu-openManage-xykl8"><a href="{{ route('historyLottery.xykl8') }}"><cite></cite><span>幸运快乐8</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.xylsc') == "has")
+                    <li id="menu-openManage-xylsc"><a href="{{ route('historyLottery.xylsc') }}"><cite></cite><span>匈牙利赛车</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.xylft') == "has")
+                    <li id="menu-openManage-xylft"><a href="{{ route('historyLottery.xylft') }}"><cite></cite><span>匈牙利飞艇</span></a></li>
+                @endif
+                @if($hasPermission->hasPermission('historyLottery.xylssc') == "has")
+                    <li id="menu-openManage-xylssc"><a href="{{ route('historyLottery.xylssc') }}"><cite></cite><span>匈牙利时时彩</span></a></li>
+                @endif
             </ul>
         </li>
         @endif
@@ -421,9 +433,9 @@
                 @if($hasPermission->hasPermission('system.systemSetting') == "has")
                 <li id="menu-systemManage-setting"><a href="{{ route('system.systemSetting') }}"><cite></cite><span>系统参数配置</span></a></li>
                 @endif
-                @if($hasPermission->hasPermission('system.articleManage') == "has")
-                <li id="menu-systemManage-article"><a href="{{ route('system.articleManage') }}"><cite></cite><span>文章管理</span></a></li>
-                @endif
+                {{--@if($hasPermission->hasPermission('system.articleManage') == "has")--}}
+                {{--<li id="menu-systemManage-article"><a href="{{ route('system.articleManage') }}"><cite></cite><span>文章管理</span></a></li>--}}
+                {{--@endif--}}
                 @if($hasPermission->hasPermission('system.whitelist') == "has")
                     <li id="menu-systemManage-whitelist"><a href="{{ route('system.whitelist') }}"><cite></cite><span>ip白名单设置</span></a></li>
                 @endif
@@ -558,7 +570,10 @@
                         {{--<li id="menu-GamesApi-cardBetInfo"><a href="{{ route('cardGame.cardBetInfo') }}"><cite></cite><span>棋牌下注查询</span></a></li>--}}
                     {{--@endif--}}
                     @if($hasPermission->hasPermission('cardGame.TCBetInfo') == "has")
-                        <li id="menu-GamesApi-TCBetInfo"><a href="{{ route('cardGame.TCBetInfo') }}"><cite></cite><span>下注查询</span></a></li>
+                        <li id="menu-GamesApi-TCBetInfo"><a href="{{ route('cardGame.TCBetInfo') }}"><cite></cite><span>今日下注查询</span></a></li>
+                    @endif
+                    @if($hasPermission->hasPermission('cardGame.BetInfoHis') == "has")
+                        <li id="menu-GamesApi-BetInfoHis"><a href="{{ route('cardGame.BetInfoHis') }}"><cite></cite><span>历史下注查询</span></a></li>
                     @endif
                     @if($hasPermission->hasPermission('cardGame.recharges') == "has")
                         <li id="menu-GamesApi-recharges"><a href="{{ route('cardGame.recharges') }}"><cite></cite><span>资金转账记录</span></a></li>

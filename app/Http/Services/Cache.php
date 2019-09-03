@@ -27,13 +27,15 @@ trait Cache
      * @param int $time 缓存时间
      * @param mixed ...$args 附加参数
      */
-    public static function HandleCacheData(\Closure $closure, $time = 1, ...$args)
+    public static function HandleCacheData(\Closure $closure, $time = 1, $nullIsCache = true, ...$args)
     {
         $res = new \ReflectionFunction ($closure);
-        $key = md5((string)$res . $time . json_encode($res->getStaticVariables()) . json_encode($args));
+        $key = md5((string)$res . $time . $nullIsCache . json_encode($res->getStaticVariables()) . json_encode($args));
         $cache = self::CaCheInstance();
         if(!($val = $cache->get($key, false))){
             $val = call_user_func($closure, ...$args);
+            if(!$nullIsCache && (empty($val) || !$val || !count((array)$val)))
+                return $val;
             $cache->put($key, $val, $time);
         }
         return $val;

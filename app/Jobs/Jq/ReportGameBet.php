@@ -58,6 +58,7 @@ class ReportGameBet implements ShouldQueue
                 'updated_at' => $dateTime,
                 'gameCategory' => $iBet->gameCategory,
                 'productType' => $iBet->productType ?? '',
+                'gameslist_id' => $iBet->gameslist_id
             ];
             $data[] = $arr;
         }

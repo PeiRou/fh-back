@@ -33,7 +33,7 @@ class Recharges extends Model
     }
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT `userId`,SUM(`amount`) AS `reAmountSum`,LEFT(`updated_at`,10) AS `date` FROM `recharges` WHERE `status` = 2 AND payType != 'adminAddMoney'";
+        $aSql = "SELECT `userId`,SUM(`amount`) AS `reAmountSum`,LEFT(`updated_at`,10) AS `date` FROM `recharges` WHERE `status` = 2 AND admin_add_money IN(0,1,2)";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `updated_at` >= :startTime ";
@@ -51,7 +51,7 @@ class Recharges extends Model
         $aSql = "SELECT LEFT(`recharges`.`updated_at`,10) AS `date`,SUM(`recharges`.`amount`) AS `reAmountSum`,`users`.`agent` AS `agentId`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`
                   FROM `recharges`
                   JOIN `users` ON `users`.`id` = `recharges`.`userId`
-                  WHERE `recharges`.`status` = 2 AND `recharges`.`payType` != 'adminAddMoney' AND `users`.`testFlag` = 0 ";
+                  WHERE `recharges`.`status` = 2 AND `recharges`.`admin_add_money` IN(0,1,2) AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `recharges`.`updated_at` >= :startTime ";
@@ -71,7 +71,7 @@ class Recharges extends Model
                   FROM `recharges`
                   JOIN `users` ON `users`.`id` = `recharges`.`userId`
                   JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
-                  WHERE `recharges`.`status` = 2 AND `recharges`.`payType` != 'adminAddMoney' AND `users`.`testFlag` = 0 ";
+                  WHERE `recharges`.`status` = 2 AND `recharges`.`admin_add_money` IN(0,1,2) AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `recharges`.`updated_at` >= :startTime ";
@@ -129,7 +129,7 @@ class Recharges extends Model
     public static function getOfflineMemberToday($date){
         $aSql = "SELECT COUNT(`re`.`userId`) AS `count` FROM
                   (SELECT `userId` FROM `recharges` JOIN `users` ON `users`.`id` = `recharges`.`userId`
-                    WHERE `users`.`testFlag` = 0 AND `recharges`.`payType` IN('alipay','bankTransfer','cft','weixin') AND `recharges`.`status` = 2
+                    WHERE `users`.`testFlag` = 0 AND `recharges`.`payType` IN('alipay','bankTransfer','cft','weixin','alipaySm') AND `recharges`.`status` = 2
                     AND `recharges`.`created_at` >= :startTime
                     AND `recharges`.`created_at` <= :endTime
                     GROUP BY `recharges`.`userId`) AS `re`";
@@ -207,7 +207,7 @@ class Recharges extends Model
             if(isset($payType) && $payType){
                 $where .= " and recharges.payType = '".$payType."'";
             }else{
-                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft')";
+                $where .= " and recharges.payType in ('bankTransfer' , 'alipay', 'weixin', 'cft','alipaySm')";
             }
         }else{
             if(isset($status) && $status){

@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Back\Data;
 
+use App\Http\Controllers\Obtain\SendController;
 use App\Http\Proxy\GetDate;
 use App\PlatformDeposit;
+use App\SystemSetting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
 
 class PlatformController extends Controller
 {
-    //平台费用结算-表格数据
-    public function settlement(Request $request)
+    public function settlementModel(Request $request)
     {
-        $model = \App\Offer::class;
-        $res = $model::where(function ($sql) use ($request) {
+        return \App\Offer::where(function ($sql) use ($request) {
             if(isset($request->is_delete))
                 $sql->where('is_delete', $request->is_delete);
             if(isset($request->status))
@@ -22,7 +22,18 @@ class PlatformController extends Controller
             if(isset($request->startTime, $request->endTime))
                 $sql->whereBetween('created_at', [$request->startTime . '-00 00:00:00', $request->endTime . '-00 00:00:00']);
         });
+    }
+    //平台费用结算-表格数据
+    public function settlement(Request $request)
+    {
+        $model = \App\Offer::class;
+        $res = $this->settlementModel($request);
         $count = $res->count();
+        $totalModel = clone $res; # 总金额模型
+        $unpaidModel = clone $res; # 未支付金额模型
+        $totalMoney = $totalModel->sum('money');
+        $unpaidMoney = $unpaidModel->where('paystatus', 0)->sum('money');
+
         $res = $res->skip($request->start)->take($request->length)->orderBy('created_at', 'desc')->get();
         return DataTables::of($res)
             ->editColumn('status',function ($val) use ($model) {
@@ -47,55 +58,37 @@ class PlatformController extends Controller
 
             ->editColumn('control',function ($val) {
                 $str = '<ul class="control-menu">';
-
                 if($val['status'] !== 2)
                     $str .= '<li onclick="edit(\''.$val->id.'\',\''.$val->typestr.'\')">支付</li>';
                 $str .= '</ul>';
+                $str = '';
                 return $str;
             })
             ->rawColumns(['control', 'paystatus', 'overstayed'])
             ->setTotalRecords($count)
             ->skipPaging()
+            ->with(compact('totalMoney', 'unpaidMoney'))
             ->make(true);
     }
-    //平台费用结算-表格数据
-//    public function settlement(Request $request){
-//        $params = $request->post();
-//        $data = PlatformSettlement::where(function ($sql) use ($params) {
-//            if(isset($params['status']) && array_key_exists('status',$params)){
-//                $sql->where('status','=',$params);
-//            }
-//            if(isset($params['monthTime']) && array_key_exists('monthTime',$params)){
-//                $date = new GetDate();
-//                $monthTime = $date->GetTheSpecifiedDate($params['monthTime']);
-//                $sql->whereBetween('date',[$monthTime['start'],$monthTime['end']]);
-//            }else{
-//                if(isset($params['startTime']) && array_key_exists('startTime',$params)){
-//                    $sql->where('date','>=',$params['startTime'] . '-01');
-//                }
-//                if(isset($params['endTime']) && array_key_exists('endTime',$params)){
-//                    $sql->where('date','<=',$params['endTime'] . '-01');
-//                }
-//            }
-//        })->orderBy('created_at','desc')->get();
-//        $aPlatformStatus = PlatformSettlement::$PlatformStatus;
-//        return DataTables::of($data)
-//            ->editColumn('date',function ($data) {
-//                return substr($data->date,0,7);
-//            })
-//            ->editColumn('status',function ($data) use ($aPlatformStatus) {
-//                return  $aPlatformStatus[$data->status];
-//            })
-//            ->editColumn('control',function ($data) {
-//                $html = '';
-//                if($data->status == 1){
-//                    $html .= '<span class="edit-link red" onclick="pay('.$data->id.')"> 付款 </span>';
-//                }
-//                return  $html;
-//            })
-//            ->rawColumns(['control'])
-//            ->make(true);
-//    }
+
+    //获取总后台支付方式
+    public function centerPays(Request $request)
+    {
+        $aArray = [
+            'platform_id' => SystemSetting::getValueByRemark1('payment_platform_id'),
+            'timestamp' => time(),
+        ];
+        $baseController = new SendController($aArray);
+        $aPay = $baseController->sendParameter('pay/pay/index');
+        if(!empty($aPay)) {
+            if ($aPay['code'] == 0) {
+                $aPay = $aPay['data'];
+            }
+        }else{
+            $aPay = [];
+        }
+        return show(0, '', $aPay);
+    }
 
     //付款记录-表格数据
     public function record(Request $request){

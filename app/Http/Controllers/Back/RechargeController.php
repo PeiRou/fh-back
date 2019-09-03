@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back;
 
 use App\Events\BackPusherEvent;
 use App\Recharges;
+use App\SystemSetting;
 use App\User;
 use App\Capital;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class RechargeController extends Controller
 
         $nowMoney = $userMoney+$amout+$rebate_or_fee;
         $nowUserPayTimes = $userPayTimes+1;
-        $nowUserSaveMoneyCount = $userSaveMoneyCount + $amout + $rebate_or_fee;
+        $nowUserSaveMoneyCount = $userSaveMoneyCount + $amout;
 
         if($getInfo->addMoney == 1){
             return response()->json([
@@ -81,12 +82,8 @@ class RechargeController extends Controller
                         $insert = $capital->save();
                     }
 
-                        //增加用户提款所需要的打码量
-                    if(($drawing_money_check_code = DB::table('system_setting')->value('drawing_money_check_code')) > 0){
-                        DB::connection('mysql::write')->table('users')->where('id' , $userId)->update([
-                            'cheak_drawing' => DB::raw(" cheak_drawing + ".($amout * $drawing_money_check_code)." ")
-                        ]);
-                    }
+                    //增加用户提款所需要的打码量
+                    SystemSetting::addDrawingMoneyCheckCode($userId, $amout + ($rebate_or_fee ?? 0));
 
                     event(new BackPusherEvent('success','充值成功提醒','您的充值订单</br>【'.$getInfo->orderNum.'】已到账，充值金额：'.$amout.'元',array('fnotice-'.$userId)));
                     return response()->json([

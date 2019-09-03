@@ -15,7 +15,7 @@ class ReportBetMember extends Model
                   '' AS `recharges_money`,'' AS `drawing_money`,'' AS `activity_money`,'' AS `handling_fee`,
                   SUM(`bet_amount`) AS `bet_amount`,SUM(`bet_bunko`) AS `bet_bunko`,
                   SUM(`odds_amount`) AS `odds_amount`,SUM(`return_amount`) AS `return_amount`,SUM(`fact_return_amount`) AS `fact_return_amount`,
-                  `user_account`,`user_name`,`user_id`,`agent_account` 
+                  `user_account`,user_name AS `user_name`,`user_id`,`agent_account` 
                   FROM `report_bet_member` WHERE 1 ";
         $result = self::conditionalConnection($aSql,$aParam);
         $result['aSql'] .= " ORDER BY `fact_bet_bunko` ASC ";

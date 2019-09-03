@@ -14,26 +14,37 @@
     {
         //彩种id
         private $clong_lottery = array(
-            'mssc' => array('id'=>80,'type'=>'car'),     //秒速赛车
-            'pk10' => array('id'=>50,'type'=>'car'),     //北京pk10
-            'msft' => array('id'=>82,'type'=>'car'),     //秒速飞艇
-            'msssc' => array('id'=>81,'type'=>'ssc'),    //秒速时时彩
+            'mssc' => array('id'=>80,'type'=>'car'),    //秒速赛车
+            'pk10' => array('id'=>50,'type'=>'car'),    //北京pk10
+            'msft' => array('id'=>82,'type'=>'car'),    //秒速飞艇
+            'msssc' => array('id'=>81,'type'=>'ssc'),   //秒速时时彩
             'cqssc' => array('id'=>1,'type'=>'ssc'),    //重庆时时彩
-            'qqffc' => array('id'=>113,'type'=>'ssc'),    //QQ分分彩
+            'qqffc' => array('id'=>113,'type'=>'ssc'),  //QQ分分彩
             'xjssc' => array('id'=>4,'type'=>'ssc'),    //新疆时时彩
-            'paoma' => array('id'=>99,'type'=>'car'),  //跑马
-            'pcdd' => array('id'=>66,'type'=>'pcdd'),    //PC蛋蛋
-            'bjkl8' => array('id'=>65,'type'=>'bjkl8'),    //北京快乐8
-            'cqxync' => array('id'=>61,'type'=>'xync'),    //重庆幸运农场
-            'gd11x5' => array('id'=>21,'type'=>'SEX5'),    //广东11选5
-            'gdklsf' => array('id'=>60,'type'=>'xync'),    //广东快乐十分
-            'kssc' => array('id'=>801,'type'=>'car'),     //快速赛车
-            'ksft' => array('id'=>802,'type'=>'car'),     //快速飞艇
-            'ksssc' => array('id'=>803,'type'=>'ssc'),    //快速时时彩
-            'twxyft' => array('id'=>804,'type'=>'car'),     //台湾幸运飞艇
-            'sfsc' => array('id'=>901,'type'=>'car'),     //三分赛车
-            'sfssc' => array('id'=>902,'type'=>'ssc'),     //三分时时彩
-            'xyft' => array('id'=>55,'type'=>'car'),     //幸运飞艇
+            'paoma' => array('id'=>99,'type'=>'car'),   //跑马
+            'pcdd' => array('id'=>66,'type'=>'pcdd'),   //PC蛋蛋
+            'bjkl8' => array('id'=>65,'type'=>'bjkl8'), //北京快乐8
+            'cqxync' => array('id'=>61,'type'=>'xync'), //重庆幸运农场
+            'gd11x5' => array('id'=>21,'type'=>'SEX5'), //广东11选5
+            'gdklsf' => array('id'=>60,'type'=>'xync'), //广东快乐十分
+            'kssc' => array('id'=>801,'type'=>'car'),   //快速赛车
+            'ksft' => array('id'=>802,'type'=>'car'),   //快速飞艇
+            'ksssc' => array('id'=>803,'type'=>'ssc'),  //快速时时彩
+            'twxyft' => array('id'=>804,'type'=>'car'), //台湾幸运飞艇
+            'sfsc' => array('id'=>901,'type'=>'car'),   //三分赛车
+            'sfssc' => array('id'=>902,'type'=>'ssc'),  //三分时时彩
+            'xyft' => array('id'=>55,'type'=>'car'),    //幸运飞艇
+            'xykl8' => array('id'=>83,'type'=>'bjkl8'), //幸运快乐八
+            'xylsc' => array('id'=>905,'type'=>'car'),  //匈牙利赛车
+            'xylft' => array('id'=>906,'type'=>'car'),  //匈牙利飞艇
+            'xylssc' => array('id'=>907,'type'=>'ssc'), //匈牙利时时彩
+            'xy28' => array('id'=>84,'type'=>'pcdd'),   //幸运28
+            'twbgc' => array('id'=>42,'type'=>'bjkl8'), //台湾宾果彩
+            'twbg28' => array('id'=>43,'type'=>'pcdd'), //台湾宾果28
+            'hlsx' => array('id'=>2,'type'=>'ssc'),     //欢乐生肖
+            'jndhl8' => array('id'=>40,'type'=>'bjkl8'),//加拿大快乐八
+            'jndssc' => array('id'=>3,'type'=>'ssc'),   //加拿大时时彩
+            'jnd28' => array('id'=>41,'type'=>'pcdd'),  //加拿大28
         );
         //开奖第一行
         private $clong_kaijian1 = array(

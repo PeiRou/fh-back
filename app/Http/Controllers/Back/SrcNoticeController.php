@@ -37,7 +37,6 @@ class SrcNoticeController extends Controller
         $notice->userLevel = $new_levels;
         $save = $notice->save();
         if ($save == 1) {
-            $this->writeToFile();
             return response()->json([
                 'status' => true,
                 'msg' => "添加成功！"
@@ -74,7 +73,6 @@ class SrcNoticeController extends Controller
         $id = $request->get('id');
         $del = Notices::where('id', $id)->delete();
         if ($del == 1) {
-            $this->writeToFile();
             return response()->json([
                 'status' => true,
             ]);
@@ -85,18 +83,6 @@ class SrcNoticeController extends Controller
             ]);
         }
     }
-
-    function writeToFile()
-    {
-        $notice1 = Notices::select('id', 'type', 'content as message', 'title', 'updated_at as updateTime', 'created_at as addTime', 'userLevel as rechLevels')->where('type', 1)->get();
-        $notice2 = Notices::select('id', 'type', 'content as message', 'title', 'updated_at as updateTime', 'created_at as addTime', 'userLevel as rechLevels')->where('type', 2)->get();
-        $notice3 = Notices::select('id', 'type', 'content as message', 'title', 'updated_at as updateTime', 'created_at as addTime', 'userLevel as rechLevels')->where('type', 3)->get();
-        $notice4 = Notices::select('id', 'type', 'content as message', 'title', 'updated_at as updateTime', 'created_at as addTime', 'userLevel as rechLevels')->where('type', 4)->get();
-        $notice5 = Notices::select('id', 'type', 'content as message', 'title', 'updated_at as updateTime', 'created_at as addTime', 'userLevel as rechLevels')->where('type', 5)->get();
-        $data = 'var MESSAGES = {"type_4":' . $notice4 . ',"type_3":' . $notice3 . ',"type_2":' . $notice2 . ',"type_1":' . $notice1 . ',"type_0":[],"type_5":' . $notice5 . '};';
-        $write = Storage::disk('static')->put('messages.js', $data);
-    }
-
 
     //添加消息
     public function addSendMessage(Request $request)

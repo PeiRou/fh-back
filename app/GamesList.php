@@ -17,7 +17,7 @@ class GamesList extends Base
 
     public static function getArr($param = [])
     {
-        $arr = self::select('id', 'pid', 'name')->get();
+        $arr = self::select('game_id', 'pid', 'name')->get();
         return self::getTree($arr->toArray());
     }
     public static function getTreeList($param = [])
@@ -162,6 +162,82 @@ class GamesList extends Base
         'LIVE' => '真人',
         'FISH' => '捕鱼',
         'SPORTS' => '体育',
+        'YOPLAY' => '电竞',
     ];
+
+    const Config = [
+        //Lotus - 真人
+        '20' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 25,
+                'gameType' => 'LIVE',
+            ]
+        ],
+        //Ameba（AE）- 电子
+        '22' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 17,
+                'gameType' => 'RNG',
+            ]
+        ],
+        //Lotus - 电子
+        '23' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 25,
+                'gameType' => 'RNG',
+            ]
+        ],
+        //IBC（沙巴） - 体育
+        '25' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 30,
+                'gameType' => 'SPORTS',
+            ]
+        ],
+        //PT - 真人
+        '26' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 3,
+                'gameType' => 'LIVE',
+            ]
+        ],
+        //PT - 电子
+        '27' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 3,
+                'gameType' => 'RNG',
+            ]
+        ],
+        //PT - 捕鱼
+        '28' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 3,
+                'gameType' => 'FISH',
+            ]
+        ],
+        //MG - 电子
+        '29' => [
+            'g_id' => 19,
+            'param' => [
+                'product_type' => 43,
+                'gameType' => 'RNG',
+            ]
+        ],
+    ];
+    public static function getNameArray(){
+        $aData = self::select('game_id','name')->where('pid','>',0)->get();
+        $aArray = [];
+        foreach ($aData as $iData){
+            $aArray[$iData->game_id] = $iData->name;
+        }
+        return $aArray;
+    }
 
 }

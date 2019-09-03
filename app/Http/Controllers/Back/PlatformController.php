@@ -8,6 +8,7 @@ use App\SystemSetting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class PlatformController extends Controller
@@ -78,4 +79,37 @@ class PlatformController extends Controller
         ]);
     }
 
+    //多订单支付
+    public function payUnpaid(Request $request){
+
+        $aParam = $request->input();
+        $aArray = [
+            'platform_id' => SystemSetting::getValueByRemark1('payment_platform_id'),
+            'timestamp' => time(),
+//            'order_id' => $iOffer->order_id,
+            'order_no' => $aParam['order_no'],
+//            'amount' => $iOffer->money,
+            'pay_remark' => $aParam['type']
+        ];
+        $baseController = new SendController($aArray);
+        $iPay = $baseController->sendParameter('pay/pay/submitOrder');
+        if($iPay['code'] === 0){
+            DB::table('offer')->where('order_no', $aParam['order_no'])->update(['paystatus' => 1]);
+            return response()->json([
+                'status' => true,
+                'data' => $iPay['data']
+            ]);
+        }elseif ($iPay['code'] === 110){
+            return response()->json([
+                'status' => false,
+                'msg' => '该订单已经支付，请等待通知',
+                'code' => $iPay['code']
+            ]);
+        }
+        return response()->json([
+            'status' => false,
+            'msg' => '支付错误',
+            'code' => $iPay['code']
+        ]);
+    }
 }

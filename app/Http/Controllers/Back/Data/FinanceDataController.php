@@ -257,14 +257,14 @@ class FinanceDataController extends Controller
         if(isset($rechargeType))
             $where .= ' and recharges.rechargeType = '.$rechargeType;
         if(isset($account_param) && $account_param){
-            if($account_type == 'account'){
-                $where .= " and recharges.username = '".$account_param."'";
-            }else if($account_type == 'orderNum'){
-                $where .= " and recharges.orderNum = '".$account_param."'";
-            }else if($account_type == 'operation_account'){
-                $where .= " and recharges.operation_account = '".$account_param."'";
-            }else if($account_type == 'sysOrderNum'){
-                $where .= " and recharges.sysPayOrder = '".$account_param."'";
+            if ($account_type == 'agent_account'){
+                $userIds = DB::select("select id from users where agent = (select a_id from agent where account = '$account_param' limit 1)")?:[['id'=>0]];
+                $userIds = implode(',',array_column(json_decode(json_encode($userIds),true),'id'));
+                $payType == 'adminAddMoney' && $where .= " and recharges.payType = '$payType'";
+                $where .= " and recharges.userId in ($userIds)";
+            } else {
+                $field = ['account'=>'username', 'orderNum'=>'orderNum', 'operation_account'=>'operation_account', 'sysOrderNum'=>'sysPayOrder'][$account_type];
+                $where .= " and recharges.$field = '$account_param'";
             }
         }
         $dateTypeName = 'updated_at';
@@ -492,18 +492,8 @@ class FinanceDataController extends Controller
             })
             ->where(function ($q) use ($account_type, $account_param, $request){
                 if(isset($account_param) && $account_param){
-                    if($account_type == 'account'){
-                        $q->where('drawing.username',$account_param);
-                    }
-                    if($account_type == 'orderNum'){
-                        $q->where('drawing.order_id',$account_param);
-                    }
-                    if($account_type == 'operation_account'){
-                        $q->where('drawing.operation_account',$account_param);
-                    }
-                    if($account_type == 'amount'){
-                        $q->where('drawing.amount',$account_param);
-                    }
+                    $field = ['account'=>'username', 'orderNum'=>'order_id', 'operation_account'=>'operation_account', 'amount'=>'amount'][$account_type];
+                    $q->where('drawing.'.$field,$account_param);
                 }
                 if(isset($account_type) && $account_type == 'amount_fw'){
 //                    if(($min = (int) $request->get('amount_min')) && ($max = $request->get('amount_max'))){

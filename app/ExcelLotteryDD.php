@@ -75,13 +75,13 @@ class ExcelLotteryDD
             $win->push($winCode);
         }
         //绿
-        if($sum == 1 || $sum == 4 || $sum == 7 || $sum == 10 || $sum == 16 || $sum == 19 || $sum == 22 || $sum == 25){
+        else if($sum == 1 || $sum == 4 || $sum == 7 || $sum == 10 || $sum == 16 || $sum == 19 || $sum == 22 || $sum == 25){
             $playId = $this->arrPlayId['LUBO'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);
         }
         //蓝
-        if($sum == 2 || $sum == 5 || $sum == 8 || $sum == 11 || $sum == 17 || $sum == 20 || $sum == 23 || $sum == 27){
+        else if($sum == 2 || $sum == 5 || $sum == 8 || $sum == 11 || $sum == 17 || $sum == 20 || $sum == 23 || $sum == 26){
             $playId = $this->arrPlayId['LANBO'];
             $winCode = $gameId.$playCate.$playId;
             $win->push($winCode);

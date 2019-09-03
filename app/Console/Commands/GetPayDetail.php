@@ -79,6 +79,8 @@ class GetPayDetail extends Command
 
         $PaymentPlatform = new PaymentPlatform();
         $aArray['sign'] = $PaymentPlatform->getSign($aArray,SystemSetting::where('id',1)->value('payment_platform_key'));
-        return $PaymentPlatform->postCurl('http://sc888999.com/api/v1/statistical',$aArray);
+        $interface=SystemSetting::where('id',1)->value('payment_platform_interface');  //http://sc888999.com/api/v1/payways
+        $posturl=substr($interface, 0, -7).'statistical';  //http://sc888999.com/api/v1/statistical
+        return $PaymentPlatform->postCurl($posturl,$aArray);
     }
 }

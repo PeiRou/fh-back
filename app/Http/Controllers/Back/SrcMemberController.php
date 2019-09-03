@@ -11,6 +11,7 @@ use App\GameOddsCategory;
 use App\GeneralAgent;
 use App\Recharges;
 use App\SubAccount;
+use App\SystemSetting;
 use App\User;
 use App\Users;
 use Illuminate\Database\Eloquent\Model;
@@ -573,18 +574,18 @@ class SrcMemberController extends Controller
             ]);
         }
      }
-     //用户修改真实姓名
+    //用户修改真实姓名
     public function userChangeFullName(Request $request)
     {
         $uid = $request->input('uid');
         $fullName = $request->input('fullName');
         //真名匹配
-        $pattern = '/^[\x{4e00}-\x{9fa5}]+$/u';
+        $pattern = '/^([\x{4e00}-\x{9fa5}]+(·[\x{4e00}-\x{9fa5}]+)*){2,15}$/u';
         $matches = preg_match($pattern, $fullName);
         if(!$matches)
             return response()->json([
                 'status' => false ,
-                'msg'  => '请输入中文姓名！'
+                'msg'  => '无效格式的中文姓名,2-15汉字,可包含·'
             ]);
         $update = User::where('id',$uid)
             ->update([
@@ -740,6 +741,9 @@ class SrcMemberController extends Controller
                                 'money' => DB::raw('money + '.$money)
                             ]);
                             if($updateUserMoney == 1){
+                                # 增加打码量限制
+                                SystemSetting::addDrawingMoneyCheckAdminMoney($uid, $money, $adminAddMoney);
+
                                 return response()->json([
                                     'status'=>true,
                                     'msg'=>'ok'
@@ -813,6 +817,25 @@ class SrcMemberController extends Controller
             return response()->json([
                 'status'=>false,
                 'msg'=>'同一个用户同资金61秒内无法重复操作，请稍后再试！'
+            ]);
+        }
+    }
+    //用户打码量清零
+    public function cleanCheckDrawing(Request $request){
+        $userid = $request->input('uid');
+        $update = User::where('id',$userid)
+            ->update([
+                'cheak_drawing'=>'0'
+            ]);
+        if($update == 1){
+            return response()->json([
+                'status'=>true,
+                'msg'=>'用户打码量清零成功'
+            ]);
+        }else{
+            return response()->json([
+                'status'=>false,
+                'msg'=>'用户打码量清零失败！'
             ]);
         }
     }

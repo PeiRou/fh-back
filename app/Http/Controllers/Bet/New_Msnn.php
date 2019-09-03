@@ -16,9 +16,10 @@ use Illuminate\Support\Facades\Session;
 
 class New_Msnn extends Excel
 {
-    protected $arrPlay_id = array(911893457,911893458,911893459,911893460,911893461);
+    protected $arrPlay_id = array(911893457,911893458,911893459,911893460,911893461,911924234,911924235,911924236,911924237,911924238);
     protected $arrPlayCate = array(
-        'NN' => 189
+        'NN' => 189,
+        'NN1' => 192
     );
     protected $arrPlayId = array(
         'XIANYI' => 3457,
@@ -26,6 +27,11 @@ class New_Msnn extends Excel
         'XIANSAN' => 3459,
         'XIANSI' => 3460,
         'XIANWU' => 3461,
+        'XIANYI1' => 4234,
+        'XIANER1' => 4235,
+        'XIANSAN1' => 4236,
+        'XIANSI1' => 4237,
+        'XIANWU1' => 4238,
     );
 
     protected function exc_play_nn($openCode,$gameId,$nn){
@@ -50,7 +56,7 @@ class New_Msnn extends Excel
             try{
                 $bunko = $this->bunko_nn($win,$lose,$gameId,$issue);
             }catch (\exception $exception){
-                writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                 DB::table('bet')->where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
             }
             if($bunko == 1){
@@ -79,7 +85,7 @@ class New_Msnn extends Excel
                 if(!$res){
                     $res = DB::table($table)->where('id',$id)->where('nn_returnwater',2)->update(['nn_returnwater' => 1]);
                     if(empty($res)){
-                        \Log::info($gameName.$issue.'退水中失败！');
+                        writeLog('New_Bet',$gameName.$issue.'退水中失败！');
                         return 0;
                     }
                 }else

@@ -29,115 +29,94 @@ class ExcelLotteryNN
         $player3_nn = $niuniuArr[3];
         $player4_nn = $niuniuArr[4];
         $player5_nn = $niuniuArr[5];
-        $gamePlay = $gameId.$this->arrPlayCate['NN'];
-        if((int)$banker_nn > (int)$player1_nn){
+        $gamePlay = $gameId.$this->arrPlayCate['NN'];   //翻倍牛牛
+        $gamePlay1 = $gameId.$this->arrPlayCate['NN1']; //平倍牛牛
+        if(((int)$banker_nn > (int)$player1_nn) || ((int)$banker_nn == (int)$player1_nn && (int)$banker_nn <= 6) || ((int)$banker_nn == (int)$player1_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[1])){
             $playId = $this->arrPlayId['XIANYI'];//$playId = 3462;
             $numCode = $gamePlay.$playId;
             $lose->push([$numCode,(int)$banker_nn]);
-            // \Log::info('闲一输');
-        } else if((int)$banker_nn == (int)$player1_nn && (int)$banker_nn <= 6){
-            $playId = $this->arrPlayId['XIANYI'];//$playId = 3462;
-            $numCode = $gamePlay.$playId;
+            $playId = $this->arrPlayId['XIANYI1'];
+            $numCode = $gamePlay1.$playId;
             $lose->push([$numCode,(int)$banker_nn]);
-            //\Log::info('闲一输');
-        } else if((int)$banker_nn == (int)$player1_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[1]){
-            $playId = $this->arrPlayId['XIANYI'];//$playId = 3462;
-            $numCode = $gamePlay.$playId;
-            $lose->push([$numCode,(int)$banker_nn]);
-            //\Log::info('闲一输');
+//            writeLog('bunko_nn', '闲一输');
         } else {
             $playId = $this->arrPlayId['XIANYI'];//$playId = 3462;
             $numCode = $gamePlay.$playId;
             $win->push([$numCode,(int)$player1_nn]);
-            //\Log::info('闲一赢');
+            $playId = $this->arrPlayId['XIANYI1'];
+            $numCode = $gamePlay1.$playId;
+            $win->push([$numCode,(int)$player1_nn]);
+//            writeLog('bunko_nn', '闲一赢');
         }
 
-        if((int)$banker_nn > (int)$player2_nn){
+        if(((int)$banker_nn > (int)$player2_nn) || ((int)$banker_nn == (int)$player2_nn && (int)$banker_nn <= 6) || ((int)$banker_nn == (int)$player2_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[2])){
             $playId = $this->arrPlayId['XIANER'];//$playId = 3463;
             $numCode = $gamePlay.$playId;
             $lose->push([$numCode,(int)$banker_nn]);
-            //\Log::info('闲二输');
-        } else if((int)$banker_nn == (int)$player2_nn && (int)$banker_nn <= 6){
-
-            $playId = $this->arrPlayId['XIANER'];//$playId = 3463;
-            $numCode = $gamePlay.$playId;
+            $playId = $this->arrPlayId['XIANER1'];
+            $numCode = $gamePlay1.$playId;
             $lose->push([$numCode,(int)$banker_nn]);
-            //\Log::info('闲二输');
-        } else if((int)$banker_nn == (int)$player2_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[2]){
-
-            $playId = $this->arrPlayId['XIANER'];//$playId = 3463;
-            $numCode = $gamePlay.$playId;
-            $lose->push([$numCode,(int)$banker_nn]);
-            //\Log::info('闲二输');
+//            writeLog('bunko_nn', '闲二输');
         } else {
             $playId = $this->arrPlayId['XIANER'];//$playId = 3463;
             $numCode = $gamePlay.$playId;
             $win->push([$numCode,(int)$player2_nn]);
-            //\Log::info('闲二赢');
+            $playId = $this->arrPlayId['XIANER1'];
+            $numCode = $gamePlay1.$playId;
+            $win->push([$numCode,(int)$player2_nn]);
+//            writeLog('bunko_nn', '闲二赢');
         }
 
-        if((int)$banker_nn > (int)$player3_nn){
+        if(((int)$banker_nn > (int)$player3_nn) || ((int)$banker_nn == (int)$player3_nn && (int)$banker_nn <= 6) || ((int)$banker_nn == (int)$player3_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[3])){
             $playId = $this->arrPlayId['XIANSAN'];//$playId = 3464;
             $numCode = $gamePlay.$playId;
             $lose->push([$numCode,(int)$banker_nn]);
-            //\Log::info('闲三输');
-        } else if((int)$banker_nn == (int)$player3_nn && (int)$banker_nn <= 6){
-            $playId = $this->arrPlayId['XIANSAN'];//$playId = 3464;
-            $numCode = $gamePlay.$playId;
-            $lose->push([$numCode,(int)$banker_nn]);
-            //\Log::info('闲三输');
-        } else if((int)$banker_nn == (int)$player3_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[3]){
-            $playId = $this->arrPlayId['XIANSAN'];//$playId = 3464;
-            $numCode = $gamePlay.$playId;
+            $playId = $this->arrPlayId['XIANSAN1'];
+            $numCode = $gamePlay1.$playId;
             $lose->push([$numCode,(int)$banker_nn]);
             //\Log::info('闲三输');
         } else {
             $playId = $this->arrPlayId['XIANSAN'];//$playId = 3464;
             $numCode = $gamePlay.$playId;
             $win->push([$numCode,(int)$player3_nn]);
+            $playId = $this->arrPlayId['XIANSAN1'];//$playId = 3464;
+            $numCode = $gamePlay1.$playId;
+            $win->push([$numCode,(int)$player3_nn]);
             //\Log::info('闲三赢');
         }
 
-        if((int)$banker_nn > (int)$player4_nn){
+        if(((int)$banker_nn > (int)$player4_nn) || ((int)$banker_nn == (int)$player4_nn && (int)$banker_nn <= 6) || ((int)$banker_nn == (int)$player4_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[4])){
             $playId = $this->arrPlayId['XIANSI'];//$playId = 3465;
             $numCode = $gamePlay.$playId;
             $lose->push([$numCode,(int)$banker_nn]);
-            //\Log::info('闲四输');
-        } else if((int)$banker_nn == (int)$player4_nn && (int)$banker_nn <= 6){
-            $playId = $this->arrPlayId['XIANSI'];//$playId = 3465;
-            $numCode = $gamePlay.$playId;
-            $lose->push([$numCode,(int)$banker_nn]);
-            //\Log::info('闲四输');
-        } else if((int)$banker_nn == (int)$player4_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[4]){
-            $playId = $this->arrPlayId['XIANSI'];//$playId = 3465;
-            $numCode = $gamePlay.$playId;
+            $playId = $this->arrPlayId['XIANSI1'];//$playId = 3465;
+            $numCode = $gamePlay1.$playId;
             $lose->push([$numCode,(int)$banker_nn]);
             //\Log::info('闲四输');
         } else {
             $playId = $this->arrPlayId['XIANSI'];//$playId = 3465;
             $numCode = $gamePlay.$playId;
             $win->push([$numCode,(int)$player4_nn]);
+            $playId = $this->arrPlayId['XIANSI1'];//$playId = 3465;
+            $numCode = $gamePlay1.$playId;
+            $win->push([$numCode,(int)$player4_nn]);
             //\Log::info('闲四赢');
         }
 
-        if((int)$banker_nn > (int)$player5_nn){
+        if(((int)$banker_nn > (int)$player5_nn) || ((int)$banker_nn == (int)$player5_nn && (int)$banker_nn <= 6) || ((int)$banker_nn == (int)$player5_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[5])){
             $playId = $this->arrPlayId['XIANWU'];//$playId = 3466;
             $numCode = $gamePlay.$playId;
             $lose->push([$numCode,(int)$banker_nn]);
-            //\Log::info('闲五输');
-        } else if((int)$banker_nn == (int)$player5_nn && (int)$banker_nn <= 6){
-            $playId = $this->arrPlayId['XIANWU'];//$playId = 3466;
-            $numCode = $gamePlay.$playId;
-            $lose->push([$numCode,(int)$banker_nn]);
-            //\Log::info('闲五输');
-        } else if((int)$banker_nn == (int)$player5_nn && (int)$banker_nn > 6 && (int)$explodeNum[0] > (int)$explodeNum[5]){
-            $playId = $this->arrPlayId['XIANWU'];//$playId = 3466;
-            $numCode = $gamePlay.$playId;
+            $playId = $this->arrPlayId['XIANWU1'];//$playId = 3466;
+            $numCode = $gamePlay1.$playId;
             $lose->push([$numCode,(int)$banker_nn]);
             //\Log::info('闲五输');
         } else {
             $playId = $this->arrPlayId['XIANWU'];//$playId = 3466;
             $numCode = $gamePlay.$playId;
+            $win->push([$numCode,(int)$player5_nn]);
+            $playId = $this->arrPlayId['XIANWU1'];//$playId = 3466;
+            $numCode = $gamePlay1.$playId;
             $win->push([$numCode,(int)$player5_nn]);
             //\Log::info('闲五赢');
         }

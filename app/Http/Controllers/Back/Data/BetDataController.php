@@ -228,13 +228,13 @@ class BetDataController extends Controller
                 break;
             foreach ($bet as $k=>$v){
                 $money = '';
-                if($v->bet_bunko == 0){
+                if($v->status == 0){
                     $money = '未结算';
                 }else{
                     if($v->bet_bunko > 0 && $v->bet_bunko != $v->bet_bet_money){
                         $tmpBet_bet_money = ($v->bet_bunko) > 0 ? ($v->bet_bet_money) : 0;
                         $lastMoney = ($v->bet_bunko) - $tmpBet_bet_money;
-                        if($lastMoney==0)
+                        if($v->status==2)
                             $money = '已撤单';
                         else
                             $money = sprintf("%.2f",$lastMoney);
@@ -332,7 +332,7 @@ class BetDataController extends Controller
                 }
             })
             ->editColumn('control',function ($bet){
-                if($bet->bet_bunko ==0)
+                if($bet->status ==0)
                     return '<a href="javascript:;" onclick="cancel(\''.$bet->bet_order_id.'\')">取消注单</a>';
             })
             ->rawColumns(['user','play','issue','bunko','bet_money','platform','control'])
@@ -431,85 +431,84 @@ class BetDataController extends Controller
         $lengthPage = $request->get('length');
         $user = DB::table('users')->where('username',$username)->first();
 
-        if($user){
-            $aBetSql = Bets::userBetSearch($request,$user);
-            $betCount = Bets::userBetSearchCount($request,$user);
-            $aBetHisSql = BetHis::userBetSearch($request, $user);
-            $betHisCount = BetHis::userBetSearchCount($request, $user);
-
-            if(empty($aBetSql) && !empty($aBetHisSql)){
-                $aSql = $aBetHisSql.' ORDER BY bet_created_at DESC,bet_bet_id DESC ';
-            }elseif(empty($aBetHisSql) && !empty($aBetSql)){
-                $aSql = $aBetSql.' ORDER BY bet_created_at DESC,bet_bet_id DESC ';
-            }else{
-                $aSql = $aBetSql . ' UNION ALL ' . $aBetHisSql .' ORDER BY bet_created_at DESC,bet_bet_id DESC';
-            }
-            $bet = DB::select($aSql." LIMIT ".$startPage.','.$lengthPage);
-            $currentIssue = '';
-            $currentColor = '';
-            $betModel = new Bets();
-            return DataTables::of($bet)
-                ->editColumn('order_id',function ($bet){
-                    return '<span>'.$bet->bet_order_id.'</span>';
-                })
-                ->editColumn('user',function ($bet) use ($user){
-                    return '<span>'.$user->username.'</span>';
-                })
-                ->editColumn('created_at',function ($bet) {
-                    return $bet->bet_created_at;
-                })
-                ->editColumn('game',function ($bet){
-                    return '<span>'.$bet->g_game_name.'</span>';
-                })
-                ->editColumn('issue',function ($bet) use(&$currentIssue,&$currentColor,$betModel){
-                    if($currentIssue != $bet->bet_issue){
-                        $currentIssue = $bet->bet_issue;
-                        $currentColor = $this->getRandColor($currentColor,$bet->bet_color,$betModel);
-                    }
-                    return '<div style="position: relative"><div class="show-open" id="openH_'.$bet->bet_bet_id.'"></div><span onmouseover="showOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\',\''.$bet->g_game_name.'\')" onmouseout="hideOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" style="color: #'.$currentColor.';cursor: pointer;">'.$bet->bet_issue.'</span></div>';
-                })
-                ->editColumn('play',function ($bet){
-                    $betInfo = $bet->bet_bet_info ?? '';
-                    return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span> <span>$betInfo</span>";
-                })
-                ->editColumn('rebate',function ($bet){
-                    return empty($bet->bet_play_rebate)?0:$bet->bet_play_rebate * 100 . "%";
-                })
-                ->editColumn('platform',function ($bet){
-                    if($bet->bet_platform == 1){
-                        return "<i class='iconfont'>&#xe696;</i> PC端";
-                    } else if($bet->bet_platform == 2){
-                        return "<i class='iconfont'>&#xe686;</i> H5端";
-                    } else if($bet->bet_platform == 3){
-                        return "<i class='Hui-iconfont'>&#xe64a;</i> IOS";
-                    } else if($bet->bet_platform == 4){
-                        return "<i class='Hui-iconfont'>&#xe6a2;</i> Android";
-                    } else {
-                        return "<i class='Hui-iconfont'>&#xe69c;</i> 其它";
-                    }
-                })
-                ->editColumn('none1',function ($bet){
-                    return '-';
-                })
-                ->editColumn('none2',function ($bet){
-                    return '-';
-                })
-                ->editColumn('dongjie',function ($bet){
-                    return '0';
-                })
-                ->editColumn('jiedong',function ($bet){
-                    return '0';
-                })
-                ->rawColumns(['order_id','user','game','issue','play','bunko','bet_money','platform'])
-                ->setTotalRecords($betCount + $betHisCount)
-                ->skipPaging()
-                ->make(true);
-        } else {
+        if (!$user)
             return response()->json([
                 'status' => false,
                 'msg' => '用户不存在，请核实！'
             ],403);
+
+        $aBetSql = Bets::userBetSearch($request,$user);
+        $betCount = Bets::userBetSearchCount($request,$user);
+        $aBetHisSql = BetHis::userBetSearch($request, $user);
+        $betHisCount = BetHis::userBetSearchCount($request, $user);
+
+        if(empty($aBetSql) && !empty($aBetHisSql)){
+            $aSql = $aBetHisSql.' ORDER BY bet_created_at DESC,bet_bet_id DESC ';
+        }elseif(empty($aBetHisSql) && !empty($aBetSql)){
+            $aSql = $aBetSql.' ORDER BY bet_created_at DESC,bet_bet_id DESC ';
+        }else{
+            $aSql = $aBetSql . ' UNION ALL ' . $aBetHisSql .' ORDER BY bet_created_at DESC,bet_bet_id DESC';
         }
+        $bet = DB::select($aSql." LIMIT ".$startPage.','.$lengthPage);
+        $currentIssue = '';
+        $currentColor = '';
+        $betModel = new Bets();
+        return DataTables::of($bet)
+            ->editColumn('order_id',function ($bet){
+                return '<span>'.$bet->bet_order_id.'</span>';
+            })
+            ->editColumn('user',function ($bet) use ($user){
+                return '<span>'.$user->username.'</span>';
+            })
+            ->editColumn('created_at',function ($bet) {
+                return $bet->bet_created_at;
+            })
+            ->editColumn('game',function ($bet){
+                return '<span>'.$bet->g_game_name.'</span>';
+            })
+            ->editColumn('issue',function ($bet) use(&$currentIssue,&$currentColor,$betModel){
+                if($currentIssue != $bet->bet_issue){
+                    $currentIssue = $bet->bet_issue;
+                    $currentColor = $this->getRandColor($currentColor,$bet->bet_color,$betModel);
+                }
+                return '<div style="position: relative"><div class="show-open" id="openH_'.$bet->bet_bet_id.'"></div><span onmouseover="showOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\',\''.$bet->g_game_name.'\')" onmouseout="hideOpenHistory(\''.$bet->bet_game_id.'\',\''.$bet->bet_issue.'\',\''.$bet->bet_bet_id.'\')" style="color: #'.$currentColor.';cursor: pointer;">'.$bet->bet_issue.'</span></div>';
+            })
+            ->editColumn('play',function ($bet){
+                $betInfo = $bet->bet_bet_info ?? '';
+                return "<span class='blue-text'>$bet->bet_playcate_name - </span><span class='blue-text'>$bet->bet_play_name</span> @ <span class='red-text'>$bet->bet_play_odds</span> <span>$betInfo</span>";
+            })
+            ->editColumn('rebate',function ($bet){
+                return empty($bet->bet_play_rebate)?0:$bet->bet_play_rebate * 100 . "%";
+            })
+            ->editColumn('platform',function ($bet){
+                if($bet->bet_platform == 1){
+                    return "<i class='iconfont'>&#xe696;</i> PC端";
+                } else if($bet->bet_platform == 2){
+                    return "<i class='iconfont'>&#xe686;</i> H5端";
+                } else if($bet->bet_platform == 3){
+                    return "<i class='Hui-iconfont'>&#xe64a;</i> IOS";
+                } else if($bet->bet_platform == 4){
+                    return "<i class='Hui-iconfont'>&#xe6a2;</i> Android";
+                } else {
+                    return "<i class='Hui-iconfont'>&#xe69c;</i> 其它";
+                }
+            })
+            ->editColumn('none1',function ($bet){
+                return '-';
+            })
+            ->editColumn('none2',function ($bet){
+                return '-';
+            })
+            ->editColumn('dongjie',function ($bet){
+                return $bet->bet_freeze_money;
+            })
+            ->editColumn('jiedong',function ($bet){
+                return $bet->bet_unfreeze_money;
+            })
+            ->rawColumns(['order_id','user','game','issue','play','bunko','bet_money','platform'])
+            ->setTotalRecords($betCount + $betHisCount)
+            ->skipPaging()
+            ->make(true);
     }
 
     public function betNumTotal(Request $request)

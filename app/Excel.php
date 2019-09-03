@@ -2,11 +2,11 @@
 
 namespace App;
 
-use App\Events\BackPusherEvent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Artisan;
 
 class Excel
 {
@@ -50,7 +50,7 @@ class Excel
             $redis->select(5);
             //新增有返奖的用户的资金明细
             foreach ($getDt as $i){
-                if(in_array($i->game_id,array(90,91))){ //根据牛牛翻倍玩法增加解冻的资金明细
+                if(in_array($i->game_id,array(90,91)) && $i->unfreeze_money!=0){ //根据牛牛翻倍玩法增加解冻的资金明细
                     $capUsers[$i->user_id] += $i->unfreeze_money;
                     $tmpCap = [];
                     $tmpCap['to_user'] = $i->user_id;
@@ -86,7 +86,7 @@ class Excel
                 $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
                 $tmpCap['order_id'] = 'W'.substr($i->order_id,1);
-                $tmpCap['type'] = ($i->bet_money==$bunko&&!in_array($i->game_id,array(90,91)))?'t02':'t09';
+                $tmpCap['type'] = ($i->bet_money==$bunko&&!in_array($i->game_id,array(90,91))&&$i->unfreeze_money==0)?'t02':'t09';      //如果投注金额与赢金额一样，就是属于t02退本金
                 $tmpCap['money'] = $bunko;
                 $tmpCap['balance'] = round($capUsers[$i->user_id],3);
                 $tmpCap['operation_id'] = 0;
@@ -105,7 +105,8 @@ class Excel
                     continue;
                 $redis->setex($keyEx,60,'on');
                 $content = ' 第'.$i->issue.'期 '.$i->playcate_name.' '.$i->play_name;
-                $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content. '已中奖，中奖金额 <span style="color:#8d71ff">' .round($winBunko,3).'元</span></div>';
+//                $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content. '已中奖，中奖金额 <span style="color:#8d71ff">' .round($winBunko,3).'元</span></div>';
+                $tmpContent = "<div><span style='color: red'>".$gameName."</span>".$content. "已中奖，中奖金额 <span style='color:#8d71ff'>" .round($winBunko,3)."元</span></div>";
                 $push[] = array('userid'=>$i->user_id,'notice'=>$tmpContent);
             }
             krsort($capData);
@@ -115,16 +116,19 @@ class Excel
             }
             if(!empty(env('PUSHER_APP_ID',''))){
                 foreach ($push as $key => $val){
-                    @event(new BackPusherEvent('win','中奖通知',$val['notice'],array('fnotice-'.$val['userid'])));
+//                    @event(new BackPusherEvent('win','中奖通知',$val['notice'],array('fnotice-'.$val['userid'])));
+                    $pushData['notice'] = $val['notice'];
+                    $pushData['userid'] = $val['userid'];
+                    $this->pushWinInfo($pushData);
                 }
             }
         } else {
-            \Log::info($gameName.'已结算过，已阻止！');
+            writeLog('New_Bet',$gameName.'已结算过，已阻止！');
         }
         if($is_status){
             $res = DB::table('bet')->where('status',$betStatus)->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 1]);
             if(!$res)
-                \Log::info($gameName.$issue.'返钱失败！');
+                writeLog('New_Bet',$gameName.$issue.'返钱失败！');
         }
         //普通模式才会退水
         if(env('AGENT_MODEL',1) == 1 && !$is_status) {
@@ -144,7 +148,7 @@ class Excel
                 if(!empty($table)&&!empty($tableid)){
                     $res = DB::table($table)->where('id',$tableid)->where('returnwater',2)->update(['returnwater' => 1]);
                     if(empty($res)){
-                        \Log::info($gameName.$issue.'退水中失败！');
+                        writeLog('New_Bet',$gameName.$issue.'退水中失败！');
                         return 0;
                     }
                 }
@@ -153,6 +157,15 @@ class Excel
         }
         return 0;
     }
+    //中奖推送
+    private function pushWinInfo($pushData){
+        try{
+            Artisan::call("PARAM_PUSH_WIN",$pushData);
+        }catch (\Exception $exception){
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+        }
+    }
+    //反水
     public function reBackUser($gameId,$issue,$gameName=''){
         $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00000001)->groupBy('user_id')->get();
         if($get){
@@ -207,7 +220,7 @@ class Excel
                 return 1;
             }
         } else {
-            \Log::info($gameName.'已结算过，已阻止！');
+            writeLog('New_Bet',$gameName.'已结算过，已阻止！');
         }
         return 0;
     }
@@ -549,11 +562,14 @@ class Excel
                 case 'game_msft':
                 case 'game_mssc':
                 case 'game_sfsc':
+                case 'game_xylsc':
+                case 'game_xylft':
                     return $this->opennum_pk10();
                     break;
                 case 'game_msssc':
                 case 'game_qqffc':
                 case 'game_sfssc':
+                case 'game_xylssc':
                     return $this->opennum_ssc($num);
                     break;
                 case 'game_msqxc':
@@ -566,6 +582,7 @@ class Excel
                     return $this->opennum_xync();
                     break;
                 case 'game_bjkl8':
+                case 'game_xykl8':
                     return $this->opennum_kl8();
                 case 'game_xylhc':
                 case 'game_sflhc':
@@ -590,17 +607,17 @@ class Excel
     }
 
     private $kill_lottery = array(
-        'game_mssc' => array('id'=>80,'api'=>'mssc'),     //秒速赛车
-        'game_msft' => array('id'=>82,'api'=>'msft'),     //秒速飞艇
+        'game_mssc' => array('id'=>80,'api'=>'mssc'),       //秒速赛车
+        'game_msft' => array('id'=>82,'api'=>'msft'),       //秒速飞艇
         'game_msssc' => array('id'=>81,'api'=>'msssc'),     //秒速时时彩
         'game_paoma' => array('id'=>99,'api'=>'paoma'),     //香港跑马
         'game_xylhc' => array('id'=>85,'api'=>'xylhc'),     //幸运六合彩
-        'game_msjsk3' => array('id'=>86,'api'=>'msjsk3'),     //秒速快三
-        'game_qqffc' => array('id'=>113,'api'=>'qqffc'),     //QQ分分彩
-        'game_kssc' => array('id'=>801,'api'=>'kssc'),     //快速赛车
-        'game_ksft' => array('id'=>802,'api'=>'ksft'),     //快速飞艇
+        'game_msjsk3' => array('id'=>86,'api'=>'msjsk3'),   //秒速快三
+        'game_qqffc' => array('id'=>113,'api'=>'qqffc'),    //QQ分分彩
+        'game_kssc' => array('id'=>801,'api'=>'kssc'),      //快速赛车
+        'game_ksft' => array('id'=>802,'api'=>'ksft'),      //快速飞艇
         'game_ksssc' => array('id'=>803,'api'=>'ksssc'),    //快速时时彩
-        'game_twxyft' => array('id'=>804,'api'=>'twxyft'),    //台湾幸运飞艇
+        'game_twxyft' => array('id'=>804,'api'=>'twxyft'),  //台湾幸运飞艇
     );
 
     private function opennum_pk10($num=0){
@@ -864,7 +881,7 @@ class Excel
                 }
             }
         }catch (\exception $exception){
-            \Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             DB::table($table)->where('status',$betStatus)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
             return 0;
         }
@@ -1326,7 +1343,7 @@ class Excel
         $loseArr = [];
         $winArr = [];
 
-        $getUserBets = DB::table('bet')->select('bet_id','play_id','bet_money','freeze_money')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        $getUserBets = DB::table('bet')->select('bet_id','play_id','playcate_id','bet_money','freeze_money')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         if($getUserBets){
             if(count($win) !== 0){
                 $sql_win = "UPDATE bet SET bunko = CASE ";
@@ -1334,43 +1351,31 @@ class Excel
                 $sql_unfreeze_win = " , unfreeze_money = CASE ";
                 foreach ($getUserBets as $item){
                     foreach ($win as $k=>$v){
+                        $v[1] = (int)$v[1];
                         if($v[0] == $item->play_id){
-                            if((int)$v[1] <= 6){
-                                $bunko = ($item->bet_money+$item->bet_money*1)+$item->freeze_money;
-                                $unfreeze = $item->freeze_money;
-                                $nn_money = $bunko-$item->bet_money-$item->freeze_money;
-                                $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                                $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
-                                $sql_nn_money .= "WHEN `bet_id` = $item->bet_id THEN $nn_money ";
-                                $winArr[] = $item->play_id;
-                            }
-                            if((int)$v[1] == 7 || (int)$v[1] == 8){
-                                $bunko = ($item->bet_money+$item->bet_money*2)+$item->freeze_money;
-                                $unfreeze = $item->freeze_money;
-                                $nn_money = $bunko-$item->bet_money-$item->freeze_money;
-                                $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                                $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
-                                $sql_nn_money .= "WHEN `bet_id` = $item->bet_id THEN $nn_money ";
-                                $winArr[] = $item->play_id;
-                            }
-                            if((int)$v[1] == 9){
-                                $bunko = ($item->bet_money+$item->bet_money*3)+$item->freeze_money;
-                                $unfreeze = $item->freeze_money;
-                                $nn_money = $bunko-$item->bet_money-$item->freeze_money;
-                                $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                                $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
-                                $sql_nn_money .= "WHEN `bet_id` = $item->bet_id THEN $nn_money ";
-                                $winArr[] = $item->play_id;
-                            }
-                            if((int)$v[1] == 10){
-                                $bunko = ($item->bet_money+$item->bet_money*5)+$item->freeze_money;
-                                $unfreeze = $item->freeze_money;
-                                $nn_money = $bunko-$item->bet_money-$item->freeze_money;
-                                $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                                $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
-                                $sql_nn_money .= "WHEN `bet_id` = $item->bet_id THEN $nn_money ";
-                                $winArr[] = $item->play_id;
-                            }
+                            $rate = 1;
+                            if($this->arrPlayCate['NN'] == $item->playcate_id){
+                                switch ($v[1]) {
+                                    case 7:
+                                    case 8:
+                                        $rate = 2;
+                                        break;
+                                    case 9:
+                                        $rate = 3;
+                                        break;
+                                    case 10:
+                                        $rate = 5;
+                                        break;
+                                }
+                            }else
+                                $item->freeze_money = 0;
+                            $bunko = ($item->bet_money + $item->bet_money * $rate) + $item->freeze_money;
+                            $unfreeze = $item->freeze_money;
+                            $nn_money = $bunko - $item->bet_money - $item->freeze_money;
+                            $sql_win .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                            $sql_unfreeze_win .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
+                            $sql_nn_money .= "WHEN `bet_id` = $item->bet_id THEN $nn_money ";
+                            $winArr[] = $item->play_id;
                         }
                     }
                 }
@@ -1379,6 +1384,7 @@ class Excel
                     $sql_win .= "END ";
                     $sql_nn_money .= "END ";
                     $sql_unfreeze_win .= "END, status = 3, updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($WinListIn)";
+//                    writeLog('bunko_nn', 'win:'.$sql_win.$sql_nn_money.$sql_unfreeze_win);
                     $run = DB::statement($sql_win.$sql_nn_money.$sql_unfreeze_win);
                     if($run == 1){
                         $in++;
@@ -1388,61 +1394,61 @@ class Excel
                 }
 
             }
-
             if(count($lose) !== 0){
                 $sql_lose = "UPDATE bet SET bunko = CASE ";
                 $sql_nn_money = " , nn_view_money = CASE ";
                 $sql_unfreeze_lose = " , unfreeze_money = CASE ";
                 foreach ($getUserBets as $item){
                     foreach ($lose as $k=>$v){
+                        $v[1] = (int)$v[1];
                         if($v[0] == $item->play_id){
-                            if((int)$v[1] <= 6){
-                                $bunko = ($item->bet_money+$item->freeze_money)-$item->bet_money;
-                                $unfreeze = $item->freeze_money;
-                                $nn_money = $bunko-$item->bet_money-$item->freeze_money;
-                                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                                $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
-                                $sql_nn_money .= "WHEN `bet_id` = $item->bet_id THEN $nn_money ";
-                                $loseArr[] = $item->play_id;
-                            }
-                            if((int)$v[1] == 7 || (int)$v[1] == 8){
-                                $bunko = ($item->bet_money+$item->freeze_money)-$item->bet_money*2;
-                                $unfreeze = $item->freeze_money - $item->bet_money;
-                                $nn_money = $bunko-$item->bet_money-$item->freeze_money;
-                                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                                $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
-                                $sql_nn_money .= "WHEN `bet_id` = $item->bet_id THEN $nn_money ";
-                                $loseArr[] = $item->play_id;
-                            }
-                            if((int)$v[1] == 9){
-                                $bunko = ($item->bet_money+$item->freeze_money)-$item->bet_money*3;
-                                $unfreeze = $item->freeze_money - $item->bet_money*2;
-                                $nn_money = $bunko-$item->bet_money-$item->freeze_money;
-                                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                                $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
-                                $sql_nn_money .= "WHEN `bet_id` = $item->bet_id THEN $nn_money ";
-                                $loseArr[] = $item->play_id;
-                            }
-                            if((int)$v[1] == 10){
-                                $bunko = ($item->bet_money+$item->freeze_money)-$item->bet_money*5;
-                                $unfreeze = 0;
-                                $nn_money = $bunko-$item->bet_money-$item->freeze_money;
-                                if($bunko == 0){
-                                    $bunko = -1;
+                            $v[1] = (int)$v[1];
+                            if($this->arrPlayCate['NN'] == $item->playcate_id) {
+                                switch ($v[1]) {
+                                    case 7:
+                                    case 8:
+                                        $bunko = ($item->bet_money + $item->freeze_money) - $item->bet_money * 2;
+                                        $unfreeze = $item->freeze_money - $item->bet_money;
+                                        $nn_money = $bunko - $item->bet_money - $item->freeze_money;
+                                        break;
+                                    case 9:
+                                        $bunko = ($item->bet_money + $item->freeze_money) - $item->bet_money * 3;
+                                        $unfreeze = $item->freeze_money - $item->bet_money * 2;
+                                        $nn_money = $bunko - $item->bet_money - $item->freeze_money;
+                                        break;
+                                    case 10:
+                                        $bunko = ($item->bet_money + $item->freeze_money) - $item->bet_money * 5;
+                                        $unfreeze = 0;
+                                        $nn_money = $bunko - $item->bet_money - $item->freeze_money;
+                                        if ($bunko == 0) {
+                                            $bunko = -1;
+                                        }
+                                        break;
+                                    default:
+                                        $bunko = ($item->bet_money + $item->freeze_money) - $item->bet_money;
+                                        $unfreeze = $item->freeze_money;
+                                        $nn_money = $bunko - $item->bet_money - $item->freeze_money;
+                                        break;
                                 }
-                                $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
-                                $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
-                                $sql_nn_money .= "WHEN `bet_id` = $item->bet_id THEN $nn_money ";
-                                $loseArr[] = $item->play_id;
+                            }else{
+                                $bunko = -$item->bet_money;
+                                $unfreeze = 0;
+                                $nn_money = $bunko;
                             }
+                            $sql_lose .= "WHEN `bet_id` = $item->bet_id THEN $bunko ";
+                            $sql_unfreeze_lose .= "WHEN `bet_id` = $item->bet_id THEN $unfreeze ";
+                            $sql_nn_money .= "WHEN `bet_id` = $item->bet_id THEN $nn_money ";
+                            $loseArr[] = $item->play_id;
                         }
                     }
                 }
+//                writeLog('bunko_nn_lose', 'lose:'.$sql_lose);
                 $LoseListIn = implode(',', $loseArr);
                 if($LoseListIn && isset($LoseListIn)){
                     $sql_lose .= "END ";
                     $sql_nn_money .= "END ";
                     $sql_unfreeze_lose .= "END, status = 3 , updated_at ='".date('Y-m-d H:i:s')."' WHERE status = 0 AND `game_id` = $gameId AND `issue` = $issue AND `play_id` IN ($LoseListIn)";
+//                    writeLog('bunko_nn', 'lose:'.$sql_lose.$sql_nn_money.$sql_unfreeze_lose);
                     $run = DB::statement($sql_lose.$sql_nn_money.$sql_unfreeze_lose);
                     if($run == 1){
                         $in++;

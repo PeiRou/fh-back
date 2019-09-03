@@ -293,7 +293,7 @@
                 {data:'none1'},
                 {data:'none2'},
                 {data: function (data) {
-                        if(data.bet_bunko == 0){
+                        if(data.status == 0){
                             txt = '<span class=\'tiny-blue-text\'>未结算</span>';
                         }else{
                             if(data.bet_game_id == 91 || data.bet_game_id == 90){

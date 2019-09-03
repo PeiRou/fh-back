@@ -126,4 +126,117 @@ class GamesApiController extends BaseController
         $this->show(0, [], 'ok');
     }
 
+    //修改第三方余额
+    private function GamesPlatQuota($aParam)
+    {
+        try{
+            $data = json_decode($aParam['data'], 1);
+            $orderNum = $data['orderNum'];
+            if($orderInfo = DB::table('platform_capital')->where('orderNum', $orderNum)->first()){
+                $this->show(0, ['money' => $orderInfo->plat_amount], 'ok');
+            }
+            if((float)$data['amount'] === 0){
+                $this->show(10, [], '金额不能为0');
+            }
+            $nowMoney = DB::table('system_setting')->value('gamesapi_amount');
+            $upMoney = $nowMoney + $data['amount'];
+            DB::beginTransaction();
+            $arr = [
+                'orderNum' => $data['orderNum'],
+                'type_id' => $data['type_id'],
+                'type' => $data['type'],
+                'type_updown' => (int)$data['type_updown'],
+                'amount' => (float)$data['amount'],
+                'plat_amount' => $upMoney, //帐变后的金额
+                'admin_id' => $data['admin_id'],
+                'admin_account' => $data['admin_account'],
+                'content' => $data['content'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            if(!DB::table('platform_capital')->insert($arr) ){
+                throw new \Exception('增加资金明细失败', 1);
+            }
+            if(!(DB::table('system_setting')->where('id', 1)->update(['gamesapi_amount' => DB::raw(' `gamesapi_amount` + ' . $data['amount'])]))){
+                throw new \Exception('修改金额失败', 1);
+            }
+            DB::commit();
+            $this->show(0, ['money' => $upMoney], 'ok');
+        }catch (\Throwable $e){
+            DB::rollback();
+            if(!$e->getCode()){
+                writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            }
+            $this->show(15, [],  'error'.$e->getMessage());
+        }
+    }
+
+    //获取第三方配置的余额
+    private function getGamesPlatQuotaMoney($aParam)
+    {
+        $money = DB::table('system_setting')->value('gamesapi_amount');
+        return  $this->show(0, ['money' => $money], 'ok');
+    }
+
+    //设置平台收支
+    private function setPlatjqpoint($aParam)
+    {
+        try{
+            $data = json_decode($aParam['data'], 1);
+            $arr = [];
+            foreach ($data as $v){
+                $arr[] = [
+                    'jq_game_id' => $v['jq_game_id'],
+                    'jq_game_name' => $v['jq_game_name'],
+                    'jq_point' => $v['jq_point'],
+                    'admin_id' => $v['admin_id'],
+                    'admin_account' => $v['admin_account'],
+                    'created_at' => $v['created_at'],
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ];
+            }
+            DB::transaction(function () use($arr){
+                DB::table('platform_jqpoint')->truncate();
+                if(!DB::table('platform_jqpoint')->insert($arr))
+                    throw new \Exception('platform_jqpoint插入失败');
+            });
+            $this->show(0, [], 'ok');
+        }catch (\Throwable $e){
+            if(!$e->getCode()){
+                writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            }
+            $this->show(15, [],  'error'.$e->getMessage());
+        }
+        return  $this->show(15, [], 'error');
+    }
+
+    private function getPlatformCapital($aParam)
+    {
+        if(!isset($aParam['endTime'], $aParam['startTime']))
+            return  $this->show(1);
+//        $aParam['endTime'] = date('Y-m-d H:i:s', strtotime($aParam['endTime']));
+//        $aParam['startTime'] = date('Y-m-d H:i:s', strtotime($aParam['startTime']));
+        if(strtotime($aParam['endTime']) - strtotime($aParam['startTime']) > 60 * 15)
+            return  $this->show(15, '时间间隔过大');
+        $res = DB::table('platform_capital')->whereBetween('updated_at', [$aParam['startTime'], $aParam['endTime']])->get();
+        $money = DB::table('system_setting')->value('gamesapi_amount');
+        return  $this->show(0, [
+            'data' => $res,
+            'money' => $money
+        ], 'ok');
+    }
+
+    private function someinformation($aParam)
+    {
+        if(!isset($aParam['data']))
+            return  $this->show(1);
+        try{
+            DB::table('system_setting')->update(['contac_information' => htmlspecialchars($aParam['data'])]);
+            return  $this->show(0, []);
+        }catch (\Throwable $e){
+            return  $this->show(15, [], $e->getMessage());
+        }
+        return $this->show(15, [],  'error');
+    }
+
 }

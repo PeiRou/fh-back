@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class JqBet extends Model
+class JqBet extends Base
 {
     protected $table = 'jq_bet';
 
@@ -85,6 +85,9 @@ class JqBet extends Model
         if(!empty($userId)){
             $aSql .= " AND `user_id` IN (".$userId.")";
             $aSql1 .= " AND `userid` IN (".$userId.")";
+        }else{
+            $aSql .= " AND `user_id` = 0 ";
+            $aSql1 .= " AND `userid` = 0";
         }
         if(isset($aParam['startTime']) && array_key_exists('startTime',$aParam)){
             $aSql .= " AND `updated_at` >= :startTime ";
@@ -191,5 +194,50 @@ class JqBet extends Model
                    JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
                    JOIN `games_api` ON `games_api`.`g_id` = `jq`.`g_id`";
         return DB::select($aSql,$aArray);
+    }
+
+    //获取Category分类下的投注额 单个会员
+    public static function getCategoryBet($param = [])
+    {
+        # 当天的
+        $betList = self::getCategoryBetBet($param);
+        # 昨天以前的 因为昨天的一般第二天才会在更新 可以记到缓存里
+        $betHisList = self::getCategoryBetBetHis($param);
+        # 合并起来
+        foreach ($betHisList as $k => $v){
+            foreach ($betList as $kk => &$vv){
+                if($vv->gameCategory == $v->gameCategory){
+                    $vv->bet_money = $vv->bet_money + $v->bet_money;
+                    $vv->bunko = $vv->bunko + $v->bunko;
+                    continue 2;
+                }
+            }
+            $betList[] = $v;
+        }
+        return $betList;
+    }
+
+    //当天的Category分类下的投注额
+    public static function getCategoryBetBet($param = [])
+    {
+        return DB::select(self::getCategoryBetSql('jq_bet', $param));
+    }
+
+    //历史Category分类下的投注额
+    public static function getCategoryBetBetHis($param = [])
+    {
+        return self::HandleCacheData(function() use($param){
+            return DB::select(self::getCategoryBetSql('jq_bet_his', $param));
+        }, 10);
+    }
+    public static function getCategoryBetSql($table, $param = [])
+    {
+        $where = ' 1 ';
+        isset($param['time48']) && $where .= ' AND '.'updated_at > DATE_SUB("'.$param['time48'].'", INTERVAL 48 HOUR) ';
+        $where .= ' AND `user_id` = '.$param['user_id'].' ';
+        $sql = "SELECT `gameCategory`, SUM(`AllBet`) AS `bet_money`, SUM(`bunko`) AS `bunko` , `user_id` FROM `{$table}` 
+                WHERE {$where}
+                GROUP BY `gameCategory`, `user_id`";
+        return $sql;
     }
 }

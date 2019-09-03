@@ -12,6 +12,11 @@ class Capital extends Model
     protected $primaryKey = 'capital_id';
 
     //类型选项
+    //游戏类型选项包括
+
+    public static $includePlayTypeOption = [
+        't05'
+    ];
     public static $playTypeOption = [
         't01' => '充值',
         't02' => '退本金',
@@ -42,12 +47,9 @@ class Capital extends Model
         't27' => '冻结',
         't28' => '推广人佣金',
         't29' => '冻结[退水金额]',
-        't30' => '棋牌上分预扣钱',
-    ];
-
-    //游戏类型选项包括
-    public static $includePlayTypeOption = [
-        't05'
+        't30' => '第三方游戏上分失败退回',
+        't31' => '第三方游戏返点',
+        't32' => '第三方游戏重新返点',
     ];
 
     //明细时间
@@ -106,7 +108,7 @@ class Capital extends Model
 
     //资金明细组装
     public static function AssemblyFundDetails($param){
-        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id','capital.game_name','capital.playcate_name','capital.operation_id','sub_account.account','capital.content',DB::raw("'' as content2,'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,capital.money as c_money,'' as bet_id"),'capital.rechargesType')
+        $aSql = Capital::select('users.username','capital.to_user','capital.order_id','capital.created_at','capital.type','capital.money','capital.balance as balance','capital.issue','capital.game_id','capital.game_name','capital.playcate_name','capital.operation_id','sub_account.account','capital.content',DB::raw("'' as content2,'' as freeze_money,'' as unfreeze_money,'' as nn_view_money,capital.money as c_money,`capital`.`capital_id` as bet_id"),'capital.rechargesType')
             ->where(function ($sql) use($param){
                 if(isset($param['startTime']) && array_key_exists('startTime',$param) && isset($param['endTime']) && array_key_exists('endTime',$param)){
                     $sql->whereBetween('capital.updated_at',[date("Y-m-d 00:00:00",strtotime($param['startTime'])),date("Y-m-d 23:59:59",strtotime($param['endTime']))]);
@@ -169,7 +171,7 @@ class Capital extends Model
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
         $aSql = "SELECT SUM(CASE WHEN `type` = 't08' THEN `money` ELSE 0 END ) AS `sumActivity`,SUM(CASE WHEN `type` = 't04' THEN `money` ELSE 0 END ) AS `sumRecharge_fee`,
-                  `to_user`,SUM(`money`) AS `moneySum`,LEFT(`created_at`,10) AS `date` FROM `capital` 
+                  `to_user`,SUM(`money`) AS `moneySum`,LEFT(`created_at`,10) AS `date` FROM `capital`
                   WHERE `type` IN('t08','t04') ";
         $aArray = [];
         if(!empty($startTime)){

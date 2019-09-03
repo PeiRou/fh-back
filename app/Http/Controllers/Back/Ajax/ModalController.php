@@ -18,9 +18,11 @@ use App\Feedback;
 use App\FeedbackMessage;
 use App\GameOddsCategory;
 use App\Games;
+use App\GamesList;
 use App\GeneralAgent;
 use App\Http\Controllers\Obtain\BaseController;
 use App\Http\Controllers\Obtain\SendController;
+use App\JqBet;
 use App\Levels;
 use App\Notices;
 use App\Offer;
@@ -437,6 +439,7 @@ class ModalController extends Controller
     public function editUserInfo($id)
     {
         $user = User::find($id);
+//        $user->fullName = mb_substr($user->fullName,0,1).'***';
         $allBanks = Banks::where('status',1)->get();
         $levelsData = Levels::all();
         return view('back.modal.member.userEditInfo',compact('user','allBanks','levelsData'));
@@ -445,6 +448,12 @@ class ModalController extends Controller
     public function UserGamesApi(Request $request)
     {
         return view('back.modal.member.UserGamesApi');
+    }
+    //用户打码量清零
+    public function cleanCheckDrawing($id)
+    {
+        $user = User::find($id);
+        return view('back.modal.member.cleanCheckDrawing',compact('user'));
     }
     //查看会员备注
     public function viewUserContent($id)
@@ -685,26 +694,39 @@ class ModalController extends Controller
                 ->whereRaw('created_at > DATE_SUB("'.($dTime ?? 'NOW()').'", INTERVAL 48 HOUR)')
                 ->where('user_id', $uid)
                 ->first();
-            //获取棋牌投注资金
-            //获取所有的棋牌游戏
-            $gamesList = GamesApi::where(function($aSql){
-                $aSql->where('type_id', 111);
-            })->get();
-            if(count($gamesList)){
-                $sqlArr = [];
-                foreach ($gamesList as $k=>$v){
-                    $table = 'jq_'.strtolower($v->alias).'_bet';
-                    $where = ' 1 ';
-                    $name = $user->username;
-                    if($v->alias == 'WS'){//无双的账户名处理过
-                        $name = substr(preg_replace("/[_]/","",$user->username), 0, 16);
-                    }
-                    $where .= " AND `Accounts` = '{$name}' ";
-                    $sqlArr[] = " (SELECT SUM(`AllBet`) AS `AllBet`,'{$v->name}' as `name` FROM `{$table}` WHERE {$where} ) ";
-                }
-                $sql = 'SELECT SUM(`AllBet`) AS `ALLBet` FROM ( '.implode(' UNION ALL ', $sqlArr).' ) AS a ';
-                $jqBetMoney = (float)DB::select($sql)[0]->ALLBet;
+            //获取所有第三方游戏
+            $jqList = JqBet::getCategoryBet([
+                'time48' => $dTime ?? date('Y-m-d H:i:s'),
+                'user_id' => $uid
+            ]);
+            $jq = '';
+            $totalBetMoney = $hours48Bet->sum;
+            $totalBunkoMoney = $hours48Bet->sumBunko;
+
+            foreach ($jqList as $v){
+                $totalBetMoney += $v->bet_money;
+                $totalBunkoMoney += $v->bunko;
+                $jq .= '<tr>
+                            <td valign="top" style="word-break: break-all;">'.(GamesList::$gameCategory[$v->gameCategory] ?? '').'下注金额：</td>
+                            <td valign="top" style="word-break: break-all;">'.($v->bet_money ?? 0).'</td>
+                            <td valign="top" style="word-break: break-all;">输赢：</td>
+                            <td valign="top" style="word-break: break-all;">'.$v->bunko.'</td>
+                        </tr>';
             }
+
+            //获取所有的棋牌游戏
+
+
+//            $jqBetMoney = DB::table('jq_bet')
+//                ->whereRaw('updated_at > DATE_SUB("'.($dTime ?? 'NOW()').'", INTERVAL 48 HOUR)')
+//                ->where('user_id', $uid)
+//                ->sum('AllBet');
+//
+//            $jqBetMoney = $jqBetMoney + DB::table('jq_bet_his')
+//                    ->whereRaw('updated_at > DATE_SUB("'.($dTime ?? 'NOW()').'", INTERVAL 48 HOUR)')
+//                    ->where('user_id', $uid)
+//                    ->sum('AllBet');
+
 
             $table = '<table class="ui small celled striped table" cellspacing="0" width="100%">
                     <tbody>
@@ -739,12 +761,6 @@ class ModalController extends Controller
                             <td valign="top" style="word-break: break-all;">' . $user->drawMoneyCount . '</td>
                         </tr>
                         <tr>
-                            <td valign="top" style="word-break: break-all;">下注总金额：</td>
-                            <td valign="top" style="word-break: break-all;">' . $hours48Bet->sum . '</td>
-                            <td valign="top" style="word-break: break-all;">输赢总金额：</td>
-                            <td valign="top" style="word-break: break-all;">' . $hours48Bet->sumBunko . '</td>
-                        </tr>
-                        <tr>
                             <td valign="top" style="word-break: break-all;">退水总金额：</td>
                             <td valign="top" style="word-break: break-all;">0</td>
                             <td valign="top" style="word-break: break-all;">未结算金额：</td>
@@ -763,10 +779,17 @@ class ModalController extends Controller
                             <td valign="top" style="word-break: break-all;">0</td>
                         </tr>
                         <tr>
-                            <td valign="top" style="word-break: break-all;">棋牌投注：</td>
-                            <td valign="top" style="word-break: break-all;">'.($jqBetMoney ?? 0).'</td>
-                            <td valign="top" style="word-break: break-all;"></td>
-                            <td valign="top" style="word-break: break-all;"></td>
+                            <td valign="top" style="word-break: break-all;">彩票下注金额：</td>
+                            <td valign="top" style="word-break: break-all;">' . $hours48Bet->sum . '</td>
+                            <td valign="top" style="word-break: break-all;">输赢：</td>
+                            <td valign="top" style="word-break: break-all;">' . $hours48Bet->sumBunko . '</td>
+                        </tr>
+                        '.$jq.'
+                        <tr>
+                            <td valign="top" style="word-break: break-all;">下注总金额：</td>
+                            <td valign="top" style="word-break: break-all;">' . $totalBetMoney . '</td>
+                            <td valign="top" style="word-break: break-all;">输赢总金额</td>
+                            <td valign="top" style="word-break: break-all;">'.$totalBunkoMoney.'</td>
                         </tr>
                         <tr>
                             <td valign="top" style="word-break: break-all;" rowspan="1" colspan="4">备注：</td>
@@ -962,7 +985,7 @@ class ModalController extends Controller
             case 'gd11x5':  //广东11选5
                 $view = 'back.modal.open.openGd11x5';
                 break;
-            case 'bjkl8':  //北京快乐8
+            case 'bjkl8':  //北京快乐8 幸运快乐8
                 $view = 'back.modal.open.openBJKL8';
                 break;
             default:
@@ -1249,6 +1272,31 @@ class ModalController extends Controller
             $aPay = [];
         }
         return view('back.modal.platform.settleOffer',compact('iInfo','aPay'));
+    }
+
+    //后台支付页面 一次性支付多个订单
+    public function payPlatformSettleOfferUnpaid(Request $request)
+    {
+        $model = app(\App\Http\Controllers\Back\Data\PlatformController::class)->settlementModel($request);
+        $model = $model->where('paystatus', 0);
+        $orders = $model->pluck('order_id')->toArray(); # 获取需要支付的订单
+        if(count($orders)){
+            $aArray = [
+                'platform_id' => SystemSetting::getValueByRemark1('payment_platform_id'),
+                'timestamp' => time(),
+                'orders' => implode(',', $orders),
+                'pay_type' => 'offer'
+            ];
+            $baseController = new SendController($aArray);
+            $res = $baseController->sendParameter('pay/pay/payCreateOrder');
+            if($res['code'] === 0){
+                DB::table('offer')->whereIn('order_id', explode(',', $res['data']['orders']))->update(['order_no' => $res['data']['order_no']]);
+                return view('back.modal.platform.settleOfferUnpaid',[
+                    'data' => $res['data']
+                ]);
+            }
+        }
+        return 'error';
     }
 
     //棋牌投注报表-添加报表
