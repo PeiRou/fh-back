@@ -44,25 +44,41 @@ class clear_data extends Command
         $sql = "delete from users where testFlag = 1 and loginTime <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
         writeLog('clear','clear users testFlag:'.json_encode($res));
+        $sql = "delete from chat_users where chat_role = 1 and created_at <='".$clearDate1."' LIMIT 1000";
+        $res = DB::connection('mysql::write')->statement($sql);
+        writeLog('clear','clear chat_user role is yk:'.json_encode($res));
         if(!$redis->exists('clear-bet')){
             $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
             writeLog('clear','clear bet :'.json_encode($res));
             if(empty($res)){
                 $redis->setex('clear-bet',$this->time,$this->stoptime);
             }else{
-                try {
-                    $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
-                    $res = DB::connection('mysql::write')->statement($sql);
-                    writeLog('clear','table insert into bet_his :'.$res);
-                    $sql = "DELETE FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
-                    $res = DB::connection('mysql::write')->statement($sql);
-                    writeLog('clear','table delete bet :'.$res);
-                }catch (\Exception $e){
-                    writeLog('clear', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
-                    writeLog('clear','table insert into bet_his :fail');
+                $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
+                $tmp = DB::select($sql);
+                $arrIds = array();
+                foreach ($tmp as&$value)
+                    $arrIds[] = $value->bet_id;
+                if(count($arrIds)==0){
+                    $redis->setex('clear-bet',$this->time,$this->stoptime);
+                }else{
+                    DB::beginTransaction();
+                    try {
+                        DB::table('bet_his')->whereIn('bet_id', $arrIds)->delete();
+                        $strIds = implode(',',$arrIds);
+                        $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE bet_id in (".$strIds.")";
+                        $res = DB::statement($sql);
+                        writeLog('clear','table insert into bet_his :'.$res);
+                        $res = DB::table('bet')->whereIn('bet_id', $arrIds)->delete();
+                        writeLog('clear','table delete bet :'.$res);
+                        DB::commit();
+                    }catch (\Exception $e){
+                        DB::rollback();
+                        writeLog('clear', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
+                        writeLog('clear','table insert into bet_his :fail');
+                    }
+                    $num++;
+                    $redis->setex('clear-bet',1,'on');
                 }
-                $num++;
-                $redis->setex('clear-bet',1,'on');
             }
         }
         writeLog('clear','clear ing ....');
@@ -70,7 +86,7 @@ class clear_data extends Command
         //清-投注历史数据
         if(!$redis->exists('clear-bet-his')){
             $sql = "DELETE FROM bet_his WHERE updated_at<='{$clearDate93}' LIMIT 5000";
-            $res = DB::connection('mysql::write')->statement($sql);
+            $res = DB::statement($sql);
             echo 'table bet_his :' . $res . PHP_EOL;
             $res = DB::connection('mysql::write')->table('bet_his')->select('bet_id')->where('updated_at','<=',$clearDate93)->first();
             if(empty($res)){
@@ -143,6 +159,11 @@ class clear_data extends Command
             $num_else = $this->clrGameTables('game_twxyft', $clearDate62, $num_else);
             $num_else = $this->clrGameTables('game_xjssc', $clearDate62, $num_else);
             $num_else = $this->clrGameTables('game_xylhc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_sfsc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_sfssc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_sflhc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_jslhc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_xyft', $clearDate62, $num_else);
             if($num_else==0){
                 $this->time = strtotime($this->stoptime) - time();
                 $redis->setex('clear-else',$this->time,$this->stoptime);
@@ -166,6 +187,7 @@ class clear_data extends Command
                     $res = DB::connection('mysql::write')->statement($sql);
                     writeLog('clear','table delete jq_bet :'.$res);
                 }catch (\Exception $e){
+                    writeLog('clear','error :'.$e->getMessage());
                     writeLog('clear','table insert into jq_bet_his :fail');
                 }
                 $num++;
@@ -183,6 +205,19 @@ class clear_data extends Command
             }else{
                 $num++;
                 $redis->setex('clear-jq-bet-his',1,'on');
+            }
+        }
+        //清-棋牌上下分失败数据
+        if(!$redis->exists('clear-jq-recharges')){
+            $sql = "DELETE FROM jq_recharges WHERE updated_at<='{$clearDate31}' LIMIT 5000";
+            $res = DB::connection('mysql::write')->statement($sql);
+            echo 'table jq_recharges :' . $res . PHP_EOL;
+            $res = DB::connection('mysql::write')->table('jq_recharges')->select('id')->where('updated_at','<=',$clearDate31)->first();
+            if(empty($res)){
+                $redis->setex('clear-jq-recharges',$this->time,$this->stoptime);
+            }else{
+                $num++;
+                $redis->setex('clear-jq-recharges',1,'on');
             }
         }
         if($num==0){

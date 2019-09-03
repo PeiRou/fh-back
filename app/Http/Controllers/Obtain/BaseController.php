@@ -91,11 +91,11 @@ class BaseController extends Controller
         echo $this->rsaPublicEncrypt(json_encode($aParam));
         exit();
     }
-    public function show($code = 0, $data = []){
+    public function show($code = 0, $data = [], $msg = ''){
         $data = [
             'code' => $code,
             'data' => $data,
-            'msg' => $this->code[0],
+            'msg' => $this->code[$code] ?? $msg,
         ];
         $this->returnAction($data);
     }

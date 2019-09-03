@@ -171,7 +171,13 @@ class DrawingController extends Controller
     {
         $id  = $request->input('id');
         $msg = $request->input('msg');
-
+        $redis = Redis::connection();
+        $redis->select(5);
+        $key = 'addDrawingError:'.$id;
+        if($redis->exists($key)){
+            return ['status' => false,'msg' => '您提交太快，请休息20秒'];
+        }
+        $redis->setex($key,20,time());
         $getUserId = Drawing::where('id',$id)->first();
         if($getUserId->locked)
             return response()->json([
@@ -199,13 +205,24 @@ class DrawingController extends Controller
             $data['bank_num'] = $getUserInfo->bank_num;
             $data['bank_addr'] = $getUserInfo->bank_addr;
         }
+        $drawingRejectCapital = new \App\Capital();
+        $drawingRejectCapital->order_id = $drawingRejectCapital->randOrder('D');
+        $drawingRejectCapital->user_type = 'user';
+        $drawingRejectCapital->to_user = $userId;
+        $drawingRejectCapital->money = $userAmount;
+        $drawingRejectCapital->balance = $userAmount + $getUserInfo->money;
+        $drawingRejectCapital->rechargesType = 3;   //加钱类型:其他
+        $drawingRejectCapital->type = 't17';    //类型:提现失败
+        $drawingRejectCapital->content = '提现失败退钱';
+        $drawingRejectCapital->operation_id = Session::get('account_id');
         DB::beginTransaction();
+        $rejectDrawing = $drawingRejectCapital->save();
         $update = Drawing::where('id',$id)
             ->update($data);
         $updateUserMoney = DB::table('users')->where('id',$userId)->update([
             'money' => DB::raw('money + '.$userAmount)
         ]);
-        if($update == 1 && $updateUserMoney){
+        if($update == 1 && $updateUserMoney && $rejectDrawing){
             DB::commit();
             event(new BackPusherEvent('error','提现失败提醒','您的提现申请被驳回，提现金额：'.$getUserId->amount.'元，流水订单号：【'.$getUserId->order_id.'】，如有疑问，请联系在线客服',array('fnotice-'.$userId)));
             return response()->json([
@@ -252,13 +269,24 @@ class DrawingController extends Controller
             $data['bank_num'] = $getUserInfo->bank_num;
             $data['bank_addr'] = $getUserInfo->bank_addr;
         }
+        $drawingRejectCapital = new \App\Capital();
+        $drawingRejectCapital->order_id = $drawingRejectCapital->randOrder('D');
+        $drawingRejectCapital->user_type = 'user';
+        $drawingRejectCapital->to_user = $userId;
+        $drawingRejectCapital->money = $userAmount;
+        $drawingRejectCapital->balance = $userAmount + $getUserInfo->money;
+        $drawingRejectCapital->rechargesType = 3;   //加钱类型:其他
+        $drawingRejectCapital->type = 't17';    //类型:提现失败
+        $drawingRejectCapital->content = '提现失败退钱';
+        $drawingRejectCapital->operation_id = Session::get('account_id');
         DB::beginTransaction();
+        $rejectDrawing = $drawingRejectCapital->save();
         $update = Drawing::where('id',$id)
             ->update($data);
         $updateUserMoney = DB::table('users')->where('id',$userId)->update([
             'money' => DB::raw('money + '.$userAmount)
         ]);
-        if($update == 1 && $updateUserMoney){
+        if($update == 1 && $updateUserMoney && $rejectDrawing){
             DB::commit();
             event(new BackPusherEvent('error','提现失败提醒','您的提现申请被驳回，提现金额：'.$getUserId->amount.'元，流水订单号：【'.$getUserId->order_id.'】，如有疑问，请联系在线客服',array('fnotice-'.$userId)));
             return response()->json([
@@ -375,7 +403,11 @@ class DrawingController extends Controller
             ]);
         }
         DB::commit();
-        json_decode($this->getArraySign($iDrawing,$iPayOnlineNew,$iBank,$iUser),true);
+        if(env('PAY_TWO',false)){
+            json_decode($this->getArraySignNew($iDrawing,$iPayOnlineNew,$iBank,$iUser),true);
+        }else{
+            json_decode($this->getArraySign($iDrawing,$iPayOnlineNew,$iBank,$iUser),true);
+        }
         return response()->json([
             'status' => true
         ]);
@@ -405,6 +437,33 @@ class DrawingController extends Controller
             'ciphertext' => base64_encode(json_encode($aArray)),
         ]);
     }
+    //代付2.0使用
+    public function getArraySignNew($iDrawing,$iPayOnlineNew,$iBank = [],$iUser = []){
+        $aArray = [
+            'pay_uname' => $iPayOnlineNew->payName,
+            'merchant_code' => $iPayOnlineNew->apiId,
+            'merchant_secret' => $iPayOnlineNew->apiKey,
+            'public_key' => $iPayOnlineNew->apiPublicKey,
+            'private_key' => $iPayOnlineNew->apiPrivateKey,
+            'order_no' => $iDrawing->order_id,
+            'money' => $iDrawing->amount,
+            'app_id' => $iPayOnlineNew->para1,
+            'callback_url' => isset($iPayOnlineNew->res_url)?$iPayOnlineNew->res_url:(env('FRONT_URL')?env('FRONT_URL').'/pay/withdrawal/callback/new':''),  //小回调异步通知平台代付地址
+            'bank' => $iBank->eng_name,
+            'gateway_address' => $iPayOnlineNew->req_url,
+            'platform_id' => SystemSetting::where('id',1)->value('payment_platform_id'),
+            'third_url' => $iPayOnlineNew->domain,
+            'timestamp' => time(),
+            'member_name' => $iUser->fullName,
+            'member_card' => $iDrawing->bank_num,
+        ];
+        $PaymentPlatform = new PaymentPlatform();
+        $aArray['sign'] = $PaymentPlatform->getSign($aArray,SystemSetting::where('id',1)->value('payment_platform_key'));
+        return $PaymentPlatform->postCurl(SystemSetting::where('id',1)->value('payment_platform_dispensing'),[
+            'ciphertext' => $PaymentPlatform->setPublicKey(env('PUBLIC_KEY'))->publicKeyToEncrypt($aArray)->getEncryptData(),
+        ]);
+    }
+
     //刷新ip信息
     public function refreshIp(Request $request){
         if(!isset($request->key) || !isset($request->value) || !isset($request->table) || !isset($request->ip) || !isset($request->upKey)){

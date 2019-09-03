@@ -11,6 +11,12 @@
             <button style="line-height: 20px;border:0;margin-left: 10px;cursor:pointer;" onclick="javascript:history.go(-1)">返回</button>
         </div>
         <div class="content-top-buttons">
+            <div class="content-top-buttons">
+                <?php $hasPermission = app('App\Http\Proxy\CheckPermission'); ?>
+                @if($hasPermission->hasPermission('member.exportReportAgent') == 'has')
+                    <span onclick="exportUser()">导出数据</span>
+                @endif
+            </div>
             <span class="refresh-nav-btn" onclick="refreshTable('reportAgentTable')"><i class="iconfont">&#xe61d;</i></span>
         </div>
     </div>

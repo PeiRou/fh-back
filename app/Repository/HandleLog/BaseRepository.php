@@ -17,12 +17,13 @@ class BaseRepository
 //    protected $response;
     protected $request;
     private $param = null;
-    public function __construct($request,$id, $data)
+    public function __construct($request,$id, $data, $table)
     {
 //        $this->response = $response;
         $this->request = $request;
         $this->id = $id;
         $this->data = $data;
+        $this->table = $table;
         $this->action();
     }
     public function action(){
@@ -45,7 +46,7 @@ class BaseRepository
     }
     private function update(){
         if(!empty($this->param) && is_array($this->param)){
-            LogHandle::where('id', $this->id)->update($this->param);
+            DB::table($this->table)->where('id', $this->id)->update($this->param);
         }
     }
     private function getUserName($id){

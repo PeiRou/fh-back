@@ -60,7 +60,7 @@ class next_open_pk10 extends Command
             $html = $excel->checkOpenGuan($table,$needOpenIssue,'bjpk10',$gapnum,$redis_gapnum,$redis);
             $needOpenIssue = isset($html['needOpenIssue'])?$html['needOpenIssue']:$needOpenIssue;
             //清除昨天长龙，在录第一期的时候清掉
-            if (substr($openTime,-8) == '09:10:00') {
+            if (substr($openTime,-8) == '09:30:00') {
                 DB::table('clong_kaijian1')->where('lotteryid', $this->gameId)->delete();
                 DB::table('clong_kaijian2')->where('lotteryid', $this->gameId)->delete();
             }

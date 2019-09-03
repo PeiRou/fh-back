@@ -35,14 +35,14 @@ class next_issue_hbk3 extends Command
         $openTime = $res->opentime;
 
         $New_nextIssue = $nextIssue+1;
-        if(substr($openTime,-8) == '22:00:40'){
+        if(substr($openTime,-8) == '21:59:00'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
             $New_nextIssue = date("Ymd",strtotime($nextDay)).'001';                         //奖期
-            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:08:40';
-            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:10:40';
+            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:17:00';
+            $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:19:00';
         } else {
-            $nextIssueEndTime = Carbon::parse($openTime)->addMinute(8)->toDateTimeString();
-            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(10)->toDateTimeString();
+            $nextIssueEndTime = Carbon::parse($openTime)->addMinute(18)->toDateTimeString();
+            $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(20)->toDateTimeString();
         }
 
         $redis->set('hbk3:nextIssue',(int)$New_nextIssue);

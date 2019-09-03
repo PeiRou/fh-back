@@ -103,13 +103,8 @@
                         text:'确定',
                         btnClass: 'btn-red',
                         action: function(){
-                            var data = {
-                                id:id,
-                                status: status == 1 ? 0 : 1,
-                            };
                             $.ajax({
-                                url: "{{ env('WEB_INTRANET_IP', 'http://192.168.162.28:8811') }}/gamesApiOrder/UpMoney?id="+id,
-                                data:data,
+                                url: "/back/GamesApi/gamesApiOrder/UpMoney?id="+id,
                                 type:'get',
                                 dataType:'json',
                                 success:function(e){
@@ -119,6 +114,7 @@
                                         dataTable.ajax.reload();
                                     }else{
                                         Calert(e.msg,'red')
+                                        dataTable.ajax.reload();
                                     }
                                 }
                             })

@@ -1,78 +1,69 @@
-/**
- * Created by vincent on 2018/1/23.
- */
+var sort = false;
+var sort = true;
+var tempDepNames = new Array;
 
-var dataTable;
-var pid = $('#exampleAuthId').val();
-
-$(function () {
+$(function(){
     $('#menu-GamesApi').addClass('nav-show');
     $('#menu-GamesApi-games-list').addClass('active');
-
-     dataTable = $('#example').DataTable({
-         ordering: false,
-         searching: false, //去掉搜索框
-         bLengthChange: false,//去掉每页多少条框体
-         processing: true,
-         serverSide: true,
-        aLengthMenu: [[50]],
-        ajax: {
-            url : '/back/datatables/GamesApiGamesList',
-            data : function (d) {
-                d.pid = $('#pid').val();
+    var zTreeObj;
+    var setting = {
+        check: {
+            enable: true,
+            autoCheckTrigger: true,
+            chkboxType: { "Y": "ps", "N": "ps" }
+        },
+        data:{
+            simpleData: {
+                enable: true
             }
         },
-        columns: [
-            {data: 'pid'},
-            {data: 'game_id'},
-            {data: 'name'},
-            {data: 'g_id'},
-            // {data: 'type'},
-            {data: 'open'},
-            {data: 'sort'},
-            {data: 'control'},
-        ],
-         language: {
-             "zeroRecords": "暂无数据",
-             "info": "当前显示第 _PAGE_ 页，共 _PAGES_ 页",
-             "infoEmpty": "没有记录",
-             "loadingRecords": "请稍后...",
-             "processing":     "读取中...",
-             "paginate": {
-                 "first":      "首页",
-                 "last":       "尾页",
-                 "next":       "下一页",
-                 "previous":   "上一页"
-             }
-         }
-    });
-
-    $(document).keyup(function(e){
-        var key = e.which;
-        if(key == 13 || key == 32){
-            dataTable.ajax.reload();
+        view: {
+            expandSpeed: "",
+            showIcon: false,
+            nameIsHTML: true,
+            addDiyDom: addDiyDom,
+        },
+        callback: {
+            onCheck: zTreeOnCheck//复选框选中
         }
-    });
+    };
 
-    $('#btn_search').on('click',function () {
-        pid = $('#pid').val();
-        dataTable.ajax.reload();
-
-    });
-
-    $('#reset').on('click',function () {
-        $('#pid').val('');
-        pid = 0;
-        $('#route_name').val('');
-        dataTable.ajax.reload();
-
-    });
-});
+    zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes,);
+    function zTreeOnCheck(){
+        var nodes = zTreeObj.getCheckedNodes(true);
+        tempDepNames = new Array;
+        $(nodes).each(function(index, obj) {
+            tempDepNames.push(obj.game_id)
+        });
+        $('#permission_selected').val(tempDepNames);
+    }
+    zTreeObj.expandAll(true);
+    $('.sort').on('input',function(){
+        $(this).val($(this).val().replace(/[^\d]/g,''))
+    })
+})
+function save(){
+    $.ajax({
+        url: '/back/modal/switchGamesApiList',
+        data:{
+            list:tempDepNames.join(',')
+        },
+        type:'post',
+        dataType:'json',
+        success:function(e){
+            if(e.code == 0){
+                location.href = location.href
+            }else{
+                Calert(e.msg,'red')
+            }
+        }
+    })
+}
 
 function add() {
     jc1 = $.confirm({
         theme: 'material',
-        title: '添加权限',
+        title: '添加',
         closeIcon:true,
         boxWidth:'25%',
         content: 'url:/back/modal/addGamesApiList',
@@ -111,7 +102,8 @@ function del(id) {
                         data:{id:id},
                         success:function (data) {
                             if(data.code == 0){
-                                dataTable.ajax.reload()
+                                // dataTable.ajax.reload()
+                                location.href = location.href
                             }else{
                                 Calert(data.msg,'red')
                             }
@@ -135,7 +127,7 @@ function del(id) {
 function edit(id) {
     jc1 = $.confirm({
         theme: 'material',
-        title: '修改权限',
+        title: '修改',
         closeIcon:true,
         boxWidth:'25%',
         content: 'url:/back/modal/addGamesApiList?id='+id,
@@ -155,7 +147,11 @@ function edit(id) {
     });
 }
 
-function sort(){
+function sort1(){
+    console.log(sort);
+    if(sort == false){
+        return $('.sort').show(),sort = true;
+    }
     var data = [];
     $('.sort').each(function(k, i){
         data.push({
@@ -172,49 +168,11 @@ function sort(){
         type:'get',
         success:function(e){
             if(e.code == 0){
-                dataTable.ajax.reload(null,false)
+                // dataTable.ajax.reload(null,false)
+                location.href = location.href
             }else{
                 Calert(e.msg,'red')
             }
         }
     })
-}
-
-function editSwitch(id,status){
-    jc = $.confirm({
-        title: '确定要改变吗？',
-        theme: 'material',
-        type: 'red',
-        boxWidth:'25%',
-        content: '请确认您的操作',
-        buttons: {
-            confirm: {
-                text:'确定',
-                btnClass: 'btn-red',
-                action: function(){
-                    var data = {
-                        id:id,
-                        status: status == 1 ? 0 : 1,
-                    };
-                    $.ajax({
-                        url: '/back/modal/switchGamesApiList',
-                        data:data,
-                        type:'post',
-                        dataType:'json',
-                        success:function(e){
-                            if(e.code == 0){
-                                // Calert('状态修改成功','green')
-                                dataTable.ajax.reload();
-                            }else{
-                                Calert(e.msg,'red')
-                            }
-                        }
-                    })
-                }
-            },
-            cancel:{
-                text:'取消'
-            }
-        }
-    });
 }

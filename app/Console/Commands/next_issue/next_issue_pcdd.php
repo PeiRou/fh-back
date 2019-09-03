@@ -36,10 +36,10 @@ class next_issue_pcdd extends Command
 
         if(substr($openTime,-8) == '23:55:00'){
             $nextDay = Carbon::parse($openTime)->addDay(1)->toDateTimeString();
-            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:03:30';
+            $nextIssueEndTime = date('Y-m-d',strtotime($nextDay)).' 09:04:30';
             $nextIssueLotteryTime = date('Y-m-d',strtotime($nextDay)).' 09:05:00';
         } else {
-            $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(210)->toDateTimeString();
+            $nextIssueEndTime = Carbon::parse($openTime)->addSeconds(270)->toDateTimeString();
             $nextIssueLotteryTime = Carbon::parse($openTime)->addMinutes(5)->toDateTimeString();
         }
         $redis->set('pcdd:nextIssue',(int)$nextIssue+1);

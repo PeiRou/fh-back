@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ISSUE_SEED_AHK3 extends Command
 {
     protected $signature = 'ISSUE_SEED_AHK3';
-    protected $description = '安徽快3期数生成-80';
+    protected $description = '安徽快3期数生成-40';
 
     public function __construct()
     {
@@ -19,7 +19,7 @@ class ISSUE_SEED_AHK3 extends Command
     public function handle()
     {
         $curDate = date('Ymd');
-        $timeUp = ' 08:40:00';
+        $timeUp = ' 08:39:00';
 
         $redis = \Illuminate\Support\Facades\Redis::connection();
         $redis->select(5);
@@ -48,8 +48,8 @@ class ISSUE_SEED_AHK3 extends Command
             return '';
         $timeUp = $issueDate . $timeUp;
         $sql = "INSERT INTO game_ahk3 (issue,opentime) VALUES ";
-        for($i=1;$i<=80;$i++){
-            $timeUp = Carbon::parse($timeUp)->addMinutes(10);
+        for($i=1;$i<=40;$i++){
+            $timeUp = Carbon::parse($timeUp)->addMinutes(20);
             if(strlen($i) == 1){
                 $i = '00'.$i;
             }

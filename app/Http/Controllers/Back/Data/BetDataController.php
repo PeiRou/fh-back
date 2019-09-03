@@ -273,7 +273,7 @@ class BetDataController extends Controller
     {
         $bet = BetHis::betHistory($request);
         $betCount = BetHis::betHistoryCount($request);
-        $betMoney = BetHis::betHistoryBetMoney($request);
+//        $betMoney = BetHis::betHistoryBetMoney($request);
         $currentIssue = '';
         $currentColor = '';
         $betModel = new Bets();
@@ -338,7 +338,7 @@ class BetDataController extends Controller
             ->rawColumns(['user','play','issue','bunko','bet_money','platform','control'])
             ->setTotalRecords($betCount[0]->count)
             ->skipPaging()
-            ->with('betMoney',$betMoney)
+//            ->with('betMoney',$betMoney)
             ->make(true);
     }
     
@@ -545,7 +545,7 @@ class BetDataController extends Controller
                     $query->where('game_id',$game);
                 }
             })
-            ->where('testFlag',0)->sum('bet_money');
+            ->where('testFlag',0)->sum(DB::raw("CASE WHEN `game_id` IN(90,91) THEN `nn_view_money` ELSE `bunko` END"));
         return $total;
     }
 

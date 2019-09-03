@@ -7,6 +7,7 @@ use App\Jobs\PayTypeNewInsert;
 use App\PayTypeNew;
 use App\SystemSetting;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class GetOnlinePaymentType extends Command
 {
@@ -59,6 +60,9 @@ class GetOnlinePaymentType extends Command
                 ];
                 PayTypeNewInsert::dispatch($aArray)->onQueue($this->setQueueRealName('payTypeNewInsert'));
             }
+            //当支付渠道下架，将此渠道停用
+            $sql="UPDATE pay_online_new SET status = 0 WHERE payName IN (SELECT old.payName FROM pay_type_new AS new RIGHT JOIN (SELECT payName FROM pay_online_new WHERE rechType = 'onlinePayment' AND status = 1) AS old ON new.payName = old.payName WHERE new.payName IS NULL);";
+            DB::statement($sql);
             $this->info('ok');
         }else{
             $this->info($result['msg']);

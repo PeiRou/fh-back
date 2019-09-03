@@ -441,6 +441,11 @@ class ModalController extends Controller
         $levelsData = Levels::all();
         return view('back.modal.member.userEditInfo',compact('user','allBanks','levelsData'));
     }
+    //会员第三方游戏管理
+    public function UserGamesApi(Request $request)
+    {
+        return view('back.modal.member.UserGamesApi');
+    }
     //查看会员备注
     public function viewUserContent($id)
     {
@@ -1149,6 +1154,27 @@ class ModalController extends Controller
     //导出用户数据-模板
     public function exportUser(){
         return view('back.modal.member.exportUser');
+    }
+
+    //导出会员报表-模板
+    public function exportReportUser(){
+        return view('back.modal.member.exportReportUser');
+    }
+    //导出代理报表-模板
+    public function exportReportAgent(){
+        return view('back.modal.member.exportReportAgent');
+    }
+    //导出代理报表-模板
+    public function exportReportGAgent(){
+        return view('back.modal.member.exportReportGAgent');
+    }
+    //导出投注报表-模板
+    public function exportReportBet(){
+        return view('back.modal.member.exportReportBet');
+    }
+    //导出棋牌报表-模板
+    public function exportReportCart(){
+        return view('back.modal.member.exportReportCart');
     }
 
     //操作报表添加-模板

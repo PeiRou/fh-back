@@ -33,6 +33,12 @@
 
         <div class="content-top-buttons">
             <span class="refresh-nav-btn" onclick="refreshTable('reportBetTable')"><i class="iconfont">&#xe61d;</i></span>
+            <div class="content-top-buttons">
+                <?php $hasPermission = app('App\Http\Proxy\CheckPermission'); ?>
+                @if($hasPermission->hasPermission('member.exportReportCart') == 'has')
+                    <span onclick="exportUser()">导出数据</span>
+                @endif
+            </div>
             {{--<span onclick="addSubAccount()">导出记录</span>--}}
 {{--            <span onclick="getReport()">手动获取</span>--}}
         </div>
@@ -84,9 +90,11 @@
                     </div>
                     <div class="divClass">
                         <span class="spanClassHeight mt20">
-                            总投注数：<span id="betCount" class="spanClassNum">0</span>
-                            总投注额：<span id="betMoney" class="spanClassNum">0.00</span>
+                            上分：<span id="betCount" class="spanClassNum">0</span>
+                            下分：<span id="betMoney" class="spanClassNum">0</span>
+                            投注额：<span id="betMoney1" class="spanClassNum">0.00</span>
                             总输赢：<span id="betBunko" class="spanClassNum">0.00</span>
+                            抽成：<span id="AllRatioMoney" class="spanClassNum">0.00</span>
                         </span>
                     </div>
                 </div>

@@ -201,15 +201,33 @@ class GamesApiController extends Controller
         return show(0);
     }
 
+    public function getWEB_INTRANET_IP()
+    {
+        return explode(',', env('WEB_INTRANET_IP'))[0] ?? '';
+    }
+
     public function allDown(Request $request)
     {
-        $url = explode(',', env('WEB_INTRANET_IP'))[0] ?? '';
+        $url = $this->getWEB_INTRANET_IP();
         if(empty($url)){
             return '';
         }
         $url .= '/api/GamesApi/allDown?user_id='.$request->user_id;
         $res = file_get_contents($url);
         echo $res;
+    }
+
+    public function UserGamesApi(Request $request)
+    {
+        $param = http_build_query($request->all());
+        $url = $this->getWEB_INTRANET_IP().'/api/GamesApi/UserGamesApi'.'?'.$param;
+        $res = @file_get_contents($url);
+
+        if($res = json_decode($res, 1)){
+            if(isset($res['code']) && $res['code'] == 0)
+                return show(0, '', $res['data']);
+        }
+        return show(1, $res['msg'] ?? '');
     }
 
 }

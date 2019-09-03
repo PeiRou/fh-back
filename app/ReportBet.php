@@ -37,4 +37,27 @@ class ReportBet extends Model
         $aSql .= " ORDER BY `sumBunko` ASC";
         return DB::select($aSql,$aArray);
     }
+
+    /**
+     * 总计
+     */
+    public static function reportQuerySum($aParam, $column = ['bet_money'])
+    {
+        $c = [];
+        foreach ($column as $v){
+            $c[] = sprintf('SUM(`%s`) AS %s', $v, $v);
+        }
+        return self::select(DB::raw(implode(',', $c)))
+            ->where(function($sql) use($aParam){
+                if(isset($aParam['startTime'], $aParam['endTime'])){
+                    $sql->whereBetween('date', [$aParam['startTime'], $aParam['endTime']]);
+                    unset($aParam['startTime']);
+                    unset($aParam['endTime']);
+                }
+
+                foreach ($aParam as $k=>$v)
+                    $sql->where($k, $v);
+            })
+            ->first();
+    }
 }

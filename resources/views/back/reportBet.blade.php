@@ -21,6 +21,12 @@
             </label>
         </div>
         <div class="content-top-buttons">
+            <div class="content-top-buttons">
+                <?php $hasPermission = app('App\Http\Proxy\CheckPermission'); ?>
+                @if($hasPermission->hasPermission('member.exportReportBet') == 'has')
+                    <span onclick="exportUser()">导出数据</span>
+                @endif
+            </div>
             <span class="refresh-nav-btn" onclick="refreshTable('reportBetTable')"><i class="iconfont">&#xe61d;</i></span>
         </div>
     </div>

@@ -40,7 +40,7 @@ $(function () {
                     else if(zh < 810)
                         zhdx = "小";
                     else
-                        zhdx = 810;
+                        zhdx = "和";
                     zhds = zh%2==1 ?"单":"<font color='red'>双</font>";
                     if(zh >= 210 && zh<=695)
                         zhwh = "金";

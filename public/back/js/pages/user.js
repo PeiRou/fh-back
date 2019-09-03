@@ -378,6 +378,11 @@ function userCapital(id) {
     Cmodal('资金明细','70%',url,false);
 }
 
+function setPlay(id) {
+    var url = '/back/control/gameManage/tradeSetting?userId='+id;
+    window.location.href = url;
+}
+
 function edit(id) {
     var url = '/back/modal/editUserInfo/'+id;
     Cmodal('修改会员资料','30%',url,true,'editUserForm');
@@ -396,4 +401,9 @@ function allDown(user_id){
             console.log(e);
         },
     });
+}
+
+function GamesApi(user_id){
+    var url = '/back/modal/UserGamesApi/?user_id='+user_id;
+    Cmodal('第三方游戏管理','30%',url,false,'editUserForm');
 }

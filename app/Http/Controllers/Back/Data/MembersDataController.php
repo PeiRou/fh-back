@@ -615,6 +615,10 @@ GROUP BY g.ga_id LIMIT $start,$length";
                     $gd .= "<li onclick='changeAgent(\"$users->uid\",\"$users->user_username\")'>更换代理</li>";
                     $j = true;
                 }
+                if(in_array('game.tradeSetting',$this->permissionArray)) {
+                    $gd .= "<li class='red-hover' onclick='setPlay(\"$users->uid\")'>个人交易</li>";
+                    $j = true;
+                }
                 if(in_array('m.user.delUser',$this->permissionArray)) {
                     $gd .= "<li class='red-hover' onclick='delUser(\"$users->uid\",\"$users->user_username\")'>删除会员</li>";
                     $j = true;
@@ -623,6 +627,9 @@ GROUP BY g.ga_id LIMIT $start,$length";
                         </li>';
                 if($j) $str .= $gd;
 
+                if(in_array('m.user.GamesApi',$this->permissionArray)) {
+                    $str .= '<li onclick=\'GamesApi('.$users->uid.')\'>第三方游戏</li>';
+                }
                 if(Session::get('account') == 'admin'){
                     $str .= '<li onclick=\'allDown('.$users->uid.')\'>下所有分</li>';
                 }

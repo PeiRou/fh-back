@@ -2,17 +2,79 @@
 
 namespace App;
 
+use App\Http\Services\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Cache\TaggedCache;
+use Illuminate\Cache\TagSet;
+use Illuminate\Cache\FileStore;
 
 class GamesApi extends Model
 {
+    use Cache;
     protected $table = 'games_api';
     protected $primaryKey = 'g_id';
     public $statusArr = [
         '1' => '棋牌游戏',
         '2' => '天成'
     ];
+
+    //更新一个表
+    public static function batchUpdate(array $update, $whereField = 'id', $table)
+    {
+        try {
+            if (empty($update)) {
+                return false;
+            }
+            $tableName = $table; // 表名
+            $firstRow  = current($update);
+            $updateColumn = array_keys($firstRow);
+            $referenceColumn = isset($firstRow[$whereField]) ? $whereField : current($updateColumn);
+            // 拼接sql语句
+            $updateSql = "UPDATE " . $tableName . " SET ";
+            $sets      = [];
+            $bindings  = [];
+            foreach ($updateColumn as $uColumn) {
+                if($uColumn == $referenceColumn) continue;
+                $setSql = "`" . $uColumn . "` = CASE ";
+                foreach ($update as $data) {
+                    $setSql .= "WHEN `" . $referenceColumn . "` = ? THEN ? ";
+                    $bindings[] = $data[$referenceColumn];
+                    $bindings[] = $data[$uColumn];
+                }
+                $setSql .= "ELSE `" . $uColumn . "` END ";
+                $sets[] = $setSql;
+            }
+            $updateSql .= implode(', ', $sets);
+            $whereIn   = collect($update)->pluck($referenceColumn)->values()->all();
+            $bindings  = array_merge($bindings, $whereIn);
+            $whereIn   = rtrim(str_repeat('?,', count($whereIn)), ',');
+            $updateSql = rtrim($updateSql, ", ") . " WHERE `" . $referenceColumn . "` IN (" . $whereIn . ")";
+            // 传入预处理sql语句和对应绑定数据
+            return DB::update($updateSql, $bindings);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * 暂时用文件缓存
+     * @param string $path 路径
+     * @return mixed
+     */
+    public static function getCaCheInstance($path = '', $storage_path = 'GamesApi/')
+    {
+        $path =  'Cache/'.$path;
+        static $Cache = [];
+        if(empty($Cache[$path])){
+            $store = new FileStore(new \Illuminate\Filesystem\Filesystem(), storage_path($storage_path.$path));
+            $TagSet = new TagSet($store);
+            $Cache[$path] = new TaggedCache($store, $TagSet);
+        }
+        return $Cache[$path];
+    }
+
+
     //获取游戏信息
     public static function getGamesApiInfo($g_id){
         return self::where('g_id', $g_id)->first();
@@ -55,7 +117,9 @@ class GamesApi extends Model
     }
     //获取所有游戏名称
     public static function getGamesNameList(){
-        return self::pluck('name', 'g_id');
+        return self::HandleCacheData(function(){
+            return self::pluck('name', 'g_id');
+        }, 5);
     }
     //组合sql
     public static function card_betInfoSql1($request, $type_id = 111){
@@ -309,5 +373,108 @@ class GamesApi extends Model
 
     public static function getOpenData(){
         return self::where('status',1)->OrderBy('g_id')->get();
+    }
+
+    /**
+     * 计算平台抽点
+     * @param $bunko 输赢
+     * @param $param
+     * g_id  --接口id
+     * productType --天成接口字段
+     */
+    public static function getRatioMoney($bunko, $aParam)
+    {
+        static $gamesApis;
+        is_null($gamesApis) && $gamesApis = self::select('g_id', 'ratio')->pluck('ratio', 'g_id')->toArray();
+        $ratio = $gamesApis[$aParam['g_id']] ?? 0;
+        //处理tcg接口的抽成
+        if($aParam['g_id'] == 19 && $aParam['productType']){
+            $ratio = self::getTcRatio($aParam['productType']);
+        }
+        if($bunko >= 0)
+            return 0;
+        $bunko = abs($bunko);
+        return $bunko * ($ratio / 100);
+    }
+
+    //取天成的抽成点
+    public static function getTcRatio($productType)
+    {
+        //取附加参数里的抽成配置，如果没有取默认的
+        return @json_decode(self::getOtherParamTc()[$productType], 1)['ratio'] ?? GamesList::$productTypeList[$productType]['ratio'] ?? 0;
+    }
+
+
+    //取得天成下的所有附加参数
+    public static function getOtherParamTc()
+    {
+        static $otherParamTc;
+        is_null($otherParamTc) && $otherParamTc = self::getOtherParam([
+            'key' => 'productType',
+            ])->pluck('param', 'value')->toArray();
+        return $otherParamTc;
+    }
+
+    //附加参数
+    public static function getOtherParam($param)
+    {
+        static $otherParam;
+        is_null($otherParam) && $otherParam = DB::table('games_api_other_param')->where(function($sql) use($param){
+            foreach ($param as $k=>$v)
+                $sql->where($k, $v);
+        })->get();
+        return $otherParam;
+    }
+
+    //删除一个接口
+    public static function delGamesApi(int $g_id)
+    {
+        try{
+            DB::beginTransaction();
+            $games_api = DB::table('games_api')->where('g_id', $g_id);
+            $games_api_config = DB::table('games_api_config')->where('g_id', $g_id);
+            $games_api_other_param = DB::table('games_api_other_param')->where('g_id', $g_id);
+
+            $games_api->delete();
+            $games_api_config->delete();
+            $games_api_other_param->delete();
+            DB::commit();
+            return true;
+        }catch (\Throwable $e){
+            DB::rollback();
+            throw $e;
+        }
+    }
+
+    public static function mkPath($newpath)
+    {
+        if(!file_exists($newpath)){
+            $paths = explode('/',$newpath);
+            array_pop($paths);
+            $p = '';
+            foreach ($paths as $path){
+                $p .= '/'.$path;
+                if(!file_exists($p))
+                    mkdir($p);
+            }
+        }
+    }
+    public static function deleteDir($dir)
+    {
+        if (!$handle = @opendir($dir)) {
+            return false;
+        }
+        while (false !== ($file = readdir($handle))) {
+            if ($file !== "." && $file !== "..") {       //排除当前目录与父级目录
+                $file = $dir . '/' . $file;
+                if (is_dir($file)) {
+                    self::deleteDir($file);
+                } else {
+                    @unlink($file);
+                }
+            }
+
+        }
+        @rmdir($dir);
     }
 }

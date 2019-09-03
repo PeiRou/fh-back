@@ -54,7 +54,7 @@
             <li onclick="javascript:(location.href='/back/control/userManage/onlineUser?platform=3')"><i data-tooltip="在线苹果人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe64a;</i>：<span id="onlineUserCountIOS">0</span></li>
             <li onclick="javascript:(location.href='/back/control/userManage/onlineUser?platform=4')"><i data-tooltip="在线安卓人数" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe6a2;</i>：<span id="onlineUserCountAND">0</span></li>
             <li onclick="javascript:(location.href='/back/control/systemManage/feedback')" id="feedbackContent"><i data-tooltip="今天未回复反馈" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe70c;</i>：<span id="feedbackCount">0</span></li>
-            {{--<li onclick="javascript:(location.href='/back/control/platformManage/platformSettlement')"><i data-tooltip="平台费用" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe732;</i>：<span id="offerCount">0</span></li>--}}
+            <li onclick="javascript:(location.href='/back/control/platformManage/platformSettlement')"><i data-tooltip="平台费用" data-position="bottom center" data-inverted class='Hui-iconfont'>&#xe732;</i>：<span id="offerCount">0</span></li>
             {{--<li>修改密码</li>--}}
             <li onclick="logout()">退出</li>
         </ul>
@@ -365,6 +365,9 @@
                     <span><img src="/back/old/images/leftico01.png"></span>
                     充值配置</a>
                 <ul>
+                    @if($hasPermission->hasPermission('payNew.detail') == "has")
+                        <li id="menu-payNewManage-payDetail"><a href="{{ route('payNew.detail') }}"><cite></cite><span>支付排行榜</span></a></li>
+                    @endif
                     @if($hasPermission->hasPermission('payNew.online') == "has")
                         <li id="menu-payNewManage-payOnline"><a href="{{ route('payNew.online') }}"><cite></cite><span>在线支付配置</span></a></li>
                     @endif

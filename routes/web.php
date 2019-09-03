@@ -2,6 +2,7 @@
 
 Route::group(['prefix' => 'back/GamesApi'], function () {
     Route::get('reGetBet/{id}', 'GamesApi\Card\PrivodeController@reGetBet'); // 重新获取第三方投注记录失败列表
+    Route::get('gamesApiOrder/UpMoney', 'GamesApi\Card\PrivodeController@checkOrder'); // 重新检查第三方上下分失败订单
 });
 
 Route::get('/test', 'GamesApi\Card\PrivodeController@test');
@@ -183,6 +184,7 @@ Route::group(['middleware'=>['check-ip']],function () {
 
 //充值配置新
     Route::group(['prefix' => 'back/control/payNewManage', 'middleware' => ['check-permission', 'domain-check', 'add-log-handle']], function () {
+        Route::get('payDetailNew', 'Back\SrcViewController@payDetailNew')->name('payNew.detail'); //支付排行榜
         Route::get('payOnlineNew', 'Back\SrcViewController@payOnlineNew')->name('payNew.online'); //在线支付配置新
         Route::get('payBankNew', 'Back\SrcViewController@payBankNew')->name('payNew.bank'); //银行支付配置
         Route::get('payAlipayNew', 'Back\SrcViewController@payAlipayNew')->name('payNew.alipay'); //支付宝支付配置
@@ -302,6 +304,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/datatables/payAlipay', 'Back\Data\PayDataController@payAlipay');
     Route::get('/back/datatables/payWechat', 'Back\Data\PayDataController@payWechat');
     Route::get('/back/datatables/payCft', 'Back\Data\PayDataController@payCft');
+    Route::get('/back/datatables/payDetailNew', 'Back\Data\PayNewDataController@payDetail'); //充值配置新-支付排行榜
     Route::get('/back/datatables/payOnlineNew', 'Back\Data\PayNewDataController@payOnline'); //充值配置新-在线支付
     Route::get('/back/datatables/payBankNew', 'Back\Data\PayNewDataController@payBank');    //充值配置新-银行支付
     Route::get('/back/datatables/payAlipayNew', 'Back\Data\PayNewDataController@payAlipay');  //充值配置新-支付宝
@@ -570,6 +573,11 @@ Route::group(['middleware'=>['check-ip']],function () {
 
     Route::any('/action/admin/member/returnVisit','Back\MemberController@returnVisit')->middleware(['check-permission','add-log-handle'])->name('member.returnVisit'); //会员-回访用户
     Route::any('/action/admin/member/exportUser','Back\MemberController@exportUser')->middleware(['check-permission','add-log-handle'])->name('member.exportUser'); //会员-导出用户数据
+    Route::any('/action/admin/member/exportReportUser','Back\MemberController@exportReportUser')->middleware(['check-permission','add-log-handle'])->name('member.exportReportUser'); //会员报表-导出数据
+    Route::any('/action/admin/member/exportReportBet','Back\MemberController@exportReportBet')->middleware(['check-permission','add-log-handle'])->name('member.exportReportBet'); //会员报表-导出数据
+    Route::any('/action/admin/member/exportReportAgent','Back\MemberController@exportReportAgent')->middleware(['check-permission','add-log-handle'])->name('member.exportReportAgent'); //代理报表-导出数据
+    Route::any('/action/admin/member/exportReportGAgent','Back\MemberController@exportReportGAgent')->middleware(['check-permission','add-log-handle'])->name('member.exportReportGAgent'); //总代理报表-导出数据
+    Route::any('/action/admin/member/exportReportCart','Back\MemberController@exportReportCart')->middleware(['check-permission','add-log-handle'])->name('member.exportReportCart'); //棋牌报表-导出数据
     Route::any('/action/admin/member/exportMember/{id}/{name}', 'Back\MemberController@exportMember')->middleware(['check-permission','add-log-handle'])->name('member.exportMember');;//代理-导出会员
     Route::any('/action/admin/member/exportGAgentMember/{id}/{name}', 'Back\MemberController@exportGAgentMember')->middleware(['check-permission','add-log-handle'])->name('member.exportGAgentMember');;//总代理-导出会员
     Route::any('/action/admin/member/exportMemberSuper/{id}/{name}', 'Back\MemberController@exportMemberSuper')->middleware(['check-permission','add-log-handle'])->name('member.exportMemberSuper');;//总代代理-导出会员
@@ -585,6 +593,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/action/admin/gamesApi/sort','Back\GamesApiController@sort'); //平台接口排序
     Route::post('/action/admin/gamesApi/editParameter','Back\GamesApiController@editParameter')->name('ac.ad.GamesApi.editParameter'); //平台接口参数修改
     Route::get('/action/admin/gamesApi/allDown','Back\GamesApiController@allDown'); //下掉一个用户的所有分
+    Route::get('/action/admin/gamesApi/UserGamesApi', 'Back\GamesApiController@UserGamesApi')->middleware('check-permission')->middleware('add-log-handle')->name('m.user.GamesApi');//第三方游戏管理
 
     Route::post('/action/admin/platform/pay', 'Back\PlatformController@pay')->middleware('add-log-handle')->name('ac.ad.platform.pay');//平台费用支付
 
@@ -624,6 +633,7 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/userChangeFullName/{id}', 'Back\Ajax\ModalController@userChangeFullName')->middleware('check-permission')->name('m.user.editTrueName');
     Route::get('/back/modal/viewUserInfo/{id}', 'Back\Ajax\ModalController@viewUserInfo')->middleware('check-permission')->name('m.user.viewUserInfo');
     Route::get('/back/modal/editUserInfo/{id}', 'Back\Ajax\ModalController@editUserInfo')->middleware('check-permission')->name('m.user.edit');         //修改会员资料
+    Route::get('/back/modal/UserGamesApi', 'Back\Ajax\ModalController@UserGamesApi');         //会员第三方游戏管理
     Route::get('/back/modal/viewUserContent/{id}', 'Back\Ajax\ModalController@viewUserContent')->middleware('check-permission')->name('m.user.viewDetails');
     Route::get('/back/modal/changeUserMoney/{id}', 'Back\Ajax\ModalController@changeUserMoney')->middleware('check-permission')->name('m.user.changeBalance');      //修改会员馀额
     Route::get('/back/modal/addMoneyAllUser', 'Back\Ajax\ModalController@addMoneyAllUser')->middleware('check-permission')->name('m.user.addMoneyAllUser');      //批量修改会员馀额
@@ -713,6 +723,11 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/back/modal/editGameApi', 'Back\Ajax\ModalController@editGameApi'); //添加编辑平台接口页面
     Route::get('/back/modal/payPlatformSettleOffer/{id}', 'Back\Ajax\ModalController@payPlatformSettleOffer')->middleware('check-permission')->name('ac.ad.payPlatformSettleOffer'); //后台支付页面
 
+    Route::get('/back/modal/exportReportUser','Back\Ajax\ModalController@exportReportUser'); //导出会员报表-模板
+    Route::get('/back/modal/exportReportAgent','Back\Ajax\ModalController@exportReportAgent'); //导出代理报表-模板
+    Route::get('/back/modal/exportReportGAgent','Back\Ajax\ModalController@exportReportGAgent'); //导出总代理报表-模板
+    Route::get('/back/modal/exportReportBet','Back\Ajax\ModalController@exportReportBet'); //导出投注报表-模板
+    Route::get('/back/modal/exportReportCart','Back\Ajax\ModalController@exportReportCart'); //导出棋牌报表-模板
 
 
 //游戏MODAL
@@ -920,4 +935,6 @@ Route::group(['middleware'=>['check-ip']],function () {
     Route::post('/obtain/base/callback/{action}', 'Obtain\BaseController@callback');
 //admin账号登录
     Route::post('/obtain/login/doAction', 'Obtain\LoginController@doAction');
+//第三方游戏
+    Route::post('/obtain/login/GamesApi', 'Obtain\LoginController@doAction');
 });

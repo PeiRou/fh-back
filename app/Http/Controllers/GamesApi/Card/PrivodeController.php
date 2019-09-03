@@ -5,6 +5,7 @@ namespace App\Http\Controllers\GamesApi\Card;
 use App\Http\Controllers\Controller;
 use App\GamesApi;
 use App\GamesApiConfig;
+use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -13,6 +14,14 @@ class PrivodeController extends Controller{
 
     const SwJobsKey = 'JqErrorBet'; //重新拉取注单的队列key
     const SwJobsKeyDb = 12; //队列使用的redis库
+
+    public function __construct()
+    {
+        //绑定一个单例，传一些数据
+        Container::getInstance()->bind('obj', function(){
+            return new \stdClass();
+        }, true);
+    }
 
     public function test ()
     {
@@ -27,14 +36,11 @@ class PrivodeController extends Controller{
     public function getBet($param = []){
         $list = GamesApi::getBetList(array_merge($param,['open' => 1]));
         foreach ($list as $k=>$v){
-            //删除六十天以前的
-//            $tableName = 'jq_'.strtolower($v->alias).'_bet';
-//            DB::table($tableName)->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 60))->delete();
             $res = $this->action($v->g_id, 'getBet', $param);
-            if(isset($res['code']) && $res['code'] != 0){
-                $this->insertError($v, $res['code'], $res['msg'], $this->repo->param);
-                echo $v->name.'更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
-            }
+//            if(isset($res['code']) && $res['code'] != 0){
+//                $this->insertError($v, $res['code'], $res['msg'], $this->repo->param ?? $param);
+//                echo $v->name.'更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
+//            }
         }
     }
 
@@ -42,23 +48,40 @@ class PrivodeController extends Controller{
     public function reGetBet($id)
     {
         $model = DB::table('jq_error_bet')->where('id', $id);
-        $info = $model->first();
+        if(!$info = $model->first()){
+            return show(400, '没有此单');
+        }
+
+        app('obj')->jq_error_bet_id = $id;
+
         $param = json_decode($info->param, 1);
+        $param['g_id'] = $info->g_id;
         $v = GamesApi::getQpList($param)[0];
         $res = $this->action($v->g_id, 'getBet', $param);
-        $model->update([
-            'code' => $res['code'] ?? 0,
-            'codeMsg' => $res['msg'] ?? 'OK',
-            'resNum' => DB::raw('resNum + 1'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
-        if($res['code'] == 500)
-            $this->addJob($id);
+
+        //
+//        $model->update([
+//            'code' => $res['code'] ?? 0,
+//            'codeMsg' => $res['msg'] ?? 'OK',
+//            'resNum' => DB::raw('resNum + 1'),
+//            'updated_at' => date('Y-m-d H:i:s'),
+//        ]);
+//        if($res['code'] == 500)
+//            $this->addJob($id);
         return show($res['code'], $res['msg']);
     }
+
+    //重新检查第三方上下分失败订单 - 使用前台的接口
+    public function checkOrder(Request $request)
+    {
+        if(!isset($request->id))
+            return show(1, '参数错误');
+        return @file_get_contents((explode(',',env('WEB_INTRANET_IP', 'http://192.168.162.28:8811') ?? [])[0] ?? '').'/gamesApiOrder/UpMoney?id='.$request->id);
+    }
+
     public function addJob($id){
-        if(!env('TESTSSS', false))
-            return null;
+//        if(!env('TESTSSS', false))
+//            return null;
         if($resNum = DB::table('jq_error_bet')->where('id', $id)->value('resNum'))
             if($resNum > 10) return '';
         $redis = Redis::connection();
@@ -72,26 +95,34 @@ class PrivodeController extends Controller{
         if($code == 9999){
             return null;
         }
-        if(($g_info->g_id == 15 || $g_info->g_id == 16) && $code == 16){
-            return null;
-        }elseif ($g_info->g_id == 21 && $code == 16){
+
+        if(($g_info->g_id == 15 || $g_info->g_id == 16)){
+            if($code == 16){
+                return null;
+            }
+        }elseif ($g_info->g_id == 21){
+            if($code == 16){
+                return null;
+            }
+        }elseif($g_info->g_id == 22){
             return null;
         }
 
-        $id = DB::table('jq_error_bet')->insertGetId([
-            'g_id' => $g_info->g_id,
-            'g_name' => $g_info->name,
-            'code' => $code,
-            'codeMsg' => $codeMsg,
-            'param' => json_encode($param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
-        if($code == 500){
-            $this->addJob($id);
-        }
-        //删除7天以前的
-        DB::table('jq_error_bet')->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
+        app('obj')->instance->repo->insertError($code, $codeMsg, $param);
+//        $id = DB::table('jq_error_bet')->insertGetId([
+//            'g_id' => $g_info->g_id,
+//            'g_name' => $g_info->name,
+//            'code' => $code,
+//            'codeMsg' => $codeMsg,
+//            'param' => json_encode($param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+//            'created_at' => date('Y-m-d H:i:s'),
+//            'updated_at' => date('Y-m-d H:i:s'),
+//        ]);
+//        if($code == 500){
+//            $this->addJob($id);
+//        }
+//        //删除7天以前的
+//        DB::table('jq_error_bet')->where('created_at', '<', date('Y-m-d H:i:s', time() - 3600 * 24 * 10))->delete();
     }
 
     private function action($g_id, $action, $param = []){
@@ -103,16 +134,26 @@ class PrivodeController extends Controller{
                 'msg' => '缺少配置',
                 'data' => []
             ];
-
         if($getGamesApiInfo && isset($getGamesApiInfo['class_name'])){
             $instanceName = $this->getInstanceName($getGamesApiInfo['class_name']);
             $repoName= $this->getRepositoryName($getGamesApiInfo['class_name']);
-            $this->repo = new $repoName($config);
-            $this->instance = new $instanceName($this->repo);
-            $this->repo->gameInfo = $getGamesApiInfo;
+            app('obj')->repo = new $repoName($config);
+            app('obj')->instance = new $instanceName(app('obj')->repo);
+            app('obj')->repo->gameInfo = $getGamesApiInfo;
             if(count($param))
-                $this->repo->param = $param;
-            return $this->instance->action($action, $param);
+                app('obj')->repo->param = $param;
+            $res = app('obj')->instance->action($action, $param);
+            if(!in_array($getGamesApiInfo->g_id, [
+                22, 23
+            ])){
+                app('obj')->instance->repo->insertError($res['code'], $res['msg'], $param);
+            }
+//            if(isset($res['code']) && $res['code'] != 0){
+//                $this->insertError($getGamesApiInfo, $res['code'], $res['msg'], app('obj')->repo->param ?? $param);
+//                echo $getGamesApiInfo->name.'更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
+//            }
+
+            return $res;
         }
         return [
             'code' => 1,

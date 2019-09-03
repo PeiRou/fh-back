@@ -254,6 +254,16 @@ class AdSystemSettingController extends Controller
             $aArray = [];
             foreach ($aKeyData as $kKey => $iKey) {
                 foreach ($aParam as $kParam => $iParam) {
+                    if(substr($iParam,0,10)=='data:image') {
+                        $limit = strpos($iParam, ';base64,');
+                        $timgtype = '.' . substr($iParam, 11, $limit - 11);
+                        if (!checkImg($timgtype)) {
+                            return response()->json([
+                                'status' => false,
+                                'msg' => '修改失败，请稍后再试！'
+                            ]);
+                        }
+                    }
                     if ($kParam == $iKey->js_key) {
                         $aArray[] = [
                             'info_id' => $iInfo->id,

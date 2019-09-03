@@ -139,8 +139,14 @@
 @endsection
 
 @section('page-js')
+    <script src="/vendor/layui/layui.js"></script>
+    <link rel="stylesheet" href="/vendor/layui/css/layui.css">
     <script src="/back/js/pages/user.js"></script>
     <script>
+        var layer;
+        layui.use('layer', function(){
+            layer = layui.layer;
+        });
         @if(session('message'))
             var message = '{{ session('message') }}';
             alert(message);

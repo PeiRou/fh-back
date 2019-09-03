@@ -61,6 +61,7 @@
                     <div class="one wide field">
                         <button id="reset" class="fluid ui mini labeled icon button"><i class="undo icon"></i> 重置 </button>
                     </div>
+                    <input type="hidden" name="" id="is_delete" value="0">
                 </div>
             </div>
         </div>

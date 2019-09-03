@@ -20,6 +20,7 @@ class OfferRepository extends BaseRepository
         if(\Illuminate\Support\Facades\DB::table('offer')->where(function ($sql) {
             $sql->where('overstayed', '<', date('Y-m-d H:i:s'));
             $sql->where('status', '<>', 2);
+            $sql->where('is_delete', 0);
         })->count()){
             return false;
         }
@@ -55,6 +56,7 @@ class OfferRepository extends BaseRepository
         return \Illuminate\Support\Facades\DB::table('offer')->where(function ($sql) {
             $sql->where('overstayed', '<', date('Y-m-d H:i:s', strtotime(' +7 day')));
             $sql->where('status', '<>', 2);
+            $sql->where('is_delete', 0);
         })->count();
     }
 

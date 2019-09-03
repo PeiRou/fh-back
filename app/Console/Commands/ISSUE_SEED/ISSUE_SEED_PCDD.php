@@ -10,6 +10,7 @@ class ISSUE_SEED_PCDD extends Command
 {
     protected $signature = 'ISSUE_SEED_PCDD';
     protected $description = 'PC蛋蛋期数生成-179';
+    const ZABBIX_BOT_URL = 'http://bot.tcwk10.com:5000';
 
     public function __construct()
     {
@@ -35,8 +36,15 @@ class ISSUE_SEED_PCDD extends Command
         $lastIssue = @$checkLastIssue->issue;
         //$lastIssue = '907087';
         if(empty($lastIssue)){
-            writeLog('ISSUE_SEED', date('Y-m-d').$this->signature.'期数不可为0');
-            echo '期数不可为0';
+            $str = date('Y-m-d H:i:s').' '.env('APP_NAME').'-'.$this->signature.'期数不可为0';
+            writeLog('ISSUE_SEED', $str);
+            echo $str;
+            $url = self::ZABBIX_BOT_URL.'/telegram?q='.urlencode($str);
+            try{
+                $http = app(\GuzzleHttp\Client::class);
+                $http->request('GET',$url,['connect_timeout' => 1]);
+            }catch (\Exception $e){
+            }
             return '';
         }
         $sql = "INSERT INTO game_pcdd (issue,opentime) VALUES ";

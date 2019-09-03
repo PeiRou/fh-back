@@ -15,7 +15,7 @@ class JqReportBet extends Model
 
     public static function reportQuerySelect($aParam){
         $aSql = "SELECT `user_id` FROM `jq_report_bet` WHERE 1 ";
-        $aArray = [
+        isset($aParam['start'], $aParam['length']) && $aArray = [
             'start' => $aParam['start'],
             'length' => $aParam['length']
         ];
@@ -35,7 +35,8 @@ class JqReportBet extends Model
             $aSql .= " AND `date` <= :endTime ";
             $aArray['endTime'] = $aParam['endTime'].' 23:59:59';
         }
-        $aSql .= " GROUP BY `user_id` ORDER BY `user_id` ASC LIMIT :start,:length";
+        $aSql .= " GROUP BY `user_id` ORDER BY `user_id` ASC ";
+        isset($aArray['start'], $aArray['length']) && $aSql .= "  LIMIT :start,:length ";
         $aUserId = DB::select($aSql,$aArray);
         $aData = [];
         foreach ($aUserId as $iUserId){
@@ -46,7 +47,7 @@ class JqReportBet extends Model
 
     public static function reportQuery($userId,$aParam){
         $aSql = "SELECT `game_name`,`agent_account`,`agent_name`,`user_account`,`user_name`,`user_id`,`game_id`, 
-                    SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,SUM(`bet_bunko`) AS `bet_bunko`
+                    SUM(`up_fraction`) AS `up_fraction`,SUM(`down_fraction`) AS `down_fraction`,SUM(`bet_bunko`) AS `bet_bunko`,SUM(`bet_money`) AS `bet_money`
                     FROM `jq_report_bet` WHERE 1 ";
         $aArray = [];
         if(empty($userId))
@@ -89,7 +90,7 @@ class JqReportBet extends Model
     }
 
     public static function reportQuerySum($aParam){
-        $aSql = "SELECT SUM(`bet_count`) AS `bet_count`,SUM(`bet_money`) AS `bet_money`,SUM(`bet_bunko`) AS `bet_bunko`,`game_id` FROM `jq_report_bet` WHERE 1";
+        $aSql = "SELECT SUM(`up_fraction`) AS `up_fraction`,SUM(`down_fraction`) AS `down_fraction`,SUM(`bet_bunko`) AS `bet_bunko`,SUM(`bet_money`) AS `bet_money`,`game_id` FROM `jq_report_bet` WHERE 1";
         $aArray = [];
         if(isset($aParam['user_account']) && array_key_exists('user_account',$aParam)){
             $aSql .= " AND `user_account` = :user_account ";

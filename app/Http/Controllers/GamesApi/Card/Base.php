@@ -28,7 +28,7 @@ class Base
     //获取棋牌投注详情
     public function getBet($param = []){
         $this->repo->param['s'] = 6;
-        $this->repo->param['startTime'] = $this->repo->param['startTime'] ?? ($this->repo->getMillisecond($param) - (1000 * $this->intervals * 60));
+        $this->repo->param['startTime'] = $this->repo->param['startTime'] ?? ($this->repo->getMillisecond($param) - (1000 * $this->intervals * 40));
         $this->repo->param['endTime'] = $this->repo->param['endTime'] ?? $this->repo->getMillisecond($param);
         $res = $this->repo->createReqData();
         if(isset($res['code']) && $res['code'] == 0 ){

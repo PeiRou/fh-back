@@ -5,6 +5,9 @@ namespace App\Jobs;
 use App\Agent;
 use App\Games;
 use App\Helpers\Common;
+use App\PromotionConfig;
+use App\SystemSetting;
+use App\Users;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -41,10 +44,8 @@ class AgentBackwaterSettlement implements ShouldQueue
     public function handle()
     {
         $table = Games::$aTableByGameId[$this->gameId];
-//        $Common = new Common();
 
         if(empty($table)){
-//            $Common->customWriteLog('agentBackwater','该游戏表不存在..游戏id：'.$this->gameId.' 期号：'.$this->issue);
             return false;
         }
 
@@ -54,62 +55,67 @@ class AgentBackwaterSettlement implements ShouldQueue
         else
             $backwater = DB::connection('mysql::write')->table($table)->where('issue',$this->issue)->value('backwater');
         if($backwater == 2){
-//            $Common->customWriteLog('agentBackwater','已返水..游戏id：'.$this->gameId.' 期号：'.$this->issue);
             return false;
         }
 
-        $aData = DB::connection('mysql::write')->table('bet')->select('bet.play_odds','bet.bet_money','bet.agnet_odds','bet.user_id')
-            ->where('bet.promotion_id','=',0)
-            ->where('bet.game_id',$this->gameId)->where('bet.issue',$this->issue)->where('bet.bunko','!=',0)->get();
+        $aData = DB::connection('mysql::write')->table('bet')
+            ->select('bet.play_odds','bet.bet_money','bet.agnet_odds','bet.user_id','users.username','game.game_name')
+            ->where('bet.game_id',$this->gameId)
+            ->where('bet.issue',$this->issue)
+            ->where('bet.status',1)
+            ->join('users','bet.user_id','=','users.id')
+            ->join('game','bet.game_id','=','game.game_id')->get();
 
-        $aData = $this->getBackwaterMoneyGroupUser($aData);
+        $aArray = [];
+        $aUserArray = [];
+        $promotionLevel = SystemSetting::where('id',1)->value('promotion_level');
+        $promotionConfig = PromotionConfig::getPromotionList();
         $time = date('Y-m-d H:i:s');
-        $aAgentBackwater = [];
-        foreach ($aData as $kData => $iData){
-            if($iData['money'] != 0) {
-                $aAgentBackwater[] = [
-                    'agent_id' => $iData['agent_id'],
-                    'user_id' => $iData['user_id'],
-                    'status' => 1,
-                    'money' => $iData['money'],
-                    'game_id' => $this->gameId,
-                    'issue' => $this->issue,
-                    'created_at' => $time,
-                    'updated_at' => $time,
-                ];
+        foreach ($aData as $kData => $iData) {
+            if (!empty($iData->agnet_odds)) {
+                $promotionArray = explode(',', $iData->agnet_odds);
+                $promotionCount = count($promotionArray);
+                if ($promotionLevel > $promotionCount)
+                    $iCount = $promotionCount;
+                else
+                    $iCount = $promotionLevel;
+                for ($i = 1; $i <= $iCount; $i++) {
+                    if (isset($aArray[$promotionArray[$promotionCount - $i]]) && array_key_exists($promotionArray[$promotionCount - $i], $aArray))
+                        $aArray[$promotionArray[$promotionCount - $i]]['money'] += $iData->bet_money * $promotionConfig[$i] / 100;
+                    else
+                        $aArray[$promotionArray[$promotionCount - $i]] = [
+                            'money' => $iData->bet_money * $promotionConfig[$i] / 100,
+                            'to_user' => $promotionArray[$promotionCount - $i],
+                            'user_type' => 'user',
+                            'order_id' => 'P' . time() . rand(100000, 999999),
+                            'type' => 't28',
+                            'game_id' => $this->gameId,
+                            'issue' => $this->issue,
+                            'created_at' => $time,
+                            'updated_at' => $time,
+                            'content' => '会员('.$iData->username.')->'.$iData->game_name.'的第'.$this->issue.'期'
+                        ];
+                    if (!in_array($promotionArray[$promotionCount - $i], $aUserArray))
+                        $aUserArray[] = $promotionArray[$promotionCount - $i];
+                }
             }
         }
-
-        $aData = $this->getBackwaterMoney($aData);
-        $aCapitalAgent = [];
-        $aAgent = DB::connection('mysql::write')->table('agent')->select('balance','a_id')->get();
-        $gameName = DB::table('game')->where('game_id',$this->gameId)->value('game_name');
-        foreach ($aAgent as $kAgent => $iAgent) {
-            foreach ($aData as $kData => $iData) {
-                if($iAgent->a_id == $iData['a_id']) {
-                    $aCapitalAgent[] = [
-                        'agent_id' => $iData['a_id'],
-                        'user_type' => 'agent',
-                        'type' => 't28',
-                        'game_id' => $this->gameId,
-                        'issue' => $this->issue,
-                        'money' => $iAgent->balance + $iData['money'],
-                        'balance' => $iAgent->balance,
-                        'game_name' =>$gameName,
-                        'created_at' =>$time,
-                        'updated_at' =>$time,
-                    ];
+        $aUser = Users::select('id','money')->whereIn('id',$aUserArray)->get()->toArray();
+        foreach ($aArray as $kArray => $iArray){
+            foreach ($aUser as $iUser){
+                if($iArray['to_user'] == $iUser['id']){
+                    $aArray[$kArray]['balance'] = $iArray['money'] + $iUser['money'];
                 }
             }
         }
 
-        $aAgentSql = Agent::updateBatchStitching($aData,['money'],'a_id');
+
+        $aUserSql = Users::updateUserBatchStitching('users',$aArray);
         DB::beginTransaction();
         try{
             if(!empty($aData)) {
-                DB::table('agent_backwater')->insert($aAgentBackwater);
-                DB::table('capital_agent')->insert($aCapitalAgent);
-                DB::update($aAgentSql);
+                DB::table('capital')->insert($aArray);
+                DB::update($aUserSql);
             }
             if(in_array($this->gameId,[91]))
                 DB::table($table)->where('issue',$this->issue)->update(['nn_backwater' => 2]);
@@ -122,46 +128,5 @@ class AgentBackwaterSettlement implements ShouldQueue
             DB::rollback();
 //            $Common->customWriteLog('agentBackwater','failure..游戏id：'.$this->gameId.' 期号：'.$this->issue);
         }
-    }
-
-    public function getBackwaterMoneyGroupUser($aData){
-        $aArray = [];
-
-        foreach ($aData as $kData => $iData){
-            if(!empty($iData->agnet_odds)){
-                foreach (unserialize($iData->agnet_odds) as $key => $value){
-                    if($value != 0) {
-                        if (isset($aArray[$iData->user_id . $key]) && array_key_exists($iData->user_id . $key, $aArray))
-                            $aArray[$iData->user_id . $key]['money'] += $iData->bet_money * $value;
-                        else
-                            $aArray[$iData->user_id . $key] = [
-                                'money' => $iData->bet_money * $value,
-                                'agent_id' => $key,
-                                'user_id' => $iData->user_id,
-                            ];
-                    }
-                }
-            }
-        }
-
-        return $aArray;
-    }
-
-    public function getBackwaterMoney($aData){
-        $aArray = [];
-
-        foreach ($aData as $kData => $iData){
-            if($iData['money'] != 0) {
-                if (isset($aArray[$iData['agent_id']]) && array_key_exists($iData['agent_id'], $aArray))
-                    $aArray[$iData['agent_id']]['money'] += $iData['money'];
-                else
-                    $aArray[$iData['agent_id']] = [
-                        'money' => $iData['money'],
-                        'a_id' => $iData['agent_id'],
-                    ];
-            }
-        }
-
-        return $aArray;
     }
 }

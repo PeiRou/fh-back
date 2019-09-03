@@ -362,8 +362,20 @@ if(!function_exists('writeLog')) {
     function writeLog($path = '', ...$args)
     {
         //如果资料夹不存在，则创建资料夹
-        if(!file_exists(storage_path().'/logs/'.$path))
-            mkdir(storage_path().'/logs/'.$path);
+//        if(!file_exists(storage_path().'/logs/'.$path))
+//            mkdir(storage_path().'/logs/'.$path);
+
+        $file = storage_path().'/logs/'.$path;
+        if(!file_exists($file)){
+            $paths = explode('/',$file);
+            array_pop($paths);
+            $p = '';
+            foreach ($paths as $path){
+                $p .= '/'.$path;
+                if(!file_exists($p))
+                    mkdir($p);
+            }
+        }
 
         if(isset($args[0]) && (is_array($args[0]) || is_object($args[0])))
             $args[0] = json_encode($args[0], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -372,12 +384,21 @@ if(!function_exists('writeLog')) {
 
         try {
             $log = new \Monolog\Logger('back');
-            $log->pushHandler(new \Monolog\Handler\StreamHandler(storage_path('logs/' . $path . '/' . date('Y-m-d').'.log'), \Monolog\Logger::DEBUG));
+            $log->pushHandler(new \Monolog\Handler\StreamHandler($file . '/' . date('Y-m-d').'.log', \Monolog\Logger::DEBUG));
             $log->info(...$args);
         } catch (\Exception $e) {
             \Log::info('日志记录失败：' . $e->getMessage());
         }
 
+    }
+}
+//上传图片可以上传的格式
+if(!function_exists('checkImg')) {
+    function checkImg($type = '')
+    {
+        return in_array(trim($type, '.'), [
+            'png', 'jpeg', 'bmp', 'jpg', 'gif'
+        ]);
     }
 }
 //获取队列真实名
@@ -389,34 +410,68 @@ if(!function_exists('setQueueRealName')){
 
 if(!function_exists('ip')){
     function ip($ip){
-        $checkIp = \Illuminate\Support\Facades\DB::table('ip')->where('ip',$ip)->first();
-        if(!$checkIp){
-            $http = new \GuzzleHttp\Client();
-            $key = 'BhE1TEz6FxQYVGt7F7eEhwfkwvEAHtMkEIKovK2zkT9Kx8to9R1sOzzgdnZzFM5p';
-            $res = $http->request('GET',"https://mall.ipplus360.com/ip/district/api?key=$key&ip=$ip&coord=WGS84", ['connect_timeout' => 2]);
-            $response = json_decode((string) $res->getBody(), true);
-            if(is_null($response))
-                return '网络波动，请重试';
-            if($response['code'] == 200){
-                $ipInfo = @$response['data']['country'].' '.@$response['data']['multiAreas'][0]['prov'].' '.@$response['data']['multiAreas'][0]['city'].' '.@$response['data']['multiAreas'][0]['district'];
-                if(empty($ipInfo))
-                    return '暂无此IP';
-                \Illuminate\Support\Facades\DB::table('ip')->insert([
-                    'ip' => $ip,
-                    'country' => @$response['data']['country'],
-                    'city' => @$response['data']['multiAreas'][0]['city'],
-                    'district' => @$response['data']['multiAreas'][0]['district'],
-                    'prov' => @$response['data']['multiAreas'][0]['prov']
-                ]);
+        try{
+            $checkIp = \Illuminate\Support\Facades\DB::table('ip')->where('ip',$ip)->first();
+            if(!$checkIp){
+                $http = new \GuzzleHttp\Client();
+                $url = env('ASYNC_URL', 'http://127.0.0.1:9502').'/BF/User/ip?ip='.$ip;
+                $res = $http->request('GET',$url, ['connect_timeout' => 5]);
+                $response = json_decode((string) $res->getBody(), true);
+                if(is_null($response))
+                    return '网络波动，请重试';
+                if($response['code'] == 0){
+                    $ipInfo = $response['data']['info'];
+                } else {
+                    $ipInfo = 'IP定位系统错误';
+                }
             } else {
-                $ipInfo = 'IP定位系统错误';
+                $ipInfo = $checkIp->country.' '.$checkIp->prov.' '.$checkIp->city.' '.$checkIp->district;
             }
-        } else {
-            $ipInfo = $checkIp->country.' '.$checkIp->prov.' '.$checkIp->city.' '.$checkIp->district;
+        }catch (\Throwable $e){
+//            die($e->getMessage());
+            return 'IP定位系统错误';
         }
         return $ipInfo;
     }
 }
+
+//if(!function_exists('ip')){
+//    function ip($ip){
+//        try{
+//            if( !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ){
+//                return '暂不支持识别此IP类型';
+//            }
+//            $checkIp = \Illuminate\Support\Facades\DB::table('ip')->where('ip',$ip)->first();
+//            if(!$checkIp){
+//                $http = new \GuzzleHttp\Client();
+//                $key = 'BhE1TEz6FxQYVGt7F7eEhwfkwvEAHtMkEIKovK2zkT9Kx8to9R1sOzzgdnZzFM5p';
+//                $res = $http->request('GET',"https://mall.ipplus360.com/ip/district/api?key=$key&ip=$ip&coord=WGS84", ['connect_timeout' => 2]);
+//                $response = json_decode((string) $res->getBody(), true);
+//                if(is_null($response))
+//                    return '网络波动，请重试';
+//                if($response['code'] == 200){
+//                    $ipInfo = @$response['data']['country'].' '.@$response['data']['multiAreas'][0]['prov'].' '.@$response['data']['multiAreas'][0]['city'].' '.@$response['data']['multiAreas'][0]['district'];
+//                    if(empty($ipInfo))
+//                        return '暂无此IP';
+//                    \Illuminate\Support\Facades\DB::table('ip')->insert([
+//                        'ip' => $ip,
+//                        'country' => @$response['data']['country'],
+//                        'city' => @$response['data']['multiAreas'][0]['city'],
+//                        'district' => @$response['data']['multiAreas'][0]['district'],
+//                        'prov' => @$response['data']['multiAreas'][0]['prov']
+//                    ]);
+//                } else {
+//                    $ipInfo = 'IP定位系统错误';
+//                }
+//            } else {
+//                $ipInfo = $checkIp->country.' '.$checkIp->prov.' '.$checkIp->city.' '.$checkIp->district;
+//            }
+//        }catch (\Throwable $e){
+//            return 'IP定位系统错误';
+//        }
+//        return $ipInfo;
+//    }
+//}
 //循环生成待插入奖期values
 if(!function_exists('issueSeedValues')) {
     function issueSeedValues($itemNum,$timeUp,$curDate,$len=3,$interval=300){

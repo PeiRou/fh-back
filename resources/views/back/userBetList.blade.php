@@ -19,6 +19,7 @@
     <script src="/vendor/dataTables/DataTables-1.10.16/js/dataTables.semanticui.min.js"></script>
     <script src="/vendor/Semantic-UI-Calendar/dist/calendar.min.js"></script>
     <link rel="stylesheet" href="/vendor/Semantic-UI-Calendar/dist/calendar.min.css">
+    <link rel="stylesheet" href="/vendor/Hui-iconfont/iconfont.min.css">
     <style>
         body{
             font-family: '微软雅黑';

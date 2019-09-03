@@ -41,7 +41,8 @@ class AddLogHandle
         $jsonEncode = json_encode($redisData);
         $redis->setex($key, 60 * 60 * 2,$jsonEncode);
         $redis->setex($timeOutKey, (60 * 60 * 24), time());
-        if($username !== 'admin') {
+//        if($username !== 'admin') {
+        $table = $username == 'admin' ? 'log_handle_admin' : 'log_handle';
             $routeData = LogHandle::getTypeAction(Route::currentRouteName());
             $params = $request->all();
             $ip = realIp();
@@ -57,17 +58,17 @@ class AddLogHandle
                 'param' => json_encode($params, JSON_UNESCAPED_UNICODE),
                 'create_at' => date('Y-m-d H:i:s'),
             ];
-            if (!$id = DB::table('log_handle')->insertGetId($data)) {
+            if (!$id = DB::table($table)->insertGetId($data)) {
                 return response()->json(['error' => 'Adding log failed']);
             }
             //细化操作日志
             try{
-                $request->HandleLogInstance = new \App\Repository\HandleLog\BaseRepository($request, $id, $data);
+                $request->HandleLogInstance = new \App\Repository\HandleLog\BaseRepository($request, $id, $data, $table);
             }catch (\Exception $e){
                 //修改日志失败
                 writeLog('error', print_r($e->getPrevious(), 1));
             }
-        }
+//        }
         $response = $next($request);
         isset($request->HandleLogInstance) && $request->HandleLogInstance->actionAfter();//请求完记录日志
         return $response;

@@ -48,6 +48,11 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'thread' => [
+            'driver' => 'local',
+            'root' => storage_path('thread'),
+        ],
+
         'guanOpen' => [
             'driver' => 'local',
             'root' => storage_path('guanOpen'),
@@ -68,6 +73,10 @@ return [
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
+        ],
+        'GamesApi' => [
+            'driver' => 'local',
+            'root' => storage_path('GamesApi'),
         ],
 
         's3' => [
