@@ -143,7 +143,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                 }
             }
         }
-        $this->editSql($aCapital,$aArray);
+        $this->editSql($aCapital,$aData);
     }
 
     private function recodeNo($aJqBet,$aReratio,$aSetrebate){
