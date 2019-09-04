@@ -228,7 +228,13 @@ class BaseRepository
     {
         count($data) > 0 && ($url = $url.'?'.http_build_query($data));
         if(isset($this->is_proxy_pass) && $this->is_proxy_pass && env('PROXY_PASS_ADDRESS', false)){
-            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php').'?'.http_build_query(['proxy_pass_url' => $url]);
+            $response = [
+                'proxy_pass_url' => $url
+            ];
+            if($this->gameInfo->g_id === 22){
+                $response['issleep'] = 1;
+            }
+            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php').'?'.http_build_query($response);
         }
         !$headers && $headers = array(
 //            "Accept: application/json",
