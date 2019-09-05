@@ -37,7 +37,7 @@ class NNRepository extends BaseRepository
         if($res['code'] === 200){
             return $this->createData($res['data']['list']);
         }
-        $this->insertError($res['code'] == 0 ? 1 : $res['code'], $this->code($res['code']) ?? $res['msg']);
+//        $this->insertError($res['code'] == 0 ? 1 : $res['code'], $this->code($res['code']) ?? $res['msg']);
 //        return $this->show($res['code'] == 0 ? 1 : ($this->code($res['code']) ?? $res['msg']), '');
     }
 
@@ -51,13 +51,14 @@ class NNRepository extends BaseRepository
         $GameIDs = $this->distinct($aData, 'id');
         $insert = [];
         foreach ($aData as $v){
+            if(isset($v['is_try']) && $v['is_try'] == 1){
+                continue;
+            }
+            !isset($v['userName']) && $v['userName'] = '';
             if(!preg_match("/^".$this->getVal('agent')."/", $v['userName']))
                 continue;
             if(in_array($v['id'], $GameIDs))
                 continue;
-            if(isset($v['is_try']) && $v['is_try'] == 1){
-                continue;
-            }
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['id'],
