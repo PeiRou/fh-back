@@ -64,6 +64,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                 $iReratio = $this->getReratio($aReratio[$iJqBet->game_id],$iJqBet->bet_money);
                 if(!empty($iReratio) && $iReratio->reratio > 0){
                     $iMoney = round($iReratio->reratio * $iJqBet->bet_money / 100,2);
+                    $iMoney = $iMoney > $iReratio->rebate_limit ? $iReratio->rebate_limit : $iMoney;
                     $aArray[] = [
                         'game_id' => $iJqBet->game_id,
                         'game_name' => $iJqBet->game_name,
@@ -76,14 +77,19 @@ class ZhRebateThirdDaily implements ShouldQueue
                         'general_account' => $iJqBet->general_account,
                         'general_name' => $iJqBet->general_name,
                         'general_id' => $iJqBet->general_id,
-                        'money' => $iMoney > $iReratio->rebate_limit ? $iReratio->rebate_limit : $iMoney,
+                        'money' => $iMoney,
                         'proportion' => $iReratio->reratio,
                         'bet_money' => $iJqBet->bet_money,
+                        'admin_id' => 0,
+                        'admin_account' => '系统',
+                        'admin_name' => '系统',
                         'status' => $this->isStatus($iJqBet->third_rebate,$iJqBet->user_id,$aSetrebate),
+                        'content' => '',
                         'date' => $this->aDateTime,
                         'dateTime' => $time,
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
+                        'balance' => round($iJqBet->userMoney + $iMoney, 2),
                     ];
                 }
             }
@@ -91,10 +97,9 @@ class ZhRebateThirdDaily implements ShouldQueue
 
         $aData = [];
         $aCapital = [];
-        foreach ($aArray as $iArray){
+        foreach ($aArray as $kArray => $iArray){
             foreach ($aThird as $iThird){
-                if($iThird->user_id == $iArray['user_id'] && $iThird->game_id == $iArray['game_id'] && $iThird->money != $iArray['money']){
-                    $iStatus = $this->isStatus($iThird->third_rebate,$iThird->user_id,$aSetrebate);
+                if($iThird->user_id == $iArray['user_id'] && $iThird->game_id == $iArray['game_id'] && $iThird->money < $iArray['money']){
                     $aData[] = [
                         'game_id' => $iThird->game_id,
                         'game_name' => $iThird->game_name,
@@ -113,36 +118,48 @@ class ZhRebateThirdDaily implements ShouldQueue
                         'admin_id' => 0,
                         'admin_account' => '系统',
                         'admin_name' => '系统',
-                        'status' => $iStatus,
+                        'status' => $this->isStatus($iThird->third_rebate,$iThird->user_id,$aSetrebate),
                         'content' => '',
                         'date' => $this->aDateTime,
                         'dateTime' => $time,
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
+                        'balance' => round($iThird->userMoney + $iArray['money'] - $iThird->money, 2),
                     ];
-                    if($iStatus === 3) {
-                        $aCapital[] = [
-                            'to_user' => $iThird->user_id,
-                            'user_type' => 'user',
-                            'order_id' => "RTHR" . date('YmdHis') . rand(10000000, 99999999),
-                            'type' => 't32',
-                            'rechargesType' => NULL,
-                            'game_id' => 0,
-                            'issue' => 0,
-                            'money' => round($iArray['money'] - $iThird->money, 2),
-                            'balance' => round($iThird->userMoney + $iArray['money'] - $iThird->money, 2),
-                            'play_type' => NULL,
-                            'playcate_id' => 0,
-                            'game_name' => $iArray['game_name'],
-                            'playcate_name' => '',
-                            'operation_id' => NULL,
-                            'content' => '第三方返点',
-                            'created_at' => $dateTime,
-                            'updated_at' => $dateTime,
-                        ];
-                    }
+                }
+                if($iThird->user_id == $iArray['user_id'] && $iThird->game_id == $iArray['game_id']){
+                    unset($aArray[$kArray]);
                 }
             }
+        }
+
+        foreach ($aArray as $iArray){
+            $aData[] = $iArray;
+        }
+
+        foreach ($aData as $kData => $iData){
+            if($iData['status'] === 3) {
+                $aCapital[] = [
+                    'to_user' => $iData['user_id'],
+                    'user_type' => 'user',
+                    'order_id' => "RTHR" . date('YmdHis') . rand(10000000, 99999999),
+                    'type' => 't32',
+                    'rechargesType' => NULL,
+                    'game_id' => 0,
+                    'issue' => 0,
+                    'money' => $iData['money'],
+                    'play_type' => NULL,
+                    'playcate_id' => 0,
+                    'balance' => $iData['balance'],
+                    'game_name' => $iArray['game_name'],
+                    'playcate_name' => '',
+                    'operation_id' => NULL,
+                    'content' => '第三方返点',
+                    'created_at' => $dateTime,
+                    'updated_at' => $dateTime,
+                ];
+            }
+            unset($aData[$kData]['balance']);
         }
         $this->editSql($aCapital,$aData);
     }
