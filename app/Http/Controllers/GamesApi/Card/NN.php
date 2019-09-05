@@ -9,6 +9,6 @@ class NN extends Base{
     {
         $this->repo->param['id'] = $param['id'] ?? \Illuminate\Support\Facades\DB::table('jq_bet')->where('g_id', $this->repo->gameInfo->g_id)->orderBy('GameID','desc')->value('GameID');
         empty($this->repo->param['id']) && $this->repo->param['id'] = \Illuminate\Support\Facades\DB::table('jq_bet_his')->where('g_id', $this->repo->gameInfo->g_id)->orderBy('GameID','desc')->value('GameID');
-        $this->repo->getBet();
+        return $this->repo->getBet();
     }
 }

@@ -85,6 +85,8 @@ class BBINRepository extends BaseRepository
             return 33;
         }elseif($data['gameCategory'] == 'RNG'){
             return 34;
+        }elseif($data['gameCategory'] == 'FISH'){
+            return 39;
         }else{
             return 0;
         }

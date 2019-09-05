@@ -34,11 +34,13 @@ class NNRepository extends BaseRepository
         ];
         $param['sign'] = $this->sign($param);
         $res = $this->request('/api/game/getRecord', $param);
+        $code = $res['code'] == 0 ? 1 : $res['code'];
         if($res['code'] === 200){
-            return $this->createData($res['data']['list']);
+            $this->createData($res['data']['list']);
+            $code = 0;
         }
-//        $this->insertError($res['code'] == 0 ? 1 : $res['code'], $this->code($res['code']) ?? $res['msg']);
-//        return $this->show($res['code'] == 0 ? 1 : ($this->code($res['code']) ?? $res['msg']), '');
+        $this->insertError($code, $this->code($res['code']) ?? $res['msg']);
+        return $this->show($code, $this->code($res['code']) ?? $res['msg']);
     }
 
     public function getBet()
