@@ -15,6 +15,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ZhRebateThirdDaily implements ShouldQueue
 {
@@ -170,7 +171,7 @@ class ZhRebateThirdDaily implements ShouldQueue
         $time = strtotime($this->aDateTime);
         $aCapital = [];
         foreach ($aJqBet as $kJqBet => $iJqBet){
-            if($iJqBet->bet_money > 1 && isset($aReratio[$iJqBet->game_id])) {
+            if($iJqBet->bet_money > 0 && isset($aReratio[$iJqBet->game_id])) {
                 $iMoney = 0;
                 $iStatus = 0;
                 $iReratio = $this->getReratio($aReratio[$iJqBet->game_id],$iJqBet->bet_money);
@@ -233,7 +234,7 @@ class ZhRebateThirdDaily implements ShouldQueue
     private function getReratio($aReratio,$betMoney){
         $iData = [];
         foreach ($aReratio as $iReratio) {
-            if ($betMoney > $iReratio->betamount_threshold) {
+            if ($betMoney >= $iReratio->betamount_threshold) {
                 $iData = $iReratio;
             } else {
                 continue;
