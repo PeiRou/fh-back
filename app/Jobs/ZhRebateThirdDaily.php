@@ -63,7 +63,7 @@ class ZhRebateThirdDaily implements ShouldQueue
             if($iJqBet->bet_money > 1 && isset($aReratio[$iJqBet->game_id])){
                 $iReratio = $this->getReratio($aReratio[$iJqBet->game_id],$iJqBet->bet_money);
                 if(!empty($iReratio) && $iReratio->reratio > 0){
-                    $iMoney = round($iReratio->reratio * $iJqBet->bet_money,2);
+                    $iMoney = round($iReratio->reratio * $iJqBet->bet_money / 100,2);
                     $aArray[] = [
                         'game_id' => $iJqBet->game_id,
                         'game_name' => $iJqBet->game_name,
@@ -157,7 +157,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                 $iStatus = 0;
                 $iReratio = $this->getReratio($aReratio[$iJqBet->game_id],$iJqBet->bet_money);
                 if (!empty($iReratio) && $iReratio->reratio > 0) {
-                    $iMoney = round($iReratio->reratio * $iJqBet->bet_money, 2);
+                    $iMoney = round($iReratio->reratio * $iJqBet->bet_money / 100, 2);
                     $iMoney = $iMoney > $iReratio->rebate_limit ? $iReratio->rebate_limit : $iMoney;
                     $iStatus = $this->isStatus($iJqBet->third_rebate,$iJqBet->user_id,$aSetrebate);
                     $aArray[] = [
