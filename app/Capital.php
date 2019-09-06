@@ -48,6 +48,8 @@ class Capital extends Model
         't28' => '推广人佣金',
         't29' => '冻结[退水金额]',
         't30' => '第三方游戏上分失败退回',
+        't31' => '第三方游戏返点',
+        't32' => '第三方游戏重新返点',
     ];
 
     //明细时间
@@ -169,7 +171,7 @@ class Capital extends Model
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
         $aSql = "SELECT SUM(CASE WHEN `type` = 't08' THEN `money` ELSE 0 END ) AS `sumActivity`,SUM(CASE WHEN `type` = 't04' THEN `money` ELSE 0 END ) AS `sumRecharge_fee`,
-                  `to_user`,SUM(`money`) AS `moneySum`,LEFT(`created_at`,10) AS `date` FROM `capital` 
+                  `to_user`,SUM(`money`) AS `moneySum`,LEFT(`created_at`,10) AS `date` FROM `capital`
                   WHERE `type` IN('t08','t04') ";
         $aArray = [];
         if(!empty($startTime)){

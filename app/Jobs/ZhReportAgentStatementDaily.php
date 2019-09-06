@@ -63,7 +63,7 @@ class ZhReportAgentStatementDaily implements ShouldQueue
         //获取棋牌投注
         $aJqBet = JqReportBetGame::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //棋牌游戏分类字符
-        $aGameCategory = GamesListConfig::$aGameCode;
+        $aGameCategory = GamesList::getCategoryArray();
         //获取游戏名
         $aGameName = GamesList::getNameArray();
         //第三方返水
@@ -156,7 +156,7 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                     $aArray[$kArray]['bet_bunko'] += empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko;
                     $aArrayBunko[] = [
                         'game_id' => $iJqBet->gameslist_id,
-                        'game_name' => (isset($aGameCategory[$iJqBet->gameCategory])?$aGameCategory[$iJqBet->gameCategory]:'默认分类').'_'.(isset($aGameName[$iJqBet->gameslist_id])?$aGameName[$iJqBet->gameslist_id]:'默认游戏'),
+                        'game_name' => (isset($aGameCategory[$iJqBet->gameslist_id])?$aGameCategory[$iJqBet->gameslist_id]:'默认分类').'_'.(isset($aGameName[$iJqBet->gameslist_id])?$aGameName[$iJqBet->gameslist_id]:'默认游戏'),
                         'agent_id' => $iJqBet->agent_id,
                         'gameCategory' => $iJqBet->gameCategory,
                         'agent_account' => $iArray['agent_account'],

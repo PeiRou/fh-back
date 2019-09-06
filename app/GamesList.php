@@ -240,4 +240,21 @@ class GamesList extends Base
         return $aArray;
     }
 
+    public static function getCategoryArray(){
+        $aData = self::select('game_id','name','pid')->orderBy('pid','asc')->get();
+        $aArray = [];
+        foreach ($aData as $iData){
+            if($iData->pid == 0){
+                $aArray[$iData->game_id] = $iData->name;
+            }
+        }
+        $aList = [];
+        foreach ($aData as $iData){
+            if ($iData->pid > 0 && array_key_exists($iData->pid,$aArray)) {
+                $aList[$iData->game_id] = $aArray[$iData->pid];
+            }
+        }
+        return $aList;
+    }
+
 }
