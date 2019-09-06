@@ -23,7 +23,7 @@ class PrivodeController extends Controller{
         }, true);
     }
 
-    public function test ()
+    public function test (Request $request)
     {
         writeLog('test', 'asdada');
       $code = $request->input("code");
