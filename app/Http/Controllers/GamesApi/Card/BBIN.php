@@ -58,7 +58,7 @@ class BBIN extends Base{
     private function f($method)
     {
         if($this->kind == $this->repo->param['gamekind']){
-            sleep(15);
+            sleep(15 + rand(0, 4));
         }
         $this->kind = $this->repo->param['gamekind'];
 

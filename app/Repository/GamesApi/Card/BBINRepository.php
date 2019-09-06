@@ -85,6 +85,8 @@ class BBINRepository extends BaseRepository
             return 33;
         }elseif($data['gameCategory'] == 'RNG'){
             return 34;
+        }elseif($data['gameCategory'] == 'FISH'){
+            return 39;
         }else{
             return 0;
         }
@@ -341,6 +343,7 @@ class BBINRepository extends BaseRepository
             44002 => '無權限',
             45005 => '機率遊戲不存在',
             99999 => 'Login Successful',
+            40014 => '日期驗證錯誤',
         ];
         return $data[$code] ?? null;
     }

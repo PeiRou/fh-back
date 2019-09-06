@@ -14,6 +14,8 @@ class GamesApi extends Model
     use Cache;
     protected $table = 'games_api';
     protected $primaryKey = 'g_id';
+    const bet_excludes = [22];
+
     public $statusArr = [
         '1' => '棋牌游戏',
         '2' => '天成'
@@ -98,9 +100,10 @@ class GamesApi extends Model
         return self::where(function($sql) use ($param){
             if(isset($param['g_id']))
                 $sql->where('g_id', $param['g_id']);
-            else
+            else{
                 isset($param['type']) && $sql->where('type', $param['type']);
-
+                isset($param['allbet']) && $sql->whereNotIn('g_id', self::bet_excludes); //过滤掉一些需要单独拿出来拉数据的第三方
+            }
             if(isset($param['open']))
                 $sql->where('open', $param['open']);
 

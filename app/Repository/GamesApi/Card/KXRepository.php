@@ -37,7 +37,7 @@ class KXRepository extends BaseRepository
             return $v->GameID;
         },$GameIDs));
         $arr = [];
-        foreach ($res['GameID'] as $k => $k){
+        foreach ($res['GameID'] as $k => $v){
             if(!preg_match('/'.$this->Config['siteID'].'_'.'/', $data['account'][$k]))
                 continue;
             $array = [
@@ -57,6 +57,7 @@ class KXRepository extends BaseRepository
                 'service_money' => 0,
                 'flag' => 1,
                 'game_id' => 30,
+                'round_id' => $data['roundID'][$k], //局id
             ];
 
             $user = $this->getUser($array['username']);

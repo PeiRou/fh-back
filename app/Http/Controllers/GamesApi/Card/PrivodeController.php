@@ -34,7 +34,10 @@ class PrivodeController extends Controller{
 //            echo '更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
     }
     public function getBet($param = []){
-        $list = GamesApi::getBetList(array_merge($param,['open' => 1]));
+        $where = ['open' => 1];
+        if(!isset($param['g_id']))
+            $where['allbet'] = 1;
+        $list = GamesApi::getBetList(array_merge($param,$where));
         foreach ($list as $k=>$v){
             $res = $this->action($v->g_id, 'getBet', $param);
 //            if(isset($res['code']) && $res['code'] != 0){
@@ -47,6 +50,7 @@ class PrivodeController extends Controller{
     //重新获取拉取失败的
     public function reGetBet($id)
     {
+        ob_start();
         $model = DB::table('jq_error_bet')->where('id', $id);
         if(!$info = $model->first()){
             return show(400, '没有此单');
@@ -58,17 +62,9 @@ class PrivodeController extends Controller{
         $param['g_id'] = $info->g_id;
         $v = GamesApi::getQpList($param)[0];
         $res = $this->action($v->g_id, 'getBet', $param);
-
-        //
-//        $model->update([
-//            'code' => $res['code'] ?? 0,
-//            'codeMsg' => $res['msg'] ?? 'OK',
-//            'resNum' => DB::raw('resNum + 1'),
-//            'updated_at' => date('Y-m-d H:i:s'),
-//        ]);
-//        if($res['code'] == 500)
-//            $this->addJob($id);
-        return show($res['code'], $res['msg']);
+        $r = ob_get_clean();
+        preg_match('/数据/', $r) && $code = 0;
+        return show($res['code'] ?? $code ?? 1, $res['msg'] ?? $r);
     }
 
     //重新检查第三方上下分失败订单 - 使用前台的接口
@@ -144,7 +140,7 @@ class PrivodeController extends Controller{
                 app('obj')->repo->param = $param;
             $res = app('obj')->instance->action($action, $param);
             if(!in_array($getGamesApiInfo->g_id, [
-                22, 23
+                22, 23, 10
             ])){
                 app('obj')->instance->repo->insertError($res['code'], $res['msg'], $param);
             }

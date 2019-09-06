@@ -239,7 +239,7 @@ class RGRepository extends BaseRepository
                     'game_type' => $this->getGameType($v['game_type']),
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
-                    'flag' => $v['state'] == 1 ? 1 : $v['flag'],
+                    'flag' => $v['state'] == 1 ? 1 : $v['state'],
                     'productType' => null,
                     'game_id' => 35,
                 ];

@@ -197,7 +197,7 @@ class AGRepository extends BaseRepository
 
     public function matchName($name)
     {
-        return preg_match("/^".$this->getVal('agent')."/", $name);
+        return preg_match("/^".strtolower($this->getVal('agent'))."/", $name);
     }
 
     public function arrInfo(&$array, $v, $key = 'AGIN')
@@ -232,6 +232,8 @@ class AGRepository extends BaseRepository
             return 24;
         }elseif ($data['gameCategory'] == 'YOPLAY'){
             return 21;
+        }elseif ($data['gameCategory'] == 'SPORTS'){
+            return 40;
         }else{
             return 0;
         }
