@@ -566,8 +566,8 @@ class BaseRepository
         $is = false;
 //        if($this->gameInfo->g_id == 22)
 //            return false;
-//        if($this->gameInfo->g_id == 22 && $code == 44003)
-//            return true;
+        if($this->gameInfo->g_id == 22 && $code == 44003)
+            return true;
         if($code == 500)
             return true;
         if($this->gameInfo->g_id == 19 && $code == 23)
