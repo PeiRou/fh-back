@@ -143,9 +143,33 @@ class NNRepository extends BaseRepository
     {
         $res = $this->curl_post_content($this->getConfig('apiUrl').$uri, json_encode($param), null, ['Content-Type: application/json']);
         if($res = json_decode($res, 1)){
+            if(empty($res['data']) && !empty($res['sign'])){
+                $res['data'] = $this->decrypt($res['sign']);
+            }
             return $res;
         }
         throw new \Exception('未知异常，请联系客服', 500);
+    }
+
+    private function decrypt($str)
+    {
+        $encode = mb_detect_encoding($str, array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));
+        if($encode !== 'UTF-8'){
+            $str = mb_convert_encoding($str, 'UTF-8', $encode);
+        }
+        $key = $this->getConfig('nnkey');
+        $key1 = substr($key, 0, 16);
+        $iv = substr($key, -16);
+        $sign = openssl_decrypt(base64_decode($str), 'AES-128-CBC', $key1, OPENSSL_RAW_DATA | OPENSSL_NO_PADDING, $iv);
+        $json = $this->pkcs5_unpad($sign);
+        return json_decode($json, 1);
+    }
+    public function pkcs5_unpad($text)
+    {
+        $pad = ord($text{strlen($text)-1});
+        if ($pad > strlen($text)) return false;
+        if (strspn($text, chr($pad), strlen($text) - $pad) != $pad) return false;
+        return substr($text, 0, -1 * $pad);
     }
 
     private function sign($arr = [])
