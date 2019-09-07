@@ -5,7 +5,6 @@ Route::group(['prefix' => 'back/GamesApi'], function () {
     Route::get('gamesApiOrder/UpMoney', 'GamesApi\Card\PrivodeController@checkOrder'); // 重新检查第三方上下分失败订单
 });
 
-Route::get('/test', 'GamesApi\Card\PrivodeController@test');
 Route::group(['middleware'=>['check-ip']],function () {
     Route::get('/', 'Back\SrcViewController@index');
 
