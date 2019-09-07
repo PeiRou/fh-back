@@ -10,6 +10,7 @@ use App\Drawing;
 use App\GamesList;
 use App\JqBetHis;
 use App\Recharges;
+use App\ThirdRebate;
 use App\Users;
 use App\ZhReportMember;
 use App\ZhReportMemberBunko;
@@ -63,9 +64,11 @@ class ZhReportMemberStatementDaily implements ShouldQueue
         //获取第三方投注
         $aJqBet = JqBetHis::memberReportDataUser($this->aDateTime,$this->aDateTime.' 23:59:59');
         //棋牌游戏分类字符
-        $aGameCategory = GamesListConfig::$aGameCode;
+        $aGameCategory = GamesList::getCategoryArray();
         //获取游戏名
         $aGameName = GamesList::getNameArray();
+        //第三方返水
+        $aRebate = ThirdRebate::memberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         $aArray = [];
         $aArrayBunko = [];
         $dateTime = date('Y-m-d H:i:s');
@@ -92,7 +95,8 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                 'bet_bunko' => 0.00,
                 'handling_fee' => 0.00,
                 'envelope_money' => 0.00,
-                'bet_money' => 0.00
+                'bet_money' => 0.00,
+                'rebate_money' => 0.00,
             ];
         }
 
@@ -145,6 +149,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                         'bet_bunko' => round($sumBunko + $back_money,2),
                         'bet_money' => empty($iBet->betMoneySum)?0.00:$iBet->betMoneySum,
                         'bet_count' => empty($iBet->idCount)?0:$iBet->idCount,
+                        'rebate_money' => 0.00,
                         'date' => $iBet->date,
                         'dateTime' => $time,
                         'created_at' => $dateTime,
@@ -160,7 +165,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                     $aArray[$kArray]['bet_money'] += empty($iJqBet->bet_money)?0.00:$iJqBet->bet_money;
                     $aArrayBunko[] = [
                         'game_id' => $iJqBet->gameslist_id,
-                        'game_name' => (isset($aGameCategory[$iJqBet->gameCategory])?$aGameCategory[$iJqBet->gameCategory]:'默认分类').'_'.(isset($aGameName[$iJqBet->gameslist_id])?$aGameName[$iJqBet->gameslist_id]:'默认游戏'),
+                        'game_name' => (isset($aGameCategory[$iJqBet->gameslist_id])?$aGameCategory[$iJqBet->gameslist_id]:'默认分类').'_'.(isset($aGameName[$iJqBet->gameslist_id])?$aGameName[$iJqBet->gameslist_id]:'默认游戏'),
                         'user_id' => $iJqBet->user_id,
                         'user_account' => $iArray['user_account'],
                         'user_name' => $iArray['user_name'],
@@ -174,6 +179,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                         'bet_bunko' => empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko,
                         'bet_money' => empty($iJqBet->bet_money)?0.00:$iJqBet->bet_money,
                         'bet_count' => empty($iJqBet->bet_count)?0:$iJqBet->bet_count,
+                        'rebate_money' => 0.00,
                         'date' => $this->aDateTime,
                         'dateTime' => $time,
                         'created_at' => $dateTime,
@@ -181,6 +187,46 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                     ];
                 }
             }
+
+            foreach ($aRebate as $iRebate){
+                if($iArray['user_id'] == $iRebate->user_id){
+                    $aArray[$kArray]['rebate_money'] += empty($iRebate->money)?0:$iRebate->money;
+                }
+            }
+        }
+
+        foreach ($aArrayBunko as $kArrayBunko => $iArrayBunko){
+            foreach ($aRebate as $kRebate => $iRebate){
+                if($iArrayBunko['game_id'] == $iRebate->game_id && $iArrayBunko['agent_id'] == $iRebate->agent_id){
+                    $aArrayBunko[$kArrayBunko]['rebate_money'] = $iRebate->money;
+                    unset($aRebate[$kRebate]);
+                }
+            }
+        }
+
+        foreach ($aRebate as $iRebate){
+            $aArrayBunko[] = [
+                'game_id' => $iRebate->game_id,
+                'game_name' => $iRebate->game_name,
+                'user_id' => $iRebate->user_id,
+                'user_account' => $iRebate->user_account,
+                'user_name' => $iRebate->user_name,
+                'agent_id' => $iRebate->agent_id,
+                'gameCategory' => $this->getGameCategoryCode($iRebate->pid),
+                'agent_account' => $iRebate->agent_account,
+                'agent_name' => $iRebate->agent_name,
+                'general_account' => $iRebate->general_account,
+                'general_name' => $iRebate->general_name,
+                'general_id' => $iRebate->general_id,
+                'bet_bunko' => 0.00,
+                'bet_money' => 0.00,
+                'bet_count' => 0,
+                'rebate_money' => $iRebate->money,
+                'date' => $this->aDateTime,
+                'dateTime' => $time,
+                'created_at' => $dateTime,
+                'updated_at' => $dateTime,
+            ];
         }
 
         ZhReportMember::where('date','=',$this->aDateTime)->delete();
@@ -190,7 +236,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
             ZhReportMemberBunko::insert($iBunko);
         }
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0)
+            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['rebate_money'] > 0)
                 ZhReportMemberStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('zhReportMemberStatementInsert'));
         }
 
@@ -199,5 +245,34 @@ class ZhReportMemberStatementDaily implements ShouldQueue
     //队列真实名
     public function setQueueRealName($queue){
         return config('prefix')['queue'] . $queue;
+    }
+
+    public function getGameCategoryCode($pid){
+        switch ($pid){
+            case 0:
+                $code = 'CP';
+                break;
+            case 1:
+                $code = 'PVP';
+                break;
+            case 2:
+                $code = 'LIVE';
+                break;
+            case 3:
+                $code = 'RNG';
+                break;
+                break;
+            case 4:
+                $code = 'FISH';
+                break;
+            case 5:
+                $code = 'SPORTS';
+                break;
+            default:
+                $code = 'YOPLAY';
+                break;
+
+        }
+        return $code;
     }
 }

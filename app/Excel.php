@@ -564,12 +564,15 @@ class Excel
                 case 'game_sfsc':
                 case 'game_xylsc':
                 case 'game_xylft':
+                case 'game_kssc':
+                case 'game_ksft':
                     return $this->opennum_pk10();
                     break;
                 case 'game_msssc':
                 case 'game_qqffc':
                 case 'game_sfssc':
                 case 'game_xylssc':
+                case 'game_ksssc':
                     return $this->opennum_ssc($num);
                     break;
                 case 'game_msqxc':
