@@ -35,6 +35,7 @@ class NNRepository extends BaseRepository
                 "token" => $this->getToken(),
             ],
         ];
+
         $param['sign'] = $this->sign($param);
         $res = $this->request('/api/game/getRecord', $param);
         $code = $res['code'] == 0 ? 1 : $res['code'];
@@ -42,13 +43,15 @@ class NNRepository extends BaseRepository
             $this->createData($res['data']['list']);
             $code = 0;
         }
-        $this->insertError($code, $this->code($res['code']) ?? $res['msg']);
+//        $this->insertError($code, $this->code($res['code']) ?? $res['msg']);
         return $this->show($code, $this->code($res['code']) ?? $res['msg']);
     }
 
     public function getBet()
     {
-        return $this->hook('getBet1');
+        $res = $this->hook('getBet1');
+        $this->insertError($res['code'] ?? 123, $res['msg'] ?? 'error');
+        return $res;
     }
 
     public function createData($aData)
@@ -156,16 +159,21 @@ class NNRepository extends BaseRepository
 
     private function decrypt($str)
     {
-        $encode = mb_detect_encoding($str, array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));
-        if($encode !== 'UTF-8'){
-            $str = mb_convert_encoding($str, 'UTF-8', $encode);
+        try{
+            $encode = mb_detect_encoding($str, array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));
+            if($encode !== 'UTF-8'){
+                $str = mb_convert_encoding($str, 'UTF-8', $encode);
+            }
+            $key = $this->getConfig('nnkey');
+            $key1 = substr($key, 0, 16);
+            $iv = substr($key, -16);
+            $sign = openssl_decrypt(base64_decode($str), 'AES-128-CBC', $key1, OPENSSL_RAW_DATA | OPENSSL_NO_PADDING, $iv);
+            $json = $this->pkcs5_unpad($sign);
+            return json_decode($json, 1);
+        }catch (\Throwable $e){
+            $this->WriteLog('解密失败：'.$e->getMessage());
+            throw new \Exception('解密失败', 200);
         }
-        $key = $this->getConfig('nnkey');
-        $key1 = substr($key, 0, 16);
-        $iv = substr($key, -16);
-        $sign = openssl_decrypt(base64_decode($str), 'AES-128-CBC', $key1, OPENSSL_RAW_DATA | OPENSSL_NO_PADDING, $iv);
-        $json = $this->pkcs5_unpad($sign);
-        return json_decode($json, 1);
     }
     public function pkcs5_unpad($text)
     {
@@ -177,6 +185,8 @@ class NNRepository extends BaseRepository
 
     private function sign($arr = [])
     {
+        $arr = $arr['data'];
+        asort($arr);
         $str = $this->pkcs5_pad(json_encode($arr), 16);
         $key = $this->getConfig('key');
         $key1 = substr($key, 0, 16);

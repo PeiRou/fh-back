@@ -573,6 +573,8 @@ class BaseRepository
             return true;
         if($this->gameInfo->g_id == 19 && $code == 23)
             return true;
+        if($this->gameInfo->g_id == 10 && $code == 1000497)
+            return true;
         return $is;
     }
 
