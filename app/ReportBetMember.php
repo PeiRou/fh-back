@@ -148,4 +148,17 @@ class ReportBetMember extends Model
             'aArray' => $aArray
         ];
     }
+
+    public static function betMemberReportData($startTime = '',$endTime = ''){
+        $aSql = "SELECT `re`.*,`game`.game_name (SELECT `game_id`,`user_account`,`user_name`,`user_id`,`agent_account`,`agent_name`,`agent_id`,
+                    `general_account`,`general_name`,`general_id`,SUM(`bet_money`) AS `bet_money`
+                    FROM `report_bet_member` WHERE `date` >= :startTime AND `date` <= :endTime 
+                    AND `user_test_flag` = 0 GROUP BY `user_id`,`game_id`) AS `re`
+                    JOIN `game` ON `game`.game_id = `re`.game_id";
+        $aArray = [
+            'startTime' => $startTime,
+            'endTime' => $endTime,
+        ];
+        return DB::select($aSql,$aArray);
+    }
 }
