@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Redis;
 
 class NNRepository extends BaseRepository
 {
+
+    public $is_proxy_pass = true; //这个游戏是否使用代理那台服务器
+
     public function __construct($config){
         parent::__construct($config,'Utils');
     }
