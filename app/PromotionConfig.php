@@ -42,4 +42,18 @@ class PromotionConfig extends Model
         return $aArray;
     }
 
+    //获取推广层级
+    public static function getLevelPromotion(){
+        $aData = self::select('level','rebate_limit','list_gid','reach_money','proportion')->get()->toArray();
+        $aArray =[];
+        foreach ($aData as $iData){
+            $aArray[$iData['level']][$iData['list_gid']] = [
+                'rebate_limit' => $iData['rebate_limit'],
+                'reach_money' => $iData['reach_money'],
+                'proportion' => $iData['proportion'],
+            ];
+        }
+        return $aArray;
+    }
+
 }

@@ -12,7 +12,7 @@ class PromotionMemberRebate extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'PromotionMemberRebate:RebateSettlement {startTime?} {endTime?}';
 
     /**
      * The console command description.

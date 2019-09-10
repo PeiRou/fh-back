@@ -47,4 +47,19 @@ class ZhReportMemberBunko extends Model
             ->join('level','level.value','=','users.rechLevel')
             ->get();
     }
+
+    public static function betMemberPromotionData($startTime = '',$endTime = ''){
+        $aSql = "SELECT `re`.*,`users`.user_odds_level,`level`.users_promoter_shangji FROM
+                    (SELECT `game_id`,`game_name`,`user_id`,`user_account`,`user_name`,SUM(`bet_money`) AS `bet_money`
+                        FROM `zh_report_member_bunko` WHERE `date` >= :startTime AND `date` <= :endTime 
+                        GROUP BY `user_id`,`game_id`
+                    ) AS `re`
+                    JOIN `users` ON `users`.id = `re`.user_id
+                    JOIN `level` ON `level`.value = `users`.rechLevel";
+        $aArray = [
+            'startTime' => $startTime,
+            'endTime' => $endTime,
+        ];
+        return DB::select($aSql,$aArray);
+    }
 }
