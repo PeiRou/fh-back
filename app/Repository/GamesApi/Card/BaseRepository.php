@@ -65,10 +65,10 @@ class BaseRepository
             $num = count($data);
         }else{
             $a = '更新';
-            $res = \App\GamesApi::batchUpdate($data, $whereField,$table);
+            $res = \App\GamesApi::batchUpdate($data, $whereField,$table, $this->gameInfo->g_id);
             $num = count($data);
             if(!$res || $res < $num){
-                $res = \App\GamesApi::batchUpdate($data, $whereField,'jq_bet_his');
+                $res = \App\GamesApi::batchUpdate($data, $whereField,'jq_bet_his', $this->gameInfo->g_id);
             }
         }
         if($res){
@@ -532,7 +532,7 @@ class BaseRepository
         }
         $g_info = $this->gameInfo;
         echo $g_info->name.'更新失败：'.$codeMsg.'。错误码：'.$code."\n";
-        if(($g_info->g_id == 15 || $g_info->g_id == 16)){
+        if(($g_info->g_id == 15 || $g_info->g_id == 16 || $g_info->g_id == 21)){
             if($code == 16){
                 return null;
             }
