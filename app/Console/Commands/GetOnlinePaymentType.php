@@ -49,6 +49,7 @@ class GetOnlinePaymentType extends Command
             $this->info('begin');
             foreach ($result['data'] as $kData => $iData){
                 $aArray = [
+                    'id' => $iData['id'],
                     'rechName' => $iData['pay_name'],
                     'payName' => $iData['pay_uname'],
                     'code' => $iData['paytype'],
