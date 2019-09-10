@@ -204,7 +204,7 @@ class FYDJRepository extends BaseRepository
                     'game_type' => $v['Category'],
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
-                    'flag' => strtoupper($v['Status']) == 'WIN' ? 1 : 2,
+                    'flag' => in_array(strtoupper($v['Status']), ['WIN', 'NONE']) ? 2 : 1,
                     'productType' => null,
                     'game_id' => 38,
                 ];
