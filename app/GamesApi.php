@@ -22,7 +22,7 @@ class GamesApi extends Model
     ];
 
     //更新一个表
-    public static function batchUpdate(array $update, $whereField = 'id', $table)
+    public static function batchUpdate(array $update, $whereField = 'id', $table, $g_id = null)
     {
         try {
             if (empty($update)) {
@@ -52,6 +52,9 @@ class GamesApi extends Model
             $bindings  = array_merge($bindings, $whereIn);
             $whereIn   = rtrim(str_repeat('?,', count($whereIn)), ',');
             $updateSql = rtrim($updateSql, ", ") . " WHERE `" . $referenceColumn . "` IN (" . $whereIn . ")";
+            if($g_id){
+                $updateSql .= ' AND `g_id` = '.$g_id;
+            }
             // 传入预处理sql语句和对应绑定数据
             return DB::update($updateSql, $bindings);
         } catch (\Exception $e) {
