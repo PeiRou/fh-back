@@ -186,8 +186,9 @@ class BaseRepository
     function curl_post_content($url, $data = [], $user_agent=null, $headers = null, $conn_timeout=7, $timeout=10)
     {
         if(isset($this->is_proxy_pass) && $this->is_proxy_pass && env('PROXY_PASS_ADDRESS', false)){
-            $data['proxy_pass_url'] = $url;
-            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php');
+//            $data['proxy_pass_url'] = $url;
+//            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php');
+            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php').'?'.http_build_query(['proxy_pass_url' => $url]);
         }
 
         !$headers && $headers = array(
@@ -566,11 +567,13 @@ class BaseRepository
         $is = false;
 //        if($this->gameInfo->g_id == 22)
 //            return false;
-//        if($this->gameInfo->g_id == 22 && $code == 44003)
-//            return true;
+        if($this->gameInfo->g_id == 22 && $code == 44003)
+            return true;
         if($code == 500)
             return true;
         if($this->gameInfo->g_id == 19 && $code == 23)
+            return true;
+        if($this->gameInfo->g_id == 10 && $code == 1000497)
             return true;
         return $is;
     }

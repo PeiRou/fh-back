@@ -14,6 +14,6 @@ class UsersSetrebate extends Model
         foreach ($aData as $iData){
             $aArray[$iData->setrebate_status][] = $iData->user_id;
         }
-        return $aArray;
+        return empty($aArray)?[0=>[],1=>[]]:$aArray;
     }
 }

