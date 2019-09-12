@@ -142,14 +142,15 @@ class FYDJRepository extends BaseRepository
 
     public function betList(){
         $resData = [];
-        $endDate = date("Y/m/d H:i:s");
-        /*-----------------确定时间开始------------------------*/
-        if(isset($this->param['toTime'])){
-            $endDate = date("Y/m/d H:i:s",$this->param['toTime']);
-        }
-        $startDate = date("Y/m/d 00:00:00",strtotime($endDate));
+//        $endDate = date("Y/m/d H:i:s");
+//        /*-----------------确定时间开始------------------------*/
+//        if(isset($this->param['toTime'])){
+//            $endDate = date("Y/m/d H:i:s",$this->param['toTime']);
+//        }
+        $this->param['endDate'] = $this->param['endDate'] ?? date("Y/m/d H:i:s", strtotime($this->OffsetTime(['time' => $this->param['toTime'] ?? time()])));
+        $this->param['startDate'] = date("Y/m/d 00:00:00",strtotime($this->param['endDate']));
         /*-----------------确定时间结束------------------------*/
-        $this->toGetBetList($startDate,$endDate,1,$resData);
+        $this->toGetBetList($this->param['startDate'],$this->param['endDate'],1,$resData);
         return $resData;
     }
 

@@ -408,7 +408,8 @@ class BaseRepository
 
     public function senterGetBet($param = [])
     {
-        $this->param['endTime'] = $this->param['endTime'] ?? $param['toTime'] ?? time();
+//        $this->param['endTime'] = $this->param['endTime'] ?? $param['toTime'] ?? time();
+        $this->param['endTime'] = $this->param['endTime'] ?? (strtotime($this->OffsetTime(['time' => $param['toTime'] ?? time()])));
         $this->param['endTime'] = $this->param['endTime'] - 1 * 60;
         $this->param['startTime'] = $this->param['endTime'] - 15 * 60;
         $platform_id = SystemSetting::getValueByRemark1('payment_platform_id');
@@ -519,6 +520,7 @@ class BaseRepository
             $this->addJob(app('obj')->jq_error_bet_id);
 
     }
+
     public function insertError($code, $codeMsg, $param = null)
     {
         if(($jq_error_bet_id = @app('obj')->jq_error_bet_id) <= 0 && $code == 0)
@@ -541,9 +543,9 @@ class BaseRepository
                 return null;
             }
         }elseif($g_info->g_id == 22 && $jq_error_bet_id <= 0){
-            if($code == 40014){
-                return null;
-            }
+//            if($code == 40014){
+//                return null;
+//            }
         }
         $model = DB::table('jq_error_bet');
             $jq_error_bet_id = $model->insertGetId([
@@ -773,4 +775,24 @@ class BaseRepository
         ][$key] ?? '';
     }
 
+    public function OffsetTime($param)
+    {
+        try{
+            $t = date('YmdHis', $param['time']);
+            $this->issue = DB::table('jq_game_issue')
+                ->where('issue', '<=', $t)
+                ->where('g_id', $this->gameInfo->g_id)
+                ->orderBy('issue', 'desc')->value('issue');
+            if($this->issue)
+                DB::table('jq_game_issue')
+                    ->where('issue', '=', $this->issue)
+                    ->where('g_id', $this->gameInfo->g_id)
+                    ->update([
+                        'status' => 1
+                    ]);
+            return $this->issue ? $this->issue : $t;
+        }catch (\Throwable $e){
+            return date('YmdHis', $param['time']);
+        }
+    }
 }

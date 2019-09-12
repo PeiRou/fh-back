@@ -258,6 +258,20 @@ class clear_data extends Command
                 $redis->setex('clear-jq-recharges',1,'on');
             }
         }
+        //清棋牌jq_game_issue数据
+        if(!$redis->exists('clear-jq-game-issue')){
+            $sql = "DELETE FROM `jq_game_issue` WHERE issue<='".date('Ymd000000', time() - (60 * 60 * 24 * 31))."' LIMIT 5000";
+            $res = DB::connection('mysql::write')->statement($sql);
+            echo 'table jq_game_issue :' . $res . PHP_EOL;
+            $res = DB::connection('mysql::write')->table('jq_game_issue')->select('id')->where('issue','<=',date('Ymd000000', time() - (60 * 60 * 24 * 31)))->first();
+            if(empty($res)){
+                $redis->setex('clear-jq-game-issue',$this->time,$this->stoptime);
+            }else{
+                $num++;
+                $redis->setex('clear-jq-game-issue',1,'on');
+            }
+        }
+
         if($num==0){
             $redis->setex('clearing',$this->time,$this->stoptime);
             echo 'finished'.PHP_EOL;
