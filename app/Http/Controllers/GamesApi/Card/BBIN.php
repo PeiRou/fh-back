@@ -15,7 +15,7 @@ class BBIN extends Base{
             $key = 'GameApiGetBet:'.$this->repo->gameInfo->g_id;
             if($redis->exists($key)){
                 echo '重复执行';
-//                return '';
+                return '';
             }
             $redis->setex($key, 20, 'on');
         }catch (\Throwable $e){
@@ -70,7 +70,7 @@ class BBIN extends Base{
     private function f($method)
     {
         if($this->kind == $this->repo->param['gamekind']){
-            sleep(15 + rand(0, 4));
+            sleep(1 + rand(0, 4));
         }
         $this->kind = $this->repo->param['gamekind'];
 
