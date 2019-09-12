@@ -28,7 +28,7 @@ class BBIN extends Base{
             $gamekind = isset($this->repo::gamekind[@$param['gamekind']]) ? [$param['gamekind'] => $this->repo::gamekind[@$param['gamekind']]] : $this->repo::gamekind;
 //            isset($param['toTime']) && $param['toTime'] = $param['toTime'] - (60 * 5 + 60 * 60 * 12);
 //            isset($param['toTime']) && $this->repo->param['endtime'] = date('H:i:s', ($param['toTime']));
-            $starttime = strtotime($this->repo->OffsetTime(['time' => $param['toTime'] ?? time()])) - (60 * 60 * 12) - (60 * 5);
+            $starttime = strtotime($this->repo->OffsetTime(['time' => $param['toTime'] ?? time()])) - (60 * 60 * 12) - (60 * 8);
             $starttime = $this->bt($starttime);
             $this->repo->param['starttime'] = $this->repo->param['starttime'] ?? date('H:i:s', $starttime);
             $this->repo->param['endtime'] = date('H:i:s', strtotime($this->repo->param['starttime']) + 299);
