@@ -3,7 +3,7 @@
 namespace App\Console\Commands\BUNKO;
 
 use App\Excel;
-use App\Events\RunSHflhc;
+use App\Events\RunShflhc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -37,7 +37,7 @@ class BUNKO_shflhc extends Command
                 'bunko' => 2
             ]);
             if($update)
-                event(new RunSHflhc($get->open_num,$get->issue,$this->gameId,$get->id, false)); //新--结算
+                event(new RunShflhc($get->open_num,$get->issue,$this->gameId,$get->id, false)); //新--结算
         }
     }
 }

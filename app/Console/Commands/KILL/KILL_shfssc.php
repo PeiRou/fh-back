@@ -3,7 +3,7 @@
 namespace App\Console\Commands\KILL;
 
 use App\Excel;
-use App\Events\RunSHfssc;
+use App\Events\RunShfssc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -41,7 +41,7 @@ class KILL_shfssc extends Command
                     'excel_num' => 2
                 ]);
                 if($update)
-                    event(new RunSHfssc($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
+                    event(new RunShfssc($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
             }
         }
     }

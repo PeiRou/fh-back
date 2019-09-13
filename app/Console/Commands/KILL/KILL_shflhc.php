@@ -3,7 +3,7 @@
 namespace App\Console\Commands\KILL;
 
 use App\Excel;
-use App\Events\RunSHflhc;
+use App\Events\RunShflhc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -41,7 +41,7 @@ class KILL_shflhc extends Command
                     'excel_num' => 2
                 ]);
                 if($update)
-                    event(new RunSHflhc($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
+                    event(new RunShflhc($opennum,$get->issue,$this->gameId,$get->id,true)); //新--结算
             }
         }
     }
