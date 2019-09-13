@@ -10,10 +10,10 @@ class UsersSetrebate extends Model
 
     public static function getSetrebateStatus(){
         $aData = self::select('setrebate_status','user_id')->get();
-        $aArray = [];
+        $aArray = [0=>[],1=>[]];
         foreach ($aData as $iData){
             $aArray[$iData->setrebate_status][] = $iData->user_id;
         }
-        return empty($aArray)?[0=>[],1=>[]]:$aArray;
+        return $aArray;
     }
 }
