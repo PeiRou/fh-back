@@ -59,7 +59,7 @@ class NNRepository extends BaseRepository
         $GameIDs = $this->distinct($aData, 'id');
         $insert = [];
         foreach ($aData as $v){
-            if(isset($v['is_try']) && $v['is_try'] == 1){
+            if(isset($v['isTry']) && $v['isTry'] == 1){
                 continue;
             }
             !isset($v['userName']) && $v['userName'] = '';
