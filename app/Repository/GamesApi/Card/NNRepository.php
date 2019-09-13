@@ -31,7 +31,7 @@ class NNRepository extends BaseRepository
         $param = [
             'data' => [
                 "agentId" => $this->getConfig('agentId'),
-                "index" => 'index',
+                "index" => $this->param['id'] ?? 0,
                 "token" => $this->getToken(),
             ],
         ];
