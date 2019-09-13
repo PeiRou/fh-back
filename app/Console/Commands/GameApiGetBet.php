@@ -24,6 +24,17 @@ class GameApiGetBet extends Command
         if($endTime = $this->argument('endTime'))
             $param['toTime'] = strtotime($endTime);
         $param['clear'] = $this->option('clear');
+        if(!isset($param['g_id'])){
+            try{
+                $http = new \GuzzleHttp\Client();
+                $url = 'http://0.0.0.0:9500?thread=JqGetBetTime:ListenJqIssue&GamesApiArtisan=1';
+                $http->request('GET',$url,['connect_timeout' => 0.1, 'timeout' => 0.1]);
+            }catch (\Throwable $e){
+                writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            }
+        }
+
+        //------------------------------------------------------
         (new PrivodeController())->getBet($param);
         // 有些游戏需要单独拿出来
         if(!isset($param['g_id'])){

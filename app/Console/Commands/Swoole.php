@@ -89,8 +89,9 @@ class Swoole extends Command
         });
         $this->ws->on('request', function ($serv, $response) {
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
-            if($data['thread'] == 'GameApiGetBet'){
-                unset($serv->get['thread']);
+            if($data['thread'] == 'GameApiGetBet' || isset($serv->get['GamesApiArtisan'])){
+                if(isset($serv->get['GamesApiArtisan'])) unset($serv->get['GamesApiArtisan']);
+                if(isset($serv->get['thread'])) unset($serv->get['thread']);
                 ob_start();
                 Artisan::call($data['thread'], $serv->get);
                 $response->end(ob_get_clean());
