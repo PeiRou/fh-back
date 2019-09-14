@@ -15,8 +15,11 @@ class MLYRepository extends BaseRepository
     public function createData($aData){
         $GameIDs = $this->distinct($aData, 'id');
         $arr = [];
+        $lineCode = $this->getConfig('lineCode');
         foreach ($aData as $v){
             if(in_array($v['id'], $GameIDs))
+                continue;
+            if($v['aid'] !== $lineCode)
                 continue;
             $array = [
                 'g_id' => $this->gameInfo->g_id,

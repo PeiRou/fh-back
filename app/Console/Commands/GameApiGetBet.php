@@ -39,7 +39,7 @@ class GameApiGetBet extends Command
                 $url = 'http://0.0.0.0:9500?thread=JqGetBetTime:ListenJqIssue&GamesApiArtisan=1';
                 $http->request('GET',$url,['connect_timeout' => 0.1, 'timeout' => 0.1]);
             }catch (\Throwable $e){
-                writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+//                writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
             }
         }
     }
