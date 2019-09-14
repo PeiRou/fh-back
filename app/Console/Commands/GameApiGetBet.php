@@ -24,15 +24,6 @@ class GameApiGetBet extends Command
         if($endTime = $this->argument('endTime'))
             $param['toTime'] = strtotime($endTime);
         $param['clear'] = $this->option('clear');
-        if(!isset($param['g_id'])){
-            try{
-                $http = new \GuzzleHttp\Client();
-                $url = 'http://0.0.0.0:9500?thread=JqGetBetTime:ListenJqIssue&GamesApiArtisan=1';
-                $http->request('GET',$url,['connect_timeout' => 0.1, 'timeout' => 0.1]);
-            }catch (\Throwable $e){
-                writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
-            }
-        }
 
         //------------------------------------------------------
         (new PrivodeController())->getBet($param);
@@ -40,6 +31,15 @@ class GameApiGetBet extends Command
         if(!isset($param['g_id'])){
             foreach (GamesApi::bet_excludes as $v){
                 (new PrivodeController())->getBet(array_merge($param, ['g_id' => $v]));
+            }
+
+            try{
+                sleep(5);
+                $http = new \GuzzleHttp\Client();
+                $url = 'http://0.0.0.0:9500?thread=JqGetBetTime:ListenJqIssue&GamesApiArtisan=1';
+                $http->request('GET',$url,['connect_timeout' => 0.1, 'timeout' => 0.1]);
+            }catch (\Throwable $e){
+                writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
             }
         }
     }

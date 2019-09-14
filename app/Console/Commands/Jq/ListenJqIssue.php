@@ -20,7 +20,7 @@ class ListenJqIssue extends Command
         $endIssue = date('YmdHis', time() - 60 * 60); # 1小时之前的
 
         $sql = "SELECT issue, g_id FROM `jq_game_issue` 
-                                WHERE STATUS = 0 
+                                WHERE `status` = 0 
                                 AND `issue` < {$endIssue} 
                                 AND  `issue` > {$startIssue} 
                                 AND `g_id` NOT IN(SELECT `g_id` from `games_api` WHERE `open` <> 1) 
