@@ -553,7 +553,7 @@ class BaseRepository
                 'g_name' => $this->gameInfo->name,
                 'code' => $code,
                 'codeMsg' => $codeMsg,
-                'param' => json_encode($param ?? $this->param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'param' => json_encode($this->param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
