@@ -94,6 +94,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                         'game_id' => $iArray['game_id'],
                         'game_name' => $iArray['game_name'],
                         'status' => $iArray['status'],
+                        'receive_status' => $iArray['receive_status'],
                         'money' => $iArray['money'],
                         'game_money' => $iArray['game_money'],
                         'promotion' => $iArray['promotion'],
@@ -108,7 +109,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
         //统计资金明细
         $aCapital = [];
         foreach ($aData as $kData => $iData){
-            if($iData['status'] === 3 && array_key_exists($iData['user_id'],$aCapital)){
+            if($iData['status'] === 3 && $iData['receive_status'] === 1 && array_key_exists($iData['user_id'],$aCapital)){
                 $aCapital[$iData['user_id']]['money'] += $iData['money'];
                 $aCapital[$iData['user_id']]['balance'] += $iData['money'];
             }else{
@@ -171,6 +172,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                             'game_id' => $iData['game_id'],
                             'game_name' => $iData['game_name'],
                             'status' => $iData['status'],
+                            'receive_status' => $iData['receive_status'],
                             'money' => round($iData['money'] - $iRecode->money,2),
                             'game_money' => $iData['game_money'],
                             'promotion' => $iData['promotion'],
@@ -203,6 +205,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                     $iPromotion = $this->getPromotion($i,$iBet->game_id,$aPromotion);
                     $iMoney = $this->getMoney($iPromotion, $iBet->bet_money);
                     if($iPromotion > 0 && $iMoney > 0) {
+                        $iStatus = $this->isStatus($iBet->users_promoter_shangji, $iBet->user_id, $aPromotionUserS, $promotionUserId[$iCount - $i], $aPromotionUser);
                         $aArray[] = [
                             'promotion_user_id' => $iBet->user_id,
                             'promotion_user_account' => $iBet->user_account,
@@ -210,7 +213,8 @@ class PromotionMemberRebateDaily implements ShouldQueue
                             'user_id' => $promotionUserId[$iCount - $i],
                             'game_id' => $iBet->game_id,
                             'game_name' => $iBet->game_name,
-                            'status' => $this->isStatus($iBet->users_promoter_shangji, $iBet->user_id, $aPromotionUserS, $promotionUserId[$iCount - $i], $aPromotionUser, $aReceiveUser),
+                            'status' => $iStatus,
+                            'receive_status' => $this->isReceiveStatus($iStatus,$promotionUserId[$iCount - $i],$aReceiveUser),
                             'money' => $iMoney,
                             'game_money' => $iBet->bet_money,
                             'promotion' => $iPromotion['proportion'] / 100,
@@ -237,10 +241,10 @@ class PromotionMemberRebateDaily implements ShouldQueue
         return 0;
     }
 
-    private function isStatus($code,$userIdS,$aPromotionUserS,$userId,$aPromotionUser,$aReceiveUser){
+    private function isStatus($code,$userIdS,$aPromotionUserS,$userId,$aPromotionUser){
         switch ($code){
             case 1:
-                $status = 6;
+                $status = 3;
                 break;
             case 2:
                 $status = 4;
@@ -252,27 +256,35 @@ class PromotionMemberRebateDaily implements ShouldQueue
 
         $iStatusS = 0;
         if(in_array($userIdS,$aPromotionUserS[1])){
-            $iStatusS = 6;
+            $iStatusS = 3;
         }elseif (in_array($userIdS,$aPromotionUserS[0])){
             $iStatusS = 4;
         }
 
         $iStatus = 0;
         if(in_array($userId,$aPromotionUser[1])){
-            $iStatus = 6;
+            $iStatus = 3;
         }elseif (in_array($userId,$aPromotionUser[0])){
             $iStatus = 4;
         }
 
         if($iStatusS === 4 || $iStatus === 4){
             $status = 4;
-        }elseif($iStatus === 6 || $iStatusS === 6){
-            $status = 6;
-        }
-
-        if($status === 6 && in_array($userId,$aReceiveUser)){
+        }elseif($iStatus === 3 || $iStatusS === 3){
             $status = 3;
         }
+
+        return $status;
+    }
+
+    private function isReceiveStatus($iStatus,$userId,$aReceiveUser){
+        $status = 0;
+        if($iStatus === 3){
+            $status = 2;
+            if(in_array($userId,$aReceiveUser))    $status = 1;
+        }
+
+        if($iStatus === 4)    $status = 4;
 
         return $status;
     }
