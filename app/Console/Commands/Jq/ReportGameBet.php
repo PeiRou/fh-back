@@ -36,7 +36,11 @@ class ReportGameBet extends Command
             \App\Jobs\Jq\ReportGameBet::dispatch($iDate)->onQueue($this->setQueueRealName('jqReportBet'));
         }
         # 报表做完生成一下jq_game_issue表
-        Artisan::call('JqGetBetTime:build');
+        try{
+            Artisan::call('JqGetBetTime:build');
+        }catch (\Throwable $e){
+            writeLog('ReportGameBet', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+        }
         $this->info('ok');
     }
 
