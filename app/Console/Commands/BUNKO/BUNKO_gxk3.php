@@ -23,9 +23,6 @@ class BUNKO_gxk3 extends Command
     {
         $table = 'game_gxk3';
         $excel = new Excel();
-//        $get = $excel->stopBunko($this->gameId,60);
-//        if($get)
-//            return 'ing';
         $get = $excel->getNeedBunkoIssue($table);
         if($get){
             $redis = Redis::connection();
@@ -36,7 +33,6 @@ class BUNKO_gxk3 extends Command
                 return 'ing';
             }
             $redis->setex($key,60,'ing');
-//        if ($get) {
             $update = DB::table($table)->where('id', $get->id)->update([
                 'bunko' => 2
             ]);

@@ -23,9 +23,6 @@ class BUNKO_sflhc extends Command
     {
         $table = 'game_sflhc';
         $excel = new Excel();
-//        $get = $excel->stopBunko($this->gameId,60);
-//        if($get)
-//            return 'ing';
         $get = $excel->getNeedBunkoIssue($table);
         if($get){
             $redis = Redis::connection();
@@ -36,7 +33,6 @@ class BUNKO_sflhc extends Command
                 return 'ing';
             }
             $redis->setex($key,60,'ing');
-//        if ($get) {
             $update = DB::table($table)->where('id', $get->id)->update([
                 'bunko' => 2
             ]);

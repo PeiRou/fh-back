@@ -23,9 +23,6 @@ class BUNKO_ahk3 extends Command
     {
         $table = 'game_ahk3';
         $excel = new Excel();
-//        $get = $excel->stopBunko($this->gameId,60);
-//        if($get)
-//            return 'ing';
         $get = $excel->getNeedBunkoIssue($table);
         if($get){
             $redis = Redis::connection();

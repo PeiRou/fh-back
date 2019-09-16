@@ -23,9 +23,6 @@ class BUNKO_msnn extends Command
     {
         $table = 'game_mssc';
         $excel = new Excel();
-//        $get = $excel->stopBunko($this->gameId,60);
-//        if($get)
-//            return 'ing';
         $get = $excel->getNeedNNBunkoIssue($table);
         if($get){
             $redis = Redis::connection();
@@ -36,7 +33,6 @@ class BUNKO_msnn extends Command
                 return 'ing';
             }
             $redis->setex($key,60,'ing');
-//        if ($get) {
             $update = DB::table($table)->where('id', $get->id)->update([
                 'nn_bunko' => 2
             ]);
