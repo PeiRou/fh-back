@@ -15,14 +15,20 @@ class MLYRepository extends BaseRepository
     public function createData($aData){
         $GameIDs = $this->distinct($aData, 'id');
         $arr = [];
+        $lineCode = $this->getConfig('lineCode');
         foreach ($aData as $v){
             if(in_array($v['id'], $GameIDs))
                 continue;
+            if($v['mid'] !== $lineCode)
+                continue;
+//            if(!preg_match("/^".$this->getVal('lineCode')."/", $v['muid']))
+//                continue;
+            $username = str_replace($this->getConfig('lineCode'),'', $v['muid']);
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['id'],
                 'sessionId' => '',
-                'username' => $v['muid'],
+                'username' => $username,
                 'AllBet' => $v['betcoin'],
                 'bunko' => $v['wlcoin'],
                 'bet_money' => $v['codeamount'],

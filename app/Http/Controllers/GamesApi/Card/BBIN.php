@@ -14,8 +14,7 @@ class BBIN extends Base{
             $redis->select(5);
             $key = 'GameApiGetBet:'.$this->repo->gameInfo->g_id;
             if($redis->exists($key)){
-                echo '重复执行';
-                return '';
+                sleep(5);
             }
             $redis->setex($key, 20, 'on');
         }catch (\Throwable $e){
@@ -26,22 +25,34 @@ class BBIN extends Base{
             $this->sgssdfjk();
         }else {
             $gamekind = isset($this->repo::gamekind[@$param['gamekind']]) ? [$param['gamekind'] => $this->repo::gamekind[@$param['gamekind']]] : $this->repo::gamekind;
-            isset($param['toTime']) && $param['toTime'] = $param['toTime'] - (60 * 5 + 60 * 60 * 12);
+//            isset($param['toTime']) && $param['toTime'] = $param['toTime'] - (60 * 5 + 60 * 60 * 12);
+//            isset($param['toTime']) && $this->repo->param['endtime'] = date('H:i:s', ($param['toTime']));
+            $starttime = strtotime($this->repo->OffsetTime(['time' => $param['toTime'] ?? time()])) - (60 * 60 * 12) - (60 * 8);
+            $starttime = $this->bt($starttime);
+            $this->repo->param['starttime'] = $this->repo->param['starttime'] ?? date('H:i:s', $starttime);
+            $this->repo->param['endtime'] = date('H:i:s', strtotime($this->repo->param['starttime']) + 299);
+//            $this->repo->param['endtime'] = $this->repo->param['endtime'] ?? date('H:i:s', $param['toTime'] ?? ($this->repo->getTime() - 60 * 5));
+
+//            $this->repo->param['rounddate'] = $this->repo->param['rounddate'] ?? date('Y-m-d', ($param['toTime']) ?? ($this->repo->getTime() - 60 * 10));//防止前一天最后5分钟没拉
+            $this->repo->param['rounddate'] = $this->repo->param['rounddate'] ?? date('Y-m-d', $starttime);//防止前一天最后5分钟没拉
             $kind = null;
             foreach ($gamekind as $k => $v) {
                 foreach ($v['subgamekinds'] ?? [0] as $kk => $vv) {
                     $this->repo->param['page'] = 0;
-                    $this->repo->param['rounddate'] = $this->repo->param['rounddate'] ?? date('Y-m-d', ($param['toTime']) ?? ($this->repo->getTime() - 60 * 10));//防止前一天最后5分钟没拉
                     $this->repo->param['gamekind'] = $k;
                     $this->repo->param['subgamekind'] = $vv;
                     $this->repo->param['pagelimit'] = 500;
-                    isset($param['toTime']) && $this->repo->param['endtime'] = date('H:i:s', ($param['toTime']));
-                    $this->repo->param['endtime'] = $this->repo->param['endtime'] ?? date('H:i:s', $param['toTime'] ?? ($this->repo->getTime() - 60 * 5));
-                    $this->repo->param['starttime'] = date('H:i:s', strtotime($this->repo->param['endtime']) - 60 * 5);
                     $this->sgssdfjk();
                 }
             }
         }
+    }
+
+    public function bt($time)
+    {
+        $i = date('i', $time);
+        $d = date('YmdH', $time).sprintf("%'02d", (((int)($i / 5)) * 5)).'00';
+        return strtotime($d);
     }
     public function sgssdfjk()
     {
@@ -58,7 +69,7 @@ class BBIN extends Base{
     private function f($method)
     {
         if($this->kind == $this->repo->param['gamekind']){
-            sleep(15 + rand(0, 4));
+            sleep(1 + rand(0, 4));
         }
         $this->kind = $this->repo->param['gamekind'];
 

@@ -408,7 +408,8 @@ class BaseRepository
 
     public function senterGetBet($param = [])
     {
-        $this->param['endTime'] = $this->param['endTime'] ?? $param['toTime'] ?? time();
+//        $this->param['endTime'] = $this->param['endTime'] ?? $param['toTime'] ?? time();
+        $this->param['endTime'] = $this->param['endTime'] ?? (strtotime($this->OffsetTime(['time' => $param['toTime'] ?? time()])));
         $this->param['endTime'] = $this->param['endTime'] - 1 * 60;
         $this->param['startTime'] = $this->param['endTime'] - 15 * 60;
         $platform_id = SystemSetting::getValueByRemark1('payment_platform_id');
@@ -519,6 +520,7 @@ class BaseRepository
             $this->addJob(app('obj')->jq_error_bet_id);
 
     }
+
     public function insertError($code, $codeMsg, $param = null)
     {
         if(($jq_error_bet_id = @app('obj')->jq_error_bet_id) <= 0 && $code == 0)
@@ -533,7 +535,7 @@ class BaseRepository
         $g_info = $this->gameInfo;
         echo $g_info->name.'更新失败：'.$codeMsg.'。错误码：'.$code."\n";
         if(($g_info->g_id == 15 || $g_info->g_id == 16 || $g_info->g_id == 21)){
-            if($code == 16){
+            if(in_array($code, [16, 43])){
                 return null;
             }
         }elseif ($g_info->g_id == 21){
@@ -541,9 +543,9 @@ class BaseRepository
                 return null;
             }
         }elseif($g_info->g_id == 22 && $jq_error_bet_id <= 0){
-            if($code == 40014){
-                return null;
-            }
+//            if($code == 40014){
+//                return null;
+//            }
         }
         $model = DB::table('jq_error_bet');
             $jq_error_bet_id = $model->insertGetId([
@@ -551,7 +553,7 @@ class BaseRepository
                 'g_name' => $this->gameInfo->name,
                 'code' => $code,
                 'codeMsg' => $codeMsg,
-                'param' => json_encode($param ?? $this->param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'param' => json_encode($this->param, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
@@ -567,6 +569,8 @@ class BaseRepository
         $is = false;
 //        if($this->gameInfo->g_id == 22)
 //            return false;
+        if(in_array($this->gameInfo->g_id, [15, 16, 21]) && $code == 43)
+            return true;
         if($this->gameInfo->g_id == 22 && $code == 44003)
             return true;
         if($code == 500)
@@ -773,4 +777,24 @@ class BaseRepository
         ][$key] ?? '';
     }
 
+    public function OffsetTime($param)
+    {
+        try{
+            $t = date('YmdHis', $param['time']);
+            $this->issue = DB::table('jq_game_issue')
+                ->where('issue', '<=', $t)
+                ->where('g_id', $this->gameInfo->g_id)
+                ->orderBy('issue', 'desc')->value('issue');
+            if($this->issue)
+                DB::table('jq_game_issue')
+                    ->where('issue', '=', $this->issue)
+                    ->where('g_id', $this->gameInfo->g_id)
+                    ->update([
+                        'status' => 1
+                    ]);
+            return $this->issue ? $this->issue : $t;
+        }catch (\Throwable $e){
+            return date('YmdHis', $param['time']);
+        }
+    }
 }

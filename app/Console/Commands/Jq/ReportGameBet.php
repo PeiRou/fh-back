@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Jq;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
 class ReportGameBet extends Command
 {
@@ -33,6 +34,12 @@ class ReportGameBet extends Command
         $aDate = $this->getSpanDays($startTime,$endTime);
         foreach ($aDate as $kDate => $iDate){
             \App\Jobs\Jq\ReportGameBet::dispatch($iDate)->onQueue($this->setQueueRealName('jqReportBet'));
+        }
+        # 报表做完生成一下jq_game_issue表
+        try{
+            Artisan::call('JqGetBetTime:build');
+        }catch (\Throwable $e){
+            writeLog('ReportGameBet', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
         }
         $this->info('ok');
     }
