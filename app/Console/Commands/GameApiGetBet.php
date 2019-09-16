@@ -34,7 +34,7 @@ class GameApiGetBet extends Command
             }
 
             try{
-                sleep(5);
+                sleep(10);
                 $http = new \GuzzleHttp\Client();
                 $url = 'http://0.0.0.0:9500?thread=JqGetBetTime:ListenJqIssue&GamesApiArtisan=1';
                 $http->request('GET',$url,['connect_timeout' => 0.1, 'timeout' => 0.1]);
