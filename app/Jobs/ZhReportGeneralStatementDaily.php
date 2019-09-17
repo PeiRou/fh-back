@@ -177,7 +177,7 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
 
         foreach ($aArrayBunko as $kArrayBunko => $iArrayBunko){
             foreach ($aRebate as $kRebate => $iRebate){
-                if($iArrayBunko['game_id'] == $iRebate->game_id && $iArrayBunko['agent_id'] == $iRebate->agent_id){
+                if($iArrayBunko['game_id'] == $iRebate->game_id && $iArrayBunko['general_id'] == $iRebate->general_id){
                     $aArrayBunko[$kArrayBunko]['rebate_money'] = $iRebate->money;
                     unset($aRebate[$kRebate]);
                 }
