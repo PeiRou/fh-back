@@ -23,9 +23,6 @@ class KILL_msssc extends Command
     {
         $table = 'game_msssc';
         $excel = new Excel();
-//        $get = $excel->stopBunko($this->gameId,60,'Kill');
-//        if($get)
-//            return 'ing';
         $get = $excel->getNeedKillIssue($table);
         $exeBase = $excel->getKillBase($this->gameId);
         if(isset($get) && $get && !empty($exeBase)){
