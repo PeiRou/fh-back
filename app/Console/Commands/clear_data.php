@@ -189,6 +189,22 @@ class clear_data extends Command
             $num_else = $this->clrGameTables('game_twbgc', $clearDate62, $num_else);
             $num_else = $this->clrGameTables('game_twbg28', $clearDate62, $num_else);
             $num_else = $this->clrGameTables('game_hlsx', $clearDate62, $num_else);
+            //======//======//======//======//======//======//======//======
+            $num_else = $this->clrGameTables('game_yfsc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_yfssc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_yflhc', $clearDate62, $num_else);
+            //======//======//======//======//======//======//======//======
+            $num_else = $this->clrGameTables('game_efsc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_efssc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_eflhc', $clearDate62, $num_else);
+            //======//======//======//======//======//======//======//======
+            $num_else = $this->clrGameTables('game_wfsc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_wfssc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_wflhc', $clearDate62, $num_else);
+            //======//======//======//======//======//======//======//======
+            $num_else = $this->clrGameTables('game_shfsc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_shfssc', $clearDate62, $num_else);
+            $num_else = $this->clrGameTables('game_shflhc', $clearDate62, $num_else);
             //清-计画试算
             $num_else = $this->clrGameTables('plan_record', $clearDate2, $num_else,'updated_at');
             //清-推送消息
@@ -260,15 +276,19 @@ class clear_data extends Command
         }
         //清棋牌jq_game_issue数据
         if(!$redis->exists('clear-jq-game-issue')){
-            $sql = "DELETE FROM `jq_game_issue` WHERE issue<='".date('Ymd000000', time() - (60 * 60 * 24 * 31))."' LIMIT 5000";
-            $res = DB::connection('mysql::write')->statement($sql);
-            echo 'table jq_game_issue :' . $res . PHP_EOL;
-            $res = DB::connection('mysql::write')->table('jq_game_issue')->select('id')->where('issue','<=',date('Ymd000000', time() - (60 * 60 * 24 * 31)))->first();
-            if(empty($res)){
-                $redis->setex('clear-jq-game-issue',$this->time,$this->stoptime);
-            }else{
-                $num++;
-                $redis->setex('clear-jq-game-issue',1,'on');
+            try{
+                $sql = "DELETE FROM `jq_game_issue` WHERE issue<='".date('Ymd000000', time() - (60 * 60 * 24 * 31))."' LIMIT 5000";
+                $res = DB::connection('mysql::write')->statement($sql);
+                echo 'table jq_game_issue :' . $res . PHP_EOL;
+                $res = DB::connection('mysql::write')->table('jq_game_issue')->select('issue')->where('issue','<=',date('Ymd000000', time() - (60 * 60 * 24 * 31)))->first();
+                if(empty($res)){
+                    $redis->setex('clear-jq-game-issue',$this->time,$this->stoptime);
+                }else{
+                    $num++;
+                    $redis->setex('clear-jq-game-issue',1,'on');
+                }
+            }catch (\Throwable $e){
+                writeLog('error', $e->getMessage());
             }
         }
 

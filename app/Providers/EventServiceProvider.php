@@ -148,6 +148,42 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunHlsx' => [
             'App\Listeners\RunHlsxEventListener',
         ],
+        'App\Events\RunYfsc' => [
+            'App\Listeners\RunYfscEventListener',
+        ],
+        'App\Events\RunYfssc' => [
+            'App\Listeners\RunYfsscEventListener',
+        ],
+        'App\Events\RunYflhc' => [
+            'App\Listeners\RunYflhcEventListener',
+        ],
+        'App\Events\RunEfsc' => [
+            'App\Listeners\RunEfscEventListener',
+        ],
+        'App\Events\RunEfssc' => [
+            'App\Listeners\RunEfsscEventListener',
+        ],
+        'App\Events\RunEflhc' => [
+            'App\Listeners\RunEflhcEventListener',
+        ],
+        'App\Events\RunWfsc' => [
+            'App\Listeners\RunWfscEventListener',
+        ],
+        'App\Events\RunWfssc' => [
+            'App\Listeners\RunWfsscEventListener',
+        ],
+        'App\Events\RunWflhc' => [
+            'App\Listeners\RunWflhcEventListener',
+        ],
+        'App\Events\RunShfsc' => [
+            'App\Listeners\RunShfscEventListener',
+        ],
+        'App\Events\RunShfssc' => [
+            'App\Listeners\RunShfsscEventListener',
+        ],
+        'App\Events\RunShflhc' => [
+            'App\Listeners\RunShflhcEventListener',
+        ],
         'App\Events\BackPusherEvent' => [
             'App\Listeners\BackPusherEventListener',
         ],

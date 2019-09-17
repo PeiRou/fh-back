@@ -566,6 +566,10 @@ class Excel
                 case 'game_xylft':
                 case 'game_kssc':
                 case 'game_ksft':
+                case 'game_yfsc':
+                case 'game_efsc':
+                case 'game_wfsc':
+                case 'game_shfsc':
                     return $this->opennum_pk10();
                     break;
                 case 'game_msssc':
@@ -573,6 +577,10 @@ class Excel
                 case 'game_sfssc':
                 case 'game_xylssc':
                 case 'game_ksssc':
+                case 'game_yfssc':
+                case 'game_efssc':
+                case 'game_wfssc':
+                case 'game_shfssc':
                     return $this->opennum_ssc($num);
                     break;
                 case 'game_msqxc':
@@ -590,6 +598,10 @@ class Excel
                 case 'game_xylhc':
                 case 'game_sflhc':
                 case 'game_jslhc':
+                case 'game_yflhc':
+                case 'game_eflhc':
+                case 'game_wflhc':
+                case 'game_shflhc':
                     return $this->opennum_lhc($num);
                     break;
 
