@@ -556,6 +556,7 @@ class Excel
         if($is_user){
             switch ($game){
                 case 'game_msjsk3':
+                case 'game_hkk3':
                     return $this->opennum_k3();
                     break;
                 case 'game_paoma':

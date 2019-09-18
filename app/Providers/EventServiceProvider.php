@@ -184,6 +184,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\RunShflhc' => [
             'App\Listeners\RunShflhcEventListener',
         ],
+        'App\Events\RunHkk3' => [
+            'App\Listeners\RunHkk3EventListener',
+        ],
         'App\Events\BackPusherEvent' => [
             'App\Listeners\BackPusherEventListener',
         ],
