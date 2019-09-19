@@ -119,8 +119,8 @@ class New_Hkk3 extends Excel
     }
     public function all($openCode,$issue,$gameId,$id,$excel)
     {
-        $table = 'game_msjsk3';
-        $gameName = '秒速快3';
+        $table = 'game_hkk3';
+        $gameName = '香港快三';
         $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $exeIssue = $this->getNeedKillIssue($table,2);
@@ -130,7 +130,7 @@ class New_Hkk3 extends Excel
                     'excel_num' => 3
                 ]);
                 if($update == 1) {
-                    writeLog('New_Kill', 'msjsk3 killing...');
+                    writeLog('New_Kill', 'hkk3 killing...');
                     $this->excel($openCode, $exeBase, $issue, $gameId, $table);
                 }
             }
