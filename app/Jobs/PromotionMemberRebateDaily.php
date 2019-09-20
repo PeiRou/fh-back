@@ -78,6 +78,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
             foreach ($aUser as $iUser){
                 if($iUser->user_id == $iArray['user_id']){
                     $aData[] = [
+                        'order_id' => "PRO" . date('YmdHis') . rand(10000000, 99999999),
                         'promotion_user_id' => $iArray['promotion_user_id'],
                         'promotion_user_account' => $iArray['promotion_user_account'],
                         'promotion_user_name' => $iArray['promotion_user_name'],
@@ -112,6 +113,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
             if($iData['status'] === 3 && $iData['receive_status'] === 1 && array_key_exists($iData['user_id'],$aCapital)){
                 $aCapital[$iData['user_id']]['money'] += $iData['money'];
                 $aCapital[$iData['user_id']]['balance'] += $iData['money'];
+                $aCapital[$iData['user_id']]['content'] .= ','.$iData['game_name'];
             }else{
                 $aCapital[$iData['user_id']] = [
                     'to_user' => $iData['user_id'],
@@ -125,10 +127,10 @@ class PromotionMemberRebateDaily implements ShouldQueue
                     'play_type' => NULL,
                     'playcate_id' => 0,
                     'balance' => round($iData['balance'] + $iData['money'],2),
-                    'game_name' => $iData['game_name'],
+                    'game_name' => '',
                     'playcate_name' => '',
                     'operation_id' => NULL,
-                    'content' => '会员返佣',
+                    'content' => '会员返佣 : '.$iData['game_name'],
                     'created_at' => $dateTime,
                     'updated_at' => $dateTime,
                 ];
