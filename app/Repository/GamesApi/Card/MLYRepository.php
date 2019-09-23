@@ -23,7 +23,8 @@ class MLYRepository extends BaseRepository
                 continue;
 //            if(!preg_match("/^".$this->getVal('lineCode')."/", $v['muid']))
 //                continue;
-            $username = str_replace($this->getConfig('lineCode'),'', $v['muid']);
+//            $username = str_replace($this->getConfig('lineCode'),'', $v['muid']);
+            $username = preg_replace('/^'.$this->getConfig('lineCode').'/', '', $v['muid']);
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['id'],

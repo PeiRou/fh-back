@@ -71,7 +71,8 @@ class NNRepository extends BaseRepository
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['id'],
                 'sessionId' => $v['gameNo'] ?? '',
-                'username' => str_replace($this->getConfig('agent'),'', $v['userName']),
+                'username' => preg_replace('/^'.$this->getConfig('agent').'/', '', $v['userName']),
+//                'username' => str_replace($this->getConfig('agent'),'', $v['userName']),
                 'AllBet' => $v['initBet'],
                 'bunko' => $v['winLost'],
                 'bet_money' => $v['initBet'],
@@ -95,6 +96,7 @@ class NNRepository extends BaseRepository
             $array['agent_name'] = $this->getAgent($user->agent ?? 0)->name ?? '';
             $insert[] = $array;
         }
+
         return count($insert) && $this->insertDB($insert);
     }
 

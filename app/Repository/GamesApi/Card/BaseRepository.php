@@ -546,6 +546,8 @@ class BaseRepository
 //            if($code == 40014){
 //                return null;
 //            }
+        }elseif($g_info->g_id == 28 && $code == 8){
+            return null;
         }
         $model = DB::table('jq_error_bet');
             $jq_error_bet_id = $model->insertGetId([
@@ -590,7 +592,7 @@ class BaseRepository
         $redis->Rpush(self::SwJobsKey, $id);
     }
 
-    //东美时区转上海
+    //美东时区转上海
     public function getDate($date = null)
     {
         is_null($date) && $date = date('Y-m-d H:i:s');
@@ -797,4 +799,5 @@ class BaseRepository
             return date('YmdHis', $param['time']);
         }
     }
+
 }
