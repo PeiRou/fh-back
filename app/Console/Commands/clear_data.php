@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Config;
 
 class clear_data extends Command
 {
@@ -147,65 +148,10 @@ class clear_data extends Command
             $sql = "DELETE FROM bet_his WHERE testFlag = 1 LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table log_login :' . $res . PHP_EOL;
-            $num_else = $this->clrGameTables('game_ahk3', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_bjkl8', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_bjpk10', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_cqssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_cqxync', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_gd11x5', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_gdklsf', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_gsk3', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_gxk3', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_gzk3', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_hbk3', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_hebeik3', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_jsk3', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_ksft', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_kssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_ksssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_lhc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_msft', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_msjsk3', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_msqxc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_mssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_msssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_paoma', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_pcdd', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_pknn', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_qqffc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_twxyft', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_xjssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_xylhc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_sfsc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_sfssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_sflhc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_jslhc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_xyft', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_xykl8', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_xylft', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_xylsc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_xylssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_xy28', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_twbgc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_twbg28', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_hlsx', $clearDate62, $num_else);
-            //======//======//======//======//======//======//======//======
-            $num_else = $this->clrGameTables('game_yfsc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_yfssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_yflhc', $clearDate62, $num_else);
-            //======//======//======//======//======//======//======//======
-            $num_else = $this->clrGameTables('game_efsc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_efssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_eflhc', $clearDate62, $num_else);
-            //======//======//======//======//======//======//======//======
-            $num_else = $this->clrGameTables('game_wfsc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_wfssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_wflhc', $clearDate62, $num_else);
-            //======//======//======//======//======//======//======//======
-            $num_else = $this->clrGameTables('game_shfsc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_shfssc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_shflhc', $clearDate62, $num_else);
-            $num_else = $this->clrGameTables('game_hkk3', $clearDate62, $num_else);
+            $res = Config::get('games');
+            foreach ($res as $key => $val){
+                $num_else = $this->clrGameTables($val['table'], $clearDate62, $num_else);
+            }
             //清-计画试算
             $num_else = $this->clrGameTables('plan_record', $clearDate2, $num_else,'updated_at');
             //清-推送消息

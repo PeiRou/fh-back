@@ -14,7 +14,7 @@ use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
-class New_Msnn extends Excel
+class New_msnn extends Excel
 {
     protected $arrPlay_id = array(911893457,911893458,911893459,911893460,911893461,911924234,911924235,911924236,911924237,911924238);
     protected $arrPlayCate = array(
@@ -43,10 +43,8 @@ class New_Msnn extends Excel
         return array('win'=>$win,'lose'=>$lose);
     }
 
-    public function all($openCode,$nn,$issue,$gameId,$id)
+    public function all($openCode,$nn,$issue,$gameId,$id,$table,$gameName)
     {
-        $table = 'game_mssc';
-        $gameName = '秒速牛牛';
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = 0;

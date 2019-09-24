@@ -1582,4 +1582,77 @@ class Excel
             }
         }
     }
+
+    public function newObject($code){
+        $excel = null;
+        switch ($code){
+            case 'cqssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'hlsx':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'jndssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'xjssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'tjssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'jsk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'ahk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'gxk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'hbk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'hebeik3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'gsk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'gzk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'gd11x5':$excel = new \App\Http\Controllers\Bet\New_gd11x5();break;
+            case 'fc3d':$excel = new \App\Http\Controllers\Bet\New_fc3d();break;
+            case 'jndhl8':$excel = new \App\Http\Controllers\Bet\New_jndhl8();break;
+            case 'jnd28':$excel = new \App\Http\Controllers\Bet\New_jnd28();break;
+            case 'twbgc':$excel = new \App\Http\Controllers\Bet\New_kl8();break;
+            case 'twbg28':$excel = new \App\Http\Controllers\Bet\New_dd();break;
+            case 'bjpk10':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'xyft':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'gdklsf':$excel = new \App\Http\Controllers\Bet\New_gdklsf();break;
+            case 'cqxync':$excel = new \App\Http\Controllers\Bet\New_cqxync();break;
+            case 'bjkl8':$excel = new \App\Http\Controllers\Bet\New_kl8();break;
+            case 'pcdd':$excel = new \App\Http\Controllers\Bet\New_dd();break;
+            case 'lhc':$excel = new \App\Http\Controllers\Bet\New_hklhc();break;
+            case 'mssc':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'msssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'msft':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'xykl8':$excel = new \App\Http\Controllers\Bet\New_kl8();break;
+            case 'xy28':$excel = new \App\Http\Controllers\Bet\New_dd();break;
+            case 'xylhc':$excel = new \App\Http\Controllers\Bet\New_nlhc();break;
+            case 'msjsk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'pknn':$excel = new \App\Http\Controllers\Bet\New_pknn();break;
+            case 'msnn':$excel = new \App\Http\Controllers\Bet\New_msnn();break;
+            case 'paoma':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'txffc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'qqffc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'msqxc':$excel = new \App\Http\Controllers\Bet\New_msqxc();break;
+            case 'kssc':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'ksft':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'ksssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'twxyft':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'sfsc':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'sfssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'jslhc':$excel = new \App\Http\Controllers\Bet\New_nlhc();break;
+            case 'sflhc':$excel = new \App\Http\Controllers\Bet\New_nlhc();break;
+            case 'xylsc':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'xylft':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'xylssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'yfsc':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'yfssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'yflhc':$excel = new \App\Http\Controllers\Bet\New_nlhc();break;
+            case 'efsc':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'efssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'eflhc':$excel = new \App\Http\Controllers\Bet\New_nlhc();break;
+            case 'wfsc':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'wfssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'wflhc':$excel = new \App\Http\Controllers\Bet\New_nlhc();break;
+            case 'shfsc':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'shfssc':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'shflhc':$excel = new \App\Http\Controllers\Bet\New_nlhc();break;
+            case 'hkk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'yfk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'efk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'sfk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'wfk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+        }
+        return $excel;
+    }
 }

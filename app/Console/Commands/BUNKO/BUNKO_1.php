@@ -2,16 +2,16 @@
 
 namespace App\Console\Commands\BUNKO;
 
-use App\Http\Controllers\Bet\New_msnn;
+use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Config;
 
-class BUNKO_msnn extends Command
+class BUNKO_1 extends Command
 {
-    protected $signature = 'BUNKO_msnn';
-    protected $description = '秒速牛牛-定时结算';
+    protected $signature = 'BUNKO_1 {code?}';
+    protected $description = '单一定时结算';
 
     public function __construct()
     {
@@ -20,15 +20,17 @@ class BUNKO_msnn extends Command
 
     public function handle()
     {
-        $code = 'msnn';
+        $code = $this->argument('code');
         $games = Config::get('games.'.$code);
         if(empty($games))
             return false;
+        $excel = new Excel();
+        $excel = $excel->newObject($code);
         $table = $games['table'];
+        $type = $games['type'];
         $gameId = $games['gameId'];
         $gameName = $games['name'];
-        $excel = new New_msnn();
-        $get = $excel->getNeedNNBunkoIssue($table);
+        $get = $excel->getNeedBunkoIssue($table);
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
@@ -39,10 +41,11 @@ class BUNKO_msnn extends Command
             }
             $redis->setex($key,60,'ing');
             $update = DB::table($table)->where('id', $get->id)->update([
-                'nn_bunko' => 2
+                'bunko' => 2
             ]);
+            $opennum = $type=='lhc'?$get->open_num:$get->opennum;
             if($update)
-                $excel->all($get->opennum,$get->niuniu, $get->issue, $gameId, $get->id,$table,$gameName); //新--结算
+                $excel->all($opennum,$get->issue,$gameId,$get->id,false,$table,$gameName);
         }
     }
 }
