@@ -5,8 +5,8 @@ namespace App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Artisan;
+use SameClass\Model\UsersModel;
 
 class Excel
 {
@@ -187,6 +187,9 @@ class Excel
                     return 1;
                 }
             }
+            # 反水计算打码
+            UsersModel::userCheakDrawings($get->toArray(),'t14',  $users, 'user_id', 'back_money');
+
             $capData = [];
             $capUsers = [];
             $ii = 0;

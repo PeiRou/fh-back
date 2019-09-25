@@ -16,6 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use SameClass\Model\UsersModel;
 
 class ZhRebateThirdDaily implements ShouldQueue
 {
@@ -254,6 +255,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                 foreach ($aCapital as $iCapital){
                     Capital::insert($iCapital);
                     DB::update( Users::updateUserBatchStitching('users',$iCapital));
+                    UsersModel::userCheakDrawings($iCapital, 't31', null, 'to_user', 'money');
                 }
             }
             if(!empty($aArray)){
