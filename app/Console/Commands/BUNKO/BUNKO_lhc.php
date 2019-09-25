@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands\BUNKO;
 
-use App\Events\RunLHC;
-use App\Excel;
+use App\Http\Controllers\Bet\New_nlhc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -21,11 +20,14 @@ class BUNKO_lhc extends Command
 
     public function handle()
     {
-        $table = 'game_lhc';
-        $excel = new Excel();
-//        $get = $excel->stopBunko($this->gameId,80);
-//        if($get)
-//            return 'ing';
+        $code = 'lhc';
+        $games = Config::get('games.'.$code);
+        if(empty($games))
+            return false;
+        $table = $games['table'];
+        $gameId = $games['gameId'];
+        $gameName = $games['lottery'];
+        $excel = new New_nlhc();
         $get = $excel->getNeedBunkoIssueLhc($table);
         if($get){
             $redis = Redis::connection();
@@ -40,9 +42,7 @@ class BUNKO_lhc extends Command
                 'bunko' => 3
             ]);
             if($update)
-                event(new RunLHC($get->open_num,$get->issue,$this->gameId,$get->id)); //新--结算
-//            if($update)
-//                event(new RunLHC($get->open_num,$get->issue,$this->gameId,$get->id)); //新--结算
+                $excel->all($get->open_num,$get->issue,$gameId,$get->id,false,$code,$table,$gameName);
         }
     }
 }

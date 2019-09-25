@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Config;
 
 class clear_daily extends Command
 {
@@ -43,48 +44,10 @@ class clear_daily extends Command
         //---将 意见反馈的ID重置
         $this->resetId('feedback_message');
         //---将 游戏表 的ID重置
-        $this->resetId('game_ahk3');
-        $this->resetId('game_bjkl8');
-        $this->resetId('game_bjpk10');
-        $this->resetId('game_cqssc');
-        $this->resetId('game_cqxync');
-        $this->resetId('game_gd11x5');
-        $this->resetId('game_gdklsf');
-        $this->resetId('game_gsk3');
-        $this->resetId('game_gxk3');
-        $this->resetId('game_gzk3');
-        $this->resetId('game_hbk3');
-        $this->resetId('game_hebeik3');
-        $this->resetId('game_jsk3');
-        $this->resetId('game_ksft');
-        $this->resetId('game_kssc');
-        $this->resetId('game_ksssc');
-        $this->resetId('game_lhc');
-        $this->resetId('game_msft');
-        $this->resetId('game_msjsk3');
-        $this->resetId('game_msqxc');
-        $this->resetId('game_mssc');
-        $this->resetId('game_msssc');
-        $this->resetId('game_paoma');
-        $this->resetId('game_pcdd');
-        $this->resetId('game_pknn');
-        $this->resetId('game_qqffc');
-        $this->resetId('game_twxyft');
-        $this->resetId('game_xjssc');
-        $this->resetId('game_xylhc');
-        $this->resetId('game_sfsc');
-        $this->resetId('game_sfssc');
-        $this->resetId('game_sflhc');
-        $this->resetId('game_jslhc');
-        $this->resetId('game_xyft');
-        $this->resetId('game_xykl8');
-        $this->resetId('game_xylft');
-        $this->resetId('game_xylsc');
-        $this->resetId('game_xylssc');
-        $this->resetId('game_xy28');
-        $this->resetId('game_twbgc');
-        $this->resetId('game_twbg28');
-        $this->resetId('game_hlsx');
+        $res = Config::get('games');
+        foreach ($res as $key => $val){
+            $this->resetId($val['table']);
+        }
         ///---将 计画试算 的ID重置
         $this->resetId('plan_record');
         ///---将 推送消息 的ID重置

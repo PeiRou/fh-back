@@ -2,15 +2,14 @@
 
 namespace App\Console\Commands\BUNKO;
 
-use App\Excel;
-use App\Events\RunMsnn;
+use App\Http\Controllers\Bet\New_msnn;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Config;
 
 class BUNKO_msnn extends Command
 {
-    protected $gameId = 91;
     protected $signature = 'BUNKO_msnn';
     protected $description = '秒速牛牛-定时结算';
 
@@ -21,14 +20,20 @@ class BUNKO_msnn extends Command
 
     public function handle()
     {
-        $table = 'game_mssc';
-        $excel = new Excel();
+        $code = 'msnn';
+        $games = Config::get('games.'.$code);
+        if(empty($games))
+            return false;
+        $table = $games['table'];
+        $gameId = $games['gameId'];
+        $gameName = $games['lottery'];
+        $excel = new New_msnn();
         $get = $excel->getNeedNNBunkoIssue($table);
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
             //阻止進行中
-            $key = 'Bunko:'.$this->gameId.'ing:'.$get->issue;
+            $key = 'Bunko:'.$gameId.'ing:'.$get->issue;
             if($redis->exists($key)){
                 return 'ing';
             }
@@ -37,7 +42,7 @@ class BUNKO_msnn extends Command
                 'nn_bunko' => 2
             ]);
             if($update)
-                event(new RunMsnn($get->opennum,$get->niuniu, $get->issue, $this->gameId, $get->id)); //新--结算
+                $excel->all($get->opennum,$get->niuniu, $get->issue, $gameId, $get->id,$code,$table,$gameName); //新--结算
         }
     }
 }

@@ -89,6 +89,7 @@ class Swoole extends Command
         });
         $this->ws->on('request', function ($serv, $response) {
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
+            $data['code'] = '';
             if($data['thread'] == 'GameApiGetBet' || isset($serv->get['GamesApiArtisan'])){
                 if(isset($serv->get['GamesApiArtisan'])) unset($serv->get['GamesApiArtisan']);
                 if(isset($serv->get['thread'])) unset($serv->get['thread']);
@@ -96,6 +97,14 @@ class Swoole extends Command
                 Artisan::call($data['thread'], $serv->get);
                 $response->end(ob_get_clean());
                 return '';
+            }else if(substr($data['thread'],0,7) == 'BUNKO_1'){
+                $tmp = explode('_',$data['thread']);
+                $data['code'] = $tmp[2];
+                $data['thread'] = 'BUNKO_1';
+            }else if(substr($data['thread'],0,6) == 'KILL_1'){
+                $tmp = explode('_',$data['thread']);
+                $data['code'] = $tmp[2];
+                $data['thread'] = 'KILL_1';
             }
             $this->timer = $this->serv->tick(1000, function($id) use ($data){
                 $redis = Redis::connection();
@@ -122,21 +131,20 @@ class Swoole extends Command
         try{
             if(env('IS_CLOUD',0)==0){       //如果非云主机
                 DB::disconnect();
-                Artisan::call($data['thread']);
+                $this->exeComds($data);
             }else{
                 $redis->select(0);
                 $key = 'Artisan:'.$data['thread'];
                 if(!$redis->exists($key)){
                     $redis->setex($key, 60,'on');
                     DB::disconnect();
-                    Artisan::call($data['thread']);
-//                $redis->setex($key,1,'on');
+                    $this->exeComds($data);
                     $redis->del($key);
                 }
             }
         }catch (\exception $exception){
             writeLog('error',$exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-            writeLog('error','this commands error :'.$data['thread']);
+            writeLog('error',$data);
         }
         if($this->num[$id]>=59)
             $this->serv->clearTimer($id);
@@ -144,5 +152,11 @@ class Swoole extends Command
     private function setId($id){
         if(!isset($this->num[$id]))
             $this->num[$id] = 0;
+    }
+    private function exeComds($data){
+        if(empty($data['code']))
+            Artisan::call($data['thread']);
+        else
+            Artisan::call($data['thread'],['code'=>$data['code']]);
     }
 }
