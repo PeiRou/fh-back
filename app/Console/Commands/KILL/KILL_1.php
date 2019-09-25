@@ -44,7 +44,7 @@ class KILL_1 extends Command
             //开奖号码
             $opennum = $excel->opennum($code,$type);
             if(isset($get->excel_num) && $get->excel_num == 0){
-                $update = DB::table($table)->where('id',$get->id)->update([
+                $update = DB::table($table)->where('id',$get->id)->where('is_open',0)->where('bunko',0)->where('opentime','>=',date('Y-m-d H:i:s'))->update([
                     'excel_num' => 2
                 ]);
                 if($update)
