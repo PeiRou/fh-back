@@ -43,7 +43,7 @@ class New_pknn extends Excel
         return array('win'=>$win,'lose'=>$lose);
     }
 
-    public function all($openCode,$nn,$issue,$gameId,$id,$table,$gameName)
+    public function all($openCode,$nn,$issue,$gameId,$id,$code,$table,$gameName)
     {
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){

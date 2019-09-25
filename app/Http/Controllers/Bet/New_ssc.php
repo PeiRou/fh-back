@@ -40,7 +40,7 @@ class New_ssc extends Excel
         $SSC->HOUSAN($gameId,$win);
         return $win;
     }
-    public function all($openCode,$issue,$gameId,$id,$excel,$table,$gameName)
+    public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
     {
         $game = Config::get('game.'.$table);
         $this->arrPlay_id = $game['arrPlay_id'];
@@ -56,7 +56,7 @@ class New_ssc extends Excel
                 ]);
                 if($update == 1) {
                     writeLog('New_Kill', 'sfssc killing...');
-                    $this->excel($openCode, $exeBase, $issue, $gameId, $table);
+                    $this->excel($openCode, $exeBase, $issue, $gameId, $code, $table);
                 }
             }
             if(!$excel){

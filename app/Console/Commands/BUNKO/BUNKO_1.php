@@ -45,7 +45,7 @@ class BUNKO_1 extends Command
             ]);
             $opennum = $type=='lhc'?$get->open_num:$get->opennum;
             if($update)
-                $excel->all($opennum,$get->issue,$gameId,$get->id,false,$table,$gameName);
+                $excel->all($opennum,$get->issue,$gameId,$get->id,false,$code,$table,$gameName);
         }
     }
 }

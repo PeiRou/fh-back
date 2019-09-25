@@ -364,7 +364,7 @@ class New_gdklsf extends Excel
         $NC->ZM($openCode,$gameId,$win);
         return array('win'=>$win,'ids_he'=>$ids_he,'NC'=>$NC);
     }
-    public function all($openCode,$issue,$gameId,$id,$excel,$table,$gameName)
+    public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
     {
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){

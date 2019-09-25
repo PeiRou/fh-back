@@ -280,33 +280,33 @@ class Excel
         return $sql;
     }
     //计算是否开杀
-    public function kill_count($table,$issue,$gameId,$opencode){
-        try{
-            $killopennum = DB::connection('mysql::write')->table($table)->select('excel_opennum','is_useropen','useropennum')->where('issue',$issue)->first();
-            $is_killopen = DB::connection('mysql::write')->table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win','is_user')->where('game_id',$gameId)->first();
-
-            if($killopennum->is_useropen==1 && !empty($killopennum->useropennum) && $is_killopen->is_user==1) {
-                $opennum = $killopennum->useropennum;
-            }else if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1) && $is_killopen->is_user){
-                $opencode = empty($opencode)?$this->opennum($table):$opencode;
-                writeLog('serfKill',$table.' 获取KILL'.$issue.'--'.@$killopennum->excel_opennum);
-                $opennum = isset($killopennum->excel_opennum)&&!empty($killopennum->excel_opennum)?$killopennum->excel_opennum:$this->opennum($table);
-                $total = $is_killopen->bet_lose + $is_killopen->bet_win;
-                $lose_losewin_rate = $total>0?($is_killopen->bet_lose-$is_killopen->bet_win)/$total:0;
-                writeLog('serfKill',$table.':杀率设置'.json_encode($is_killopen));
-                writeLog('serfKill',$table.':输赢比 '.$lose_losewin_rate);
-                writeLog('serfKill',$table.' 获取KILL开奖'.$issue.'--'.$opennum);
-                writeLog('serfKill',$table.' 获取origin开奖'.$issue.'--'.$opencode);
-            }else if(isset($is_killopen->is_user) && $is_killopen->is_user == 0){//增加统一杀率，如果是此栏位为0时，为统一控制杀率
-                $opennum = $this->opennum($table,$is_killopen->is_user,$issue);
-            }else
-                $opennum = $this->opennum($table);
-        }catch (\Exception $exception){
-            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-            $opennum = $this->opennum($table);
-        }
-        return $opennum;
-    }
+//    public function kill_count($table,$issue,$gameId,$opencode){
+//        try{
+//            $killopennum = DB::connection('mysql::write')->table($table)->select('excel_opennum','is_useropen','useropennum')->where('issue',$issue)->first();
+//            $is_killopen = DB::connection('mysql::write')->table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win','is_user')->where('game_id',$gameId)->first();
+//
+//            if($killopennum->is_useropen==1 && !empty($killopennum->useropennum) && $is_killopen->is_user==1) {
+//                $opennum = $killopennum->useropennum;
+//            }else if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1) && $is_killopen->is_user){
+//                $opencode = empty($opencode)?$this->opennum($table):$opencode;
+//                writeLog('serfKill',$table.' 获取KILL'.$issue.'--'.@$killopennum->excel_opennum);
+//                $opennum = isset($killopennum->excel_opennum)&&!empty($killopennum->excel_opennum)?$killopennum->excel_opennum:$this->opennum($table);
+//                $total = $is_killopen->bet_lose + $is_killopen->bet_win;
+//                $lose_losewin_rate = $total>0?($is_killopen->bet_lose-$is_killopen->bet_win)/$total:0;
+//                writeLog('serfKill',$table.':杀率设置'.json_encode($is_killopen));
+//                writeLog('serfKill',$table.':输赢比 '.$lose_losewin_rate);
+//                writeLog('serfKill',$table.' 获取KILL开奖'.$issue.'--'.$opennum);
+//                writeLog('serfKill',$table.' 获取origin开奖'.$issue.'--'.$opencode);
+//            }else if(isset($is_killopen->is_user) && $is_killopen->is_user == 0){//增加统一杀率，如果是此栏位为0时，为统一控制杀率
+//                $opennum = $this->opennum($table,$is_killopen->is_user,$issue);
+//            }else
+//                $opennum = $this->opennum($table);
+//        }catch (\Exception $exception){
+//            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+//            $opennum = $this->opennum($table);
+//        }
+//        return $opennum;
+//    }
     //取得杀率信息
     public function getKillBase($gameId){
         $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$gameId)->first();
@@ -552,70 +552,39 @@ class Excel
         return $res;
     }
     //根据类别回传开奖格式
-    public function opennum($game,$is_user=1,$needOpenIssue='',$num=0){
+    public function opennum($code,$type,$is_user=1,$needOpenIssue='',$num=0){
         if($is_user){
-            switch ($game){
-                case 'game_msjsk3':
-                case 'game_hkk3':
+            switch ($type){
+                case 'k3':
                     return $this->opennum_k3();
                     break;
-                case 'game_paoma':
-                case 'game_msft':
-                case 'game_mssc':
-                case 'game_sfsc':
-                case 'game_xylsc':
-                case 'game_xylft':
-                case 'game_kssc':
-                case 'game_ksft':
-                case 'game_yfsc':
-                case 'game_efsc':
-                case 'game_wfsc':
-                case 'game_shfsc':
+                case 'car':
                     return $this->opennum_pk10();
                     break;
-                case 'game_msssc':
-                case 'game_qqffc':
-                case 'game_sfssc':
-                case 'game_xylssc':
-                case 'game_ksssc':
-                case 'game_yfssc':
-                case 'game_efssc':
-                case 'game_wfssc':
-                case 'game_shfssc':
+                case 'ssc':
                     return $this->opennum_ssc($num);
                     break;
-                case 'game_msqxc':
+                case 'qxc':
                     return $this->opennum_qxc();
                     break;
-                case 'game_cqxync':
+                case 'nc':
                     return $this->opennum_xync();
                     break;
-                case 'game_gdklsf':
-                    return $this->opennum_xync();
-                    break;
-                case 'game_bjkl8':
-                case 'game_xykl8':
+                case 'kl8':
                     return $this->opennum_kl8();
-                case 'game_xylhc':
-                case 'game_sflhc':
-                case 'game_jslhc':
-                case 'game_yflhc':
-                case 'game_eflhc':
-                case 'game_wflhc':
-                case 'game_shflhc':
+                case 'lhc':
                     return $this->opennum_lhc($num);
                     break;
 
             }
-        }else if(isset($this->kill_lottery[$game])){
-            $api = $this->kill_lottery[$game]['api'];
+        }else{
             if($num>0){
-                $res = $this->getKillIssueNum($api,$needOpenIssue,$num);
+                $res = $this->getKillIssueNum($code,$needOpenIssue,$num);
                 return isset($res['data'])?$res['data']:'';
             }else{
-                if(empty($api)||empty($needOpenIssue))
+                if(empty($needOpenIssue))
                     return '';
-                $res = $this->getZiYingIssueNum($api,$needOpenIssue);
+                $res = $this->getZiYingIssueNum($code,$needOpenIssue);
                 return isset($res['opennum'])?$res['opennum']:'';
             }
         }
@@ -970,9 +939,11 @@ class Excel
         return 0;
     }
     //试算杀率共用方法
-    public function excel($openCode,$exeBase,$issue,$gameId,$table = '',$lotterytype = ''){
-        if(empty($table))
+    public function excel($openCode,$exeBase,$issue,$gameId,$code,$table = ''){
+        $games = Config::get('games.'.$code);
+        if(empty($games))
             return false;
+        $type = $games['type'];
         writeLog('New_Kill', $table.' issue:'.$issue);
         $bet = DB::table('bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
         if(empty($bet))
@@ -985,8 +956,8 @@ class Excel
             }else{
                 DB::connection('mysql::write')->table("excel_bet")->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 0,'bunko' => 0]);
             }
-            $openCode = $this->opennum($table,$exeBase->is_user,$issue,$i);
-            if($lotterytype=='lhc'){                                        //根据六合彩的系列另外有bunko
+            $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
+            if(Config::get('games.'.$code)=='lhc'){                                        //根据六合彩的系列另外有bunko
                 $resData = $this->exc_play($openCode,$gameId);
                 $win = @$resData['win'];
                 $he = isset($resData['ids_he'])?$resData['ids_he']:array();
@@ -1035,7 +1006,7 @@ class Excel
                     writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
                     $randRate = rand(1000,1999)/1000;
                     if($lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
-                        $openCode = $this->opennum($table,$exeBase->is_user,$issue,$i);
+                        $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
 //                        $iLimit = count($arrLimit)>=2?2:1;
 //                        if($iLimit!=1){
 //                            $tmpVal = 0;
@@ -1071,7 +1042,7 @@ class Excel
                                 }
                             }
                         }else
-                            $openCode = $this->opennum($table,$exeBase->is_user,$issue,$i);
+                            $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
                     }
                 }else{                                        //如果当日的尚未计算，则给中间值
                     foreach ($arrLimit as $key2 =>$va2){
@@ -1093,7 +1064,7 @@ class Excel
                     foreach ($tmp as &$value)
                         $openCode = $value->opennum;
                 }else
-                    $openCode = $this->opennum($table,$exeBase->is_user,$issue,$i);
+                    $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
             }else{
                 $openCode = '';
             }

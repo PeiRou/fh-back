@@ -42,7 +42,7 @@ class BUNKO_lhc extends Command
                 'bunko' => 3
             ]);
             if($update)
-                $excel->all($get->open_num,$get->issue,$gameId,$get->id,false,$table,$gameName);
+                $excel->all($get->open_num,$get->issue,$gameId,$get->id,false,$code,$table,$gameName);
         }
     }
 }

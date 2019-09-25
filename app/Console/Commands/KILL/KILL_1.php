@@ -29,6 +29,7 @@ class KILL_1 extends Command
         $table = $games['table'];
         $gameId = $games['gameId'];
         $gameName = $games['lottery'];
+        $type = $games['type'];
         $get = $excel->getNeedKillIssue($table);
         $exeBase = $excel->getKillBase($gameId);
         if(isset($get) && $get && !empty($exeBase)){
@@ -41,13 +42,13 @@ class KILL_1 extends Command
             }
             $redis->setex($key,60,'ing');
             //开奖号码
-            $opennum = $excel->opennum($table);
+            $opennum = $excel->opennum($code,$type);
             if(isset($get->excel_num) && $get->excel_num == 0){
                 $update = DB::table($table)->where('id',$get->id)->update([
                     'excel_num' => 2
                 ]);
                 if($update)
-                    $excel->all($opennum,$get->issue,$gameId,$get->id,true,$table,$gameName);
+                    $excel->all($opennum,$get->issue,$gameId,$get->id,true,$code,$table,$gameName);
             }
         }
     }

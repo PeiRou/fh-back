@@ -31,7 +31,7 @@ class New_kl8 extends Excel
         $KL8->WX($openCode,$gameId,$win);
         return $win;
     }
-    public function all($openCode,$issue,$gameId,$id,$excel,$table,$gameName)
+    public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
     {
         $game = Config::get('game.'.$table);
         $this->arrPlay_id = $game['arrPlay_id'];
@@ -47,7 +47,7 @@ class New_kl8 extends Excel
                 ]);
                 if ($update == 1) {
                     writeLog('New_Kill', 'xykl8 killing...');
-                    $this->excel($openCode, $exeBase, $issue, $gameId, $table);
+                    $this->excel($openCode, $exeBase, $issue, $gameId, $code,$table);
                 }
             }
             if (!$excel) {

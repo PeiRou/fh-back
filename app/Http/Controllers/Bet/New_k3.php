@@ -34,7 +34,7 @@ class New_k3 extends Excel
         $K3->BICHU($openCode,$gameId,$win); //必出号码
         return $win;
     }
-    public function all($openCode,$issue,$gameId,$id,$excel,$table,$gameName)
+    public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
     {
         $game = Config::get('game.'.$table);
         $this->arrPlay_id = $game['arrPlay_id'];

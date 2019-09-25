@@ -39,7 +39,7 @@ class New_nlhc extends Excel
         return array('win'=>$win,'ids_he'=>$ids_he,'LHC'=>$LHC);
     }
 
-    public function all($openCode,$issue,$gameId,$id,$excel,$table,$gameName)
+    public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
     {
         $game = Config::get('game.'.$table);
         $this->arrPlay_id = $game['arrPlay_id'];
@@ -57,7 +57,7 @@ class New_nlhc extends Excel
                 writeLog('New_Kill', 'excel_num:'.$update);
                 if($update == 1) {
                     writeLog('New_Kill', 'shflhc killing...');
-                    $this->excel($openCode, $exeBase, $issue, $gameId, $table,'lhc');
+                    $this->excel($openCode, $exeBase, $issue, $gameId, $code, $table);
                 }
             }
             if(!$excel){

@@ -139,7 +139,7 @@ class New_gd11x5 extends Excel
         $a11X5->LM($gameId,$win,$ids_he);
         return array('win'=>$win,'ids_he'=>$ids_he,'11X5'=>$a11X5);
     }
-    public function all($openCode,$issue,$gameId,$id,$excel,$table,$gameName)
+    public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
     {
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
