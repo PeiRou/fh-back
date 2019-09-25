@@ -28,7 +28,7 @@ class KILL_1 extends Command
         $excel = $excel->newObject($code);
         $table = $games['table'];
         $gameId = $games['gameId'];
-        $gameName = $games['name'];
+        $gameName = $games['lottery'];
         $get = $excel->getNeedKillIssue($table);
         $exeBase = $excel->getKillBase($gameId);
         if(isset($get) && $get && !empty($exeBase)){

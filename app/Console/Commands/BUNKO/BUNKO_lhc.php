@@ -2,16 +2,16 @@
 
 namespace App\Console\Commands\BUNKO;
 
-use App\Excel;
+use App\Http\Controllers\Bet\New_nlhc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Config;
 
-class BUNKO_1 extends Command
+class BUNKO_lhc extends Command
 {
-    protected $signature = 'BUNKO_1 {code?}';
-    protected $description = '单一定时结算';
+    protected $gameId = 70;
+    protected $signature = 'BUNKO_lhc';
+    protected $description = '六合彩-定时结算';
 
     public function __construct()
     {
@@ -20,32 +20,29 @@ class BUNKO_1 extends Command
 
     public function handle()
     {
-        $code = $this->argument('code');
+        $code = 'lhc';
         $games = Config::get('games.'.$code);
         if(empty($games))
             return false;
-        $excel = new Excel();
-        $excel = $excel->newObject($code);
         $table = $games['table'];
-        $type = $games['type'];
         $gameId = $games['gameId'];
         $gameName = $games['lottery'];
-        $get = $excel->getNeedBunkoIssue($table);
+        $excel = new New_nlhc();
+        $get = $excel->getNeedBunkoIssueLhc($table);
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
             //阻止進行中
-            $key = 'Bunko:'.$gameId.'ing:'.$get->issue;
+            $key = 'Bunko:'.$this->gameId.'ing:'.$get->issue;
             if($redis->exists($key)){
                 return 'ing';
             }
-            $redis->setex($key,60,'ing');
-            $update = DB::table($table)->where('id', $get->id)->update([
-                'bunko' => 2
+            $redis->setex($key,80,'ing');
+            $update = DB::table($table)->where('id', $get->id)->where('bunko', 2)->update([
+                'bunko' => 3
             ]);
-            $opennum = $type=='lhc'?$get->open_num:$get->opennum;
             if($update)
-                $excel->all($opennum,$get->issue,$gameId,$get->id,false,$table,$gameName);
+                $excel->all($get->open_num,$get->issue,$gameId,$get->id,false,$table,$gameName);
         }
     }
 }

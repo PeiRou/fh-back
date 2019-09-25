@@ -34,7 +34,7 @@ class CURL_BK_THREAD extends Command
         if(!Storage::disk('thread')->exists('thread')||($thread_time<$now)){
             Storage::disk('thread')->put('thread', date('Y-m-d H:i:s',$now).'***'.($now+50));
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_bjkl8');
-            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_bjpk10');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_pk10');
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_cqssc');
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_cqxync');
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_gd11x5');

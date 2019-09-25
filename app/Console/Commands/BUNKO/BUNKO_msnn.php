@@ -26,7 +26,7 @@ class BUNKO_msnn extends Command
             return false;
         $table = $games['table'];
         $gameId = $games['gameId'];
-        $gameName = $games['name'];
+        $gameName = $games['lottery'];
         $excel = new New_msnn();
         $get = $excel->getNeedNNBunkoIssue($table);
         if($get){

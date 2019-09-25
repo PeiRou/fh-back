@@ -26,7 +26,7 @@ class BUNKO_pknn extends Command
             return false;
         $table = $games['table'];
         $gameId = $games['gameId'];
-        $gameName = $games['name'];
+        $gameName = $games['lottery'];
         $excel = new New_pknn();
         $get = $excel->getNeedBunkoIssue($table);
         if($get){

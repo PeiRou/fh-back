@@ -1604,7 +1604,7 @@ class Excel
             case 'jnd28':$excel = new \App\Http\Controllers\Bet\New_jnd28();break;
             case 'twbgc':$excel = new \App\Http\Controllers\Bet\New_kl8();break;
             case 'twbg28':$excel = new \App\Http\Controllers\Bet\New_dd();break;
-            case 'bjpk10':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'pk10':$excel = new \App\Http\Controllers\Bet\New_sc();break;
             case 'xyft':$excel = new \App\Http\Controllers\Bet\New_sc();break;
             case 'gdklsf':$excel = new \App\Http\Controllers\Bet\New_gdklsf();break;
             case 'cqxync':$excel = new \App\Http\Controllers\Bet\New_cqxync();break;
