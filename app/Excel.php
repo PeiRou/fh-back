@@ -947,7 +947,7 @@ class Excel
         if(empty($games))
             return false;
         $type = $games['type'];
-        writeLog('New_Kill', $table.' issue:'.$issue);
+        writeLog('New_Kill', $code.' issue:'.$issue);
         $bet = DB::table('bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
         if(empty($bet))
             return false;

@@ -64,7 +64,7 @@ class New_msnn extends Excel
                 }
             }
         }
-        $update = DB::table($table)->where('id',$id)->update([
+        $update = DB::table($table)->where('id',$id)->where('is_open',1)->where('nn_bunko',2)->update([
             'nn_bunko' => 1
         ]);
         if ($update !== 1) {

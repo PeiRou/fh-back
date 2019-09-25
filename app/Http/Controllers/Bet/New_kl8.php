@@ -46,8 +46,8 @@ class New_kl8 extends Excel
                     'excel_num' => 3
                 ]);
                 if ($update == 1) {
-                    writeLog('New_Kill', 'xykl8 killing...');
-                    $this->excel($openCode, $exeBase, $issue, $gameId, $code,$table);
+                    writeLog('New_Kill', $code.' killing...');
+                    $this->excel($openCode, $exeBase, $issue, $gameId, $code, $table);
                 }
             }
             if (!$excel) {
@@ -71,7 +71,7 @@ class New_kl8 extends Excel
             } else
                 $this->stopBunko($gameId, 1, 'Kill');
         } else {
-            $update = DB::table($table)->where('id', $id)->update([
+            $update = DB::table($table)->where('id',$id)->where('is_open',1)->where('bunko',2)->update([
                 'bunko' => 1
             ]);
             if ($update !== 1) {

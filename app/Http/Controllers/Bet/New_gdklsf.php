@@ -386,7 +386,7 @@ class New_gdklsf extends Excel
                 }
             }
         }
-        $update = DB::table($table)->where('id',$id)->update([
+        $update = DB::table($table)->where('id',$id)->where('is_open',1)->where('bunko',2)->update([
             'bunko' => 1
         ]);
         if ($update !== 1) {

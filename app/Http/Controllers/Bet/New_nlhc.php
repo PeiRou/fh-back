@@ -56,7 +56,7 @@ class New_nlhc extends Excel
                 ]);
                 writeLog('New_Kill', 'excel_num:'.$update);
                 if($update == 1) {
-                    writeLog('New_Kill', 'shflhc killing...');
+                    writeLog('New_Kill', $code.' killing...');
                     $this->excel($openCode, $exeBase, $issue, $gameId, $code, $table);
                 }
             }
@@ -89,9 +89,9 @@ class New_nlhc extends Excel
             }else
                 $this->stopBunko($gameId,1,'Kill');
         }else{
-            $update = DB::table($table)->where('id',$id)->update([
-                'bunko' => 1
-            ]);
+            $update = DB::table($table)->where('id',$id)->where('is_open',1)->where('bunko',2)->update([
+            'bunko' => 1
+        ]);
             if ($update !== 1) {
                 writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
             }else{
