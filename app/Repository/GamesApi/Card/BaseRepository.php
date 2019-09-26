@@ -8,6 +8,7 @@
 
 namespace App\Repository\GamesApi\Card;
 use App\GamesApi;
+use App\GamesListPlay;
 use App\Http\Controllers\Obtain\SendController;
 use App\SystemSetting;
 use App\Users;
@@ -108,10 +109,10 @@ class BaseRepository
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => $data['GameEndTime'][$k] ?? $data['GameStartTime'][$k],
                 'gameCategory' => 'PVP',
-                'game_type' => $this->getGameType($data['ServerID'][$k]),
+                'game_type' => $this->getGameType($data['KindID'][$k], $data['ServerID'][$k]),
                 'service_money' => $data['Revenue'][$k],// + 服务费
                 'flag' => 1,
-                'bet_info' => $data['CardValue'][$k],
+                'bet_info' => $data['KindID'][$k],
                 'game_id' => $this->getGameId([]),
                 'sessionId' => json_encode([
                     'ChannelID' =>  $data['ChannelID'][$k], //渠道id
@@ -644,8 +645,17 @@ class BaseRepository
         return $this->Config[$key] ?? '';
     }
 
-    public function getGameType($key)
+    public function getGameType($key, $key1)
     {
+        switch ($key){
+            case '1355':
+                return '搏一搏';
+        }
+        static $list;
+        if(is_null($list))
+            $list = GamesListPlay::getOneList(15);
+        if(!empty($list->get($key)->game_name))
+            return $list->get($key)->game_name;
         return [
             3600=>'德州扑克新手房',
             3601=>'德州扑克初级房',
@@ -776,7 +786,7 @@ class BaseRepository
                 19503=>'万人炸金花中级房',
                 19504=>'万人炸金花高级房',
 
-        ][$key] ?? '';
+        ][$key1] ?? '';
     }
 
     public function OffsetTime($param)

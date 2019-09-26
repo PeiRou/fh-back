@@ -2,6 +2,7 @@
 
 namespace App\Repository\GamesApi\Card;
 
+use App\GamesListPlay;
 use Illuminate\Support\Facades\DB;
 
 class VGRepository extends BaseRepository
@@ -48,7 +49,7 @@ class VGRepository extends BaseRepository
                 'game_type' => $this->getGameType($v['gametype']),
                 'service_money' => $v['servicemoney'], // + 服务费
                 'flag' => 1,
-                'game_id' => 18,
+                'game_id' => $v['gametype'] == 5 ? 43 : 18,
                 'round_id' => $v['roundid'] ?? '',  //场景号
             ];
             $array['content'] = $this->content($v, $array) ?: $array['game_type'];
@@ -88,7 +89,6 @@ class VGRepository extends BaseRepository
         return "{$this->url}/webapi/gamerecordid.aspx?".http_build_query($param)."&verifyCode={$verifyCode}";
     }
 
-
     //--------------------------------------------- 分割线 ----------------------------------------------
 
     private function getverifyCode($param)
@@ -124,37 +124,6 @@ class VGRepository extends BaseRepository
         return null;
     }
 
-//    function curl_get_content($url, $conn_timeout=7, $timeout=10)
-//    {
-//        $headers = array(
-//            "Accept: application/json",
-//            "Accept-Encoding: deflate,sdch",
-//            "Accept-Charset: utf-8;q=1"
-//        );
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($ch, CURLOPT_HEADER, 0);
-//        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $conn_timeout);
-//        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-//        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-//        curl_setopt($ch, CURLOPT_ENCODING, "");
-//        $res = curl_exec($ch);
-//        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-//        $err = curl_errno($ch);
-//        curl_close($ch);
-//        //记录日志
-//        if (($err) || ($httpcode !== 200)) {
-//            return null;
-//        }
-//        if(empty($res))
-//            return null;
-//        if(count($json = @json_decode($res, 1)))
-//            return $json;
-//        return json_decode(json_encode(simplexml_load_string($res)), 1);
-//    }
-
     public $code = [
         '1' => '不合法的用户名',
         '0' => '成功',
@@ -179,6 +148,11 @@ class VGRepository extends BaseRepository
 
     public function getGameType($key)
     {
+        static $list;
+        if(is_null($list))
+            $list = GamesListPlay::getOneList(18);
+        if(!empty($list->get($key)->game_name))
+            return $list->get($key)->game_name;
         return [
             1=>'斗地主',
             3=>'抢庄牛牛',
