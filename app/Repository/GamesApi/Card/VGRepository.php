@@ -45,7 +45,7 @@ class VGRepository extends BaseRepository
                 'GameEndTime' => $v['endtime'],  //游戏结束时间
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => $v['endtime'] ?? $v['begintime'],
-                'gameCategory' => 'PVP',
+                'gameCategory' => $v['gametype'] == 5 ? 'FISH' : 'PVP',
                 'game_type' => $this->getGameType($v['gametype']),
                 'service_money' => $v['servicemoney'], // + 服务费
                 'flag' => 1,
