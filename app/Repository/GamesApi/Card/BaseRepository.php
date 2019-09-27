@@ -109,7 +109,7 @@ class BaseRepository
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => $data['GameEndTime'][$k] ?? $data['GameStartTime'][$k],
                 'gameCategory' => 'PVP',
-                'game_type' => $this->getGameType($data['KindID'][$k], $data['ServerID'][$k]),
+                'game_type' => $this->baseGetGameType($data['KindID'][$k], $data['ServerID'][$k]),
                 'service_money' => $data['Revenue'][$k],// + 服务费
                 'flag' => 1,
                 'bet_info' => $data['KindID'][$k],
@@ -536,13 +536,9 @@ class BaseRepository
         $g_info = $this->gameInfo;
         echo $g_info->name.'更新失败：'.$codeMsg.'。错误码：'.$code."\n";
         if(($g_info->g_id == 15 || $g_info->g_id == 16 || $g_info->g_id == 21)){
-            if(in_array($code, [16, 43])){
-                return null;
-            }
-        }elseif ($g_info->g_id == 21){
-            if($code == 16){
-                return null;
-            }
+//            if(in_array($code, [16, 43])){
+//                return null;
+//            }
         }elseif($g_info->g_id == 22 && $jq_error_bet_id <= 0){
 //            if($code == 40014){
 //                return null;
@@ -645,7 +641,7 @@ class BaseRepository
         return $this->Config[$key] ?? '';
     }
 
-    public function getGameType($key, $key1)
+    public function baseGetGameType($key, $key1)
     {
         switch ($key){
             case '1355':
