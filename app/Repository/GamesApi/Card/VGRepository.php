@@ -70,7 +70,7 @@ class VGRepository extends BaseRepository
             if($v['gametype'] == 22){
 //                $str .= '投注内容：'.($v['isbanker'] == 1 ? '庄' : '闲').'<br />';
             }
-            $str .= '下注前余额：'.$v['beforebalance'];
+            $v['beforebalance'] && $str .= '下注前余额：'.$v['beforebalance'];
             return $str;
         }catch (\Throwable $e){
             return false;
