@@ -8,7 +8,7 @@ use App\Http\Controllers\GamesApi\Card\PrivodeController;
 
 class GameApiGetBet extends Command
 {
-    protected $signature = 'GameApiGetBet {g_id?} {endTime?} {--clear=0}';
+    protected $signature = 'GameApiGetBet {g_id?} {endTime?} {--clear=0} {--issue=1}';
     protected $description = '对接游戏注单定时获取';
 
     public function __construct()
@@ -24,6 +24,7 @@ class GameApiGetBet extends Command
         if($endTime = $this->argument('endTime'))
             $param['toTime'] = strtotime($endTime);
         $param['clear'] = $this->option('clear');
+        $param['issue'] = $this->option('issue');
 
         //------------------------------------------------------
         (new PrivodeController())->getBet($param);

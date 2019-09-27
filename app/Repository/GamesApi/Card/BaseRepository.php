@@ -789,6 +789,9 @@ class BaseRepository
     {
         try{
             $t = date('YmdHis', $param['time']);
+            if(!$this->param['issue']){
+                return $t;
+            }
             $this->issue = DB::table('jq_game_issue')
                 ->where('issue', '<=', $t)
                 ->where('g_id', $this->gameInfo->g_id)
