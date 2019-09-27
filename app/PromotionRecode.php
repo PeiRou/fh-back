@@ -24,7 +24,7 @@ class PromotionRecode extends Model
     public static function agentReportData($startTime = '',$endTime = ''){
         $aSql = 'SELECT `pro`.*,`games_list`.pid FROM 
                     (
-                        SELECT `game_id`,`game_name`,`agent_account`,`agent_name`,`agent_id`,`game_id`
+                        SELECT `game_id`,`game_name`,`agent_account`,`agent_name`,`agent_id`,
                         `general_account`,`general_name`,`general_id`,SUM(`money`) AS `money` FROM `promotion_record`
                         WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` IN(1,3)
                         GROUP BY `game_id`,`agent_id`
@@ -40,7 +40,7 @@ class PromotionRecode extends Model
     public static function generalReportData($startTime = '',$endTime = ''){
         $aSql = 'SELECT `pro`.*,`games_list`.pid FROM 
                     (
-                        SELECT `game_id`,`game_name`,`game_id`
+                        SELECT `game_id`,`game_name`,
                         `general_account`,`general_name`,`general_id`,SUM(`money`) AS `money` FROM `promotion_record`
                         WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` IN(1,3)
                         GROUP BY `game_id`,`general_id`
@@ -56,7 +56,7 @@ class PromotionRecode extends Model
     public static function memberReportData($startTime = '',$endTime = ''){
         $aSql = 'SELECT `pro`.*,`games_list`.pid FROM 
                     (
-                        SELECT `game_id`,`game_name`,`agent_account`,`agent_name`,`agent_id`,`game_id`,`user_id`,`user_account`,`user_name`,
+                        SELECT `game_name`,`agent_account`,`agent_name`,`agent_id`,`game_id`,`user_id`,`user_account`,`user_name`,
                         `general_account`,`general_name`,`general_id`,SUM(`money`) AS `money` FROM `promotion_record`
                         WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` IN(1,3)
                         GROUP BY `game_id`,`user_id`
