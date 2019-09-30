@@ -11,11 +11,11 @@ class CQ9 extends Base{
     {
         $this->repo->param['endtime'] = $this->repo->param['endtime'] ?? $this->repo->formatTime(strtotime($this->getTime($param)), true);
         $this->repo->param['starttime'] = $this->repo->formatTime(strtotime($this->repo->param['endtime']) - (60 * 15) - 1, false);
-
         $this->repo->param['page'] = $this->repo->param['page'] ?? 1;
         $this->repo->param['pagesize'] = $this->repo->param['pagesize'] ?? 1000;
         $res = $this->repo->hook('getBet');
         $this->repo->insertError($res['code'], $res['msg']);
+        return $res;
     }
 
     public function getTime($param = [])
