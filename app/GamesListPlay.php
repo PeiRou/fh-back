@@ -23,7 +23,7 @@ class GamesListPlay extends Base
             return GamesListPlay::where(function($sql)use($game_id){
                 $sql->where('game_id', $game_id);
             })->get()->keyBy('tag');
-        }, 60 * 24 * 7, true, false);
+        }, 20, true, false);
     }
 
 }

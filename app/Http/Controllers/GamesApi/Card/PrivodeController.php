@@ -49,7 +49,6 @@ class PrivodeController extends Controller{
         if(!$info = $model->first()){
             return show(400, '没有此单');
         }
-
         app('obj')->jq_error_bet_id = $id;
 
         $param = json_decode($info->param, 1);

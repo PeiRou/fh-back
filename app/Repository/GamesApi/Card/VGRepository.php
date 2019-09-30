@@ -88,7 +88,6 @@ class VGRepository extends BaseRepository
         $verifyCode = $this->getverifyCode($param);
         return "{$this->url}/webapi/gamerecordid.aspx?".http_build_query($param)."&verifyCode={$verifyCode}";
     }
-
     //--------------------------------------------- 分割线 ----------------------------------------------
 
     private function getverifyCode($param)

@@ -428,6 +428,7 @@ class BaseRepository
         }else{
             try{
                 if(is_null(@app('obj')->jq_error_bet_id)) {
+                    writeLog('senterGetBet', json_encode($data, 3));
                     $message_error = [
                         'info' => [
                             'title' => 'zabbix告警通知',
@@ -536,9 +537,9 @@ class BaseRepository
         $g_info = $this->gameInfo;
         echo $g_info->name.'更新失败：'.$codeMsg.'。错误码：'.$code."\n";
         if(($g_info->g_id == 15 || $g_info->g_id == 16 || $g_info->g_id == 21)){
-//            if(in_array($code, [16, 43])){
-//                return null;
-//            }
+            if(in_array($code, [16])){
+                return null;
+            }
         }elseif($g_info->g_id == 22 && $jq_error_bet_id <= 0){
 //            if($code == 40014){
 //                return null;
