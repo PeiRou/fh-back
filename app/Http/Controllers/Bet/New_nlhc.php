@@ -48,19 +48,20 @@ class New_nlhc extends Excel
         $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
 
         if($betCount > 0){
-            $exeIssue = $this->getNeedKillIssue($table,2);
-            $exeBase = $this->getNeedKillBase($gameId);
-            if(isset($exeIssue->excel_num) && $exeBase->excel_num > 0 && $excel){
-                $update = DB::table($table)->where('id',$id)->where('excel_num',2)->update([
-                    'excel_num' => 3
-                ]);
-                writeLog('New_Kill', 'excel_num:'.$update);
-                if($update == 1) {
-                    writeLog('New_Kill', $code.' killing...');
-                    $this->excel($openCode, $exeBase, $issue, $gameId, $code, $table);
+            if($excel){
+                $exeIssue = $this->getNeedKillIssue($table,2);
+                $exeBase = $this->getNeedKillBase($gameId);
+                if(isset($exeIssue->excel_num) && $exeBase->excel_num > 0){
+                    $update = DB::table($table)->where('id',$id)->where('excel_num',2)->update([
+                        'excel_num' => 3
+                    ]);
+                    writeLog('New_Kill', 'excel_num:'.$update);
+                    if($update == 1) {
+                        writeLog('New_Kill', $code.' killing...');
+                        $this->excel($openCode, $exeBase, $issue, $gameId, $code, $table);
+                    }
                 }
-            }
-            if(!$excel){
+            }else{
                 $resData = $this->exc_play($openCode,$gameId);
                 $win = @$resData['win'];
                 $he = isset($resData['ids_he'])?$resData['ids_he']:array();
