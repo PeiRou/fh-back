@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Config;
+use SameClass\Config\LotteryGames\Games;
 
 class clear_daily extends Command
 {
@@ -44,7 +44,7 @@ class clear_daily extends Command
         //---将 意见反馈的ID重置
         $this->resetId('feedback_message');
         //---将 游戏表 的ID重置
-        $res = Config::get('games');
+        $res = Games::$games;
         foreach ($res as $key => $val){
             $this->resetId($val['table']);
         }

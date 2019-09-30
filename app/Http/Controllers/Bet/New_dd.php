@@ -12,7 +12,7 @@ use App\Excel;
 use App\ExcelLotteryDD;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Config;
+use SameClass\Config\LotteryGames\Games;
 
 class New_dd extends Excel
 {
@@ -32,7 +32,7 @@ class New_dd extends Excel
 
     public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
     {
-        $game = Config::get('game.'.$table);
+        $game = Games::$games[$table];
         $this->arrPlay_id = $game['arrPlay_id'];
         $this->arrPlayCate = $game['arrPlayCate'];
         $this->arrPlayId = $game['arrPlayId'];

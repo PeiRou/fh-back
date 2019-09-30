@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Config;
+use SameClass\Config\LotteryGames\Games;
 
 class clear_data extends Command
 {
@@ -148,7 +148,7 @@ class clear_data extends Command
             $sql = "DELETE FROM bet_his WHERE testFlag = 1 LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table log_login :' . $res . PHP_EOL;
-            $res = Config::get('games');
+            $res = Games::$games;
             foreach ($res as $key => $val){
                 $num_else = $this->clrGameTables($val['table'], $clearDate62, $num_else);
             }

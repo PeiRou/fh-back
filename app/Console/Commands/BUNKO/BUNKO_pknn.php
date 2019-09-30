@@ -6,7 +6,7 @@ use App\Http\Controllers\Bet\New_pknn;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Config;
+use SameClass\Config\LotteryGames\Games;
 
 class BUNKO_pknn extends Command
 {
@@ -21,7 +21,7 @@ class BUNKO_pknn extends Command
     public function handle()
     {
         $code = 'pknn';
-        $games = Config::get('games.'.$code);
+        $games = Games::$games[$code]??'';
         if(empty($games))
             return false;
         $table = $games['table'];

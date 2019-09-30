@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Artisan;
 use SameClass\Model\UsersModel;
+use SameClass\Config\LotteryGames\Games;
 
 class Excel
 {
@@ -943,7 +944,7 @@ class Excel
     }
     //试算杀率共用方法
     public function excel($openCode,$exeBase,$issue,$gameId,$code,$table = ''){
-        $games = Config::get('games.'.$code);
+        $games = Games::$games[$code];
         if(empty($games))
             return false;
         $type = $games['type'];

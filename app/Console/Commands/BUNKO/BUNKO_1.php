@@ -6,7 +6,7 @@ use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Config;
+use SameClass\Config\LotteryGames\Games;
 
 class BUNKO_1 extends Command
 {
@@ -21,7 +21,7 @@ class BUNKO_1 extends Command
     public function handle()
     {
         $code = $this->argument('code');
-        $games = Config::get('games.'.$code);
+        $games = Games::$games[$code]??'';
         if(empty($games))
             return false;
         $excel = new Excel();
