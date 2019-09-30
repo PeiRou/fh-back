@@ -134,7 +134,7 @@ class Swoole extends Command
                 $this->exeComds($data);
             }else{
                 $redis->select(0);
-                $key = 'Artisan:'.$data['thread'];
+                $key = 'Artisan:'.$data['thread'].'-'.$data['code'];
                 if(!$redis->exists($key)){
                     $redis->setex($key, 60,'on');
                     DB::disconnect();

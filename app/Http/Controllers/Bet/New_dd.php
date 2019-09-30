@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Config;
 
 class New_dd extends Excel
 {
-    protected $arrPlay_id = array();
-    protected $arrPlayCate = array();
-    protected $arrPlayId = array();
+    public $arrPlay_id = array();
+    public $arrPlayCate = array();
+    public $arrPlayId = array();
 
     protected function exc_play($openCode,$gameId){
         $win = collect([]);

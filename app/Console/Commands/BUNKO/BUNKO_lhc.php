@@ -6,6 +6,7 @@ use App\Http\Controllers\Bet\New_nlhc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use SameClass\Config\LotteryGames\Games;
 
 class BUNKO_lhc extends Command
 {
@@ -21,7 +22,7 @@ class BUNKO_lhc extends Command
     public function handle()
     {
         $code = 'lhc';
-        $games = Config::get('games.'.$code);
+        $games = Games::$games[$code]??'';
         if(empty($games))
             return false;
         $table = $games['table'];

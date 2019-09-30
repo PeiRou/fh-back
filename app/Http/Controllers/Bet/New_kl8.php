@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Config;
 
 class New_kl8 extends Excel
 {
-    protected $arrPlay_id = array();
-    protected $arrPlayCate = array();
-    protected $arrPlayId = array();
+    public $arrPlay_id = array();
+    public $arrPlayCate = array();
+    public $arrPlayId = array();
 
     protected function exc_play($openCode,$gameId){
         $win = collect([]);
@@ -39,24 +39,25 @@ class New_kl8 extends Excel
         $this->arrPlayId = $game['arrPlayId'];
         $betCount = DB::table('bet')->where('status', 0)->where('game_id', $gameId)->where('issue', $issue)->where('bunko', '=', 0.00)->count();
         if ($betCount > 0) {
-            $exeIssue = $this->getNeedKillIssue($table, 2);
-            $exeBase = $this->getNeedKillBase($gameId);
-            if (isset($exeIssue->excel_num) && $exeBase->excel_num > 0 && $excel) {
-                $update = DB::table($table)->where('id', $id)->where('excel_num', 2)->update([
-                    'excel_num' => 3
-                ]);
-                if ($update == 1) {
-                    writeLog('New_Kill', $code.' killing...');
-                    $this->excel($openCode, $exeBase, $issue, $gameId, $code, $table);
+            if($excel){
+                $exeIssue = $this->getNeedKillIssue($table,2);
+                $exeBase = $this->getNeedKillBase($gameId);
+                if(isset($exeIssue->excel_num) && $exeBase->excel_num > 0){
+                    $update = DB::table($table)->where('id',$id)->where('excel_num',2)->update([
+                        'excel_num' => 3
+                    ]);
+                    if($update == 1) {
+                        writeLog('New_Kill', $code.' killing...');
+                        $this->excel($openCode, $exeBase, $issue, $gameId, $code, $table);
+                    }
                 }
-            }
-            if (!$excel) {
-                $win = $this->exc_play($openCode, $gameId);
-                $bunko = $this->bunko($win, $gameId, $issue, $excel, $this->arrPlay_id, true);
-                $this->bet_total($issue, $gameId);
-                if ($bunko == 1) {
-                    $updateUserMoney = $this->updateUserMoney($gameId, $issue, $gameName, $table, $id, true);
-                    if ($updateUserMoney == 1) {
+            }else{
+                $win = $this->exc_play($openCode,$gameId);
+                $bunko = $this->bunko($win,$gameId,$issue,$excel,$this->arrPlay_id,true);
+                $this->bet_total($issue,$gameId);
+                if($bunko == 1){
+                    $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id,true);
+                    if($updateUserMoney == 1){
                         writeLog('New_Bet', $gameName . $issue . "结算出错");
                     }
                 }
