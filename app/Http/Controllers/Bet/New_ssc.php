@@ -12,13 +12,13 @@ use App\Excel;
 use App\ExcelLotterySSC;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
-use SameClass\Config\LotteryGames\Games;
+use Illuminate\Support\Facades\Config;
 
 class New_ssc extends Excel
 {
-    protected $arrPlay_id = array();
-    protected $arrPlayCate = array();
-    protected $arrPlayId = array();
+    public $arrPlay_id = array();
+    public $arrPlayCate = array();
+    public $arrPlayId = array();
 
     protected function exc_play($openCode,$gameId){
         $win = collect([]);
@@ -42,7 +42,7 @@ class New_ssc extends Excel
     }
     public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
     {
-        $game = Games::$games[$table];
+        $game = Config::get('game.'.$table);
         $this->arrPlay_id = $game['arrPlay_id'];
         $this->arrPlayCate = $game['arrPlayCate'];
         $this->arrPlayId = $game['arrPlayId'];
