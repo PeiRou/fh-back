@@ -961,7 +961,7 @@ class Excel
                 DB::connection('mysql::write')->table("excel_bet")->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 0,'bunko' => 0]);
             }
             $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
-            if(Config::get('games.'.$code)=='lhc'){                                        //根据六合彩的系列另外有bunko
+            if($type=='lhc'){                                        //根据六合彩的系列另外有bunko
                 $resData = $this->exc_play($openCode,$gameId);
                 $win = @$resData['win'];
                 $he = isset($resData['ids_he'])?$resData['ids_he']:array();
