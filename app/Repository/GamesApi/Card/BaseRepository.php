@@ -513,8 +513,8 @@ class BaseRepository
     {
         $model = DB::table('jq_error_bet');
         $model->where('id', app('obj')->jq_error_bet_id)->update([
-            'code' => $code ?? 0,
-            'codeMsg' => $codeMsg ?? 'OK',
+            'code' => ($code ?? 0),
+            'codeMsg' => ($codeMsg ?? '没有传此参数，默认成功'),
             'resNum' => DB::raw('resNum + 1'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
@@ -540,11 +540,13 @@ class BaseRepository
             if(in_array($code, [16])){
                 return null;
             }
-        }elseif($g_info->g_id == 22 && $jq_error_bet_id <= 0){
+        }
+        elseif($g_info->g_id == 22 && $jq_error_bet_id <= 0){
 //            if($code == 40014){
 //                return null;
 //            }
-        }elseif($g_info->g_id == 28 && $code == 8){
+        }
+        elseif($g_info->g_id == 28 && $code == 8){
             return null;
         }
         $model = DB::table('jq_error_bet');
