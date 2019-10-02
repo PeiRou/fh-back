@@ -91,6 +91,7 @@ class CURL_BK_THREAD extends Command
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_efk3');
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_sfk3');
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_wfk3');
+            $this->pushData('http://127.0.0.1:9500?thread2=push');
 
             $this->pushData('http://127.0.0.1:9500?thread=KILL_1_msft');
             $this->pushData('http://127.0.0.1:9500?thread=KILL_1_mssc');
