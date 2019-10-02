@@ -169,8 +169,8 @@ class CQ9Repository extends BaseRepository
     public function request($uri, $param, $method = 'post')
     {
         $headers = [
-            'Authorization: ' . $this->getConfig('token'),
-            'Content-Type: application/x-www-form-urlencoded'
+            "Authorization: " . $this->getConfig('token'),
+            'Content-Type:application/x-www-form-urlencoded'
         ];
         if($method === 'post')
             $res = $this->curl_post_content($this->getConfig('apiUrl').$uri, $param, false, $headers);
