@@ -129,7 +129,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                         'dateTime' => $time,
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
-                        'balance' => round($iThird->userMoney + $iArray['money'] - $iThird->money, 2),
+                        'balance' => $iThird->userMoney,
                     ];
                 }
                 if($iThird->user_id == $iArray['user_id'] && $iThird->game_id == $iArray['game_id']){
@@ -144,6 +144,14 @@ class ZhRebateThirdDaily implements ShouldQueue
 
         foreach ($aData as $kData => $iData){
             if($iData['status'] === 3) {
+                if(array_key_exists($iData['user_id'],$aUserMoney)){
+                    $aUserMoney[$iData['user_id']]['money'] += $iData['money'];
+                }else{
+                    $aUserMoney[$iData['user_id']] = [
+                        'money' => $iData['money'],
+                        'to_user' => $iData['user_id'],
+                    ];
+                }
                 $aCapital[] = [
                     'to_user' => $iData['user_id'],
                     'user_type' => 'user',
@@ -155,7 +163,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                     'money' => $iData['money'],
                     'play_type' => NULL,
                     'playcate_id' => 0,
-                    'balance' => $iData['balance'],
+                    'balance' => round($iData['balance'] + $iData['money'],2),
                     'game_name' => $iData['game_name'],
                     'playcate_name' => '',
                     'operation_id' => NULL,
@@ -163,14 +171,6 @@ class ZhRebateThirdDaily implements ShouldQueue
                     'created_at' => $dateTime,
                     'updated_at' => $dateTime,
                 ];
-                if(array_key_exists($iData['user_id'],$aUserMoney)){
-                    $aUserMoney[$iData['user_id']]['money'] += $iData['money'];
-                }else{
-                    $aUserMoney[$iData['user_id']] = [
-                        'money' => $iData['money'],
-                        'to_user' => $iData['user_id'],
-                    ];
-                }
             }
             unset($aData[$kData]['balance']);
         }
@@ -220,6 +220,14 @@ class ZhRebateThirdDaily implements ShouldQueue
                     ];
                 }
                 if ($iStatus === 3 && $iMoney > 0) {
+                    if(array_key_exists($iJqBet->user_id,$aUserMoney)){
+                        $aUserMoney[$iJqBet->user_id]['money'] += $iMoney;
+                    }else{
+                        $aUserMoney[$iJqBet->user_id] = [
+                            'money' => $iMoney,
+                            'to_user' => $iJqBet->user_id,
+                        ];
+                    }
                     $aCapital[] = [
                         'to_user' => $iJqBet->user_id,
                         'user_type' => 'user',
@@ -229,7 +237,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                         'game_id' => 0,
                         'issue' => 0,
                         'money' => $iMoney,
-                        'balance' => round($iJqBet->userMoney + $iMoney, 2),
+                        'balance' => round($iJqBet->userMoney + $aUserMoney[$iJqBet->user_id]['money'], 2),
                         'play_type' => NULL,
                         'playcate_id' => 0,
                         'game_name' => $iJqBet->game_name,
@@ -239,14 +247,6 @@ class ZhRebateThirdDaily implements ShouldQueue
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
                     ];
-                    if(array_key_exists($iJqBet->user_id,$aUserMoney)){
-                        $aUserMoney[$iJqBet->user_id]['money'] += $iMoney;
-                    }else{
-                        $aUserMoney[$iJqBet->user_id] = [
-                            'money' => $iMoney,
-                            'to_user' => $iJqBet->user_id,
-                        ];
-                    }
                 }
             }
         }
