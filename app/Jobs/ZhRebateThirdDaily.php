@@ -173,6 +173,7 @@ class ZhRebateThirdDaily implements ShouldQueue
         $dateTime = date('Y-m-d H:i:s');
         $time = strtotime($this->aDateTime);
         $aCapital = [];
+        $aUserMoney = [];
         foreach ($aJqBet as $kJqBet => $iJqBet){
             if($iJqBet->bet_money > 0 && isset($aReratio[$iJqBet->game_id])) {
                 $iMoney = 0;
@@ -229,10 +230,18 @@ class ZhRebateThirdDaily implements ShouldQueue
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
                     ];
+                    if(array_key_exists($iJqBet->user_id,$aUserMoney)){
+                        $aUserMoney[$iJqBet->user_id]['money'] += $iMoney;
+                    }else{
+                        $aUserMoney[$iJqBet->user_id] = [
+                            'money' => $iMoney,
+                            'to_user' => $iJqBet->user_id,
+                        ];
+                    }
                 }
             }
         }
-        $this->editSql($aCapital,$aArray);
+        $this->editSql($aCapital,$aArray,$aUserMoney);
     }
 
     private function getReratio($aReratio,$betMoney){
@@ -247,17 +256,24 @@ class ZhRebateThirdDaily implements ShouldQueue
         return $iData;
     }
 
-    private function editSql($aCapital,$aArray){
+    private function editSql($aCapital,$aArray,$aUserMoney,$type){
         DB::beginTransaction();
         try{
             if(!empty($aCapital)){
                 $aCapital = array_chunk($aCapital,1000);
                 foreach ($aCapital as $iCapital){
                     Capital::insert($iCapital);
-                    DB::update( Users::updateUserBatchStitching('users',$iCapital));
-                    UsersModel::userCheakDrawings($iCapital, 't31', null, 'to_user', 'money');
                 }
             }
+
+            if(!empty($aUserMoney)){
+                $aUserMoney = array_chunk($aUserMoney,1000);
+                foreach ($aUserMoney as $iUserMoney){
+                    DB::update( Users::updateUserBatchStitching('users',$iUserMoney));
+                    UsersModel::userCheakDrawings($iUserMoney, 't31', null, 'to_user', 'money');
+                }
+            }
+
             if(!empty($aArray)){
                 $aArray = array_chunk($aArray,1000);
                 foreach ($aArray as $iArray){

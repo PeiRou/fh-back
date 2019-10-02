@@ -1109,4 +1109,19 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             ->select(DB::raw('SUM(`betTotal`) AS `betTotal`, SUM(`winTotal`) AS `winTotal`'))
             ->get();
     }
+
+    //代理用户投注
+    public static function getAgentUserData($gameId,$issue){
+        $aSql = 'SELECT `BET`.*,`agent`.modelStatus,`agent`.superior_agent,`agent`.account,`agent`.name FROM 
+                    (
+                        SELECT `user_id`,`agent_id`,SUM(`bet_money`) AS `betMoney` FROM `bet`
+                        WHERE `game_id` = :gameId AND `issue` = :issue GROUP BY `user_id`
+                    ) AS `BET`
+                    INNER JOIN `agent` ON `agent`.a_id = `BET`.agent_id AND `agent`.modelStatus = 1';
+        $aArray = [
+            'gameId' => $gameId,
+            'issue' => $issue,
+        ];
+        return DB::select($aSql,$aArray);
+    }
 }
