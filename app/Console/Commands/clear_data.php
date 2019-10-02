@@ -148,7 +148,8 @@ class clear_data extends Command
             $sql = "DELETE FROM bet_his WHERE testFlag = 1 LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table log_login :' . $res . PHP_EOL;
-            $res = Games::$games;
+            $Games = new Games();
+            $res = $Games->games;
             foreach ($res as $key => $val){
                 $num_else = $this->clrGameTables($val['table'], $clearDate62, $num_else);
             }

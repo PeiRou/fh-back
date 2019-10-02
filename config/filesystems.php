@@ -53,6 +53,16 @@ return [
             'root' => storage_path('thread'),
         ],
 
+        'needbunko' => [
+            'driver' => 'local',
+            'root' => storage_path('needbunko'),
+        ],
+
+        'needkill' => [
+            'driver' => 'local',
+            'root' => storage_path('needkill'),
+        ],
+
         'guanOpen' => [
             'driver' => 'local',
             'root' => storage_path('guanOpen'),
