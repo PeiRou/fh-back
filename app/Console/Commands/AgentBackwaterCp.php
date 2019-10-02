@@ -115,6 +115,7 @@ class AgentBackwaterCp extends Command
                             'issue' => $issue,
                             'rebate' => $iAgent->rebate,
                             'commission' => $iCommission,
+                            'bet_money' => $iBet->betMoney,
                             'category_id' => 1,
                             'created_at' => $iTime,
                             'updated_at' => $iTime,

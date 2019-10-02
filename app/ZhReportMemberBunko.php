@@ -47,4 +47,19 @@ class ZhReportMemberBunko extends Model
             ->join('level','level.value','=','users.rechLevel')
             ->get();
     }
+
+    //获取第三方数据
+    public static function getThirdData($startTime,$endTime){
+        $aSql = 'SELECT `zh_report_member_bunko`.agent_id,`zh_report_member_bunko`.agent_account,`zh_report_member_bunko`.agent_name, 
+                    `zh_report_member_bunko`.game_id,`zh_report_member_bunko`.bet_money,`zh_report_member_bunko`.game_name,
+                    `zh_report_member_bunko`.user_id,`agent`.superior_agent
+                    FROM `zh_report_member_bunko`
+                    INNER JOIN `agent` ON `agent`.a_id = `zh_report_member_bunko`.agent_id AND `agent`.modelStatus = 1
+                    WHERE `game_id` > 0 AND `date` >= :startTime AND `date` <= :endTime';
+        $aArray = [
+            'startTime' => $startTime,
+            'endTime' => $endTime
+        ];
+        return DB::select($aSql,$aArray);
+    }
 }
