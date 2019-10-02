@@ -100,6 +100,7 @@ class ZhRebateThirdDaily implements ShouldQueue
 
         $aData = [];
         $aCapital = [];
+        $aUserMoney = [];
         foreach ($aArray as $kArray => $iArray){
             foreach ($aThird as $iThird){
                 if($iThird->user_id == $iArray['user_id'] && $iThird->game_id == $iArray['game_id'] && $iThird->money < $iArray['money']){
@@ -155,17 +156,25 @@ class ZhRebateThirdDaily implements ShouldQueue
                     'play_type' => NULL,
                     'playcate_id' => 0,
                     'balance' => $iData['balance'],
-                    'game_name' => $iArray['game_name'],
+                    'game_name' => $iData['game_name'],
                     'playcate_name' => '',
                     'operation_id' => NULL,
                     'content' => '第三方返点',
                     'created_at' => $dateTime,
                     'updated_at' => $dateTime,
                 ];
+                if(array_key_exists($iData['user_id'],$aUserMoney)){
+                    $aUserMoney[$iData['user_id']]['money'] += $iData['money'];
+                }else{
+                    $aUserMoney[$iData['user_id']] = [
+                        'money' => $iData['money'],
+                        'to_user' => $iData['user_id'],
+                    ];
+                }
             }
             unset($aData[$kData]['balance']);
         }
-        $this->editSql($aCapital,$aData);
+        $this->editSql($aCapital,$aData,$aUserMoney);
     }
 
     private function recodeNo($aJqBet,$aReratio,$aSetrebate){
@@ -256,7 +265,7 @@ class ZhRebateThirdDaily implements ShouldQueue
         return $iData;
     }
 
-    private function editSql($aCapital,$aArray,$aUserMoney,$type){
+    private function editSql($aCapital,$aArray,$aUserMoney){
         DB::beginTransaction();
         try{
             if(!empty($aCapital)){
