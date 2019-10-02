@@ -2,24 +2,24 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\AgentBackwaterThirdDaily;
+use App\Jobs\PromotionMemberRebateDaily;
 use Illuminate\Console\Command;
 
-class AgentBackwaterThird extends Command
+class PromotionMemberRebate extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'AgentOdds:AgentBackwaterThird {startTime?} {endTime?}';
+    protected $signature = 'PromotionMemberRebate:RebateSettlement {startTime?} {endTime?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '代理模式第三方返水';
+    protected $description = '会员推广结算定时任务';
 
     /**
      * Create a new command instance.
@@ -38,11 +38,12 @@ class AgentBackwaterThird extends Command
      */
     public function handle()
     {
+        ini_set('memory_limit','2048M');
         $startTime = empty($this->argument('startTime'))?date('Y-m-d',strtotime('-1 day')):$this->argument('startTime');
         $endTime = empty($this->argument('endTime'))?date('Y-m-d',strtotime('-1 day')):$this->argument('endTime');
         $aDate = $this->getSpanDays($startTime,$endTime);
         foreach ($aDate as $kDate => $iDate){
-            AgentBackwaterThirdDaily::dispatch($iDate)->onQueue($this->setQueueRealName('ZhRebateThirdDaily'));
+            PromotionMemberRebateDaily::dispatch($iDate)->onQueue($this->setQueueRealName('ZhRebateThirdDaily'));
         }
         $this->info('ok');
     }

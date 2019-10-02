@@ -86,22 +86,24 @@ class AgentBackwaterCp extends Command
         $iLevelNum = SystemSetup::getValueByCode('agent_backwater_level_num');
         //获取参数返水代理
         $aAgentBackwater = [];
-        //获取代理增肌金额
+        //获取代理增加金额
         $aAgentMoney = [];
         $iTime = date('Y-m-d H:i:s');
         foreach ($aBet as  $iBet){
-            if(empty($iAgent = $aAgentOdds[$iBet->agent_id])){
+            if(empty($aAgentOdds[$iBet->agent_id])){
                 $this->info('代理id为'.$iBet->agent_id.',赔率不存在');
                 continue;
             }
+            $iAgent = $aAgentOdds[$iBet->agent_id];
             $preRebate = $iAgent->rebate;
             if(!empty($iBet->superior_agent)){
                 $aAgentId = array_slice(array_reverse(explode(',',$iBet->superior_agent),false),0,$iLevelNum);
                 foreach ($aAgentId as $iAgentId){
-                    if(empty($iAgent = $aAgentOdds[$iAgentId])){
+                    if(empty($aAgentOdds[$iAgentId])){
                         $this->info('代理id为'.$iBet->agent_id.',赔率不存在');
                         continue;
                     }
+                    $iAgent = $aAgentOdds[$iAgentId];
                     $iCommission = $this->getCommission($preRebate,$iAgent->rebate);
                     $iMoney = $this->getMoney($iBet->betMoney,$iCommission);
                     if($iMoney > 0){
@@ -115,6 +117,7 @@ class AgentBackwaterCp extends Command
                             'issue' => $issue,
                             'rebate' => $iAgent->rebate,
                             'commission' => $iCommission,
+                            'bet_money' => $iBet->betMoney,
                             'category_id' => 1,
                             'created_at' => $iTime,
                             'updated_at' => $iTime,

@@ -47,4 +47,34 @@ class ZhReportMemberBunko extends Model
             ->join('level','level.value','=','users.rechLevel')
             ->get();
     }
+
+    //获取第三方数据
+    public static function getThirdData($startTime,$endTime){
+        $aSql = 'SELECT `zh_report_member_bunko`.agent_id,`zh_report_member_bunko`.game_id,`zh_report_member_bunko`.bet_money,
+                    `zh_report_member_bunko`.game_name,`zh_report_member_bunko`.user_id,`agent`.superior_agent 
+                    FROM `zh_report_member_bunko`
+                    INNER JOIN `agent` ON `agent`.a_id = `zh_report_member_bunko`.agent_id AND `agent`.modelStatus = 1
+                    WHERE `zh_report_member_bunko`.`game_id` > 0 AND `zh_report_member_bunko`.`date` >= :startTime 
+                    AND `zh_report_member_bunko`.`date` <= :endTime';
+        $aArray = [
+            'startTime' => $startTime,
+            'endTime' => $endTime
+        ];
+        return DB::select($aSql,$aArray);
+    }
+
+    public static function betMemberPromotionData($startTime = '',$endTime = ''){
+        $aSql = "SELECT `re`.*,`users`.user_odds_level,`level`.users_promoter_shangji FROM
+                    (SELECT `game_id`,`game_name`,`user_id`,`user_account`,`user_name`,SUM(`bet_money`) AS `bet_money`
+                        FROM `zh_report_member_bunko` WHERE `date` >= :startTime AND `date` <= :endTime 
+                        GROUP BY `user_id`,`game_id`
+                    ) AS `re`
+                    JOIN `users` ON `users`.id = `re`.user_id
+                    JOIN `level` ON `level`.value = `users`.rechLevel";
+        $aArray = [
+            'startTime' => $startTime,
+            'endTime' => $endTime,
+        ];
+        return DB::select($aSql,$aArray);
+    }
 }
