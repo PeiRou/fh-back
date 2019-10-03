@@ -22,7 +22,8 @@ class BUNKO_lhc extends Command
     public function handle()
     {
         $code = 'lhc';
-        $games = Games::$games[$code]??'';
+        $Games = new Games();
+        $games = $Games->games[$code]??'';
         if(empty($games))
             return false;
         $table = $games['table'];

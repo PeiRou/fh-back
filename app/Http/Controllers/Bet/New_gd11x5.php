@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Bet;
 
-use App\Bets;
 use App\Excel;
 use App\ExcelLottery11X5;
 use App\Http\Controllers\Job\AgentBackwaterJob;

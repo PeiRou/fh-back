@@ -5,10 +5,10 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
-class CURL_BK_THREAD extends Command
+class CURL_B_THREAD extends Command
 {
 
-    protected $signature = 'CURL_BK_THREAD';
+    protected $signature = 'CURL_B_THREAD';
     protected $description = '执行所有的定时任务';
     private $urls = array();
 
@@ -33,14 +33,12 @@ class CURL_BK_THREAD extends Command
         }
         if(!Storage::disk('thread')->exists('thread')||($thread_time<$now)){
             Storage::disk('thread')->put('thread', date('Y-m-d H:i:s',$now).'***'.($now+50));
-            $this->pushData('http://127.0.0.1:9500?thread=CHECK_KILL');
+            $this->pushData('http://127.0.0.1:9500?thread=CHECK_BUNKO');
+            usleep(20000);
+            $this->pushData('http://127.0.0.1:9500?thread=CHECK_EXEB');
             usleep(50000);
             $this->pushData('http://127.0.0.1:9500?thread=CHECK_BUNKO');
-            usleep(10000);
-            $this->pushData('http://127.0.0.1:9500?thread=CHECK_EXEB');
-            usleep(40000);
-            $this->pushData('http://127.0.0.1:9500?thread=CHECK_BUNKO');
-            usleep(10000);
+            usleep(20000);
             $this->pushData('http://127.0.0.1:9500?thread=CHECK_EXEB');
 
             //组装后一起发送

@@ -21,7 +21,8 @@ class BUNKO_pknn extends Command
     public function handle()
     {
         $code = 'pknn';
-        $games = Games::$games[$code]??'';
+        $Games = new Games();
+        $games = $Games->games[$code]??'';
         if(empty($games))
             return false;
         $table = $games['table'];
@@ -43,6 +44,12 @@ class BUNKO_pknn extends Command
             ]);
             if($update)
                 $excel->all($get->opennum,$get->niuniu, $get->issue, $gameId, $get->id,$code,$table,$gameName); //新--结算
+            $get = $excel->getNeedBunkoIssueAll($table);
+            if($get) {
+                foreach ($get as $k => $one) {
+                    $redis->set($code . ':needbunko--' . $one->issue, $one->issue);
+                }
+            }
         }
     }
 }
