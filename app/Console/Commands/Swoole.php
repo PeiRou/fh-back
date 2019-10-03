@@ -220,7 +220,7 @@ class Swoole extends Command
                                 Storage::disk('needbunko')->delete($filename);
                             }
                             $ii++;
-                            if ($ii > 10)
+                            if ($ii > 3)
                                 break;
                         }
                     } catch (\Exception $exception) {
@@ -231,51 +231,54 @@ class Swoole extends Command
                     $redis = Redis::connection();
                     $redis->select(0);
                     foreach ($this->gameKill as $gameId => $code){
+                        $rsKey = $code.':nextIssueLotteryTime';
+                        $LotteryTime = $redis->exists($rsKey)?(int)$redis->get($rsKey):0;
+                        if(empty($LotteryTime))
+                            continue;
+                        if(Storage::disk('thread')->exists('needkill-'.$code)&& time() <= Storage::disk('thread')->get('needkill-'.$code))
+                            continue;
+                        $data['LotteryTime'] = $LotteryTime;
                         $data['code'] = $code;
                         $data['exethread'] = 'KILL_1';
-                        $this->cldComds($redis, $data);
-//                        $rsKey = $code.':nextIssueLotteryTime';
-//                        $LotteryTime = $redis->get($rsKey);
-//                        if(empty($LotteryTime))
-//                            continue;
-//                        if(Storage::disk('thread')->exists('needkill-'.$code)&& time() <= Storage::disk('thread')->get('needkill-'.$code))
-//                            continue;
-//                        $data['code'] = $code;
-//                        $data['exethread'] = 'KILL_1';
-//                        $filename = ($LotteryTime+7).'--'.$code.'--'.date('H:i:s',$LotteryTime);
-//                        if(time() <= (int)$LotteryTime && !Storage::disk('needkill')->exists($filename))
-//                            Storage::disk('needkill')->put($filename,json_encode($data));
+                        $killLotteryTime = $LotteryTime-7;
+                        $filename = ($killLotteryTime).'--'.$code.'--'.date('H:i:s',$killLotteryTime);
+                        if(time() <= (int)$LotteryTime && !Storage::disk('needkill')->exists($filename))
+                            Storage::disk('needkill')->put($filename,json_encode($data));
                     }
                     break;
-//                case 'CHECK_EXEK':           //改良的新结算，执行有需要杀率的
-//                    $redis = Redis::connection();
-//                    $redis->select(0);
-//                    $files = Storage::disk('needkill')->files();
-//                    try {
-//                        $ii = 0;
-//                        foreach ($files as $filename) {
-//                            if(Storage::disk('needkill')->exists($filename)){
-//                                $info = json_decode(Storage::disk('needkill')->get($filename),true);
-//                                $tmp = explode('--',$filename);
+                case 'CHECK_EXEK':           //改良的新结算，执行有需要杀率的
+                    $redis = Redis::connection();
+                    $redis->select(0);
+                    $files = Storage::disk('needkill')->files();
+                    try {
+                        $ii = 0;
+                        foreach ($files as $filename) {
+                            if(Storage::disk('needkill')->exists($filename)){
+                                $info = json_decode(Storage::disk('needkill')->get($filename),true);
+                                $tmp = explode('--',$filename);
 //                                if(time() >= (int)$tmp[0]) {
 //                                    echo 'del--'.$info['code'].PHP_EOL;
 //                                    Storage::disk('needkill')->delete($filename);
 //                                }else
-//                                if(time() >= (int)$tmp[0]) {
-//                                    echo 'exe--'.$info['code'].PHP_EOL;
-//                                    $this->cldComds($redis, $info);
-//                                    Storage::disk('needkill')->delete($filename);
-//                                    Storage::disk('thread')->put('needkill-'.$info['code'],time()+5);
-//                                }
-//                            }
-//                            $ii++;
-//                            if ($ii > 40)
-//                                break;
-//                        }
-//                    } catch (\Exception $exception) {
-//                        writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-//                    }
-//                    break;
+                                if(isset($info['LotteryTime']) && time() >= $info['LotteryTime']){       //如果已经超出开奖时间，则不执行了
+                                    Storage::disk('needkill')->delete($filename);
+                                    continue;
+                                }
+                                if(time() >= (int)$tmp[0]) {
+                                    echo 'killexe--'.$info['code'].PHP_EOL;
+                                    Storage::disk('needkill')->delete($filename);
+                                    $this->cldComds($redis, $info);
+                                    Storage::disk('thread')->put('needkill-'.$info['code'],time()+5);
+                                }
+                            }
+                            $ii++;
+                            if ($ii > 3)
+                                break;
+                        }
+                    } catch (\Exception $exception) {
+                        writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                    }
+                    break;
 //                case 'CHECK_EXEK':           //改良的新结算，执行有需要杀率的
 //                    $redis = Redis::connection();
 //                    $redis->select(0);
