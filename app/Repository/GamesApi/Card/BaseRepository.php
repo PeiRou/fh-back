@@ -500,6 +500,8 @@ class BaseRepository
                 return 16;
             case 21:
                 return 31;
+            case 20:
+                return 30;
         }
         return $this->gameInfo->g_id;
     }
@@ -578,8 +580,6 @@ class BaseRepository
         if($code == 500)
             return true;
         if($this->gameInfo->g_id == 19 && $code == 23)
-            return true;
-        if($this->gameInfo->g_id == 10 && $code == 1000497)
             return true;
         return $is;
     }
