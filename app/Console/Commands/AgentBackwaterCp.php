@@ -114,6 +114,7 @@ class AgentBackwaterCp extends Command
                             'status' => 1,
                             'money' => $iMoney,
                             'game_id' => $gameId,
+                            'game_name' => $iGame['lottery'],
                             'issue' => $issue,
                             'rebate' => $iAgent->rebate,
                             'commission' => $iCommission,
