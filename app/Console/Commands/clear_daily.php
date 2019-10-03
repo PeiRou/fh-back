@@ -44,7 +44,8 @@ class clear_daily extends Command
         //---将 意见反馈的ID重置
         $this->resetId('feedback_message');
         //---将 游戏表 的ID重置
-        $res = Games::$games;
+        $Games = new Games();
+        $res = $Games->games;
         foreach ($res as $key => $val){
             $this->resetId($val['table']);
         }

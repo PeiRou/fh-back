@@ -283,34 +283,6 @@ class Excel
         $sql = DB::connection('mysql::write')->select($strSql);
         return $sql;
     }
-    //计算是否开杀
-//    public function kill_count($table,$issue,$gameId,$opencode){
-//        try{
-//            $killopennum = DB::connection('mysql::write')->table($table)->select('excel_opennum','is_useropen','useropennum')->where('issue',$issue)->first();
-//            $is_killopen = DB::connection('mysql::write')->table('excel_base')->select('is_open','count_date','kill_rate','bet_lose','bet_win','is_user')->where('game_id',$gameId)->first();
-//
-//            if($killopennum->is_useropen==1 && !empty($killopennum->useropennum) && $is_killopen->is_user==1) {
-//                $opennum = $killopennum->useropennum;
-//            }else if(!empty($killopennum->excel_opennum)&&($is_killopen->is_open==1) && $is_killopen->is_user){
-//                $opencode = empty($opencode)?$this->opennum($table):$opencode;
-//                writeLog('serfKill',$table.' 获取KILL'.$issue.'--'.@$killopennum->excel_opennum);
-//                $opennum = isset($killopennum->excel_opennum)&&!empty($killopennum->excel_opennum)?$killopennum->excel_opennum:$this->opennum($table);
-//                $total = $is_killopen->bet_lose + $is_killopen->bet_win;
-//                $lose_losewin_rate = $total>0?($is_killopen->bet_lose-$is_killopen->bet_win)/$total:0;
-//                writeLog('serfKill',$table.':杀率设置'.json_encode($is_killopen));
-//                writeLog('serfKill',$table.':输赢比 '.$lose_losewin_rate);
-//                writeLog('serfKill',$table.' 获取KILL开奖'.$issue.'--'.$opennum);
-//                writeLog('serfKill',$table.' 获取origin开奖'.$issue.'--'.$opencode);
-//            }else if(isset($is_killopen->is_user) && $is_killopen->is_user == 0){//增加统一杀率，如果是此栏位为0时，为统一控制杀率
-//                $opennum = $this->opennum($table,$is_killopen->is_user,$issue);
-//            }else
-//                $opennum = $this->opennum($table);
-//        }catch (\Exception $exception){
-//            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-//            $opennum = $this->opennum($table);
-//        }
-//        return $opennum;
-//    }
     //取得杀率信息
     public function getKillBase($gameId){
         $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$gameId)->first();
@@ -353,6 +325,17 @@ class Excel
             $res = $value;
         return $res;
     }
+    //取得最新的需要结算奖期-所有的
+    public function getNeedBunkoIssueAll($table){
+        if(empty($table))
+            return false;
+        $today = date('Y-m-d H:i:s',time());
+//        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0)");
+        $res = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 order by id desc");
+        if(empty($res))
+            return false;
+        return $res;
+    }
     //取得最新的需要结算奖期
     public function getNeedBunkoIssueLhc($table){
         if(empty($table))
@@ -378,6 +361,17 @@ class Excel
             return false;
         foreach ($tmp as&$value)
             $res = $value;
+        return $res;
+    }
+    //取得最新的需要结算NN奖期-所有的
+    public function getNeedNNBunkoIssueAll($table){
+        if(empty($table))
+            return false;
+        $today = date('Y-m-d H:i:s',time());
+//        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0)");
+        $res = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0 order by id desc");
+        if(empty($res))
+            return false;
         return $res;
     }
     //取得目前奖期
@@ -944,7 +938,8 @@ class Excel
     }
     //试算杀率共用方法
     public function excel($openCode,$exeBase,$issue,$gameId,$code,$table = ''){
-        $games = Games::$games[$code];
+        $Games = new Games();
+        $games = $Games->games[$code]??'';
         if(empty($games))
             return false;
         $type = $games['type'];

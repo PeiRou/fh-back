@@ -124,6 +124,27 @@ class Agent extends Model
         return $aSql;
     }
 
+    public static function updateBalanceBatch($data,$fields,$table = 'agent'){
+        $aSql = 'UPDATE '. $table . ' SET ';
+        foreach ($fields as $field){
+            $str1 = '`balance` = `balance` + CASE `a_id`  ';
+            foreach ($data as $key => $value){
+                $str1 .= 'WHEN \'' . $value['a_id'] . '\' THEN \'' . $value[$field] . '\' ';
+            }
+            $str1 .= 'END , ';
+            $aSql .= $str1;
+        }
+        $aSql = substr($aSql, 0, strlen($aSql) - 2);
+        $endStr = 'WHERE `a_id` IN (';
+        foreach ($data as $key => $value) {
+            $endStr .= '\'' . $value['a_id'] . '\',';
+        }
+        $endStr = substr($endStr, 0, strlen($endStr) - 1);
+        $endStr .= ')';
+        $aSql .= $endStr;
+        return $aSql;
+    }
+
     //获得下级代理
     public static function getSubordinateAgent($agentId){
         $aSql = "SELECT * FROM `agent` WHERE FIND_IN_SET(:agentId,`superior_agent`)";

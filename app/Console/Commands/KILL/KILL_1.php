@@ -21,7 +21,8 @@ class KILL_1 extends Command
     public function handle()
     {
         $code = $this->argument('code');
-        $games = Games::$games[$code]??'';
+        $Games = new Games();
+        $games = $Games->games[$code]??'';
         if(empty($games))
             return false;
         $excel = new Excel();

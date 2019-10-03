@@ -10,6 +10,7 @@ use App\Drawing;
 use App\GamesList;
 use App\GeneralAgent;
 use App\JqReportBetGame;
+use App\PromotionRecode;
 use App\Recharges;
 use App\ThirdRebate;
 use App\ZhReportGeneral;
@@ -19,8 +20,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
-use SameClass\Config\GamesListConfig\GamesListConfig;
 
 class ZhReportGeneralStatementDaily implements ShouldQueue
 {
@@ -68,6 +67,8 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
         $aGameName = GamesList::getNameArray();
         //第三方返水
         $aRebate = ThirdRebate::generalReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        //会员推广返佣
+        $aPromotion = PromotionRecode::generalReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         $aArray = [];
         $aArrayBunko = [];
         $dateTime = date('Y-m-d H:i:s');
@@ -89,7 +90,8 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
                 'handling_fee' => 0.00,
                 'bet_bunko' => 0.00,
                 'bet_money' => 0.00,
-                'rebate_money' => 0.00
+                'rebate_money' => 0.00,
+                'promotion_money' => 0.00,
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -135,6 +137,7 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
                         'bet_count' => empty($iBet->idCount)?0:$iBet->idCount,
                         'bet_money' => empty($iBet->betMoneySum)?0.00:$iBet->betMoneySum,
                         'rebate_money' => 0.00,
+                        'promotion_money' => 0.00,
                         'gameCategory' => 'CP',
                         'date' => $iBet->date,
                         'dateTime' => $time,
@@ -160,6 +163,7 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
                         'bet_count' => empty($iJqBet->bet_count)?0:$iJqBet->bet_count,
                         'bet_money' => empty($iJqBet->bet_money)?0.00:$iJqBet->bet_money,
                         'rebate_money' => 0.00,
+                        'promotion_money' => 0.00,
                         'date' => $this->aDateTime,
                         'dateTime' => $time,
                         'created_at' => $dateTime,
@@ -173,6 +177,12 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
                     $aArray[$kArray]['rebate_money'] += empty($iRebate->money)?0:$iRebate->money;
                 }
             }
+
+            foreach ($aPromotion as $iPromotion){
+                if($iArray['general_id'] == $iPromotion->general_id){
+                    $aArray[$kArray]['promotion_money'] += empty($iPromotion->money)?0:$iPromotion->money;
+                }
+            }
         }
 
         foreach ($aArrayBunko as $kArrayBunko => $iArrayBunko){
@@ -180,6 +190,13 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
                 if($iArrayBunko['game_id'] == $iRebate->game_id && $iArrayBunko['general_id'] == $iRebate->general_id){
                     $aArrayBunko[$kArrayBunko]['rebate_money'] = $iRebate->money;
                     unset($aRebate[$kRebate]);
+                }
+            }
+
+            foreach ($aPromotion as $kPromotion => $iPromotion){
+                if($iArrayBunko['game_id'] == $iPromotion->game_id && $iArrayBunko['general_id'] == $iPromotion->general_id){
+                    $aArrayBunko[$kArrayBunko]['promotion_money'] = $iPromotion->money;
+                    unset($aPromotion[$kPromotion]);
                 }
             }
         }
@@ -196,6 +213,27 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
                 'bet_money' => 0.00,
                 'bet_count' => 0,
                 'rebate_money' => $iRebate->money,
+                'promotion_money' => 0.00,
+                'date' => $this->aDateTime,
+                'dateTime' => $time,
+                'created_at' => $dateTime,
+                'updated_at' => $dateTime,
+            ];
+        }
+
+        foreach ($aPromotion as $iPromotion){
+            $aArrayBunko[] = [
+                'game_id' => $iPromotion->game_id,
+                'game_name' => $iPromotion->game_name,
+                'gameCategory' => $this->getGameCategoryCode($iPromotion->pid),
+                'general_account' => $iPromotion->general_account,
+                'general_name' => $iPromotion->general_name,
+                'general_id' => $iPromotion->general_id,
+                'bet_bunko' => 0.00,
+                'bet_money' => 0.00,
+                'bet_count' => 0,
+                'rebate_money' => 0.00,
+                'promotion_money' => $iPromotion->money,
                 'date' => $this->aDateTime,
                 'dateTime' => $time,
                 'created_at' => $dateTime,
@@ -210,7 +248,7 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
             ZhReportGeneralBunko::insert($iBunko);
         }
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['bet_bunko'] > 0 || $iArray['rebate_money'] > 0)
+            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['bet_bunko'] > 0 || $iArray['rebate_money'] > 0 || $iArray['promotion_money'] > 0)
                 ZhReportGeneralStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('zhReportGeneralStatementInsert'));
         }
     }

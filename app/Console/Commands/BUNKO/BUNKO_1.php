@@ -21,8 +21,11 @@ class BUNKO_1 extends Command
     public function handle()
     {
         $code = $this->argument('code');
-        $games = Games::$games[$code]??'';
-        if(empty($games))
+        if(in_array($code,['lhc','msnn','pknn']))
+            return false;
+        $Games = new Games();
+        $games = $Games->games[$code]??'';
+        if(empty($games) || in_array($code,['lhc','msnn','pknn']))
             return false;
         $excel = new Excel();
         $excel = $excel->newObject($code);
@@ -34,6 +37,7 @@ class BUNKO_1 extends Command
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
+            $redis->del($code.':needbunko--'.$get->issue);
             //阻止進行中
             $key = 'Bunko:'.$gameId.'ing:'.$get->issue;
             if($redis->exists($key)){
@@ -46,6 +50,12 @@ class BUNKO_1 extends Command
             $opennum = $type=='lhc'?$get->open_num:$get->opennum;
             if($update)
                 $excel->all($opennum,$get->issue,$gameId,$get->id,false,$code,$table,$gameName);
+            $get = $excel->getNeedBunkoIssueAll($table);
+            if($get){
+                foreach ($get as $k => $one){
+                    $redis->set($code.':needbunko--'.$one->issue,$one->issue);
+                }
+            }
         }
     }
 }
