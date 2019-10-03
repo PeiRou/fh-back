@@ -40,20 +40,6 @@ class Swoole extends Command
     public function __construct()
     {
         parent::__construct();
-        $ClassGames = new Games();
-        $this->gameIdtoCode = $ClassGames->getGameData('gameIdtoCode','',['lhc']); //取得游戏id对应的游戏code，排除香港六合彩
-        $this->gameCodetoTable = $ClassGames->getGameFileData('gameCodetoTable');   //取得游戏code对应的游戏table
-        $tmp = $ClassGames->getGameFileData('gameKill');     //取得游戏不是官彩都要开启杀率
-        foreach ($tmp as $k => $v){
-            $this->gameKill[$k] = $v;
-        }
-        //进程一起来的时候只做一次检查
-        $redis = Redis::connection();
-        $redis->select(0);
-        $redis->flushdb();
-        foreach ($this->gameCodetoTable as $code => $table) {         //把需要结算的奖期放到redis
-            $this->setNeedBunkoIssue($redis, $code, $table);
-        }
     }
 
     /**
@@ -83,6 +69,20 @@ class Swoole extends Command
      * 初始化
      */
     private function init(){
+        $ClassGames = new Games();
+        $this->gameIdtoCode = $ClassGames->getGameData('gameIdtoCode','',['lhc']); //取得游戏id对应的游戏code，排除香港六合彩
+        $this->gameCodetoTable = $ClassGames->getGameFileData('gameCodetoTable');   //取得游戏code对应的游戏table
+        $tmp = $ClassGames->getGameFileData('gameKill');     //取得游戏不是官彩都要开启杀率
+        foreach ($tmp as $k => $v){
+            $this->gameKill[$k] = $v;
+        }
+        //进程一起来的时候只做一次检查
+        $redis = Redis::connection();
+        $redis->select(0);
+        $redis->flushdb();
+        foreach ($this->gameCodetoTable as $code => $table) {         //把需要结算的奖期放到redis
+            $this->setNeedBunkoIssue($redis, $code, $table);
+        }
     }
 
     /***
@@ -116,12 +116,6 @@ class Swoole extends Command
                 Artisan::call($data['thread'], $serv->get);
                 $response->end(ob_get_clean());
                 return '';
-            }else if(substr($data['thread'],0,7) == 'BUNKO_F'){     //改良的新结算，只执行一次
-                $tmp = explode('_',$data['thread']);
-                $data['code'] = $tmp[2];
-                $data['thread'] = 'BUNKO_1';
-                $this->exeComds($data);
-                return '';
             }else if(substr($data['thread'],0,11) == 'CHECK_BUNKO'){     //改良的新结算，检查有需要结算的，把它放到文件做对列
                 $data['dida'] = 1000;
                 $data['dida_num'] = 59;
@@ -139,7 +133,7 @@ class Swoole extends Command
                 $data['dida_num'] = 59;
                 $this->didaTimer($data);
             }else{
-                echo json_encode($data).PHP_EOL;
+//                echo json_encode($data).PHP_EOL;
                 $this->exeComds($data);
             }
         });
@@ -154,6 +148,7 @@ class Swoole extends Command
     //启动计数器
     private function didaTimer($data){
         $this->timer = $this->serv->tick($data['dida'], function($id) use ($data){
+//            if($data['thread']=='CHECK_KILL')
 //            echo $data['thread'].'-----id----'.$id.'----'.$data['dida'].'----'.$data['dida_num'].PHP_EOL;
             //设置ID计数器
             $this->setId($id,$data);
@@ -187,22 +182,7 @@ class Swoole extends Command
                         if(is_array($needBunko)&&count($needBunko)>0){
                             foreach ($needBunko as $k1 => $v1){
                                 $tmp = explode('--',$v1);
-                                switch ($code){
-                                    case 'msnn':
-                                        $data['code'] = '';
-                                        $data['exethread'] = 'BUNKO_msnn';
-                                        break;
-                                    case 'pknn':
-                                        $data['code'] = '';
-                                        $data['exethread'] = 'BUNKO_pknn';
-                                        break;
-                                    default:
-                                        $data['code'] = $code;
-                                        $data['exethread'] = 'BUNKO_1';
-                                        break;
-                                }
-                                Storage::disk('needbunko')->put($data['exethread'].'-'.$data['code'].'-'.$tmp[1],json_encode($data));
-//                                echo json_encode($data).PHP_EOL;
+                                $this->setNeedBunkoFile($code,$tmp[1]);
                             }
                         }
                     }
@@ -216,10 +196,13 @@ class Swoole extends Command
                         foreach ($files as $filename) {
                             if(Storage::disk('needbunko')->exists($filename)){
                                 $info = json_decode(Storage::disk('needbunko')->get($filename),true);
-                                $this->cldComds($redis, $info);
-                                Storage::disk('needbunko')->delete($filename);
+                                $rep = $this->cldComds($redis, $info);
+                                if($rep)
+                                    Storage::disk('needbunko')->delete($filename);
+                                else
+                                    continue;
+                                $ii++;
                             }
-                            $ii++;
                             if ($ii > 3)
                                 break;
                         }
@@ -242,8 +225,9 @@ class Swoole extends Command
                         $data['exethread'] = 'KILL_1';
                         $killLotteryTime = $LotteryTime-7;
                         $filename = ($killLotteryTime).'--'.$code.'--'.date('H:i:s',$killLotteryTime);
-                        if(time() <= (int)$LotteryTime && !Storage::disk('needkill')->exists($filename))
+                        if(time() <= (int)$LotteryTime && !Storage::disk('needkill')->exists($filename)){
                             Storage::disk('needkill')->put($filename,json_encode($data));
+                        }
                     }
                     break;
                 case 'CHECK_EXEK':           //改良的新结算，执行有需要杀率的
@@ -256,23 +240,22 @@ class Swoole extends Command
                             if(Storage::disk('needkill')->exists($filename)){
                                 $info = json_decode(Storage::disk('needkill')->get($filename),true);
                                 $tmp = explode('--',$filename);
-//                                if(time() >= (int)$tmp[0]) {
-//                                    echo 'del--'.$info['code'].PHP_EOL;
-//                                    Storage::disk('needkill')->delete($filename);
-//                                }else
                                 if(isset($info['LotteryTime']) && time() >= $info['LotteryTime']){       //如果已经超出开奖时间，则不执行了
                                     Storage::disk('needkill')->delete($filename);
                                     continue;
                                 }
                                 if(time() >= (int)$tmp[0]) {
-                                    echo 'killexe--'.$info['code'].PHP_EOL;
+//                                    echo 'killexe--'.$info['code'].PHP_EOL;
                                     Storage::disk('needkill')->delete($filename);
-                                    $this->cldComds($redis, $info);
-                                    Storage::disk('thread')->put('needkill-'.$info['code'],time()+5);
+                                    $rep = $this->cldComds($redis, $info);
+                                    if($rep)
+                                        Storage::disk('thread')->put('needkill-'.$info['code'],time()+50);
+                                    else
+                                        continue;
                                 }
+                                $ii++;
                             }
-                            $ii++;
-                            if ($ii > 3)
+                            if ($ii > 5)
                                 break;
                         }
                     } catch (\Exception $exception) {
@@ -311,13 +294,16 @@ class Swoole extends Command
             $this->num[$data['thread']][$id]['num'] = 0;
     }
     private function cldComds($redis,$data){
+        $data['thread'] = isset($data['thread'])??'';
         $key = 'Artisan:'.$data['thread'].'-'.$data['exethread'].'-'.$data['code'];
         if(!$redis->exists($key)){
             $redis->setex($key, 60,'on');
             DB::disconnect();
             $this->exeComds($data);
             $redis->del($key);
+            return true;
         }
+        return false;
     }
     private function exeComds($data){
         if(empty($data['code'])){
@@ -328,6 +314,7 @@ class Swoole extends Command
         }else
             Artisan::call($data['exethread'],['code'=>$data['code']]);
     }
+    //把需要开奖的提出来
     private function setNeedBunkoIssue($redis,$code,$table){
         $excel = new Excel();
         if($code=='msnn')                               //只有秒速牛牛的表跟别人不一样
@@ -336,6 +323,33 @@ class Swoole extends Command
             $res = $excel->getNeedBunkoIssue($table);
         if($res){
             $redis->set($code.':needbunko--'.$res->issue,$res->issue);
+            $this->setNeedBunkoFile($code,$res->issue);
         }
+    }
+    //把需要开奖的放到结算文件里
+    //第一个参数是彩种的code，第二个参数是需要结算的期号
+    private function setNeedBunkoFile($code,$issue){
+        switch ($code){
+            case 'msnn':
+                $data['code'] = '';
+                $data['thread'] = 'BUNKO_msnn';
+                $data['exethread'] = 'BUNKO_msnn';
+                break;
+            case 'pknn':
+                $data['code'] = '';
+                $data['thread'] = 'BUNKO_pknn';
+                $data['exethread'] = 'BUNKO_pknn';
+                break;
+            default:
+                $data['code'] = $code;
+                $data['thread'] = 'BUNKO_1';
+                $data['exethread'] = 'BUNKO_1';
+                break;
+        }
+        $filename = $data['exethread'].'-'.$data['code'].'-'.$issue;
+        if(Storage::disk('needbunko')->exists($filename))
+            return false;
+        Storage::disk('needbunko')->put($filename,json_encode($data));
+//        echo json_encode($data).PHP_EOL;
     }
 }

@@ -34,19 +34,27 @@ class CURL_BK_THREAD extends Command
         if(!Storage::disk('thread')->exists('thread')||($thread_time<$now)){
             Storage::disk('thread')->put('thread', date('Y-m-d H:i:s',$now).'***'.($now+50));
             $this->pushData('http://127.0.0.1:9500?thread=CHECK_KILL');
-            usleep(10000);
+            usleep(20000);
             $this->pushData('http://127.0.0.1:9500?thread=CHECK_BUNKO');
-            usleep(10000);
+            usleep(20000);
             $this->pushData('http://127.0.0.1:9500?thread=CHECK_EXEB');
-            usleep(10000);
+            usleep(20000);
             $this->pushData('http://127.0.0.1:9500?thread=CHECK_EXEK');
-            usleep(40000);
+            usleep(300000);
             $this->pushData('http://127.0.0.1:9500?thread=CHECK_KILL');
-            usleep(10000);
+            usleep(20000);
             $this->pushData('http://127.0.0.1:9500?thread=CHECK_BUNKO');
-            usleep(10000);
+            usleep(20000);
             $this->pushData('http://127.0.0.1:9500?thread=CHECK_EXEB');
-            usleep(10000);
+            usleep(20000);
+            $this->pushData('http://127.0.0.1:9500?thread=CHECK_EXEK');
+            usleep(300000);
+            $this->pushData('http://127.0.0.1:9500?thread=CHECK_KILL');
+            usleep(20000);
+            $this->pushData('http://127.0.0.1:9500?thread=CHECK_BUNKO');
+            usleep(20000);
+            $this->pushData('http://127.0.0.1:9500?thread=CHECK_EXEB');
+            usleep(20000);
             $this->pushData('http://127.0.0.1:9500?thread=CHECK_EXEK');
 
             //组装后一起发送

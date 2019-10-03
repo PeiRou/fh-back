@@ -21,6 +21,7 @@ class BUNKO_msnn extends Command
     public function handle()
     {
         $code = 'msnn';
+        echo 'BUNKO-'.$code.PHP_EOL;
         $Games = new Games();
         $games = $Games->games[$code]??'';
         if(empty($games))

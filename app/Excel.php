@@ -317,8 +317,8 @@ class Excel
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time());
-//        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0)");
-        $tmp = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 order by id desc LIMIT 1");
+        $sql = "SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 order by id desc LIMIT 1";
+        $tmp = DB::select($sql);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -330,7 +330,6 @@ class Excel
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time());
-//        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0)");
         $res = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 order by id desc");
         if(empty($res))
             return false;
@@ -341,8 +340,6 @@ class Excel
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time());
-//        writeLog('New_Bet1',  "SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 2)");
-//        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 2)");
         $tmp = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 2 order by id desc LIMIT 1");
         if(empty($tmp))
             return false;
