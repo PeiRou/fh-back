@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Agent;
 use App\AgentOddsLevel;
 use App\Bets;
+use App\CapitalAgent;
 use App\SystemSetup;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ class AgentBackwaterCp extends Command
      *
      * @var string
      */
-    protected $signature = 'AgentOdds:AgentBackwaterCp {gameId} {issue}';
+    protected $signature = 'AgentOdds:AgentBackwaterCp {code} {issue}';
 
     /**
      * The console command description.
@@ -44,12 +45,21 @@ class AgentBackwaterCp extends Command
     public function handle()
     {
         ini_set('memory_limit','2048M');
-        $gameId = $this->argument('gameId');
+        $code = $this->argument('code');
         $issue = $this->argument('issue');
-        if(empty($gameId) || empty($issue)){
+        if(empty($code) || empty($issue)){
             $this->info('缺少必要参数');
             return false;
         }
+        //获取彩票分类
+        $aGamesConfig = new Games();
+        $aGames = $aGamesConfig->games;
+        if(empty($aGames[$code])){
+            $this->info('该游戏分类不存在');
+            return false;
+        }
+        $iGame = $aGames[$code];
+        $gameId = $iGame['gameId'];
         //获取用户打码量
         $aBet = Bets::getAgentUserData($gameId,$issue);
         if(empty($aBet)){
@@ -65,17 +75,6 @@ class AgentBackwaterCp extends Command
             }
         }
         $aAgentId = array_unique($aAgentId);
-        //获取彩票分类
-        $aGamesConfig = new Games();
-        $aGames = $aGamesConfig->games;
-        $iGame = [];
-        foreach ($aGames as $iGames){
-            if($iGames['gameId'] == $gameId)    $iGame = $iGames;
-        }
-        if(empty($iGame)){
-            $this->info('该游戏分类不存在');
-            return false;
-        }
         //获取代理赔率
         $aAgentOdds = $this->agentOddsSort(AgentOddsLevel::getAgentOdds($iGame['type'],$aAgentId));
         if(empty($aAgentOdds)){
@@ -88,6 +87,8 @@ class AgentBackwaterCp extends Command
         $aAgentBackwater = [];
         //获取代理增加金额
         $aAgentMoney = [];
+        //资金明细
+        $aCapitalAgent = [];
         $iTime = date('Y-m-d H:i:s');
         foreach ($aBet as  $iBet){
             if(empty($aAgentOdds[$iBet->agent_id])){
@@ -107,6 +108,13 @@ class AgentBackwaterCp extends Command
                     $iCommission = $this->getCommission($preRebate,$iAgent->rebate);
                     $iMoney = $this->getMoney($iBet->betMoney,$iCommission);
                     if($iMoney > 0){
+                        if(array_key_exists($iAgentId,$aAgentMoney))
+                            $aAgentMoney[$iAgentId]['balance'] += $iMoney;
+                        else
+                            $aAgentMoney[$iAgentId] = [
+                                'a_id' => $iAgentId,
+                                'balance' => $iMoney
+                            ];
                         $aAgentBackwater[] = [
                             'agent_id' => $iAgentId,
                             'to_agent' => $iBet->agent_id,
@@ -123,13 +131,21 @@ class AgentBackwaterCp extends Command
                             'created_at' => $iTime,
                             'updated_at' => $iTime,
                         ];
-                        if(array_key_exists($iAgentId,$aAgentMoney))
-                            $aAgentMoney[$iAgentId]['balance'] += $iMoney;
-                        else
-                            $aAgentMoney[$iAgentId] = [
-                                'a_id' => $iAgentId,
-                                'balance' => $iMoney
-                            ];
+                        $aCapitalAgent[] = [
+                            'agent_id' => $iAgentId,
+                            'pre_id' => $iBet->agent_id,
+                            'order_id' => $iAgentId,
+                            'type' => 't01',
+                            'money' => $iMoney,
+                            'balance' => round($aAgentMoney[$iAgentId]['balance'] + $iBet->balance,2),
+                            'content' => '',
+                            'expan1' => $gameId,
+                            'expan2' => $issue,
+                            'expan3' => '',
+                            'expan4' => '',
+                            'created_at' => $iTime,
+                            'updated_at' => $iTime,
+                        ];
                         $preRebate = $iAgent->rebate;
                     }
                 }
@@ -139,7 +155,9 @@ class AgentBackwaterCp extends Command
         DB::beginTransaction();
         try{
             \App\AgentBackwater::insert($aAgentBackwater);
-            DB::update(Agent::updateFiledBatchStitching($aAgentMoney,['balance'],'a_id'));
+            if(count($aAgentMoney) > 0)
+                DB::update(Agent::updateFiledBatchStitching($aAgentMoney,['balance'],'a_id'));
+            CapitalAgent::insert($aCapitalAgent);
             DB::commit();
             $this->info('ok');
         }catch (\Exception $exception){

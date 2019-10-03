@@ -1112,7 +1112,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
 
     //代理用户投注
     public static function getAgentUserData($gameId,$issue){
-        $aSql = 'SELECT `BET`.*,`agent`.modelStatus,`agent`.superior_agent,`agent`.account,`agent`.name FROM 
+        $aSql = 'SELECT `BET`.*,`agent`.modelStatus,`agent`.superior_agent,`agent`.account,`agent`.balance FROM 
                     (
                         SELECT `user_id`,`agent_id`,SUM(`bet_money`) AS `betMoney` FROM `bet`
                         WHERE `game_id` = :gameId AND `issue` = :issue GROUP BY `user_id`
