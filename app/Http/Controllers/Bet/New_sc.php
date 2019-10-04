@@ -54,8 +54,12 @@ class New_sc extends Excel
         $this->arrPlay_id = $game['arrPlay_id'];
         $this->arrPlayCate = $game['arrPlayCate'];
         $this->arrPlayId = $game['arrPlayId'];
-        $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
+        if($excel && $code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
+            $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->whereIn('game_id',[$gameId,91])->where('issue',$issue)->where('bunko','=',0.00)->count();
+        else
+            $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
+            echo $betCount.PHP_EOL;
             if($excel){
                 $exeIssue = $this->getNeedKillIssue($table,2);
                 $exeBase = $this->getNeedKillBase($gameId);

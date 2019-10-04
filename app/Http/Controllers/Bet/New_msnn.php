@@ -43,7 +43,7 @@ class New_msnn extends Excel
         return array('win'=>$win,'lose'=>$lose);
     }
 
-    public function all($openCode,$nn,$issue,$gameId,$id,$code,$table,$gameName)
+    public function all($openCode,$nn,$issue,$gameId,$id,$excel,$code,$table,$gameName)
     {
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
@@ -51,16 +51,27 @@ class New_msnn extends Excel
             $resData = $this->exc_play_nn($openCode,$gameId,$nn);
             $win = @$resData['win'];
             $lose = isset($resData['lose'])?$resData['lose']:array();
-            try{
-                $bunko = $this->bunko_nn($win,$lose,$gameId,$issue);
-            }catch (\exception $exception){
-                writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-                DB::table('bet')->where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
-            }
-            if($bunko == 1){
-                $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id,true);
-                if($updateUserMoney == 1){
-                    writeLog('New_Bet', $gameName . $issue . "结算出错");
+            if($excel){ //执行杀率
+                try{
+                    $bunko = $this->bunko_nn($win,$lose,$gameId,$issue,$excel);
+                }catch (\exception $exception){
+                    writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                    DB::table('excel_bet')->where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
+                }
+                if($excel)
+                    return true;
+            }else{
+                try{
+                    $bunko = $this->bunko_nn($win,$lose,$gameId,$issue,$excel);
+                }catch (\exception $exception){
+                    writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                    DB::table('bet')->where('status',1)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
+                }
+                if($bunko == 1){
+                    $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id,true);
+                    if($updateUserMoney == 1){
+                        writeLog('New_Bet', $gameName . $issue . "结算出错");
+                    }
                 }
             }
         }

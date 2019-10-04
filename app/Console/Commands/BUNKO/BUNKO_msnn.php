@@ -44,7 +44,7 @@ class BUNKO_msnn extends Command
                 'nn_bunko' => 2
             ]);
             if($update)
-                $excel->all($get->opennum,$get->niuniu, $get->issue, $gameId, $get->id,$code,$table,$gameName); //新--结算
+                $excel->all($get->opennum,$get->niuniu, $get->issue, $gameId, $get->id, false,$code,$table,$gameName); //新--结算
             $get = $excel->getNeedNNBunkoIssueAll($table);
             if($get) {
                 foreach ($get as $k => $one) {

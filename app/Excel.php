@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Controllers\Bet\New_msnn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Config;
@@ -941,16 +942,29 @@ class Excel
             return false;
         $type = $games['type'];
         writeLog('New_Kill', $code.' issue:'.$issue);
-        $bet = DB::table('bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
+        if($code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
+            $bet = DB::table('bet')->select('bet_id')->where('status',0)->whereIn('game_id',[$gameId,91])->where('issue','=',$issue)->where('testFlag',0)->first();
+        else
+            $bet = DB::table('bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
         if(empty($bet))
             return false;
         for($i=1;$i<= (int)$exeBase->excel_num;$i++){
             if($i==1){
-                $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
-                if(empty($exeBet))
-                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.status = 0 and bet.game_id = '{$gameId}' and bet.issue = '{$issue}' and bet.testFlag = 0");
+                if($code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
+                    $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->whereIn('game_id',[$gameId,91])->where('issue','=',$issue)->where('testFlag',0)->first();
+                else
+                    $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
+                if(empty($exeBet)){
+                    if($code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
+                        DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.status = 0 and bet.game_id in ('{$gameId}','91') and bet.issue = '{$issue}' and bet.testFlag = 0");
+                    else
+                        DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.status = 0 and bet.game_id = '{$gameId}' and bet.issue = '{$issue}' and bet.testFlag = 0");
+                }
             }else{
-                DB::connection('mysql::write')->table("excel_bet")->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 0,'bunko' => 0]);
+                if($code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
+                    DB::connection('mysql::write')->table("excel_bet")->whereIn('game_id',[$gameId,91])->where('issue',$issue)->update(['status' => 0,'bunko' => 0,'nn_view_money' => 0]);
+                else
+                    DB::connection('mysql::write')->table("excel_bet")->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 0,'bunko' => 0]);
             }
             $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
             if($type=='lhc'){                                        //根据六合彩的系列另外有bunko
@@ -960,13 +974,32 @@ class Excel
                 $LHC = isset($resData['LHC'])?$resData['LHC']:null;
                 $bunko = $this->BUNKO_LHC($openCode, $win, $gameId, $issue, $he, true, $LHC);
             }else{
+                echo $gameId.'--'.$issue.PHP_EOL;
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue,true,$this->arrPlay_id);
+                if($code=='mssc'){   //只有秒速赛车需要额外加秒速牛牛的杀率
+                    $msnn = new New_msnn();
+                    $niuniu = $this->exePK10nn($openCode);
+                    $openniuniu =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
+                    $bunko = $msnn->all($openCode,$openniuniu, $issue, 91, 0, true,'msnn',$table,'秒速牛牛'); //新--结算
+                }
             }
             if($bunko == 1){
-                $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE game_id = '{$gameId}' and issue = '{$issue}'");
-                foreach ($tmp as&$value)
-                    $excBunko = $value->sumBunko;
+                if($code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
+                    $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko ,sum(nn_view_money) as sumBunkoNN ,game_id FROM excel_bet WHERE game_id in ('{$gameId}','91') and issue = '{$issue}' group by game_id");
+                else
+                    $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE game_id = '{$gameId}' and issue = '{$issue}'");
+                $excBunko = 0;
+                foreach ($tmp as&$value){
+                    if($code=='mssc'){   //只有秒速赛车需要额外加秒速牛牛的杀率
+                        if($value->game_id==91)
+                            $excBunko += $value->sumBunkoNN;
+                        else
+                            $excBunko += $value->sumBunko;
+                    }else{
+                        $excBunko = $value->sumBunko;
+                    }
+                }
                 writeLog('New_Kill', $table.' :'.$openCode.' => '.$excBunko);
                 $dataExcGame['game_id'] = $gameId;
                 $dataExcGame['issue'] = $issue;
@@ -1067,8 +1100,8 @@ class Excel
         }
         writeLog('New_Kill', $table.' :'.$openCode);
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
-        DB::table("excel_bet")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->limit(1000)->delete();
-        DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->limit(1000)->delete();
+//        DB::table("excel_bet")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->limit(1000)->delete();
+//        DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->limit(1000)->delete();
     }
     //试算杀率个别取用方法，用来继承的父类
     protected function exc_play($openCode,$gameId){
@@ -1320,16 +1353,21 @@ class Excel
      * @param $issue
      * @return int
      */
-    protected function bunko_nn($win,$lose,$gameId,$issue)
+    protected function bunko_nn($win,$lose,$gameId,$issue,$excel=false)
     {
         $in = 0;
         $loseArr = [];
         $winArr = [];
 
-        $getUserBets = DB::table('bet')->select('bet_id','play_id','playcate_id','bet_money','freeze_money')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
+        if($excel) {
+            $table = 'excel_bet';
+        }else{
+            $table = 'bet';
+        }
+        $getUserBets = DB::table($table)->select('bet_id','play_id','playcate_id','bet_money','freeze_money')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->get();
         if($getUserBets){
             if(count($win) !== 0){
-                $sql_win = "UPDATE bet SET bunko = CASE ";
+                $sql_win = "UPDATE ".$table." SET bunko = CASE ";
                 $sql_nn_money = " , nn_view_money = CASE ";
                 $sql_unfreeze_win = " , unfreeze_money = CASE ";
                 foreach ($getUserBets as $item){
@@ -1378,7 +1416,7 @@ class Excel
 
             }
             if(count($lose) !== 0){
-                $sql_lose = "UPDATE bet SET bunko = CASE ";
+                $sql_lose = "UPDATE ".$table." SET bunko = CASE ";
                 $sql_nn_money = " , nn_view_money = CASE ";
                 $sql_unfreeze_lose = " , unfreeze_money = CASE ";
                 foreach ($getUserBets as $item){
