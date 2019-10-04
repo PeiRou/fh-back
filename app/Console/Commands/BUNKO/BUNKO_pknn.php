@@ -33,6 +33,7 @@ class BUNKO_pknn extends Command
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
+            $redis->del($code.':needbunko--'.$get->issue);
             //阻止進行中
             $key = 'Bunko:'.$gameId.'ing:'.$get->issue;
             if($redis->exists($key)){
