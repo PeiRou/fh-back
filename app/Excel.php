@@ -974,7 +974,6 @@ class Excel
                 $LHC = isset($resData['LHC'])?$resData['LHC']:null;
                 $bunko = $this->BUNKO_LHC($openCode, $win, $gameId, $issue, $he, true, $LHC);
             }else{
-                echo $gameId.'--'.$issue.PHP_EOL;
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue,true,$this->arrPlay_id);
                 if($code=='mssc'){   //只有秒速赛车需要额外加秒速牛牛的杀率

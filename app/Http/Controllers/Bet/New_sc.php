@@ -59,7 +59,6 @@ class New_sc extends Excel
         else
             $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
-            echo $betCount.PHP_EOL;
             if($excel){
                 $exeIssue = $this->getNeedKillIssue($table,2);
                 $exeBase = $this->getNeedKillBase($gameId);
