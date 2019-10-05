@@ -207,7 +207,10 @@ class Swoole extends Command
                                 break;
                         }
                     } catch (\Exception $exception) {
+                        echo __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage().PHP_EOL;
+                        echo json_encode($data).PHP_EOL;
                         writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                        writeLog('error',$data);
                     }
                     break;
                 case 'CHECK_KILL':           //改良的新结算，检查有需要杀率的，把它放到文件做对列
@@ -260,24 +263,9 @@ class Swoole extends Command
                         }
                     } catch (\Exception $exception) {
                         writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                        writeLog('error',$data);
                     }
                     break;
-//                case 'CHECK_EXEK':           //改良的新结算，执行有需要杀率的
-//                    $redis = Redis::connection();
-//                    $redis->select(0);
-//                    foreach ($this->gameKill as $gameId => $code){
-//                        $rsKey = $code.':nextIssueLotteryTime';
-//                        try{
-//                            if($redis->exists($rsKey) && time()+10 >= (int)$redis->get($rsKey)){
-//                                $data['code'] = $code;
-//                                $data['exethread'] = 'KILL_1';
-//                                $this->cldComds($redis, $data);
-//                            }
-//                        }catch (\exception $exception){
-//                            continue;
-//                        }
-//                    }
-//                    break;
                 default:
                     $this->serv->clearTimer($id);
                     break;
@@ -296,6 +284,7 @@ class Swoole extends Command
     private function cldComds($redis,$data){
         $data['thread'] = isset($data['thread'])??'';
         $key = 'Artisan:'.$data['thread'].'-'.$data['exethread'].'-'.$data['code'];
+//        echo $key.PHP_EOL;
         if(!$redis->exists($key)){
             $redis->setex($key, 60,'on');
             DB::disconnect();

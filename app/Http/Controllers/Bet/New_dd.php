@@ -30,8 +30,12 @@ class New_dd extends Excel
         return $win;
     }
 
-    public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
+    public function all($openCode,$issue,$id,$excel,$code,$lotterys)
     {
+        $gameId = $lotterys['gameId'];
+        $table = $lotterys['table'];
+        $gameName = $lotterys['lottery'];
+
         $game = Config::get('game.'.$table);
         $this->arrPlay_id = $game['arrPlay_id'];
         $this->arrPlayCate = $game['arrPlayCate'];

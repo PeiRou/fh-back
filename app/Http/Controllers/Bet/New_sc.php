@@ -13,6 +13,7 @@ use App\ExcelLotterySC;
 use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
+use SameClass\Config\LotteryGames\Games;
 
 class New_sc extends Excel
 {
@@ -48,16 +49,37 @@ class New_sc extends Excel
         $SC->NUM10($gameId,$win);
         return $win;
     }
-    public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
+    public function all($openCode,$issue,$id,$excel,$code,$lotterys)
     {
+        $gameId = $lotterys['gameId'];
+        $table = $lotterys['table'];
+        $gameName = $lotterys['lottery'];
+
         $game = Config::get('game.'.$table);
         $this->arrPlay_id = $game['arrPlay_id'];
         $this->arrPlayCate = $game['arrPlayCate'];
         $this->arrPlayId = $game['arrPlayId'];
-        if($excel && $code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
-            $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->whereIn('game_id',[$gameId,91])->where('issue',$issue)->where('bunko','=',0.00)->count();
-        else
-            $betCount = DB::connection('mysql::write')->table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
+
+        $havElse = $lotterys['conElseLottery'];
+        $havElseLottery = [];
+
+        writeLog('New_Kill', $code.'-- issue:'.$issue);
+        if(!empty($havElse)){       //如果有连动彩种，例如秒速赛车＋秒速牛牛，幸运快乐8＋幸运28
+            $Games = new Games();
+            $havElseLottery = isset($Games->games[$havElse])?$Games->games[$havElse]:[];
+        }
+
+        $param['lottery'] = $lotterys;
+        $param['lotteryElse'] = $havElseLottery;
+
+        $betCount = DB::connection('mysql::write')->table('bet')
+            ->where(function ($sql) use ($param,$excel) {
+                if(count($param['lotteryElse'])>0)      //如果有连动彩种，例如秒速赛车＋秒速牛牛，幸运快乐8＋幸运28
+                    return $sql->whereIn('game_id',[$param['lottery']['gameId'],$param['lotteryElse']['gameId']]);
+                else
+                    return $sql->where('game_id',$param['lottery']['gameId']);
+            })->where('issue',$issue)->count();
+
         if($betCount > 0){
             if($excel){
                 $exeIssue = $this->getNeedKillIssue($table,2);
@@ -67,20 +89,21 @@ class New_sc extends Excel
                         'excel_num' => 3
                     ]);
                     if($update == 1) {
-                        writeLog('New_Kill', $code.' killing...');
-                        $this->excel($openCode, $exeBase, $issue, $gameId, $code, $table);
+                        writeLog('New_Kill', $gameName.' killing...');
+                        $this->excel($openCode, $exeBase, $issue, $code,$lotterys);
                     }
                 }
             }else{
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue,$excel,$this->arrPlay_id,true);
-                $this->bet_total($issue,$gameId);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id,true);
                     if($updateUserMoney == 1){
                         writeLog('New_Bet', $gameName . $issue . "结算出错");
                     }
                 }
+                //统计一下杀率
+                $this->bet_total($issue, $lotterys);
             }
         }
         if($excel){

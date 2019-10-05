@@ -230,7 +230,17 @@ class Excel
         return 0;
     }
     //计算当日总输赢
-    public function bet_total($issue,$gameId){
+    public function bet_total($issue,$lotterys){
+        $gameId = $lotterys['gameId'];
+        $havElse = $lotterys['conElseLottery'];
+        $betGameWhere = " and bet.game_id = '{$gameId}' ";
+
+        if(!empty($havElse)){       //如果有连动彩种，例如秒速赛车＋秒速牛牛，幸运快乐8＋幸运28
+            $Games = new Games();
+            $havElseLottery = isset($Games->games[$havElse])?$Games->games[$havElse]:[];
+            if(count($havElseLottery)>0)      //如果有连动彩种，例如秒速赛车＋秒速牛牛，幸运快乐8＋幸运28
+                $betGameWhere = " and bet.game_id in ('{$gameId}','{$havElseLottery['gameId']}') ";
+        }
         $exceBase = DB::table('excel_base')->select('excel_base_idx','count_date','is_user')->where('game_id',$gameId)->first();
         if(empty($exceBase))
             return false;
@@ -238,8 +248,9 @@ class Excel
         if(empty($exceBase->count_date) || $exceBase->count_date!=date("Y-m-d")){
             $todaystart = date("Y-m-d 00:00:00");
             $todayend = date("Y-m-d 23:59:59");
-            $where = " and created_at BETWEEN '{$todaystart}' and '{$todayend}' and status >= 1 ";
-            $tmp = $this->countAllLoseWin($gameId,$where);
+            $where = $betGameWhere;
+            $where .= " and created_at BETWEEN '{$todaystart}' and '{$todayend}' and status >= 1 ";
+            $tmp = $this->countAllLoseWin($where,$havElse);
             foreach ($tmp as&$todayBet){
                 $data = array();
                 $todayBet->sumBet_money = !isset($todayBet->sumBet_money)||empty($todayBet->sumBet_money)?0:$todayBet->sumBet_money;
@@ -256,8 +267,9 @@ class Excel
                 }
             }
         }else{
-            $where = " and issue = '{$issue}' ";
-            $tmp = $this->countAllLoseWin($gameId,$where);
+            $where = $betGameWhere;
+            $where .= " and issue = '{$issue}' ";
+            $tmp = $this->countAllLoseWin($where,$havElse);
             foreach ($tmp as&$excBunko){
                 $data = array();
                 $excBunko->sumBet_money = !isset($excBunko->sumBet_money)||empty($excBunko->sumBet_money)?0:$excBunko->sumBet_money;
@@ -279,8 +291,15 @@ class Excel
             $this->setWinIssueNum($dataUnity);
         }
     }
-    private function countAllLoseWin($gameId,$where=''){
-        $strSql = "SELECT sum(bet_money) as sumBet_money,sum(case when bunko >0 then bunko-bet_money else 0 end) as sumBunkoWin,sum(case when bunko < 0 then bunko else 0 end) as sumBunkoLose FROM bet WHERE game_id = '{$gameId}' and testFlag = 0 ".$where;
+    private function countAllLoseWin($where='',$havElse){
+        if(empty($havElse))
+            $strSql = "SELECT sum(bet_money) as sumBet_money,sum(case when bunko >0 then bunko-bet_money else 0 end) as sumBunkoWin,sum(case when bunko < 0 then bunko else 0 end) as sumBunkoLose FROM bet WHERE 1 and testFlag = 0 ".$where;
+        else
+            $strSql = "SELECT sum(bet_money) as sumBet_money,
+sum(CASE WHEN `game_id` IN(90,91) THEN case when `nn_view_money` >0 then `nn_view_money` else 0 end ELSE (case when bunko >0 then bunko-bet_money else 0 end) END) as sumBunkoWin,
+sum(CASE WHEN `game_id` IN(90,91) THEN case when `nn_view_money` < 0 then `nn_view_money` else 0 end ELSE (case when bunko < 0 then bunko else 0 end) END) as sumBunkoLose 
+FROM bet WHERE 1 and testFlag = 0 ".$where;
+
         $sql = DB::connection('mysql::write')->select($strSql);
         return $sql;
     }
@@ -314,26 +333,28 @@ class Excel
         return $res;
     }
     //取得最新的需要结算奖期
-    public function getNeedBunkoIssue($table){
+    public function getNeedBunkoIssue($table,$code='',$havElse='',$havElseLottery=[]){
         if(empty($table))
             return false;
         $today = date('Y-m-d H:i:s',time());
-        $sql = "SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 order by id desc LIMIT 1";
+        if(empty($havElse) || !isset($havElseLottery['table']))
+            $sql = "SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 order by id desc LIMIT 1";
+        else{
+            if($code=='mssc')
+                $sql = "SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 and nn_bunko = 1 order by id desc LIMIT 1";
+            else{
+                $sql = "SELECT * FROM {$table} 
+                            join {$havElseLottery['table']} on {$table}.issue = {$havElseLottery['table']}.issue
+                            WHERE {$table}.opentime <='".$today."' and {$table}.is_open=1 
+                             and {$table}.bunko = 0
+                             and {$havElseLottery['table']}.bunko = 1 order by {$table}.id desc LIMIT 1";
+            }
+        }
         $tmp = DB::select($sql);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
             $res = $value;
-        return $res;
-    }
-    //取得最新的需要结算奖期-所有的
-    public function getNeedBunkoIssueAll($table){
-        if(empty($table))
-            return false;
-        $today = date('Y-m-d H:i:s',time());
-        $res = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 order by id desc");
-        if(empty($res))
-            return false;
         return $res;
     }
     //取得最新的需要结算奖期
@@ -354,7 +375,8 @@ class Excel
             return false;
         $today = date('Y-m-d H:i:s',time());
 //        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0)");
-        $tmp = DB::select("SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0 order by id desc LIMIT 1");
+        $sql = "SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0 order by id desc LIMIT 1";
+        $tmp = DB::select($sql);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -860,7 +882,8 @@ class Excel
                         }
                     }
                 }
-            }
+            }else
+                return 0;
         }catch (\exception $exception){
             writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             DB::table($table)->where('status',$betStatus)->where('issue',$issue)->where('game_id',$gameId)->update(['bunko' => 0,'status' => 0]);
@@ -935,36 +958,56 @@ class Excel
         return 0;
     }
     //试算杀率共用方法
-    public function excel($openCode,$exeBase,$issue,$gameId,$code,$table = ''){
-        $Games = new Games();
-        $games = $Games->games[$code]??'';
-        if(empty($games))
-            return false;
-        $type = $games['type'];
-        writeLog('New_Kill', $code.' issue:'.$issue);
-        if($code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
-            $bet = DB::table('bet')->select('bet_id')->where('status',0)->whereIn('game_id',[$gameId,91])->where('issue','=',$issue)->where('testFlag',0)->first();
-        else
-            $bet = DB::table('bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
+    public function excel($openCode,$exeBase,$issue,$code,$lotterys){
+        $type = $lotterys['type'];
+        $gameId = $lotterys['gameId'];
+        $table = $lotterys['table'];
+        $havElse = $lotterys['conElseLottery'];
+        $havElseLottery = [];
+        $betGameWhere = " and bet.game_id = '{$gameId}' ";
+        $betExeGameWhere = " and excel_bet.game_id = '{$gameId}' ";
+
+        writeLog('New_Kill', $code.'-- issue:'.$issue);
+        if(!empty($havElse)){       //如果有连动彩种，例如秒速赛车＋秒速牛牛，幸运快乐8＋幸运28
+            $Games = new Games();
+            $havElseLottery = isset($Games->games[$havElse])?$Games->games[$havElse]:[];
+            if(count($havElseLottery)>0){      //如果有连动彩种，例如秒速赛车＋秒速牛牛，幸运快乐8＋幸运28
+                $betGameWhere = " and bet.game_id in ('{$gameId}','{$havElseLottery['gameId']}') ";
+                $betExeGameWhere = " and excel_bet.game_id in ('{$gameId}','{$havElseLottery['gameId']}') ";
+            }
+        }
+
+        $param['lottery'] = $lotterys;
+        $param['lotteryElse'] = $havElseLottery;
+        $bet = DB::table('bet')->select('bet_id')->where('status',0)
+            ->where(function ($sql) use ($param) {
+                if(count($param['lotteryElse'])>0)      //如果有连动彩种，例如秒速赛车＋秒速牛牛，幸运快乐8＋幸运28
+                    return $sql->whereIn('game_id',[$param['lottery']['gameId'],$param['lotteryElse']['gameId']]);
+                else
+                    return $sql->where('game_id',$param['lottery']['gameId']);
+            })->where('issue','=',$issue)->where('testFlag',0)->first();
         if(empty($bet))
             return false;
+
         for($i=1;$i<= (int)$exeBase->excel_num;$i++){
             if($i==1){
-                if($code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
-                    $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->whereIn('game_id',[$gameId,91])->where('issue','=',$issue)->where('testFlag',0)->first();
-                else
-                    $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)->where('game_id',$gameId)->where('issue','=',$issue)->where('testFlag',0)->first();
+                $exeBet = DB::table('excel_bet')->select('bet_id')->where('status',0)
+                    ->where(function ($sql) use ($param) {
+                        if(count($param['lotteryElse'])>0)      //如果有连动彩种，例如秒速赛车＋秒速牛牛，幸运快乐8＋幸运28
+                            return $sql->whereIn('game_id',[$param['lottery']['gameId'],$param['lotteryElse']['gameId']]);
+                        else
+                            return $sql->where('game_id',$param['lottery']['gameId']);
+                    })->where('issue','=',$issue)->where('testFlag',0)->first();
                 if(empty($exeBet)){
-                    if($code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
-                        DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.status = 0 and bet.game_id in ('{$gameId}','91') and bet.issue = '{$issue}' and bet.testFlag = 0");
-                    else
-                        DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.status = 0 and bet.game_id = '{$gameId}' and bet.issue = '{$issue}' and bet.testFlag = 0");
+                    DB::connection('mysql::write')->select("INSERT INTO excel_bet  SELECT * FROM bet WHERE 1 and bet.status = 0 ".$betGameWhere." and bet.issue = '{$issue}' and bet.testFlag = 0");
                 }
             }else{
-                if($code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
-                    DB::connection('mysql::write')->table("excel_bet")->whereIn('game_id',[$gameId,91])->where('issue',$issue)->update(['status' => 0,'bunko' => 0,'nn_view_money' => 0]);
-                else
-                    DB::connection('mysql::write')->table("excel_bet")->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 0,'bunko' => 0]);
+                DB::connection('mysql::write')->table("excel_bet")->where(function ($sql) use ($param) {
+                    if(count($param['lotteryElse'])>0)      //如果有连动彩种，例如秒速赛车＋秒速牛牛，幸运快乐8＋幸运28
+                        return $sql->whereIn('game_id',[$param['lottery']['gameId'],$param['lotteryElse']['gameId']]);
+                    else
+                        return $sql->where('game_id',$param['lottery']['gameId']);
+                })->where('issue',$issue)->update(['status' => 0,'bunko' => 0,'nn_view_money' => 0]);
             }
             $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
             if($type=='lhc'){                                        //根据六合彩的系列另外有bunko
@@ -976,29 +1019,19 @@ class Excel
             }else{
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue,true,$this->arrPlay_id);
-                if($code=='mssc'){   //只有秒速赛车需要额外加秒速牛牛的杀率
+                if($havElse=='msnn' && $havElseLottery['type']=='nn'){   //只有秒速赛车需要额外加秒速牛牛的杀率
                     $msnn = new New_msnn();
                     $niuniu = $this->exePK10nn($openCode);
                     $openniuniu =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
-                    $bunko = $msnn->all($openCode,$openniuniu, $issue, 91, 0, true,'msnn',$table,'秒速牛牛'); //新--结算
+                    $bunko = $msnn->all($openCode,$openniuniu, $issue, 0, true,$havElse,$havElseLottery); //新--结算
                 }
             }
             if($bunko == 1){
-                if($code=='mssc')   //只有秒速赛车需要额外加秒速牛牛的杀率
-                    $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko ,sum(nn_view_money) as sumBunkoNN ,game_id FROM excel_bet WHERE game_id in ('{$gameId}','91') and issue = '{$issue}' group by game_id");
-                else
-                    $tmp = DB::connection('mysql::write')->select("SELECT sum(bunko) as sumBunko FROM excel_bet WHERE game_id = '{$gameId}' and issue = '{$issue}'");
+                $tmp = DB::connection('mysql::write')->select("SELECT SUM(CASE WHEN `game_id` = 91 THEN (CASE WHEN `nn_view_money` >0 THEN `nn_view_money` + `bet_money` ELSE `bunko` END) ELSE `bunko` END) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'");
                 $excBunko = 0;
-                foreach ($tmp as&$value){
-                    if($code=='mssc'){   //只有秒速赛车需要额外加秒速牛牛的杀率
-                        if($value->game_id==91)
-                            $excBunko += $value->sumBunkoNN;
-                        else
-                            $excBunko += $value->sumBunko;
-                    }else{
-                        $excBunko = $value->sumBunko;
-                    }
-                }
+                foreach ($tmp as&$value)
+                    $excBunko = $value->sumBunko;
+
                 writeLog('New_Kill', $table.' :'.$openCode.' => '.$excBunko);
                 $dataExcGame['game_id'] = $gameId;
                 $dataExcGame['issue'] = $issue;
@@ -1023,11 +1056,8 @@ class Excel
                 }
                 ksort($arrLimit);                //将计算后的杀率值，由小到大排序
                 writeLog('New_Kill', $table.' :'.$issue.' s-to-b-'.json_encode($arrLimit));
-//                $iLimit = count($arrLimit)>=2?2:1;
                 $ii = 0;
                 $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
-//                if($randNum<=5)
-//                    $iLimit = 1;
                 if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
                     $total = $exeBase->bet_lose + $exeBase->bet_win;
                     $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
@@ -1035,30 +1065,6 @@ class Excel
                     $randRate = rand(1000,1999)/1000;
                     if($lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
                         $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
-//                        $iLimit = count($arrLimit)>=2?2:1;
-//                        if($iLimit!=1){
-//                            $tmpVal = 0;
-//                            foreach ($arrLimit as $key2 =>$va2){
-//                                $ii++;
-//                                if($ii==$iLimit) {
-//                                    $tmpVal = $key2;
-//                                    break;
-//                                }
-//                            }
-//                            $tmpNum = $exeBase->bet_lose-($exeBase->bet_win+$tmpVal);
-//                            $lose_losewin_rate = $total>0?($tmpNum)/$total:0;
-//                            writeLog('New_Kill',$table.' :'.$issue.' lastBunko: '.$tmpNum .'share :'.$tmpVal);
-//                            if(($lose_losewin_rate <= $exeBase->kill_rate) || (($exeBase->bet_lose-($exeBase->bet_win+$tmpVal)) <= $tmpVal))
-//                                $iLimit = 1;
-//                            $ii = 0;
-//                        }
-//                        foreach ($arrLimit as $key2 =>$va2){
-//                            $ii++;
-//                            if($ii==$iLimit) {
-//                                $openCode = $va2;
-//                                break;
-//                            }
-//                        }
                     }else{
                         if($lose_losewin_rate<=0.1 || (!in_array($randNum,array(3,5,7)))) {                        //如果当日的输赢比低于0，则选平台最好的营利值
                             $iLimit = 1;

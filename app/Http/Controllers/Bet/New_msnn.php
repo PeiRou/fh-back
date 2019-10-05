@@ -43,8 +43,12 @@ class New_msnn extends Excel
         return array('win'=>$win,'lose'=>$lose);
     }
 
-    public function all($openCode,$nn,$issue,$gameId,$id,$excel,$code,$table,$gameName)
+    public function all($openCode,$nn,$issue,$id,$excel,$code,$lotterys)
     {
+        $gameId = $lotterys['gameId'];
+        $table = $lotterys['table'];
+        $gameName = $lotterys['lottery'];
+
         $betCount = DB::table('bet')->where('status',0)->where('game_id',$gameId)->where('issue',$issue)->where('bunko','=',0.00)->count();
         if($betCount > 0){
             $bunko = 0;

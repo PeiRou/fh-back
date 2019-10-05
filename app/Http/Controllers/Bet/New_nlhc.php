@@ -39,8 +39,12 @@ class New_nlhc extends Excel
         return array('win'=>$win,'ids_he'=>$ids_he,'LHC'=>$LHC);
     }
 
-    public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
+    public function all($openCode,$issue,$id,$excel,$code,$lotterys)
     {
+        $gameId = $lotterys['gameId'];
+        $table = $lotterys['table'];
+        $gameName = $lotterys['lottery'];
+
         $game = Config::get('game.'.$table);
         $this->arrPlay_id = $game['arrPlay_id'];
         $this->arrPlayCate = $game['arrPlayCate'];
@@ -57,8 +61,8 @@ class New_nlhc extends Excel
                     ]);
                     writeLog('New_Kill', 'excel_num:'.$update);
                     if($update == 1) {
-                        writeLog('New_Kill', $code.' killing...');
-                        $this->excel($openCode, $exeBase, $issue, $gameId, $code, $table);
+                        writeLog('New_Kill', $table.' killing...');
+                        $this->excel($openCode, $exeBase, $issue, $code,$lotterys);
                     }
                 }
             }else{
@@ -72,7 +76,7 @@ class New_nlhc extends Excel
                     writeLog('New_Bet', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                     DB::table('bet')->where('issue',$issue)->where('game_id',$gameId)->update(['status' => 0,'bunko' => 0]);
                 }
-                $this->bet_total($issue,$gameId);
+                $this->bet_total($issue,$lotterys);
                 if(isset($bunko) && $bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id,true);
                     if($updateUserMoney == 1){
