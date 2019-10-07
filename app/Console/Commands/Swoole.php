@@ -287,19 +287,24 @@ class Swoole extends Command
             $this->num[$data['thread']][$id]['num'] = 0;
     }
     private function cldComds($redis,$data){
-        $data['thread'] = isset($data['thread'])??'';
-        $key = 'Artisan:'.$data['thread'].'-'.$data['exethread'].'-'.$data['code'];
-        if(empty($data['code']))
-            $data['extra'] = [];
-        else
-            $data['extra'] = ['code'=>$data['code']];
-//        echo $key.PHP_EOL;
-        if(!$redis->exists($key)){
-            $redis->setex($key, 60,'on');
-            DB::disconnect();
-            $this->exeComds($data);
-            $redis->del($key);
-            return true;
+        try{
+            $data['thread'] = isset($data['thread'])??'';
+            $key = 'Artisan:'.$data['thread'].'-'.$data['exethread'].'-'.$data['code'];
+            if(empty($data['code']))
+                $data['extra'] = [];
+            else
+                $data['extra'] = ['code'=>$data['code']];
+    //        echo $key.PHP_EOL;
+            if(!$redis->exists($key)){
+                $redis->setex($key, 60,'on');
+                DB::disconnect();
+                $this->exeComds($data);
+                $redis->del($key);
+                return true;
+            }
+        }catch (\exception $exception){
+            writeLog('error',$exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            writeLog('error',$data);
         }
         return false;
     }
