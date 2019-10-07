@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Bet;
 
 use App\Excel;
 use App\ExcelLotterySSC;
-use App\Http\Controllers\Job\AgentBackwaterJob;
+use App\Helpers\CurService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 

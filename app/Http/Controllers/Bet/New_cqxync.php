@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Bet;
 
 use App\Excel;
 use App\ExcelLotteryNC;
-use App\Http\Controllers\Job\AgentBackwaterJob;
+use App\Helpers\CurService;
 use Illuminate\Support\Facades\DB;
 
 class New_cqxync extends Excel

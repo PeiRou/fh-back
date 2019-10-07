@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Bet;
 
 use App\Excel;
 use App\ExcelLotteryLHC;
-use App\Http\Controllers\Job\AgentBackwaterJob;
+use App\Helpers\CurService;
 use Illuminate\Support\Facades\DB;
 
 class New_hklhc extends Excel
