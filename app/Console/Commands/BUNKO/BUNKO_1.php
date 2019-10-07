@@ -24,38 +24,47 @@ class BUNKO_1 extends Command
         if(in_array($code,['lhc','msnn','pknn']))
             return false;
         $Games = new Games();
-        $games = $Games->games[$code]??'';
-        if(empty($games) || in_array($code,['lhc','msnn','pknn']))
+        $lotterys = $Games->games[$code]??'';
+        if(empty($lotterys) || in_array($code,['lhc','msnn','pknn']))
             return false;
+        $havElse = $lotterys['conElseLottery'];
+        $havElseLottery = [];
+
+        if(!empty($havElse)){       //如果有连动彩种，例如秒速赛车＋秒速牛牛，幸运快乐8＋幸运28
+            $havElseLottery = isset($Games->games[$havElse])?$Games->games[$havElse]:[];
+        }
         $excel = new Excel();
         $excel = $excel->newObject($code);
-        $table = $games['table'];
-        $type = $games['type'];
-        $gameId = $games['gameId'];
-        $gameName = $games['lottery'];
-        $get = $excel->getNeedBunkoIssue($table);
+        $get = $excel->getNeedBunkoIssue($lotterys['table'],$code,$havElse,$havElseLottery);
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
             $redis->del($code.':needbunko--'.$get->issue);
+
             //阻止進行中
-            $key = 'Bunko:'.$gameId.'ing:'.$get->issue;
+            $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
             if($redis->exists($key)){
                 return 'ing';
             }
             $redis->setex($key,60,'ing');
-            $update = DB::table($table)->where('id', $get->id)->update([
+
+            //将SQL状态改成结算中
+            $update = DB::table($lotterys['table'])->where('id', $get->id)->update([
                 'bunko' => 2
             ]);
-            $opennum = $type=='lhc'?$get->open_num:$get->opennum;
+            $opennum = $lotterys['type']=='lhc'?$get->open_num:$get->opennum;
+            //SQL状态有成功改成结算中，就开始执行结算
             if($update)
-                $excel->all($opennum,$get->issue,$gameId,$get->id,false,$code,$table,$gameName);
-            $get = $excel->getNeedBunkoIssueAll($table);
-            if($get){
-                foreach ($get as $k => $one){
-                    $redis->set($code.':needbunko--'.$one->issue,$one->issue);
-                }
-            }
+                $excel->all($opennum,$get->issue,$get->id,false,$code,$lotterys);
+            $one = $excel->getNeedBunkoIssue($lotterys['table']);
+            if($one)
+                $redis->set($code.':needbunko--'.$one->issue,$one->issue);
+        }elseif (count($havElseLottery)>0){
+            $redis = Redis::connection();
+            $redis->select(0);
+            $one = $excel->getNeedBunkoIssue($lotterys['table']);
+            if($one)
+                $redis->set($code.':needbunko--'.$one->issue,$one->issue);
         }
     }
 }

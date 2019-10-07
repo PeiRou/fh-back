@@ -22,34 +22,29 @@ class BUNKO_pknn extends Command
     {
         $code = 'pknn';
         $Games = new Games();
-        $games = $Games->games[$code]??'';
-        if(empty($games))
+        $lotterys = $Games->games[$code]??'';
+        if(empty($lotterys))
             return false;
-        $table = $games['table'];
-        $gameId = $games['gameId'];
-        $gameName = $games['lottery'];
         $excel = new New_pknn();
-        $get = $excel->getNeedBunkoIssue($table);
+        $get = $excel->getNeedBunkoIssue($lotterys['table']);
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
+            $redis->del($code.':needbunko--'.$get->issue);
             //阻止進行中
-            $key = 'Bunko:'.$gameId.'ing:'.$get->issue;
+            $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
             if($redis->exists($key)){
                 return 'ing';
             }
             $redis->setex($key,60,'ing');
-            $update = DB::table($table)->where('id', $get->id)->update([
+            $update = DB::table($lotterys['table'])->where('id', $get->id)->update([
                 'bunko' => 2
             ]);
             if($update)
-                $excel->all($get->opennum,$get->niuniu, $get->issue, $gameId, $get->id,$code,$table,$gameName); //新--结算
-            $get = $excel->getNeedBunkoIssueAll($table);
-            if($get) {
-                foreach ($get as $k => $one) {
-                    $redis->set($code . ':needbunko--' . $one->issue, $one->issue);
-                }
-            }
+                $excel->all($get->opennum,$get->niuniu, $get->issue, $get->id,$code,$lotterys); //新--结算
+            $one = $excel->getNeedBunkoIssue($lotterys['table']);
+            if($one)
+                $redis->set($code.':needbunko--'.$one->issue,$one->issue);
         }
     }
 }

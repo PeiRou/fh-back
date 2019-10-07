@@ -10,7 +10,6 @@ use SameClass\Config\LotteryGames\Games;
 
 class BUNKO_lhc extends Command
 {
-    protected $gameId = 70;
     protected $signature = 'BUNKO_lhc';
     protected $description = '六合彩-定时结算';
 
@@ -23,28 +22,25 @@ class BUNKO_lhc extends Command
     {
         $code = 'lhc';
         $Games = new Games();
-        $games = $Games->games[$code]??'';
-        if(empty($games))
+        $lotterys = $Games->games[$code]??'';
+        if(empty($lotterys))
             return false;
-        $table = $games['table'];
-        $gameId = $games['gameId'];
-        $gameName = $games['lottery'];
         $excel = new New_nlhc();
-        $get = $excel->getNeedBunkoIssueLhc($table);
+        $get = $excel->getNeedBunkoIssueLhc($lotterys['table']);
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
             //阻止進行中
-            $key = 'Bunko:'.$this->gameId.'ing:'.$get->issue;
+            $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
             if($redis->exists($key)){
                 return 'ing';
             }
             $redis->setex($key,80,'ing');
-            $update = DB::table($table)->where('id', $get->id)->where('bunko', 2)->update([
+            $update = DB::table($lotterys['table'])->where('id', $get->id)->where('bunko', 2)->update([
                 'bunko' => 3
             ]);
             if($update)
-                $excel->all($get->open_num,$get->issue,$gameId,$get->id,false,$code,$table,$gameName);
+                $excel->all($get->open_num,$get->issue,$get->id,false,$code,$lotterys);
         }
     }
 }

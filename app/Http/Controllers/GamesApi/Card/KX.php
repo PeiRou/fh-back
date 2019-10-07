@@ -4,8 +4,12 @@ namespace App\Http\Controllers\GamesApi\Card;
 
 class KX extends Base{
 
-    //获取棋牌投注详情
     public function getBet($param = [])
+    {
+        return $this->repo->senterGetBet($param);
+    }
+    //获取棋牌投注详情
+    public function getBet1($param = [])
     {
         $this->repo->param['endTime'] = $this->repo->param['endTime'] ?? (strtotime($this->repo->OffsetTime(['time' => $param['toTime'] ?? (time() - 4 * 60)])));
         $this->repo->param['startTime'] = $this->repo->param['endTime'] - 15 * 60;

@@ -31,8 +31,12 @@ class New_kl8 extends Excel
         $KL8->WX($openCode,$gameId,$win);
         return $win;
     }
-    public function all($openCode,$issue,$gameId,$id,$excel,$code,$table,$gameName)
+    public function all($openCode,$issue,$id,$excel,$code,$lotterys)
     {
+        $gameId = $lotterys['gameId'];
+        $table = $lotterys['table'];
+        $gameName = $lotterys['lottery'];
+
         $game = Config::get('game.'.$table);
         $this->arrPlay_id = $game['arrPlay_id'];
         $this->arrPlayCate = $game['arrPlayCate'];
@@ -47,14 +51,14 @@ class New_kl8 extends Excel
                         'excel_num' => 3
                     ]);
                     if($update == 1) {
-                        writeLog('New_Kill', $code.' killing...');
-                        $this->excel($openCode, $exeBase, $issue, $gameId, $code, $table);
+                        writeLog('New_Kill', $gameName.' killing...');
+                        $this->excel($openCode, $exeBase, $issue, $code,$lotterys);
                     }
                 }
             }else{
                 $win = $this->exc_play($openCode,$gameId);
                 $bunko = $this->bunko($win,$gameId,$issue,$excel,$this->arrPlay_id,true);
-                $this->bet_total($issue,$gameId);
+                $this->bet_total($issue,$lotterys);
                 if($bunko == 1){
                     $updateUserMoney = $this->updateUserMoney($gameId,$issue,$gameName,$table,$id,true);
                     if($updateUserMoney == 1){

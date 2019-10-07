@@ -32,6 +32,9 @@ class PrivodeController extends Controller{
             try{
                 $res = $this->action($v->g_id, 'getBet', $param);
             }catch (\Throwable $e){
+                if(env('APP_DEBUG', false)){
+                    echo($e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+                }
                 writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
             }
 //            if(isset($res['code']) && $res['code'] != 0){
@@ -133,7 +136,7 @@ class PrivodeController extends Controller{
                 app('obj')->repo->param = $param;
             $res = app('obj')->instance->action($action, $param);
             if(!in_array($getGamesApiInfo->g_id, [
-                22, 23, 10, 17, 19, 28
+                22, 23, 10, 17, 19, 28, 20
             ])){
                 app('obj')->instance->repo->insertError($res['code'], $res['msg'], $param);
             }

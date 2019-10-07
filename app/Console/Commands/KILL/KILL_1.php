@@ -27,29 +27,25 @@ class KILL_1 extends Command
             return false;
         $excel = new Excel();
         $excel = $excel->newObject($code);
-        $table = $games['table'];
-        $gameId = $games['gameId'];
-        $gameName = $games['lottery'];
-        $type = $games['type'];
-        $get = $excel->getNeedKillIssue($table);
-        $exeBase = $excel->getKillBase($gameId);
+        $get = $excel->getNeedKillIssue($games['table']);
+        $exeBase = $excel->getKillBase($games['gameId']);
         if(isset($get) && $get && !empty($exeBase)){
             $redis = Redis::connection();
             $redis->select(0);
             //阻止進行中
-            $key = 'Kill:'.$gameId.'ing:'.$get->issue;
+            $key = 'Kill:'.$games['gameId'].'ing:'.$get->issue;
             if($redis->exists($key)){
                 return 'ing';
             }
             $redis->setex($key,60,'ing');
             //开奖号码
-            $opennum = $excel->opennum($code,$type);
+            $opennum = $excel->opennum($code,$games['type']);
             if(isset($get->excel_num) && $get->excel_num == 0){
-                $update = DB::table($table)->where('id',$get->id)->where('is_open',0)->where('bunko',0)->where('opentime','>=',date('Y-m-d H:i:s'))->update([
+                $update = DB::table($games['table'])->where('id',$get->id)->where('is_open',0)->where('bunko',0)->where('opentime','>=',date('Y-m-d H:i:s'))->update([
                     'excel_num' => 2
                 ]);
                 if($update)
-                    $excel->all($opennum,$get->issue,$gameId,$get->id,true,$code,$table,$gameName);
+                    $excel->all($opennum,$get->issue,$get->id,true,$code,$games);
             }
         }
     }
