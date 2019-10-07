@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Agent;
 use App\AgentBackwater;
 use App\AgentOddsLevel;
+use App\CapitalAgent;
 use App\SystemSetup;
 use App\ZhReportAgentBunko;
 use App\ZhReportMemberBunko;
@@ -13,6 +14,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 
 class AgentBackwaterThirdDaily implements ShouldQueue
@@ -62,7 +64,10 @@ class AgentBackwaterThirdDaily implements ShouldQueue
         }
         //获取代理增加金额
         $aAgentMoney = [];
-        foreach ($aAgentBackwater as $iArray){
+        //代理资金明细
+        $aCapitalAgent = [];
+        $iTime = date('Y-m-d H:i:s');
+        foreach ($aAgentBackwater as $kArray => $iArray){
             if(array_key_exists($iArray['agent_id'],$aAgentMoney))
                 $aAgentMoney[$iArray['agent_id']]['balance'] += $iArray['money'];
             else
@@ -70,12 +75,30 @@ class AgentBackwaterThirdDaily implements ShouldQueue
                     'a_id' => $iArray['agent_id'],
                     'balance' => $iArray['money']
                 ];
+            $aCapitalAgent[] = [
+                'agent_id' => $iArray['agent_id'],
+                'order_id' => "ABWT" . date('YmdHis') . rand(10000000, 99999999),
+                'type' => 't02',
+                'money' => $iArray['money'],
+                'balance' => round($iArray['balance'] + $aAgentMoney[$iArray['agent_id']]['balance'],2),
+                'content' => '',
+                'expan1' => $iArray['game_id'],
+                'expan2' => $iArray['issue'],
+                'expan3' => $iArray['game_name'],
+                'expan4' => '',
+                'created_at' => $iTime,
+                'updated_at' => $iTime,
+            ];
+            unset($aAgentBackwater[$kArray]['balance']);
         }
         DB::beginTransaction();
         try{
             AgentBackwater::insert($aAgentBackwater);
-            DB::update(Agent::updateFiledBatchStitching($aAgentMoney,['balance'],'a_id'));
+            if(count($aAgentMoney) > 0)
+                DB::update(Agent::updateFiledBatchStitching($aAgentMoney,['balance'],'a_id'));
+            CapitalAgent::insert($aCapitalAgent);
             DB::commit();
+            Artisan::call('AgentOdds:AgentBackwaterReport',['date' => $this->aDateTime]);
         }catch (\Exception $exception){
             DB::rollback();
         }
@@ -95,11 +118,13 @@ class AgentBackwaterThirdDaily implements ShouldQueue
                             'agent_id' => $iData['agent_id'],
                             'to_agent' => $iData['to_agent'],
                             'user_id' => $iData['user_id'],
+                            'balance' => $iData['balance'],
                             'status' => 1,
                             'money' => $iMoney,
                             'game_id' => $iData['game_id'],
                             'game_name' => $iData['game_name'],
                             'issue' => 0,
+                            'level' => $iData['level'],
                             'rebate' => $iData['rebate'],
                             'commission' => $iData['commission'],
                             'bet_money' => $iBetMoney,
@@ -128,6 +153,7 @@ class AgentBackwaterThirdDaily implements ShouldQueue
             $preRebate = $aAgentOdds[$iJqBet->agent_id][$iJqBet->game_id];
             if(!empty($iJqBet->superior_agent)){
                 $aAgentId = array_slice(array_reverse(explode(',',$iJqBet->superior_agent),false),0,$iLevelNum);
+                $i = 1;
                 foreach ($aAgentId as $iAgentId){
                     if(empty($aAgentOdds[$iAgentId][$iJqBet->game_id])){
                         continue;
@@ -142,9 +168,11 @@ class AgentBackwaterThirdDaily implements ShouldQueue
                             'user_id' => $iJqBet->user_id,
                             'status' => 1,
                             'money' => $iMoney,
+                            'balance' => $iJqBet->balance,
                             'game_id' => $iJqBet->game_id,
-                            'game_name' => $iJqBet->game_id,
+                            'game_name' => $iJqBet->game_name,
                             'issue' => 0,
+                            'level' => $i,
                             'rebate' => $iRebate,
                             'commission' => $iCommission,
                             'bet_money' => $iJqBet->bet_money,
@@ -153,6 +181,7 @@ class AgentBackwaterThirdDaily implements ShouldQueue
                             'updated_at' => $iTime,
                         ];
                     }
+                    $i++;
                 }
             }
         }

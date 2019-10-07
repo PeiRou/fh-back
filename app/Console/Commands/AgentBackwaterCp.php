@@ -99,6 +99,7 @@ class AgentBackwaterCp extends Command
             $preRebate = $iAgent->rebate;
             if(!empty($iBet->superior_agent)){
                 $aAgentId = array_slice(array_reverse(explode(',',$iBet->superior_agent),false),0,$iLevelNum);
+                $i = 1;
                 foreach ($aAgentId as $iAgentId){
                     if(empty($aAgentOdds[$iAgentId])){
                         $this->info('代理id为'.$iBet->agent_id.',赔率不存在');
@@ -124,6 +125,7 @@ class AgentBackwaterCp extends Command
                             'game_id' => $gameId,
                             'game_name' => $iGame['lottery'],
                             'issue' => $issue,
+                            'level' => $i,
                             'rebate' => $iAgent->rebate,
                             'commission' => $iCommission,
                             'bet_money' => $iBet->betMoney,
@@ -133,21 +135,21 @@ class AgentBackwaterCp extends Command
                         ];
                         $aCapitalAgent[] = [
                             'agent_id' => $iAgentId,
-                            'pre_id' => $iBet->agent_id,
-                            'order_id' => $iAgentId,
+                            'order_id' => "ABWC" . date('YmdHis') . rand(10000000, 99999999),
                             'type' => 't01',
                             'money' => $iMoney,
                             'balance' => round($aAgentMoney[$iAgentId]['balance'] + $iBet->balance,2),
                             'content' => '',
                             'expan1' => $gameId,
                             'expan2' => $issue,
-                            'expan3' => '',
+                            'expan3' => $iGame['lottery'],
                             'expan4' => '',
                             'created_at' => $iTime,
                             'updated_at' => $iTime,
                         ];
                         $preRebate = $iAgent->rebate;
                     }
+                    $i++;
                 }
             }
         }

@@ -19,3 +19,4 @@ yarn-error.log
 /storage/framework/testing/*
 /storage/framework/views/*
 /public/static/tables/*
+/storage/gameData/*
