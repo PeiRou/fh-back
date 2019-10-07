@@ -110,30 +110,32 @@ class PromotionMemberRebateDaily implements ShouldQueue
         //统计资金明细
         $aCapital = [];
         foreach ($aData as $kData => $iData){
-            if($iData['status'] === 3 && $iData['receive_status'] === 1 && array_key_exists($iData['user_id'],$aCapital)){
-                $aCapital[$iData['user_id']]['money'] += $iData['money'];
-                $aCapital[$iData['user_id']]['balance'] += $iData['money'];
-                $aCapital[$iData['user_id']]['content'] .= ','.$iData['game_name'];
-            }else{
-                $aCapital[$iData['user_id']] = [
-                    'to_user' => $iData['user_id'],
-                    'user_type' => 'user',
-                    'order_id' => "PTHR" . date('YmdHis') . rand(10000000, 99999999),
-                    'type' => $iType,
-                    'rechargesType' => NULL,
-                    'game_id' => 0,
-                    'issue' => 0,
-                    'money' => $iData['money'],
-                    'play_type' => NULL,
-                    'playcate_id' => 0,
-                    'balance' => round($iData['balance'] + $iData['money'],2),
-                    'game_name' => '',
-                    'playcate_name' => '',
-                    'operation_id' => NULL,
-                    'content' => '会员返佣 : '.$iData['game_name'],
-                    'created_at' => $dateTime,
-                    'updated_at' => $dateTime,
-                ];
+            if($iData['status'] === 3) {
+                if ($iData['receive_status'] === 1 && array_key_exists($iData['user_id'], $aCapital)) {
+                    $aCapital[$iData['user_id']]['money'] += $iData['money'];
+                    $aCapital[$iData['user_id']]['balance'] += $iData['money'];
+                    $aCapital[$iData['user_id']]['content'] .= ',' . $iData['game_name'];
+                } else {
+                    $aCapital[$iData['user_id']] = [
+                        'to_user' => $iData['user_id'],
+                        'user_type' => 'user',
+                        'order_id' => "PTHR" . date('YmdHis') . rand(10000000, 99999999),
+                        'type' => $iType,
+                        'rechargesType' => NULL,
+                        'game_id' => 0,
+                        'issue' => 0,
+                        'money' => $iData['money'],
+                        'play_type' => NULL,
+                        'playcate_id' => 0,
+                        'balance' => round($iData['balance'] + $iData['money'], 2),
+                        'game_name' => '',
+                        'playcate_name' => '',
+                        'operation_id' => NULL,
+                        'content' => '会员返佣 : ' . $iData['game_name'],
+                        'created_at' => $dateTime,
+                        'updated_at' => $dateTime,
+                    ];
+                }
             }
             unset($aData[$kData]['balance']);
         }

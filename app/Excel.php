@@ -156,7 +156,7 @@ class Excel
         }else
             writeLog('New_Bet', $gameName . $issue . "退水前失败！");
         $curlService = new CurService();
-        $curlService->curlGet('http://127.0.0.1:9500?thread=AgentBackwaterCp-'.$gameId.'-'.$issue);
+        $curlService->curlGet('http://127.0.0.1:9500?thread=AgentOdds:AgentBackwaterCp-'.$gameId.'-'.$issue);
         return 0;
     }
     //中奖推送
