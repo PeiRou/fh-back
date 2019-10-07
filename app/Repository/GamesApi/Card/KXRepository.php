@@ -71,6 +71,22 @@ class KXRepository extends BaseRepository
         return $this->insertDB($arr);
     }
 
+    public function arrInfo(&$array, $v, $key = '')
+    {
+        $array['username'] = preg_replace('/^'.$this->Config['siteID'].'_'.'/','',$array['username']);
+        $user = $this->getUser($array['username']);
+        $array['agent'] = $user->agent ?? 0;
+        $array['user_id'] = $user->id ?? 0;
+        $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';
+        $array['agent_name'] = $this->getAgent($user->agent ?? 0)->name ?? '';
+    }
+
+
+    public function matchName($name)
+    {
+        return preg_match('/^'.$this->Config['siteID'].'_'.'/', $name);
+    }
+
     private function request_api($parms)
     {
         $parms['sign'] = md5($this->Config['GAME_API_MERCHANT_ID'].$parms['curtime'].$this->Config['GAME_API_MD5KEY']);

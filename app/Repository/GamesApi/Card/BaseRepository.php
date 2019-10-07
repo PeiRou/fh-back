@@ -10,10 +10,12 @@ namespace App\Repository\GamesApi\Card;
 use App\GamesApi;
 use App\GamesListPlay;
 use App\Http\Controllers\Obtain\SendController;
+use App\Http\Services\CurlService;
 use App\SystemSetting;
 use App\Users;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use SameClass\Service\RsaService\RsaService;
 
 class BaseRepository
 {
@@ -407,6 +409,29 @@ class BaseRepository
         return $res;
     }
 
+    public function sendCenter($data)
+    {
+        $rsa = new RsaService();
+        $data['sign'] = $rsa->getSignature($data, $rsa::defaultPlatformKey);
+        $paramStr = json_encode($data);
+        $aArray = [
+            'platform_id' => $data['platform_id'],
+            'data' => $rsa->rsaPublicEncrypt($paramStr, $rsa::defaultPublicKey)
+        ];
+        $result = CurlService::getInstance()->post(env('GENERAL_INTERFACE_URL').'/GamesApiGetBet',
+            $aArray);
+
+        return json_decode($result,true) ?? $result;
+    }
+
+    public function getAgentPrefix()
+    {
+        $key = 'agent';
+        if($this->gameInfo->g_id == 20)
+            $key = 'siteID';
+        return $this->getVal($key);
+    }
+
     public function senterGetBet($param = [])
     {
 //        $this->param['endTime'] = $this->param['endTime'] ?? $param['toTime'] ?? time();
@@ -414,15 +439,21 @@ class BaseRepository
         $this->param['endTime'] = $this->param['endTime'] - 1 * 60;
         $this->param['startTime'] = $this->param['endTime'] - 15 * 60;
         $platform_id = SystemSetting::getValueByRemark1('payment_platform_id');
-        $this->param['remark'] = $this->getVal('agent');
+        $this->param['remark'] = $this->getAgentPrefix();
         $this->param['g_id'] = $this->gameInfo->g_id;
-        $baseController = new SendController([
+//        $baseController = new SendController([
+//            'platform_id' => $platform_id,
+//            'data' => json_encode([
+//                'data' => $this->param,
+//            ]),
+//        ]);
+//        $data = $baseController->sendPlatformOffer('Children/GamesApiGetBet');
+        $data = $this->sendCenter([
             'platform_id' => $platform_id,
             'data' => json_encode([
                 'data' => $this->param,
             ]),
         ]);
-        $data = $baseController->sendPlatformOffer('Children/GamesApiGetBet');
         if(isset($data['code']) && $data['code'] == 0){
             $this->senterCreateData($data['data']);
         }else{
