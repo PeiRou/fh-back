@@ -80,6 +80,10 @@ class Swoole extends Command
         $redis = Redis::connection();
         $redis->select(0);
         $redis->flushdb();
+        $files = Storage::disk('needbunko')->files();
+        foreach ($files as $filename) {
+            Storage::disk('needbunko')->delete($filename);
+        }
         foreach ($this->gameCodetoTable as $code => $table) {         //把需要结算的奖期放到redis
             $this->setNeedBunkoIssue($redis, $code, $table);
         }
@@ -153,10 +157,15 @@ class Swoole extends Command
     //启动计数器
     private function didaTimer($data){
         $this->timer = $this->serv->tick($data['dida'], function($id) use ($data){
-//            if($data['thread']=='CHECK_KILL')
-//            echo $data['thread'].'-----id----'.$id.'----'.$data['dida'].'----'.$data['dida_num'].PHP_EOL;
+            if(isset($this->num[$data['thread']])&&count($this->num[$data['thread']])>1)
+                unset($this->num[$data['thread']]);
             //设置ID计数器
             $this->setId($id,$data);
+            try{
+                echo $data['thread'].'-----id----'.$id.'----'.$data['dida'].'----'.$this->num[$data['thread']][$id]['num'].'----'.$data['dida_num'].PHP_EOL;
+            }catch (\exception $exception){
+            }
+            echo json_encode($this->num).PHP_EOL;
             //开始计数器
             $this->settimer($id,$data);
             $this->num[$data['thread']][$id]['num']++;
@@ -186,8 +195,13 @@ class Swoole extends Command
                         }
                         if(is_array($needBunko)&&count($needBunko)>0){
                             foreach ($needBunko as $k1 => $v1){
+                                try {
+                                    $opentime = $redis->get($v1);
+                                }catch (\exception $exception){
+                                    continue;
+                                }
                                 $tmp = explode('--',$v1);
-                                $this->setNeedBunkoFile($code,$tmp[1]);
+                                $this->setNeedBunkoFile($code,$tmp[1],$opentime);
                             }
                         }
                     }
@@ -200,7 +214,19 @@ class Swoole extends Command
                         $ii = 0;
                         foreach ($files as $filename) {
                             if(Storage::disk('needbunko')->exists($filename)){
+                                $tmp = explode('-',$filename);
+                                $rsKey = $tmp[2].':needbunko--'.$tmp[1];
+                                if(!$redis->exists($rsKey)){
+                                    Storage::disk('needbunko')->delete($filename);
+                                    continue;
+                                }
                                 $info = json_decode(Storage::disk('needbunko')->get($filename),true);
+                                if(is_object($info['opentime'])){
+                                    Storage::disk('needbunko')->delete($filename);
+                                    continue;
+                                }
+                                if($info['opentime'] > time())
+                                    continue;
                                 $rep = $this->cldComds($redis, $info);
                                 if($rep)
                                     Storage::disk('needbunko')->delete($filename);
@@ -222,9 +248,22 @@ class Swoole extends Command
                     $redis = Redis::connection();
                     $redis->select(0);
                     foreach ($this->gameKill as $gameId => $code){
+                        if(Storage::disk('thread')->exists('checkkill-'.$code) && time() <= Storage::disk('thread')->get('checkkill-'.$code))
+                            continue;
                         $rsKey = $code.':nextIssueLotteryTime';
-                        $LotteryTime = $redis->exists($rsKey)?(int)$redis->get($rsKey):0;
-                        if(empty($LotteryTime))
+                        try{
+                            if($redis->exists($rsKey))
+                                $LotteryTime = $redis->get($rsKey);
+                            else
+                                $LotteryTime = 0;
+                        } catch (\Exception $exception) {
+                            writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+                            writeLog('error',$code);
+                            writeLog('error',$redis->get($rsKey));
+                            writeLog('error',$data);
+                            continue;
+                        }
+                        if(!is_numeric($LotteryTime) || $LotteryTime <= 1)
                             continue;
                         if(Storage::disk('thread')->exists('needkill-'.$code)&& time() <= Storage::disk('thread')->get('needkill-'.$code))
                             continue;
@@ -233,8 +272,10 @@ class Swoole extends Command
                         $data['exethread'] = 'KILL_1';
                         $killLotteryTime = $LotteryTime-7;
                         $filename = ($killLotteryTime).'--'.$code.'--'.date('H:i:s',$killLotteryTime);
-                        if(time() <= (int)$LotteryTime && !Storage::disk('needkill')->exists($filename)){
+                        if(time() <= (int)$killLotteryTime && !Storage::disk('needkill')->exists($filename)){
+                            echo $filename.'--lott:'.$LotteryTime.'--'.date('Y-m-d H:i:s',$LotteryTime).PHP_EOL;
                             Storage::disk('needkill')->put($filename,json_encode($data));
+                            Storage::disk('thread')->put('checkkill-'.$code,$killLotteryTime-1);
                         }
                     }
                     break;
@@ -252,8 +293,9 @@ class Swoole extends Command
                                     Storage::disk('needkill')->delete($filename);
                                     continue;
                                 }
+                                echo 'killexe-1-'.$info['code'].PHP_EOL;
                                 if(time() >= (int)$tmp[0]) {
-//                                    echo 'killexe--'.$info['code'].PHP_EOL;
+                                    echo 'killexe-2-'.$info['code'].PHP_EOL;
                                     Storage::disk('needkill')->delete($filename);
                                     $rep = $this->cldComds($redis, $info);
                                     if($rep)
@@ -294,7 +336,6 @@ class Swoole extends Command
                 $data['extra'] = [];
             else
                 $data['extra'] = ['code'=>$data['code']];
-    //        echo $key.PHP_EOL;
             if(!$redis->exists($key)){
                 $redis->setex($key, 60,'on');
                 DB::disconnect();
@@ -325,13 +366,16 @@ class Swoole extends Command
         else
             $res = $excel->getNeedBunkoIssue($table);
         if($res){
-            $redis->set($code.':needbunko--'.$res->issue,$res->issue);
-            $this->setNeedBunkoFile($code,$res->issue);
+            $redis->set($code.':needbunko--'.$res->issue,strtotime($res->opentime));
+            $this->setNeedBunkoFile($code,$res->issue,strtotime($res->opentime));
         }
     }
     //把需要开奖的放到结算文件里
     //第一个参数是彩种的code，第二个参数是需要结算的期号
-    private function setNeedBunkoFile($code,$issue){
+    private function setNeedBunkoFile($code,$issue,$opentime){
+        if(!is_numeric($opentime))
+            return false;
+        $data['opentime'] = $opentime;
         switch ($code){
             case 'msnn':
                 $data['code'] = '';
@@ -349,7 +393,7 @@ class Swoole extends Command
                 $data['exethread'] = 'BUNKO_1';
                 break;
         }
-        $filename = $data['exethread'].'-'.$data['code'].'-'.$issue;
+        $filename = $opentime.'-'.$issue.'-'.$data['code'].'-'.$data['exethread'];
         if(Storage::disk('needbunko')->exists($filename))
             return false;
         Storage::disk('needbunko')->put($filename,json_encode($data));

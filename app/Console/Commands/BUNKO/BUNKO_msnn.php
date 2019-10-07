@@ -45,7 +45,7 @@ class BUNKO_msnn extends Command
             $get = $excel->getNeedNNBunkoIssueAll($lotterys['table']);
             if($get) {
                 foreach ($get as $k => $one) {
-                    $redis->set($code . ':needbunko--' . $one->issue, $one->issue);
+                    $redis->set($code . ':needbunko--' . $one->issue, strtotime($one->opentime));
                 }
             }
         }
