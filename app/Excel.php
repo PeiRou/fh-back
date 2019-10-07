@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Helpers\CurService;
 use App\Http\Controllers\Bet\New_msnn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -133,30 +132,28 @@ class Excel
             if(!$res)
                 writeLog('New_Bet',$gameName.$issue.'返钱失败！');
         }
-        if(!empty($table)&&!empty($tableid)){
-            $reWater = DB::table($table)->where('id',$tableid)->where('returnwater',0)->first();
-            if(empty($reWater))
-                return 0;
-            $res = DB::table($table)->where('id',$tableid)->where('returnwater',0)->update(['returnwater' => 2]);
-            if(empty($res)){
-                writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-                return 0;
-            }
-        }
-        //退水
-        $res = $this->reBackUser($gameId, $issue, $gameName);
-        if(!$res){
-            if(!empty($table)&&!empty($tableid)){
-                $res = DB::table($table)->where('id',$tableid)->where('returnwater',2)->update(['returnwater' => 1]);
-                if(empty($res)){
-                    writeLog('New_Bet',$gameName.$issue.'退水中失败！');
-                    return 0;
-                }
-            }
-        }else
-            writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-        $curlService = new CurService();
-        $curlService->curlGet('http://127.0.0.1:9500?thread=AgentOdds:AgentBackwaterCp-'.$gameId.'-'.$issue);
+//        if(!empty($table)&&!empty($tableid)){
+//            $reWater = DB::table($table)->where('id',$tableid)->where('returnwater',0)->first();
+//            if(empty($reWater))
+//                return 0;
+//            $res = DB::table($table)->where('id',$tableid)->where('returnwater',0)->update(['returnwater' => 2]);
+//            if(empty($res)){
+//                writeLog('New_Bet', $gameName . $issue . "退水前失败！");
+//                return 0;
+//            }
+//        }
+//        //退水
+//        $res = $this->reBackUser($gameId, $issue, $gameName);
+//        if(!$res){
+//            if(!empty($table)&&!empty($tableid)){
+//                $res = DB::table($table)->where('id',$tableid)->where('returnwater',2)->update(['returnwater' => 1]);
+//                if(empty($res)){
+//                    writeLog('New_Bet',$gameName.$issue.'退水中失败！');
+//                    return 0;
+//                }
+//            }
+//        }else
+//            writeLog('New_Bet', $gameName . $issue . "退水前失败！");
         return 0;
     }
     //中奖推送

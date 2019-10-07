@@ -107,7 +107,7 @@ class Swoole extends Command
         });
         $this->ws->on('request', function ($serv, $response) {
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
-            $data['code'] = '';
+            $data['extra'] = [];
 
             if($data['thread'] == 'GameApiGetBet' || isset($serv->get['GamesApiArtisan'])){         //这是第三方游戏拉数据定时任务
                 if(isset($serv->get['GamesApiArtisan'])) unset($serv->get['GamesApiArtisan']);
@@ -132,6 +132,11 @@ class Swoole extends Command
                 $data['dida'] = 1000;
                 $data['dida_num'] = 59;
                 $this->didaTimer($data);
+            }else if(substr($data['thread'],0,26) == 'AgentOdds:AgentBackwaterCp'){     //层层代理返水
+                $tmp = explode('-',$data['thread']);
+                $data['extra'] = ['code'=>$tmp[1],'issue'=>$tmp[2]];
+                $data['exethread'] = $tmp[0];
+                $this->exeComds($data);
             }else{
 //                echo json_encode($data).PHP_EOL;
                 $this->exeComds($data);
@@ -284,6 +289,10 @@ class Swoole extends Command
     private function cldComds($redis,$data){
         $data['thread'] = isset($data['thread'])??'';
         $key = 'Artisan:'.$data['thread'].'-'.$data['exethread'].'-'.$data['code'];
+        if(empty($data['code']))
+            $data['extra'] = [];
+        else
+            $data['extra'] = ['code'=>$data['code']];
 //        echo $key.PHP_EOL;
         if(!$redis->exists($key)){
             $redis->setex($key, 60,'on');
@@ -295,13 +304,13 @@ class Swoole extends Command
         return false;
     }
     private function exeComds($data){
-        if(empty($data['code'])){
+        if(count($data['extra'])==0){
             if(isset($data['exethread']))
                 Artisan::call($data['exethread']);
             else
                 Artisan::call($data['thread']);
         }else
-            Artisan::call($data['exethread'],['code'=>$data['code']]);
+            Artisan::call($data['exethread'],$data['extra']);
     }
     //把需要开奖的提出来
     private function setNeedBunkoIssue($redis,$code,$table){

@@ -172,12 +172,11 @@ class New_gd11x5 extends Excel
         }else{
             $this->stopBunko($gameId,1);
             //玩法退水
-            if(env('AGENT_MODEL',1) == 1) {
-                $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
-                if(!$res){
-                    writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-                    return 0;
-                }
+            $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
+            if(!$res){
+                writeLog('New_Bet', $gameName . $issue . "退水前失败！");
+                return 0;
+            }else{
                 //退水
                 $res = $this->reBackUser($gameId, $issue, $gameName);
                 if(!$res){
@@ -188,10 +187,10 @@ class New_gd11x5 extends Excel
                     }
                 }else
                     writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-            }else{//代理退水
-                $agentJob = new AgentBackwaterJob($gameId,$issue);
-                $agentJob->addQueue();
             }
+            //层层代理退水
+            $curlService = new CurService();
+            $curlService->curlGet('http://127.0.0.1:9500?thread=AgentOdds:AgentBackwaterCp-'.$code.'-'.$issue);
         }
     }
 }
