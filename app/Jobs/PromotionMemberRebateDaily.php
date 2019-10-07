@@ -6,6 +6,7 @@ use App\Capital;
 use App\PromotionConfig;
 use App\PromotionRecode;
 use App\SystemSetting;
+use App\SystemSetup;
 use App\ThirdRebate;
 use App\Users;
 use App\UsersPromoter;
@@ -110,7 +111,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
         //统计资金明细
         $aCapital = [];
         foreach ($aData as $kData => $iData){
-            if($iData['status'] === 3) {
+            if($iData['status'] === 3 && $iData['receive_status'] === 1) {
                 if ($iData['receive_status'] === 1 && array_key_exists($iData['user_id'], $aCapital)) {
                     $aCapital[$iData['user_id']]['money'] += $iData['money'];
                     $aCapital[$iData['user_id']]['balance'] += $iData['money'];
@@ -196,6 +197,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
     private function recodeNo($aBet,$aPromotion,$aPromotionUserS,$aPromotionUser,$aReceiveUser){
         $aArray = [];
         $promotionLevel = SystemSetting::where('id',1)->value('promotion_level');
+        $isAutoReturn = SystemSetup::getValueByCode('automatic_grant_return');
         if($promotionLevel == 0) return $aArray;
         foreach ($aBet as $iBet){
             if(!empty($iBet->user_odds_level) && $iBet->bet_money > 0){
@@ -219,7 +221,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                             'game_id' => $iBet->game_id,
                             'game_name' => $iBet->game_name,
                             'status' => $iStatus,
-                            'receive_status' => $this->isReceiveStatus($iStatus,$promotionUserId[$iCount - $i],$aReceiveUser),
+                            'receive_status' => $this->isReceiveStatus($iStatus,$promotionUserId[$iCount - $i],$aReceiveUser,$isAutoReturn),
                             'money' => $iMoney,
                             'game_money' => $iBet->bet_money,
                             'promotion' => $iPromotion['proportion'] / 100,
@@ -283,11 +285,11 @@ class PromotionMemberRebateDaily implements ShouldQueue
         return $status;
     }
 
-    private function isReceiveStatus($iStatus,$userId,$aReceiveUser){
+    private function isReceiveStatus($iStatus,$userId,$aReceiveUser,$isAutoReturn){
         $status = 0;
         if($iStatus === 3){
             $status = 2;
-            if(in_array($userId,$aReceiveUser))    $status = 1;
+            if(in_array($userId,$aReceiveUser) && ($isAutoReturn == 1))    $status = 1;
         }
 
         if($iStatus === 4)    $status = 4;
