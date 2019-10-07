@@ -43,9 +43,9 @@ class BUNKO_1 extends Command
 
             //阻止進行中
             $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
-            echo $key.PHP_EOL;
+//            echo $key.PHP_EOL;
             if($redis->exists($key)){
-                echo $key.'----ing'.PHP_EOL;
+//                echo $key.'----ing'.PHP_EOL;
                 return 'ing';
             }
             $redis->setex($key,10,'ing');

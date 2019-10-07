@@ -161,11 +161,11 @@ class Swoole extends Command
                 unset($this->num[$data['thread']]);
             //设置ID计数器
             $this->setId($id,$data);
-            try{
-                echo $data['thread'].'-----id----'.$id.'----'.$data['dida'].'----'.$this->num[$data['thread']][$id]['num'].'----'.$data['dida_num'].PHP_EOL;
-            }catch (\exception $exception){
-            }
-            echo json_encode($this->num).PHP_EOL;
+//            try{
+//                echo $data['thread'].'-----id----'.$id.'----'.$data['dida'].'----'.$this->num[$data['thread']][$id]['num'].'----'.$data['dida_num'].PHP_EOL;
+//            }catch (\exception $exception){
+//            }
+//            echo json_encode($this->num).PHP_EOL;
             //开始计数器
             $this->settimer($id,$data);
             $this->num[$data['thread']][$id]['num']++;
@@ -238,8 +238,8 @@ class Swoole extends Command
                                 break;
                         }
                     } catch (\Exception $exception) {
-                        echo __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage().PHP_EOL;
-                        echo json_encode($data).PHP_EOL;
+//                        echo __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage().PHP_EOL;
+//                        echo json_encode($data).PHP_EOL;
                         writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
                         writeLog('error',$data);
                     }
@@ -273,7 +273,7 @@ class Swoole extends Command
                         $killLotteryTime = $LotteryTime-7;
                         $filename = ($killLotteryTime).'--'.$code.'--'.date('H:i:s',$killLotteryTime);
                         if(time() <= (int)$killLotteryTime && !Storage::disk('needkill')->exists($filename)){
-                            echo $filename.'--lott:'.$LotteryTime.'--'.date('Y-m-d H:i:s',$LotteryTime).PHP_EOL;
+//                            echo $filename.'--lott:'.$LotteryTime.'--'.date('Y-m-d H:i:s',$LotteryTime).PHP_EOL;
                             Storage::disk('needkill')->put($filename,json_encode($data));
                             Storage::disk('thread')->put('checkkill-'.$code,$killLotteryTime-1);
                         }
@@ -293,9 +293,9 @@ class Swoole extends Command
                                     Storage::disk('needkill')->delete($filename);
                                     continue;
                                 }
-                                echo 'killexe-1-'.$info['code'].PHP_EOL;
+//                                echo 'killexe-1-'.$info['code'].PHP_EOL;
                                 if(time() >= (int)$tmp[0]) {
-                                    echo 'killexe-2-'.$info['code'].PHP_EOL;
+//                                    echo 'killexe-2-'.$info['code'].PHP_EOL;
                                     Storage::disk('needkill')->delete($filename);
                                     $rep = $this->cldComds($redis, $info);
                                     if($rep)
