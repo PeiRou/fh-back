@@ -124,19 +124,16 @@ class Swoole extends Command
                 }else if(substr($data['thread'],0,7) == 'BUNKO_1'){
                     $tmp = explode('_',$data['thread']);
                     $data['code'] = $tmp[2];
-                    $info['extra'] =  ['code'=>$data['code']];
                     $data['thread'] = 'BUNKO_1';
                 }else if(substr($data['thread'],0,6) == 'KILL_1'){
                     $tmp = explode('_',$data['thread']);
                     $data['code'] = $tmp[2];
-                    $info['extra'] =  ['code'=>$data['code']];
                     $data['thread'] = 'KILL_1';
                 }else if(substr($data['thread'],0,9) == 'AgentOdds'){
                     $tmp = explode('-',$data['thread']);
                     $data['extra'] = ['code'=>$tmp[1],'issue'=>$tmp[2]];
                     $data['thread'] = $tmp[0];
-                    $data['exethread'] = $tmp[0];
-                    $this->exeComds($data);
+                    $this->exeComds_one($data);
                     return '';
                 }
             }else if($data['thread2']=='push'){
@@ -145,7 +142,6 @@ class Swoole extends Command
                     if(substr($val,0,7) == 'BUNKO_1'){
                         $tmp = explode('_',$val);
                         $data['code'] = $tmp[2];
-                        $info['extra'] =  ['code'=>$data['code']];
                         $data['thread'] = 'BUNKO_1';
                     }else if(substr($val,0,6) == 'KILL_1'){
                         $tmp = explode('_',$val);
@@ -158,6 +154,7 @@ class Swoole extends Command
                     $ii++;
                 }
             }
+            echo json_encode($data).PHP_EOL;
             $this->timer = $this->serv->tick(1000, function($id) use ($data){
                 $this->maxId = $id>$this->maxId?$id:$this->maxId;
                 $redis = Redis::connection();
@@ -215,14 +212,13 @@ class Swoole extends Command
         }
     }
     private function exeComds($data){
-        if(!isset($data['extra'])||empty($data['extra'])){
-//            echo 'dooo-1-'.json_encode($data).PHP_EOL;
+        if(empty($data['code']))
             Artisan::call($data['thread']);
-//            echo 'finished-1'.PHP_EOL;
-        }else{
-//            echo 'dooo-2-'.json_encode($data).PHP_EOL;
-            Artisan::call($data['exethread'],$data['extra']);
-//            echo 'finished-2'.PHP_EOL;
-        }
+        else
+            Artisan::call($data['thread'],['code'=>$data['code']]);
+    }
+    private function exeComds_one($data){
+        echo json_encode($data).PHP_EOL;
+        Artisan::call($data['thread'],$data['extra']);
     }
 }
