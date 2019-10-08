@@ -110,7 +110,14 @@ class Swoole extends Command
             }else if(substr($data['thread'],0,6) == 'KILL_1'){
                 $tmp = explode('_',$data['thread']);
                 $data['code'] = $tmp[2];
+                $data['extra'] = ['code'=>$data['code']];
                 $data['thread'] = 'KILL_1';
+            }else if(substr($data['thread'],0,9) == 'AgentOdds'){
+                $tmp = explode('-',$data['thread']);
+                $data['extra'] = ['code'=>$tmp[1],'issue'=>$tmp[2]];
+                $data['thread'] = $tmp[0];
+                $this->exeComds($data);
+                return false;
             }
             $this->timer = $this->serv->tick(1000, function($id) use ($data){
 //                $this->maxId = $id>$this->maxId?$id:$this->maxId;
@@ -169,9 +176,9 @@ class Swoole extends Command
         }
     }
     private function exeComds($data){
-        if(empty($data['code']))
+        if(empty($data['extra']))
             Artisan::call($data['thread']);
         else
-            Artisan::call($data['thread'],['code'=>$data['code']]);
+            Artisan::call($data['thread'],$data['extra']);
     }
 }
