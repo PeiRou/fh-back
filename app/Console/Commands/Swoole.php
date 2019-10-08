@@ -213,26 +213,30 @@ class Swoole extends Command
                     try {
                         $ii = 0;
                         foreach ($files as $filename) {
-                            if(Storage::disk('needbunko')->exists($filename)){
-                                $tmp = explode('-',$filename);
-                                $rsKey = $tmp[2].':needbunko--'.$tmp[1];
-                                if(!$redis->exists($rsKey)){
-                                    Storage::disk('needbunko')->delete($filename);
-                                    continue;
+                            try{
+                                if(Storage::disk('needbunko')->exists($filename)){
+                                    $tmp = explode('-',$filename);
+                                    $rsKey = $tmp[2].':needbunko--'.$tmp[1];
+                                    if(!$redis->exists($rsKey)){
+                                        Storage::disk('needbunko')->delete($filename);
+                                        continue;
+                                    }
+                                    $info = json_decode(Storage::disk('needbunko')->get($filename),true);
+                                    if(is_object($info['opentime'])){
+                                        Storage::disk('needbunko')->delete($filename);
+                                        continue;
+                                    }
+                                    if($info['opentime'] > time())
+                                        continue;
+                                    $rep = $this->cldComds($redis, $info);
+                                    if($rep)
+                                        Storage::disk('needbunko')->delete($filename);
+                                    else
+                                        continue;
+                                    $ii++;
                                 }
-                                $info = json_decode(Storage::disk('needbunko')->get($filename),true);
-                                if(is_object($info['opentime'])){
-                                    Storage::disk('needbunko')->delete($filename);
-                                    continue;
-                                }
-                                if($info['opentime'] > time())
-                                    continue;
-                                $rep = $this->cldComds($redis, $info);
-                                if($rep)
-                                    Storage::disk('needbunko')->delete($filename);
-                                else
-                                    continue;
-                                $ii++;
+                            }catch (\Exception $exception) {
+                                continue;
                             }
                             if ($ii > 3)
                                 break;
@@ -286,24 +290,28 @@ class Swoole extends Command
                     try {
                         $ii = 0;
                         foreach ($files as $filename) {
-                            if(Storage::disk('needkill')->exists($filename)){
-                                $info = json_decode(Storage::disk('needkill')->get($filename),true);
-                                $tmp = explode('--',$filename);
-                                if(isset($info['LotteryTime']) && time() >= $info['LotteryTime']){       //如果已经超出开奖时间，则不执行了
-                                    Storage::disk('needkill')->delete($filename);
-                                    continue;
-                                }
-//                                echo 'killexe-1-'.$info['code'].PHP_EOL;
-                                if(time() >= (int)$tmp[0]) {
-//                                    echo 'killexe-2-'.$info['code'].PHP_EOL;
-                                    Storage::disk('needkill')->delete($filename);
-                                    $rep = $this->cldComds($redis, $info);
-                                    if($rep)
-                                        Storage::disk('thread')->put('needkill-'.$info['code'],time()+50);
-                                    else
+                            try {
+                                if (Storage::disk('needkill')->exists($filename)) {
+                                    $info = json_decode(Storage::disk('needkill')->get($filename), true);
+                                    $tmp = explode('--', $filename);
+                                    if (isset($info['LotteryTime']) && time() >= $info['LotteryTime']) {       //如果已经超出开奖时间，则不执行了
+                                        Storage::disk('needkill')->delete($filename);
                                         continue;
+                                    }
+//                                echo 'killexe-1-'.$info['code'].PHP_EOL;
+                                    if (time() >= (int)$tmp[0]) {
+//                                    echo 'killexe-2-'.$info['code'].PHP_EOL;
+                                        Storage::disk('needkill')->delete($filename);
+                                        $rep = $this->cldComds($redis, $info);
+                                        if ($rep)
+                                            Storage::disk('thread')->put('needkill-' . $info['code'], time() + 50);
+                                        else
+                                            continue;
+                                    }
+                                    $ii++;
                                 }
-                                $ii++;
+                            } catch (\Exception $exception) {
+                                continue;
                             }
                             if ($ii > 5)
                                 break;
