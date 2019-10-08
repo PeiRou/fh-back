@@ -27,13 +27,13 @@ class CURL_PUSH_THREAD extends Command
         $now = time();
         $thread_time = $now;
         $key = 'thread-push';
-//        if(Storage::disk('thread')->exists($key)){
-//            $thread_time = Storage::disk('thread')->get($key);
-//            $thread_time = explode('***',$thread_time);
-//            $thread_time = $thread_time[1];
-//        }
-//        if(!Storage::disk('thread')->exists($key)||($thread_time<$now)){
-//            Storage::disk('thread')->put($key, date('Y-m-d H:i:s',$now).'***'.($now+1));
+        if(Storage::disk('thread')->exists($key)){
+            $thread_time = Storage::disk('thread')->get($key);
+            $thread_time = explode('***',$thread_time);
+            $thread_time = $thread_time[1];
+        }
+        if(!Storage::disk('thread')->exists($key)||($thread_time<$now)){
+            Storage::disk('thread')->put($key, date('Y-m-d H:i:s',$now).'***'.($now+3));
             $this->pushData('BUNKO_1-needbunko-bjkl8');
             $this->pushData('BUNKO_1-needbunko-pk10');
             $this->pushData('BUNKO_1-needbunko-cqssc');
@@ -134,7 +134,7 @@ class CURL_PUSH_THREAD extends Command
 
             //组装后一起发送
             $this->sendUrl();
-//        }
+        }
     }
     private function pushData($tmp){
 //        echo $tmp.PHP_EOL;
