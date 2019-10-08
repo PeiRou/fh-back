@@ -185,7 +185,8 @@ class Swoole extends Command
                 $data['key'] = 'needbunko';
                 $key = 'needbunko';
                 $filename = time().'-needbunko-'.$data['exethread'].'-'.$data['code'];
-                Storage::disk($key)->put($filename,json_encode($data));
+                if(count(Storage::disk($key)->files())<200);
+                    Storage::disk($key)->put($filename,json_encode($data));
                 return '';
             }else if(substr($data['thread'],0,6) == 'KILL_1'){
                 $tmp = explode('_',$data['thread']);
@@ -195,7 +196,8 @@ class Swoole extends Command
                 $data['key'] = 'needkill';
                 $key = 'needkill';
                 $filename = time().'-needkill-'.$data['exethread'].'-'.$data['code'];
-                Storage::disk($key)->put($filename,json_encode($data));
+                if(count(Storage::disk($key)->files())<200);
+                    Storage::disk($key)->put($filename,json_encode($data));
                 return '';
             }else if(substr($data['thread'],0,6) == 'CHECK_'){
                 switch ($data['thread']){
