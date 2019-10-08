@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Helpers\CurService;
 use App\Http\Controllers\Bet\New_msnn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -133,30 +132,28 @@ class Excel
             if(!$res)
                 writeLog('New_Bet',$gameName.$issue.'返钱失败！');
         }
-        if(!empty($table)&&!empty($tableid)){
-            $reWater = DB::table($table)->where('id',$tableid)->where('returnwater',0)->first();
-            if(empty($reWater))
-                return 0;
-            $res = DB::table($table)->where('id',$tableid)->where('returnwater',0)->update(['returnwater' => 2]);
-            if(empty($res)){
-                writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-                return 0;
-            }
-        }
-        //退水
-        $res = $this->reBackUser($gameId, $issue, $gameName);
-        if(!$res){
-            if(!empty($table)&&!empty($tableid)){
-                $res = DB::table($table)->where('id',$tableid)->where('returnwater',2)->update(['returnwater' => 1]);
-                if(empty($res)){
-                    writeLog('New_Bet',$gameName.$issue.'退水中失败！');
-                    return 0;
-                }
-            }
-        }else
-            writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-        $curlService = new CurService();
-        $curlService->curlGet('http://127.0.0.1:9500?thread=AgentOdds:AgentBackwaterCp-'.$gameId.'-'.$issue);
+//        if(!empty($table)&&!empty($tableid)){
+//            $reWater = DB::table($table)->where('id',$tableid)->where('returnwater',0)->first();
+//            if(empty($reWater))
+//                return 0;
+//            $res = DB::table($table)->where('id',$tableid)->where('returnwater',0)->update(['returnwater' => 2]);
+//            if(empty($res)){
+//                writeLog('New_Bet', $gameName . $issue . "退水前失败！");
+//                return 0;
+//            }
+//        }
+//        //退水
+//        $res = $this->reBackUser($gameId, $issue, $gameName);
+//        if(!$res){
+//            if(!empty($table)&&!empty($tableid)){
+//                $res = DB::table($table)->where('id',$tableid)->where('returnwater',2)->update(['returnwater' => 1]);
+//                if(empty($res)){
+//                    writeLog('New_Bet',$gameName.$issue.'退水中失败！');
+//                    return 0;
+//                }
+//            }
+//        }else
+//            writeLog('New_Bet', $gameName . $issue . "退水前失败！");
         return 0;
     }
     //中奖推送
@@ -295,8 +292,8 @@ class Excel
         if(empty($havElse))
             $strSql = "SELECT sum(bet_money) as sumBet_money,sum(case when bunko >0 then bunko-bet_money else 0 end) as sumBunkoWin,sum(case when bunko < 0 then bunko else 0 end) as sumBunkoLose FROM bet WHERE 1 and testFlag = 0 ".$where;
         else
-            $strSql = "SELECT sum(bet_money) as sumBet_money,
-sum(CASE WHEN `game_id` IN(90,91) THEN case when `nn_view_money` >0 then `nn_view_money` else 0 end ELSE (case when bunko >0 then bunko-bet_money else 0 end) END) as sumBunkoWin,
+            $strSql = "SELECT sum(CASE WHEN `game_id` IN(90,91) THEN bet_money+freeze_money else bet_money end ) as sumBet_money,
+sum(CASE WHEN `game_id` IN(90,91) THEN case when `nn_view_money` > 0 then `nn_view_money`-`freeze_money` else 0 end ELSE (case when bunko >0 then bunko-bet_money else 0 end) END) as sumBunkoWin,
 sum(CASE WHEN `game_id` IN(90,91) THEN case when `nn_view_money` < 0 then `nn_view_money` else 0 end ELSE (case when bunko < 0 then bunko else 0 end) END) as sumBunkoLose 
 FROM bet WHERE 1 and testFlag = 0 ".$where;
 
@@ -343,7 +340,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
             if($code=='mssc')
                 $sql = "SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 and nn_bunko = 1 order by id desc LIMIT 1";
             else{
-                $sql = "SELECT * FROM {$table} 
+                $sql = "SELECT {$table}.* FROM {$table} 
                             join {$havElseLottery['table']} on {$table}.issue = {$havElseLottery['table']}.issue
                             WHERE {$table}.opentime <='".$today."' and {$table}.is_open=1 
                              and {$table}.bunko = 0
@@ -355,6 +352,17 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
             return false;
         foreach ($tmp as&$value)
             $res = $value;
+        return $res;
+    }
+    //取得最新的需要结算奖期-All
+    public function getNeedBunkoIssueAll($table){
+        if(empty($table))
+            return false;
+        $today = date('Y-m-d H:i:s',time());
+        $sql = "SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 order by id desc";
+        $res = DB::select($sql);
+        if(empty($res))
+            return false;
         return $res;
     }
     //取得最新的需要结算奖期
@@ -1027,7 +1035,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                 }
             }
             if($bunko == 1){
-                $tmp = DB::connection('mysql::write')->select("SELECT SUM(CASE WHEN `game_id` = 91 THEN (CASE WHEN `nn_view_money` >0 THEN `nn_view_money` + `bet_money` ELSE `bunko` END) ELSE `bunko` END) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'");
+                $tmp = DB::connection('mysql::write')->select("SELECT SUM(`bunko`) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'");
                 $excBunko = 0;
                 foreach ($tmp as&$value)
                     $excBunko = $value->sumBunko;

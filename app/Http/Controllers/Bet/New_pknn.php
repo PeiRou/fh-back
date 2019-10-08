@@ -10,7 +10,6 @@ namespace App\Http\Controllers\Bet;
 
 use App\Excel;
 use App\ExcelLotteryNN;
-use App\Http\Controllers\Job\AgentBackwaterJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -76,12 +75,11 @@ class New_pknn extends Excel
         }else{
             $this->stopBunko($gameId,1);
             //玩法退水
-            if(env('AGENT_MODEL',1) == 1) {
-                $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
-                if(!$res){
-                    writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-                    return 0;
-                }
+            $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
+            if(!$res){
+                writeLog('New_Bet', $gameName . $issue . "退水前失败！");
+                return 0;
+            }else{
                 //退水
                 $res = $this->reBackUser($gameId, $issue, $gameName);
                 if(!$res){
@@ -92,9 +90,6 @@ class New_pknn extends Excel
                     }
                 }else
                     writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-            }else{//代理退水
-                $agentJob = new AgentBackwaterJob($gameId,$issue);
-                $agentJob->addQueue();
             }
         }
     }

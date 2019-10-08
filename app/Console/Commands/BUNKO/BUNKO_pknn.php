@@ -30,7 +30,7 @@ class BUNKO_pknn extends Command
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
-            $redis->del($code.':needbunko--'.$get->issue);
+//            $redis->del($code.':needbunko--'.$get->issue);
             //阻止進行中
             $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
             if($redis->exists($key)){
@@ -42,9 +42,10 @@ class BUNKO_pknn extends Command
             ]);
             if($update)
                 $excel->all($get->opennum,$get->niuniu, $get->issue, $get->id,$code,$lotterys); //新--结算
-            $one = $excel->getNeedBunkoIssue($lotterys['table']);
-            if($one)
-                $redis->set($code.':needbunko--'.$one->issue,$one->issue);
+//            $get = $excel->getNeedBunkoIssueAll($lotterys['table']);
+//            if($get)
+//                foreach ($get as $k => $one)
+//                    $redis->set($code . ':needbunko--' . $one->issue, strtotime($one->opentime));
         }
     }
 }

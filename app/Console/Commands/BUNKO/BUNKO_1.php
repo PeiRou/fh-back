@@ -39,16 +39,18 @@ class BUNKO_1 extends Command
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
-            $redis->del($code.':needbunko--'.$get->issue);
+//            $redis->del($code.':needbunko--'.$get->issue);
 
             //阻止進行中
             $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
+//            echo $key.PHP_EOL;
             if($redis->exists($key)){
+//                echo $key.'----ing'.PHP_EOL;
                 return 'ing';
             }
-            $redis->setex($key,60,'ing');
+            $redis->setex($key,10,'ing');
 
-            //将SQL状态改成结算中
+//            //将SQL状态改成结算中
             $update = DB::table($lotterys['table'])->where('id', $get->id)->update([
                 'bunko' => 2
             ]);
@@ -56,15 +58,20 @@ class BUNKO_1 extends Command
             //SQL状态有成功改成结算中，就开始执行结算
             if($update)
                 $excel->all($opennum,$get->issue,$get->id,false,$code,$lotterys);
-            $one = $excel->getNeedBunkoIssue($lotterys['table']);
-            if($one)
-                $redis->set($code.':needbunko--'.$one->issue,$one->issue);
-        }elseif (count($havElseLottery)>0){
-            $redis = Redis::connection();
-            $redis->select(0);
-            $one = $excel->getNeedBunkoIssue($lotterys['table']);
-            if($one)
-                $redis->set($code.':needbunko--'.$one->issue,$one->issue);
+//            $get = $excel->getNeedBunkoIssueAll($lotterys['table'],$code,$havElse,$havElseLottery);
+//            if($get){
+//                foreach ($get as $k => $one)
+//                    $redis->set($code . ':needbunko--' . $one->issue,strtotime($one->opentime));
+//            }
+            $redis->setex($key,1,'ing');
         }
+//        elseif (count($havElseLottery)>0){
+//            $redis = Redis::connection();
+//            $redis->select(0);
+//            $get = $excel->getNeedBunkoIssueAll($lotterys['table'],$code,$havElse,$havElseLottery);
+//            if($get)
+//                foreach ($get as $k => $one)
+//                    $redis->set($code . ':needbunko--' . $one->issue,strtotime($one->opentime));
+//        }
     }
 }
