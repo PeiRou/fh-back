@@ -39,7 +39,7 @@ class BUNKO_1 extends Command
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
-            $redis->del($code.':needbunko--'.$get->issue);
+//            $redis->del($code.':needbunko--'.$get->issue);
 
             //阻止進行中
             $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
@@ -58,19 +58,20 @@ class BUNKO_1 extends Command
             //SQL状态有成功改成结算中，就开始执行结算
             if($update)
                 $excel->all($opennum,$get->issue,$get->id,false,$code,$lotterys);
-            $get = $excel->getNeedBunkoIssueAll($lotterys['table'],$code,$havElse,$havElseLottery);
-            if($get){
-                foreach ($get as $k => $one)
-                    $redis->set($code . ':needbunko--' . $one->issue,strtotime($one->opentime));
-            }
+//            $get = $excel->getNeedBunkoIssueAll($lotterys['table'],$code,$havElse,$havElseLottery);
+//            if($get){
+//                foreach ($get as $k => $one)
+//                    $redis->set($code . ':needbunko--' . $one->issue,strtotime($one->opentime));
+//            }
             $redis->setex($key,1,'ing');
-        }elseif (count($havElseLottery)>0){
-            $redis = Redis::connection();
-            $redis->select(0);
-            $get = $excel->getNeedBunkoIssueAll($lotterys['table'],$code,$havElse,$havElseLottery);
-            if($get)
-                foreach ($get as $k => $one)
-                    $redis->set($code . ':needbunko--' . $one->issue,strtotime($one->opentime));
         }
+//        elseif (count($havElseLottery)>0){
+//            $redis = Redis::connection();
+//            $redis->select(0);
+//            $get = $excel->getNeedBunkoIssueAll($lotterys['table'],$code,$havElse,$havElseLottery);
+//            if($get)
+//                foreach ($get as $k => $one)
+//                    $redis->set($code . ':needbunko--' . $one->issue,strtotime($one->opentime));
+//        }
     }
 }

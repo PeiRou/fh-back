@@ -69,24 +69,6 @@ class Swoole extends Command
      * 初始化
      */
     private function init(){
-        $ClassGames = new Games();
-        $this->gameIdtoCode = $ClassGames->getGameData('gameIdtoCode','',['lhc']); //取得游戏id对应的游戏code，排除香港六合彩
-        $this->gameCodetoTable = $ClassGames->getGameFileData('gameCodetoTable');   //取得游戏code对应的游戏table
-        $tmp = $ClassGames->getGameFileData('gameKill');     //取得游戏不是官彩都要开启杀率
-        foreach ($tmp as $k => $v){
-            $this->gameKill[$k] = $v;
-        }
-        //进程一起来的时候只做一次检查
-        $redis = Redis::connection();
-        $redis->select(0);
-        $redis->flushdb();
-        $files = Storage::disk('needbunko')->files();
-        foreach ($files as $filename) {
-            Storage::disk('needbunko')->delete($filename);
-        }
-        foreach ($this->gameCodetoTable as $code => $table) {         //把需要结算的奖期放到redis
-            $this->setNeedBunkoIssue($redis, $code, $table);
-        }
     }
 
     /***
@@ -108,43 +90,39 @@ class Swoole extends Command
         });
         $this->ws->on('workerStart', function ($serv) {
             $this->serv = $serv;
+            $this->num = array();
         });
         $this->ws->on('request', function ($serv, $response) {
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
-            $data['extra'] = [];
-
-            if($data['thread'] == 'GameApiGetBet' || isset($serv->get['GamesApiArtisan'])){         //这是第三方游戏拉数据定时任务
+            $data['thread2'] = isset($serv->post['thread2'])?$serv->post['thread2']:(isset($serv->get['thread2'])?$serv->get['thread2']:'');      //定时任务名称
+            $data['code'] = '';
+            if($data['thread'] == 'GameApiGetBet' || isset($serv->get['GamesApiArtisan'])){
                 if(isset($serv->get['GamesApiArtisan'])) unset($serv->get['GamesApiArtisan']);
                 if(isset($serv->get['thread'])) unset($serv->get['thread']);
                 ob_start();
                 Artisan::call($data['thread'], $serv->get);
                 $response->end(ob_get_clean());
                 return '';
-            }else if(substr($data['thread'],0,11) == 'CHECK_BUNKO'){     //改良的新结算，检查有需要结算的，把它放到文件做对列
-                $data['dida'] = 1000;
-                $data['dida_num'] = 59;
-                $this->didaTimer($data);
-            }else if(substr($data['thread'],0,10) == 'CHECK_EXEB'){     //改良的新结算，执行有需要结算的
-                $data['dida'] = 1000;
-                $data['dida_num'] = 59;
-                $this->didaTimer($data);
-            }else if(substr($data['thread'],0,10) == 'CHECK_KILL'){     //改良的新结算，检查有需要杀率的，把它放到文件做对列
-                $data['dida'] = 1000;
-                $data['dida_num'] = 59;
-                $this->didaTimer($data);
-            }else if(substr($data['thread'],0,10) == 'CHECK_EXEK'){     //改良的新结算，执行有需要杀率的
-                $data['dida'] = 1000;
-                $data['dida_num'] = 59;
-                $this->didaTimer($data);
-            }else if(substr($data['thread'],0,26) == 'AgentOdds:AgentBackwaterCp'){     //层层代理返水
-                $tmp = explode('-',$data['thread']);
-                $data['extra'] = ['code'=>$tmp[1],'issue'=>$tmp[2]];
-                $data['exethread'] = $tmp[0];
-                $this->exeComds($data);
-            }else{
-//                echo json_encode($data).PHP_EOL;
-                $this->exeComds($data);
+            }else if(substr($data['thread'],0,7) == 'BUNKO_1'){
+                $tmp = explode('_',$data['thread']);
+                $data['code'] = $tmp[2];
+                $data['thread'] = 'BUNKO_1';
+            }else if(substr($data['thread'],0,6) == 'KILL_1'){
+                $tmp = explode('_',$data['thread']);
+                $data['code'] = $tmp[2];
+                $data['thread'] = 'KILL_1';
             }
+            $this->timer = $this->serv->tick(1000, function($id) use ($data){
+//                $this->maxId = $id>$this->maxId?$id:$this->maxId;
+                $redis = Redis::connection();
+
+                //设置ID计数器
+                $this->setId($id);
+                //开始计数器
+                $this->settimer($id,$data, $redis);
+                $this->num[$id]['num'] ++;
+                $redis->disconnect();
+            });
         });
 
         //监听WebSocket连接关闭事件
@@ -153,258 +131,47 @@ class Swoole extends Command
 
         $this->ws->start();
     }
-
-    //启动计数器
-    private function didaTimer($data){
-        $this->timer = $this->serv->tick($data['dida'], function($id) use ($data){
-            if(isset($this->num[$data['thread']])&&count($this->num[$data['thread']])>1)
-                unset($this->num[$data['thread']]);
-            //设置ID计数器
-            $this->setId($id,$data);
-//            try{
-//                echo $data['thread'].'-----id----'.$id.'----'.$data['dida'].'----'.$this->num[$data['thread']][$id]['num'].'----'.$data['dida_num'].PHP_EOL;
-//            }catch (\exception $exception){
-//            }
-//            echo json_encode($this->num).PHP_EOL;
-            //开始计数器
-            $this->settimer($id,$data);
-            $this->num[$data['thread']][$id]['num']++;
-        });
-    }
-
-    //计时器中间执行程序
-    private function settimer($id,$data){
+    //计数到60则停下
+    private function settimer($id,$data,$redis){
         if(!isset($data['thread']) || empty($data['thread']))
             $this->serv->clearTimer($id);
         try{
-            switch ($data['thread']){
-                case 'CHECK_BUNKO':           //改良的新结算，检查有需要结算的，把它放到文件做对列
-                    $redis = Redis::connection();
-                    $redis->select(0);
-                    foreach ($this->gameIdtoCode as $k => $code){
-                        if(empty($code))
-                            continue;
-                        $rsKey = $code.':needbunko--*';
-                        try{
-                            $needBunko = $redis->keys($rsKey);
-                        }catch (\exception $exception){
-                            foreach ($this->gameCodetoTable as $code => $table) {         //把需要结算的奖期放到redis
-                                $this->setNeedBunkoIssue($redis, $code, $table);
-                            }
-                            continue;
-                        }
-                        if(is_array($needBunko)&&count($needBunko)>0){
-                            foreach ($needBunko as $k1 => $v1){
-                                try {
-                                    $opentime = $redis->get($v1);
-                                }catch (\exception $exception){
-                                    continue;
-                                }
-                                $tmp = explode('--',$v1);
-                                $this->setNeedBunkoFile($code,$tmp[1],$opentime);
-                            }
-                        }
-                    }
-                    break;
-                case 'CHECK_EXEB':           //改良的新结算，执行有需要结算的
-                    $redis = Redis::connection();
-                    $redis->select(0);
-                    $files = Storage::disk('needbunko')->files();
-                    try {
-                        $ii = 0;
-                        foreach ($files as $filename) {
-                            try{
-                                if(Storage::disk('needbunko')->exists($filename)){
-                                    $tmp = explode('-',$filename);
-                                    $rsKey = $tmp[2].':needbunko--'.$tmp[1];
-                                    if(!$redis->exists($rsKey)){
-                                        Storage::disk('needbunko')->delete($filename);
-                                        continue;
-                                    }
-                                    $info = json_decode(Storage::disk('needbunko')->get($filename),true);
-                                    if(is_object($info['opentime'])){
-                                        Storage::disk('needbunko')->delete($filename);
-                                        continue;
-                                    }
-                                    if($info['opentime'] > time())
-                                        continue;
-                                    $rep = $this->cldComds($redis, $info);
-                                    if($rep)
-                                        Storage::disk('needbunko')->delete($filename);
-                                    else
-                                        continue;
-                                    $ii++;
-                                }
-                            }catch (\Exception $exception) {
-                                continue;
-                            }
-                            if ($ii > 3)
-                                break;
-                        }
-                    } catch (\Exception $exception) {
-//                        echo __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage().PHP_EOL;
-//                        echo json_encode($data).PHP_EOL;
-                        writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-                        writeLog('error',$data);
-                    }
-                    break;
-                case 'CHECK_KILL':           //改良的新结算，检查有需要杀率的，把它放到文件做对列
-                    $redis = Redis::connection();
-                    $redis->select(0);
-                    foreach ($this->gameKill as $gameId => $code){
-                        if(Storage::disk('thread')->exists('checkkill-'.$code) && time() <= Storage::disk('thread')->get('checkkill-'.$code))
-                            continue;
-                        $rsKey = $code.':nextIssueLotteryTime';
-                        try{
-                            if($redis->exists($rsKey))
-                                $LotteryTime = $redis->get($rsKey);
-                            else
-                                $LotteryTime = 0;
-                        } catch (\Exception $exception) {
-                            writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-                            writeLog('error',$code);
-                            writeLog('error',$redis->get($rsKey));
-                            writeLog('error',$data);
-                            continue;
-                        }
-                        if(!is_numeric($LotteryTime) || $LotteryTime <= 1)
-                            continue;
-                        if(Storage::disk('thread')->exists('needkill-'.$code)&& time() <= Storage::disk('thread')->get('needkill-'.$code))
-                            continue;
-                        $data['LotteryTime'] = $LotteryTime;
-                        $data['code'] = $code;
-                        $data['exethread'] = 'KILL_1';
-                        $killLotteryTime = $LotteryTime-7;
-                        $filename = ($killLotteryTime).'--'.$code.'--'.date('H:i:s',$killLotteryTime);
-                        if(time() <= (int)$killLotteryTime && !Storage::disk('needkill')->exists($filename)){
-//                            echo $filename.'--lott:'.$LotteryTime.'--'.date('Y-m-d H:i:s',$LotteryTime).PHP_EOL;
-                            Storage::disk('needkill')->put($filename,json_encode($data));
-                            Storage::disk('thread')->put('checkkill-'.$code,$killLotteryTime-1);
-                        }
-                    }
-                    break;
-                case 'CHECK_EXEK':           //改良的新结算，执行有需要杀率的
-                    $redis = Redis::connection();
-                    $redis->select(0);
-                    $files = Storage::disk('needkill')->files();
-                    try {
-                        $ii = 0;
-                        foreach ($files as $filename) {
-                            try {
-                                if (Storage::disk('needkill')->exists($filename)) {
-                                    $info = json_decode(Storage::disk('needkill')->get($filename), true);
-                                    $tmp = explode('--', $filename);
-                                    if (isset($info['LotteryTime']) && time() >= $info['LotteryTime']) {       //如果已经超出开奖时间，则不执行了
-                                        Storage::disk('needkill')->delete($filename);
-                                        continue;
-                                    }
-//                                echo 'killexe-1-'.$info['code'].PHP_EOL;
-                                    if (time() >= (int)$tmp[0]) {
-//                                    echo 'killexe-2-'.$info['code'].PHP_EOL;
-                                        Storage::disk('needkill')->delete($filename);
-                                        $rep = $this->cldComds($redis, $info);
-                                        if ($rep)
-                                            Storage::disk('thread')->put('needkill-' . $info['code'], time() + 50);
-                                        else
-                                            continue;
-                                    }
-                                    $ii++;
-                                }
-                            } catch (\Exception $exception) {
-                                continue;
-                            }
-                            if ($ii > 5)
-                                break;
-                        }
-                    } catch (\Exception $exception) {
-                        writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-                        writeLog('error',$data);
-                    }
-                    break;
-                default:
-                    $this->serv->clearTimer($id);
-                    break;
-            }
-        }catch (\exception $exception){
-            writeLog('error',$exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-            writeLog('error',$data);
-        }
-        if($this->num[$data['thread']][$id]['num']>=$data['dida_num'])
-            $this->serv->clearTimer($id);
-    }
-    private function setId($id,$data){
-        if(!isset($this->num[$data['thread']][$id]['num']))
-            $this->num[$data['thread']][$id]['num'] = 0;
-    }
-    private function cldComds($redis,$data){
-        try{
-            $data['thread'] = isset($data['thread'])??'';
-            $key = 'Artisan:'.$data['thread'].'-'.$data['exethread'].'-'.$data['code'];
-            if(empty($data['code']))
-                $data['extra'] = [];
-            else
-                $data['extra'] = ['code'=>$data['code']];
-            if(!$redis->exists($key)){
-                $redis->setex($key, 60,'on');
+            if(env('IS_CLOUD',0)==0){       //如果非云主机
                 DB::disconnect();
                 $this->exeComds($data);
-                $redis->del($key);
-                return true;
+            }else{
+                $redis->select(0);
+                if(isset($this->num[$id]['cmds']))
+                    foreach ($this->num[$id]['cmds'] as $key => $val ){
+                        $this->cldComds($redis,$val,'cmds',$id);
+                    }
+                else
+                    $this->cldComds($redis,$data);
             }
         }catch (\exception $exception){
             writeLog('error',$exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             writeLog('error',$data);
         }
-        return false;
+        if($this->num[$id]['num']>=59)
+            $this->serv->clearTimer($id);
+    }
+    private function setId($id){
+        if(!isset($this->num[$id]['num']))
+            $this->num[$id]['num'] = 0;
+    }
+    private function cldComds($redis,$data){
+        $key = 'Artisan:'.$data['thread'].'-'.$data['code'];
+        if(!$redis->exists($key)){
+            $redis->setex($key, 60,'on');
+            DB::disconnect();
+            $this->exeComds($data);
+            $redis->del($key);
+        }
     }
     private function exeComds($data){
-        if(count($data['extra'])==0){
-            if(isset($data['exethread']))
-                Artisan::call($data['exethread']);
-            else
-                Artisan::call($data['thread']);
-        }else
-            Artisan::call($data['exethread'],$data['extra']);
-    }
-    //把需要开奖的提出来
-    private function setNeedBunkoIssue($redis,$code,$table){
-        $excel = new Excel();
-        if($code=='msnn')                               //只有秒速牛牛的表跟别人不一样
-            $res = $excel->getNeedNNBunkoIssue($table);
+        if(empty($data['code']))
+            Artisan::call($data['thread']);
         else
-            $res = $excel->getNeedBunkoIssue($table);
-        if($res){
-            $redis->set($code.':needbunko--'.$res->issue,strtotime($res->opentime));
-            $this->setNeedBunkoFile($code,$res->issue,strtotime($res->opentime));
-        }
-    }
-    //把需要开奖的放到结算文件里
-    //第一个参数是彩种的code，第二个参数是需要结算的期号
-    private function setNeedBunkoFile($code,$issue,$opentime){
-        if(!is_numeric($opentime))
-            return false;
-        $data['opentime'] = $opentime;
-        switch ($code){
-            case 'msnn':
-                $data['code'] = '';
-                $data['thread'] = 'BUNKO_msnn';
-                $data['exethread'] = 'BUNKO_msnn';
-                break;
-            case 'pknn':
-                $data['code'] = '';
-                $data['thread'] = 'BUNKO_pknn';
-                $data['exethread'] = 'BUNKO_pknn';
-                break;
-            default:
-                $data['code'] = $code;
-                $data['thread'] = 'BUNKO_1';
-                $data['exethread'] = 'BUNKO_1';
-                break;
-        }
-        $filename = $opentime.'-'.$issue.'-'.$data['code'].'-'.$data['exethread'];
-        if(Storage::disk('needbunko')->exists($filename))
-            return false;
-        Storage::disk('needbunko')->put($filename,json_encode($data));
-//        echo json_encode($data).PHP_EOL;
+            Artisan::call($data['thread'],['code'=>$data['code']]);
     }
 }

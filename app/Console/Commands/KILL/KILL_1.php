@@ -25,13 +25,17 @@ class KILL_1 extends Command
         $games = $Games->games[$code]??'';
         if(empty($games))
             return false;
+        $redis = Redis::connection();
+        $redis->select(0);
+        $nextIssueLotteryTime = $redis->exists($code.':nextIssueLotteryTime')?$redis->get($code.':nextIssueLotteryTime'):0;
+        if(empty($nextIssueLotteryTime) || time() < ($nextIssueLotteryTime-7))
+            return false;
+
         $excel = new Excel();
         $excel = $excel->newObject($code);
         $get = $excel->getNeedKillIssue($games['table']);
         $exeBase = $excel->getKillBase($games['gameId']);
         if(isset($get) && $get && !empty($exeBase)){
-            $redis = Redis::connection();
-            $redis->select(0);
             //阻止進行中
             $key = 'Kill:'.$games['gameId'].'ing:'.$get->issue;
             if($redis->exists($key)){

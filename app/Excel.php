@@ -311,6 +311,8 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
             return false;
         $today = date('Y-m-d H:i:s',time()+9);
         $sql = "SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=".$status.") and is_open=0 and bunko=0 and excel_num=".$status;
+        if($table=='game_mssc')
+            echo $sql.PHP_EOL;
         $tmp = DB::connection('mysql::write')->select($sql);
         if(empty($tmp))
             return false;
