@@ -100,6 +100,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                         'money' => $iArray['money'],
                         'game_money' => $iArray['game_money'],
                         'promotion' => $iArray['promotion'],
+                        'level' => $iArray['level'],
                         'date' => $this->aDateTime,
                         'dateTime' => $time,
                         'created_at' => $dateTime,
