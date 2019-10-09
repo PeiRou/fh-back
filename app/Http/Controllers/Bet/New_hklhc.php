@@ -844,7 +844,7 @@ class New_hklhc extends Excel
                 }
             }
         }
-        $update = DB::table($table)->where('id',$id)->where('is_open',1)->where('bunko',2)->update([
+        $update = DB::table($table)->where('id',$id)->where('is_open',1)->where('bunko',3)->update([
             'bunko' => 1
         ]);
         if ($update !== 1) {
