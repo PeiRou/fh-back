@@ -30,7 +30,6 @@ class BUNKO_msnn extends Command
         if($get){
             $redis = Redis::connection();
             $redis->select(0);
-//            $redis->del($code.':needbunko--'.$get->issue);
             //阻止進行中
             $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
             if($redis->exists($key)){
