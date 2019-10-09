@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\BUNKO;
 
-use App\Http\Controllers\Bet\New_nlhc;
+use App\Http\Controllers\Bet\New_hklhc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -25,7 +25,7 @@ class BUNKO_lhc extends Command
         $lotterys = $Games->games[$code]??'';
         if(empty($lotterys))
             return false;
-        $excel = new New_nlhc();
+        $excel = new New_hklhc();
         $get = $excel->getNeedBunkoIssueLhc($lotterys['table']);
         if($get){
             $redis = Redis::connection();

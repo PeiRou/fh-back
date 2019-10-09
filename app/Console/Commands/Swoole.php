@@ -2,22 +2,33 @@
 
 namespace App\Console\Commands;
 
-use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Artisan;
-use SameClass\Config\LotteryGames\Games;
 
 class Swoole extends Command
 {
     public $ws;
     public $serv;
-    public $num = [];
-    public $gameIdtoCode = [];
-    public $gameCodetoTable = [];
-    public $gameKill = [];
+    public $num;
+    public $maxId = 8;
+    public $threadArray= [
+        'BUNKO_1_bjkl8','BUNKO_1_pk10','BUNKO_1_cqssc','BUNKO_1_cqxync','BUNKO_1_gd11x5','BUNKO_1_gdklsf','BUNKO_1_gsk3',
+        'BUNKO_1_gxk3','BUNKO_1_gzk3','BUNKO_1_hbk3','BUNKO_1_hebeik3','BUNKO_1_jsk3','BUNKO_1_msft','BUNKO_1_msjsk3',
+        'BUNKO_1_qqffc','BUNKO_msnn','BUNKO_1_mssc','BUNKO_1_msssc','BUNKO_1_paoma','BUNKO_1_pcdd','BUNKO_pknn',
+        'BUNKO_1_xjssc','BUNKO_1_xylhc','BUNKO_1_kssc','BUNKO_1_ksft','BUNKO_1_ksssc','BUNKO_1_twxyft',
+        'BUNKO_1_sfsc','BUNKO_1_sfssc','BUNKO_1_jslhc','BUNKO_1_sflhc','BUNKO_1_xyft','BUNKO_1_ahk3',
+        'BUNKO_1_xykl8','BUNKO_1_xylsc','BUNKO_1_xylft','BUNKO_1_xylssc','BUNKO_1_xy28','BUNKO_1_twbgc',
+        'BUNKO_1_twbg28','BUNKO_1_hlsx','BUNKO_1_yfsc','BUNKO_1_yfssc','BUNKO_1_yflhc','BUNKO_1_efsc','BUNKO_1_efssc',
+        'BUNKO_1_eflhc','BUNKO_1_wfsc','BUNKO_1_wfssc','BUNKO_1_wflhc','BUNKO_1_shfsc','BUNKO_1_shfssc','BUNKO_1_shflhc',
+        'BUNKO_1_hkk3','BUNKO_1_yfk3','BUNKO_1_efk3','BUNKO_1_sfk3','BUNKO_1_wfk3','KILL_1_msft','KILL_1_mssc','KILL_1_msssc',
+        'KILL_1_paoma','KILL_1_xylhc','KILL_1_msjsk3','KILL_1_qqffc','KILL_1_kssc','KILL_1_ksft','KILL_1_ksssc','KILL_1_twxyft',
+        'KILL_1_sfsc','KILL_1_sfssc','KILL_1_jslhc','KILL_1_sflhc','KILL_1_xykl8','KILL_1_xylsc','KILL_1_xylft','KILL_1_xylssc',
+        'KILL_1_yfsc','KILL_1_yfssc','KILL_1_yflhc','KILL_1_efsc','KILL_1_efssc','KILL_1_eflhc','KILL_1_wfsc','KILL_1_wfssc',
+        'KILL_1_wflhc','KILL_1_shfsc','KILL_1_shfssc','KILL_1_shflhc','KILL_1_hkk3','KILL_1_yfk3','KILL_1_efk3','KILL_1_sfk3','KILL_1_wfk3'
+    ];
     /**
      * The name and signature of the console command.
      *
@@ -69,6 +80,12 @@ class Swoole extends Command
      * 初始化
      */
     private function init(){
+        $redis = Redis::connection();
+        $redis->select(0);
+        $redis->flushdb();        //清除所有开奖相关redis
+        if(Storage::disk('thread')->exists('thread')){
+            Storage::disk('thread')->delete('thread');
+        }
     }
 
     /***
@@ -96,31 +113,50 @@ class Swoole extends Command
             $data['thread'] = isset($serv->post['thread'])?$serv->post['thread']:(isset($serv->get['thread'])?$serv->get['thread']:'');      //定时任务名称
             $data['thread2'] = isset($serv->post['thread2'])?$serv->post['thread2']:(isset($serv->get['thread2'])?$serv->get['thread2']:'');      //定时任务名称
             $data['code'] = '';
-            if($data['thread'] == 'GameApiGetBet' || isset($serv->get['GamesApiArtisan'])){
-                if(isset($serv->get['GamesApiArtisan'])) unset($serv->get['GamesApiArtisan']);
-                if(isset($serv->get['thread'])) unset($serv->get['thread']);
-                ob_start();
-                Artisan::call($data['thread'], $serv->get);
-                $response->end(ob_get_clean());
-                return '';
-            }else if(substr($data['thread'],0,7) == 'BUNKO_1'){
-                $tmp = explode('_',$data['thread']);
-                $data['code'] = $tmp[2];
-                $data['thread'] = 'BUNKO_1';
-            }else if(substr($data['thread'],0,6) == 'KILL_1'){
-                $tmp = explode('_',$data['thread']);
-                $data['code'] = $tmp[2];
-                $data['extra'] = ['code'=>$data['code']];
-                $data['thread'] = 'KILL_1';
-            }else if(substr($data['thread'],0,9) == 'AgentOdds'){
-                $tmp = explode('-',$data['thread']);
-                $data['extra'] = ['code'=>$tmp[1],'issue'=>$tmp[2]];
-                $data['thread'] = $tmp[0];
-                $this->exeComds($data);
-                return false;
+            if(empty($data['thread2'])){
+                if($data['thread'] == 'GameApiGetBet' || isset($serv->get['GamesApiArtisan'])){
+                    if(isset($serv->get['GamesApiArtisan'])) unset($serv->get['GamesApiArtisan']);
+                    if(isset($serv->get['thread'])) unset($serv->get['thread']);
+                    ob_start();
+                    Artisan::call($data['thread'], $serv->get);
+                    $response->end(ob_get_clean());
+                    return '';
+                }else if(substr($data['thread'],0,7) == 'BUNKO_1'){
+                    $tmp = explode('_',$data['thread']);
+                    $data['code'] = $tmp[2];
+                    $data['thread'] = 'BUNKO_1';
+                }else if(substr($data['thread'],0,6) == 'KILL_1'){
+                    $tmp = explode('_',$data['thread']);
+                    $data['code'] = $tmp[2];
+                    $data['thread'] = 'KILL_1';
+                }else if(substr($data['thread'],0,9) == 'AgentOdds'){
+                    $tmp = explode('-',$data['thread']);
+                    $data['extra'] = ['code'=>$tmp[1],'issue'=>$tmp[2]];
+                    $data['thread'] = $tmp[0];
+                    $this->exeComds_one($data);
+                    return '';
+                }
+            }else if($data['thread2']=='push'){
+                $ii = 1;
+                foreach ($this->threadArray as $key => $val){
+                    if(substr($val,0,7) == 'BUNKO_1'){
+                        $tmp = explode('_',$val);
+                        $data['code'] = $tmp[2];
+                        $data['thread'] = 'BUNKO_1';
+                    }else if(substr($val,0,6) == 'KILL_1'){
+                        $tmp = explode('_',$val);
+                        $data['code'] = $tmp[2];
+                        $info['extra'] =  ['code'=>$data['code']];
+                        $data['thread'] = 'KILL_1';
+                    }
+                    $tmpIndex = ($ii%$this->maxId)+1;
+                    $this->num[$tmpIndex]['cmds'][$data['thread'].'-'.$data['code']] = $data;
+                    $ii++;
+                }
             }
+            echo json_encode($data).PHP_EOL;
             $this->timer = $this->serv->tick(1000, function($id) use ($data){
-//                $this->maxId = $id>$this->maxId?$id:$this->maxId;
+                $this->maxId = $id>$this->maxId?$id:$this->maxId;
                 $redis = Redis::connection();
 
                 //设置ID计数器
@@ -176,9 +212,13 @@ class Swoole extends Command
         }
     }
     private function exeComds($data){
-        if(empty($data['extra']))
+        if(empty($data['code']))
             Artisan::call($data['thread']);
         else
-            Artisan::call($data['thread'],$data['extra']);
+            Artisan::call($data['thread'],['code'=>$data['code']]);
+    }
+    private function exeComds_one($data){
+        echo json_encode($data).PHP_EOL;
+        Artisan::call($data['thread'],$data['extra']);
     }
 }
