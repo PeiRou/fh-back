@@ -238,7 +238,7 @@ class ZhReportAgentStatementDaily implements ShouldQueue
         foreach ($aPromotion as $iPromotion){
             $aArrayBunko[] = [
                 'game_id' => $iPromotion->game_id,
-                'game_name' => $iPromotion->game_name,
+                'game_name' => empty($iPromotion->game_id) ? '彩票' : $iPromotion->game_name,
                 'agent_id' => $iPromotion->agent_id,
                 'gameCategory' => $this->getGameCategoryCode($iPromotion->pid),
                 'agent_account' => $iPromotion->agent_account,

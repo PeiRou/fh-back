@@ -253,7 +253,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
         foreach ($aPromotion as $iPromotion){
             $aArrayBunko[] = [
                 'game_id' => $iPromotion->game_id,
-                'game_name' => $iPromotion->game_name,
+                'game_name' => empty($iPromotion->game_id) ? '彩票' : $iPromotion->game_name,
                 'user_id' => $iPromotion->user_id,
                 'user_account' => $iPromotion->user_account,
                 'user_name' => $iPromotion->user_name,

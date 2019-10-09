@@ -29,7 +29,7 @@ class PromotionRecode extends Model
                         WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` IN(1,3) AND `receive_status` IN(1,3)
                         GROUP BY `game_id`,`agent_id`
                     ) AS `pro`
-                    JOIN `games_list` ON `games_list`.game_id = `pro`.game_id';
+                    LEFT JOIN `games_list` ON `games_list`.game_id = `pro`.game_id';
         $aArray = [
             'startTime' => $startTime,
             'endTime' => $endTime,
@@ -45,7 +45,7 @@ class PromotionRecode extends Model
                         WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` IN(1,3) AND `receive_status` IN(1,3)
                         GROUP BY `game_id`,`general_id`
                     ) AS `pro`
-                    JOIN `games_list` ON `games_list`.game_id = `pro`.game_id';
+                    LEFT JOIN `games_list` ON `games_list`.game_id = `pro`.game_id';
         $aArray = [
             'startTime' => $startTime,
             'endTime' => $endTime,
@@ -61,7 +61,7 @@ class PromotionRecode extends Model
                         WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` IN(1,3) AND `receive_status` IN(1,3)
                         GROUP BY `game_id`,`user_id`
                     ) AS `pro`
-                    JOIN `games_list` ON `games_list`.game_id = `pro`.game_id';
+                    LEFT JOIN `games_list` ON `games_list`.game_id = `pro`.game_id';
         $aArray = [
             'startTime' => $startTime,
             'endTime' => $endTime,
