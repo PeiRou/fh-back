@@ -105,6 +105,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                         'dateTime' => $time,
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
+                        'testFlag' => $iUser->user_testFlag,
                     ];
                 }
             }
@@ -120,6 +121,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                 } else {
                     $aCapital[$iData['user_id']] = [
                         'to_user' => $iData['user_id'],
+                        'testFlag' => $iData['testFlag'],
                         'user_type' => 'user',
                         'order_id' => "PTHR" . date('YmdHis') . rand(10000000, 99999999),
                         'type' => $iType,
@@ -140,6 +142,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                 }
             }
             unset($aData[$kData]['balance']);
+            unset($aData[$kData]['testFlag']);
         }
 
         DB::beginTransaction();

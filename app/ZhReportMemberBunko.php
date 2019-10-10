@@ -33,7 +33,7 @@ class ZhReportMemberBunko extends Model
     }
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
-        return self::select('zh_report_member_bunko.*','level.third_rebate','users.money as userMoney')
+        return self::select('zh_report_member_bunko.*','level.third_rebate','users.money as userMoney','users.testFlag')
             ->where(function ($aSql) use($startTime,$endTime){
                 if(!empty($startTime)){
                     $aSql->where('zh_report_member_bunko.date','>=',$startTime);
