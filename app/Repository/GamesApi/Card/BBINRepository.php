@@ -212,7 +212,7 @@ class BBINRepository extends BaseRepository
     {
         $url = $this->getUrl($key).'/app/WebService/'.$json.'/display.php/'.$key;
 //        $res = $this->curl_post_content($url, $data);
-        $res = $this->curl_get_content($url, $data);
+        $res = $this->curl_get_content($url, $data, null, null, 15, 15);
         if($json == 'JSON')
             $res = @json_decode($res,1);
         return $res;
