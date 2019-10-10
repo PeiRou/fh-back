@@ -288,9 +288,13 @@ class PromotionMemberRebateDaily implements ShouldQueue
 
     private function isReceiveStatus($iStatus,$userId,$aReceiveUser,$isAutoReturn){
         $status = 0;
-        if($iStatus === 3){
-            $status = 2;
-            if(in_array($userId,$aReceiveUser) && ($isAutoReturn == 1))    $status = 1;
+        if($isAutoReturn == 1){
+            if($iStatus == 3)    $status = 1;
+        }else {
+            if ($iStatus === 3) {
+                $status = 2;
+                if (in_array($userId, $aReceiveUser)) $status = 1;
+            }
         }
 
         if($iStatus === 4)    $status = 4;
