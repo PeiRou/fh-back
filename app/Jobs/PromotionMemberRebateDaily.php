@@ -209,6 +209,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                 }else{
                     $iCount = $promotionLevel;
                 }
+                $promotionUserId = array_slice($promotionUserId,$promotionUserCount - $iCount);
                 for ($i = 1; $i <= $iCount; $i++){
                     $iPromotion = $this->getPromotion($i,$iBet->game_id,$aPromotion);
                     $iMoney = $this->getMoney($iPromotion, $iBet->bet_money);
@@ -222,7 +223,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                             'game_id' => $iBet->game_id,
                             'game_name' => $iBet->game_name,
                             'status' => $iStatus,
-                            'receive_status' => $this->isReceiveStatus($iStatus,$promotionUserId[$iCount - $i],$aReceiveUser,$isAutoReturn),
+                            'receive_status' => $this->isReceiveStatus($iStatus, [$iCount - $i],$aReceiveUser,$isAutoReturn),
                             'money' => $iMoney,
                             'game_money' => $iBet->bet_money,
                             'promotion' => $iPromotion['proportion'] / 100,
