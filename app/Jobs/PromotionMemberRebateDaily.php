@@ -256,30 +256,29 @@ class PromotionMemberRebateDaily implements ShouldQueue
 
     private function isStatus($codeS,$codeX,$userIdS,$aPromotionUserS,$userId,$aPromotionUser){
         $status = 0;
-        if($codeS == 2 || $codeX == 2){
-            $status = 4;
-        }elseif($codeS == 1 || $codeX == 1){
-            $status = 3;
-        }
 
         $iStatusS = 0;
         if(in_array($userIdS,$aPromotionUserS[1])){
-            $iStatusS = 3;
+            $status = 3;
         }elseif (in_array($userIdS,$aPromotionUserS[0])){
             $iStatusS = 4;
         }
 
         $iStatus = 0;
         if(in_array($userId,$aPromotionUser[1])){
-            $iStatus = 3;
+            $status = 3;
         }elseif (in_array($userId,$aPromotionUser[0])){
             $iStatus = 4;
         }
 
+        if($codeS == 2 || $codeX == 2){
+            $status = 4;
+        }elseif($codeS == 1 || $codeX == 1){
+            $status = 3;
+        }
+
         if($iStatusS === 4 || $iStatus === 4){
             $status = 4;
-        }elseif($iStatus === 3 || $iStatusS === 3){
-            $status = 3;
         }
 
         return $status;
