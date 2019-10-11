@@ -12,7 +12,7 @@ class UsersPromoter extends Model
         $aData = self::select('setrebate_status','user_id')->get();
         $aArray = [0=>[],1=>[]];
         foreach ($aData as $iData){
-            $aArray[$iData->status][] = $iData->user_id;
+            $aArray[$iData->setrebate_status][] = $iData->user_id;
         }
         return $aArray;
     }
