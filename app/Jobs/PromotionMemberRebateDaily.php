@@ -217,7 +217,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                     $iPromotion = $this->getPromotion($i,$iBet->game_id,$aPromotion);
                     $iMoney = $this->getMoney($iPromotion, $iBet->bet_money);
                     if($iPromotion > 0 && $iMoney > 0) {
-                        $iStatus = $this->isStatus($iBet->users_promoter_shangji, $iBet->user_id, $aPromotionUserS, $promotionUserId[$iCount - $i], $aPromotionUser);
+                        $iStatus = $this->isStatus($iBet->users_promoter_shangji, $iBet->users_promoter, $iBet->user_id, $aPromotionUserS, $promotionUserId[$iCount - $i], $aPromotionUser);
                         $aArray[] = [
                             'promotion_user_id' => $iBet->user_id,
                             'promotion_user_account' => $iBet->user_account,
@@ -254,17 +254,12 @@ class PromotionMemberRebateDaily implements ShouldQueue
         return 0;
     }
 
-    private function isStatus($code,$userIdS,$aPromotionUserS,$userId,$aPromotionUser){
-        switch ($code){
-            case 1:
-                $status = 3;
-                break;
-            case 2:
-                $status = 4;
-                break;
-            default :
-                $status = 0;
-                break;
+    private function isStatus($codeS,$codeX,$userIdS,$aPromotionUserS,$userId,$aPromotionUser){
+        $status = 0;
+        if($codeS == 2 || $codeX == 2){
+            $status = 4;
+        }elseif($codeS == 1 || $codeX == 1){
+            $status = 3;
         }
 
         $iStatusS = 0;

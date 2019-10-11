@@ -64,7 +64,7 @@ class ZhReportMemberBunko extends Model
     }
 
     public static function betMemberPromotionData($startTime = '',$endTime = ''){
-        $aSql = "SELECT `re`.*,`users`.user_odds_level,`level`.users_promoter_shangji FROM
+        $aSql = "SELECT `re`.*,`users`.user_odds_level,`level`.users_promoter_shangji,`level`.users_promoter FROM
                     (SELECT `game_id`,`game_name`,`user_id`,`user_account`,`user_name`,SUM(`bet_money`) AS `bet_money`
                         FROM `zh_report_member_bunko` WHERE `date` >= :startTime AND `date` <= :endTime 
                         GROUP BY `user_id`,`game_id`
