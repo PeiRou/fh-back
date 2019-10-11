@@ -217,7 +217,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                     $iPromotion = $this->getPromotion($i,$iBet->game_id,$aPromotion);
                     $iMoney = $this->getMoney($iPromotion, $iBet->bet_money);
                     if($iPromotion > 0 && $iMoney > 0) {
-                        $iStatus = $this->isStatus($iBet->users_promoter_shangji, $iBet->users_promoter, $promotionUserId[$iCount - $i], $aPromotionUserS, $iBet->user_id, $aPromotionUser);
+                        $iStatus = $this->isStatus($iBet->users_promoter_shangji, $iBet->users_promoter, $iBet->user_id, $aPromotionUserS, $promotionUserId[$iCount - $i], $aPromotionUser);
                         $aArray[] = [
                             'promotion_user_id' => $iBet->user_id,
                             'promotion_user_account' => $iBet->user_account,
