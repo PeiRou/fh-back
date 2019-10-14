@@ -208,7 +208,9 @@ class FYDJRepository extends BaseRepository
                     'flag' => in_array(strtoupper($v['Status']), ['SETTLEMENT', 'NONE']) ? 2 : 1,
                     'productType' => null,
                     'game_id' => 38,
+                    'round_id' => $v['MatchID']
                 ];
+                $array['content'] = $this->content($v, $array);
                 $this->arrInfo($array, $v);
                 if (in_array($v['OrderID'], $GameIDs))
                     $update[] = $array;
@@ -217,6 +219,19 @@ class FYDJRepository extends BaseRepository
             }
             count($insert) && $this->saveDB($insert);
             count($update) && $this->saveDB($update, 'GameID');
+        }
+    }
+    public function content($v, $array)
+    {
+        try{
+            $str = '';
+            $str .= '联赛名称:'.($v['League'] ?? '').'<br />';
+            $str .= '投注名称:'.($v['Bet'] ?? '').'<br />';
+            $str .= '投注内容:'.($v['Content'] ?? '').'<br />';
+            return $str;
+        }catch (\Throwable $e){
+            writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            return $array['game_type'] ?? '';
         }
     }
     private function arrInfo(&$array, $v, $key = '')

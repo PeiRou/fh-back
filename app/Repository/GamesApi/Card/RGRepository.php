@@ -242,7 +242,9 @@ class RGRepository extends BaseRepository
                     'flag' => $v['state'] == 1 ? 1 : $v['state'],
                     'productType' => null,
                     'game_id' => 35,
+                    'round_id' => $v['record_id']
                 ];
+                $array['content'] = $this->content($v, $array);
                 $this->arrInfo($array, $v);
                 if (in_array($v['id'], $GameIDs))
                     $update[] = $array;
@@ -253,6 +255,77 @@ class RGRepository extends BaseRepository
             count($update) && $this->saveDB($update, 'GameID');
         }
     }
+
+    public function content($v, $array)
+    {
+        try{
+            $str = '';
+            $str .= '局号:'.$array['round_id'].'<br />';
+            $str .= '投注内容:'.$this->t($v).'<br />';
+            $str .= '下注前余额:'.$v['balance_before'];
+            return $str;
+        }catch (\Throwable $e){
+            writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            return $array['game_type'] ?? '';
+        }
+    }
+
+    //投注内容
+    public function t($v)
+    {
+        if($v['game_type'] == 'baccarat'){ # 百家乐
+            switch ($v['bet_record']){
+                case 'banker':
+                    return '庄';
+                case 'player':
+                    return '闲';
+                case 'tie':
+                    return '和';
+                case 'banker_pair':
+                    return '庄对';
+                case 'player_pair':
+                    return '闲对';
+                case 'big':
+                    return '大';
+                case 'small':
+                    return '小';
+            }
+        }else if($v['game_type'] == 'dragon_tiger'){ # 龙虎
+            switch ($v['bet_record']){
+                case 'dragon':
+                    return '龙';
+                case 'tiger':
+                    return '虎';
+                case 'tie':
+                    return '和';
+                case 'dragon_even':
+                    return '龙双';
+                case 'dragon_odd':
+                    return '龙单';
+                case 'tiger_even':
+                    return '虎双';
+                case 'tiger_odd':
+                    return '虎单';
+            }
+        }else if($v['game_type'] == 'cattle'){ # 牛牛
+            switch ($v['bet_record']){
+                case 'player1':
+                    return '闲 1';
+                case 'player1_double':
+                    return '闲 1 翻倍';
+                case 'player2':
+                    return '闲 2';
+                case 'player2_double':
+                    return '闲 2 翻倍';
+                case 'player3':
+                    return '闲 3';
+                case 'player3_double':
+                    return '闲 3 翻倍';
+            }
+        }
+        return '';
+    }
+
     private function arrInfo(&$array, $v, $key = '')
     {
         $user = $this->getUser($array['username'], '', $key);

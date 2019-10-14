@@ -313,7 +313,9 @@ class MYRepository extends BaseRepository
                     'flag' => $v['State'] == 2 ? 1 : $v['State'],
                     'productType' => null,
                     'game_id' => 36,
+                    'round_id' => $v['GameNo'] ?? ''
                 ];
+                $array['content'] = $this->content($v, $array);
                 $this->arrInfo($array, $v);
                 if (in_array($v['GameSequenceID'], $GameIDs))
                     $update[] = $array;
@@ -324,6 +326,19 @@ class MYRepository extends BaseRepository
             count($update) && $this->saveDB($update, 'GameID');
         }
     }
+
+    public function content($v, $array)
+    {
+        try{
+            $str = '';
+            $str .= '局号:'.$array['round_id'];
+            return $str;
+        }catch (\Throwable $e){
+            writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            return $array['game_type'] ?? '';
+        }
+    }
+
     private function arrInfo(&$array, $v, $key = '')
     {
         $user = $this->getUser($array['username'], '', $key);
