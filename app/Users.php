@@ -301,7 +301,7 @@ WHERE 1 ";
     }
 
     public static function getUserInfoByIds($aIds){
-        return self::select('users.money as user_money','users.name as user_name','users.id as user_id','users.username as user_account','agent.a_id as agent_id','agent.account as agent_account','agent.name as agent_name','general_agent.ga_id as general_id','general_agent.account as general_account','general_agent.name as general_name')
+        return self::select('users.money as user_money','users.testFlag as user_testFlag','users.name as user_name','users.id as user_id','users.username as user_account','agent.a_id as agent_id','agent.account as agent_account','agent.name as agent_name','general_agent.ga_id as general_id','general_agent.account as general_account','general_agent.name as general_name')
             ->whereIn('users.id',$aIds)
             ->join('agent','agent.a_id','=','users.agent')
             ->join('general_agent','general_agent.ga_id','=','agent.gagent_id')

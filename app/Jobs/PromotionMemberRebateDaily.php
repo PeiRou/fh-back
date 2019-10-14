@@ -105,6 +105,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                         'dateTime' => $time,
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
+                        'testFlag' => $iUser->user_testFlag,
                     ];
                 }
             }
@@ -120,6 +121,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                 } else {
                     $aCapital[$iData['user_id']] = [
                         'to_user' => $iData['user_id'],
+                        'testFlag' => $iData['testFlag'],
                         'user_type' => 'user',
                         'order_id' => "PTHR" . date('YmdHis') . rand(10000000, 99999999),
                         'type' => $iType,
@@ -140,6 +142,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                 }
             }
             unset($aData[$kData]['balance']);
+            unset($aData[$kData]['testFlag']);
         }
 
         DB::beginTransaction();
@@ -214,7 +217,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
                     $iPromotion = $this->getPromotion($i,$iBet->game_id,$aPromotion);
                     $iMoney = $this->getMoney($iPromotion, $iBet->bet_money);
                     if($iPromotion > 0 && $iMoney > 0) {
-                        $iStatus = $this->isStatus($iBet->users_promoter_shangji, $iBet->user_id, $aPromotionUserS, $promotionUserId[$iCount - $i], $aPromotionUser);
+                        $iStatus = $this->isStatus($iBet->users_promoter_shangji, $iBet->users_promoter, $promotionUserId[$iCount - $i], $aPromotionUserS, $iBet->user_id, $aPromotionUser);
                         $aArray[] = [
                             'promotion_user_id' => $iBet->user_id,
                             'promotion_user_account' => $iBet->user_account,
@@ -251,37 +254,31 @@ class PromotionMemberRebateDaily implements ShouldQueue
         return 0;
     }
 
-    private function isStatus($code,$userIdS,$aPromotionUserS,$userId,$aPromotionUser){
-        switch ($code){
-            case 1:
-                $status = 3;
-                break;
-            case 2:
-                $status = 4;
-                break;
-            default :
-                $status = 0;
-                break;
-        }
+    private function isStatus($codeS,$codeX,$userIdS,$aPromotionUserS,$userId,$aPromotionUser){
+        $status = 0;
 
         $iStatusS = 0;
         if(in_array($userIdS,$aPromotionUserS[1])){
-            $iStatusS = 3;
+            $status = 3;
         }elseif (in_array($userIdS,$aPromotionUserS[0])){
             $iStatusS = 4;
         }
 
         $iStatus = 0;
         if(in_array($userId,$aPromotionUser[1])){
-            $iStatus = 3;
+            $status = 3;
         }elseif (in_array($userId,$aPromotionUser[0])){
             $iStatus = 4;
         }
 
+        if($codeS == 2 || $codeX == 2){
+            $status = 4;
+        }elseif($codeS == 1 || $codeX == 1){
+            $status = 3;
+        }
+
         if($iStatusS === 4 || $iStatus === 4){
             $status = 4;
-        }elseif($iStatus === 3 || $iStatusS === 3){
-            $status = 3;
         }
 
         return $status;

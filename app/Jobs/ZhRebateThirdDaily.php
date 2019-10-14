@@ -93,6 +93,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
                         'balance' => round($iJqBet->userMoney + $iMoney, 2),
+                        'testFlag' => $iJqBet->testFlag,
                     ];
                 }
             }
@@ -154,6 +155,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                 }
                 $aCapital[] = [
                     'to_user' => $iData['user_id'],
+                    'testFlag' => $iData['testFlag'],
                     'user_type' => 'user',
                     'order_id' => "RTHR" . date('YmdHis') . rand(10000000, 99999999),
                     'type' => 't32',
@@ -173,6 +175,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                 ];
             }
             unset($aData[$kData]['balance']);
+            unset($aData[$kData]['testFlag']);
         }
         $this->editSql($aCapital,$aData,$aUserMoney);
     }
@@ -230,6 +233,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                     }
                     $aCapital[] = [
                         'to_user' => $iJqBet->user_id,
+                        'testFlag' => $iJqBet->testFlag,
                         'user_type' => 'user',
                         'order_id' => "THR" . date('YmdHis') . rand(10000000, 99999999),
                         'type' => 't31',
