@@ -154,7 +154,7 @@ class Swoole extends Command
                     $ii++;
                 }
             }
-            echo json_encode($data).PHP_EOL;
+//            echo json_encode($data).PHP_EOL;
             $this->timer = $this->serv->tick(1000, function($id) use ($data){
                 $this->maxId = $id>$this->maxId?$id:$this->maxId;
                 $redis = Redis::connection();
@@ -218,7 +218,7 @@ class Swoole extends Command
             Artisan::call($data['thread'],['code'=>$data['code']]);
     }
     private function exeComds_one($data){
-        echo json_encode($data).PHP_EOL;
+//        echo json_encode($data).PHP_EOL;
         Artisan::call($data['thread'],$data['extra']);
     }
 }

@@ -1031,11 +1031,13 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                     $msnn = new New_msnn();
                     $niuniu = $this->exePK10nn($openCode);
                     $openniuniu =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
-                    $bunko = $msnn->all($openCode,$openniuniu, $issue, 0, true,$havElse,$havElseLottery); //新--结算
-                }
+                    $nnBunko = $msnn->all($openCode,$openniuniu, $issue, 0, true,$havElse,$havElseLottery); //新--结算
+                }else
+                    $nnBunko = 1;
             }
-            if($bunko == 1){
-                $tmp = DB::connection('mysql::write')->select("SELECT SUM(`bunko`) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'");
+            if($bunko == 1 && $nnBunko){
+                $sql = "SELECT SUM(`bunko`) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'";
+                $tmp = DB::connection('mysql::write')->select($sql);
                 $excBunko = 0;
                 foreach ($tmp as&$value)
                     $excBunko = $value->sumBunko;
