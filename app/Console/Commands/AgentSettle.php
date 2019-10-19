@@ -18,14 +18,14 @@ class AgentSettle extends Command
      *
      * @var string
      */
-    protected $signature = 'AgentSettle:Settlement';
+    protected $signature = 'AgentSettle:Settlement {startTime} {endTime}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'billing agent last month report';
+    protected $description = '代理和总代理结算报表';
 
     /**
      * Create a new command instance.
@@ -47,14 +47,20 @@ class AgentSettle extends Command
         ini_set('memory_limit','1024M');
         $date = new GetDate();
         //获取上月时间段
-        $currentMonth = $date->lastMonthDate();
+        $currentMonth = [
+            'start' => $this->argument('startTime'),
+            'end' => $this->argument('endTime'),
+        ];
         //$currentMonth = ['start'=>'2018-05-01','end'=>'2018-06-30'];
         $yearMonth = date('Y-m',strtotime($currentMonth['start']));
         $yearMonthDay = date('Y-m-d H:i:s',strtotime($currentMonth['start']));
         //获取平台配置
         $aAgentBaseInfo = AgentReportBase::getAgentBaseInfo();
         //获取上月的前两月时间段
-        $beforeMonth = $date->beforeTwoMonthDate();
+        $beforeMonth = [
+            'start' => date('Y-m-d',strtotime('-3 month',strtotime($currentMonth['start']))),
+            'end' => date('Y-m-d',strtotime('-3 month',strtotime($currentMonth['end'])))
+        ];
         //获取上月的前两月统计数据
         $aMemberBeforeDatas = AgentReport::getAccordingDateData($beforeMonth);
         //获取需要统计的会员
@@ -79,6 +85,9 @@ class AgentSettle extends Command
                 }
             }
             $aAgentInfos[] = [
+                'g_id' => $aAgentAll->g_id,
+                'g_account' => $aAgentAll->g_account,
+                'g_name' => $aAgentAll->g_name,
                 'a_id' => $aAgentAll->a_id,
                 'account' => $aAgentAll->account,
                 'name' => $aAgentAll->name,
@@ -86,7 +95,8 @@ class AgentSettle extends Command
                 'year_month' => $yearMonth,
                 'real_bunko' => $real_bunko,
                 'valid_member' => $effectiveMember,
-                'fenhong_rate' => json_decode($aAgentAll->fenhong_rate),
+                'Gfenhong_rate' => json_decode($aAgentAll->Gfenhong_rate,true),
+                'fenhong_rate' => json_decode($aAgentAll->fenhong_rate,true),
             ];
         }
         //代理结算初步计算
@@ -101,26 +111,40 @@ class AgentSettle extends Command
             }
             //本月纯赢利
             $aAgentInfos[$key]['fee_bunko'] = $aAgentInfo['real_bunko'] + $aAgentInfos[$key]['base_fee'];
-            //代理分红比
-            if(empty($aAgentInfo['fenhong_rate'])){
-                $aAgentInfos[$key]['fenhong_prop'] = $this->getAgentProp($aAgentBaseInfo->fenhong_rate,-$aAgentInfos[$key]['fee_bunko']);
+            //代理和总代理分红比
+            if(!empty($aAgentInfo['fenhong_rate']) && is_array($aAgentInfo['fenhong_rate'])){
+                $iProp = $this->getAgentProp($aAgentInfo['fenhong_rate'],-$aAgentInfos[$key]['fee_bunko']);
+                $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
+                $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
+            }elseif (!empty($aAgentInfo['Gfenhong_rate']) && is_array($aAgentInfo['Gfenhong_rate'])){
+                $iProp = $this->getAgentProp($aAgentInfo['Gfenhong_rate'],-$aAgentInfos[$key]['fee_bunko']);
+                $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
+                $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
             }else{
-                $aAgentInfos[$key]['fenhong_prop'] = $this->getAgentProp($aAgentInfo['fenhong_rate'],-$aAgentInfos[$key]['fee_bunko']);
+                $iProp = $this->getAgentProp($aAgentBaseInfo->fenhong_rate,-$aAgentInfos[$key]['fee_bunko']);
+                $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
+                $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
             }
+
 
             //代理本月佣金(本月纯赢利*代理分红比)
             $aAgentInfos[$key]['commission'] = -$aAgentInfos[$key]['fee_bunko'] * $aAgentInfos[$key]['fenhong_prop'];
+            //总代理本月佣金(本月纯赢利*总代理分红比)
+            $aAgentInfos[$key]['g_commission'] = -$aAgentInfos[$key]['fee_bunko'] * $aAgentInfos[$key]['g_fenhong_prop'];
             //最近三个月的累计赢利和佣金以及达标会员
             $aAgentInfos[$key]['month3_fee_bunko'] = $aAgentInfos[$key]['fee_bunko'];
             $aAgentInfos[$key]['month3_commission'] = $aAgentInfos[$key]['commission'];
+            $aAgentInfos[$key]['g_month3_commission'] = $aAgentInfos[$key]['g_commission'];
             $aAgentInfos[$key]['ach_member'] = $aAgentBaseInfo->incre_member;
             foreach ($aMemberBeforeDatas as $aMemberBeforeData){
                 if($aAgentInfo['a_id'] == $aMemberBeforeData->a_id){
                     $aAgentInfos[$key]['month3_fee_bunko'] += $aMemberBeforeData->fee_bunko;
                     $aAgentInfos[$key]['month3_commission'] += $aMemberBeforeData->commission;
+                    $aAgentInfos[$key]['g_month3_commission'] += $aMemberBeforeData->g_commission;
                     $aAgentInfos[$key]['ach_member'] = $aAgentBaseInfo->incre_member + $aMemberBeforeData->ach_member;
                 }
             }
+            unset($aAgentInfos[$key]['Gfenhong_rate'],$aAgentInfos[$key]['fenhong_rate']);
         }
         AgentReport::where('year_month','=',$yearMonth)->delete();
         AgentReportReview::where('year_month','=',$yearMonth)->delete();
@@ -130,10 +154,16 @@ class AgentSettle extends Command
     }
 
     public function getAgentProp($aList,$profit){
-        $proportion = 0;
-        foreach ($aList->fenhong_rate as $fenhong_rate){
+        $proportion = [
+            'agent' => 0,
+            'gAgent' => 0,
+        ];
+        foreach ($aList as $fenhong_rate){
             if($profit > $fenhong_rate['profit']){
-                $proportion = $fenhong_rate['proportion'];
+                $proportion = [
+                    'agent' => $fenhong_rate['AgentProportion'],
+                    'gAgent' => $fenhong_rate['GagentProportion'],
+                ];
             }else{
                 break;
             }

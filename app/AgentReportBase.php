@@ -17,7 +17,7 @@ class AgentReportBase extends Model
             $aData[$iList->code] = $iList->value;
         }
         $aData = json_decode(json_encode($aData));
-        $aData->fenhong_rate = json_decode($aData->fenhong_ratetrue,true);
+        $aData->fenhong_rate = json_decode($aData->fenhong_rate,true);
         $aData->statistics_game = json_decode($aData->statistics_game,true);
         $aData->noNeed_agent = json_decode($aData->noNeed_agent,true);
         return $aData;
