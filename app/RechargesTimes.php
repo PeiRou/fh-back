@@ -18,4 +18,9 @@ class RechargesTimes extends Model
     public static function getSecondChargeUsersCount($date){
         return self::where('frequency',2)->whereBetween('created_at',[$date,$date.' 23:59:59'])->count();
     }
+
+    //获取第三次充值用户
+    public static function getThirdChargeUsersCount($date){
+        return self::where('frequency',3)->whereBetween('created_at',[$date,$date.' 23:59:59'])->count();
+    }
 }
