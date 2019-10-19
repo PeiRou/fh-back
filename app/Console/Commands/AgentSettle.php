@@ -97,6 +97,7 @@ class AgentSettle extends Command
                 'valid_member' => $effectiveMember,
                 'Gfenhong_rate' => json_decode($aAgentAll->Gfenhong_rate,true),
                 'fenhong_rate' => json_decode($aAgentAll->fenhong_rate,true),
+                'g_total_pro' => $aAgentAll->g_total_pro,
             ];
         }
         //代理结算初步计算
@@ -112,19 +113,26 @@ class AgentSettle extends Command
             //本月纯赢利
             $aAgentInfos[$key]['fee_bunko'] = $aAgentInfo['real_bunko'] + $aAgentInfos[$key]['base_fee'];
             //代理和总代理分红比
-            if(!empty($aAgentInfo['fenhong_rate']) && is_array($aAgentInfo['fenhong_rate'])){
-                $iProp = $this->getAgentProp($aAgentInfo['fenhong_rate'],-$aAgentInfos[$key]['fee_bunko']);
-                $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
-                $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
-            }elseif (!empty($aAgentInfo['Gfenhong_rate']) && is_array($aAgentInfo['Gfenhong_rate'])){
-                $iProp = $this->getAgentProp($aAgentInfo['Gfenhong_rate'],-$aAgentInfos[$key]['fee_bunko']);
-                $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
-                $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
-            }else{
+            if($aAgentInfo['g_total_pro'] == -1){
                 $iProp = $this->getAgentProp($aAgentBaseInfo->fenhong_rate,-$aAgentInfos[$key]['fee_bunko']);
                 $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
                 $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
+            }else{
+                if(!empty($aAgentInfo['fenhong_rate']) && is_array($aAgentInfo['fenhong_rate'])){
+                    $iProp = $this->getAgentProp($aAgentInfo['fenhong_rate'],-$aAgentInfos[$key]['fee_bunko']);
+                    $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
+                    $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
+                }elseif (!empty($aAgentInfo['Gfenhong_rate']) && is_array($aAgentInfo['Gfenhong_rate'])){
+                    $iProp = $this->getAgentProp($aAgentInfo['Gfenhong_rate'],-$aAgentInfos[$key]['fee_bunko']);
+                    $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
+                    $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
+                }else{
+                    $iProp = $this->getAgentProp($aAgentBaseInfo->fenhong_rate,-$aAgentInfos[$key]['fee_bunko']);
+                    $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
+                    $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
+                }
             }
+
 
 
             //代理本月佣金(本月纯赢利*代理分红比)
@@ -144,7 +152,7 @@ class AgentSettle extends Command
                     $aAgentInfos[$key]['ach_member'] = $aAgentBaseInfo->incre_member + $aMemberBeforeData->ach_member;
                 }
             }
-            unset($aAgentInfos[$key]['Gfenhong_rate'],$aAgentInfos[$key]['fenhong_rate']);
+            unset($aAgentInfos[$key]['Gfenhong_rate'],$aAgentInfos[$key]['fenhong_rate'],$aAgentInfos[$key]['g_total_pro']);
         }
         AgentReport::where('year_month','=',$yearMonth)->delete();
         AgentReportReview::where('year_month','=',$yearMonth)->delete();
