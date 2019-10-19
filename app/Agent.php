@@ -26,8 +26,19 @@ class Agent extends Model
     ];
 
     //获取所有代理商
-    public static function getAgentAllBunko(){
-        return self::select(DB::raw("a_id,account,name,created_at,0 as bunko"))->where('created_at','<',date('Y-m-01'))->get();
+    public static function getAgentAllBunko($agentId){
+        $aSql = 'SELECT `agent`.a_id,`agent`.account,`agent`.name,`agent`.created_at,0 AS `bunko`,`general_agent`.fenhong_rate AS `Gfenhong_rate`,
+                `agent`.fenhong_rate,`general_agent`.ga_id AS `g_id`,`general_agent`.account AS `g_account`,`general_agent`.name AS `g_name`
+                FROM `agent` 
+                INNER JOIN `general_agent` ON `agent`.gagent_id = `general_agent`.ga_id
+                WHERE `agent`.created_at < :iTime';
+        $aArray = [
+            'iTime' => date('Y-m-01')
+        ];
+        if(is_array($agentId) && count($agentId) > 0){
+            $aSql .= ' AND `agent`.a_id NOT IN('.implode(',',$agentId).')';
+        }
+        return DB::select($aSql,$aArray);
     }
 
     public static function betAgentReportData(){

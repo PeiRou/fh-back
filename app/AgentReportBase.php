@@ -11,9 +11,16 @@ class AgentReportBase extends Model
 
     //获取平台信息
     public static function getAgentBaseInfo(){
-        $data = self::where('agent_report_base_idx','=',1)->first();
-        $data->fenhong_rate = json_decode($data->fenhong_rate,true);
-        return $data;
+        $aList = self::get();
+        $aData = [];
+        foreach ($aList as $iList){
+            $aData[$iList->code] = $iList->value;
+        }
+        $aData = json_decode(json_encode($aData));
+        $aData->fenhong_rate = json_decode($aData->fenhong_rate,true);
+        $aData->statistics_game = json_decode($aData->statistics_game,true);
+        $aData->noNeed_agent = json_decode($aData->noNeed_agent,true);
+        return $aData;
     }
 
     //修改平台信息

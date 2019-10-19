@@ -26,7 +26,8 @@ class AgentReport extends Model
 
     //根据时间获取结算数据
     public static function getAccordingDateData($date){
-        return self::select('a_id','year_month','fee_bunko','commission','ach_member')->whereBetween('created_at',[$date['start'],$date['end']])->orderBy('created_at','asc')->get();
+        return self::select('a_id','year_month','fee_bunko','commission','g_commission','ach_member')
+            ->whereBetween('created_at',[$date['start'],$date['end']])->orderBy('created_at','asc')->get();
     }
 
 }
