@@ -1018,6 +1018,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                 })->where('issue',$issue)->update(['status' => 0,'bunko' => 0,'nn_view_money' => 0]);
             }
             $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
+            $nnBunko = 1;
             if($type=='lhc'){                                        //根据六合彩的系列另外有bunko
                 $resData = $this->exc_play($openCode,$gameId);
                 $win = @$resData['win'];
@@ -1032,8 +1033,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                     $niuniu = $this->exePK10nn($openCode);
                     $openniuniu =$this->nn($niuniu[0]).','.$this->nn($niuniu[1]).','.$this->nn($niuniu[2]).','.$this->nn($niuniu[3]).','.$this->nn($niuniu[4]).','.$this->nn($niuniu[5]);
                     $nnBunko = $msnn->all($openCode,$openniuniu, $issue, 0, true,$havElse,$havElseLottery); //新--结算
-                }else
-                    $nnBunko = 1;
+                }
             }
             if($bunko == 1 && $nnBunko){
                 $sql = "SELECT SUM(`bunko`) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'";
