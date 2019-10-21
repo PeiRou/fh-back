@@ -18,14 +18,14 @@ class AgentSettle extends Command
      *
      * @var string
      */
-    protected $signature = 'AgentSettle:Settlement';
+    protected $signature = 'AgentSettle:Settlement {startTime} {endTime}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'billing agent last month report';
+    protected $description = '代理和总代理结算报表';
 
     /**
      * Create a new command instance.
@@ -47,44 +47,58 @@ class AgentSettle extends Command
         ini_set('memory_limit','1024M');
         $date = new GetDate();
         //获取上月时间段
-        $currentMonth = $date->lastMonthDate();
+        $currentMonth = [
+            'start' => $this->argument('startTime'),
+            'end' => $this->argument('endTime'),
+        ];
         //$currentMonth = ['start'=>'2018-05-01','end'=>'2018-06-30'];
         $yearMonth = date('Y-m',strtotime($currentMonth['start']));
         $yearMonthDay = date('Y-m-d H:i:s',strtotime($currentMonth['start']));
         //获取平台配置
         $aAgentBaseInfo = AgentReportBase::getAgentBaseInfo();
         //获取上月的前两月时间段
-        $beforeMonth = $date->beforeTwoMonthDate();
+        $beforeMonth = [
+            'start' => date('Y-m-d',strtotime('-3 month',strtotime($currentMonth['start']))),
+            'end' => date('Y-m-d',strtotime('-3 month',strtotime($currentMonth['end'])))
+        ];
         //获取上月的前两月统计数据
         $aMemberBeforeDatas = AgentReport::getAccordingDateData($beforeMonth);
         //获取需要统计的会员
 //        $aMemberDatas = Bets::preliminaryManualSettlement($currentMonth);
-        $aMemberDatas = ZhReportMemberBunko::getDataMemberBunko($currentMonth,json_decode($aAgentBaseInfo->statistics_game,true));
+        $aMemberDatas = ZhReportMemberBunko::getDataMemberBunko($currentMonth,$aAgentBaseInfo->statistics_game);
         //获取所有代理商
-        $aAgentAlls = Agent::getAgentAllBunko();
+        $aAgentAlls = Agent::getAgentAllBunko($aAgentBaseInfo->noNeed_agent);
         //代理结算信息整合
         $aAgentInfos = [];
         foreach ($aAgentAlls as $aAgentKey => $aAgentAll){
             //初始化有效会员个数
             $effectiveMember = 0;
-            $aAgentInfos[$aAgentKey]['a_id'] = $aAgentAll->a_id;
-            $aAgentInfos[$aAgentKey]['account'] = $aAgentAll->account;
-            $aAgentInfos[$aAgentKey]['name'] = $aAgentAll->name;
-            $aAgentInfos[$aAgentKey]['created_at'] = $yearMonthDay;
-            $aAgentInfos[$aAgentKey]['year_month'] = $yearMonth;
-            $aAgentInfos[$aAgentKey]['real_bunko'] = 0;
+            $real_bunko = 0;
             //获取代理商的实际输赢
             foreach ($aMemberDatas as $aMemberKey => $aMemberData){
                 if($aMemberData->agent_id == $aAgentAll->a_id) {
-                    $aAgentInfos[$aAgentKey]['real_bunko'] += $aMemberData->sumBunko;
+                    $real_bunko += $aMemberData->sumBunko;
                     //获取有效会员数
                     if ($aMemberData->betCount >= $aAgentBaseInfo->effective_bet && $aMemberData->sumBetMoney >= $aAgentBaseInfo->effective_money) {
                         $effectiveMember++;
                     }
                 }
             }
-            $aAgentInfos[$aAgentKey]['valid_member'] = $effectiveMember;
-            //$aAgentInfos[$aAgentKey]['ach_member'] = (floor((strtotime($yearMonth) - strtotime(substr($aAgentAll->created_at,0,7)))/60/60/24/30) + 1) * $aAgentBaseInfo->incre_member;
+            $aAgentInfos[] = [
+                'g_id' => $aAgentAll->g_id,
+                'g_account' => $aAgentAll->g_account,
+                'g_name' => $aAgentAll->g_name,
+                'a_id' => $aAgentAll->a_id,
+                'account' => $aAgentAll->account,
+                'name' => $aAgentAll->name,
+                'created_at' => $yearMonthDay,
+                'year_month' => $yearMonth,
+                'real_bunko' => $real_bunko,
+                'valid_member' => $effectiveMember,
+                'Gfenhong_rate' => json_decode($aAgentAll->Gfenhong_rate,true),
+                'fenhong_rate' => json_decode($aAgentAll->fenhong_rate,true),
+                'g_total_pro' => $aAgentAll->g_total_pro,
+            ];
         }
         //代理结算初步计算
         foreach ($aAgentInfos as $key => $aAgentInfo){
@@ -98,31 +112,70 @@ class AgentSettle extends Command
             }
             //本月纯赢利
             $aAgentInfos[$key]['fee_bunko'] = $aAgentInfo['real_bunko'] + $aAgentInfos[$key]['base_fee'];
-            //代理分红比
-            $aAgentInfos[$key]['fenhong_prop'] = 0;
-            foreach ($aAgentBaseInfo->fenhong_rate as $fenhong_rate){
-                if(-$aAgentInfos[$key]['fee_bunko'] > $fenhong_rate['profitStart'] && -$aAgentInfos[$key]['fee_bunko'] <= $fenhong_rate['profitEnd']){
-                    $aAgentInfos[$key]['fenhong_prop'] = $fenhong_rate['proportion'];
+            //代理和总代理分红比
+            if($aAgentInfo['g_total_pro'] == -1){
+                $iProp = $this->getAgentProp($aAgentBaseInfo->fenhong_rate,-$aAgentInfos[$key]['fee_bunko']);
+                $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
+                $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
+            }else{
+                if(!empty($aAgentInfo['fenhong_rate']) && is_array($aAgentInfo['fenhong_rate'])){
+                    $iProp = $this->getAgentProp($aAgentInfo['fenhong_rate'],-$aAgentInfos[$key]['fee_bunko']);
+                    $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
+                    $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
+                }elseif (!empty($aAgentInfo['Gfenhong_rate']) && is_array($aAgentInfo['Gfenhong_rate'])){
+                    $iProp = $this->getAgentProp($aAgentInfo['Gfenhong_rate'],-$aAgentInfos[$key]['fee_bunko']);
+                    $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
+                    $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
+                }else{
+                    $iProp = $this->getAgentProp($aAgentBaseInfo->fenhong_rate,-$aAgentInfos[$key]['fee_bunko']);
+                    $aAgentInfos[$key]['fenhong_prop'] = $iProp['agent'];
+                    $aAgentInfos[$key]['g_fenhong_prop'] = $iProp['gAgent'];
                 }
             }
-            //本月佣金(本月纯赢利*代理分红比)
+
+
+
+            //代理本月佣金(本月纯赢利*代理分红比)
             $aAgentInfos[$key]['commission'] = -$aAgentInfos[$key]['fee_bunko'] * $aAgentInfos[$key]['fenhong_prop'];
+            //总代理本月佣金(本月纯赢利*总代理分红比)
+            $aAgentInfos[$key]['g_commission'] = -$aAgentInfos[$key]['fee_bunko'] * $aAgentInfos[$key]['g_fenhong_prop'];
             //最近三个月的累计赢利和佣金以及达标会员
             $aAgentInfos[$key]['month3_fee_bunko'] = $aAgentInfos[$key]['fee_bunko'];
             $aAgentInfos[$key]['month3_commission'] = $aAgentInfos[$key]['commission'];
+            $aAgentInfos[$key]['g_month3_commission'] = $aAgentInfos[$key]['g_commission'];
             $aAgentInfos[$key]['ach_member'] = $aAgentBaseInfo->incre_member;
             foreach ($aMemberBeforeDatas as $aMemberBeforeData){
                 if($aAgentInfo['a_id'] == $aMemberBeforeData->a_id){
                     $aAgentInfos[$key]['month3_fee_bunko'] += $aMemberBeforeData->fee_bunko;
                     $aAgentInfos[$key]['month3_commission'] += $aMemberBeforeData->commission;
+                    $aAgentInfos[$key]['g_month3_commission'] += $aMemberBeforeData->g_commission;
                     $aAgentInfos[$key]['ach_member'] = $aAgentBaseInfo->incre_member + $aMemberBeforeData->ach_member;
                 }
             }
+            unset($aAgentInfos[$key]['Gfenhong_rate'],$aAgentInfos[$key]['fenhong_rate'],$aAgentInfos[$key]['g_total_pro']);
         }
         AgentReport::where('year_month','=',$yearMonth)->delete();
         AgentReportReview::where('year_month','=',$yearMonth)->delete();
         AgentReport::where('created_at','<',$yearMonthDay)->where('status','=',0)->update(['status'=>4]);
         AgentReport::insert($aAgentInfos);
         $this->info('Console settlement successfully.');
+    }
+
+    public function getAgentProp($aList,$profit){
+        $proportion = [
+            'agent' => 0,
+            'gAgent' => 0,
+        ];
+        foreach ($aList as $fenhong_rate){
+            if($profit > $fenhong_rate['profit']){
+                $proportion = [
+                    'agent' => $fenhong_rate['AgentProportion'],
+                    'gAgent' => $fenhong_rate['GagentProportion'],
+                ];
+            }else{
+                break;
+            }
+        }
+        return $proportion;
     }
 }
