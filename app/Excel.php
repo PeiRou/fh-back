@@ -32,7 +32,7 @@ class Excel
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->s ";
             }
-            $getAfterUser = DB::connection('mysql::write')->table('users')->select('id','money')->whereIn('id',$users)->get();
+            $capUsers = DB::connection('mysql::write')->table('users')->select('id','money','testFlag')->whereIn('id',$users)->get()->keyBy('id')->toArray();
             $ids = implode(',',$users);
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
@@ -42,25 +42,22 @@ class Excel
                 }
             }
             $capData = [];
-            $capUsers = [];
             $push = [];             //组装推送消息的数组
             $ii = 0;
-            foreach ($getAfterUser as&$val){
-                $capUsers[$val->id] = $val->money;
-            }
+
             $redis = Redis::connection();
             $redis->select(5);
             //新增有返奖的用户的资金明细
             foreach ($getDt as $i){
                 if(in_array($i->game_id,array(90,91)) && $i->unfreeze_money!=0){ //根据牛牛翻倍玩法增加解冻的资金明细
-                    $capUsers[$i->user_id] += $i->unfreeze_money;
+                    $capUsers[$i->user_id]['money'] += $i->unfreeze_money;
                     $tmpCap = [];
                     $tmpCap['to_user'] = $i->user_id;
                     $tmpCap['user_type'] = 'user';
                     $tmpCap['order_id'] = 'UF'.substr($i->order_id,2);
                     $tmpCap['type'] = 't26';
                     $tmpCap['money'] = $i->unfreeze_money;
-                    $tmpCap['balance'] = round($capUsers[$i->user_id],3);
+                    $tmpCap['balance'] = round($capUsers[$i->user_id]['money'],3);
                     $tmpCap['operation_id'] = 0;
                     $tmpCap['issue'] = $i->issue;
                     $tmpCap['game_id'] = $i->game_id;
@@ -68,6 +65,7 @@ class Excel
                     $tmpCap['playcate_id'] = $i->playcate_id;
                     $tmpCap['playcate_name'] = $i->playcate_name;
                     $tmpCap['content'] = $gameName.'-'.$i->play_name.'-'.$i->play_odds;
+                    $tmpCap['testFlag'] = $capUsers[$i->user_id]['testFlag'];
                     $tmpCap['created_at'] = date('Y-m-d H:i:s');
                     $tmpCap['updated_at'] = date('Y-m-d H:i:s');
                     $capData[$ii] = $tmpCap;
@@ -83,14 +81,14 @@ class Excel
                 }
                 if(!isset($capUsers[$i->user_id]))
                     continue;
-                $capUsers[$i->user_id] += $bunko; //累加馀额
+                $capUsers[$i->user_id]['money'] += $bunko; //累加馀额
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
                 $tmpCap['order_id'] = 'W'.substr($i->order_id,1);
                 $tmpCap['type'] = ($i->bet_money==$bunko&&!in_array($i->game_id,array(90,91))&&$i->unfreeze_money==0)?'t02':'t09';      //如果投注金额与赢金额一样，就是属于t02退本金
                 $tmpCap['money'] = $bunko;
-                $tmpCap['balance'] = round($capUsers[$i->user_id],3);
+                $tmpCap['balance'] = round($capUsers[$i->user_id]['money'],3);
                 $tmpCap['operation_id'] = 0;
                 $tmpCap['issue'] = $i->issue;
                 $tmpCap['game_id'] = $i->game_id;
@@ -132,28 +130,6 @@ class Excel
             if(!$res)
                 writeLog('New_Bet',$gameName.$issue.'返钱失败！');
         }
-//        if(!empty($table)&&!empty($tableid)){
-//            $reWater = DB::table($table)->where('id',$tableid)->where('returnwater',0)->first();
-//            if(empty($reWater))
-//                return 0;
-//            $res = DB::table($table)->where('id',$tableid)->where('returnwater',0)->update(['returnwater' => 2]);
-//            if(empty($res)){
-//                writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-//                return 0;
-//            }
-//        }
-//        //退水
-//        $res = $this->reBackUser($gameId, $issue, $gameName);
-//        if(!$res){
-//            if(!empty($table)&&!empty($tableid)){
-//                $res = DB::table($table)->where('id',$tableid)->where('returnwater',2)->update(['returnwater' => 1]);
-//                if(empty($res)){
-//                    writeLog('New_Bet',$gameName.$issue.'退水中失败！');
-//                    return 0;
-//                }
-//            }
-//        }else
-//            writeLog('New_Bet', $gameName . $issue . "退水前失败！");
         return 0;
     }
     //中奖推送
