@@ -177,7 +177,7 @@ class Excel
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->back_money ";
             }
-            $getAfterUser = DB::connection('mysql::write')->table('users')->select('id','money')->whereIn('id',$users)->get();
+            $capUsers = DB::connection('mysql::write')->table('users')->select('id','money','testFlag')->whereIn('id',$users)->get()->keyBy('id')->toArray();
             $ids = implode(',',$users);
             if($ids && isset($ids)){
                 $sql .= "END WHERE id IN (0,$ids)";
@@ -190,11 +190,8 @@ class Excel
             UsersModel::userCheakDrawings($get->toArray(),'t14',  $users, 'user_id', 'back_money');
 
             $capData = [];
-            $capUsers = [];
             $ii = 0;
-            foreach ($getAfterUser as&$val){
-                $capUsers[$val->id] = $val->money;
-            }
+
             //新增有返奖的用户的资金明细
             foreach ($get as $i){
                 $tmpCap = [];
@@ -203,7 +200,7 @@ class Excel
                 $tmpCap['order_id'] = $this->randOrder('BW');
                 $tmpCap['type'] = 't14';
                 $tmpCap['money'] = $i->back_money;
-                $tmpCap['balance'] = round($capUsers[$i->user_id]+$i->back_money,3);
+                $tmpCap['balance'] = round($capUsers[$i->user_id]['money']+$i->back_money,3);
                 $tmpCap['operation_id'] = 0;
                 $tmpCap['issue'] = $issue;
                 $tmpCap['game_id'] = $gameId;
@@ -211,6 +208,7 @@ class Excel
                 $tmpCap['playcate_id'] = 0;
                 $tmpCap['playcate_name'] = '';
                 $tmpCap['content'] = '';
+                $tmpCap['testFlag'] = $capUsers[$i->user_id]['testFlag'];
                 $tmpCap['created_at'] = date('Y-m-d H:i:s',time()+1);
                 $tmpCap['updated_at'] = date('Y-m-d H:i:s',time()+1);
                 $capData[$ii] = $tmpCap;
