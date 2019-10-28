@@ -50,14 +50,14 @@ class Excel
             //新增有返奖的用户的资金明细
             foreach ($getDt as $i){
                 if(in_array($i->game_id,array(90,91)) && $i->unfreeze_money!=0){ //根据牛牛翻倍玩法增加解冻的资金明细
-                    $capUsers[$i->user_id]['money'] += $i->unfreeze_money;
+                    $capUsers[$i->user_id]->money += $i->unfreeze_money;
                     $tmpCap = [];
                     $tmpCap['to_user'] = $i->user_id;
                     $tmpCap['user_type'] = 'user';
                     $tmpCap['order_id'] = 'UF'.substr($i->order_id,2);
                     $tmpCap['type'] = 't26';
                     $tmpCap['money'] = $i->unfreeze_money;
-                    $tmpCap['balance'] = round($capUsers[$i->user_id]['money'],3);
+                    $tmpCap['balance'] = round($capUsers[$i->user_id]->money,3);
                     $tmpCap['operation_id'] = 0;
                     $tmpCap['issue'] = $i->issue;
                     $tmpCap['game_id'] = $i->game_id;
@@ -65,7 +65,7 @@ class Excel
                     $tmpCap['playcate_id'] = $i->playcate_id;
                     $tmpCap['playcate_name'] = $i->playcate_name;
                     $tmpCap['content'] = $gameName.'-'.$i->play_name.'-'.$i->play_odds;
-                    $tmpCap['testFlag'] = $capUsers[$i->user_id]['testFlag'];
+                    $tmpCap['testFlag'] = $capUsers[$i->user_id]->testFlag;
                     $tmpCap['created_at'] = date('Y-m-d H:i:s');
                     $tmpCap['updated_at'] = date('Y-m-d H:i:s');
                     $capData[$ii] = $tmpCap;
@@ -81,14 +81,14 @@ class Excel
                 }
                 if(!isset($capUsers[$i->user_id]))
                     continue;
-                $capUsers[$i->user_id]['money'] += $bunko; //累加馀额
+                $capUsers[$i->user_id]->money += $bunko; //累加馀额
                 $tmpCap = [];
                 $tmpCap['to_user'] = $i->user_id;
                 $tmpCap['user_type'] = 'user';
                 $tmpCap['order_id'] = 'W'.substr($i->order_id,1);
                 $tmpCap['type'] = ($i->bet_money==$bunko&&!in_array($i->game_id,array(90,91))&&$i->unfreeze_money==0)?'t02':'t09';      //如果投注金额与赢金额一样，就是属于t02退本金
                 $tmpCap['money'] = $bunko;
-                $tmpCap['balance'] = round($capUsers[$i->user_id]['money'],3);
+                $tmpCap['balance'] = round($capUsers[$i->user_id]->money,3);
                 $tmpCap['operation_id'] = 0;
                 $tmpCap['issue'] = $i->issue;
                 $tmpCap['game_id'] = $i->game_id;
@@ -96,6 +96,7 @@ class Excel
                 $tmpCap['playcate_id'] = $i->playcate_id;
                 $tmpCap['playcate_name'] = $i->playcate_name;
                 $tmpCap['content'] = $gameName.'-'.$i->play_name.'-'.$i->play_odds;
+                $tmpCap['testFlag'] = $capUsers[$i->user_id]->testFlag;
                 $tmpCap['created_at'] = date('Y-m-d H:i:s');
                 $tmpCap['updated_at'] = date('Y-m-d H:i:s');
                 $capData[$ii] = $tmpCap;
@@ -176,7 +177,7 @@ class Excel
                 $tmpCap['order_id'] = $this->randOrder('BW');
                 $tmpCap['type'] = 't14';
                 $tmpCap['money'] = $i->back_money;
-                $tmpCap['balance'] = round($capUsers[$i->user_id]['money']+$i->back_money,3);
+                $tmpCap['balance'] = round($capUsers[$i->user_id]->money+$i->back_money,3);
                 $tmpCap['operation_id'] = 0;
                 $tmpCap['issue'] = $issue;
                 $tmpCap['game_id'] = $gameId;
@@ -184,7 +185,7 @@ class Excel
                 $tmpCap['playcate_id'] = 0;
                 $tmpCap['playcate_name'] = '';
                 $tmpCap['content'] = '';
-                $tmpCap['testFlag'] = $capUsers[$i->user_id]['testFlag'];
+                $tmpCap['testFlag'] = $capUsers[$i->user_id]->testFlag;
                 $tmpCap['created_at'] = date('Y-m-d H:i:s',time()+1);
                 $tmpCap['updated_at'] = date('Y-m-d H:i:s',time()+1);
                 $capData[$ii] = $tmpCap;
