@@ -118,7 +118,7 @@ class WSGJRepository extends BaseRepository
     {
         $res = GamesList::Config;
         foreach ($res as $k=>$v){
-            if($data['gameCategory'] == $v['param']['gameType']){
+            if($data['gameCategory'] == $v['param']['gameType'] && $data['productType'] ==  $v['param']['product_type']){
                 return $k;
             }
         }
