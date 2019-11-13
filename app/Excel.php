@@ -28,10 +28,18 @@ class Excel
             //更新返奖的用户馀额
             $sql = "UPDATE users SET money = money+ CASE id ";
             $users = [];
+            $withdrawableAmountMoney = []; //计算用户可提现金额时用的
             foreach ($get as $i){
                 $users[] = $i->user_id;
                 $sql .= "WHEN $i->user_id THEN $i->s ";
+                if($i->s > 0){
+                    $withdrawableAmountMoney[] = [
+                        'user_id' => $i->user_id,
+                        'money' => $i->s
+                    ];
+                }
             }
+            UsersModel::upUserWithdrawableAmount($withdrawableAmountMoney); # 如果是赢的 增加用户可提现金额
             $capUsers = DB::connection('mysql::write')->table('users')->select('id','money','testFlag')->whereIn('id',$users)->get()->keyBy('id')->toArray();
             $ids = implode(',',$users);
             if($ids && isset($ids)){

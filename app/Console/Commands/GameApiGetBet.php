@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\GamesApi;
+use App\User;
 use Illuminate\Console\Command;
 use App\Http\Controllers\GamesApi\Card\PrivodeController;
+use SameClass\Model\UsersModel;
 
 class GameApiGetBet extends Command
 {

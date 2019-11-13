@@ -15,6 +15,7 @@ use App\SystemSetting;
 use App\Users;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use SameClass\Model\UsersModel;
 use SameClass\Service\RsaService\RsaService;
 
 class BaseRepository
@@ -64,6 +65,8 @@ class BaseRepository
             $a = '插入';
             # 修改提款打码量
             SystemSetting::decDrawingMoneyCheckCode($data, 'AllBet');
+            # 增加可提现金额
+            UsersModel::upUserWithdrawableAmount($data, null, 'user_id', 'bunko');
             $res = DB::table($table)->insert($data);
             $num = count($data);
         }else{
