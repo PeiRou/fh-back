@@ -73,7 +73,7 @@ class NNRepository extends BaseRepository
                 'sessionId' => $v['gameNo'] ?? '',
                 'username' => preg_replace('/^'.$this->getConfig('agent').'/', '', $v['userName']),
 //                'username' => str_replace($this->getConfig('agent'),'', $v['userName']),
-                'AllBet' => $v['initBet'],
+                'AllBet' => $v['bet'],
                 'bunko' => $v['winLost'],
                 'bet_money' => $v['initBet'],
                 'GameStartTime' => $v['startTime'],
@@ -88,6 +88,9 @@ class NNRepository extends BaseRepository
                 'game_id' => 10,
                 'round_id' => $v['gameNo'] ?? '',  //局号
             ];
+//            if($v['gameId'] == 107){
+//                $array['bunko'] = $array['bunko'] + $v['bet'];
+//            }
             $array['content'] = $this->content($v) ?: $array['game_type'];
             $user = $this->getUser($array['username']);
             $array['agent'] = $user->agent ?? 0;
