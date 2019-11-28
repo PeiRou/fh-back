@@ -83,7 +83,7 @@ class VGRepository extends BaseRepository
         $param = [
             'channel' => $this->channel,
             'agent' => $this->agent,
-            'id' => $this->param['id'] ?? 0,
+            'id' => $this->param['id'] ?? env('gamerecordid', 0),
         ];
         $verifyCode = $this->getverifyCode($param);
         return "{$this->url}/webapi/gamerecordid.aspx?".http_build_query($param)."&verifyCode={$verifyCode}";

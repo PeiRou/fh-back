@@ -440,7 +440,7 @@ class BaseRepository
 //        $this->param['endTime'] = $this->param['endTime'] ?? $param['toTime'] ?? time();
         $this->param['endTime'] = $this->param['endTime'] ?? (strtotime($this->OffsetTime(['time' => $param['toTime'] ?? time()])));
         $this->param['endTime'] = $this->param['endTime'] - 1 * 60;
-        $this->param['startTime'] = $this->param['endTime'] - 15 * 60;
+        $this->param['startTime'] = $this->param['endTime'] - 35 * 60;
         $platform_id = SystemSetting::getValueByRemark1('payment_platform_id');
         $this->param['remark'] = $this->getAgentPrefix();
         $this->param['g_id'] = $this->gameInfo->g_id;
