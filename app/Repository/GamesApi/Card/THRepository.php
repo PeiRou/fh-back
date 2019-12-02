@@ -42,7 +42,6 @@ class THRepository extends BaseRepository
 
     public function createData($aData)
     {
-        p($aData , 1);
         $GameIDs = $this->distinct($aData, 'desk_uuid');
         $insert = [];
         foreach ($aData as $v){
