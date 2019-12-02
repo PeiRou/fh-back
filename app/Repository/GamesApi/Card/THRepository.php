@@ -64,7 +64,7 @@ class THRepository extends BaseRepository
                 'game_type' => $this->getGameType($v['game_type']),
                 'service_money' => $v['tax_money'] ?? 0,
                 'flag' => 1,
-                'game_id' => 43,
+                'game_id' => 44,
                 'round_id' => $v['desk_uuid'],  //局号
             ];
             $array['content'] = $this->content($v, $array) ?: $array['game_type'];
