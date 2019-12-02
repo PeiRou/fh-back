@@ -397,7 +397,7 @@ class BaseRepository
     public function getUser($username, $key = '', $v = '')
     {
         if(in_array($this->gameInfo->g_id, [
-            17,22,19,23,24,25,26
+            17,22,19,23,24,25,26,29
         ])){
             $res = \App\GamesApiUserName::getGidOtherName([
                 'g_id' => $this->gameInfo->g_id,
@@ -843,6 +843,17 @@ class BaseRepository
             return $this->issue ? $this->issue : $t;
         }catch (\Throwable $e){
             return date('YmdHis', $param['time']);
+        }
+    }
+
+    public function hook($f, ...$args)
+    {
+        try{
+            return call_user_func([$this, $f], ...$args);
+        }catch (\Throwable $e){
+            if(!$e->getCode())
+                throw  $e;
+            return $this->show($e->getCode(), $e->getMessage());
         }
     }
 
