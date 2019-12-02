@@ -68,6 +68,7 @@ class THRepository extends BaseRepository
             ];
             $array['content'] = $this->content($v, $array) ?: $array['game_type'];
             $user = $this->getUser($array['username']);
+            $array['username'] = $user->username ?? $array['username'];
             $array['agent'] = $user->agent ?? 0;
             $array['user_id'] = $user->id ?? 0;
             $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';
@@ -87,11 +88,11 @@ class THRepository extends BaseRepository
     }
     public function getGameType($key)
     {
-        static $list;
-        if (is_null($list))
-            $list = GamesListPlay::getOneList(43);
-        if (!empty($list->get($key)->game_name))
-            return $list->get($key)->game_name;
+//        static $list;
+//        if (is_null($list))
+//            $list = GamesListPlay::getOneList(43);
+//        if (!empty($list->get($key)->game_name))
+//            return $list->get($key)->game_name;
         return [
             '1002'=>'炸金花',
             '1015'=>'十三水',
