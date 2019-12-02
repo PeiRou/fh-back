@@ -92,6 +92,7 @@ class THRepository extends BaseRepository
             $list = GamesListPlay::getOneList(43);
         if (!empty($list->get($key)->game_name))
             return $list->get($key)->game_name;
+        return '';
     }
 
     public function getRoomType($key)
