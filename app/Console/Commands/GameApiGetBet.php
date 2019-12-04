@@ -3,10 +3,8 @@
 namespace App\Console\Commands;
 
 use App\GamesApi;
-use App\User;
 use Illuminate\Console\Command;
 use App\Http\Controllers\GamesApi\Card\PrivodeController;
-use SameClass\Model\UsersModel;
 
 class GameApiGetBet extends Command
 {
@@ -21,6 +19,7 @@ class GameApiGetBet extends Command
     public function handle()
     {
         $param = [];
+        ini_set('memory_limit','1024M');
         if($g_id = $this->argument('g_id'))
             $param['g_id'] = $g_id;
         if($endTime = $this->argument('endTime'))
