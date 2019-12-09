@@ -53,7 +53,8 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
         //获取活动金额
         $aActivity = Capital::betGeneralReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取聊天室红包
-        $aHongBao = ChatHongbaoDt::betGeneralReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        //$aHongBao = ChatHongbaoDt::betGeneralReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        $aHongBao = Capital::betGeneralReportHongBaoData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取彩票投注
         if(strtotime($this->aDateTime) >= strtotime(date('Y-m-d')))
             $aBet = Bets::betGeneralReportData($this->aDateTime,$this->aDateTime.' 23:59:59');

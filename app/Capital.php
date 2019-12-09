@@ -169,6 +169,7 @@ class Capital extends Model
         return $fix.$order_id;
     }
 
+    //活动金额--会员
     public static function betMemberReportData($startTime = '',$endTime = ''){
         $aSql = "SELECT SUM(CASE WHEN `type` = 't08' THEN `money` ELSE 0 END ) AS `sumActivity`,SUM(CASE WHEN `type` = 't04' THEN `money` ELSE 0 END ) AS `sumRecharge_fee`,
                   `to_user`,SUM(`money`) AS `moneySum`,LEFT(`created_at`,10) AS `date` FROM `capital`
@@ -186,6 +187,23 @@ class Capital extends Model
         return DB::select($aSql,$aArray);
     }
 
+    //红包金额--会员
+    public static function betMemberReportHongBaoData($startTime = '',$endTime = ''){
+        $aSql = "SELECT SUM(`money`) AS `amount`,LEFT(`created_at`,10) AS `date`,to_user AS `users_id` FROM `capital` WHERE `type` = 't13' ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `to_user`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
+    //活动金额--代理
     public static function betAgentReportData($startTime = '',$endTime = ''){
         $aSql = "SELECT LEFT(`capital`.`created_at`,10) AS `date`,`users`.`agent` AS `agentId`,SUM(`capital`.`money`) AS `moneySum`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,
                    SUM(CASE WHEN `capital`.`type` = 't08' THEN `capital`.`money` ELSE 0 END ) AS `sumActivity`,SUM(CASE WHEN `capital`.`type` = 't04' THEN `capital`.`money` ELSE 0 END ) AS `sumRecharge_fee`
@@ -205,6 +223,26 @@ class Capital extends Model
         return DB::select($aSql,$aArray);
     }
 
+    //红包金额--代理
+    public static function betAgentReportHongBaoData($startTime = '',$endTime = ''){
+        $aSql = "SELECT LEFT(`capital`.`created_at`,10) AS `date`,`users`.`agent` AS `agent`,SUM(`capital`.`money`) AS `amount`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount` 
+                  FROM `capital`
+                  JOIN `users` ON `users`.`id` = `capital`.`to_user`
+                  WHERE `capital`.`type` = 't13' AND `users`.`testFlag` = 0 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `capital`.`created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `capital`.`created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `agent`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
+    //活动金额--总代理
     public static function betGeneralReportData($startTime = '',$endTime = ''){
         $aSql = "SELECT LEFT(`capital`.`created_at`,10) AS `date`,`agent`.`gagent_id` AS `generalId`,SUM(`capital`.`money`) AS `moneySum`,
                   COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`,
@@ -224,6 +262,27 @@ class Capital extends Model
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `generalId`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
+    //红包金额--总代理
+    public static function betGeneralReportHongBaoData($startTime = '',$endTime = ''){
+        $aSql = "SELECT LEFT(`capital`.`created_at`,10) AS `date`,`agent`.`gagent_id` AS `gagent_id`,SUM(`capital`.`money`) AS `amount`,
+                  COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`
+                  FROM `capital`
+                  JOIN `users` ON `users`.`id` = `capital`.`to_user`
+                  JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
+                  WHERE `capital`.`type` = 't13' AND `users`.`testFlag` = 0 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `capital`.`created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `capital`.`created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `gagent_id`,`date` ORDER BY `date` ASC";
         return DB::select($aSql,$aArray);
     }
 }

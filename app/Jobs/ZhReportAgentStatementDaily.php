@@ -55,7 +55,8 @@ class ZhReportAgentStatementDaily implements ShouldQueue
         //获取活动金额
         $aActivity = Capital::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取聊天室红包
-        $aHongBao = ChatHongbaoDt::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        //$aHongBao = ChatHongbaoDt::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        $aHongBao = Capital::betAgentReportHongBaoData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取彩票投注
         if(strtotime($this->aDateTime) >= strtotime(date('Y-m-d')))
             $aBet = Bets::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
