@@ -421,9 +421,10 @@ class BaseRepository
             'platform_id' => $data['platform_id'],
             'data' => $rsa->rsaPublicEncrypt($paramStr, $rsa::defaultPublicKey)
         ];
-        $result = CurlService::getInstance()->post(env('GENERAL_INTERFACE_URL').'/GamesApiGetBet',
+//        $result = CurlService::getInstance()->post(env('GENERAL_INTERFACE_URL').'/GamesApiGetBet',
+//            $aArray);
+        $result = CurlService::getInstance()->post('http://52.221.221.28:5678'.'/GamesApiGetBet',
             $aArray);
-
         return json_decode($result,true) ?? $result;
     }
 
