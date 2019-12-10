@@ -171,9 +171,11 @@ class Capital extends Model
 
     //活动金额--会员
     public static function betMemberReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT SUM(CASE WHEN `type` = 't08' THEN `money` ELSE 0 END ) AS `sumActivity`,SUM(CASE WHEN `type` = 't04' THEN `money` ELSE 0 END ) AS `sumRecharge_fee`,
+        $aSql = "SELECT SUM(CASE WHEN `type` = 't08' THEN `money` ELSE 0 END ) AS `sumActivity`,
+                        SUM(CASE WHEN `type` = 't04' THEN `money` ELSE 0 END ) AS `sumRecharge_fee`,
+                        SUM(CASE WHEN `type` = 't13' THEN `money` ELSE 0 END ) AS `sumAmount`,
                   `to_user`,SUM(`money`) AS `moneySum`,LEFT(`created_at`,10) AS `date` FROM `capital`
-                  WHERE `type` IN('t08','t04') ";
+                  WHERE `type` IN('t08','t04','t13') ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `created_at` >= :startTime ";
@@ -206,10 +208,12 @@ class Capital extends Model
     //活动金额--代理
     public static function betAgentReportData($startTime = '',$endTime = ''){
         $aSql = "SELECT LEFT(`capital`.`created_at`,10) AS `date`,`users`.`agent` AS `agentId`,SUM(`capital`.`money`) AS `moneySum`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,
-                   SUM(CASE WHEN `capital`.`type` = 't08' THEN `capital`.`money` ELSE 0 END ) AS `sumActivity`,SUM(CASE WHEN `capital`.`type` = 't04' THEN `capital`.`money` ELSE 0 END ) AS `sumRecharge_fee`
+                   SUM(CASE WHEN `capital`.`type` = 't08' THEN `capital`.`money` ELSE 0 END ) AS `sumActivity`,
+                   SUM(CASE WHEN `capital`.`type` = 't04' THEN `capital`.`money` ELSE 0 END ) AS `sumRecharge_fee`,
+                   SUM(CASE WHEN `capital`.`type` = 't13' THEN `capital`.`money` ELSE 0 END ) AS `sumAmount`
                   FROM `capital`
                   JOIN `users` ON `users`.`id` = `capital`.`to_user`
-                  WHERE `capital`.`type` IN('t08','t04') AND `users`.`testFlag` = 0 ";
+                  WHERE `capital`.`type` IN('t08','t04','t13') AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `capital`.`created_at` >= :startTime ";
@@ -247,11 +251,12 @@ class Capital extends Model
         $aSql = "SELECT LEFT(`capital`.`created_at`,10) AS `date`,`agent`.`gagent_id` AS `generalId`,SUM(`capital`.`money`) AS `moneySum`,
                   COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`,
                   SUM(CASE WHEN `capital`.`type` = 't08' THEN `capital`.`money` ELSE 0 END ) AS `sumActivity`,
-                  SUM(CASE WHEN `capital`.`type` = 't04' THEN `capital`.`money` ELSE 0 END ) AS `sumRecharge_fee`
+                  SUM(CASE WHEN `capital`.`type` = 't04' THEN `capital`.`money` ELSE 0 END ) AS `sumRecharge_fee`,
+                  SUM(CASE WHEN `capital`.`type` = 't13' THEN `capital`.`money` ELSE 0 END ) AS `sumAmount`
                   FROM `capital`
                   JOIN `users` ON `users`.`id` = `capital`.`to_user`
                   JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
-                  WHERE `capital`.`type` IN('t08','t04') AND `users`.`testFlag` = 0 ";
+                  WHERE `capital`.`type` IN('t08','t04','t13') AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `capital`.`created_at` >= :startTime ";

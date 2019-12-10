@@ -52,11 +52,11 @@ class ZhReportMemberStatementDaily implements ShouldQueue
         $aRecharges = Recharges::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取提款金额
         $aDrawing = Drawing::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
-        //获取活动金额
+        //获取活动金额和聊天室红包金额
         $aActivity = Capital::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //聊天室红包金额
         //$aHongBao = ChatHongbaoDt::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
-        $aHongBao = Capital::betMemberReportHongBaoData($this->aDateTime,$this->aDateTime.' 23:59:59');
+//        $aHongBao = Capital::betMemberReportHongBaoData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取彩票投注
         if(strtotime($this->aDateTime) >= strtotime(date('Y-m-d')))
             $aBet = Bets::memberReportDataUser($this->aDateTime,$this->aDateTime.' 23:59:59');
@@ -122,14 +122,15 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                 if($iArray['user_id'] == $iActivity->to_user && $iArray['date'] == $iActivity->date){
                     $aArray[$kArray]['activity_money'] = empty($iActivity->sumActivity)?0.00:$iActivity->sumActivity;
                     $aArray[$kArray]['handling_fee'] = empty($iActivity->sumRecharge_fee)?0.00:$iActivity->sumRecharge_fee;
+                    $aArray[$kArray]['envelope_money'] = empty($iActivity->sumAmount)?0.00:$iActivity->sumAmount;
                 }
             }
 
-            foreach ($aHongBao as $iHongBao){
-                if($iArray['user_id'] == $iHongBao->users_id && $iArray['date'] == $iHongBao->date){
-                    $aArray[$kArray]['envelope_money'] = empty($iHongBao->amount)?0.00:$iHongBao->amount;
-                }
-            }
+//            foreach ($aHongBao as $iHongBao){
+//                if($iArray['user_id'] == $iHongBao->users_id && $iArray['date'] == $iHongBao->date){
+//                    $aArray[$kArray]['envelope_money'] = empty($iHongBao->amount)?0.00:$iHongBao->amount;
+//                }
+//            }
 
             foreach ($aBet as $iBet){
                 if($iArray['user_id'] == $iBet->user_id && $iArray['date'] == $iBet->date){

@@ -56,7 +56,7 @@ class ZhReportAgentStatementDaily implements ShouldQueue
         $aActivity = Capital::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取聊天室红包
         //$aHongBao = ChatHongbaoDt::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
-        $aHongBao = Capital::betAgentReportHongBaoData($this->aDateTime,$this->aDateTime.' 23:59:59');
+//        $aHongBao = Capital::betAgentReportHongBaoData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取彩票投注
         if(strtotime($this->aDateTime) >= strtotime(date('Y-m-d')))
             $aBet = Bets::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
@@ -116,14 +116,15 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                 if($iArray['agent_id'] == $iActivity->agentId && $iArray['date'] == $iActivity->date){
                     $aArray[$kArray]['activity_money'] = empty($iActivity->sumActivity)?0.00:$iActivity->sumActivity;
                     $aArray[$kArray]['handling_fee'] = empty($iActivity->sumRecharge_fee)?0.00:$iActivity->sumRecharge_fee;
+                    $aArray[$kArray]['envelope_money'] = empty($iActivity->sumAmount)?0.00:$iActivity->sumAmount;
                 }
             }
 
-            foreach ($aHongBao as $iHongBao){
-                if($iArray['agent_id'] == $iHongBao->agent && $iArray['date'] == $iHongBao->date){
-                    $aArray[$kArray]['envelope_money'] = empty($iHongBao->amount)?0.00:$iHongBao->amount;
-                }
-            }
+//            foreach ($aHongBao as $iHongBao){
+//                if($iArray['agent_id'] == $iHongBao->agent && $iArray['date'] == $iHongBao->date){
+//                    $aArray[$kArray]['envelope_money'] = empty($iHongBao->amount)?0.00:$iHongBao->amount;
+//                }
+//            }
 
             foreach ($aBet as $iBet){
                 if($iArray['agent_id'] == $iBet->agentId && $iArray['date'] == $iBet->date){

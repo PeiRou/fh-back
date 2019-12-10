@@ -52,7 +52,7 @@ class AgentSettle extends Command
             'end' => $this->argument('endTime'),
         ];
         //$currentMonth = ['start'=>'2018-05-01','end'=>'2018-06-30'];
-        $yearMonth = date('Y-m',strtotime($currentMonth['start']));
+        $yearMonth = date('Y-m-d',strtotime($currentMonth['start']));
         $yearMonthDay = date('Y-m-d H:i:s',strtotime($currentMonth['start']));
         //获取平台配置
         $aAgentBaseInfo = AgentReportBase::getAgentBaseInfo();
