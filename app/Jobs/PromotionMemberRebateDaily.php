@@ -172,7 +172,7 @@ class PromotionMemberRebateDaily implements ShouldQueue
         foreach ($aData as $kData => $iData){
             foreach ($aRecode as $iRecode){
                 if($iData['user_id'] == $iRecode->user_id && $iData['game_id'] == $iRecode->game_id && $iData['promotion_user_id'] == $iRecode->promotion_user_id){
-                    if($iData['money'] > $iRecode){
+                    if($iData['money'] > $iRecode->money){
                         $aArray[] = [
                             'promotion_user_id' => $iData['promotion_user_id'],
                             'promotion_user_account' => $iData['promotion_user_account'],

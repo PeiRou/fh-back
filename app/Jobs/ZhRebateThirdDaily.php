@@ -131,6 +131,7 @@ class ZhRebateThirdDaily implements ShouldQueue
                         'created_at' => $dateTime,
                         'updated_at' => $dateTime,
                         'balance' => $iThird->userMoney,
+                        'testFlag' => $iArray['testFlag'],
                     ];
                 }
                 if($iThird->user_id == $iArray['user_id'] && $iThird->game_id == $iArray['game_id']){
