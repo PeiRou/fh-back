@@ -151,7 +151,11 @@ class clear_data extends Command
             $Games = new Games();
             $res = $Games->games;
             foreach ($res as $key => $val){
-                $num_else = $this->clrGameTables($val['table'], $clearDate62, $num_else);
+                $newClearDate = $clearDate62;
+                if($val['table'] == 'game_lhc'){
+                    $newClearDate = date('Y-m-d 23:59:59',strtotime("-1 Year")-300);
+                }
+                $num_else = $this->clrGameTables($val['table'], $newClearDate, $num_else);
             }
             //清-计画试算
             $num_else = $this->clrGameTables('plan_record', $clearDate2, $num_else,'updated_at');
