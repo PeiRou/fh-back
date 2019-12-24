@@ -92,8 +92,11 @@ class AgentBetStatementDaily implements ShouldQueue
 
         ReportBetAgent::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['return_amount'] > 0)
-                AgentBetStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('agentBetStatementInsert'));
+            if($iArray['bet_count'] == 0 && $iArray['return_amount'] == 0)  unset($aArray[$kArray]);
+        }
+        $aData = array_chunk($aArray,1000);
+        foreach ($aData as $iData){
+            ReportBetAgent::insert($iData);
         }
     }
 

@@ -116,8 +116,12 @@ class GeneralStatementDaily implements ShouldQueue
         }
         ReportGeneral::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['return_amount'] > 0)
-                GeneralStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('generalStatementInsert'));
+            if($iArray['bet_count'] == 0 && $iArray['recharges_money'] == 0 && $iArray['drawing_money'] == 0 && $iArray['activity_money'] == 0 && $iArray['return_amount'] == 0)
+                unset($aArray[$kArray]);
+        }
+        $aData = array_chunk($aArray,1000);
+        foreach ($aData as $iData){
+            ReportGeneral::insert($iData);
         }
     }
 
