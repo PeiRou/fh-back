@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\AgentBackwater;
+use App\BalanceIncomeDay;
 use App\BetHis;
 use App\Bets;
 use App\Capital;
@@ -15,6 +16,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use SameClass\Model\CapitalModel;
 
 class GeneralStatementDaily implements ShouldQueue
 {
@@ -54,6 +56,10 @@ class GeneralStatementDaily implements ShouldQueue
         $aActivity = Capital::betGeneralReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取代理返水
         $aBack = AgentBackwater::getBackGroupByGeneralId($this->aDateTime,$this->aDateTime.' 23:59:59');
+        # 资金明细可以取到的 其它金额
+        $aCapitalOther = Capital::betGeneralReportOtherData($this->aDateTime,$this->aDateTime.' 23:59:59', CapitalModel::capitalOtherTypes);
+        # 余额宝盈利  collect
+        $balance_income = BalanceIncomeDay::betGAgentReportData($this->aDateTime);
         $aArray = [];
         $dateTime = date('Y-m-d H:i:s');
         $time = strtotime($this->aDateTime);
