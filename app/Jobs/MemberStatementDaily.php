@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\BalanceIncomeDay;
 use App\BetHis;
 use App\Bets;
 use App\Capital;
@@ -14,6 +15,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use SameClass\Model\CapitalModel;
 
 class MemberStatementDaily implements ShouldQueue
 {
@@ -51,6 +53,12 @@ class MemberStatementDaily implements ShouldQueue
         $aDrawing = Drawing::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取活动金额
         $aActivity = Capital::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        # todo  t31/t32:第三方游戏返点  t33/t34:会员(重新)返佣  t28:推广人佣金  t13:聊天室红包
+        $capitalOtherTypes = CapitalModel::capitalOtherTypes; //Capital表要算在其它字段金额的类型
+        # 资金明细可以取到的 其它金额
+        $aCapitalOther = Capital::betMemberReportOtherData($this->aDateTime,$this->aDateTime.' 23:59:59', $capitalOtherTypes);
+        # 余额宝盈利  collect
+        $balance_income = BalanceIncomeDay::betMemberReportData($this->aDateTime);
         $aArray = [];
         $dateTime = date('Y-m-d H:i:s');
         $time = strtotime($this->aDateTime);
@@ -74,6 +82,8 @@ class MemberStatementDaily implements ShouldQueue
                 'recharges_money' => 0.00,
                 'drawing_money' => 0.00,
                 'activity_money' => 0.00,
+                'other_money' => 0.00,
+                'balance_money' => 0.00
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -103,10 +113,22 @@ class MemberStatementDaily implements ShouldQueue
                     $aArray[$kArray]['handling_fee'] = empty($iActivity->sumRecharge_fee)?0.00:$iActivity->sumRecharge_fee;
                 }
             }
+
+            //余额宝盈利 - 其它
+            if($balance_income->get($iArray['user_id'])){
+                $aArray[$kArray]['balance_money'] += ($balance_income->get($iArray['user_id']) ?? 0.00);
+            }
+            //资金明细 - 其它 t31/t32:第三方游戏(重新)返点  t33/t34:会员(重新)返佣  t28:推广人佣金  t13:聊天室红包
+            foreach ($aCapitalOther as $kCapitalOther => $iCapitalOther){
+                if($iArray['user_id'] == $iCapitalOther->to_user && $iArray['date'] == $iCapitalOther->date){
+                    $aArray[$kArray]['other_money'] += $iCapitalOther->moneySum ?? 0;
+                }
+            }
+
         }
         ReportMember::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0)
+            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['other_money'] > 0 || $iArray['balance_money'] > 0)
                 MemberStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('memberStatementInsert'));
         }
     }

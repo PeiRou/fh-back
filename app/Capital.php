@@ -189,6 +189,31 @@ class Capital extends Model
         return DB::select($aSql,$aArray);
     }
 
+    //获取
+    public static function betMemberReportOtherData($startTime = '',$endTime = '', $types = []){
+
+        $aSql = "SELECT
+                    `to_user`,
+                    SUM( `money` ) AS `moneySum`,
+                    LEFT ( `created_at`, 10 ) AS `date` 
+                FROM
+                    `capital` 
+                WHERE 1
+                  AND (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 ))
+                ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `to_user`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
     //红包金额--会员
     public static function betMemberReportHongBaoData($startTime = '',$endTime = ''){
         $aSql = "SELECT SUM(`money`) AS `amount`,LEFT(`created_at`,10) AS `date`,to_user AS `users_id` FROM `capital` WHERE `type` = 't13' ";
