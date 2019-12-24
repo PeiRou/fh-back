@@ -1,3 +1,6 @@
 [submodule "sameClass"]
 	path = sameClass
 	url = ssh://root@azzshub.dabkuk642fkjs.com:4444/laomumeme/wx-same-class.git
+[submodule "config/game"]
+	path = config/game
+	url = ssh://root@azzshub.dabkuk642fkjs.com:4444/laomumeme/wx-lottery.git
