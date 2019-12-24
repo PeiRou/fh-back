@@ -290,4 +290,58 @@ class Capital extends Model
         $aSql .= " GROUP BY `gagent_id`,`date` ORDER BY `date` ASC";
         return DB::select($aSql,$aArray);
     }
+
+    public static function capitalNew($iStartTime,$iEndTime){
+        $aSql = "SELECT 
+                        `ca`.capital23,`ca`.capital24,`ca`.capital30,`ca`.capital31,`ca`.capital32,
+                        `ca`.capital35,`ca`.capital36,`ca`.capital33,`ca`.capital34,`ca`.capital02,
+                        `ca`.capital16,`ca`.capital08,`ca`.capital13,`ca`.capital28,`ca`.capital04,
+                        `ca`.capital03,`ca`.capital14,`bet`.betMoney,`bet`.betBunko,
+                        `re`.onPay,`re`.offPay,`re`.adPay,`dr`.suDraw,`dr`.adDraw
+                    FROM (
+                        SELECT 
+                            SUM(CASE WHEN `type` = 't23' THEN `money` ELSE 0 END) AS `capital23`,
+                            SUM(CASE WHEN `type` = 't24' THEN `money` ELSE 0 END) AS `capital24`,
+                            SUM(CASE WHEN `type` = 't30' THEN `money` ELSE 0 END) AS `capital30`,
+                            SUM(CASE WHEN `type` = 't31' THEN `money` ELSE 0 END) AS `capital31`,
+                            SUM(CASE WHEN `type` = 't32' THEN `money` ELSE 0 END) AS `capital32`,
+                            SUM(CASE WHEN `type` = 't35' THEN `money` ELSE 0 END) AS `capital35`,
+                            SUM(CASE WHEN `type` = 't36' THEN `money` ELSE 0 END) AS `capital36`,
+                            SUM(CASE WHEN `type` = 't33' THEN `money` ELSE 0 END) AS `capital33`,
+                            SUM(CASE WHEN `type` = 't34' THEN `money` ELSE 0 END) AS `capital34`,
+                            SUM(CASE WHEN `type` = 't02' THEN `money` ELSE 0 END) AS `capital02`,
+                            SUM(CASE WHEN `type` = 't03' THEN `money` ELSE 0 END) AS `capital03`,
+                            SUM(CASE WHEN `type` = 't16' THEN `money` ELSE 0 END) AS `capital16`,
+                            SUM(CASE WHEN `type` = 't08' THEN `money` ELSE 0 END) AS `capital08`,
+                            SUM(CASE WHEN `type` = 't13' THEN `money` ELSE 0 END) AS `capital13`,
+                            SUM(CASE WHEN `type` = 't28' THEN `money` ELSE 0 END) AS `capital28`,
+                            SUM(CASE WHEN `type` = 't04' THEN `money` ELSE 0 END) AS `capital04`,
+                            SUM(CASE WHEN `type` = 't14' THEN `money` ELSE 0 END) AS `capital14`,
+                            LEFT(`created_at`,10) AS `date` 
+                        FROM `capital` WHERE `testFlag` = 0 AND `created_at` >= '".$iStartTime."' AND `created_at` <= '".$iEndTime."' GROUP BY `date`
+                    ) AS `ca`
+                    LEFT JOIN (
+                        SELECT 
+                            SUM(CASE WHEN `payType` = 'onlinePayment' THEN `amount` ELSE 0 END) AS `onPay`,
+                            SUM(CASE WHEN `payType` IN('bankTransfer','alipaySm','weixinSm','ysf','alipay','weixin','cft') THEN `amount` ELSE 0 END) AS `offPay`,
+                            SUM(CASE WHEN `payType` = 'adminAddMoney' THEN `amount` ELSE 0 END) AS `adPay`,
+                            LEFT(`created_at`,10) AS `date`
+                        FROM `recharges` WHERE `testFlag` = 0 AND `updated_at` >= '".$iStartTime."' AND `updated_at` <= '".$iEndTime."' GROUP BY `date`
+                    ) AS `re` ON `re`.date = `ca`.date
+                    LEFT JOIN (
+                        SELECT 
+                            SUM(CASE WHEN `draw_type` IN(0,1) AND `status` = 2 THEN `amount` ELSE 0 END) AS `suDraw`,
+                            SUM(CASE WHEN `draw_type` = 2 THEN `amount` ELSE 0 END) AS `adDraw`,
+                            LEFT(`created_at`,10) AS `date`
+                        FROM `drawing` WHERE `testFlag` = 0 AND `updated_at` >= '".$iStartTime."' AND `updated_at` <= '".$iEndTime."' GROUP BY `date` 
+                    ) AS `dr` ON `dr`.date = `ca`.date
+                    LEFT JOIN (
+                        SELECT 
+                            SUM(`bet_money`) AS `betMoney`,
+                            SUM(CASE WHEN bet_his.`game_id` IN(90,91) THEN bet_his.`nn_view_money` ELSE (CASE WHEN bet_his.`bunko` >0 THEN bet_his.`bunko` - bet_his.`bet_money` ELSE bet_his.`bunko` END) END) AS `betBunko`,
+                            LEFT(`created_at`,10) AS `date`
+                        FROM `bet_his` WHERE `testFlag` = 0 AND `status` = 1 AND `updated_at` >= '".$iStartTime."' AND `updated_at` <= '".$iEndTime."' GROUP BY `date`
+                    ) AS `bet` ON `bet`.date = `ca`.date";
+        return DB::select($aSql);
+    }
 }
