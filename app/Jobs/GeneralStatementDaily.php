@@ -76,7 +76,13 @@ class GeneralStatementDaily implements ShouldQueue
                 'recharges_money' => 0.00,
                 'drawing_money' => 0.00,
                 'activity_money' => 0.00,
-                'return_amount' => 0.00
+                'return_amount' => 0.00,
+                'other_money' => 0.00,
+                'other_count' => 0,
+                'other_agent_count' => 0,
+                'balance_money' => 0.00,
+                'balance_count' => 0,
+                'balance_agent_count' => 0,
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -119,10 +125,24 @@ class GeneralStatementDaily implements ShouldQueue
                     $aArray[$kArray]['return_amount'] = empty($iBack->money)?0.00:$iBack->money;
                 }
             }
+            foreach ($aCapitalOther as $iCapitalOther){
+                if($iArray['general_id'] == $iCapitalOther->generalId && $iArray['date'] == $iCapitalOther->date){
+                    $aArray[$kArray]['other_money'] = empty($iCapitalOther->moneySum)?0.00:$iCapitalOther->moneySum;
+                    $aArray[$kArray]['other_count'] = empty($iCapitalOther->userIdCount)?0:$iCapitalOther->userIdCount;
+                    $aArray[$kArray]['other_agent_count'] = empty($iCapitalOther->agentIdCount)?0:$iCapitalOther->agentIdCount;
+                }
+            }
+            foreach ($balance_income as $ibalance_income){
+                if($iArray['general_id'] == $ibalance_income->generalId && $iArray['date'] == $ibalance_income->date){
+                    $aArray[$kArray]['balance_money'] = empty($ibalance_income->money)?0.00:$ibalance_income->money;
+                    $aArray[$kArray]['balance_count'] = empty($ibalance_income->userIdCount)?0:$ibalance_income->userIdCount;
+                    $aArray[$kArray]['balance_agent_count'] = empty($ibalance_income->agentIdCount)?0:$ibalance_income->agentIdCount;
+                }
+            }
         }
         ReportGeneral::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] == 0 && $iArray['recharges_money'] == 0 && $iArray['drawing_money'] == 0 && $iArray['activity_money'] == 0 && $iArray['return_amount'] == 0)
+            if($iArray['bet_count'] == 0 && $iArray['recharges_money'] == 0 && $iArray['drawing_money'] == 0 && $iArray['activity_money'] == 0 && $iArray['return_amount'] == 0 && $iArray['other_money'] == 0 && $iArray['balance_money'] == 0)
                 unset($aArray[$kArray]);
         }
         $aData = array_chunk($aArray,1000);
