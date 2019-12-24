@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Agent;
 use App\AgentBackwater;
+use App\BalanceIncomeDay;
 use App\BetHis;
 use App\Bets;
 use App\Capital;
@@ -15,6 +16,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use SameClass\Model\CapitalModel;
 
 class AgentStatementDaily implements ShouldQueue
 {
@@ -54,6 +56,10 @@ class AgentStatementDaily implements ShouldQueue
         $aActivity = Capital::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取代理返水金额
         $aBack = AgentBackwater::getBackGroupByAgentId($this->aDateTime,$this->aDateTime.' 23:59:59');
+        # 资金明细可以取到的 其它金额
+        $aCapitalOther = Capital::betAgentReportOtherData($this->aDateTime,$this->aDateTime.' 23:59:59', CapitalModel::capitalOtherTypes);
+        # 余额宝盈利
+        $balance_income = BalanceIncomeDay::betAgentReportData($this->aDateTime);
         $aArray = [];
         $dateTime = date('Y-m-d H:i:s');
         $time = strtotime($this->aDateTime);
@@ -73,7 +79,9 @@ class AgentStatementDaily implements ShouldQueue
                 'recharges_money' => 0.00,
                 'drawing_money' => 0.00,
                 'activity_money' => 0.00,
-                'return_amount' => 0.00
+                'return_amount' => 0.00,
+                'other_money' => 0.00,
+                'balance_money' => 0.00
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -112,10 +120,23 @@ class AgentStatementDaily implements ShouldQueue
                     $aArray[$kArray]['return_amount'] = empty($iBack->money)?0.00:$iBack->money;
                 }
             }
+
+            foreach ($aCapitalOther as $kCapitalOther => $iCapitalOther){
+                if($iArray['agent_id'] == $iCapitalOther->agentId && $iArray['date'] == $iCapitalOther->date){
+                    $aArray[$kArray]['other_money'] = empty($iCapitalOther->moneySum)?0.00:$iCapitalOther->moneySum;
+                    $aArray[$kArray]['other_count'] = empty($iCapitalOther->userIdCount)?0:$iCapitalOther->userIdCount;
+                }
+            }
+            foreach ($balance_income as $kbalance_income => $ibalance_income){
+                if($iArray['agent_id'] == $ibalance_income->agent && $iArray['date'] == $ibalance_income->date){
+                    $aArray[$kArray]['balance_money'] = empty($ibalance_income->money)?0.00:$ibalance_income->money;
+                    $aArray[$kArray]['balance_count'] = empty($ibalance_income->userIdCount)?0:$ibalance_income->userIdCount;
+                }
+            }
         }
         ReportAgent::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['return_amount'] > 0)
+            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['return_amount'] > 0 || $iArray['other_money'] > 0 || $iArray['balance_money'] > 0)
                 AgentStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('agentStatementInsert'));
         }
     }
