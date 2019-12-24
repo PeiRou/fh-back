@@ -252,6 +252,30 @@ class Capital extends Model
         return DB::select($aSql,$aArray);
     }
 
+    public static function betAgentReportOtherData($startTime = '',$endTime = '', $types = []){
+        $aSql = "SELECT 
+                    LEFT(`capital`.`created_at`,10) AS `date`,
+                    COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,
+                    `users`.`agent` AS `agentId`,
+                    SUM(`capital`.`money`) AS `moneySum`
+                  FROM `capital`
+                  JOIN `users` ON `users`.`id` = `capital`.`to_user`
+                  WHERE 1
+                     AND (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 ))
+                     AND `users`.`testFlag` = 0 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `capital`.`created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `capital`.`created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `agentId`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql,$aArray);
+    }
+
     //红包金额--代理
     public static function betAgentReportHongBaoData($startTime = '',$endTime = ''){
         $aSql = "SELECT LEFT(`capital`.`created_at`,10) AS `date`,`users`.`agent` AS `agent`,SUM(`capital`.`money`) AS `amount`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount` 

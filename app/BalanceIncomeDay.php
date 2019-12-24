@@ -24,6 +24,7 @@ class BalanceIncomeDay extends Model
     {
         $sql = "SELECT
                     sum( b.money ) AS money,
+                    COUNT(DISTINCT(`u`.`id`)) AS `userIdCount`,
                     u.agent ,
                     `date`
                 FROM
