@@ -76,8 +76,11 @@ class MemberBetStatementDaily implements ShouldQueue
         }
         ReportBetMember::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0)
-                MemberBetStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('memberBetStatementInsert'));
+            if($iArray['bet_count'] == 0)   unset($aArray[$kArray]);
+        }
+        $aData = array_chunk($aArray,1000);
+        foreach ($aData as $iData){
+            ReportBetMember::insert($iData);
         }
     }
 

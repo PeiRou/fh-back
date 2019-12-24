@@ -128,8 +128,12 @@ class MemberStatementDaily implements ShouldQueue
         }
         ReportMember::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['other_money'] > 0 || $iArray['balance_money'] > 0)
-                MemberStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('memberStatementInsert'));
+            if($iArray['bet_count'] == 0 && $iArray['recharges_money'] == 0 && $iArray['drawing_money'] == 0 && $iArray['activity_money'] == 0 && $iArray['other_money'] == 0 && $iArray['balance_money'] == 0)
+                unset($aArray[$kArray]);
+        }
+        $aData = array_chunk($aArray,1000);
+        foreach ($aData as $iData){
+            ReportMember::insert($iData);
         }
     }
 
