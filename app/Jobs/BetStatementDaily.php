@@ -54,7 +54,7 @@ class BetStatementDaily implements ShouldQueue
                     'user_id' => $iBet->user_id,
                     'bet_money' => $iBet->sumMoney,
                     'bet_count' => $iBet->countBets,
-                    'rebate' => 0,
+                    'rebate' => $iBet->rebate,
                     'win_bunko' => $iBet->sumWinBunko,
                     'win_count' => $iBet->countWinBunkoBet,
                     'bunko' => $iBet->sumBunko,

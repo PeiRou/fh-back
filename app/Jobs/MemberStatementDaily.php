@@ -79,9 +79,15 @@ class MemberStatementDaily implements ShouldQueue
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
                 'bet_count' => 0,
+                'bet_money' => 0.00,
+                'bet_amount' => 0.00,
+                'bet_bunko' => 0.00,
+                'fact_bet_bunko' => 0.00,
+                'fact_return_amount' => 0.00,
                 'recharges_money' => 0.00,
                 'drawing_money' => 0.00,
                 'activity_money' => 0.00,
+                'handling_fee' => 0.00,
                 'other_money' => 0.00,
                 'balance_money' => 0.00
             ];

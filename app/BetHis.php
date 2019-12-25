@@ -468,7 +468,7 @@ class BetHis extends Model
     }
 
     public static function getReportBet($startTime,$endTime){
-    $aSql = "SELECT SUM(`bet_money`) AS `sumMoney`,COUNT(`bet_id`) AS `countBets`,COUNT(DISTINCT(`user_id`)) AS `countMember`,
+    $aSql = "SELECT SUM(`bet_money`) AS `sumMoney`,COUNT(`bet_id`) AS `countBets`,COUNT(DISTINCT(`user_id`)) AS `countMember`,SUM(`play_rebate`*`bet_money`) AS `rebate`,
                   SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `nn_view_money` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bunko` ELSE 0 END) END) AS `sumWinBunko`,
                   COUNT(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bet_id` ELSE NULL END) ELSE(CASE WHEN `bunko` >0 THEN `bet_id` ELSE NULL END) END) AS `countWinBunkoBet`,
                   COUNT(DISTINCT(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `user_id` ELSE NULL END) ELSE(CASE WHEN `bunko` >0 THEN `user_id` ELSE NULL END) END)) AS `countWinBunkoMember`,
