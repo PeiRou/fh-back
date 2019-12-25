@@ -65,7 +65,11 @@ class BetStatementDaily implements ShouldQueue
             }
 
             ReportBet::where('date','=',$this->aDateTime)->delete();
-            ReportBet::insert($aArray);
+            $aData = array_chunk($aArray,2000);
+            foreach ($aData as $iData){
+                ReportBet::insert($iData);
+            }
+
         }catch (\Exception $e){
             Log::info($e->getMessage());
         }
