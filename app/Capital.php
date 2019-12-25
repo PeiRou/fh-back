@@ -339,7 +339,29 @@ class Capital extends Model
         $aSql .= " GROUP BY `gagent_id`,`date` ORDER BY `date` ASC";
         return DB::select($aSql,$aArray);
     }
-
+    public static function betGeneralReportOtherData($startTime = '',$endTime = '', $types = [])
+    {
+        $aSql = "SELECT LEFT(`capital`.`created_at`,10) AS `date`,`agent`.`gagent_id` AS `generalId`,
+                  COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`,
+                  SUM(`capital`.`money`) AS `moneySum`
+                  FROM `capital`
+                  JOIN `users` ON `users`.`id` = `capital`.`to_user`
+                  JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
+                  WHERE `users`.`testFlag` = 0 
+                  AND (`capital`.`type` IN('" . implode("','", $types) . "') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 ))
+                  ";
+        $aArray = [];
+        if (!empty($startTime)) {
+            $aSql .= " AND `capital`.`created_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if (!empty($endTime)) {
+            $aSql .= " AND `capital`.`created_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        $aSql .= " GROUP BY `generalId`,`date` ORDER BY `date` ASC";
+        return DB::select($aSql, $aArray);
+    }
     public static function capitalNew($iStartTime,$iEndTime){
         $aSql = "SELECT 
                         `ca`.capital23,`ca`.capital24,`ca`.capital30,`ca`.capital31,`ca`.capital32,

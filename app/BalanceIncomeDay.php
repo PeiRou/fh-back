@@ -43,7 +43,8 @@ class BalanceIncomeDay extends Model
     {
         $sql = " SELECT
                     sum( b.money ) AS money,
-                    u.agent,
+                    COUNT(DISTINCT(`u`.`id`)) AS `userIdCount`,
+                    COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`,
                     `date`,
                     `agent`.`gagent_id` AS `generalId` 
                 FROM
