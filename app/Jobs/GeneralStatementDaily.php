@@ -87,6 +87,7 @@ class GeneralStatementDaily implements ShouldQueue
                 'drawing_member_count' => 0,
                 'drawing_agent_count' => 0,
                 'activity_money' => 0.00,
+                'handling_fee' => 0.00,
                 'activity_member_count' => 0,
                 'activity_agent_count' => 0,
                 'return_amount' => 0.00,
