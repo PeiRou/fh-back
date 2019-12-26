@@ -45,7 +45,7 @@ class clear_bet extends Command
         echo "StartTime:".$clearDateStart.PHP_EOL;
         echo "EndTime:".$clearDateEnd.PHP_EOL;
 //        $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at >= '{$clearDateStart}' AND updated_at <= '{$clearDateEnd}'";
-        $res = DB::table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','>=',$clearDateStart)->where('updated_at','<=',$clearDateEnd)>limit(50000)->get();
+        $res = DB::table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','>=',$clearDateStart)->where('updated_at','<=',$clearDateEnd)->limit(50000)->get();
         $betTempIds = [];
         if(!$res){
             echo 'nohave'.PHP_EOL;
