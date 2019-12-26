@@ -52,5 +52,6 @@ class clear_bet extends Command
         foreach ($res as $k=> $v)
             Storage::disk('betTemp')->put($v->bet_id,json_encode($v));
         $redis->del($keyEx);
+        echo 'ok'.PHP_EOL;
     }
 }
