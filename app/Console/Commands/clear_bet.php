@@ -29,8 +29,9 @@ class clear_bet extends Command
             return "";
         }
         $redis->setex('clearing',30,'on');
-        $clearDate1 = date('Y-m-d H:i:s',strtotime('-3 hours'));
-        $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}'";
+        $clearDateStart = date('Y-m-d H:i:s',strtotime('-3 hours'));
+        $clearDateEnd = date('Y-m-d H:i:s',strtotime('-4 hours'));
+        $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at >= '{$clearDateEnd}' AND updated_at <= '{$clearDateStart}'";
         $res = DB::select($sql);
         $betTempIds = [];
         if(!$res){
