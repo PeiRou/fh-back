@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class clear_bet extends Command
 {
 
-    protected $signature = 'clear_bet';
+    protected $signature = 'clear_bet {StartTime?} {EndTime?}';
     protected $description = '清除缓存';
     protected $stoptime = '';
     protected $time = '';
@@ -30,12 +30,21 @@ class clear_bet extends Command
             return "";
         }
         $redis->setex('clearing',30,'on');
-        $clearDateStart = date('Y-m-d H:i:s',strtotime('-4 hours'));
-        $clearDateEnd = date('Y-m-d H:i:s',strtotime('-3 hours'));
+        $clearDateStart = $this->argument('StartTime');
+        $clearDateEnd = $this->argument('EndTime');
         echo "StartTime:".$clearDateStart.PHP_EOL;
         echo "EndTime:".$clearDateEnd.PHP_EOL;
-        $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at >= '{$clearDateStart}' AND updated_at <= '{$clearDateEnd}'";
-        $res = DB::select($sql);
+        if(empty($clearDateStart) || empty($clearDateEnd)){
+            $clearDateStart = date('Y-m-d H:i:s',strtotime('-4 hours'));
+            $clearDateEnd = date('Y-m-d H:i:s',strtotime('-3 hours'));
+        }else{
+            $clearDateStart = $clearDateStart.' 00:00:00';
+            $clearDateEnd = $clearDateEnd.date(' H:i:s');
+        }
+        echo "StartTime:".$clearDateStart.PHP_EOL;
+        echo "EndTime:".$clearDateEnd.PHP_EOL;
+//        $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at >= '{$clearDateStart}' AND updated_at <= '{$clearDateEnd}'";
+        $res = DB::table('bet')->where('status','>=',1)->where('updated_at','>=',$clearDateStart)->where('updated_at','<=',$clearDateEnd)->get();
         $betTempIds = [];
         if(!$res){
             echo 'nohave'.PHP_EOL;
