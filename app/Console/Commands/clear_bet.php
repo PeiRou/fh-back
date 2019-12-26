@@ -26,15 +26,20 @@ class clear_bet extends Command
         $redis->select(5);
         $keyEx = 'clear_beting';
         if($redis->exists($keyEx)){     //锁定暂存
+            echo 'ing'.PHP_EOL;
             return "";
         }
         $redis->setex('clearing',30,'on');
-        $clearDateStart = date('Y-m-d H:i:s',strtotime('-3 hours'));
-        $clearDateEnd = date('Y-m-d H:i:s',strtotime('-4 hours'));
-        $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at >= '{$clearDateEnd}' AND updated_at <= '{$clearDateStart}'";
+        $clearDateStart = date('Y-m-d H:i:s',strtotime('-4 hours'));
+        $clearDateEnd = date('Y-m-d H:i:s',strtotime('-3 hours'));
+        echo "StartTime:".$clearDateStart.PHP_EOL;
+        echo "EndTime:".$clearDateEnd.PHP_EOL;
+        $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at >= '{$clearDateStart}' AND updated_at <= '{$clearDateEnd}'";
         $res = DB::select($sql);
         $betTempIds = [];
         if(!$res){
+            echo 'nohave'.PHP_EOL;
+            $redis->del($keyEx);
             return false;
         }
         foreach ($res as $k => $v){
