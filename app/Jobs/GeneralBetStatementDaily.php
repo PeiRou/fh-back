@@ -63,6 +63,7 @@ class GeneralBetStatementDaily implements ShouldQueue
                         'fact_return_amount' => empty($iBet->back_money)?0.00:$iBet->back_money,
                         'member_count' => empty($iBet->userIdCount)?0:$iBet->userIdCount,
                         'agent_count' => empty($iBet->agentIdCount)?0:$iBet->agentIdCount,
+                        'return_amount' => 0.00,
                         'game_id' => $iBet->game_id,
                         'date' => $this->aDateTime,
                         'dateTime' => $time,
