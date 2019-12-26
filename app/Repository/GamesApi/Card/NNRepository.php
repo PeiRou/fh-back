@@ -75,7 +75,7 @@ class NNRepository extends BaseRepository
 //                'username' => str_replace($this->getConfig('agent'),'', $v['userName']),
                 'AllBet' => $v['bet'],
                 'bunko' => $v['winLost'],
-                'bet_money' => $v['initBet'],
+                'bet_money' => $v['bet'],
                 'GameStartTime' => $v['startTime'],
                 'GameEndTime' =>  $v['endTime'],
                 'created_at' => date('Y-m-d H:i:s'),
