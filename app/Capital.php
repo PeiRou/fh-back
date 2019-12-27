@@ -199,7 +199,7 @@ class Capital extends Model
                 FROM
                     `capital` 
                 WHERE 1
-                  AND (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 ))
+                  AND (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` IN(1,3) ))
                 ";
         $aArray = [];
         if(!empty($startTime)){
@@ -261,7 +261,7 @@ class Capital extends Model
                   FROM `capital`
                   JOIN `users` ON `users`.`id` = `capital`.`to_user`
                   WHERE 1
-                     AND (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 ))
+                     AND (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` IN(1,3) ))
                      AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
@@ -348,7 +348,7 @@ class Capital extends Model
                   JOIN `users` ON `users`.`id` = `capital`.`to_user`
                   JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
                   WHERE `users`.`testFlag` = 0 
-                  AND (`capital`.`type` IN('" . implode("','", $types) . "') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 ))
+                  AND (`capital`.`type` IN('" . implode("','", $types) . "') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` IN(1,3) ))
                   ";
         $aArray = [];
         if (!empty($startTime)) {
