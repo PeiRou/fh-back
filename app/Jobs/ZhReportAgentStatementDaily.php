@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Agent;
+use App\BalanceIncomeDay;
 use App\BetHis;
 use App\Bets;
 use App\Capital;
@@ -22,6 +23,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Log;
 use SameClass\Config\GamesListConfig\GamesListConfig;
+use SameClass\Model\CapitalModel;
 
 class ZhReportAgentStatementDaily implements ShouldQueue
 {
@@ -72,6 +74,11 @@ class ZhReportAgentStatementDaily implements ShouldQueue
         $aRebate = ThirdRebate::agentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //会员推广返佣
         $aPromotion = PromotionRecode::agentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        # 资金明细可以取到的 其它金额
+        $aCapitalOther = Capital::betAgentReportOtherData($this->aDateTime,$this->aDateTime.' 23:59:59', CapitalModel::capitalOtherTypes);
+        # 余额宝盈利
+        $balance_income = BalanceIncomeDay::betAgentReportData($this->aDateTime);
+
         $aArray = [];
         $aArrayBunko = [];
         $dateTime = date('Y-m-d H:i:s');
@@ -96,7 +103,9 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                 'activity_money' => 0.00,
                 'envelope_money' => 0.00,
                 'bet_bunko' => 0.00,
-                'bet_money' => 0.00
+                'bet_money' => 0.00,
+                'other_money' => 0.00,
+                'balance_money' => 0.00
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -195,6 +204,17 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                     $aArray[$kArray]['promotion_money'] += empty($iPromotion->money)?0:$iPromotion->money;
                 }
             }
+
+            foreach ($aCapitalOther as $kCapitalOther => $iCapitalOther){
+                if($iArray['agent_id'] == $iCapitalOther->agentId && $iArray['date'] == $iCapitalOther->date){
+                    $aArray[$kArray]['other_money'] = empty($iCapitalOther->moneySum)?0.00:$iCapitalOther->moneySum;
+                }
+            }
+            foreach ($balance_income as $kbalance_income => $ibalance_income){
+                if($iArray['agent_id'] == $ibalance_income->agent && $iArray['date'] == $ibalance_income->date){
+                    $aArray[$kArray]['balance_money'] = empty($ibalance_income->money)?0.00:$ibalance_income->money;
+                }
+            }
         }
 
         foreach ($aArrayBunko as $kArrayBunko => $iArrayBunko){
@@ -267,7 +287,7 @@ class ZhReportAgentStatementDaily implements ShouldQueue
             ZhReportAgentBunko::insert($iBunko);
         }
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['bet_bunko'] > 0 || $iArray['rebate_money'] > 0 || $iArray['promotion_money'] > 0)
+            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['bet_bunko'] > 0 || $iArray['rebate_money'] > 0 || $iArray['promotion_money'] > 0 || $iArray['other_money'] > 0 || $iArray['balance_money'] > 0)
                 ZhReportAgentStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('zhReportAgentStatementInsert'));
         }
     }

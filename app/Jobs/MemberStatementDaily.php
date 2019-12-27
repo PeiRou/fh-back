@@ -53,7 +53,7 @@ class MemberStatementDaily implements ShouldQueue
         $aDrawing = Drawing::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取活动金额
         $aActivity = Capital::betMemberReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
-        # todo  t31/t32:第三方游戏返点  t33/t34:会员(重新)返佣  t28:推广人佣金  t13:聊天室红包
+        # todo  t31/t32:第三方游戏返点  t33/t34:会员(重新)返佣  t28:推广人佣金
         $capitalOtherTypes = CapitalModel::capitalOtherTypes; //Capital表要算在其它字段金额的类型
         # 资金明细可以取到的 其它金额
         $aCapitalOther = Capital::betMemberReportOtherData($this->aDateTime,$this->aDateTime.' 23:59:59', $capitalOtherTypes);
@@ -120,11 +120,11 @@ class MemberStatementDaily implements ShouldQueue
                 }
             }
 
-            //余额宝盈利 - 其它
+            //余额宝盈利
             if($balance_income->get($iArray['user_id'])){
                 $aArray[$kArray]['balance_money'] += ($balance_income->get($iArray['user_id']) ?? 0.00);
             }
-            //资金明细 - 其它 t31/t32:第三方游戏(重新)返点  t33/t34:会员(重新)返佣  t28:推广人佣金  t13:聊天室红包
+            //资金明细 - 其它
             foreach ($aCapitalOther as $kCapitalOther => $iCapitalOther){
                 if($iArray['user_id'] == $iCapitalOther->to_user && $iArray['date'] == $iCapitalOther->date){
                     $aArray[$kArray]['other_money'] += $iCapitalOther->moneySum ?? 0;

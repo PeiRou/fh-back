@@ -91,6 +91,8 @@ class AgentStatementDaily implements ShouldQueue
                 'activity_member_count' => 0,
                 'return_amount' => 0.00,
                 'other_money' => 0.00,
+                'other_count' => 0,
+                'balance_count' => 0,
                 'balance_money' => 0.00
             ];
         }
