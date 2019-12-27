@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 use SameClass\Config\LotteryGames\Games;
 
 class clear_data extends Command
@@ -30,7 +31,7 @@ class clear_data extends Command
         if($redis->exists('clearing')){
             return "";
         }
-        $redis->setex('clearing',300,'on');
+//        $redis->setex('clearing',300,'on');
         $this->stoptime = date('Y-m-d H:i:s',strtotime(date('Y-m-d 23:59:59'))+7200);                                 //卡redis时间，改成两点之后才开始移数据
         $this->time = strtotime($this->stoptime) - time();                                                      //卡redis时间，剩馀时间
         if($this->time<=0)                                 //剩馀时间若是非有效秒数，则返回不继续往下做
@@ -60,38 +61,61 @@ class clear_data extends Command
             writeLog('clear','3 clear bet ing...');
             $redis->setex('clear-bet',5,'on');
             writeLog('clear','4 clear bet begin...');
-            $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();
+            $res = DB::connection('mysql::write')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();       //查一下有没有数据
             writeLog('clear','5 clear bet :'.json_encode($res));
             if(empty($res)){
                 $redis->setex('clear-bet',$this->time,$this->stoptime);
             }else{
-                $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
-                $tmp = DB::select($sql);
-                $arrIds = array();
-                foreach ($tmp as&$value)
-                    $arrIds[] = $value->bet_id;
-                if(count($arrIds)==0){
-                    $redis->setex('clear-bet',$this->time,$this->stoptime);
-                }else{
-                    DB::beginTransaction();
-                    try {
-                        DB::table('bet_his')->whereIn('bet_id', $arrIds)->delete();
-                        $strIds = implode(',',$arrIds);
-                        $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE bet_id in (".$strIds.")";
-                        $res = DB::statement($sql);
-                        writeLog('clear','table insert into bet_his :'.$res);
-                        if($res){
-                            $res = DB::table('bet')->whereIn('bet_id', $arrIds)->delete();
-                            writeLog('clear','table delete bet :'.$res);
-                        }
-                        DB::commit();
-                    }catch (\Exception $e){
-                        DB::rollback();
-                        writeLog('clear', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
-                        writeLog('clear','table insert into bet_his :fail');
+                //当文件有数据的时候，则到文件里把文件放到bet_his里
+                $files = Storage::disk('betTemp')->files();
+                $arrayTmp = [];
+                $ii = 0;
+                if(count($files)>0){
+                    $arrayFileData = [];
+                    foreach ($files as $hisKey){
+                        if($ii>=1000)
+                            break;
+                        $arrayTmp[] = $hisKey;                      //将序号放成数组，容易使用sql查询
+                        $betinfoData = json_decode(Storage::disk('betTemp')->get($hisKey),true);     //把值从文件里面拿出来
+                        $arrayFileData[] = $betinfoData;
+                        $ii++;
                     }
+                    DB::table('bet_his')->whereIn('bet_id', $arrayTmp)->delete();
+                    DB::table('bet_his')->insert($arrayFileData);
+                    DB::table('bet')->whereIn('bet_id', $arrayTmp)->delete();
+                    Storage::disk('betTemp')->delete($arrayTmp);              //删除用户在文件的历史数据
                     $num++;
                     $redis->del('clear-bet');
+                }else{
+                    //如果还有遗漏的数据，则像原先一样到bet里读出来，再放到bet_his里
+                    $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
+                    $tmp = DB::select($sql);
+                    $arrIds = array();
+                    foreach ($tmp as&$value)
+                        $arrIds[] = $value->bet_id;
+                    if(count($arrIds)==0){
+                        $redis->setex('clear-bet',$this->time,$this->stoptime);
+                    }else{
+                        DB::beginTransaction();
+                        try {
+                            DB::table('bet_his')->whereIn('bet_id', $arrIds)->delete();
+                            $strIds = implode(',',$arrIds);
+                            $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE bet_id in (".$strIds.")";
+                            $res = DB::statement($sql);
+                            writeLog('clear','table insert into bet_his :'.$res);
+                            if($res){
+                                $res = DB::table('bet')->whereIn('bet_id', $arrIds)->delete();
+                                writeLog('clear','table delete bet :'.$res);
+                            }
+                            DB::commit();
+                        }catch (\Exception $e){
+                            DB::rollback();
+                            writeLog('clear', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
+                            writeLog('clear','table insert into bet_his :fail');
+                        }
+                        $num++;
+                        $redis->del('clear-bet');
+                    }
                 }
             }
         }
@@ -99,7 +123,7 @@ class clear_data extends Command
         writeLog('clear',"clear Date1:".$clearDate1."clear Date31:".$clearDate31."clear Date62:".$clearDate62."clear Date93:".$clearDate93);
         //清-投注历史数据
         if(!$redis->exists('clear-bet-his')){
-            $sql = "DELETE FROM bet_his WHERE updated_at<='{$clearDate93}' LIMIT 5000";
+            $sql = "DELETE FROM bet_his WHERE updated_at<='{$clearDate93}' LIMIT 2000";
             $res = DB::statement($sql);
             echo 'table bet_his :' . $res . PHP_EOL;
             $res = DB::connection('mysql::write')->table('bet_his')->select('bet_id')->where('updated_at','<=',$clearDate93)->first();

@@ -53,14 +53,9 @@ return [
             'root' => storage_path('thread'),
         ],
 
-        'needbunko' => [
+        'betTemp' => [
             'driver' => 'local',
-            'root' => storage_path('needbunko'),
-        ],
-
-        'needkill' => [
-            'driver' => 'local',
-            'root' => storage_path('needkill'),
+            'root' => storage_path('betTemp'),
         ],
 
         'guanOpen' => [
