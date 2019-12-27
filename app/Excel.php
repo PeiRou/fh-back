@@ -118,7 +118,7 @@ class Excel
                 $tmpContent = "<div><span style='color: red'>".$gameName."</span>".$content. "已中奖，中奖金额 <span style='color:#8d71ff'>" .round($winBunko,3)."元</span></div>";
                 $push[] = array('userid'=>$i->user_id,'notice'=>$tmpContent);
             }
-            krsort($capData);
+//            krsort($capData);     //取消多一个排序
             $capIns = DB::table('capital')->insert($capData);
             if($capIns != 1){
                 return 1;
