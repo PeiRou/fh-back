@@ -71,11 +71,12 @@ class clear_data extends Command
                 $redis->setex('clear-bet',$this->time,$this->stoptime);
             }else{
                 //当文件有数据的时候，则到文件里把文件放到bet_his里
+                echo "clear clear-bet file into...".PHP_EOL;
                 $files = Storage::disk('betTemp')->files();
                 $arrayTmp = [];
                 $ii = 0;
                 if(count($files)>0){
-                    echo "clear clear-bet file into...".PHP_EOL;
+                    echo "clear clear-bet file into start...".PHP_EOL;
                     $arrayFileData = [];
                     foreach ($files as $hisKey){
                         if($ii>=1000)
