@@ -22,7 +22,7 @@ class clear_bet extends Command
 
     public function handle()
     {
-        ini_set('memory_limit','1024M');
+        ini_set('memory_limit','2048M');
         $redis = Redis::connection();
         $redis->select(5);
         $keyEx = 'clear_beting';
