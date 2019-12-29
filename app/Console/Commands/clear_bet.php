@@ -40,7 +40,7 @@ class clear_bet extends Command
             $clearDateEnd = date('Y-m-d H:i:s',strtotime('-2 hours'));
         }else{
             $clearDateStart = $clearDateStart.' 00:00:00';
-            $clearDateEnd = $clearDateEnd.date(' H:i:s',strtotime('-2 hours'));
+            $clearDateEnd = $clearDateEnd.' 23:59:59';
         }
         echo "StartTime:".$clearDateStart.PHP_EOL;
         echo "EndTime:".$clearDateEnd.PHP_EOL;

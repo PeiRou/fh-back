@@ -72,24 +72,39 @@ class clear_data extends Command
             }else{
                 //当文件有数据的时候，则到文件里把文件放到bet_his里
                 echo "clear clear-bet file into...".PHP_EOL;
-                $files = Storage::disk('betTemp')->files();
+
+                //如果已经有做过一次，则不再读一次浪费内存
+                $rdKeybet = 'clear-bet-file';
+                if($redis->exists($rdKeybet)){
+                    $files = json_decode($redis->get($rdKeybet),true);
+                }else{
+                    $files = Storage::disk('betTemp')->files();
+                }
                 $arrayTmp = [];
                 $ii = 0;
                 if(count($files)>0){
                     echo "clear clear-bet file into start...".PHP_EOL;
                     $arrayFileData = [];
-                    foreach ($files as $hisKey){
+                    $arrayFileDataDel = [];         //蒐集要删掉的key
+                    foreach ($files as $ik => $hisKey){
                         if($ii>=1000)
                             break;
                         $arrayTmp[] = $hisKey;                      //将序号放成数组，容易使用sql查询
                         $betinfoData = json_decode(Storage::disk('betTemp')->get($hisKey),true);     //把值从文件里面拿出来
+                        if(strtotime($betinfoData['updated_at'])>strtotime($clearDate1))
+                            continue;
                         $arrayFileData[] = $betinfoData;
+                        $arrayFileDataDel[] = $ik;
                         $ii++;
                     }
-                    DB::table('bet_his')->whereIn('bet_id', $arrayTmp)->delete();
+                    DB::table('bet_his')->whereIn('bet_id', $arrayTmp)->where('updated_at','<=',$clearDate1)->delete();
                     DB::table('bet_his')->insert($arrayFileData);
-                    DB::table('bet')->whereIn('bet_id', $arrayTmp)->delete();
+                    DB::table('bet')->whereIn('bet_id', $arrayTmp)->where('updated_at','<=',$clearDate1)->delete();
                     Storage::disk('betTemp')->delete($arrayTmp);              //删除用户在文件的历史数据
+                    foreach ($arrayFileDataDel as $ik => $delKey){
+                        unset($files[$delKey]);
+                    }
+                    $redis->setex($rdKeybet,30,json_encode($files));
                     $num++;
                     $redis->del('clear-bet');
                 }else{
