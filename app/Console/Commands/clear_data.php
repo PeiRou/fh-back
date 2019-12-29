@@ -90,6 +90,8 @@ class clear_data extends Command
                         if($ii>=1000)
                             break;
                         $arrayTmp[] = $hisKey;                      //将序号放成数组，容易使用sql查询
+                        if(!Storage::disk('betTemp')->exists($hisKey))
+                            continue;
                         $betinfoData = json_decode(Storage::disk('betTemp')->get($hisKey),true);     //把值从文件里面拿出来
                         if(strtotime($betinfoData['updated_at'])>strtotime($clearDate1))
                             continue;
