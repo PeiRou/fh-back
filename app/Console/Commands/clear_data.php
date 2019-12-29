@@ -24,6 +24,7 @@ class clear_data extends Command
 
     public function handle()
     {
+        ini_set('memory_limit','1024M');
         $num = 0;
         $redis = Redis::connection();
         $redis->select(5);

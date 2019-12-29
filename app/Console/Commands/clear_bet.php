@@ -37,15 +37,15 @@ class clear_bet extends Command
         echo "EndTime:".$clearDateEnd.PHP_EOL;
         if(empty($clearDateStart) || empty($clearDateEnd)){
             $clearDateStart = date('Y-m-d H:i:s',strtotime('-4 hours'));
-            $clearDateEnd = date('Y-m-d H:i:s',strtotime('-3 hours'));
+            $clearDateEnd = date('Y-m-d H:i:s',strtotime('-2 hours'));
         }else{
             $clearDateStart = $clearDateStart.' 00:00:00';
-            $clearDateEnd = $clearDateEnd.date(' H:i:s',strtotime('-3 hours'));
+            $clearDateEnd = $clearDateEnd.date(' H:i:s',strtotime('-2 hours'));
         }
         echo "StartTime:".$clearDateStart.PHP_EOL;
         echo "EndTime:".$clearDateEnd.PHP_EOL;
 //        $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at >= '{$clearDateStart}' AND updated_at <= '{$clearDateEnd}'";
-        $res = DB::table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','>=',$clearDateStart)->where('updated_at','<=',$clearDateEnd)->limit(50000)->get();
+        $res = DB::table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','>=',$clearDateStart)->where('updated_at','<=',$clearDateEnd)->limit(20000)->orderBy('bet_id', 'desc')->get();
         $betTempIds = [];
         if(!$res){
             echo 'nohave'.PHP_EOL;
