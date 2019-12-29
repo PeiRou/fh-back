@@ -82,6 +82,7 @@ class clear_data extends Command
                 }
                 $arrayTmp = [];
                 $ii = 0;
+                $needNew = false;
                 if(count($files)>0){
                     echo "clear clear-bet file into start...".PHP_EOL;
                     $arrayFileData = [];
@@ -90,8 +91,10 @@ class clear_data extends Command
                         if($ii>=1000)
                             break;
                         $arrayTmp[] = $hisKey;                      //将序号放成数组，容易使用sql查询
-                        if(!Storage::disk('betTemp')->exists($hisKey))
+                        if(!Storage::disk('betTemp')->exists($hisKey)){
+                            $needNew = true;
                             continue;
+                        }
                         $betinfoData = json_decode(Storage::disk('betTemp')->get($hisKey),true);     //把值从文件里面拿出来
                         if(strtotime($betinfoData['updated_at'])>strtotime($clearDate1))
                             continue;
@@ -106,7 +109,10 @@ class clear_data extends Command
                     foreach ($arrayFileDataDel as $ik => $delKey){
                         unset($files[$delKey]);
                     }
-                    $redis->setex($rdKeybet,30,json_encode($files));
+                    if($needNew)
+                        $redis->del($rdKeybet);
+                    else
+                        $redis->setex($rdKeybet,30,json_encode($files));
                     $num++;
                     $redis->del('clear-bet');
                 }else{
