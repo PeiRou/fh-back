@@ -54,9 +54,11 @@ class clear_data extends Command
         //清-游客
         $sql = "delete from users where testFlag = 1 and loginTime <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
+        echo "clear testFlag...".PHP_EOL;
         writeLog('clear','1 clear users testFlag:'.json_encode($res));
         $sql = "delete from chat_users where chat_role = 1 and created_at <='".$clearDate1."' LIMIT 1000";
         $res = DB::connection('mysql::write')->statement($sql);
+        echo "clear chat testFlag...".PHP_EOL;
         writeLog('clear','2 clear chat_user role is yk:'.json_encode($res));
         if(!$redis->exists('clear-bet')){
             writeLog('clear','3 clear bet ing...');
@@ -72,6 +74,7 @@ class clear_data extends Command
                 $arrayTmp = [];
                 $ii = 0;
                 if(count($files)>0){
+                    echo "clear clear-bet file into...".PHP_EOL;
                     $arrayFileData = [];
                     foreach ($files as $hisKey){
                         if($ii>=1000)
@@ -88,6 +91,7 @@ class clear_data extends Command
                     $num++;
                     $redis->del('clear-bet');
                 }else{
+                    echo "clear clear-bet db into...".PHP_EOL;
                     //如果还有遗漏的数据，则像原先一样到bet里读出来，再放到bet_his里
                     $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
                     $tmp = DB::select($sql);
