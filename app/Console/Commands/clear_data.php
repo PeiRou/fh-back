@@ -61,6 +61,7 @@ class clear_data extends Command
         echo "clear chat testFlag...".PHP_EOL;
         writeLog('clear','2 clear chat_user role is yk:'.json_encode($res));
         if(!$redis->exists('clear-bet')){
+            echo "clear clear-bet 3 clear bet ing...".PHP_EOL;
             writeLog('clear','3 clear bet ing...');
             $redis->setex('clear-bet',5,'on');
             writeLog('clear','4 clear bet begin...');
