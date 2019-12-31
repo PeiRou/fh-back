@@ -44,29 +44,69 @@ class clear_bet extends Command
         }
         echo "StartTime:".$clearDateStart.PHP_EOL;
         echo "EndTime:".$clearDateEnd.PHP_EOL;
-//        $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at >= '{$clearDateStart}' AND updated_at <= '{$clearDateEnd}'";
-        $res = DB::table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','>=',$clearDateStart)->where('updated_at','<=',$clearDateEnd)->limit(20000)->orderBy('bet_id', 'desc')->get();
-        $betTempIds = [];
+
+        echo date("Y-m-d H:i:s")." betTempFile ing...".PHP_EOL;
+        //彩票投注转移
+        $res = DB::table('bet')->select('bet_id')->where('status',1)->where('updated_at','>=',$clearDateStart)->where('updated_at','<=',$clearDateEnd)->limit(20000)->orderBy('bet_id', 'desc')->get();
+        $betTempIds = [];           //需要转移的id数组
+
+        //判断 彩票投注 是否有数据
         if(!$res){
-            echo 'nohave'.PHP_EOL;
-            $redis->del($keyEx);
-            return false;
-        }
-        foreach ($res as $k => $v){
-            if(Storage::disk('betTemp')->exists($v->bet_id)){
-                continue;
-            }else{
-                $betTempIds[] = $v->bet_id;
+            echo 'bet nohave'.PHP_EOL;
+        }else{
+            echo date("Y-m-d H:i:s")." betTempFile start...".PHP_EOL;
+            foreach ($res as $k => $v){
+                $fileId = $v->bet_id;
+                if(Storage::disk('betTemp')->exists($fileId)){
+                    $betTempNotInIds[] = $fileId;
+                    continue;
+                }else{
+                    $betTempIds[] = $fileId;
+                }
+            }
+            //如果有 需要转移的id数组 则将会把数据开始进行
+            if(count($betTempIds)==0)
+                echo 'bet file already input'.PHP_EOL;
+            else{
+                $betTempIds = implode(',',$betTempIds);
+                $sql = "SELECT * FROM bet WHERE bet_id in (".$betTempIds.") LIMIT 10000";
+                $res = DB::select($sql);
+                foreach ($res as $k=> $v)
+                    Storage::disk('betTemp')->put($v->bet_id,json_encode($v));
             }
         }
-        if(count($betTempIds)==0)
-            return false;
-        $betTempIds = implode(',',$betTempIds);
-        $sql = "SELECT * FROM bet WHERE bet_id in (".$betTempIds.") LIMIT 10000";
-        $res = DB::select($sql);
-        foreach ($res as $k=> $v)
-            Storage::disk('betTemp')->put($v->bet_id,json_encode($v));
+
+        echo date("Y-m-d H:i:s")." betJqTempFile ing...".PHP_EOL;
+        //第三方投注转移
+        $res = DB::table('jq_bet')->select('id')->where('flag',1)->where('updated_at','>=',$clearDateStart)->where('updated_at','<=',$clearDateEnd)->limit(20000)->orderBy('id', 'desc')->get();
+        $betTempIds = [];
+
+        //判断 第三方投注 是否有数据
+        if(!$res){
+            echo 'bet jq nohave'.PHP_EOL;
+        }else{
+            echo date("Y-m-d H:i:s")." betJqTempFile start...".PHP_EOL;
+            foreach ($res as $k => $v){
+                $fileId = $v->id;
+                if(Storage::disk('betJqTemp')->exists($fileId)){
+                    continue;
+                }else{
+                    $betTempIds[] = $fileId;
+                }
+            }
+            if(count($betTempIds)==0){
+                echo 'bet jq file already input'.PHP_EOL;
+            }else{
+                $betTempIds = implode(',',$betTempIds);
+                $sql = "SELECT * FROM jq_bet WHERE id in (".$betTempIds.") LIMIT 10000";
+                $res = DB::select($sql);
+                foreach ($res as $k=> $v)
+                    Storage::disk('betJqTemp')->put($v->id,json_encode($v));
+            }
+        }
+
+        //最后做完把redis给删了
         $redis->del($keyEx);
-        echo 'ok'.PHP_EOL;
+        echo date("Y-m-d H:i:s").' ok...'.PHP_EOL;
     }
 }
