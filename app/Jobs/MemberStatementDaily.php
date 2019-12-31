@@ -89,7 +89,8 @@ class MemberStatementDaily implements ShouldQueue
                 'activity_money' => 0.00,
                 'handling_fee' => 0.00,
                 'other_money' => 0.00,
-                'balance_money' => 0.00
+                'balance_money' => 0.00,
+                'cai_money' => 0.00,
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -127,14 +128,15 @@ class MemberStatementDaily implements ShouldQueue
             //资金明细 - 其它
             foreach ($aCapitalOther as $kCapitalOther => $iCapitalOther){
                 if($iArray['user_id'] == $iCapitalOther->to_user && $iArray['date'] == $iCapitalOther->date){
-                    $aArray[$kArray]['other_money'] += $iCapitalOther->moneySum ?? 0;
+                    $aArray[$kArray]['other_money'] += $iCapitalOther->other_money ?? 0;
+                    $aArray[$kArray]['cai_money'] += $iCapitalOther->cai_money ?? 0;
                 }
             }
 
         }
         ReportMember::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] == 0 && $iArray['recharges_money'] == 0 && $iArray['drawing_money'] == 0 && $iArray['activity_money'] == 0 && $iArray['other_money'] == 0 && $iArray['balance_money'] == 0)
+            if($iArray['bet_count'] == 0 && $iArray['recharges_money'] == 0 && $iArray['drawing_money'] == 0 && $iArray['activity_money'] == 0 && $iArray['other_money'] == 0 && $iArray['balance_money'] == 0 && $iArray['cai_money'] == 0)
                 unset($aArray[$kArray]);
         }
         $aData = array_chunk($aArray,1000);

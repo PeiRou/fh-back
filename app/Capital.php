@@ -195,12 +195,12 @@ class Capital extends Model
         $aSql = "SELECT
                     `to_user`,
                     SUM( `money` ) AS `moneySum`,
+                    SUM( CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `money` ELSE 0 END  ) AS other_money,
+                    SUM( CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `capital`.`money` ELSE 0 END ) AS cai_money,
                     LEFT ( `created_at`, 10 ) AS `date` 
                 FROM
                     `capital` 
-                WHERE 1
-                  AND (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` IN(1,3) ))
-                ";
+                WHERE 1 AND `capital`.`type` IN('".implode("','", $types)."','t18')  ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `created_at` >= :startTime ";
@@ -255,13 +255,15 @@ class Capital extends Model
     public static function betAgentReportOtherData($startTime = '',$endTime = '', $types = []){
         $aSql = "SELECT 
                     LEFT(`capital`.`created_at`,10) AS `date`,
-                    COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,
                     `users`.`agent` AS `agentId`,
-                    SUM(`capital`.`money`) AS `moneySum`
+                    SUM( CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `capital`.`money` ELSE 0 END  ) AS other_money,
+                    COUNT(DISTINCT CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `capital`.`to_user` ELSE NULL END  ) AS other_count,
+                    SUM( CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `capital`.`money` ELSE 0 END ) AS cai_money,
+                    COUNT(DISTINCT CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `capital`.`to_user` ELSE NULL END ) AS cai_count
                   FROM `capital`
                   JOIN `users` ON `users`.`id` = `capital`.`to_user`
                   WHERE 1
-                     AND (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` IN(1,3) ))
+                     AND `capital`.`type` IN('".implode("','", $types)."','t18')  
                      AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
@@ -341,14 +343,20 @@ class Capital extends Model
     }
     public static function betGeneralReportOtherData($startTime = '',$endTime = '', $types = [])
     {
-        $aSql = "SELECT LEFT(`capital`.`created_at`,10) AS `date`,`agent`.`gagent_id` AS `generalId`,
-                  COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`,
-                  SUM(`capital`.`money`) AS `moneySum`
+        $aSql = "SELECT 
+                  LEFT(`capital`.`created_at`,10) AS `date`,
+                  `agent`.`gagent_id` AS `generalId`,
+                  SUM( CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `capital`.`money` ELSE 0 END  ) AS other_money,
+                  COUNT(DISTINCT CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `capital`.`to_user` ELSE NULL END  ) AS other_count,
+                  COUNT(DISTINCT CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `agent`.`a_id` ELSE NULL END  ) AS other_agent_count,
+                  SUM( CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `capital`.`money` ELSE 0 END ) AS cai_money,
+                  COUNT(DISTINCT CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `capital`.`to_user` ELSE NULL END ) AS cai_count,
+                  COUNT(DISTINCT CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `agent`.`a_id` ELSE NULL END ) AS cai_agent_count
                   FROM `capital`
                   JOIN `users` ON `users`.`id` = `capital`.`to_user`
                   JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
                   WHERE `users`.`testFlag` = 0 
-                  AND (`capital`.`type` IN('" . implode("','", $types) . "') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` IN(1,3) ))
+                  AND `capital`.`type` IN('".implode("','", $types)."','t18') 
                   ";
         $aArray = [];
         if (!empty($startTime)) {

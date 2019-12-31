@@ -105,7 +105,8 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                 'bet_bunko' => 0.00,
                 'bet_money' => 0.00,
                 'other_money' => 0.00,
-                'balance_money' => 0.00
+                'balance_money' => 0.00,
+                'cai_money' => 0.00,
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -207,7 +208,8 @@ class ZhReportAgentStatementDaily implements ShouldQueue
 
             foreach ($aCapitalOther as $kCapitalOther => $iCapitalOther){
                 if($iArray['agent_id'] == $iCapitalOther->agentId && $iArray['date'] == $iCapitalOther->date){
-                    $aArray[$kArray]['other_money'] = empty($iCapitalOther->moneySum)?0.00:$iCapitalOther->moneySum;
+                    $aArray[$kArray]['other_money'] = empty($iCapitalOther->other_money)?0.00:$iCapitalOther->other_money;
+                    $aArray[$kArray]['cai_money'] = empty($iCapitalOther->cai_money)?0.00:$iCapitalOther->cai_money;
                 }
             }
             foreach ($balance_income as $kbalance_income => $ibalance_income){
@@ -287,7 +289,7 @@ class ZhReportAgentStatementDaily implements ShouldQueue
             ZhReportAgentBunko::insert($iBunko);
         }
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['bet_bunko'] > 0 || $iArray['rebate_money'] > 0 || $iArray['promotion_money'] > 0 || $iArray['other_money'] > 0 || $iArray['balance_money'] > 0)
+            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['bet_bunko'] > 0 || $iArray['rebate_money'] > 0 || $iArray['promotion_money'] > 0 || $iArray['other_money'] > 0 || $iArray['balance_money'] > 0 || $iArray['cai_money'] > 0)
                 ZhReportAgentStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('zhReportAgentStatementInsert'));
         }
     }

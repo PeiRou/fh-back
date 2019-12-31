@@ -93,7 +93,8 @@ class AgentStatementDaily implements ShouldQueue
                 'other_money' => 0.00,
                 'other_count' => 0,
                 'balance_count' => 0,
-                'balance_money' => 0.00
+                'balance_money' => 0.00,
+                'cai_money' => 0.00,
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -135,8 +136,9 @@ class AgentStatementDaily implements ShouldQueue
 
             foreach ($aCapitalOther as $kCapitalOther => $iCapitalOther){
                 if($iArray['agent_id'] == $iCapitalOther->agentId && $iArray['date'] == $iCapitalOther->date){
-                    $aArray[$kArray]['other_money'] = empty($iCapitalOther->moneySum)?0.00:$iCapitalOther->moneySum;
-                    $aArray[$kArray]['other_count'] = empty($iCapitalOther->userIdCount)?0:$iCapitalOther->userIdCount;
+                    $aArray[$kArray]['other_money'] = empty($iCapitalOther->other_money)?0.00:$iCapitalOther->other_money;
+                    $aArray[$kArray]['other_count'] = empty($iCapitalOther->other_count)?0:$iCapitalOther->other_count;
+                    $aArray[$kArray]['cai_money'] = empty($iCapitalOther->cai_money)?0:$iCapitalOther->cai_money;
                 }
             }
             foreach ($balance_income as $kbalance_income => $ibalance_income){
@@ -148,7 +150,7 @@ class AgentStatementDaily implements ShouldQueue
         }
         ReportAgent::where('date','=',$this->aDateTime)->delete();
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] == 0 && $iArray['recharges_money'] == 0 && $iArray['drawing_money'] == 0 && $iArray['activity_money'] == 0 && $iArray['return_amount'] == 0 && $iArray['other_money'] == 0 && $iArray['balance_money'] == 0)
+            if($iArray['bet_count'] == 0 && $iArray['recharges_money'] == 0 && $iArray['drawing_money'] == 0 && $iArray['activity_money'] == 0 && $iArray['return_amount'] == 0 && $iArray['other_money'] == 0 && $iArray['balance_money'] == 0 && $iArray['cai_money'] == 0)
                 unset($aArray[$kArray]);
         }
         $aData = array_chunk($aArray,1000);

@@ -102,6 +102,7 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
                 'promotion_money' => 0.00,
                 'other_money' => 0.00,
                 'balance_money' => 0.00,
+                'cai_money' => 0.00,
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -196,7 +197,8 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
             }
             foreach ($aCapitalOther as $iCapitalOther){
                 if($iArray['general_id'] == $iCapitalOther->generalId && $iArray['date'] == $iCapitalOther->date){
-                    $aArray[$kArray]['other_money'] = empty($iCapitalOther->moneySum)?0.00:$iCapitalOther->moneySum;
+                    $aArray[$kArray]['other_money'] = empty($iCapitalOther->other_money)?0.00:$iCapitalOther->other_money;
+                    $aArray[$kArray]['cai_money'] = empty($iCapitalOther->cai_money)?0.00:$iCapitalOther->cai_money;
                 }
             }
             foreach ($balance_income as $ibalance_income){
@@ -269,7 +271,7 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
             ZhReportGeneralBunko::insert($iBunko);
         }
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['bet_bunko'] > 0 || $iArray['rebate_money'] > 0 || $iArray['promotion_money'] > 0 || $iArray['other_money'] > 0 || $iArray['balance_money'] > 0)
+            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['bet_bunko'] > 0 || $iArray['rebate_money'] > 0 || $iArray['promotion_money'] > 0 || $iArray['other_money'] > 0 || $iArray['balance_money'] > 0 || $iArray['cai_money'] > 0)
                 ZhReportGeneralStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('zhReportGeneralStatementInsert'));
         }
     }
