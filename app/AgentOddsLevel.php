@@ -29,8 +29,10 @@ class AgentOddsLevel extends Model
         return DB::select($aSql,$aArray);
     }
 
-    //获取第三方代理赔率
+    //获取层层代理赔率
     public static function getOddsByAgentId($aAgentId){
+        if(empty($aAgentId))
+            return [];
         $aSql = 'SELECT `agent_odds_level`.agent_id,`play_agent_level`.rebate,`agent_odds_level`.type FROM `agent_odds_level`
                     INNER JOIN `play_agent_level` ON `play_agent_level`.id = `agent_odds_level`.level_id
                     WHERE `agent_odds_level`.category_id = 2 AND `agent_odds_level`.agent_id IN (';
