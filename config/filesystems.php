@@ -52,10 +52,15 @@ return [
             'driver' => 'local',
             'root' => storage_path('thread'),
         ],
-
+//彩票转移数据暂时存放的文件
         'betTemp' => [
             'driver' => 'local',
             'root' => storage_path('betTemp'),
+        ],
+//第三方转移数据暂时存放的文件
+        'betJqTemp' => [
+            'driver' => 'local',
+            'root' => storage_path('betJqTemp'),
         ],
 
         'guanOpen' => [
