@@ -18,7 +18,7 @@ class CapitalNewReport extends Command
      *
      * @var string
      */
-    protected $description = '新资金明细每日报表结算';
+    protected $description = '结算明细每日报表结算';
 
     /**
      * Create a new command instance.

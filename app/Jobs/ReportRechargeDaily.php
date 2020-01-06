@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Agent;
+use App\GeneralAgent;
 use App\Recharges;
 use App\RechargesTimes;
 use App\ReportRecharge;
@@ -42,6 +43,10 @@ class ReportRechargeDaily implements ShouldQueue
         $register_member = 0;
         //注册代理数
         $register_agent = Agent::getRegisteredCount($this->aDateTime);
+        //注册总代理数
+        $register_general = GeneralAgent::getRegisteredCount($this->aDateTime);
+        //今日首充人数
+        $recharge_today = Recharges::getTodayChargeUsersCount($this->aDateTime);
         //首充人数
         $recharge_first = RechargesTimes::getFirstChargeUsersCount($this->aDateTime);
         //第二次充值人数
@@ -59,6 +64,8 @@ class ReportRechargeDaily implements ShouldQueue
             'register_person' => $register_person,
             'register_member' => $register_member,
             'register_agent' => $register_agent,
+            'register_general' => $register_general,
+            'recharge_today' => $recharge_today,
             'recharge_first' => $recharge_first,
             'recharge_second' => $recharge_second,
             'recharge_third' => $recharge_third,
