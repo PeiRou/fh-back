@@ -360,7 +360,6 @@ class clear_data extends Command
             $num++;
         }
 
-
         if($num==0){
             $redis->setex('clearing',$this->time,$this->stoptime);
             echo 'finished'.PHP_EOL;
