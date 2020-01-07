@@ -39,7 +39,7 @@ class clear_data extends Command
         if($this->time<=0)                                 //剩馀时间若是非有效秒数，则返回不继续往下做
             return "";
         $clearDate1 = date('Y-m-d 23:59:59',strtotime("-1 days"));        //1天
-        $clearDate2 = date('Y-m-d 23:59:59',strtotime("-2 days"));        //1天
+        $clearDate2 = date('Y-m-d 23:59:59',strtotime("-2 days"));        //2天
         $clearDate31 = date('Y-m-d 23:59:59',strtotime("-31 days")-300);        //31天
         $clearDate62 = date('Y-m-d 23:59:59',strtotime("-62 days")-300);        //62天
         $clearDate93 = date('Y-m-d 23:59:59',strtotime("-93 days")-300);        //93天
