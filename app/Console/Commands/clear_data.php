@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Artisan;
 use SameClass\Config\LotteryGames\Games;
 
 class clear_data extends Command
@@ -363,6 +364,9 @@ class clear_data extends Command
         }
         writeLog('clear','Ok');
         echo 'Ok';
+
+        //同步执行删馀额宝数据
+        Artisan::call('clear_balance_income');
     }
 
     /**
