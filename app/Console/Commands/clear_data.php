@@ -353,6 +353,14 @@ class clear_data extends Command
             }
         }
 
+        //检查馀额宝有没有要删数据
+        if(!$redis->exists('clearing_balance_income')){     //锁定暂存
+            //同步执行删馀额宝数据
+            Artisan::call('clear_balance_income');
+            $num++;
+        }
+
+
         if($num==0){
             $redis->setex('clearing',$this->time,$this->stoptime);
             echo 'finished'.PHP_EOL;
@@ -364,9 +372,6 @@ class clear_data extends Command
         }
         writeLog('clear','Ok');
         echo 'Ok';
-
-        //同步执行删馀额宝数据
-        Artisan::call('clear_balance_income');
     }
 
     /**
