@@ -85,7 +85,7 @@ class YuBaoDailyIncome extends Command
             DB::table('balance_income_day')->where('date', '>=', $startTime)->where('date', '<=', $endTime)->delete();
             DB::table('balance_income_day')->insert($incomedayData);
             DB::commit();
-            $this->info('余额宝收益日报表 执行成功! ('.$startTime.' 至 '.$endTime.' 删除 '.$deleteCount.' 笔 & 新增 '.$resCount.' 笔)');
+            $this->info('余额宝收益日报表 执行成功! ('.$startTime.' 删除 '.$deleteCount.' 笔 & 新增 '.$resCount.' 笔)');
         }catch (\Exception $exception){
             writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             DB::rollback();
