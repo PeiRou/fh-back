@@ -91,6 +91,7 @@ class MemberStatementDaily implements ShouldQueue
                 'other_money' => 0.00,
                 'balance_money' => 0.00,
                 'cai_money' => 0.00,
+                'bonus_amount' => 0.00,
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -102,6 +103,7 @@ class MemberStatementDaily implements ShouldQueue
                     $aArray[$kArray]['bet_bunko'] = empty($iBet->sumBunko)?0.00:$iBet->sumBunko;
                     $aArray[$kArray]['fact_bet_bunko'] = empty($iBet->sumBunko)?0.00:$iBet->sumBunko;
                     $aArray[$kArray]['fact_return_amount'] = empty($iBet->back_money)?0.00:$iBet->back_money;
+                    $aArray[$kArray]['bonus_amount'] = empty($iBet->sumBonus)?0.00:$iBet->sumBonus;
                 }
             }
             foreach ($aRecharges as $kRecharges => $iRecharges){
