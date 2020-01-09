@@ -269,7 +269,7 @@ class Recharges extends Model
             'startTime' => $date,
             'endTime' => $date.' 23:59:59',
         ];
-        return DB::select($aSql,$aArray);
+        return DB::select($aSql,$aArray)[0]->count;
     }
 
 }
