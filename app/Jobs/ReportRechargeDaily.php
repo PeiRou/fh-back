@@ -45,8 +45,8 @@ class ReportRechargeDaily implements ShouldQueue
         $register_agent = Agent::getRegisteredCount($this->aDateTime);
         //注册总代理数
         $register_general = GeneralAgent::getRegisteredCount($this->aDateTime);
-        //今日首充人数
-        $recharge_today = Recharges::getTodayChargeUsersCount($this->aDateTime);
+        //今日首充人数和今日首充金额
+        $iRecharge = Recharges::getTodayChargeUsersCount($this->aDateTime);
         //首充人数
         $recharge_first = RechargesTimes::getFirstChargeUsersCount($this->aDateTime);
         //第二次充值人数
@@ -58,14 +58,14 @@ class ReportRechargeDaily implements ShouldQueue
         //当前注册充值金额
         $current_money = Recharges::getCurrentChargeUsersMoney($this->aDateTime);
         $dateTime = date('Y-m-d H:i:s');
-
         ReportRecharge::where('date',$this->aDateTime)->delete();
         ReportRecharge::insert([
             'register_person' => $register_person,
             'register_member' => $register_member,
             'register_agent' => $register_agent,
             'register_general' => $register_general,
-            'recharge_today' => $recharge_today,
+            'recharge_today' => $iRecharge->count,
+            'recharge_today_money' => $iRecharge->money ?: 0,
             'recharge_first' => $recharge_first,
             'recharge_second' => $recharge_second,
             'recharge_third' => $recharge_third,
