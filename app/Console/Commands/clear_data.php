@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Artisan;
 use SameClass\Config\LotteryGames\Games;
 
 class clear_data extends Command
@@ -39,7 +40,7 @@ class clear_data extends Command
         if($this->time<=0)                                 //剩馀时间若是非有效秒数，则返回不继续往下做
             return "";
         $clearDate1 = date('Y-m-d 23:59:59',strtotime("-1 days"));        //1天
-        $clearDate2 = date('Y-m-d 23:59:59',strtotime("-2 days"));        //1天
+        $clearDate2 = date('Y-m-d 23:59:59',strtotime("-2 days"));        //2天
         $clearDate31 = date('Y-m-d 23:59:59',strtotime("-31 days")-300);        //31天
         $clearDate62 = date('Y-m-d 23:59:59',strtotime("-62 days")-300);        //62天
         $clearDate93 = date('Y-m-d 23:59:59',strtotime("-93 days")-300);        //93天
@@ -350,6 +351,13 @@ class clear_data extends Command
             }catch (\Throwable $e){
                 writeLog('error', $e->getMessage());
             }
+        }
+
+        //检查馀额宝有没有要删数据
+        if(!$redis->exists('clearing_balance_income')){     //锁定暂存
+            //同步执行删馀额宝数据
+            Artisan::call('clear_balance_income');
+            $num++;
         }
 
         if($num==0){

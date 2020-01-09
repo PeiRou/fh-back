@@ -263,13 +263,13 @@ class Recharges extends Model
     }
     //获取今日充值人数
     public static function getTodayChargeUsersCount($date){
-        $aSql = "SELECT COUNT(DISTINCT(`userId`)) AS `count` FROM `recharges`
+        $aSql = "SELECT COUNT(DISTINCT(`userId`)) AS `count`,SUM(`amount`) AS `money` FROM `recharges`
                  WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` = 2";
         $aArray = [
             'startTime' => $date,
             'endTime' => $date.' 23:59:59',
         ];
-        return DB::select($aSql,$aArray);
+        return DB::select($aSql,$aArray)[0];
     }
 
 }
