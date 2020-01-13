@@ -423,7 +423,7 @@ class BaseRepository
         ];
 //        $result = CurlService::getInstance()->post(env('GENERAL_INTERFACE_URL').'/GamesApiGetBet',
 //            $aArray);
-        $result = CurlService::getInstance()->post('http://52.221.221.28:5678'.'/GamesApiGetBet',
+        $result = CurlService::getInstance()->post('http://69.72.82.204:5678'.'/GamesApiGetBet',
             $aArray);
         return json_decode($result,true) ?? $result;
     }
