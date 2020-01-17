@@ -195,6 +195,7 @@ class THRepository extends BaseRepository
             'timestamp' => $this->getTimestamp(),
             'params' => $this->desEncode($param, $this->getConfig('desKey'))
         ];
+        $this->WriteLog($url.json_encode($param));
         $data['sig'] = md5($data['userid'] . $data['timestamp'] . $this->getConfig('md5Key'));
         $url = $url . '?' . http_build_query($data);
         $res = $this->curl_get_content($url);

@@ -7,6 +7,7 @@ namespace App\Repository\GamesApi\Card;
 use App\SystemSetting;
 use App\Users;
 use Illuminate\Support\Facades\DB;
+use SameClass\Model\UsersModel;
 
 class BBINRepository extends BaseRepository
 {
@@ -117,6 +118,8 @@ class BBINRepository extends BaseRepository
         if($table->insert($data)){
             # 修改提款打码量
             SystemSetting::decDrawingMoneyCheckCode($data, 'AllBet');
+            # 增加可提现金额
+            UsersModel::upUserWithdrawableAmount($data, null, 'user_id', 'bunko');
             echo $this->gameInfo->name.'_'.(self::gamekind[$this->param['gamekind']]['gameCategory'] ?? '').$this->param['subgamekind'].'插入'.count($data).'条数据'.PHP_EOL;
         }else{
             echo $this->gameInfo->name.'_'.(self::gamekind[$this->param['gamekind']]['gameCategory'] ?? '').$this->param['subgamekind'].'插入'.count($data).'条数据失败'.PHP_EOL;

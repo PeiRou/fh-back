@@ -99,10 +99,14 @@ class JqBetHis extends Model
         $aSql = "SELECT `jq`.`bet_money`,`jq`.`bet_bunko`,`jq`.`bet_count`,
                     `jq`.`name` AS `user_name`,`jq`.`user_id` AS `user_id`,`jq`.`username` AS `user_account`,
                      `jq`.`a_id` AS `agent_id`,`jq`.`agent_account` AS `agent_account`,`jq`.`agent_name` AS `agent_name`,
+                     `jq`.`sumBonus` AS `sumBonus`,
                      `games_api`.`g_id` AS `game_id`, `games_api`.`name` AS `game_name` ,`gameCategory`,`productType`,`jq`.`gameslist_id`
                      FROM 
                         (SELECT `g_id`,`user_id`,`username`,'' AS `name`,`agent` AS `a_id`,`agent_account`,`agent_name`,
-                            COUNT(`id`) AS `bet_count`,SUM(`bunko`) AS `bet_bunko`,SUM(`bet_money`) AS `bet_money`, `gameCategory`,`productType`,`game_id` as `gameslist_id`
+                            COUNT(`id`) AS `bet_count`,SUM(`bunko`) AS `bet_bunko`,
+                            SUM(`bet_money`) AS `bet_money`, 
+                            SUM( CASE WHEN bunko > 0 THEN bunko ELSE 0 END ) AS sumBonus,
+                            `gameCategory`,`productType`,`game_id` as `gameslist_id`
                             FROM `jq_bet_his` WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime 
 		                    AND `flag` = '1'
                             GROUP BY `user_id`,`g_id`,`gameCategory`,`productType`

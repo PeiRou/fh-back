@@ -397,7 +397,7 @@ class BaseRepository
     public function getUser($username, $key = '', $v = '')
     {
         if(in_array($this->gameInfo->g_id, [
-            17,22,19,23,24,25,26,29
+            17,22,19,23,24,25,26,29,30
         ])){
             $res = \App\GamesApiUserName::getGidOtherName([
                 'g_id' => $this->gameInfo->g_id,
@@ -611,7 +611,7 @@ class BaseRepository
     public function isAdd($code)
     {
         $is = false;
-        if($this->gameInfo->g_id == 10)
+        if(in_array($this->gameInfo->g_id, [10, 30]))
             return false;
         if(in_array($this->gameInfo->g_id, [15, 16, 21]) && $code == 43)
             return true;
@@ -668,7 +668,11 @@ class BaseRepository
     {
         $GameIDs = [];
         if(count($ids)) {
-            $where = ' g_id = ' . $this->gameInfo->g_id . ' and GameID in ("' . implode('","', $ids) . '")';
+            $where = ' g_id = ' . $this->gameInfo->g_id;
+            if($this->gameInfo->g_id == 30){
+                $where .= ' AND game_id = '.$this->gameListArr['game_id'];
+            }
+            $where .= ' and GameID in ("' . implode('","', $ids) . '")';
             $GameIDs = array_map(function($v){
                 return $v->GameID;
             },DB::select('select GameID from jq_bet

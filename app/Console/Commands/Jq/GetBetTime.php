@@ -19,7 +19,7 @@ class GetBetTime extends Command
     private $setApiTime = [
         15 => 120
     ];
-    // 10 18 25 是拿id的
+    // 10 18 25 30 是拿id的
     // 15 16 17 18 19 20 21 22 23 24 26
     private $defaultTime = 120;
 
@@ -28,7 +28,7 @@ class GetBetTime extends Command
         # 获取所有接口
         $this->redis = Redis::connection();
         $this->redis->select(5);
-        foreach (GamesApi::whereNotIn('g_id', [18, 10, 25])->pluck('g_id') as $v){
+        foreach (GamesApi::whereNotIn('g_id', [18, 10, 25, 30])->pluck('g_id') as $v){
             $this->create($v);
         }
     }
