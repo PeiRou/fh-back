@@ -54,7 +54,7 @@ class ReportRechargeDaily implements ShouldQueue
         //第三次充值人数
         $recharge_third = RechargesTimes::getThirdChargeUsersCount($this->aDateTime);
         //当前注册充值人数,当前注册充值金额
-        $iCurrent = Recharges::getCurrentChargeUsersCount($this->aDateTime);
+        $iCurrent = Recharges::getCurrentChargeUsersMoney($this->aDateTime);
         $dateTime = date('Y-m-d H:i:s');
         ReportRecharge::where('date',$this->aDateTime)->delete();
         ReportRecharge::insert([
