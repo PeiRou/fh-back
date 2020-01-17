@@ -267,7 +267,10 @@ class Recharges extends Model
             'rStartTime' => $date,
             'rEndTime' => $date.' 23:59:59',
         ];
-        return DB::select($aSql,$aArray)[0]->amount ?? 0;
+        return DB::select($aSql,$aArray)[0] ?? (object)[
+                'amount' => 0,
+                'count' => 0
+            ];
     }
     //获取今日充值人数
     public static function getTodayChargeUsersCount($date){
