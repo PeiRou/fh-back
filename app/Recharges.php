@@ -273,7 +273,7 @@ class Recharges extends Model
     }
     //获取今日充值金额
     public static function getTodayChargeUsersMoney($date){
-        $aSql = "SELECT `amount` FROM `recharges`
+        $aSql = "SELECT SUM(`amount`) AS `amount` FROM `recharges`
                  INNER JOIN(
                     SELECT MIN(`id`) AS `id` FROM `recharges`
                     WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` = 2 
