@@ -256,15 +256,26 @@ class Recharges extends Model
 
     //获取当前注册充值金额
     public static function getCurrentChargeUsersMoney($date){
-        return self::where('recharges.updated_at','>=',$date)->where('recharges.updated_at','<=',$date.' 23:59:59')
-            ->where('recharges.status',2)->where('users.PayTimes',1)
-            ->where('users.created_at','>=',$date)->where('users.created_at','<=',$date.' 23:59:59')
-            ->join('users','users.id','=','recharges.userId')->sum('recharges.amount');
+        $aSql = "SELECT SUM(`recharges`.amount) AS `amount`,COUNT(`recharges`.id) AS `count` FROM `recharges`
+                    INNER JOIN `users` ON `users`.id = `recharges`.userId AND `users`.created_at >= :uStartTime
+                        AND `users`.created_at <= :uEndTime
+                    WHERE `recharges`.updated_at >= :rStartTime AND `recharges`.updated_at <= :rEndTime 
+                        AND `recharges`.status = 2 AND `recharges`.testFlag = 0 AND `recharges`.payType != 'adminAddMoney'";
+        $aArray = [
+            'uStartTime' => $date,
+            'uEndTime' => $date.' 23:59:59',
+            'rStartTime' => $date,
+            'rEndTime' => $date.' 23:59:59',
+        ];
+        return DB::select($aSql,$aArray)[0] ?? (object)[
+                'amount' => 0,
+                'count' => 0
+            ];
     }
     //获取今日充值人数
     public static function getTodayChargeUsersCount($date){
         $aSql = "SELECT COUNT(DISTINCT(`userId`)) AS `count` FROM `recharges`
-                 WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` = 2";
+                 WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` = 2 AND `testFlag` = 0 AND `payType` != 'adminAddMoney'";
         $aArray = [
             'startTime' => $date,
             'endTime' => $date.' 23:59:59',
@@ -273,10 +284,10 @@ class Recharges extends Model
     }
     //获取今日充值金额
     public static function getTodayChargeUsersMoney($date){
-        $aSql = "SELECT `amount` FROM `recharges`
+        $aSql = "SELECT SUM(`amount`) AS `amount` FROM `recharges`
                  INNER JOIN(
                     SELECT MIN(`id`) AS `id` FROM `recharges`
-                    WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` = 2 
+                    WHERE `updated_at` >= :startTime AND `updated_at` <= :endTime AND `status` = 2 AND `testFlag` = 0 AND `payType` != 'adminAddMoney'
                     GROUP BY `userId`
                 ) AS `re`
                 ON `re`.id = `recharges`.id";

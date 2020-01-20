@@ -404,21 +404,21 @@ class Capital extends Model
                             SUM(CASE WHEN `payType` = 'onlinePayment' THEN `amount` ELSE 0 END) AS `onPay`,
                             SUM(CASE WHEN `payType` IN('bankTransfer','alipaySm','weixinSm','ysf','alipay','weixin','cft') THEN `amount` ELSE 0 END) AS `offPay`,
                             SUM(CASE WHEN `payType` = 'adminAddMoney' THEN `amount` ELSE 0 END) AS `adPay`,
-                            LEFT(`created_at`,10) AS `date`
-                        FROM `recharges` WHERE `testFlag` = 0 AND `updated_at` >= '".$iStartTime."' AND `updated_at` <= '".$iEndTime."' GROUP BY `date`
+                            LEFT(`updated_at`,10) AS `date`
+                        FROM `recharges` WHERE `testFlag` = 0 AND `status` = 2 AND `updated_at` >= '".$iStartTime."' AND `updated_at` <= '".$iEndTime."' GROUP BY `date`
                     ) AS `re` ON `re`.date = `ca`.date
                     LEFT JOIN (
                         SELECT 
                             SUM(CASE WHEN `draw_type` IN(0,1) AND `status` = 2 THEN `amount` ELSE 0 END) AS `suDraw`,
                             SUM(CASE WHEN `draw_type` = 2 THEN `amount` ELSE 0 END) AS `adDraw`,
-                            LEFT(`created_at`,10) AS `date`
+                            LEFT(`updated_at`,10) AS `date`
                         FROM `drawing` WHERE `testFlag` = 0 AND `updated_at` >= '".$iStartTime."' AND `updated_at` <= '".$iEndTime."' GROUP BY `date` 
                     ) AS `dr` ON `dr`.date = `ca`.date
                     LEFT JOIN (
                         SELECT 
                             SUM(`bet_money`) AS `betMoney`,
                             SUM(CASE WHEN bet_his.`game_id` IN(90,91) THEN bet_his.`nn_view_money` ELSE (CASE WHEN bet_his.`bunko` >0 THEN bet_his.`bunko` - bet_his.`bet_money` ELSE bet_his.`bunko` END) END) AS `betBunko`,
-                            LEFT(`created_at`,10) AS `date`
+                            LEFT(`updated_at`,10) AS `date`
                         FROM `bet_his` WHERE `testFlag` = 0 AND `status` = 1 AND `updated_at` >= '".$iStartTime."' AND `updated_at` <= '".$iEndTime."' GROUP BY `date`
                     ) AS `bet` ON `bet`.date = `ca`.date";
         return DB::select($aSql);
