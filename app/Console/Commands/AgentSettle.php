@@ -18,7 +18,7 @@ class AgentSettle extends Command
      *
      * @var string
      */
-    protected $signature = 'AgentSettle:Settlement {startTime} {endTime}';
+    protected $signature = 'AgentSettle:Settlement {choiceTime?}';
 
     /**
      * The console command description.
@@ -45,12 +45,18 @@ class AgentSettle extends Command
     public function handle()
     {
         ini_set('memory_limit','1024M');
-        $date = new GetDate();
-        //获取上月时间段
-        $currentMonth = [
-            'start' => $this->argument('startTime'),
-            'end' => $this->argument('endTime'),
-        ];
+        $iChoiceTime = $this->argument('choiceTime');
+        if($iChoiceTime === 'week'){
+            $currentMonth = [
+                'start' => date("Y-m-d",strtotime("-1 week Monday")),
+                'end' => date("Y-m-d",strtotime("-1 week Sunday")),
+            ];
+        }else{
+            $currentMonth = [
+                'start' => date('Y-m-01',strtotime('-1 month')),
+                'end' => date('Y-m-t', strtotime('-1 month')),
+            ];
+        }
         //$currentMonth = ['start'=>'2018-05-01','end'=>'2018-06-30'];
         $yearMonth = date('Y-m-d',strtotime($currentMonth['start']));
         $yearMonthDay = date('Y-m-d H:i:s',strtotime($currentMonth['start']));
