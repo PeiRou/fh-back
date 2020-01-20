@@ -15,6 +15,7 @@ use App\SystemSetting;
 use App\Users;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use SameClass\Config\GamesListConfig\GamesListConfig;
 use SameClass\Model\UsersModel;
 use SameClass\Service\RsaService\RsaService;
 
@@ -191,10 +192,10 @@ class BaseRepository
 
     function curl_post_content($url, $data = [], $user_agent=null, $headers = null, $conn_timeout=7, $timeout=10)
     {
-        if(isset($this->is_proxy_pass) && $this->is_proxy_pass && env('PROXY_PASS_ADDRESS', false)){
+        if(isset($this->is_proxy_pass) && $this->is_proxy_pass){
 //            $data['proxy_pass_url'] = $url;
 //            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php');
-            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php').'?'.http_build_query(['proxy_pass_url' => $url]);
+            $url = GamesListConfig::getProxyPassAddress().'?'.http_build_query(['proxy_pass_url' => $url]);
         }
 
         !$headers && $headers = array(
@@ -234,14 +235,14 @@ class BaseRepository
     function curl_get_content($url, $data = [], $user_agent=null, $headers = null, $conn_timeout=7,$timeout=10)
     {
         count($data) > 0 && ($url = $url.'?'.http_build_query($data));
-        if(isset($this->is_proxy_pass) && $this->is_proxy_pass && env('PROXY_PASS_ADDRESS', false)){
+        if(isset($this->is_proxy_pass) && $this->is_proxy_pass){
             $response = [
                 'proxy_pass_url' => $url
             ];
             if($this->gameInfo->g_id === 22){
                 $response['issleep'] = 1;
             }
-            $url = env('PROXY_PASS_ADDRESS', 'http://192.168.1.127:4455/ThirdGames.php').'?'.http_build_query($response);
+            $url = GamesListConfig::getProxyPassAddress().'?'.http_build_query($response);
         }
         !$headers && $headers = array(
 //            "Accept: application/json",
