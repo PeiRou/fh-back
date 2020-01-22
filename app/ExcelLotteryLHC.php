@@ -284,10 +284,9 @@ class ExcelLotteryLHC
         }
     }
     //色波
-    public function LHC_SB($openCode,$gameId,$win,$ids_he){
-        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+    public function LHC_SB($gameId,$win,$ids_he){
         $sb_playCate = $this->arrPlayCate['SEBO']; //特码分类ID
-        $tm = $arrOpenCode[6]; //特码号码
+        $tm = $this->tm; //特码号码
         //色波
         if($tm == 1 || $tm == 2 || $tm == 7 || $tm == 8 || $tm == 12 || $tm == 13 || $tm == 18 || $tm == 19 || $tm == 23 || $tm == 24 || $tm == 29 || $tm == 30 || $tm == 34 || $tm == 35 || $tm == 40 || $tm == 45 || $tm == 46){ //红波
             $playId = $this->arrPlayId['HONGBO'];
@@ -559,10 +558,9 @@ class ExcelLotteryLHC
         }
     }
     //特码头尾数
-    public function LHC_TMTWS($openCode,$gameId,$win,$ids_he){
-        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+    public function LHC_TMTWS($gameId,$win,$ids_he){
         $tmtws_playCate = $this->arrPlayCate['TOUWEISHU']; //特码分类ID
-        $tm = $arrOpenCode[6]; //特码号码
+        $tm = $this->tm; //特码号码
         $tmBL = str_pad($tm,2,"0",STR_PAD_LEFT); //十位补零
         $chaiTM = str_split($tmBL); //拆分个位 十位
         $tou = (int)$chaiTM[0];
@@ -1310,36 +1308,9 @@ class ExcelLotteryLHC
         //正6====两面====结束
     }
     //五行
-    public function LHC_WX($openCode,$gameId,$win){//WUHANG
-        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+    public function LHC_WX($gameId,$win){//WUHANG
         $wx_playCate = $this->arrPlayCate['WUHANG']; //特码分类ID
-        $tm = $arrOpenCode[6]; //特码号码
-        //2019年
-//        if($tm == 5 || $tm == 6 || $tm == 19 || $tm == 20 || $tm == 27 || $tm == 28 || $tm == 35 || $tm == 36 || $tm == 49){ //金
-//            $playId = $this->arrPlayId['WXJIN'];
-//            $winCode = $gameId.$wx_playCate.$playId;
-//            $win->push($winCode);
-//        }
-//        if($tm == 1 || $tm == 2 || $tm == 9 || $tm == 10 || $tm == 17 || $tm == 18 || $tm == 31 || $tm == 32 || $tm == 39 || $tm == 40 || $tm == 47 || $tm == 48){ //木
-//            $playId = $this->arrPlayId['WXMU'];
-//            $winCode = $gameId.$wx_playCate.$playId;
-//            $win->push($winCode);
-//        }
-//        if($tm == 7 || $tm == 8 || $tm == 15 || $tm == 16 || $tm == 23 || $tm == 24 || $tm == 37 || $tm == 38 || $tm == 45 || $tm == 46){ //水
-//            $playId = $this->arrPlayId['WXSHUI'];
-//            $winCode = $gameId.$wx_playCate.$playId;
-//            $win->push($winCode);
-//        }
-//        if($tm == 3 || $tm == 4 || $tm == 11 || $tm == 12 || $tm == 25 || $tm == 26 || $tm == 33 || $tm == 34 || $tm == 41 || $tm == 42){ //火
-//            $playId = $this->arrPlayId['WXHUO'];
-//            $winCode = $gameId.$wx_playCate.$playId;
-//            $win->push($winCode);
-//        }
-//        if($tm == 13 || $tm == 14 || $tm == 21 || $tm == 22 || $tm == 29 || $tm == 30 || $tm == 43 || $tm == 44){ //土
-//            $playId = $this->arrPlayId['WXTU'];
-//            $winCode = $gameId.$wx_playCate.$playId;
-//            $win->push($winCode);
-//        }
+        $tm = $this->tm; //特码号码
         //2020年
         $playId = 0;
         switch ($tm){
