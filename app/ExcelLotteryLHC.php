@@ -512,67 +512,48 @@ class ExcelLotteryLHC
         }
     }
     //特肖
-    public function LHC_TX($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+    public function LHC_TX($gameId,$win){
         $tx_playCate = $this->arrPlayCate['TEXIAO']; //特码分类ID
-        $tm = $arrOpenCode[6]; //特码号码
-        if($tm == 7 || $tm == 19 || $tm == 31 || $tm == 43){ //蛇
-            $playId = $this->arrPlayId['TXSHE'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
+        $playId = 0;
+        switch ($this->sx7){
+            case '鼠':
+                $playId = $this->arrPlayId['TXSHU'];
+                break;
+            case '牛':
+                $playId = $this->arrPlayId['TXNIU'];
+                break;
+            case '虎':
+                $playId = $this->arrPlayId['TXHU'];
+                break;
+            case '兔':
+                $playId = $this->arrPlayId['TXTU'];
+                break;
+            case '龙':
+                $playId = $this->arrPlayId['TXLONG'];
+                break;
+            case '蛇':
+                $playId = $this->arrPlayId['TXSHE'];
+                break;
+            case '马':
+                $playId = $this->arrPlayId['TXMA'];
+                break;
+            case '羊':
+                $playId = $this->arrPlayId['TXYANG'];
+                break;
+            case '猴':
+                $playId = $this->arrPlayId['TXHOU'];
+                break;
+            case '鸡':
+                $playId = $this->arrPlayId['TXJI'];
+                break;
+            case '狗':
+                $playId = $this->arrPlayId['TXGOU'];
+                break;
+            case '猪':
+                $playId = $this->arrPlayId['TXZHU'];
+                break;
         }
-        if($tm == 6 || $tm == 18 || $tm == 30 || $tm == 42){ //马
-            $playId = $this->arrPlayId['TXMA'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 5 || $tm == 17 || $tm == 29 || $tm == 41){ //羊
-            $playId = $this->arrPlayId['TXYANG'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 4 || $tm == 16 || $tm == 28 || $tm == 40){ //猴
-            $playId = $this->arrPlayId['TXHOU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 3 || $tm == 15 || $tm == 27 || $tm == 39){ //鸡
-            $playId = $this->arrPlayId['TXJI'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 2 || $tm == 14 || $tm == 26 || $tm == 38){ //狗
-            $playId = $this->arrPlayId['TXGOU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 1 || $tm == 13 || $tm == 25 || $tm == 37 || $tm == 49){ //猪
-            $playId = $this->arrPlayId['TXZHU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 12 || $tm == 24 || $tm == 36 || $tm == 48){ // 鼠
-            $playId = $this->arrPlayId['TXSHU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 11 || $tm == 23 || $tm == 35 || $tm == 47){ //牛
-            $playId = $this->arrPlayId['TXNIU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 10 || $tm == 22 || $tm == 34 || $tm == 46){ //虎
-            $playId = $this->arrPlayId['TXHU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 9 || $tm == 21 || $tm == 33 || $tm == 45){ //兔
-            $playId = $this->arrPlayId['TXTU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 8 || $tm == 20 || $tm == 32 || $tm == 44){ //龙
-            $playId = $this->arrPlayId['TXLONG'];
+        if($playId>0){
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
