@@ -1391,18 +1391,6 @@ class ExcelLotteryLHC
         $m5 = $arrOpenCode[4];
         $m6 = $arrOpenCode[5];
         $m7 = $arrOpenCode[6];
-        $shu = [12,24,36,48];
-        $niu = [11,23,35,47];
-        $hu = [10,22,34,46];
-        $tu = [9,21,33,45];
-        $long = [8,20,32,44];
-        $she = [7,19,31,43];
-        $ma = [6,18,30,42];
-        $yang = [5,17,29,41];
-        $hou = [4,16,28,40];
-        $ji = [3,15,27,39];
-        $gou = [2,14,26,38];
-        $zhu = [1,13,25,37,49];
         $w0 = [10,20,30,40];
         $w1 = [1,11,21,31,41];
         $w2 = [2,12,22,32,42];
@@ -1413,66 +1401,53 @@ class ExcelLotteryLHC
         $w7 = [7,17,27,37,47];
         $w8 = [8,18,28,38,48];
         $w9 = [9,19,29,39,49];
-        if(in_array($m1,$shu) || in_array($m2,$shu) || in_array($m3,$shu) || in_array($m4,$shu) || in_array($m5,$shu) || in_array($m6,$shu) || in_array($m7,$shu)){
-            $playId = $this->arrPlayId['PTYXSHU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
+        $playId = 0;
+        $res = array_unique([$this->sx1,$this->sx2,$this->sx3,$this->sx4,$this->sx5,$this->sx6,$this->sx7]);
+        foreach ($res as $k => $sx){
+            switch ($sx){
+                case '鼠':
+                    $playId = $this->arrPlayId['PTYXSHU'];
+                    break;
+                case '牛':
+                    $playId = $this->arrPlayId['PTYXNIU'];
+                    break;
+                case '虎':
+                    $playId = $this->arrPlayId['PTYXHU'];
+                    break;
+                case '兔':
+                    $playId = $this->arrPlayId['PTYXTU'];
+                    break;
+                case '龙':
+                    $playId = $this->arrPlayId['PTYXLONG'];
+                    break;
+                case '蛇':
+                    $playId = $this->arrPlayId['PTYXSHE'];
+                    break;
+                case '马':
+                    $playId = $this->arrPlayId['PTYXMA'];
+                    break;
+                case '羊':
+                    $playId = $this->arrPlayId['PTYXYANG'];
+                    break;
+                case '猴':
+                    $playId = $this->arrPlayId['PTYXHOU'];
+                    break;
+                case '鸡':
+                    $playId = $this->arrPlayId['PTYXJI'];
+                    break;
+                case '狗':
+                    $playId = $this->arrPlayId['PTYXGOU'];
+                    break;
+                case '猪':
+                    $playId = $this->arrPlayId['PTYXZHU'];
+                    break;
+            }
+            if($playId>0){
+                $winCode = $gameId.$ptyxws_playCate.$playId;
+                $win->push($winCode);
+            }
         }
-        if(in_array($m1,$niu) || in_array($m2,$niu) || in_array($m3,$niu) || in_array($m4,$niu) || in_array($m5,$niu) || in_array($m6,$niu) || in_array($m7,$niu)){
-            $playId = $this->arrPlayId['PTYXNIU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$hu) || in_array($m2,$hu) || in_array($m3,$hu) || in_array($m4,$hu) || in_array($m5,$hu) || in_array($m6,$hu) || in_array($m7,$hu)){
-            $playId = $this->arrPlayId['PTYXHU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$tu) || in_array($m2,$tu) || in_array($m3,$tu) || in_array($m4,$tu) || in_array($m5,$tu) || in_array($m6,$tu) || in_array($m7,$tu)){
-            $playId = $this->arrPlayId['PTYXTU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$long) || in_array($m2,$long) || in_array($m3,$long) || in_array($m4,$long) || in_array($m5,$long) || in_array($m6,$long) || in_array($m7,$long)){
-            $playId = $this->arrPlayId['PTYXLONG'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$she) || in_array($m2,$she) || in_array($m3,$she) || in_array($m4,$she) || in_array($m5,$she) || in_array($m6,$she) || in_array($m7,$she)){
-            $playId = $this->arrPlayId['PTYXSHE'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$ma) || in_array($m2,$ma) || in_array($m3,$ma) || in_array($m4,$ma) || in_array($m5,$ma) || in_array($m6,$ma) || in_array($m7,$ma)){
-            $playId = $this->arrPlayId['PTYXMA'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$yang) || in_array($m2,$yang) || in_array($m3,$yang) || in_array($m4,$yang) || in_array($m5,$yang) || in_array($m6,$yang) || in_array($m7,$yang)){
-            $playId = $this->arrPlayId['PTYXYANG'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$hou) || in_array($m2,$hou) || in_array($m3,$hou) || in_array($m4,$hou) || in_array($m5,$hou) || in_array($m6,$hou) || in_array($m7,$hou)){
-            $playId = $this->arrPlayId['PTYXHOU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$ji) || in_array($m2,$ji) || in_array($m3,$ji) || in_array($m4,$ji) || in_array($m5,$ji) || in_array($m6,$ji) || in_array($m7,$ji)){
-            $playId = $this->arrPlayId['PTYXJI'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$gou) || in_array($m2,$gou) || in_array($m3,$gou) || in_array($m4,$gou) || in_array($m5,$gou) || in_array($m6,$gou) || in_array($m7,$gou)){
-            $playId = $this->arrPlayId['PTYXGOU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$zhu) || in_array($m2,$zhu) || in_array($m3,$zhu) || in_array($m4,$zhu) || in_array($m5,$zhu) || in_array($m6,$zhu) || in_array($m7,$zhu)){
-            $playId = $this->arrPlayId['PTYXZHU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
+
         //尾数
         if(in_array($m1,$w0) || in_array($m2,$w0) || in_array($m3,$w0) || in_array($m4,$w0) || in_array($m5,$w0) || in_array($m6,$w0) || in_array($m7,$w0)){
             $playId = $this->arrPlayId['PTYXW0'];
