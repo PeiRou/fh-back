@@ -284,10 +284,9 @@ class ExcelLotteryLHC
         }
     }
     //色波
-    public function LHC_SB($openCode,$gameId,$win,$ids_he){
-        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+    public function LHC_SB($gameId,$win,$ids_he){
         $sb_playCate = $this->arrPlayCate['SEBO']; //特码分类ID
-        $tm = $arrOpenCode[6]; //特码号码
+        $tm = $this->tm; //特码号码
         //色波
         if($tm == 1 || $tm == 2 || $tm == 7 || $tm == 8 || $tm == 12 || $tm == 13 || $tm == 18 || $tm == 19 || $tm == 23 || $tm == 24 || $tm == 29 || $tm == 30 || $tm == 34 || $tm == 35 || $tm == 40 || $tm == 45 || $tm == 46){ //红波
             $playId = $this->arrPlayId['HONGBO'];
@@ -512,76 +511,56 @@ class ExcelLotteryLHC
         }
     }
     //特肖
-    public function LHC_TX($openCode,$gameId,$win){
-        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+    public function LHC_TX($gameId,$win){
         $tx_playCate = $this->arrPlayCate['TEXIAO']; //特码分类ID
-        $tm = $arrOpenCode[6]; //特码号码
-        if($tm == 7 || $tm == 19 || $tm == 31 || $tm == 43){ //蛇
-            $playId = $this->arrPlayId['TXSHE'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
+        $playId = 0;
+        switch ($this->sx7){
+            case '鼠':
+                $playId = $this->arrPlayId['TXSHU'];
+                break;
+            case '牛':
+                $playId = $this->arrPlayId['TXNIU'];
+                break;
+            case '虎':
+                $playId = $this->arrPlayId['TXHU'];
+                break;
+            case '兔':
+                $playId = $this->arrPlayId['TXTU'];
+                break;
+            case '龙':
+                $playId = $this->arrPlayId['TXLONG'];
+                break;
+            case '蛇':
+                $playId = $this->arrPlayId['TXSHE'];
+                break;
+            case '马':
+                $playId = $this->arrPlayId['TXMA'];
+                break;
+            case '羊':
+                $playId = $this->arrPlayId['TXYANG'];
+                break;
+            case '猴':
+                $playId = $this->arrPlayId['TXHOU'];
+                break;
+            case '鸡':
+                $playId = $this->arrPlayId['TXJI'];
+                break;
+            case '狗':
+                $playId = $this->arrPlayId['TXGOU'];
+                break;
+            case '猪':
+                $playId = $this->arrPlayId['TXZHU'];
+                break;
         }
-        if($tm == 6 || $tm == 18 || $tm == 30 || $tm == 42){ //马
-            $playId = $this->arrPlayId['TXMA'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 5 || $tm == 17 || $tm == 29 || $tm == 41){ //羊
-            $playId = $this->arrPlayId['TXYANG'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 4 || $tm == 16 || $tm == 28 || $tm == 40){ //猴
-            $playId = $this->arrPlayId['TXHOU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 3 || $tm == 15 || $tm == 27 || $tm == 39){ //鸡
-            $playId = $this->arrPlayId['TXJI'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 2 || $tm == 14 || $tm == 26 || $tm == 38){ //狗
-            $playId = $this->arrPlayId['TXGOU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 1 || $tm == 13 || $tm == 25 || $tm == 37 || $tm == 49){ //猪
-            $playId = $this->arrPlayId['TXZHU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 12 || $tm == 24 || $tm == 36 || $tm == 48){ // 鼠
-            $playId = $this->arrPlayId['TXSHU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 11 || $tm == 23 || $tm == 35 || $tm == 47){ //牛
-            $playId = $this->arrPlayId['TXNIU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 10 || $tm == 22 || $tm == 34 || $tm == 46){ //虎
-            $playId = $this->arrPlayId['TXHU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 9 || $tm == 21 || $tm == 33 || $tm == 45){ //兔
-            $playId = $this->arrPlayId['TXTU'];
-            $winCode = $gameId.$tx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 8 || $tm == 20 || $tm == 32 || $tm == 44){ //龙
-            $playId = $this->arrPlayId['TXLONG'];
+        if($playId>0){
             $winCode = $gameId.$tx_playCate.$playId;
             $win->push($winCode);
         }
     }
     //特码头尾数
-    public function LHC_TMTWS($openCode,$gameId,$win,$ids_he){
-        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+    public function LHC_TMTWS($gameId,$win,$ids_he){
         $tmtws_playCate = $this->arrPlayCate['TOUWEISHU']; //特码分类ID
-        $tm = $arrOpenCode[6]; //特码号码
+        $tm = $this->tm; //特码号码
         $tmBL = str_pad($tm,2,"0",STR_PAD_LEFT); //十位补零
         $chaiTM = str_split($tmBL); //拆分个位 十位
         $tou = (int)$chaiTM[0];
@@ -1329,32 +1308,74 @@ class ExcelLotteryLHC
         //正6====两面====结束
     }
     //五行
-    public function LHC_WX($openCode,$gameId,$win){//WUHANG
-        $arrOpenCode = explode(',',$openCode); // 分割开奖号码
+    public function LHC_WX($gameId,$win){//WUHANG
         $wx_playCate = $this->arrPlayCate['WUHANG']; //特码分类ID
-        $tm = $arrOpenCode[6]; //特码号码
-        if($tm == 5 || $tm == 6 || $tm == 19 || $tm == 20 || $tm == 27 || $tm == 28 || $tm == 35 || $tm == 36 || $tm == 49){ //金
-            $playId = $this->arrPlayId['WXJIN'];
-            $winCode = $gameId.$wx_playCate.$playId;
-            $win->push($winCode);
+        $tm = $this->tm; //特码号码
+        //2020年
+        $playId = 0;
+        switch ($tm){
+            case 6 :
+            case 7 :
+            case 20 :
+            case 21 :
+            case 28 :
+            case 29 :
+            case 36 :
+            case 37 ://金
+                $playId = $this->arrPlayId['WXJIN'];
+                break;
+            case 2 :
+            case 3 :
+            case 10 :
+            case 11 :
+            case 18 :
+            case 19 :
+            case 32 :
+            case 33 :
+            case 40 :
+            case 41 :
+            case 48 :
+            case 49 ://木
+                $playId = $this->arrPlayId['WXMU'];
+                break;
+            case 8 :
+            case 9 :
+            case 16 :
+            case 17 :
+            case 24 :
+            case 25 :
+            case 38 :
+            case 39 :
+            case 46 :
+            case 47 ://水
+                $playId = $this->arrPlayId['WXSHUI'];
+                break;
+            case 4 :
+            case 5 :
+            case 12 :
+            case 13 :
+            case 26 :
+            case 27 :
+            case 34 :
+            case 35 :
+            case 42 :
+            case 43 ://火
+                $playId = $this->arrPlayId['WXHUO'];
+                break;
+            case 1 :
+            case 14 :
+            case 15 :
+            case 22 :
+            case 23 :
+            case 30 :
+            case 31 :
+            case 44 :
+            case 45 ://土
+                $playId = $this->arrPlayId['WXTU'];
+                break;
+
         }
-        if($tm == 1 || $tm == 2 || $tm == 9 || $tm == 10 || $tm == 17 || $tm == 18 || $tm == 31 || $tm == 32 || $tm == 39 || $tm == 40 || $tm == 47 || $tm == 48){ //木
-            $playId = $this->arrPlayId['WXMU'];
-            $winCode = $gameId.$wx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 7 || $tm == 8 || $tm == 15 || $tm == 16 || $tm == 23 || $tm == 24 || $tm == 37 || $tm == 38 || $tm == 45 || $tm == 46){ //水
-            $playId = $this->arrPlayId['WXSHUI'];
-            $winCode = $gameId.$wx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 3 || $tm == 4 || $tm == 11 || $tm == 12 || $tm == 25 || $tm == 26 || $tm == 33 || $tm == 34 || $tm == 41 || $tm == 42){ //火
-            $playId = $this->arrPlayId['WXHUO'];
-            $winCode = $gameId.$wx_playCate.$playId;
-            $win->push($winCode);
-        }
-        if($tm == 13 || $tm == 14 || $tm == 21 || $tm == 22 || $tm == 29 || $tm == 30 || $tm == 43 || $tm == 44){ //土
-            $playId = $this->arrPlayId['WXTU'];
+        if($playId>0){
             $winCode = $gameId.$wx_playCate.$playId;
             $win->push($winCode);
         }
@@ -1370,18 +1391,6 @@ class ExcelLotteryLHC
         $m5 = $arrOpenCode[4];
         $m6 = $arrOpenCode[5];
         $m7 = $arrOpenCode[6];
-        $shu = [12,24,36,48];
-        $niu = [11,23,35,47];
-        $hu = [10,22,34,46];
-        $tu = [9,21,33,45];
-        $long = [8,20,32,44];
-        $she = [7,19,31,43];
-        $ma = [6,18,30,42];
-        $yang = [5,17,29,41];
-        $hou = [4,16,28,40];
-        $ji = [3,15,27,39];
-        $gou = [2,14,26,38];
-        $zhu = [1,13,25,37,49];
         $w0 = [10,20,30,40];
         $w1 = [1,11,21,31,41];
         $w2 = [2,12,22,32,42];
@@ -1392,66 +1401,53 @@ class ExcelLotteryLHC
         $w7 = [7,17,27,37,47];
         $w8 = [8,18,28,38,48];
         $w9 = [9,19,29,39,49];
-        if(in_array($m1,$shu) || in_array($m2,$shu) || in_array($m3,$shu) || in_array($m4,$shu) || in_array($m5,$shu) || in_array($m6,$shu) || in_array($m7,$shu)){
-            $playId = $this->arrPlayId['PTYXSHU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
+        $playId = 0;
+        $res = array_unique([$this->sx1,$this->sx2,$this->sx3,$this->sx4,$this->sx5,$this->sx6,$this->sx7]);
+        foreach ($res as $k => $sx){
+            switch ($sx){
+                case '鼠':
+                    $playId = $this->arrPlayId['PTYXSHU'];
+                    break;
+                case '牛':
+                    $playId = $this->arrPlayId['PTYXNIU'];
+                    break;
+                case '虎':
+                    $playId = $this->arrPlayId['PTYXHU'];
+                    break;
+                case '兔':
+                    $playId = $this->arrPlayId['PTYXTU'];
+                    break;
+                case '龙':
+                    $playId = $this->arrPlayId['PTYXLONG'];
+                    break;
+                case '蛇':
+                    $playId = $this->arrPlayId['PTYXSHE'];
+                    break;
+                case '马':
+                    $playId = $this->arrPlayId['PTYXMA'];
+                    break;
+                case '羊':
+                    $playId = $this->arrPlayId['PTYXYANG'];
+                    break;
+                case '猴':
+                    $playId = $this->arrPlayId['PTYXHOU'];
+                    break;
+                case '鸡':
+                    $playId = $this->arrPlayId['PTYXJI'];
+                    break;
+                case '狗':
+                    $playId = $this->arrPlayId['PTYXGOU'];
+                    break;
+                case '猪':
+                    $playId = $this->arrPlayId['PTYXZHU'];
+                    break;
+            }
+            if($playId>0){
+                $winCode = $gameId.$ptyxws_playCate.$playId;
+                $win->push($winCode);
+            }
         }
-        if(in_array($m1,$niu) || in_array($m2,$niu) || in_array($m3,$niu) || in_array($m4,$niu) || in_array($m5,$niu) || in_array($m6,$niu) || in_array($m7,$niu)){
-            $playId = $this->arrPlayId['PTYXNIU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$hu) || in_array($m2,$hu) || in_array($m3,$hu) || in_array($m4,$hu) || in_array($m5,$hu) || in_array($m6,$hu) || in_array($m7,$hu)){
-            $playId = $this->arrPlayId['PTYXHU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$tu) || in_array($m2,$tu) || in_array($m3,$tu) || in_array($m4,$tu) || in_array($m5,$tu) || in_array($m6,$tu) || in_array($m7,$tu)){
-            $playId = $this->arrPlayId['PTYXTU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$long) || in_array($m2,$long) || in_array($m3,$long) || in_array($m4,$long) || in_array($m5,$long) || in_array($m6,$long) || in_array($m7,$long)){
-            $playId = $this->arrPlayId['PTYXLONG'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$she) || in_array($m2,$she) || in_array($m3,$she) || in_array($m4,$she) || in_array($m5,$she) || in_array($m6,$she) || in_array($m7,$she)){
-            $playId = $this->arrPlayId['PTYXSHE'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$ma) || in_array($m2,$ma) || in_array($m3,$ma) || in_array($m4,$ma) || in_array($m5,$ma) || in_array($m6,$ma) || in_array($m7,$ma)){
-            $playId = $this->arrPlayId['PTYXMA'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$yang) || in_array($m2,$yang) || in_array($m3,$yang) || in_array($m4,$yang) || in_array($m5,$yang) || in_array($m6,$yang) || in_array($m7,$yang)){
-            $playId = $this->arrPlayId['PTYXYANG'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$hou) || in_array($m2,$hou) || in_array($m3,$hou) || in_array($m4,$hou) || in_array($m5,$hou) || in_array($m6,$hou) || in_array($m7,$hou)){
-            $playId = $this->arrPlayId['PTYXHOU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$ji) || in_array($m2,$ji) || in_array($m3,$ji) || in_array($m4,$ji) || in_array($m5,$ji) || in_array($m6,$ji) || in_array($m7,$ji)){
-            $playId = $this->arrPlayId['PTYXJI'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$gou) || in_array($m2,$gou) || in_array($m3,$gou) || in_array($m4,$gou) || in_array($m5,$gou) || in_array($m6,$gou) || in_array($m7,$gou)){
-            $playId = $this->arrPlayId['PTYXGOU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
-        if(in_array($m1,$zhu) || in_array($m2,$zhu) || in_array($m3,$zhu) || in_array($m4,$zhu) || in_array($m5,$zhu) || in_array($m6,$zhu) || in_array($m7,$zhu)){
-            $playId = $this->arrPlayId['PTYXZHU'];
-            $winCode = $gameId.$ptyxws_playCate.$playId;
-            $win->push($winCode);
-        }
+
         //尾数
         if(in_array($m1,$w0) || in_array($m2,$w0) || in_array($m3,$w0) || in_array($m4,$w0) || in_array($m5,$w0) || in_array($m6,$w0) || in_array($m7,$w0)){
             $playId = $this->arrPlayId['PTYXW0'];

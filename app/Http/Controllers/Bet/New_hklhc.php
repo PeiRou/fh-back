@@ -806,12 +806,12 @@ class New_hklhc extends Excel
         $LHC->setArrPlay($openCode,$this->arrPlayCate,$this->arrPlayId);
         $LHC->LHC_TM($gameId,$win);
         $LHC->LHC_LM($openCode,$gameId,$win,$ids_he);
-        $LHC->LHC_SB($openCode,$gameId,$win,$ids_he);
-        $LHC->LHC_TX($openCode,$gameId,$win);
-        $LHC->LHC_TMTWS($openCode,$gameId,$win,$ids_he);
+        $LHC->LHC_SB($gameId,$win,$ids_he);
+        $LHC->LHC_TX($gameId,$win);
+        $LHC->LHC_TMTWS($gameId,$win,$ids_he);
         $LHC->LHC_ZM($openCode,$gameId,$win);
         $LHC->LHC_ZMT($openCode,$gameId,$win,$ids_he);
-        $LHC->LHC_WX($openCode,$gameId,$win);
+        $LHC->LHC_WX($gameId,$win);
         $LHC->LHC_QSB($openCode,$gameId,$win,$ids_he);
         $LHC->LHC_PTYXWS($openCode,$gameId,$win);
         $LHC->LHC_ZONGXIAO($gameId,$win);
