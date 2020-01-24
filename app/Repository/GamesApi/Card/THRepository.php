@@ -8,8 +8,13 @@ use App\GamesListPlay;
 class THRepository extends BaseRepository
 {
     public $is_proxy_pass = true; //这个游戏是否使用代理那台服务器
+    public $betUrl;
 
     public function __construct($config){
+        $this->betUrl = $config['apiUrl'];
+        if($this->betUrl == 'http://gas8387sdkasdf.th713.com/access'){
+            $this->betUrl = 'https://gasdata.th705.com/access';
+        }
         parent::__construct($config);
     }
 
@@ -35,7 +40,7 @@ class THRepository extends BaseRepository
             'endtime' => $this->param['endtime'],
             'ip' => $this->ip(),
         ];
-        $res = $this->request($param, $this->getConfig('apiUrl').'/gamerecord');
+        $res = $this->request($param, $this->betUrl.'/gamerecord');
         $this->createData($res['info']);
         return $this->show(0);
     }
