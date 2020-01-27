@@ -29,7 +29,7 @@ class New_nlhc extends Excel
         $LHC->LHC_LM($openCode,$gameId,$win,$ids_he);
         $LHC->LHC_SB($gameId,$win,$ids_he);
         $LHC->LHC_TX($gameId,$win);
-        $LHC->LHC_TMTWS($gameId,$win,$ids_he);
+        $LHC->LHC_TMTWS($gameId,$win);
         $LHC->LHC_ZM($openCode,$gameId,$win);
         $LHC->LHC_ZMT($openCode,$gameId,$win,$ids_he);
         $LHC->LHC_WX($gameId,$win);
