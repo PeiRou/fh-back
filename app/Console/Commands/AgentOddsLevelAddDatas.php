@@ -33,7 +33,8 @@ class AgentOddsLevelAddDatas extends Command
     }
 
     /**
-     * Execute the console command.
+     * 此功能用来判断agent_odds_level 是否还是旧的模式(只有彩票类，没有单个彩票赔率层级)
+     * 如果没有个别彩票赔率层级，则从大类里面捞出来重新新增
      *
      * @return mixed
      */
@@ -44,7 +45,7 @@ class AgentOddsLevelAddDatas extends Command
         $aOddsTypeCodeStr = "'".implode("','", $aOddsTypeCodeArray)."'";
 
         $aArray=[];
-        $aSql = "SELECT agent_id,type,level_id FROM agent_odds_level WHERE type in(".$aOddsTypeCodeStr.") AND game_id = 0 GROUP BY agent_id,type";
+        $aSql = "SELECT agent_id,type,level_id FROM agent_odds_level WHERE type in(".$aOddsTypeCodeStr.") AND category_id = 1 AND game_id = 0 GROUP BY agent_id,type";
         $ares = DB::select($aSql,$aArray);
 
         $bSql = "SELECT agent_id,type,level_id,game_id FROM agent_odds_level WHERE type in(".$aOddsTypeCodeStr.")";
@@ -113,14 +114,18 @@ class AgentOddsLevelAddDatas extends Command
             }
         }
 
+        $needDeleteSql = "SELECT count(id) as count FROM agent_odds_level WHERE category_id=1 AND game_id = 0";
+        $needDeleteCount = DB::select($needDeleteSql);
+
         try{
             foreach ($insertData as $kin => $vin){
                 DB::select($vin);
             }
-            $this->info('需增加 '.$nednum.' 笔，新增成功 '.$count);
+            DB::select("DELETE FROM agent_odds_level WHERE category_id = 1 AND game_id = 0");
+            $this->info('需增加 '.$nednum.' 笔，新增成功 '.$count.'  已删除 '.$needDeleteCount[0]->count.' 笔');
         }catch (\Exception $e){
             writeLog('AgentOddsLevelAddDatas',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
-            $this->info('新增失败 ');
+            $this->info('处理失败 ');
         }
     }
 
