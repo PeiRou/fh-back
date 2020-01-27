@@ -558,31 +558,23 @@ class ExcelLotteryLHC
         }
     }
     //特码头尾数
-    public function LHC_TMTWS($gameId,$win,$ids_he){
+    public function LHC_TMTWS($gameId,$win){
         $tmtws_playCate = $this->arrPlayCate['TOUWEISHU']; //特码分类ID
         $tm = $this->tm; //特码号码
         $tmBL = str_pad($tm,2,"0",STR_PAD_LEFT); //十位补零
         $chaiTM = str_split($tmBL); //拆分个位 十位
         $tou = (int)$chaiTM[0];
         $wei = (int)$chaiTM[1];
-        if($tm==49){    //和局：特码为49时，和局退本金//特码尾数大小，特尾大：5尾~9尾为大，如05、18、19。特尾小：0尾~4尾为小，如01，32，44。
+
+        if($tou>=0 && $tou<=4){  //特码头数：是指特码属头数的号码   //"0"头：01、02、03、04、05、06、07、08、09  //"1"头：10、11、12、13、14、15、16、17、18、19 //"2"头：20、21、22、23、24、25、26、27、28、29 //"3"头：30、31、32、33、34、35、36、37、38、39 //"4"头：40、41、42、43、44、45、46、47、48、49
             $playId = $this->arrPlayId['TOUT'.$tou];
             $winCode = $gameId.$tmtws_playCate.$playId;
-            $ids_he->push($winCode);
+            $win->push($winCode);
+        }
+        if($wei>=0 && $wei<=9){
             $playId = $this->arrPlayId['WEIW'.$wei];
             $winCode = $gameId.$tmtws_playCate.$playId;
-            $ids_he->push($winCode);
-        }else{
-            if($tou>=0 && $tou<=4){
-                $playId = $this->arrPlayId['TOUT'.$tou];
-                $winCode = $gameId.$tmtws_playCate.$playId;
-                $win->push($winCode);
-            }
-            if($wei>=0 && $wei<=9){
-                $playId = $this->arrPlayId['WEIW'.$wei];
-                $winCode = $gameId.$tmtws_playCate.$playId;
-                $win->push($winCode);
-            }
+            $win->push($winCode);
         }
     }
     //正码
