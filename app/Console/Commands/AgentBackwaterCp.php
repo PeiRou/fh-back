@@ -76,7 +76,8 @@ class AgentBackwaterCp extends Command
         }
         $aAgentId = array_unique($aAgentId);
         //获取代理赔率
-        $aAgentOdds = $this->agentOddsSort(AgentOddsLevel::getAgentOdds($iGame['type'],$aAgentId));
+//        $aAgentOdds = $this->agentOddsSort(AgentOddsLevel::getAgentOdds($iGame['type'],$aAgentId));
+        $aAgentOdds = $this->agentOddsSort(AgentOddsLevel::getAgentOdds($gameId,$aAgentId));
         if(empty($aAgentOdds)){
             $this->info('代理赔率为空');
             return false;
