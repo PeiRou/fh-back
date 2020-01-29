@@ -60,10 +60,10 @@ class AgentBackwaterReport extends Command
                 'updated_at' => $curTime,
             ];
         }
-        AgentBackwaterReport::where('date',$iDate)->delete();
+        \App\AgentBackwaterReport::where('date',$iDate)->delete();
         $aArray = array_chunk($aArray,5000);
         foreach ($aArray as $iArray){
-            AgentBackwaterReport::insert($iArray);
+            \App\AgentBackwaterReport::insert($iArray);
         }
         $this->info('ok');
     }

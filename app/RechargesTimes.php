@@ -11,16 +11,26 @@ class RechargesTimes extends Model
 
     //获取首充用户
     public static function getFirstChargeUsersCount($date){
-        return self::where('frequency',1)->whereBetween('created_at',[$date,$date.' 23:59:59'])->count();
+        return self::where('recharges_times.frequency',1)
+            ->join('users', 'users.id','=','recharges_times.userId')
+            ->where('users.testFlag',0)
+            ->whereBetween('recharges_times.created_at',[$date,$date.' 23:59:59'])
+            ->count();
     }
 
     //获取第二次充值用户
     public static function getSecondChargeUsersCount($date){
-        return self::where('frequency',2)->whereBetween('created_at',[$date,$date.' 23:59:59'])->count();
+        return self::where('recharges_times.frequency',2)
+            ->join('users', 'users.id','=','recharges_times.userId')
+            ->where('users.testFlag',0)
+            ->whereBetween('recharges_times.created_at',[$date,$date.' 23:59:59'])->count();
     }
 
     //获取第三次充值用户
     public static function getThirdChargeUsersCount($date){
-        return self::where('frequency',3)->whereBetween('created_at',[$date,$date.' 23:59:59'])->count();
+        return self::where('recharges_times.frequency',3)
+            ->join('users', 'users.id','=','recharges_times.userId')
+            ->where('users.testFlag',0)
+            ->whereBetween('recharges_times.created_at',[$date,$date.' 23:59:59'])->count();
     }
 }
