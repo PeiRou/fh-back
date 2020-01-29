@@ -52,7 +52,7 @@ class AgentBackwaterThirdDaily implements ShouldQueue
         }
         $aAgentId = array_unique($aAgentId);
         //获取代理赔率
-        $aAgentOdds = $this->agentOddsSort(AgentOddsLevel::getOddsByAgentId($aAgentId));
+        $aAgentOdds = count($aAgentId) ? $this->agentOddsSort(AgentOddsLevel::getOddsByAgentId($aAgentId)) : [];
         //获取代理返水层级数
         $iLevelNum = SystemSetup::getValueByCode('agent_backwater_level_num');
         //获取当前代理返水
@@ -111,7 +111,7 @@ class AgentBackwaterThirdDaily implements ShouldQueue
         $aArray = [];
         foreach ($aData as $kData => $iData){
             foreach ($aRecode as $kRecode => $iRecode){
-                if($iData['agent_id'] == $iRecode->agent_id && $iData['to_agent'] == $iRecode->to_agent && $iData['user_id'] == $iRecode->user_id && $iData['game_id'] == $iRecode->game_id){
+                if($iData['agent_id'] == $iRecode->agent_id && $iData['to_agent'] == $iRecode->to_agent && $iData['user_id'] == $iRecode->user_id && $iData['game_id'] == $iRecode->game_id && $iData['issue'] == $iRecode->issue){
                     if($iData['bet_money'] > $iRecode->betMoney){
                         $iBetMoney = round($iData['bet_money'] - $iRecode->betMoney,2);
                         $iMoney = $this->getMoney($iBetMoney,$iData['commission']);
@@ -124,7 +124,7 @@ class AgentBackwaterThirdDaily implements ShouldQueue
                             'money' => $iMoney,
                             'game_id' => $iData['game_id'],
                             'game_name' => $iData['game_name'],
-                            'issue' => 0,
+                            'issue' => $iData['issue'],
                             'level' => $iData['level'],
                             'rebate' => $iData['rebate'],
                             'commission' => $iData['commission'],
@@ -172,7 +172,7 @@ class AgentBackwaterThirdDaily implements ShouldQueue
                             'balance' => $iJqBet->balance,
                             'game_id' => $iJqBet->game_id,
                             'game_name' => $iJqBet->game_name,
-                            'issue' => 0,
+                            'issue' => date('Ymd', strtotime($iJqBet->date)),
                             'level' => $i,
                             'rebate' => $iRebate,
                             'commission' => $iCommission,

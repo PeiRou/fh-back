@@ -11,9 +11,11 @@ class AgentBackwater extends Model
 
     //获取当前时间数据
     public static function getDataByTime($startTime,$endTime){
-        $aSql = 'SELECT `agent_id`,`to_agent`,`user_id`,`game_id`,SUM(`bet_money`) AS `betMoney` FROM `agent_backwater`
-                    WHERE `category_id` = 2 AND `created_at` >= :startTime AND `created_at` <= :endTime
-                    GROUP BY `agent_id`,`to_agent`,`user_id`,`game_id`';
+        $startTime = date('Ymd', strtotime($startTime));
+        $endTime = date('Ymd', strtotime($endTime));
+        $aSql = 'SELECT `agent_id`,`to_agent`,`user_id`,`game_id`,SUM(`bet_money`) AS `betMoney`,`issue` FROM `agent_backwater`
+                    WHERE `category_id` = 2 AND `issue` >= :startTime AND `issue` <= :endTime
+                    GROUP BY `agent_id`,`to_agent`,`user_id`,`game_id`,`issue` ';
         $aArray = [
             'startTime' => $startTime,
             'endTime' => $endTime,
@@ -34,13 +36,15 @@ class AgentBackwater extends Model
     public static function getAgentDate($iDate){
         $aSql = 'SELECT `agent`.account,`agent`.name,`agent`.p_agent_id,`back`.* FROM 
                     (
-                        SELECT `agent_backwater_report`.agent_id,`agent`.account,`agent`.name,SUM(`agent_backwater_report`.id) AS `count`,
-                        SUM(`agent_backwater_report`.money) AS `money`,SUM(`agent_backwater_report`.bet_money) AS `bet_money`
-                        FROM `agent_backwater_report`
-                        WHERE `agent_backwater_report`.created_at >= :startTime AND `agent_backwater_report`.created_at <= :endTime
-                        GROUP BY `agent_backwater_report`.agent_id
+                        SELECT `agent_backwater`.agent_id,
+                        COUNT(`agent_backwater`.user_id) AS `count`,
+                        SUM(`agent_backwater`.money) AS `money`,
+                        SUM(`agent_backwater`.bet_money) AS `bet_money`
+                        FROM `agent_backwater`
+                        WHERE `agent_backwater`.created_at >= :startTime AND `agent_backwater`.created_at <= :endTime
+                        GROUP BY `agent_backwater`.agent_id
                     ) AS `back`
-                    JOIN `agent` ON `agent`.a_id = `agent_backwater_report`.agent_id';
+                    JOIN `agent` ON `agent`.a_id = `back`.agent_id';
         $aArray = [
             'startTime' => $iDate,
             'endTime' => $iDate.' 23:59:59',
