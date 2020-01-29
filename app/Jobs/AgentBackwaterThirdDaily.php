@@ -101,6 +101,7 @@ class AgentBackwaterThirdDaily implements ShouldQueue
             Artisan::call('AgentOdds:AgentBackwaterReport',['date' => $this->aDateTime]);
         }catch (\Exception $exception){
             DB::rollback();
+            throw $exception;
         }
     }
 
