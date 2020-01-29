@@ -37,11 +37,7 @@ class KILL_1 extends Command
         $exeBase = $excel->getKillBase($games['gameId']);
         if(isset($get) && $get && !empty($exeBase)){
             //阻止進行中
-            $key = 'Kill:'.$games['gameId'].'ing:'.$get->issue;
-            if($redis->exists($key)){
-                return 'ing';
-            }
-            $redis->setex($key,60,'ing');
+            $excel->stopBunko($games['gameId'], 10,'Kill:'.$get->issue);
             //开奖号码
             $opennum = $excel->opennum($code,$games['type']);
             if(isset($get->excel_num) && $get->excel_num == 0){

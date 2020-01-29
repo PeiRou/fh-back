@@ -73,12 +73,10 @@ class New_pknn extends Excel
         if ($update !== 1) {
             writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
         }else{
-            $this->stopBunko($gameId,1);
             //玩法退水
             $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
             if(!$res){
                 writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-                return 0;
             }else{
                 //退水
                 $res = $this->reBackUser($gameId, $issue, $gameName);
@@ -86,7 +84,6 @@ class New_pknn extends Excel
                     $res = DB::table($table)->where('id',$id)->where('returnwater',2)->update(['returnwater' => 1]);
                     if(empty($res)){
                         writeLog('New_Bet',$gameName.$issue.'退水中失败！');
-                        return 0;
                     }
                 }else
                     writeLog('New_Bet', $gameName . $issue . "退水前失败！");

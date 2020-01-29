@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helpers\CurService;
 use App\Http\Controllers\Bet\New_msnn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -151,7 +152,7 @@ class Excel
     }
     //反水
     public function reBackUser($gameId,$issue,$gameName=''){
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00000001)->groupBy('user_id')->get();
+        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('status',1)->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00000001)->groupBy('user_id')->get();
         if($get){
             if (count($get)==0)
                 return 0;
@@ -932,21 +933,49 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         $redis->select(0);
         //阻止進行中
         $key = $strBunko.':'.$gameId.'ing:';
-        if($redis->exists($key)){
-            return '1';
+
+        if($redis->setnx($key, 'on')){
+            $redis->expire($key, $time);
+            $result = 0;
+        }else{
+            $result = 1;
         }
-        $redis->setex($key,$time,'ing');
-        return '0';
+        return $result;
     }
-    //开奖阻止
-    public function stopIng($code,$issue,$redis){
-        $key = $code.'ing:'.$issue;
-        if($redis->exists($key)){
-            return 1;
+    //执行玩法退水跟层层代理反水
+    public function exeReturnAndBackWater($table,$id,$gameName,$issue,$gameId,$code){
+        //层层代理退水
+        try{
+            $res = DB::table($table)->where('id',$id)->where('backwater',0)->update(['backwater' => 2]);
+            echo $table.$id.$res.PHP_EOL;
+            if(!$res){
+                writeLog('New_Bet', $gameName . $issue . "层层代理反水前失败！");
+            }else {
+                $curlService = new CurService();
+                $curlService->curlGet('http://127.0.0.1:9500?thread=AgentOdds:AgentBackwaterCp-' . $code . '-' . $issue);
+            }
+        }catch (\Exception $e){
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
         }
-        $redis->setex($key,5,'ing');
-        $redis->set($code.':needopen','');
-        return 0;
+        //玩法退水
+        try{
+            $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
+            if(!$res){
+                writeLog('New_Bet', $gameName . $issue . "退水前失败！");
+            }else{
+                //退水
+                $res = $this->reBackUser($gameId, $issue, $gameName);
+                if(!$res){
+                    $res = DB::table($table)->where('id',$id)->where('returnwater',2)->update(['returnwater' => 1]);
+                    if(empty($res)){
+                        writeLog('New_Bet',$gameName.$issue.'退水中失败！');
+                    }
+                }else
+                    writeLog('New_Bet', $gameName . $issue . "退水前失败！");
+            }
+        }catch (\Exception $e){
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
+        }
     }
     //试算杀率共用方法
     public function excel($openCode,$exeBase,$issue,$code,$lotterys){

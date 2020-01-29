@@ -37,16 +37,9 @@ class BUNKO_1 extends Command
         $excel = $excel->newObject($code);
         $get = $excel->getNeedBunkoIssue($lotterys['table'],$code,$havElse,$havElseLottery);
         if($get){
-            $redis = Redis::connection();
-            $redis->select(0);
-
             //阻止進行中
-            $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
-            if($redis->exists($key)){
+            if($excel->stopBunko($lotterys['gameId'], 10,'Bunko:'.$get->issue))
                 return 'ing';
-            }
-            $redis->setex($key,10,'ing');
-
 //            //将SQL状态改成结算中
             $update = DB::table($lotterys['table'])->where('id', $get->id)->update([
                 'bunko' => 2
@@ -55,7 +48,6 @@ class BUNKO_1 extends Command
             //SQL状态有成功改成结算中，就开始执行结算
             if($update)
                 $excel->all($opennum,$get->issue,$get->id,false,$code,$lotterys);
-            $redis->setex($key,1,'ing');
         }
     }
 }
