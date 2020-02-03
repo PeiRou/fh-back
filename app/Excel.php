@@ -947,7 +947,6 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         //层层代理退水
         try{
             $res = DB::table($table)->where('id',$id)->where('backwater',0)->update(['backwater' => 2]);
-            echo $table.$id.$res.PHP_EOL;
             if(!$res){
                 writeLog('New_Bet', $gameName . $issue . "层层代理反水前失败！");
             }else {
@@ -1048,7 +1047,9 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                 }
             }
             if($bunko == 1 && $nnBunko){
-                $sql = "SELECT SUM(`bunko`) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'";
+//                $sql = "SELECT SUM(`bunko`) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'";
+                //增加加权杀率
+                $sql = "SELECT SUM(CASE WHEN (`bet_money` >= ".$exeBase->kill_betmoney." AND ".$exeBase->kill_betmoney." <> 0 AND `bunko` > 0 ) THEN `bunko` * 100 ELSE `bunko` END) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'";
                 $tmp = DB::connection('mysql::write')->select($sql);
                 $excBunko = 0;
                 foreach ($tmp as&$value)
