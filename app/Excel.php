@@ -1072,7 +1072,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         if(isset($exeBase->is_ai)&&$exeBase->is_ai){
             if($exeBase->is_open==1){
                 $exeData = DB::table('excel_game')->select(DB::raw('opennum,issue,bunko'))->where('game_id',$gameId)->where('issue',$issue)->groupBy('issue','excel_num')->get();
-                writeLog('New_Kill', $table.' :'.$issue.' origin-'.json_encode($exeData));
+                writeLog('New_Kill', '开启了智慧模式--'.$table.' :'.$issue.' origin-'.json_encode($exeData));
                 $arrLimit = array();
                 foreach ($exeData as $key => $val) {
                     $arrLimit[(string)$val->bunko] = $val->opennum;
@@ -1086,10 +1086,15 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                     $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                     writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
                     $randRate = rand(1000,1999)/1000;
-                    if($lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
+                    $checkKill_betmoney = false;
+                    writeLog('New_Kill', 'kill_betmoney:'.$exeBase->kill_betmoney);
+                    if($exeBase->kill_betmoney>0)
+                        $checkKill_betmoney = DB::table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bet_money','>=',$exeBase->kill_betmoney)->exists();
+                    writeLog('New_Kill', '$checkKill_betmoney:'.$checkKill_betmoney);
+                    if($checkKill_betmoney==false && $lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
                         $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
                     }else{
-                        if($lose_losewin_rate<=0.1 || (!in_array($randNum,array(3,5,7)))) {                        //如果当日的输赢比低于0，则选平台最好的营利值
+                        if($checkKill_betmoney || $lose_losewin_rate<=0.1 || (!in_array($randNum,array(3,5,7)))) {                        //如果当日的输赢比低于0，则选平台最好的营利值
                             $iLimit = 1;
                             foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
                                 $ii++;
@@ -1114,7 +1119,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
             if($exeBase->is_open==1) {
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
-                writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
+                writeLog('New_Kill', '开启了传统模式--'.$table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
                 if($lose_losewin_rate<=($exeBase->kill_rate)) {            //平台最大营利去选杀号
                     $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = " . $gameId . " AND issue ='{$issue}') and game_id = " . $gameId . " AND issue ='{$issue}' LIMIT 1";
                     $tmp = DB::select($aSql);
