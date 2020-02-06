@@ -42,8 +42,8 @@ class GG extends Base{
 
     public function getindex($game_id)
     {
-        $id = \Illuminate\Support\Facades\DB::table('jq_bet')->where('game_id', $game_id)->orderBy('GameID','desc')->value('GameID');
-        empty($id) && $id = \Illuminate\Support\Facades\DB::table('jq_bet_his')->where('game_id', $game_id)->orderBy('GameID','desc')->value('GameID');
+        $id = \Illuminate\Support\Facades\DB::table('jq_bet')->where('game_id', $game_id)->orderBy('id','desc')->value('GameID');
+        empty($id) && $id = \Illuminate\Support\Facades\DB::table('jq_bet_his')->where('game_id', $game_id)->orderBy('id','desc')->value('GameID');
         return $id ?? 0;
     }
 }
