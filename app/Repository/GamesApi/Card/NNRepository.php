@@ -59,6 +59,8 @@ class NNRepository extends BaseRepository
         $GameIDs = $this->distinct($aData, 'id');
         $insert = [];
         foreach ($aData as $v){
+            Redis::select(11);
+            Redis::setex('nn_id', 60 * 60 * 2, $v['id']);
             if(isset($v['isTry']) && $v['isTry'] == 1){
                 continue;
             }
@@ -67,8 +69,6 @@ class NNRepository extends BaseRepository
                 continue;
             if(in_array($v['id'], $GameIDs))
                 continue;
-            Redis::select(11);
-            Redis::setex('nn_id', 60 * 60 * 2, $v['id']);
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['id'],
