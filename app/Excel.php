@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helpers\CurService;
 use App\Http\Controllers\Bet\New_msnn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -151,7 +152,7 @@ class Excel
     }
     //反水
     public function reBackUser($gameId,$issue,$gameName=''){
-        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00000001)->groupBy('user_id')->get();
+        $get = DB::connection('mysql::write')->table('bet')->select(DB::connection('mysql::write')->raw("SUM(bet.bet_money * bet.play_rebate) AS back_money"),'user_id')->where('status',1)->where('game_id',$gameId)->where('issue',$issue)->where('play_rebate','>=',0.00000001)->groupBy('user_id')->get();
         if($get){
             if (count($get)==0)
                 return 0;
@@ -932,21 +933,48 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         $redis->select(0);
         //阻止進行中
         $key = $strBunko.':'.$gameId.'ing:';
-        if($redis->exists($key)){
-            return '1';
+
+        if($redis->setnx($key, 'on')){
+            $redis->expire($key, $time);
+            $result = 0;
+        }else{
+            $result = 1;
         }
-        $redis->setex($key,$time,'ing');
-        return '0';
+        return $result;
     }
-    //开奖阻止
-    public function stopIng($code,$issue,$redis){
-        $key = $code.'ing:'.$issue;
-        if($redis->exists($key)){
-            return 1;
+    //执行玩法退水跟层层代理反水
+    public function exeReturnAndBackWater($table,$id,$gameName,$issue,$gameId,$code){
+        //层层代理退水
+        try{
+            $res = DB::table($table)->where('id',$id)->where('backwater',0)->update(['backwater' => 2]);
+            if(!$res){
+                writeLog('New_Bet', $gameName . $issue . "层层代理反水前失败！");
+            }else {
+                $curlService = new CurService();
+                $curlService->curlGet('http://127.0.0.1:9500?thread=AgentOdds:AgentBackwaterCp-' . $code . '-' . $issue);
+            }
+        }catch (\Exception $e){
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
         }
-        $redis->setex($key,5,'ing');
-        $redis->set($code.':needopen','');
-        return 0;
+        //玩法退水
+        try{
+            $res = DB::table($table)->where('id',$id)->where('returnwater',0)->update(['returnwater' => 2]);
+            if(!$res){
+                writeLog('New_Bet', $gameName . $issue . "退水前失败！");
+            }else{
+                //退水
+                $res = $this->reBackUser($gameId, $issue, $gameName);
+                if(!$res){
+                    $res = DB::table($table)->where('id',$id)->where('returnwater',2)->update(['returnwater' => 1]);
+                    if(empty($res)){
+                        writeLog('New_Bet',$gameName.$issue.'退水中失败！');
+                    }
+                }else
+                    writeLog('New_Bet', $gameName . $issue . "退水前失败！");
+            }
+        }catch (\Exception $e){
+            writeLog('error', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
+        }
     }
     //试算杀率共用方法
     public function excel($openCode,$exeBase,$issue,$code,$lotterys){
@@ -1019,7 +1047,9 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                 }
             }
             if($bunko == 1 && $nnBunko){
-                $sql = "SELECT SUM(`bunko`) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'";
+//                $sql = "SELECT SUM(`bunko`) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'";
+                //增加加权杀率
+                $sql = "SELECT SUM(CASE WHEN (`bet_money` >= ".$exeBase->kill_betmoney." AND ".$exeBase->kill_betmoney." <> 0 AND `bunko` > 0 ) THEN `bunko` * 100 ELSE `bunko` END) AS `sumBunko` FROM excel_bet WHERE 1 ".$betExeGameWhere." and issue = '{$issue}'";
                 $tmp = DB::connection('mysql::write')->select($sql);
                 $excBunko = 0;
                 foreach ($tmp as&$value)
@@ -1042,7 +1072,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         if(isset($exeBase->is_ai)&&$exeBase->is_ai){
             if($exeBase->is_open==1){
                 $exeData = DB::table('excel_game')->select(DB::raw('opennum,issue,bunko'))->where('game_id',$gameId)->where('issue',$issue)->groupBy('issue','excel_num')->get();
-                writeLog('New_Kill', $table.' :'.$issue.' origin-'.json_encode($exeData));
+                writeLog('New_Kill', '开启了智慧模式--'.$table.' :'.$issue.' origin-'.json_encode($exeData));
                 $arrLimit = array();
                 foreach ($exeData as $key => $val) {
                     $arrLimit[(string)$val->bunko] = $val->opennum;
@@ -1056,10 +1086,15 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                     $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                     writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
                     $randRate = rand(1000,1999)/1000;
-                    if($lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
+                    $checkKill_betmoney = false;
+                    writeLog('New_Kill', 'kill_betmoney:'.$exeBase->kill_betmoney);
+                    if($exeBase->kill_betmoney>0)
+                        $checkKill_betmoney = DB::table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bet_money','>=',$exeBase->kill_betmoney)->exists();
+                    writeLog('New_Kill', '$checkKill_betmoney:'.$checkKill_betmoney);
+                    if($checkKill_betmoney==false && $lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
                         $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
                     }else{
-                        if($lose_losewin_rate<=0.1 || (!in_array($randNum,array(3,5,7)))) {                        //如果当日的输赢比低于0，则选平台最好的营利值
+                        if($checkKill_betmoney || $lose_losewin_rate<=0.1 || (!in_array($randNum,array(3,5,7)))) {                        //如果当日的输赢比低于0，则选平台最好的营利值
                             $iLimit = 1;
                             foreach ($arrLimit as $key2 =>$va2){               //如果当日的输赢比低于杀率，则选给杀率号
                                 $ii++;
@@ -1084,7 +1119,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
             if($exeBase->is_open==1) {
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
-                writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
+                writeLog('New_Kill', '开启了传统模式--'.$table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
                 if($lose_losewin_rate<=($exeBase->kill_rate)) {            //平台最大营利去选杀号
                     $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = " . $gameId . " AND issue ='{$issue}') and game_id = " . $gameId . " AND issue ='{$issue}' LIMIT 1";
                     $tmp = DB::select($aSql);

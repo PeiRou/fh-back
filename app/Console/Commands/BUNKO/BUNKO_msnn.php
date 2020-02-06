@@ -28,14 +28,8 @@ class BUNKO_msnn extends Command
         $excel = new New_msnn();
         $get = $excel->getNeedNNBunkoIssue($lotterys['table']);
         if($get){
-            $redis = Redis::connection();
-            $redis->select(0);
             //阻止進行中
-            $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
-            if($redis->exists($key)){
-                return 'ing';
-            }
-            $redis->setex($key,60,'ing');
+            $excel->stopBunko($lotterys['gameId'], 10,'Bunko:'.$get->issue);
             $update = DB::table($lotterys['table'])->where('id', $get->id)->update([
                 'nn_bunko' => 2
             ]);
