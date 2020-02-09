@@ -149,7 +149,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                     $sumBunko = empty($iBet->sumBunko)?0.00:$iBet->sumBunko;
                     $back_money = empty($iBet->back_money)?0.00:$iBet->back_money;
                     $aArray[$kArray]['bet_bunko'] = round($sumBunko + $back_money,2);
-                    $aArrayBunko[] = [
+                    $aArrayElse[$iBet->user_id.'-0-'.$time] = [
                         'game_id' => 0,
                         'game_name' => '彩票',
                         'user_id' => $iBet->user_id,
@@ -175,12 +175,13 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                 }
             }
 
+            $aArrayElse = [];
             foreach ($aJqBet as $iJqBet){
                 if($iArray['user_id'] == $iJqBet->user_id && !empty($iJqBet->gameslist_id)){
                     $aArray[$kArray]['bet_count'] += empty($iJqBet->bet_count)?0:$iJqBet->bet_count;
                     $aArray[$kArray]['bet_bunko'] += empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko;
                     $aArray[$kArray]['bet_money'] += empty($iJqBet->bet_money)?0.00:$iJqBet->bet_money;
-                    $aArrayBunko[] = [
+                    $aArrayElse[$iJqBet->user_id.'-'.$iJqBet->gameslist_id.'-'.$time] = [
                         'game_id' => $iJqBet->gameslist_id,
                         'game_name' => (isset($aGameCategory[$iJqBet->gameslist_id])?$aGameCategory[$iJqBet->gameslist_id]:'默认分类').'_'.(isset($aGameName[$iJqBet->gameslist_id])?$aGameName[$iJqBet->gameslist_id]:'默认游戏'),
                         'user_id' => $iJqBet->user_id,
@@ -233,55 +234,64 @@ class ZhReportMemberStatementDaily implements ShouldQueue
         }
 
         foreach ($aRebate as $iRebate){
-            $aArrayBunko[] = [
-                'game_id' => $iRebate->game_id,
-                'game_name' => $iRebate->game_name,
-                'user_id' => $iRebate->user_id,
-                'user_account' => $iRebate->user_account,
-                'user_name' => $iRebate->user_name,
-                'agent_id' => $iRebate->agent_id,
-                'gameCategory' => $this->getGameCategoryCode($iRebate->pid),
-                'agent_account' => $iRebate->agent_account,
-                'agent_name' => $iRebate->agent_name,
-                'general_account' => $iRebate->general_account,
-                'general_name' => $iRebate->general_name,
-                'general_id' => $iRebate->general_id,
-                'bet_bunko' => 0.00,
-                'bet_money' => 0.00,
-                'bet_count' => 0,
-                'rebate_money' => $iRebate->money,
-                'promotion_money' => 0.00,
-                'date' => $this->aDateTime,
-                'dateTime' => $time,
-                'created_at' => $dateTime,
-                'updated_at' => $dateTime,
-            ];
+            if(isset($aArrayElse[$iRebate->user_id.'-'.$iRebate->game_id.'-'.$time])){
+                $aArrayElse[$iRebate->user_id.'-'.$iRebate->game_id.'-'.$time]['rebate_money'] += $iRebate->money;
+            }else
+                $aArrayElse[$iRebate->user_id.'-'.$iRebate->game_id.'-'.$time] = [
+                    'game_id' => $iRebate->game_id,
+                    'game_name' => $iRebate->game_name,
+                    'user_id' => $iRebate->user_id,
+                    'user_account' => $iRebate->user_account,
+                    'user_name' => $iRebate->user_name,
+                    'agent_id' => $iRebate->agent_id,
+                    'gameCategory' => $this->getGameCategoryCode($iRebate->pid),
+                    'agent_account' => $iRebate->agent_account,
+                    'agent_name' => $iRebate->agent_name,
+                    'general_account' => $iRebate->general_account,
+                    'general_name' => $iRebate->general_name,
+                    'general_id' => $iRebate->general_id,
+                    'bet_bunko' => 0.00,
+                    'bet_money' => 0.00,
+                    'bet_count' => 0,
+                    'rebate_money' => $iRebate->money,
+                    'promotion_money' => 0.00,
+                    'date' => $this->aDateTime,
+                    'dateTime' => $time,
+                    'created_at' => $dateTime,
+                    'updated_at' => $dateTime,
+                ];
         }
 
         foreach ($aPromotion as $iPromotion){
-            $aArrayBunko[] = [
-                'game_id' => $iPromotion->game_id,
-                'game_name' => empty($iPromotion->game_id) ? '彩票' : $iPromotion->game_name,
-                'user_id' => $iPromotion->user_id,
-                'user_account' => $iPromotion->user_account,
-                'user_name' => $iPromotion->user_name,
-                'agent_id' => $iPromotion->agent_id,
-                'gameCategory' => $this->getGameCategoryCode($iPromotion->pid),
-                'agent_account' => $iPromotion->agent_account,
-                'agent_name' => $iPromotion->agent_name,
-                'general_account' => $iPromotion->general_account,
-                'general_name' => $iPromotion->general_name,
-                'general_id' => $iPromotion->general_id,
-                'bet_bunko' => 0.00,
-                'bet_money' => 0.00,
-                'bet_count' => 0,
-                'rebate_money' => 0.00,
-                'promotion_money' => $iPromotion->money,
-                'date' => $this->aDateTime,
-                'dateTime' => $time,
-                'created_at' => $dateTime,
-                'updated_at' => $dateTime,
-            ];
+            if(isset($aArrayElse[$iPromotion->user_id.'-'.$iPromotion->game_id.'-'.$time])){
+                $aArrayElse[$iPromotion->user_id.'-'.$iPromotion->game_id.'-'.$time]['promotion_money'] += $iPromotion->money;
+            }else
+                $aArrayElse[$iPromotion->user_id.'-'.$iPromotion->game_id.'-'.$time] = [
+                    'game_id' => $iPromotion->game_id,
+                    'game_name' => empty($iPromotion->game_id) ? '彩票' : $iPromotion->game_name,
+                    'user_id' => $iPromotion->user_id,
+                    'user_account' => $iPromotion->user_account,
+                    'user_name' => $iPromotion->user_name,
+                    'agent_id' => $iPromotion->agent_id,
+                    'gameCategory' => $this->getGameCategoryCode($iPromotion->pid),
+                    'agent_account' => $iPromotion->agent_account,
+                    'agent_name' => $iPromotion->agent_name,
+                    'general_account' => $iPromotion->general_account,
+                    'general_name' => $iPromotion->general_name,
+                    'general_id' => $iPromotion->general_id,
+                    'bet_bunko' => 0.00,
+                    'bet_money' => 0.00,
+                    'bet_count' => 0,
+                    'rebate_money' => 0.00,
+                    'promotion_money' => $iPromotion->money,
+                    'date' => $this->aDateTime,
+                    'dateTime' => $time,
+                    'created_at' => $dateTime,
+                    'updated_at' => $dateTime,
+                ];
+        }
+        foreach ($aArrayElse as $iArrayElse){
+            $aArrayBunko[] = $iArrayElse;
         }
 
         foreach ($aArrayBunko as $kArrayBunko => $iArrayBunko){
