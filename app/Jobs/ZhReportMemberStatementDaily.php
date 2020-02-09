@@ -248,57 +248,57 @@ class ZhReportMemberStatementDaily implements ShouldQueue
             }
         }
 
-        foreach ($aRebate as $iRebate){
-            $aArrayBunko[] = [
-                'game_id' => $iRebate->game_id,
-                'game_name' => $iRebate->game_name,
-                'user_id' => $iRebate->user_id,
-                'user_account' => $iRebate->user_account,
-                'user_name' => $iRebate->user_name,
-                'agent_id' => $iRebate->agent_id,
-                'gameCategory' => $this->getGameCategoryCode($iRebate->pid),
-                'agent_account' => $iRebate->agent_account,
-                'agent_name' => $iRebate->agent_name,
-                'general_account' => $iRebate->general_account,
-                'general_name' => $iRebate->general_name,
-                'general_id' => $iRebate->general_id,
-                'bet_bunko' => 0.00,
-                'bet_money' => 0.00,
-                'bet_count' => 0,
-                'rebate_money' => $iRebate->money,
-                'promotion_money' => 0.00,
-                'date' => $this->aDateTime,
-                'dateTime' => $time,
-                'created_at' => $dateTime,
-                'updated_at' => $dateTime,
-            ];
-        }
-
-        foreach ($aPromotion as $iPromotion){
-            $aArrayBunko[] = [
-                'game_id' => $iPromotion->game_id,
-                'game_name' => empty($iPromotion->game_id) ? '彩票' : $iPromotion->game_name,
-                'user_id' => $iPromotion->user_id,
-                'user_account' => $iPromotion->user_account,
-                'user_name' => $iPromotion->user_name,
-                'agent_id' => $iPromotion->agent_id,
-                'gameCategory' => $this->getGameCategoryCode($iPromotion->pid),
-                'agent_account' => $iPromotion->agent_account,
-                'agent_name' => $iPromotion->agent_name,
-                'general_account' => $iPromotion->general_account,
-                'general_name' => $iPromotion->general_name,
-                'general_id' => $iPromotion->general_id,
-                'bet_bunko' => 0.00,
-                'bet_money' => 0.00,
-                'bet_count' => 0,
-                'rebate_money' => 0.00,
-                'promotion_money' => $iPromotion->money,
-                'date' => $this->aDateTime,
-                'dateTime' => $time,
-                'created_at' => $dateTime,
-                'updated_at' => $dateTime,
-            ];
-        }
+//        foreach ($aRebate as $iRebate){
+//            $aArrayBunko[] = [
+//                'game_id' => $iRebate->game_id,
+//                'game_name' => $iRebate->game_name,
+//                'user_id' => $iRebate->user_id,
+//                'user_account' => $iRebate->user_account,
+//                'user_name' => $iRebate->user_name,
+//                'agent_id' => $iRebate->agent_id,
+//                'gameCategory' => $this->getGameCategoryCode($iRebate->pid),
+//                'agent_account' => $iRebate->agent_account,
+//                'agent_name' => $iRebate->agent_name,
+//                'general_account' => $iRebate->general_account,
+//                'general_name' => $iRebate->general_name,
+//                'general_id' => $iRebate->general_id,
+//                'bet_bunko' => 0.00,
+//                'bet_money' => 0.00,
+//                'bet_count' => 0,
+//                'rebate_money' => $iRebate->money,
+//                'promotion_money' => 0.00,
+//                'date' => $this->aDateTime,
+//                'dateTime' => $time,
+//                'created_at' => $dateTime,
+//                'updated_at' => $dateTime,
+//            ];
+//        }
+//
+//        foreach ($aPromotion as $iPromotion){
+//            $aArrayBunko[] = [
+//                'game_id' => $iPromotion->game_id,
+//                'game_name' => empty($iPromotion->game_id) ? '彩票' : $iPromotion->game_name,
+//                'user_id' => $iPromotion->user_id,
+//                'user_account' => $iPromotion->user_account,
+//                'user_name' => $iPromotion->user_name,
+//                'agent_id' => $iPromotion->agent_id,
+//                'gameCategory' => $this->getGameCategoryCode($iPromotion->pid),
+//                'agent_account' => $iPromotion->agent_account,
+//                'agent_name' => $iPromotion->agent_name,
+//                'general_account' => $iPromotion->general_account,
+//                'general_name' => $iPromotion->general_name,
+//                'general_id' => $iPromotion->general_id,
+//                'bet_bunko' => 0.00,
+//                'bet_money' => 0.00,
+//                'bet_count' => 0,
+//                'rebate_money' => 0.00,
+//                'promotion_money' => $iPromotion->money,
+//                'date' => $this->aDateTime,
+//                'dateTime' => $time,
+//                'created_at' => $dateTime,
+//                'updated_at' => $dateTime,
+//            ];
+//        }
 
         ZhReportMember::where('date','=',$this->aDateTime)->delete();
         ZhReportMemberBunko::where('date','=',$this->aDateTime)->delete();
