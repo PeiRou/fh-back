@@ -200,6 +200,10 @@ class clear_data extends Command
             $sql = "DELETE FROM log_login WHERE login_time<='{$clearDate62}' LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table log_login :' . $res . PHP_EOL;
+            //清-会员登陆异常日志
+            $sql = "DELETE FROM log_login_error WHERE login_time<='{$clearDate62}' LIMIT 1000";
+            $res = DB::connection('mysql::write')->statement($sql);
+            echo 'table log_login_error :' . $res . PHP_EOL;
             //清-游客投注数据
             $sql = "DELETE FROM bet_his WHERE testFlag = 1 LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
