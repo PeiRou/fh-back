@@ -161,6 +161,9 @@ class AgentBackwaterCp extends Command
                 }
             }
         }
+        foreach ($aAgentMoney as &$v){
+            $v['balance'] = '0\' + balance + '.$v['balance'].' + \'0';
+        }
         //获取资金明细
         DB::beginTransaction();
         try{
@@ -174,8 +177,8 @@ class AgentBackwaterCp extends Command
             $this->info('ok');
         }catch (\Exception $exception){
             writeLog('error',$exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
-            writeLog('error','$aAgentBackwater:'.$aAgentBackwater);
-            writeLog('error','$aCapitalAgent:'.$aCapitalAgent);
+            writeLog('error','$aAgentBackwater:'.json_encode($aAgentBackwater));
+            writeLog('error','$aCapitalAgent:'.json_encode($aCapitalAgent));
             DB::rollback();
             writeLog('New_Bet', $iGame['lottery'] . $issue . "层层代理反水前失败！");
             $this->info('保存失败');
