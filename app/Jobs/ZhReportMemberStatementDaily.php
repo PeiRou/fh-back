@@ -82,6 +82,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
 
         $aArray = [];
         $aArrayBunko = [];
+        $aArrayElse = [];
         $dateTime = date('Y-m-d H:i:s');
         $time = strtotime($this->aDateTime);
         foreach ($aUser as $kUser => $iUser) {
@@ -175,7 +176,6 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                 }
             }
 
-            $aArrayElse = [];
             foreach ($aJqBet as $iJqBet){
                 if($iArray['user_id'] == $iJqBet->user_id && !empty($iJqBet->gameslist_id)){
                     $aArray[$kArray]['bet_count'] += empty($iJqBet->bet_count)?0:$iJqBet->bet_count;
