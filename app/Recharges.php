@@ -48,7 +48,7 @@ class Recharges extends Model
     }
 
     public static function betAgentReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT LEFT(`recharges`.`updated_at`,10) AS `date`,SUM(`recharges`.`amount`) AS `reAmountSum`,`users`.`agent` AS `agentId`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`
+        $aSql = "SELECT LEFT(`recharges`.`updated_at`,10) AS `date`,SUM(`recharges`.`amount`) AS `reAmountSum`,`recharges`.`agent_id` AS `agentId`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`
                   FROM `recharges`
                   JOIN `users` ON `users`.`id` = `recharges`.`userId`
                   WHERE `recharges`.`status` = 2 AND `recharges`.`admin_add_money` IN(0,1,2) AND `users`.`testFlag` = 0 ";
@@ -70,7 +70,7 @@ class Recharges extends Model
                   COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(DISTINCT(`agent`.`a_id`)) AS `agentIdCount`
                   FROM `recharges`
                   JOIN `users` ON `users`.`id` = `recharges`.`userId`
-                  JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
+                  JOIN `agent` ON `agent`.`a_id` = `recharges`.`agent_id`
                   WHERE `recharges`.`status` = 2 AND `recharges`.`admin_add_money` IN(0,1,2) AND `users`.`testFlag` = 0 ";
         $aArray = [];
         if(!empty($startTime)){
