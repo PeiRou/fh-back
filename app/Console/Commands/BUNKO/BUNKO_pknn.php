@@ -28,14 +28,9 @@ class BUNKO_pknn extends Command
         $excel = new New_pknn();
         $get = $excel->getNeedBunkoIssue($lotterys['table']);
         if($get){
-            $redis = Redis::connection();
-            $redis->select(0);
             //阻止進行中
-            $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
-            if($redis->exists($key)){
+            if($excel->stopBunko($lotterys['gameId'], 10,'Bunko:'.$get->issue));
                 return 'ing';
-            }
-            $redis->setex($key,60,'ing');
             $update = DB::table($lotterys['table'])->where('id', $get->id)->update([
                 'bunko' => 2
             ]);

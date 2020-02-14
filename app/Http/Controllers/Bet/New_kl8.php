@@ -10,7 +10,6 @@ namespace App\Http\Controllers\Bet;
 
 use App\Excel;
 use App\ExcelLotteryKL8;
-use App\Helpers\CurService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
@@ -68,13 +67,12 @@ class New_kl8 extends Excel
             }
         }
         if ($excel) {
-            $update = DB::table($table)->where('id', $id)->update([
+            $update = DB::table($table)->where('id', $id)->whereIn('excel_num',[2,3])->update([
                 'excel_num' => 1
             ]);
             if ($update !== 1) {
                 writeLog('New_Kill', $gameName . $issue . "杀率not Finshed");
-            } else
-                $this->stopBunko($gameId, 1, 'Kill');
+            }
         } else {
             $update = DB::table($table)->where('id',$id)->where('is_open',1)->where('bunko',2)->update([
                 'bunko' => 1
@@ -82,28 +80,8 @@ class New_kl8 extends Excel
             if ($update !== 1) {
                 writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
             } else {
-                $this->stopBunko($gameId, 1);
-                //玩法退水
-                $res = DB::table($table)->where('id', $id)->where('returnwater', 0)->update(['returnwater' => 2]);
-                if (!$res) {
-                    writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-                    return 0;
-                }else{
-                    //退水
-                    $res = $this->reBackUser($gameId, $issue, $gameName);
-                    if (!$res) {
-                        $res = DB::table($table)->where('id', $id)->where('returnwater', 2)->update(['returnwater' => 1]);
-                        if (empty($res)) {
-                            writeLog('New_Bet', $gameName . $issue . '退水中失败！');
-                            return 0;
-                        }
-                    } else
-                        writeLog('New_Bet', $gameName . $issue . "退水前失败！");
-                }
-
-                //层层代理退水
-                $curlService = new CurService();
-                $curlService->curlGet('http://127.0.0.1:9500?thread=AgentOdds:AgentBackwaterCp-'.$code.'-'.$issue);
+                //执行玩法退水跟层层代理反水
+                $this->exeReturnAndBackWater($table,$id,$gameName,$issue,$gameId,$code);
             }
         }
     }

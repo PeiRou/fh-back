@@ -200,6 +200,10 @@ class clear_data extends Command
             $sql = "DELETE FROM log_login WHERE login_time<='{$clearDate62}' LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
             echo 'table log_login :' . $res . PHP_EOL;
+            //清-会员登陆异常日志
+            $sql = "DELETE FROM log_login_error WHERE login_time<='{$clearDate62}' LIMIT 1000";
+            $res = DB::connection('mysql::write')->statement($sql);
+            echo 'table log_login_error :' . $res . PHP_EOL;
             //清-游客投注数据
             $sql = "DELETE FROM bet_his WHERE testFlag = 1 LIMIT 1000";
             $res = DB::connection('mysql::write')->statement($sql);
@@ -212,6 +216,11 @@ class clear_data extends Command
                     $newClearDate = date('Y-m-d 23:59:59',strtotime("-1 Year")-300);
                 }
                 $num_else = $this->clrGameTables($val['table'], $newClearDate, $num_else);
+            }
+            //特定休市彩种删奖期
+            $res = ['game_bjpk10','game_cqssc','game_cqxync','game_pcdd','game_gd11x5','game_jsk3','game_bjkl8','game_gdklsf','game_xjssc','game_pknn','game_ahk3','game_gxk3','game_hbk3','game_hebeik3','game_gsk3','game_gzk3','game_twbg28','game_hlsx','game_twbgc'];
+            foreach ($res as $key => $table){
+                $num_else = $this->delGameTables($table, '2020-01-22 00:00:00', '2020-03-01 23:59:59', $num_else);
             }
             //清-计画试算
             $num_else = $this->clrGameTables('plan_record', $clearDate2, $num_else,'updated_at');
@@ -394,6 +403,36 @@ class clear_data extends Command
                 $sql = "DELETE FROM {$table} WHERE {$fielddname}<='{$clearDate62}' LIMIT 1000";
                 $res = DB::connection('mysql::write')->statement($sql);
                 writeLog('clear',$table.'=>'.$res);
+                $num_else ++;
+            }
+        }
+        return $num_else;
+    }
+
+    /**
+     * 删游戏数据表-特定休市时间
+     * @param string $table
+     * @param string $clearDate62
+     * @return int
+     */
+    private function delGameTables($table='',$delStart='',$delEnd='',$num_else,$fielddname='opentime'){
+        if(empty($table) || empty($delStart) || empty($delEnd))
+            return 0;
+        $redis = Redis::connection();
+        $redis->select(5);
+        $redisKey = 'clear-del-'.$table;
+        if(!$redis->exists($redisKey)){
+            $res = DB::connection('mysql::write')->table($table)->select('id')->whereBetween($fielddname, [$delStart, $delEnd])->first();
+            if(empty($res)){
+                $this->time = strtotime($this->stoptime) - time();
+                $redis->setex($redisKey,$this->time,$this->stoptime);
+                echo $redisKey.'=>0'.PHP_EOL;
+                writeLog('clear',$redisKey.'=>0');
+            }else{
+                $sql = "DELETE FROM {$table} WHERE {$fielddname} between '{$delStart}' and '{$delEnd}'";
+                $res = DB::connection('mysql::write')->statement($sql);
+                echo $redisKey.'=>'.$res.PHP_EOL;
+                writeLog('clear',$redisKey.'=>'.$res);
                 $num_else ++;
             }
         }

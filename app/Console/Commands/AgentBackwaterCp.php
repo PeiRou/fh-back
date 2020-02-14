@@ -64,6 +64,8 @@ class AgentBackwaterCp extends Command
         $aBet = Bets::getAgentUserData($gameId,$issue);
         if(empty($aBet)){
             $this->info('无下注打码量');
+            //层层代理反水结束后将状态改成已反水完
+            $this->setFinished($iGame['table'],$issue,$iGame['lottery']);
             return false;
         }
         //获取需要返点的代理id
@@ -76,9 +78,13 @@ class AgentBackwaterCp extends Command
         }
         $aAgentId = array_unique($aAgentId);
         //获取代理赔率
-        $aAgentOdds = $this->agentOddsSort(AgentOddsLevel::getAgentOdds($iGame['type'],$aAgentId));
+//        $aAgentOdds = $this->agentOddsSort(AgentOddsLevel::getAgentOdds($iGame['type'],$aAgentId));
+        $aAgentOdds = $this->agentOddsSort(AgentOddsLevel::getAgentOdds($gameId,$aAgentId));
         if(empty($aAgentOdds)){
             $this->info('代理赔率为空');
+            writeLog('New_Bet', $iGame['lottery'] . $issue . "层层代理反水-代理赔率为空！");
+            //层层代理反水结束后将状态改成已反水完
+            $this->setFinished($iGame['table'],$issue,$iGame['lottery']);
             return false;
         }
         //获取代理返水层级数
@@ -93,6 +99,7 @@ class AgentBackwaterCp extends Command
         foreach ($aBet as  $iBet){
             if(empty($aAgentOdds[$iBet->agent_id])){
                 $this->info('代理id为'.$iBet->agent_id.',赔率不存在');
+                writeLog('New_Bet', $iGame['lottery'] . $issue .'--agent_id:'. $iBet->agent_id ."层层代理反水-赔率不存在！");
                 continue;
             }
             $iAgent = $aAgentOdds[$iBet->agent_id];
@@ -103,6 +110,7 @@ class AgentBackwaterCp extends Command
                 foreach ($aAgentId as $iAgentId){
                     if(empty($aAgentOdds[$iAgentId])){
                         $this->info('代理id为'.$iBet->agent_id.',赔率不存在');
+                        writeLog('New_Bet', $iGame['lottery'] . $issue .'--agent_id:'. "层层代理反水-赔率不存在！");
                         continue;
                     }
                     $iAgent = $aAgentOdds[$iAgentId];
@@ -153,6 +161,9 @@ class AgentBackwaterCp extends Command
                 }
             }
         }
+        foreach ($aAgentMoney as &$v){
+            $v['balance'] = '0\' + balance + '.$v['balance'].' + \'0';
+        }
         //获取资金明细
         DB::beginTransaction();
         try{
@@ -161,9 +172,15 @@ class AgentBackwaterCp extends Command
                 DB::update(Agent::updateFiledBatchStitching($aAgentMoney,['balance'],'a_id'));
             CapitalAgent::insert($aCapitalAgent);
             DB::commit();
+            //层层代理反水结束后将状态改成已反水完
+            $this->setFinished($iGame['table'],$issue,$iGame['lottery']);
             $this->info('ok');
         }catch (\Exception $exception){
+            writeLog('error',$exception->getFile(). '-> Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+            writeLog('error','$aAgentBackwater:'.json_encode($aAgentBackwater));
+            writeLog('error','$aCapitalAgent:'.json_encode($aCapitalAgent));
             DB::rollback();
+            writeLog('New_Bet', $iGame['lottery'] . $issue . "层层代理反水前失败！");
             $this->info('保存失败');
         }
     }
@@ -186,5 +203,12 @@ class AgentBackwaterCp extends Command
     //获取金额
     public function getMoney($betMoney,$commission){
         return round($betMoney * $commission / 100,2);
+    }
+    //层层代理反水结束后将状态改成已反水完
+    private function setFinished($table,$issue,$gameName){
+        $res = DB::table($table)->where('issue',$issue)->where('backwater',2)->update(['backwater' => 1]);
+        if(empty($res)){
+            writeLog('New_Bet',$gameName.$issue.'层层代理反水中失败！');
+        }
     }
 }
