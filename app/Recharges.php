@@ -33,7 +33,12 @@ class Recharges extends Model
     }
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT `userId`,SUM(`amount`) AS `reAmountSum`,LEFT(`updated_at`,10) AS `date` FROM `recharges` WHERE `status` = 2 AND admin_add_money IN(0,1,2)";
+        $aSql = "SELECT `re`.*,`general_agent`.account AS `generalAccount`,`general_agent`.name AS `generalName`,`general_agent`.ga_id AS `generalId`,
+                    `agent`.account AS `agentAccount`,`agent`.name AS `agentName`,
+                    `users`.username AS `userAccount`,`users`.name AS `userName`  
+                    FROM (
+                        SELECT `userId`,`agent_id`,SUM(`amount`) AS `reAmountSum`,LEFT(`updated_at`,10) AS `date` 
+                        FROM `recharges` WHERE `status` = 2 AND admin_add_money IN(0,1,2)";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `updated_at` >= :startTime ";
@@ -43,7 +48,11 @@ class Recharges extends Model
             $aSql .= " AND `updated_at` <= :endTime ";
             $aArray['endTime'] = $endTime;
         }
-        $aSql .= " GROUP BY `userId`,`date` ORDER BY `date` ASC";
+        $aSql .= "      GROUP BY `userId`,`agent_id`,`date` ORDER BY `date` ASC
+                    ) AS `re`
+                    JOIN `users` ON `users`.id = `re`.userId
+                    LEFT JOIN `agent` ON `agent`.a_id = `re`.agent_id
+                    LEFT JOIN `general_agent` ON `general_agent`.ga_id = `agent`.gagent_id";
         return DB::select($aSql,$aArray);
     }
 

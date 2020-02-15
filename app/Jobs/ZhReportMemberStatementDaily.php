@@ -116,13 +116,47 @@ class ZhReportMemberStatementDaily implements ShouldQueue
             ];
         }
 
-        foreach ($aArray as $kArray => $iArray){
-            foreach ($aRecharges as $iRecharges){
-                if($iArray['user_id'] == $iRecharges->userId && $iArray['date'] == $iRecharges->date){
-                    $aArray[$kArray]['recharges_money'] = empty($iRecharges->reAmountSum)?0.00:$iRecharges->reAmountSum;
+        foreach ($aArray as $kArray => $iArray) {
+            foreach ($aRecharges as $kRecharges => $iRecharges) {
+                if ($iArray['user_id'] == $iRecharges->userId && $iArray['agent_id'] == $iRecharges->agent_id && $iArray['date'] == $iRecharges->date) {
+                    $aArray[$kArray]['recharges_money'] = empty($iRecharges->reAmountSum) ? 0.00 : $iRecharges->reAmountSum;
+                    unset($aRecharges[$kRecharges]);
                 }
             }
+        }
 
+        foreach ($aRecharges as $iRecharges){
+            $aArray[] = [
+                'user_account' => $iRecharges->userAccount,
+                'user_name' => $iRecharges->userName,
+                'user_id' => $iRecharges->userId,
+                'agent_account' => $iRecharges->agentAccount,
+                'agent_name' => $iRecharges->agentName,
+                'agent_id' => $iRecharges->agent_id,
+                'general_account' => $iRecharges->generalAccount,
+                'general_name' => $iRecharges->generalName,
+                'general_id' => $iRecharges->generalId,
+                'date' => $this->aDateTime,
+                'dateTime' => $time,
+                'created_at' => $dateTime,
+                'updated_at' => $dateTime,
+                'bet_count' => 0,
+                'recharges_money' => empty($iRecharges->reAmountSum) ? 0.00 : $iRecharges->reAmountSum,
+                'drawing_money' => 0.00,
+                'activity_money' => 0.00,
+                'bet_bunko' => 0.00,
+                'handling_fee' => 0.00,
+                'envelope_money' => 0.00,
+                'bet_money' => 0.00,
+                'rebate_money' => 0.00,
+                'promotion_money' => 0.00,
+                'other_money' => 0.00,
+                'balance_money' => 0.00,
+                'cai_money' => 0.00
+            ];
+        }
+
+        foreach ($aArray as $kArray => $iArray){
             foreach ($aDrawing as $iDrawing){
                 if($iArray['user_id'] == $iDrawing->user_id && $iArray['date'] == $iDrawing->date){
                     $aArray[$kArray]['drawing_money'] = empty($iDrawing->drAmountSum)?0.00:$iDrawing->drAmountSum;
