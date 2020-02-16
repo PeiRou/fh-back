@@ -70,7 +70,8 @@ class Drawing extends Model
     }
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT `user_id`,SUM(`amount`) AS `drAmountSum`,LEFT(`updated_at`,10) AS `date` FROM `drawing` WHERE `status` = 2  AND `draw_type` IN(0,1) ";
+        $aSql = "SELECT `user_id`,`agent_id`,
+                  SUM(`amount`) AS `drAmountSum`,LEFT(`updated_at`,10) AS `date` FROM `drawing` WHERE `status` = 2  AND `draw_type` IN(0,1) ";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `updated_at` >= :startTime ";

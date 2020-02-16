@@ -92,6 +92,7 @@ class MemberStatementDaily implements ShouldQueue
                 'balance_money' => 0.00,
                 'cai_money' => 0.00,
                 'bonus_amount' => 0.00,
+                'is_u' => 1,
             ];
         }
 
@@ -139,7 +140,7 @@ class MemberStatementDaily implements ShouldQueue
 
         foreach ($aArray as $kArray => $iArray){
             foreach ($aBet as $kBet => $iBet){
-                if($iArray['user_id'] == $iBet->user_id && $iArray['date'] == $iBet->date){
+                if($iArray['user_id'] == $iBet->user_id && $iArray['date'] == $iBet->date && $iArray['agent_id'] == $iRecharges->agent_id){
                     $aArray[$kArray]['bet_count'] = empty($iBet->idCount)?0:$iBet->idCount;
                     $aArray[$kArray]['bet_money'] = empty($iBet->betMoneySum)?0.00:$iBet->betMoneySum;
                     $aArray[$kArray]['bet_amount'] = empty($iBet->sumWinbet)?0.00:$iBet->sumWinbet;
@@ -151,24 +152,24 @@ class MemberStatementDaily implements ShouldQueue
             }
 
             foreach ($aDrawing as $kDrawing => $iDrawing){
-                if($iArray['user_id'] == $iDrawing->user_id && $iArray['date'] == $iDrawing->date){
+                if($iArray['user_id'] == $iDrawing->user_id && $iArray['date'] == $iDrawing->date && $iArray['agent_id'] == $iRecharges->agent_id){
                     $aArray[$kArray]['drawing_money'] = empty($iDrawing->drAmountSum)?0.00:$iDrawing->drAmountSum;
                 }
             }
             foreach ($aActivity as $kActivity => $iActivity){
-                if($iArray['user_id'] == $iActivity->to_user && $iArray['date'] == $iActivity->date){
+                if($iArray['user_id'] == $iActivity->to_user && $iArray['date'] == $iActivity->date && isset($iArray['is_u'])){
                     $aArray[$kArray]['activity_money'] = empty($iActivity->sumActivity)?0.00:$iActivity->sumActivity;
                     $aArray[$kArray]['handling_fee'] = empty($iActivity->sumRecharge_fee)?0.00:$iActivity->sumRecharge_fee;
                 }
             }
 
             //余额宝盈利
-            if($balance_income->get($iArray['user_id'])){
+            if($balance_income->get($iArray['user_id']) && isset($iArray['is_u'])){
                 $aArray[$kArray]['balance_money'] += ($balance_income->get($iArray['user_id']) ?? 0.00);
             }
             //资金明细 - 其它
             foreach ($aCapitalOther as $kCapitalOther => $iCapitalOther){
-                if($iArray['user_id'] == $iCapitalOther->to_user && $iArray['date'] == $iCapitalOther->date){
+                if($iArray['user_id'] == $iCapitalOther->to_user && $iArray['date'] == $iCapitalOther->date && isset($iArray['is_u'])){
                     $aArray[$kArray]['other_money'] += $iCapitalOther->other_money ?? 0;
                     $aArray[$kArray]['cai_money'] += $iCapitalOther->cai_money ?? 0;
                 }
@@ -179,6 +180,9 @@ class MemberStatementDaily implements ShouldQueue
         foreach ($aArray as $kArray => $iArray){
             if($iArray['bet_count'] == 0 && $iArray['recharges_money'] == 0 && $iArray['drawing_money'] == 0 && $iArray['activity_money'] == 0 && $iArray['other_money'] == 0 && $iArray['balance_money'] == 0 && $iArray['cai_money'] == 0)
                 unset($aArray[$kArray]);
+            if (isset($iArray['is_u'])){
+                unset($aArray[$kArray]['is_u']);
+            }
         }
         $aData = array_chunk($aArray,1000);
         foreach ($aData as $iData){
