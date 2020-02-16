@@ -35,7 +35,7 @@ class Recharges extends Model
     public static function betMemberReportData($startTime = '',$endTime = ''){
         $aSql = "SELECT `re`.*,`general_agent`.account AS `generalAccount`,`general_agent`.name AS `generalName`,`general_agent`.ga_id AS `generalId`,
                     `agent`.account AS `agentAccount`,`agent`.name AS `agentName`,
-                    `users`.username AS `userAccount`,`users`.name AS `userName`  
+                    `users`.username AS `userAccount`,`users`.name AS `userName`,`users`.testFlag AS `userTestFlag`  
                     FROM (
                         SELECT `userId`,`agent_id`,SUM(`amount`) AS `reAmountSum`,LEFT(`updated_at`,10) AS `date` 
                         FROM `recharges` WHERE `status` = 2 AND admin_add_money IN(0,1,2)";
