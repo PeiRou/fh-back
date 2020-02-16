@@ -95,12 +95,16 @@ class MemberStatementDaily implements ShouldQueue
             ];
         }
 
-        foreach ($aRecharges as $iRecharges){
-            foreach ($aArray as $kArray => $iArray) {
-                if ($iArray['user_id'] == $iRecharges->userId && $iArray['agent_id'] == $iRecharges->agent_id && $iArray['date'] == $iRecharges->date) {
-                    continue 2;
+        foreach ($aArray as $kArray => $iArray){
+            foreach ($aRecharges as $kRecharges => $iRecharges){
+                if($iArray['user_id'] == $iRecharges->userId && $iArray['agent_id'] == $iRecharges->agent_id && $iArray['date'] == $iRecharges->date){
+                    $aArray[$kArray]['recharges_money'] = empty($iRecharges->reAmountSum)?0.00:$iRecharges->reAmountSum;
+                    unset($aRecharges[$kRecharges]);
                 }
             }
+        }
+
+        foreach ($aRecharges as $iRecharges){
             $aArray[] = [
                 'user_account' => $iRecharges->userAccount,
                 'user_name' => $iRecharges->userName,
@@ -108,7 +112,7 @@ class MemberStatementDaily implements ShouldQueue
                 'user_test_flag' => $iRecharges->userTestFlag,
                 'agent_account' => $iRecharges->agentAccount,
                 'agent_name' => $iRecharges->agentName,
-                'agent_id' => $iRecharges->agentId,
+                'agent_id' => $iRecharges->agent_id,
                 'general_account' => $iRecharges->generalAccount,
                 'general_name' => $iRecharges->generalName,
                 'general_id' => $iRecharges->generalId,
@@ -131,15 +135,6 @@ class MemberStatementDaily implements ShouldQueue
                 'cai_money' => 0.00,
                 'bonus_amount' => 0.00,
             ];
-        }
-
-        foreach ($aArray as $kArray => $iArray){
-            foreach ($aRecharges as $kRecharges => $iRecharges){
-                if($iArray['user_id'] == $iRecharges->userId && $iArray['agent_id'] == $iRecharges->agent_id && $iArray['date'] == $iRecharges->date){
-                    $aArray[$kArray]['recharges_money'] = empty($iRecharges->reAmountSum)?0.00:$iRecharges->reAmountSum;
-                    unset($aRecharges[$kRecharges]);
-                }
-            }
         }
 
         foreach ($aArray as $kArray => $iArray){
