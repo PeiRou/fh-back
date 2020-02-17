@@ -140,7 +140,7 @@ class MemberStatementDaily implements ShouldQueue
 
         foreach ($aArray as $kArray => $iArray){
             foreach ($aBet as $kBet => $iBet){
-                if($iArray['user_id'] == $iBet->user_id && $iArray['date'] == $iBet->date && $iArray['agent_id'] == $iRecharges->agent_id){
+                if($iArray['user_id'] == $iBet->user_id && $iArray['date'] == $iBet->date && $iArray['agent_id'] == $iBet->agent_id){
                     $aArray[$kArray]['bet_count'] = empty($iBet->idCount)?0:$iBet->idCount;
                     $aArray[$kArray]['bet_money'] = empty($iBet->betMoneySum)?0.00:$iBet->betMoneySum;
                     $aArray[$kArray]['bet_amount'] = empty($iBet->sumWinbet)?0.00:$iBet->sumWinbet;
@@ -152,7 +152,7 @@ class MemberStatementDaily implements ShouldQueue
             }
 
             foreach ($aDrawing as $kDrawing => $iDrawing){
-                if($iArray['user_id'] == $iDrawing->user_id && $iArray['date'] == $iDrawing->date && $iArray['agent_id'] == $iRecharges->agent_id){
+                if($iArray['user_id'] == $iDrawing->user_id && $iArray['date'] == $iDrawing->date && $iArray['agent_id'] == $iDrawing->agent_id){
                     $aArray[$kArray]['drawing_money'] = empty($iDrawing->drAmountSum)?0.00:$iDrawing->drAmountSum;
                 }
             }
