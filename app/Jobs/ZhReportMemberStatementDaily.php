@@ -112,7 +112,8 @@ class ZhReportMemberStatementDaily implements ShouldQueue
                 'promotion_money' => 0.00,
                 'other_money' => 0.00,
                 'balance_money' => 0.00,
-                'cai_money' => 0.00
+                'cai_money' => 0.00,
+                'is_u' => 1,
             ];
         }
 
@@ -158,13 +159,13 @@ class ZhReportMemberStatementDaily implements ShouldQueue
 
         foreach ($aArray as $kArray => $iArray){
             foreach ($aDrawing as $iDrawing){
-                if($iArray['user_id'] == $iDrawing->user_id && $iArray['date'] == $iDrawing->date){
+                if($iArray['user_id'] == $iDrawing->user_id && $iArray['date'] == $iDrawing->date && isset($iArray['is_u'])){
                     $aArray[$kArray]['drawing_money'] = empty($iDrawing->drAmountSum)?0.00:$iDrawing->drAmountSum;
                 }
             }
 
             foreach ($aActivity as $iActivity){
-                if($iArray['user_id'] == $iActivity->to_user && $iArray['date'] == $iActivity->date){
+                if($iArray['user_id'] == $iActivity->to_user && $iArray['date'] == $iActivity->date && isset($iArray['is_u'])){
                     $aArray[$kArray]['activity_money'] = empty($iActivity->sumActivity)?0.00:$iActivity->sumActivity;
                     $aArray[$kArray]['handling_fee'] = empty($iActivity->sumRecharge_fee)?0.00:$iActivity->sumRecharge_fee;
                     $aArray[$kArray]['envelope_money'] = empty($iActivity->sumAmount)?0.00:$iActivity->sumAmount;
@@ -178,7 +179,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
 //            }
 
             foreach ($aBet as $iBet){
-                if($iArray['user_id'] == $iBet->user_id && $iArray['date'] == $iBet->date){
+                if($iArray['user_id'] == $iBet->user_id && $iArray['date'] == $iBet->date && isset($iArray['is_u'])){
                     $aArray[$kArray]['bet_count'] = empty($iBet->idCount)?0:$iBet->idCount;
                     $aArray[$kArray]['bet_money'] = empty($iBet->betMoneySum)?0:$iBet->betMoneySum;
                     $sumBunko = empty($iBet->sumBunko)?0.00:$iBet->sumBunko;
@@ -211,7 +212,7 @@ class ZhReportMemberStatementDaily implements ShouldQueue
             }
 
             foreach ($aJqBet as $iJqBet){
-                if($iArray['user_id'] == $iJqBet->user_id && !empty($iJqBet->gameslist_id)){
+                if($iArray['user_id'] == $iJqBet->user_id && !empty($iJqBet->gameslist_id) && isset($iArray['is_u'])){
                     $aArray[$kArray]['bet_count'] += empty($iJqBet->bet_count)?0:$iJqBet->bet_count;
                     $aArray[$kArray]['bet_bunko'] += empty($iJqBet->bet_bunko)?0.00:$iJqBet->bet_bunko;
                     $aArray[$kArray]['bet_money'] += empty($iJqBet->bet_money)?0.00:$iJqBet->bet_money;
@@ -242,24 +243,24 @@ class ZhReportMemberStatementDaily implements ShouldQueue
             }
 
             foreach ($aRebate as $iRebate){
-                if($iArray['user_id'] == $iRebate->user_id){
+                if($iArray['user_id'] == $iRebate->user_id && isset($iArray['is_u'])){
                     $aArray[$kArray]['rebate_money'] += empty($iRebate->money)?0:$iRebate->money;
                 }
             }
 
             foreach ($aPromotion as $iPromotion){
-                if($iArray['user_id'] == $iPromotion->user_id){
+                if($iArray['user_id'] == $iPromotion->user_id && isset($iArray['is_u'])){
                     $aArray[$kArray]['promotion_money'] += empty($iPromotion->money)?0:$iPromotion->money;
                 }
             }
 
             //余额宝盈利
-            if($balance_income->get($iArray['user_id'])){
+            if($balance_income->get($iArray['user_id']) && isset($iArray['is_u'])){
                 $aArray[$kArray]['balance_money'] += ($balance_income->get($iArray['user_id']) ?? 0.00);
             }
             //资金明细 - 其它
             foreach ($aCapitalOther as $kCapitalOther => $iCapitalOther){
-                if($iArray['user_id'] == $iCapitalOther->to_user){
+                if($iArray['user_id'] == $iCapitalOther->to_user && isset($iArray['is_u'])){
                     $aArray[$kArray]['other_money'] += $iCapitalOther->other_money ?? 0;
                     $aArray[$kArray]['cai_money'] += $iCapitalOther->cai_money ?? 0;
                 }
@@ -350,6 +351,11 @@ class ZhReportMemberStatementDaily implements ShouldQueue
         foreach ($aBunko as $iBunko){
             ZhReportMemberBunko::insert($iBunko);
         }
+        foreach ($aArray as $kArray => $iArray){
+            if (isset($iArray['is_u'])){
+                unset($aArray[$kArray]['is_u']);
+            }
+         }
         foreach ($aArray as $kArray => $iArray){
             if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['rebate_money'] > 0 || $iArray['promotion_money'] > 0 || $iArray['other_money'] > 0 || $iArray['balance_money'] > 0 || $iArray['cai_money'] > 0)
                 ZhReportMemberStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('zhReportMemberStatementInsert'));
