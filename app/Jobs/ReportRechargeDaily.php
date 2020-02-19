@@ -49,6 +49,8 @@ class ReportRechargeDaily implements ShouldQueue
         $recharge_today_money = Recharges::getTodayChargeUsersMoney($this->aDateTime);
         //首充人数
         $recharge_first = RechargesTimes::getFirstChargeUsersCount($this->aDateTime);
+        //首充金额
+        $recharge_first_money = RechargesTimes::getFirstChargeUsersMoney($this->aDateTime);
         //第二次充值人数
         $recharge_second = RechargesTimes::getSecondChargeUsersCount($this->aDateTime);
         //第三次充值人数
@@ -65,6 +67,7 @@ class ReportRechargeDaily implements ShouldQueue
             'recharge_today' => $recharge_today,
             'recharge_today_money' => $recharge_today_money,
             'recharge_first' => $recharge_first,
+            'recharge_first_money' => $recharge_first_money,
             'recharge_second' => $recharge_second,
             'recharge_third' => $recharge_third,
             'current_count' => $iCurrent->count ?: 0,
