@@ -231,7 +231,9 @@ class Bets extends Model
     }
 
     public static function betMemberReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT LEFT(`updated_at`,10) AS `date`,`user_id`,COUNT(`bet_id`) AS `idCount`,SUM(`bet_money`) AS `betMoneySum`,
+        $aSql = "SELECT LEFT(`updated_at`,10) AS `date`,
+                  `user_id`,`agent_id`,
+                  COUNT(`bet_id`) AS `idCount`,SUM(`bet_money`) AS `betMoneySum`,
                   SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `bet_money` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bet_money` ELSE 0 END) END) AS `sumWinbet`,
                   SUM(CASE WHEN `game_id` IN(90,91) THEN `nn_view_money` ELSE (CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE `bunko` END) END) AS `sumBunko`,
                   SUM(CASE WHEN `game_id` IN(90,91) THEN (CASE WHEN `nn_view_money` > 0 THEN `nn_view_money` ELSE 0 END) ELSE (CASE WHEN `bunko` >0 THEN `bunko` - `bet_money` ELSE 0 END) END) AS `sumBonus`,
