@@ -420,7 +420,7 @@ class clear_data extends Command
             return 0;
         $redis = Redis::connection();
         $redis->select(5);
-        $redisKey = 'clear-del-'.$table;
+        $redisKey = 'clear-del-'.$table.'-'.$delStart.'-'.$delEnd;
         if(!$redis->exists($redisKey)){
             $res = DB::connection('mysql::write')->table($table)->select('id')->whereBetween($fielddname, [$delStart, $delEnd])->first();
             if(empty($res)){
