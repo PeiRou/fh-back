@@ -78,7 +78,9 @@ class AgentBackwaterCp extends Command
                 $aAgentId = array_merge($aAgentId,explode(',',$iBet->superior_agent));
             }
         }
+        //去除重复的
         $aAgentId = array_unique($aAgentId);
+        $aUserId = array_unique($aUserId);
         //获取有設置會員賠率的
         $aAgentOddsUser = $this->agentOddsSortUser(AgentOddsLevel::getAgentOddsUser($gameId,$aUserId));
         //获取代理赔率
