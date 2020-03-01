@@ -277,6 +277,16 @@ class ZhReportAgentStatementDaily implements ShouldQueue
 
 
         foreach ($aPromotion as $iPromotion){
+            foreach ($aArrayBunko as $kArrayBunko => $iArrayBunko){
+                if(
+                    $iArrayBunko['game_id'] == $iPromotion->game_id
+                    && $iArrayBunko['agent_id'] == $iPromotion->agent_id
+                    && $iArrayBunko['date'] == $iPromotion->date
+                ){
+                    $aArrayBunko[$kArrayBunko]['promotion_money'] += $iPromotion->money;
+                    continue 2;
+                }
+            }
             $aArrayBunko[] = [
                 'game_id' => $iPromotion->game_id,
                 'game_name' => empty($iPromotion->game_id) ? '彩票' : $iPromotion->game_name,
