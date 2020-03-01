@@ -68,8 +68,36 @@ class AgentBackwater extends Model
             $aSql .= ' AND `category_id` = :category_id ';
             $aArray['category_id'] = $is_zh;
         }
+
         $aSql .= " GROUP BY `agent_id`,`date`";
         return DB::select($aSql,$aArray);
+    }
+
+    public static function getZHBackGroupByAgentId($startTime = '',$endTime = ''){
+        $aSql = "SELECT 
+                LEFT(`updated_at`,10) AS `date`,
+                `agent_id`,
+                SUM(`money`) AS `money`,
+                `game_id`,
+                `category_id` 
+                FROM `agent_backwater` WHERE `status` = 1 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `updated_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `updated_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+
+        $aSql .= " GROUP BY `agent_id`,`date`,`game_id`,`category_id` ";
+        $sql = " SELECT `tb`.*, IFNULL(`games_list`.`pid`, 0) as `pid` FROM (
+	              {$aSql}
+                ) AS tb 
+                LEFT JOIN `games_list` ON `games_list`.game_id = `tb`.game_id AND `category_id` = 2 ";
+
+        return DB::select($sql,$aArray);
     }
 
     public static function getBackGroupByAgentGame($startTime = '',$endTime = ''){
