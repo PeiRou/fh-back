@@ -305,7 +305,7 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                 $iBack->game_id = 0;
                 $iBack->game_name = '彩票';
             }else{
-                $iBack->game_name = $aGameName[$iBack->game_id] ?? '默认游戏';
+                $iBack->game_name = ((isset($aGameCategory[$iBack->game_id])?$aGameCategory[$iBack->game_id]:'默认分类').'_'.$aGameName[$iBack->game_id]) ?? '默认游戏';
             }
             foreach ($aArrayBunkoCopy as $kArrayBunko => $iArrayBunko){
                 if(
