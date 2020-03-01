@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Agent;
+use App\AgentBackwater;
 use App\BalanceIncomeDay;
 use App\BetHis;
 use App\Bets;
@@ -56,6 +57,8 @@ class ZhReportAgentStatementDaily implements ShouldQueue
         $aDrawing = Drawing::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取活动金额
         $aActivity = Capital::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
+        //获取代理返水金额
+        $aBack = AgentBackwater::getBackGroupByAgentId($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取聊天室红包
         //$aHongBao = ChatHongbaoDt::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
 //        $aHongBao = Capital::betAgentReportHongBaoData($this->aDateTime,$this->aDateTime.' 23:59:59');
@@ -107,6 +110,7 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                 'other_money' => 0.00,
                 'balance_money' => 0.00,
                 'cai_money' => 0.00,
+                'return_amount' => 0.00
             ];
         }
         foreach ($aArray as $kArray => $iArray){
@@ -129,7 +133,11 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                     $aArray[$kArray]['envelope_money'] = empty($iActivity->sumAmount)?0.00:$iActivity->sumAmount;
                 }
             }
-
+            foreach ($aBack as $kBack => $iBack){
+                if($iArray['agent_id'] == $iBack->agent_id && $iArray['date'] == $iBack->date){
+                    $aArray[$kArray]['return_amount'] = empty($iBack->money)?0.00:$iBack->money;
+                }
+            }
 //            foreach ($aHongBao as $iHongBao){
 //                if($iArray['agent_id'] == $iHongBao->agent && $iArray['date'] == $iHongBao->date){
 //                    $aArray[$kArray]['envelope_money'] = empty($iHongBao->amount)?0.00:$iHongBao->amount;
@@ -289,7 +297,7 @@ class ZhReportAgentStatementDaily implements ShouldQueue
             ZhReportAgentBunko::insert($iBunko);
         }
         foreach ($aArray as $kArray => $iArray){
-            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['bet_bunko'] > 0 || $iArray['rebate_money'] > 0 || $iArray['promotion_money'] > 0 || $iArray['other_money'] > 0 || $iArray['balance_money'] > 0 || $iArray['cai_money'] > 0)
+            if($iArray['bet_count'] > 0 || $iArray['recharges_money'] > 0 || $iArray['drawing_money'] > 0 || $iArray['activity_money'] > 0 || $iArray['envelope_money'] > 0 || $iArray['bet_bunko'] > 0 || $iArray['rebate_money'] > 0 || $iArray['promotion_money'] > 0 || $iArray['other_money'] > 0 || $iArray['balance_money'] > 0 || $iArray['cai_money'] > 0 || $iArray['return_amount'] > 0)
                 ZhReportAgentStatementInsert::dispatch($iArray)->onQueue($this->setQueueRealName('zhReportAgentStatementInsert'));
         }
     }

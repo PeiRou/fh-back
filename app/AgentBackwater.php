@@ -53,17 +53,21 @@ class AgentBackwater extends Model
     }
 
 
-    public static function getBackGroupByAgentId($startTime = '',$endTime = ''){
-            $aSql = "SELECT LEFT(`updated_at`,10) AS `date`,`agent_id`,SUM(`money`) AS `money` FROM `agent_backwater` WHERE `status` = 1 ";
-            $aArray = [];
-            if(empty($startTime)){
-                    $aSql .= " AND `updated_at` >= :startTime ";
-                    $aArray['startTime'] = $startTime;
-                }
-        if(empty($endTime)){
-                    $aSql .= " AND `updated_at` <= :endTime ";
-                    $aArray['startTime'] = $endTime;
-                }
+    public static function getBackGroupByAgentId($startTime = '',$endTime = '',$is_zh = false){
+        $aSql = "SELECT LEFT(`updated_at`,10) AS `date`,`agent_id`,SUM(`money`) AS `money` FROM `agent_backwater` WHERE `status` = 1 ";
+        $aArray = [];
+        if(!empty($startTime)){
+            $aSql .= " AND `updated_at` >= :startTime ";
+            $aArray['startTime'] = $startTime;
+        }
+        if(!empty($endTime)){
+            $aSql .= " AND `updated_at` <= :endTime ";
+            $aArray['endTime'] = $endTime;
+        }
+        if($is_zh){
+            $aSql .= ' AND `category_id` = :category_id ';
+            $aArray['category_id'] = $is_zh;
+        }
         $aSql .= " GROUP BY `agent_id`,`date`";
         return DB::select($aSql,$aArray);
     }

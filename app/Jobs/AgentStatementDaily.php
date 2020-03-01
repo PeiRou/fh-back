@@ -55,7 +55,7 @@ class AgentStatementDaily implements ShouldQueue
         //获取活动金额
         $aActivity = Capital::betAgentReportData($this->aDateTime,$this->aDateTime.' 23:59:59');
         //获取代理返水金额
-        $aBack = AgentBackwater::getBackGroupByAgentId($this->aDateTime,$this->aDateTime.' 23:59:59');
+        $aBack = AgentBackwater::getBackGroupByAgentId($this->aDateTime,$this->aDateTime.' 23:59:59', 1);
         # 资金明细可以取到的 其它金额
         $aCapitalOther = Capital::betAgentReportOtherData($this->aDateTime,$this->aDateTime.' 23:59:59', CapitalModel::capitalOtherTypes);
         # 余额宝盈利
