@@ -299,7 +299,6 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                 'return_amount' => 0.00
             ];
         }
-        $aArrayBunkoCopy = $aArrayBunko;
         foreach ($aBack as $kBack => $iBack){
             if($iBack->category_id == 1){
                 $iBack->game_id = 0;
@@ -307,7 +306,7 @@ class ZhReportAgentStatementDaily implements ShouldQueue
             }else{
                 $iBack->game_name = ((isset($aGameCategory[$iBack->game_id])?$aGameCategory[$iBack->game_id]:'默认分类').'_'.$aGameName[$iBack->game_id]) ?? '默认游戏';
             }
-            foreach ($aArrayBunkoCopy as $kArrayBunko => $iArrayBunko){
+            foreach ($aArrayBunko as $kArrayBunko => $iArrayBunko){
                 if(
                     $iArrayBunko['game_id'] == $iBack->game_id
                     && $iArrayBunko['agent_id'] == $iBack->agent_id
