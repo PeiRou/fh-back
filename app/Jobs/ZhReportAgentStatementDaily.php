@@ -281,7 +281,6 @@ class ZhReportAgentStatementDaily implements ShouldQueue
                 if(
                     $iArrayBunko['game_id'] == $iPromotion->game_id
                     && $iArrayBunko['agent_id'] == $iPromotion->agent_id
-                    && $iArrayBunko['date'] == $iPromotion->date
                 ){
                     $aArrayBunko[$kArrayBunko]['promotion_money'] += $iPromotion->money;
                     continue 2;
