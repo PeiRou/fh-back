@@ -63,10 +63,19 @@ class AgentBackwaterCp extends Command
         //获取用户打码量
         $aBet = Bets::getAgentUserData($gameId,$issue);
         if(empty($aBet)){
-            $this->info('无下注打码量');
-            //层层代理反水结束后将状态改成已反水完
-            $this->setFinished($iGame['table'],$issue,$iGame['lottery']);
-            return false;
+            $this->info('今日无下注打码量-1');
+            //----新增可以补昨日的数据
+            $checkIsDo = $this->getFinished($iGame['table'],$issue);   //先查询是否是昨日以前的奖期
+            echo $checkIsDo.'===';
+            if($checkIsDo)  //查到已经做过了，就不继续做了
+                return false;
+            $aBet = Bets::getAgentUserDataHis($gameId,$issue);
+            if(empty($aBet)) {
+                $this->info('历史也无下注打码量-3');
+                //层层代理反水结束后将状态改成已反水完
+                $this->setFinished($iGame['table'], $issue, $iGame['lottery']);
+                return false;
+            }
         }
         //获取需要返点的代理id
         $aAgentId = [];
@@ -234,5 +243,14 @@ class AgentBackwaterCp extends Command
         if(empty($res)){
             writeLog('New_Bet',$gameName.$issue.'层层代理反水中失败！');
         }
+    }
+    //检查是否未返过或是返回中失败，而且日期不是还不能是今日的
+    private function getFinished($table,$issue){
+        $res = DB::table($table)->where('is_open',1)->where('opentime','<=',date('Y-m-d 23:59:59',strtotime("-1 days")))->where('issue',$issue)->whereIn('backwater',[0,2])->first();
+        if(empty($res)) {
+            $this->info('没有可以补做的-2');
+            return true;
+        }else
+            return false;
     }
 }

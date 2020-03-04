@@ -1113,7 +1113,7 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
             ->get();
     }
 
-    //代理用户投注
+    //代理用户投注-今日的
     public static function getAgentUserData($gameId,$issue){
         $aSql = 'SELECT `BET`.*,`agent`.modelStatus,`agent`.superior_agent,`agent`.account,`agent`.balance FROM 
                     (
@@ -1121,6 +1121,21 @@ sum(case WHEN b.game_id in (90,91) then nn_view_money else(case when bunko >0 th
                         WHERE `game_id` = :gameId AND `issue` = :issue AND `status` = 1 GROUP BY `user_id`
                     ) AS `BET`
                     INNER JOIN `agent` ON `agent`.a_id = `BET`.agent_id AND `agent`.modelStatus = 1';
+        $aArray = [
+            'gameId' => $gameId,
+            'issue' => $issue,
+        ];
+        return DB::select($aSql,$aArray);
+    }
+
+    //代理用户投注-历史的
+    public static function getAgentUserDataHis($gameId,$issue){
+        $aSql = 'SELECT `BET_HIS`.*,`agent`.modelStatus,`agent`.superior_agent,`agent`.account,`agent`.balance FROM 
+                    (
+                        SELECT `user_id`,`agent_id`,SUM(`bet_money`) AS `betMoney` FROM `bet_his`
+                        WHERE `game_id` = :gameId AND `issue` = :issue AND `status` = 1 GROUP BY `user_id`
+                    ) AS `BET_HIS`
+                    INNER JOIN `agent` ON `agent`.a_id = `BET_HIS`.agent_id AND `agent`.modelStatus = 1';
         $aArray = [
             'gameId' => $gameId,
             'issue' => $issue,
