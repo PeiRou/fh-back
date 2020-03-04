@@ -148,4 +148,19 @@ class AgentBackwater extends Model
         $aSql .= " GROUP BY `g_id`,`date`,`game_id`";
         return DB::select($aSql,$aArray);
     }
+
+    public static function getBackwaterUser($startTime,$endTime){
+        $aSql = "SELECT `agent_backwater`.`user_id`,`agent_backwater`.`game_id`,`agent_backwater`.`game_name`,`agent_backwater`.`category_id`,
+                 `agent_backwater`.`issue`,SUM(`agent_backwater`.`money`) AS `money`,SUM(`agent_backwater`.`bet_money`) AS `bet_money`,
+                 `agent_backwater`.`created_at`,`users`.username  
+                 FROM  `agent_backwater`
+                 INNER JOIN `users` ON `users`.id = `agent_backwater`.user_id
+                 WHERE  `agent_backwater`.created_at >= :startTime  AND `agent_backwater`.created_at <= :endTime
+                 GROUP BY `agent_backwater`.user_id,`agent_backwater`.category_id,`agent_backwater`.game_id,`agent_backwater`.issue";
+        $aArray = [
+            'startTime' => $startTime,
+            'endTime' => $endTime,
+        ];
+        return DB::select($aSql,$aArray);
+    }
 }
