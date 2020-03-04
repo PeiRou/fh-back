@@ -70,15 +70,20 @@ class AgentBackwaterCp extends Command
         }
         //获取需要返点的代理id
         $aAgentId = [];
+        $aUserId = [];
         foreach ($aBet as $iBet){
             $aAgentId[] = $iBet->agent_id;
+            $aUserId[] = $iBet->user_id;        //拼装会员ID
             if(!empty($iBet->superior_agent)){
                 $aAgentId = array_merge($aAgentId,explode(',',$iBet->superior_agent));
             }
         }
+        //去除重复的
         $aAgentId = array_unique($aAgentId);
+        $aUserId = array_unique($aUserId);
+        //获取有設置會員賠率的
+        $aAgentOddsUser = $this->agentOddsSortUser(AgentOddsLevel::getAgentOddsUser($gameId,$aUserId));
         //获取代理赔率
-//        $aAgentOdds = $this->agentOddsSort(AgentOddsLevel::getAgentOdds($iGame['type'],$aAgentId));
         $aAgentOdds = $this->agentOddsSort(AgentOddsLevel::getAgentOdds($gameId,$aAgentId));
         if(empty($aAgentOdds)){
             $this->info('代理赔率为空');
@@ -97,16 +102,26 @@ class AgentBackwaterCp extends Command
         $aCapitalAgent = [];
         $iTime = date('Y-m-d H:i:s');
         foreach ($aBet as  $iBet){
+            //检查代理赔率是否存在
             if(empty($aAgentOdds[$iBet->agent_id])){
                 $this->info('代理id为'.$iBet->agent_id.',赔率不存在');
                 writeLog('New_Bet', $iGame['lottery'] . $issue .'--agent_id:'. $iBet->agent_id ."层层代理反水-赔率不存在！");
                 continue;
             }
-            $iAgent = $aAgentOdds[$iBet->agent_id];
+            //检查有設置會員賠率的直属代理
+            if(empty($aAgentOddsUser[$iBet->user_id])){
+                $iAgent = $aAgentOdds[$iBet->agent_id];
+            }else{
+                $iAgent = $aAgentOddsUser[$iBet->user_id];
+                $iBet->superior_agent = empty($iBet->superior_agent )?$iBet->agent_id:$iBet->superior_agent .','.$iBet->agent_id;
+            }
+
             $preRebate = $iAgent->rebate;
+            //开始处理层层代理
             if(!empty($iBet->superior_agent)){
                 $aAgentId = array_slice(array_reverse(explode(',',$iBet->superior_agent),false),0,$iLevelNum);
                 $i = 1;
+                //把注单里每层的代理拿出来循环做一下
                 foreach ($aAgentId as $iAgentId){
                     if(empty($aAgentOdds[$iAgentId])){
                         $this->info('代理id为'.$iBet->agent_id.',赔率不存在');
@@ -183,6 +198,15 @@ class AgentBackwaterCp extends Command
             writeLog('New_Bet', $iGame['lottery'] . $issue . "层层代理反水前失败！");
             $this->info('保存失败');
         }
+    }
+
+    //按代理id为键名排序-有设置会员培率的
+    public function agentOddsSortUser($aAgentOdds){
+        $aArray = [];
+        foreach ($aAgentOdds as $iAgentOdds){
+            $aArray[$iAgentOdds->user_id] = $iAgentOdds;
+        }
+        return $aArray;
     }
 
     //按代理id为键名排序

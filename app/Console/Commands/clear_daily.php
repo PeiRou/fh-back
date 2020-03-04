@@ -37,6 +37,9 @@ class clear_daily extends Command
      */
     public function handle()
     {
+        $redis = Redis::connection();
+        $redis->select(9);
+        $redis->flushdb();        //清除所有聊天室红包跟公告 相关redis
         //---将 杀率 的ID重置
         $this->resetId('excel_game');
         //---将 长龙 的ID重置

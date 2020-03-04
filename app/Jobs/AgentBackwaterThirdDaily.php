@@ -33,24 +33,29 @@ class AgentBackwaterThirdDaily implements ShouldQueue
     }
 
     /**
-     * Execute the job.
-     *
-     * @return void
+     * @throws \Exception
      */
     public function handle()
     {
         ini_set('memory_limit','2048M');
         //获取第三方打码量
         $aJqBet = ZhReportMemberBunko::getThirdData($this->aDateTime,$this->aDateTime.' 23:59:59');
-        //获取需要返点的代理id
+        //获取 需要返点的代理id
         $aAgentId = [];
+        //获取 有设置会员赔率的会员id
+        $aUserId = [];
         foreach ($aJqBet as $iJqBet){
             $aAgentId[] = $iJqBet->agent_id;
+            $aUserId[] = $iJqBet->user_id;
             if(!empty($iJqBet->superior_agent)){
                 $aAgentId = array_merge($aAgentId,explode(',',$iJqBet->superior_agent));
             }
         }
+        //去除重复的
         $aAgentId = array_unique($aAgentId);
+        $aUserId = array_unique($aUserId);
+        //获取有設置會員賠率的
+        $aAgentOddsUser = count($aUserId) ? $this->agentOddsSortUser(AgentOddsLevel::getOddsByAgentIdUser($aUserId)) : [];
         //获取代理赔率
         $aAgentOdds = count($aAgentId) ? $this->agentOddsSort(AgentOddsLevel::getOddsByAgentId($aAgentId)) : [];
         //获取代理返水层级数
@@ -58,9 +63,9 @@ class AgentBackwaterThirdDaily implements ShouldQueue
         //获取当前代理返水
         $aRecode = AgentBackwater::getDataByTime($this->aDateTime,$this->aDateTime.' 23:59:59');
         if(count($aRecode) > 0){
-            $aAgentBackwater = $this->recodeYes($aJqBet,$aAgentOdds,$iLevelNum,$aRecode);
+            $aAgentBackwater = $this->recodeYes($aJqBet,$aAgentOdds,$aAgentOddsUser,$iLevelNum,$aRecode);
         }else{
-            $aAgentBackwater = $this->recodeNo($aJqBet,$aAgentOdds,$iLevelNum);
+            $aAgentBackwater = $this->recodeNo($aJqBet,$aAgentOdds,$aAgentOddsUser,$iLevelNum);
         }
         //获取代理增加金额
         $aAgentMoney = [];
@@ -105,8 +110,8 @@ class AgentBackwaterThirdDaily implements ShouldQueue
         }
     }
 
-    private function recodeYes($aJqBet,$aAgentOdds,$iLevelNum,$aRecode){
-        $aData = $this->recodeNo($aJqBet,$aAgentOdds,$iLevelNum);
+    private function recodeYes($aJqBet,$aAgentOdds,$aAgentOddsUser,$iLevelNum,$aRecode){
+        $aData = $this->recodeNo($aJqBet,$aAgentOdds,$aAgentOddsUser,$iLevelNum);
         $iTime = date('Y-m-d H:i:s');
         $aArray = [];
         foreach ($aData as $kData => $iData){
@@ -144,14 +149,20 @@ class AgentBackwaterThirdDaily implements ShouldQueue
         return $aArray;
     }
 
-    private function recodeNo($aJqBet,$aAgentOdds,$iLevelNum){
+    private function recodeNo($aJqBet,$aAgentOdds,$aAgentOddsUser,$iLevelNum){
         $aAgentBackwater = [];
         $iTime = date('Y-m-d H:i:s');
         foreach ($aJqBet as $iJqBet){
             if(empty($aAgentOdds[$iJqBet->agent_id][$iJqBet->game_id])){
                 continue;
             }
-            $preRebate = $aAgentOdds[$iJqBet->agent_id][$iJqBet->game_id];
+            //检查有設置會員賠率的直属代理
+            if(isset($aAgentOddsUser[$iJqBet->user_id]) && !empty($aAgentOddsUser[$iJqBet->user_id])){
+                $iJqBet->superior_agent = empty($iJqBet->superior_agent )?$iJqBet->agent_id:$iJqBet->superior_agent .','.$iJqBet->agent_id;
+                $preRebate = $aAgentOddsUser[$iJqBet->user_id][$iJqBet->game_id];
+            }else
+                $preRebate = $aAgentOdds[$iJqBet->agent_id][$iJqBet->game_id];
+
             if(!empty($iJqBet->superior_agent)){
                 $aAgentId = array_slice(array_reverse(explode(',',$iJqBet->superior_agent),false),0,$iLevelNum);
                 $i = 1;
@@ -181,12 +192,22 @@ class AgentBackwaterThirdDaily implements ShouldQueue
                             'created_at' => $iTime,
                             'updated_at' => $iTime,
                         ];
+                        $preRebate = $iRebate;
                     }
                     $i++;
                 }
             }
         }
         return $aAgentBackwater;
+    }
+
+    //代理第三方排序-有设置会员培率的
+    private function agentOddsSortUser($aData){
+        $aArray = [];
+        foreach ($aData as $iData){
+            $aArray[$iData->user_id][$iData->type] = $iData->rebate;
+        }
+        return $aArray;
     }
 
     //代理第三方排序
