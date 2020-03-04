@@ -66,7 +66,6 @@ class AgentBackwaterCp extends Command
             $this->info('今日无下注打码量-1');
             //----新增可以补昨日的数据
             $checkIsDo = $this->getFinished($iGame['table'],$issue);   //先查询是否是昨日以前的奖期
-            echo $checkIsDo.'===';
             if($checkIsDo)  //查到已经做过了，就不继续做了
                 return false;
             $aBet = Bets::getAgentUserDataHis($gameId,$issue);
