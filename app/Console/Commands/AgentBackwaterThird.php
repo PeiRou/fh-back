@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\AgentBackwaterThirdDaily;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
 class AgentBackwaterThird extends Command
 {
@@ -44,6 +45,7 @@ class AgentBackwaterThird extends Command
         foreach ($aDate as $kDate => $iDate){
             AgentBackwaterThirdDaily::dispatch($iDate)->onQueue($this->setQueueRealName('ZhRebateThirdDaily'));
         }
+        Artisan::call('AgentOdds:AgentBackwaterUser',['startTime'=>$startTime,'endTime'=>$endTime]);
         $this->info('ok');
     }
 
