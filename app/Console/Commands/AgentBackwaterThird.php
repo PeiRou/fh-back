@@ -45,7 +45,10 @@ class AgentBackwaterThird extends Command
         foreach ($aDate as $kDate => $iDate){
             AgentBackwaterThirdDaily::dispatch($iDate)->onQueue($this->setQueueRealName('ZhRebateThirdDaily'));
         }
-        Artisan::call('AgentOdds:AgentBackwaterUser',['startTime'=>$startTime,'endTime'=>$endTime]);
+        Artisan::call('AgentOdds:AgentBackwaterUser',[
+            'startTime' => date("Y-m-d",strtotime( '+1 day',strtotime($startTime))),
+            'endTime' => date("Y-m-d",strtotime( '+1 day',strtotime($endTime)))
+        ]);
         $this->info('ok');
     }
 
