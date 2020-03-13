@@ -60,7 +60,7 @@ class RGNEWRepository extends BaseRepository
             Redis::setex('rgnew_start_time', 60 * 60 * 2, $v['start_time']);
             if($v['start_time'] = $GameID)
                 continue;
-            if($v['is_mark'] = 0 ?? '')
+            if($v['is_mark'] ==  0 ?? '')
                 continue;
             $array = [
                 'g_id' => $this->gameInfo->g_id,
