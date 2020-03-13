@@ -218,7 +218,7 @@ class clear_data extends Command
                 $num_else = $this->clrGameTables($val['table'], $newClearDate, $num_else);
             }
             //特定休市彩种删奖期
-            $res = ['game_bjpk10','game_pcdd','game_gd11x5','game_bjkl8','game_gdklsf','game_xjssc','game_pknn','game_ahk3','game_hbk3','game_hebeik3','game_gsk3','game_twbg28','game_twbgc'];
+            $res = ['game_bjpk10','game_pcdd','game_gd11x5','game_bjkl8','game_gdklsf','game_xjssc','game_pknn','game_ahk3','game_hbk3','game_hebeik3','game_gsk3'];
             foreach ($res as $key => $table){
                 $num_else = $this->delGameTables($table, '2020-01-22 00:00:00', '2020-03-15 23:59:59', $num_else);
             }
