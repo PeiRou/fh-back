@@ -220,7 +220,7 @@ class clear_data extends Command
             //特定休市彩种删奖期
             $res = ['game_bjpk10','game_pcdd','game_bjkl8','game_gdklsf','game_pknn','game_ahk3','game_hbk3'];
             foreach ($res as $key => $table){
-                $num_else = $this->delGameTables($table, '2020-01-22 00:00:00', '2020-03-16 23:59:59', $num_else);
+                $num_else = $this->delGameTables($table, '2020-01-22 00:00:00', '2020-03-17 23:59:59', $num_else);
             }
             //清-计画试算
             $num_else = $this->clrGameTables('plan_record', $clearDate2, $num_else,'updated_at');
