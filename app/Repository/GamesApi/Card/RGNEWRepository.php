@@ -52,15 +52,16 @@ class RGNEWRepository extends BaseRepository
 
     public function createData($aData)
     {
-
+        $GameIDs = $this->distinct($aData, 'round_no');
         $insert = [];
         foreach ($aData as $v){
-            $GameID = DB::table('jq_bet')->where('GameID',$v['round_no'])->value('GameID');
+//            $GameID = DB::table('jq_bet')->where('GameID',$v['round_no'])->value('GameID');
             Redis::select(11);
             Redis::setex('rgnew_start_time', 60 * 60 * 2, $v['start_time']);
-            if($v['start_time'] = $GameID)
-                continue;
-            if($v['is_mark'] ==  0 ?? '')
+            if(in_array($v['round_no'], $GameIDs)) continue;
+//            if($v['start_time'] = $GameID)
+//                continue;
+            if(($v['is_mark'] ?? 0) ==  0)
                 continue;
             $array = [
                 'g_id' => $this->gameInfo->g_id,
@@ -70,8 +71,8 @@ class RGNEWRepository extends BaseRepository
                 'AllBet' => $v['total_bet_score'],
                 'bunko' => $v['total_win_score'],
                 'bet_money' => $v['valid_bet_score_total'],
-                'GameStartTime' => $v['start_time'] ?? date('Y-m-d H:i:s'),
-                'GameEndTime' =>  date('Y-m-d H:i:s'),
+                'GameStartTime' => $v['start_time'],
+                'GameEndTime' =>  $v['start_time'],
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => $v['start_time'] ?? date('Y-m-d H:i:s'),
                 'gameCategory' => 'LIVE',
@@ -88,7 +89,6 @@ class RGNEWRepository extends BaseRepository
             $array['user_id'] = $user->id ?? 0;
             $array['agent_account'] = $this->getAgent($user->agent ?? 0)->account ?? '';
             $array['agent_name'] = $this->getAgent($user->agent ?? 0)->name ?? '';
-            if($array);
             $insert[] = $array;
         }
 

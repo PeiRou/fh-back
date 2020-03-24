@@ -28,7 +28,7 @@ class GetBetTime extends Command
         # 获取所有接口
         $this->redis = Redis::connection();
         $this->redis->select(5);
-        foreach (GamesApi::whereNotIn('g_id', [18, 10, 25, 30])->pluck('g_id') as $v){
+        foreach (GamesApi::whereNotIn('g_id', [18, 10, 25, 30, 31])->pluck('g_id') as $v){
             $this->create($v);
         }
     }
