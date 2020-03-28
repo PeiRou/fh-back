@@ -223,7 +223,7 @@ class clear_data extends Command
                 $num_else = $this->delGameTables($table, '2020-01-22 00:00:00', '2020-04-30 23:59:59', $num_else);
             }
             //特定休市彩种-封盘
-            $resGameIds = [50,60,65,60,90,13];
+            $resGameIds = [50,66,65,60,90,13];
             DB::table('game')->whereIn('game_id',$resGameIds)->update(['holiday_start'=>'2020-01-22 00:00:00','holiday_end'=>'2020-04-30 23:59:59']);
             //清-计画试算
             $num_else = $this->clrGameTables('plan_record', $clearDate2, $num_else,'updated_at');
