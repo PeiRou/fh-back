@@ -69,15 +69,19 @@ class NNRepository extends BaseRepository
                 continue;
             if(in_array($v['id'], $GameIDs))
                 continue;
+            $bet = $v['bet'];
+            if($v['gameId'] == 120){
+                $bet = abs($v['winLost']);
+            }
             $array = [
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['id'],
                 'sessionId' => $v['gameNo'] ?? '',
                 'username' => preg_replace('/^'.$this->getConfig('agent').'/', '', $v['userName']),
 //                'username' => str_replace($this->getConfig('agent'),'', $v['userName']),
-                'AllBet' => $v['bet'],
+                'AllBet' => $bet,
                 'bunko' => $v['winLost'],
-                'bet_money' => $v['bet'],
+                'bet_money' => $bet,
                 'GameStartTime' => $v['startTime'],
                 'GameEndTime' =>  $v['endTime'],
                 'created_at' => date('Y-m-d H:i:s'),
