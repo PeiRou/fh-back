@@ -41,6 +41,7 @@ class clear_data extends Command
             return "";
         $clearDate1 = date('Y-m-d 23:59:59',strtotime("-1 days"));        //1天
         $clearDate2 = date('Y-m-d 23:59:59',strtotime("-2 days"));        //2天
+        $clearDate7 = date('Y-m-d 23:59:59',strtotime("-7 days"));        //2天
         $clearDate31 = date('Y-m-d 23:59:59',strtotime("-31 days")-300);        //31天
         $clearDate62 = date('Y-m-d 23:59:59',strtotime("-62 days")-300);        //62天
         $clearDate93 = date('Y-m-d 23:59:59',strtotime("-93 days")-300);        //93天
@@ -229,7 +230,7 @@ class clear_data extends Command
             $num_else = $this->clrGameTables('plan_record', $clearDate2, $num_else,'updated_at');
             //清-推送消息
             $num_else = $this->clrGameTables('message_push', $clearDate62, $num_else,'updated_at');
-            $num_else = $this->clrGameTables('user_messages', $clearDate62, $num_else,'created_at');
+            $num_else = $this->clrGameTables('user_messages', $clearDate7, $num_else,'created_at');
 
             if($num_else==0){
                 $this->time = strtotime($this->stoptime) - time();
