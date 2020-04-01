@@ -226,7 +226,7 @@ class GamesList extends Base
         '29' => [
             'g_id' => 19,
             'param' => [
-                'product_type' => 43,
+                'product_type' => 6,
                 'gameType' => 'RNG',
             ]
         ],
