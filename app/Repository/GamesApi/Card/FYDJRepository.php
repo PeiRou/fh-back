@@ -57,6 +57,7 @@ class FYDJRepository extends BaseRepository
     }
 
     protected function curl_post($url,$data){
+        $url = str_replace('http://api.bw-gaming.com', 'https://api.avia-gaming.vip' , $url);
         return $this->curl_post_content($url, $data, null, ['Authorization:'. $this->Config['Authorization']]);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -161,6 +162,7 @@ class FYDJRepository extends BaseRepository
             'EndAt' => $endDate,
             'UserName' => null,
             'PageIndex' => $PageIndex,
+            'OrderType' => 'All'
         ];
         $res = $this->curl_post($this->Config['get_log_api'],$data);
         $res = json_decode($res,true);
@@ -187,9 +189,14 @@ class FYDJRepository extends BaseRepository
         foreach ($aArray as $data) {
             $insert = [];
             $update = [];
+
             foreach ($data as $v) {
-                if(!preg_match("/^".$this->getVal('agent')."/", $v['UserName']))
+                if(in_array(strtoupper($v['Status']), ['SETTLEMENT', 'NONE'])){
                     continue;
+                }
+                if(!preg_match("/^".$this->getVal('agent')."/", $v['UserName'])){
+                    continue;
+                }
                 $array = [
                     'g_id' => $this->gameInfo->g_id,
                     'GameID' => $v['OrderID'],   //游戏代码
@@ -202,13 +209,13 @@ class FYDJRepository extends BaseRepository
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => $v['UpdateAt'] ?? $v['CreateAt'],
                     'gameCategory' => 'YOPLAY', //
-                    'game_type' => $v['Category'],
+                    'game_type' => $v['Category'] ?? $v['Code'] ?? '',
                     'service_money' => 0, // + 服务费
                     'bet_info' => '',
                     'flag' => in_array(strtoupper($v['Status']), ['SETTLEMENT', 'NONE']) ? 2 : 1,
                     'productType' => null,
                     'game_id' => 38,
-                    'round_id' => $v['MatchID']
+                    'round_id' => $v['MatchID'] ?? $v['Index'] ?? ''
                 ];
                 $array['content'] = $this->content($v, $array);
                 $this->arrInfo($array, $v);
@@ -225,9 +232,20 @@ class FYDJRepository extends BaseRepository
     {
         try{
             $str = '';
-            $str .= '联赛名称:'.($v['League'] ?? '').'<br />';
-            $str .= '投注名称:'.($v['Bet'] ?? '').'<br />';
-            $str .= '投注内容:'.($v['Content'] ?? '').'<br />';
+            switch ($v['Type']){
+                case 'Smart':
+                    $str .= '订单类型:小游戏订单<br />';
+                    break;
+                case 'Single':
+                    $str .= '订单类型:单关电竞订单<br />';
+                    break;
+                case 'Combo':
+                    $str .= '订单类型:串关订单<br />';
+                    break;
+            }
+            !empty($v['League']) && $str .= '联赛名称:'.($v['League'] ?? '').'<br />';
+            !empty($v['Bet']) && $str .= '投注名称:'.($v['Bet'] ?? '').'<br />';
+            !empty($v['Content']) && $str .= '投注内容:'.($v['Content'] ?? '').'<br />';
             return $str;
         }catch (\Throwable $e){
             writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
