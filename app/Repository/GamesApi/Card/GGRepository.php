@@ -34,7 +34,7 @@ class GGRepository extends BaseRepository
         $param = [
             'index' => $index,
             'count' => 100,
-            'org' => $this->getConfig('org')
+            'org' => (int)$this->getConfig('org')
         ];
         $res = $this->request($param, '', 'GAMELOG');
         if($res['count']){
@@ -109,7 +109,7 @@ class GGRepository extends BaseRepository
         $param = [
             'index' => $index,
             'count' => 100,
-            'org' => $this->getConfig('org')
+            'org' => (int)$this->getConfig('org')
         ];
         $res = $this->request($param, '', 'GAMELOG');
         if($res['count']){
