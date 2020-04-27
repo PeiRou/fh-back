@@ -47,6 +47,8 @@ class GGRepository extends BaseRepository
         $GameIDs = $this->distinct($aData, 'index');
         $insert = [];
         foreach ($aData as $v){
+            if(!preg_match('/'.$this->getConfig('agent').'_'.'/', $v['user_name']))
+                continue;
             if(in_array($v['index'], $GameIDs))
                 continue;
             $array = [
@@ -122,6 +124,8 @@ class GGRepository extends BaseRepository
         $GameIDs = $this->distinct($aData, 'index');
         $insert = [];
         foreach ($aData as $v){
+            if(!preg_match('/'.$this->getConfig('agent').'_'.'/', $v['user_name']))
+                continue;
             if(in_array($v['index'], $GameIDs))
                 continue;
             $array = [
