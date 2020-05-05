@@ -92,15 +92,7 @@ class New_nlhc extends Excel
                 writeLog('New_Kill', $gameName . $issue . "杀率not Finshed");
             }
         }else{
-            $update = DB::table($table)->where('id',$id)->where('is_open',1)->where('bunko',2)->update([
-                'bunko' => 1
-            ]);
-            if ($update !== 1) {
-                writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
-            }else{
-                //执行玩法退水跟层层代理反水
-                $this->exeReturnAndBackWater($table,$id,$gameName,$issue,$gameId,$code);
-            }
+            $this->updateTableFinished($table,$id,$gameName,$issue,$gameId,$code);
         }
     }
 }

@@ -35,9 +35,12 @@ class BUNKO_1 extends Command
         }
         $excel = new Excel();
         $excel = $excel->newObject($code);
+        //阻止彩种進行中
+        if($excel->stopBunko($code, 1,'BunkoCP'))
+            return 'ing';
         $get = $excel->getNeedBunkoIssue($lotterys['table'],$code,$havElse,$havElseLottery);
         if($get){
-            //阻止進行中
+            //阻止奖期進行中
             if($excel->stopBunko($lotterys['gameId'], 10,'Bunko:'.$get->issue))
                 return 'ing';
 //            //将SQL状态改成结算中
@@ -48,6 +51,8 @@ class BUNKO_1 extends Command
             //SQL状态有成功改成结算中，就开始执行结算
             if($update)
                 $excel->all($opennum,$get->issue,$get->id,false,$code,$lotterys);
+        }else{
+            $excel->setNextBunkoIssue($lotterys['table'],$code);
         }
     }
 }

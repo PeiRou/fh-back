@@ -142,6 +142,24 @@ class Excel
         }
         return 0;
     }
+
+    /**
+     * 更新赢钱的用户馀额
+     * @param $table
+     * @param $id
+     * 单子状态 0未结算 1已结算 2撤单 3已计算，未反钱 4已返钱，未返水
+     */
+    public function updateTableFinished($table,$id,$gameName,$issue,$gameId,$code){
+        $update = DB::table($table)->where('id',$id)->where('is_open',1)->where('bunko',2)->update([
+            'bunko' => 1
+        ]);
+        if ($update !== 1) {
+            writeLog('New_Bet', $gameName . $issue . "结算not Finshed");
+        }else{
+            //执行玩法退水跟层层代理反水
+            $this->exeReturnAndBackWater($table,$id,$gameName,$issue,$gameId,$code);
+        }
+    }
     //中奖推送
     private function pushWinInfo($pushData){
         try{
@@ -286,7 +304,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
     }
     //取得杀率信息
     public function getKillBase($gameId){
-        $exeBase = DB::table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$gameId)->first();
+        $exeBase = DB::connection('mysql_report')->table('excel_base')->select('excel_num')->where('is_open',1)->where('game_id',$gameId)->first();
         return $exeBase;
     }
     //取得最新的需要计算杀率
@@ -312,6 +330,23 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         foreach ($tmp as&$value)
             $res = $value;
         return $res;
+    }
+    //取得下一期结算奖期
+    public function setNextBunkoIssue($table,$code){
+        $tmp = DB::connection('mysql_report')->select("SELECT opentime FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE bunko=0)");
+        if(empty($tmp))
+            $opentime = time();
+        foreach ($tmp as&$value)
+            $opentime = $value->opentime;
+        $time = (strtotime($opentime)-time())>0?0:strtotime($opentime)-time();
+        $redis = Redis::connection();
+        $redis->select(0);
+        $key = 'BunkoCP:'.$code.'ing:';
+
+        if($redis->setnx($key, 'on')){
+            $redis->expire($key, $time);
+            $result = 0;
+        }
     }
     //取得最新的需要结算奖期
     public function getNeedBunkoIssue($table,$code='',$havElse='',$havElseLottery=[]){
@@ -514,53 +549,53 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         return $res;
     }
     //取得目前未开奖奖期
-    public function getNeedMinIssue($table){
-        if(empty($table))
-            return false;
-        $today = date('Y-m-d H:i:s',time());
-        $yesterday = date('Y-m-d H:i:s',strtotime('-1 day'));
-        $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE is_open=0 and opentime >='".$yesterday."' and opentime <='".$today."')");
-        if(empty($tmp))
-            return false;
-        foreach ($tmp as&$value)
-            $res = $value;
-        return $res;
-    }
+//    public function getNeedMinIssue($table){
+//        if(empty($table))
+//            return false;
+//        $today = date('Y-m-d H:i:s',time());
+//        $yesterday = date('Y-m-d H:i:s',strtotime('-1 day'));
+//        $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE is_open=0 and opentime >='".$yesterday."' and opentime <='".$today."')");
+//        if(empty($tmp))
+//            return false;
+//        foreach ($tmp as&$value)
+//            $res = $value;
+//        return $res;
+//    }
     //取得目前未开奖奖期组
-    public function getNeedAarrayIssue($table){
-        if(empty($table))
-            return false;
-        $today = date('Y-m-d H:i:s',time());
-        $yesterday = date('Y-m-d H:i:s',strtotime('-1 day'));
-        $res = DB::connection('mysql::write')->select("SELECT issue,opentime FROM {$table} WHERE is_open=0 and opentime >='".$yesterday."' and opentime <='".$today."'");
-        if(empty($res))
-            return array();
-        return $res;
-    }
+//    public function getNeedAarrayIssue($table){
+//        if(empty($table))
+//            return false;
+//        $today = date('Y-m-d H:i:s',time());
+//        $yesterday = date('Y-m-d H:i:s',strtotime('-1 day'));
+//        $res = DB::connection('mysql::write')->select("SELECT issue,opentime FROM {$table} WHERE is_open=0 and opentime >='".$yesterday."' and opentime <='".$today."'");
+//        if(empty($res))
+//            return array();
+//        return $res;
+//    }
     //取得目前开盘奖期
-    public function getNextBetIssue($table){
-        if(empty($table))
-            return false;
-        $today = date('Y-m-d H:i:s',time());
-        $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."')");
-        if(empty($tmp))
-            return false;
-        foreach ($tmp as&$value)
-            $res = $value;
-        return $res;
-    }
+//    public function getNextBetIssue($table){
+//        if(empty($table))
+//            return false;
+//        $today = date('Y-m-d H:i:s',time());
+//        $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."')");
+//        if(empty($tmp))
+//            return false;
+//        foreach ($tmp as&$value)
+//            $res = $value;
+//        return $res;
+//    }
     //取得目前需要开奖奖期
-    public function getNeedtIssue($table){
-        if(empty($table))
-            return false;
-        $today = date('Y-m-d H:i:s',time());
-        $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE is_open=0 and opentime <='".$today."')");
-        if(empty($tmp))
-            return false;
-        foreach ($tmp as&$value)
-            $res = $value;
-        return $res;
-    }
+//    public function getNeedtIssue($table){
+//        if(empty($table))
+//            return false;
+//        $today = date('Y-m-d H:i:s',time());
+//        $tmp = DB::connection('mysql::write')->select("SELECT * FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE is_open=0 and opentime <='".$today."')");
+//        if(empty($tmp))
+//            return false;
+//        foreach ($tmp as&$value)
+//            $res = $value;
+//        return $res;
+//    }
     //根据类别回传开奖格式
     public function opennum($code,$type,$is_user=1,$needOpenIssue='',$num=0){
         if($is_user){
