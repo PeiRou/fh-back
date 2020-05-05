@@ -345,7 +345,6 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
 
         if($redis->setnx($key, 'on')){
             $redis->expire($key, $time);
-            $result = 0;
         }
     }
     //取得最新的需要结算奖期
