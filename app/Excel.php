@@ -295,7 +295,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
             return false;
         $today = date('Y-m-d H:i:s',time()+9);
         $sql = "SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=".$status.") and is_open=0 and bunko=0 and excel_num=".$status;
-        $tmp = DB::connection('mysql::write')->select($sql);
+        $tmp = DB::connection('mysql_report')->select($sql);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -306,7 +306,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
     public function getNeedKillBase($gameId){
         if(empty($gameId))
             return false;
-        $tmp = DB::connection('mysql::write')->select("SELECT * FROM excel_base WHERE game_id = ".$gameId);
+        $tmp = DB::connection('mysql_report')->select("SELECT * FROM excel_base WHERE game_id = ".$gameId);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -331,7 +331,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                              and {$havElseLottery['table']}.bunko = 1 order by {$table}.id desc LIMIT 1";
             }
         }
-        $tmp = DB::select($sql);
+        $tmp = DB::connection('mysql_report')->select($sql);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
@@ -344,7 +344,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
             return false;
         $today = date('Y-m-d H:i:s',time());
         $sql = "SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and bunko = 0 order by id desc";
-        $res = DB::select($sql);
+        $res = DB::connection('mysql_report')->select($sql);
         if(empty($res))
             return false;
         return $res;
@@ -368,7 +368,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         $today = date('Y-m-d H:i:s',time());
 //        $tmp = DB::select("SELECT * FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0)");
         $sql = "SELECT * FROM {$table} WHERE opentime <='".$today."' and is_open=1 and nn_bunko = 0 order by id desc LIMIT 1";
-        $tmp = DB::select($sql);
+        $tmp = DB::connection('mysql_report')->select($sql);
         if(empty($tmp))
             return false;
         foreach ($tmp as&$value)
