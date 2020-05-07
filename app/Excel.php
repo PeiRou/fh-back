@@ -336,18 +336,19 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         $betweenDay = date('Y-m-d H:i:s',time()-86400);
         $tmp = DB::connection('mysql_report')->select("SELECT opentime FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE opentime >='".$betweenDay."' and bunko=0)");
         if(empty($tmp))
-            $opentime = time();
+            $OrgOpentime = date('Y-m-d H:i:s');
         foreach ($tmp as&$value)
-            $opentime = (int)strtotime($value->opentime);
+            $OrgOpentime = $value->opentime;
+        $opentime = (int)strtotime($OrgOpentime);
         $time = (int)($opentime-time());
         $time = $time<0?0:$time;
         $redis = Redis::connection();
         $redis->select(0);
         $key = 'BunkoCP:'.$code.'ing:';
 
-        if(!$redis->setnx($key, $time)){
+        if(!$redis->setnx($key, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time)){
             $redis->del($key);
-            $redis->setnx($key, $time);
+            $redis->setnx($key, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time);
         }
         $redis->expire($key, $time);
     }
