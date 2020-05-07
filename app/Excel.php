@@ -333,7 +333,8 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
     }
     //取得下一期结算奖期
     public function setNextBunkoIssue($table,$code){
-        $tmp = DB::connection('mysql_report')->select("SELECT opentime FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE bunko=0)");
+        $betweenDay = date('Y-m-d H:i:s',time()-86400);
+        $tmp = DB::connection('mysql_report')->select("SELECT opentime FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE opentime >='".$betweenDay."' and bunko=0)");
         if(empty($tmp))
             $opentime = time();
         foreach ($tmp as&$value)
