@@ -27,7 +27,7 @@ class BUNKO_pknn extends Command
             return false;
         $excel = new New_pknn();
         //阻止彩种進行中
-        if($excel->stopBunko($code, 2,'BunkoCP'))
+        if($excel->stopBunko($code, 1,'BunkoCP'))
             return 'ing';
         $get = $excel->getNeedBunkoIssue($lotterys['table']);
         if($get){
