@@ -36,7 +36,7 @@ class BUNKO_1 extends Command
         $excel = new Excel();
         $excel = $excel->newObject($code);
         //阻止彩种進行中
-        if($excel->stopBunko($code, 1,'BunkoCP'))
+        if($excel->stopBunko($code, 2,'BunkoCP'))
             return 'ing';
         $get = $excel->getNeedBunkoIssue($lotterys['table'],$code,$havElse,$havElseLottery);
         if($get){
