@@ -345,7 +345,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         $redis->select(0);
         $key = 'BunkoCP:'.$code.'ing:';
 
-        if($redis->setnx($key, $time)){
+        if(!$redis->setnx($key, $time)){
             $redis->del($key);
             $redis->setnx($key, $time);
         }
