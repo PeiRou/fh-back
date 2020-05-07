@@ -337,13 +337,14 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         if(empty($tmp))
             $opentime = time();
         foreach ($tmp as&$value)
-            $opentime = $value->opentime;
-        $time = (strtotime($opentime)-time())>0?0:strtotime($opentime)-time();
+            $opentime = (int)strtotime($value->opentime);
+        $time = (int)($opentime-time());
+        $time = $time<0?0:$time;
         $redis = Redis::connection();
         $redis->select(0);
         $key = 'BunkoCP:'.$code.'ing:';
 
-        if($redis->setnx($key, 'on')){
+        if($redis->setnx($key, $time)){
             $redis->expire($key, $time);
         }
     }
@@ -968,7 +969,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         //阻止進行中
         $key = $strBunko.':'.$gameId.'ing:';
 
-        if($redis->setnx($key, 'on')){
+        if($redis->setnx($key, $time)){
             $redis->expire($key, $time);
             $result = 0;
         }else{
