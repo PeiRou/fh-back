@@ -373,9 +373,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
 //            $redis->del($key);
 //            $redis->setnx($key, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time);
 //        }
-        if($redis->exists($key))
-            $redis->del($key);
-        $redis->setex($key, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time);
+        $redis->setex($key, $time, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time);
     }
     //取得最新的需要结算奖期
     public function getNeedBunkoIssue($table,$code='',$havElse='',$havElseLottery=[]){
