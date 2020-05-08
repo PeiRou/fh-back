@@ -41,7 +41,7 @@ class BUNKO_pknn extends Command
                 $excel->all($get->opennum,$get->niuniu, $get->issue, $get->id,$code,$lotterys); //新--结算
         }else{
             //如果现在没有需要开奖的，把下一期时间放到缓存里，减少读取次数
-            $excel->setNextBunkoIssue($lotterys['table'],$code);
+            $excel->setNextBunkoIssue($lotterys['table'],$code,true);
         }
     }
 }
