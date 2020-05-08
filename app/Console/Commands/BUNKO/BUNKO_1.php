@@ -54,7 +54,7 @@ class BUNKO_1 extends Command
                 $excel->all($opennum,$get->issue,$get->id,false,$code,$lotterys);
         }else{
             //如果现在没有需要开奖的，把下一期时间放到缓存里，减少读取次数
-            $excel->setNextBunkoIssue($lotterys['table'],$code);
+            $excel->setNextBunkoIssue($lotterys['table'],$code,$lotterys['isGuan']===1);
         }
     }
 }
