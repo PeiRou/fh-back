@@ -29,7 +29,7 @@ class BUNKO_msnn extends Command
         $get = $excel->getNeedNNBunkoIssue($lotterys['table']);
         if($get){
             //阻止進行中
-            $excel->stopBunko($lotterys['gameId'], 10,'Bunko:'.$get->issue);
+            $excel->stopBunko($lotterys['gameId'], 1,'Bunko:'.$get->issue);
             $update = DB::table($lotterys['table'])->where('id', $get->id)->update([
                 'nn_bunko' => 2
             ]);

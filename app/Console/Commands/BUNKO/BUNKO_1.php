@@ -39,10 +39,11 @@ class BUNKO_1 extends Command
         if($excel->stopBunko($code, 1,'BunkoCP'))
             return 'ing';
         $get = $excel->getNeedBunkoIssue($lotterys['table'],$code,$havElse,$havElseLottery);
+
         if($get){
             //阻止奖期進行中
-            if($excel->stopBunko($lotterys['gameId'], 10,'Bunko:'.$get->issue))
-                return 'ing';
+//            if($excel->stopBunko($lotterys['table'], 1,'Bunko:'.$get->issue))
+//                return 'ing';
 //            //将SQL状态改成结算中
             $update = DB::table($lotterys['table'])->where('id', $get->id)->update([
                 'bunko' => 2

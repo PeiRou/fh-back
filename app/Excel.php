@@ -347,11 +347,13 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         $redis->select(0);
         $key = 'BunkoCP:'.$code.'ing:';
 
-        if(!$redis->setnx($key, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time)){
+//        if(!$redis->setnx($key, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time)){
+//            $redis->del($key);
+//            $redis->setnx($key, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time);
+//        }
+        if($redis->exists($key))
             $redis->del($key);
-            $redis->setnx($key, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time);
-        }
-        $redis->expire($key, $time);
+        $redis->setex($key, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time);
     }
     //取得最新的需要结算奖期
     public function getNeedBunkoIssue($table,$code='',$havElse='',$havElseLottery=[]){
@@ -974,8 +976,8 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         //阻止進行中
         $key = $strBunko.':'.$gameId.'ing:';
 
-        if($redis->setnx($key, date('Y-m-d H:i:s').'--'.$time)){
-            $redis->expire($key, $time);
+        if(!$redis->exists($key)){
+            $redis->setex($key, $time, date('Y-m-d H:i:s').'=='.$time);
             $result = 0;
         }else{
             $result = 1;

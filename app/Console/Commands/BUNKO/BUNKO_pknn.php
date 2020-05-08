@@ -32,8 +32,8 @@ class BUNKO_pknn extends Command
         $get = $excel->getNeedBunkoIssue($lotterys['table']);
         if($get){
             //阻止進行中
-            if($excel->stopBunko($lotterys['gameId'], 10,'Bunko:'.$get->issue))
-                return 'ing';
+//            if($excel->stopBunko($lotterys['gameId'], 10,'Bunko:'.$get->issue))
+//                return 'ing';
             $update = DB::table($lotterys['table'])->where('id', $get->id)->update([
                 'bunko' => 2
             ]);
