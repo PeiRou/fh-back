@@ -375,6 +375,24 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
 //        }
         $redis->setex($key, $time, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time);
     }
+    //取得下一期结算奖期-牛牛
+    public function setNextNNBunkoIssue($table,$code){
+        $betweenDay = date('Y-m-d H:i:s',time()-86400);
+        $tmp = DB::connection('mysql_report')->select("SELECT opentime,issue FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE opentime >='".$betweenDay."' and nn_bunko = 0)");
+        if(empty($tmp))
+            $OrgOpentime = date('Y-m-d H:i:s');
+        foreach ($tmp as&$value){
+            $OrgOpentime = $value->opentime;
+        }
+        $opentime = (int)strtotime($OrgOpentime);
+        $time = (int)($opentime-time());
+        $time = $time<0?0:$time;
+
+        $redis = Redis::connection();
+        $redis->select(0);
+        $key = 'BunkoCP:'.$code.'ing:';
+        $redis->setex($key, $time, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time);
+    }
     //取得最新的需要结算奖期
     public function getNeedBunkoIssue($table,$code='',$havElse='',$havElseLottery=[]){
         if(empty($table))
