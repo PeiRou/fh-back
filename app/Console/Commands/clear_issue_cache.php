@@ -42,6 +42,10 @@ class clear_issue_cache extends Command
         if(Storage::disk('thread')->exists('thread')){
             Storage::disk('thread')->delete('thread');
         }
+        $directories = Storage::disk('logs')->directories();
+        foreach ($directories as $key => $val){
+            Storage::disk('logs')->deleteDirectory($val);
+        }
         return 'Ok';
     }
 }

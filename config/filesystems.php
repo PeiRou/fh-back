@@ -48,6 +48,11 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'logs' => [
+            'driver' => 'local',
+            'root' => storage_path('logs'),
+        ],
+
         'thread' => [
             'driver' => 'local',
             'root' => storage_path('thread'),
