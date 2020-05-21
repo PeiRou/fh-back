@@ -345,7 +345,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
             }
         $opentime = (int)strtotime($OrgOpentime);
         $time = (int)($opentime-time());
-        $time = $time<0?0:$time;
+        $time = $time<0?1:$time;
 
         $redis = Redis::connection();
         $redis->select(0);
