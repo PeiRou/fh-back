@@ -336,7 +336,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         $betweenDay = date('Y-m-d H:i:s',time()-86400);
         $tmp = DB::connection('mysql_report')->select("SELECT opentime,issue FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE opentime >='".$betweenDay."' and bunko=0)");
         if(empty($tmp)){
-            $OrgOpentime = strtotime('+1 day');
+            $OrgOpentime = '+1 day';
             $OrgIssue = 0;
         }else
             foreach ($tmp as&$value){
