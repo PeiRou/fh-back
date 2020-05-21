@@ -335,12 +335,14 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
     public function setNextBunkoIssue($table,$code,$isGuan=false){
         $betweenDay = date('Y-m-d H:i:s',time()-86400);
         $tmp = DB::connection('mysql_report')->select("SELECT opentime,issue FROM {$table} WHERE id = (SELECT MIN(id) FROM {$table} WHERE opentime >='".$betweenDay."' and bunko=0)");
-        if(empty($tmp))
-            $OrgOpentime = date('Y-m-d H:i:s');
-        foreach ($tmp as&$value){
-            $OrgOpentime = $value->opentime;
-            $OrgIssue = $value->issue;
-        }
+        if(empty($tmp)){
+            $OrgOpentime = strtotime('+1 day');
+            $OrgIssue = 0;
+        }else
+            foreach ($tmp as&$value){
+                $OrgOpentime = $value->opentime;
+                $OrgIssue = $value->issue;
+            }
         $opentime = (int)strtotime($OrgOpentime);
         $time = (int)($opentime-time());
         $time = $time<0?0:$time;
