@@ -91,6 +91,11 @@ class CURL_BK_THREAD extends Command
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_efk3');
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_sfk3');
             $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_wfk3');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_xyft168');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_azxy5');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_azxy8');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_azxy10');
+            $this->pushData('http://127.0.0.1:9500?thread=BUNKO_1_azxy20');
 
             $this->pushData('http://127.0.0.1:9500?thread2=push');
 
@@ -130,6 +135,11 @@ class CURL_BK_THREAD extends Command
             $this->pushData('http://127.0.0.1:9500?thread=KILL_1_efk3');
             $this->pushData('http://127.0.0.1:9500?thread=KILL_1_sfk3');
             $this->pushData('http://127.0.0.1:9500?thread=KILL_1_wfk3');
+            $this->pushData('http://127.0.0.1:9500?thread=KILL_1_xyft168');
+            $this->pushData('http://127.0.0.1:9500?thread=KILL_1_azxy5');
+            $this->pushData('http://127.0.0.1:9500?thread=KILL_1_azxy8');
+            $this->pushData('http://127.0.0.1:9500?thread=KILL_1_azxy10');
+            $this->pushData('http://127.0.0.1:9500?thread=KILL_1_azxy20');
 
             //组装后一起发送
             $this->sendUrl();

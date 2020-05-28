@@ -1772,6 +1772,11 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
             case 'efk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
             case 'sfk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
             case 'wfk3':$excel = new \App\Http\Controllers\Bet\New_k3();break;
+            case 'xyft168':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'azxy5':$excel = new \App\Http\Controllers\Bet\New_ssc();break;
+            case 'azxy8':$excel = new \App\Http\Controllers\Bet\New_nc();break;
+            case 'azxy10':$excel = new \App\Http\Controllers\Bet\New_sc();break;
+            case 'azxy20':$excel = new \App\Http\Controllers\Bet\New_kl8();break;
         }
         return $excel;
     }
