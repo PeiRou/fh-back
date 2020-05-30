@@ -92,7 +92,6 @@ class clear_data extends Command
                     foreach ($files as $ik => $hisKey){
                         if($ii>=1000)
                             break;
-                        $arrayTmp[] = $hisKey;                      //将序号放成数组，容易使用sql查询
                         if(!Storage::disk('betTemp')->exists($hisKey)){
                             $needNew = true;
                             continue;
@@ -100,6 +99,7 @@ class clear_data extends Command
                         $betinfoData = json_decode(Storage::disk('betTemp')->get($hisKey),true);     //把值从文件里面拿出来
                         if(strtotime($betinfoData['updated_at'])>strtotime($clearDate1))
                             continue;
+                        $arrayTmp[] = $hisKey;                      //将序号放成数组，容易使用sql查询
                         $arrayFileData[] = $betinfoData;
                         $arrayFileDataDel[] = $ik;
                         $ii++;
@@ -266,7 +266,6 @@ class clear_data extends Command
                     foreach ($files as $ik => $hisKey) {
                         if ($ii >= 1000)
                             break;
-                        $arrayTmp[] = $hisKey;                      //将序号放成数组，容易使用sql查询
                         if (!Storage::disk('betJqTemp')->exists($hisKey)) {
                             $needNew = true;
                             continue;
@@ -274,6 +273,7 @@ class clear_data extends Command
                         $betinfoData = json_decode(Storage::disk('betJqTemp')->get($hisKey), true);     //把值从文件里面拿出来
                         if (strtotime($betinfoData['updated_at']) > strtotime($clearDate1))
                             continue;
+                        $arrayTmp[] = $hisKey;                      //将序号放成数组，容易使用sql查询
                         $arrayFileData[] = $betinfoData;
                         $arrayFileDataDel[] = $ik;
                         $ii++;
@@ -294,7 +294,7 @@ class clear_data extends Command
                 } else {
                     echo "clear clear-bet db into..." . PHP_EOL;
                     $sql = "SELECT id FROM jq_bet WHERE `flag` = 1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
-                    $tmp = DB::connection('mysql_report')->select($sql);
+                    $tmp = DB::select($sql);
                     $arrIds = array();
                     foreach ($tmp as &$value)
                         $arrIds[] = $value->id;
