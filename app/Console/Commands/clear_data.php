@@ -33,7 +33,7 @@ class clear_data extends Command
         if($redis->exists('clearing')){
             return "";
         }
-//        $redis->setex('clearing',300,'on');
+        $redis->setex('clearing',300,'on');
         $this->stoptime = date('Y-m-d H:i:s',strtotime(date('Y-m-d 23:59:59'))+7200);                                 //卡redis时间，改成两点之后才开始移数据
 //        $this->stoptime = date('Y-m-d H:i:s',strtotime(date('Y-m-d 23:59:59'))+3600);                                 //卡redis时间，改成一点之后才开始移数据
         $this->time = strtotime($this->stoptime) - time();                                                      //卡redis时间，剩馀时间
@@ -67,7 +67,7 @@ class clear_data extends Command
             $redis->setex('clear-bet',5,'on');
             echo "clear clear-bet 3 clear bet ing...".PHP_EOL;
             writeLog('clear','3 clear bet ing...');
-            $res = DB::connection('mysql_report')->table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();       //查一下有没有数据
+            $res = DB::table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();       //查一下有没有数据
             writeLog('clear','4 clear bet :'.json_encode($res));
             if(empty($res)){
                 $redis->setex('clear-bet',$this->time,$this->stoptime);
@@ -244,7 +244,7 @@ class clear_data extends Command
         if(!$redis->exists('clear-jq-bet')){
             //当文件有数据的时候，则到文件里把文件放到bet_his里
             echo "clear clear-bet jq file into...".PHP_EOL;
-            $res = DB::connection('mysql_report')->table('jq_bet')->select('id')->where('flag',1)->where('updated_at','<=',$clearDate1)->first();       //查一下有没有数据
+            $res = DB::table('jq_bet')->select('id')->where('flag',1)->where('updated_at','<=',$clearDate1)->first();       //查一下有没有数据
             writeLog('clear','clear bet jq :'.json_encode($res));
             if(empty($res)){
                 $redis->setex('clear-jq-bet',$this->time,$this->stoptime);
