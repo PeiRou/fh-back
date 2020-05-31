@@ -69,6 +69,7 @@ class clear_data extends Command
             writeLog('clear','3 clear bet ing...');
             $res = DB::table('bet')->select('bet_id')->where('status','>=',1)->where('updated_at','<=',$clearDate1)->first();       //查一下有没有数据
             writeLog('clear','4 clear bet :'.json_encode($res));
+            echo 'clear clear-bet 4 clear bet :'.json_encode($res).PHP_EOL;
             if(empty($res)){
                 $redis->setex('clear-bet',$this->time,$this->stoptime);
             }else{
@@ -97,57 +98,35 @@ class clear_data extends Command
                             continue;
                         }
                         $betinfoData = json_decode(Storage::disk('betTemp')->get($hisKey),true);     //把值从文件里面拿出来
-                        if(strtotime($betinfoData['updated_at'])>strtotime($clearDate1))
+                        if(strtotime($betinfoData['updated_at']) > strtotime($clearDate1) || strtotime($betinfoData['updated_at']) < strtotime(substr($clearDate1,0,10).' 00:00:00'))
                             continue;
                         $arrayTmp[] = $hisKey;                      //将序号放成数组，容易使用sql查询
                         $arrayFileData[] = $betinfoData;
                         $arrayFileDataDel[] = $ik;
                         $ii++;
                     }
-                    DB::table('bet_his')->whereIn('bet_id', $arrayTmp)->where('updated_at','<=',$clearDate1)->delete();
-                    DB::table('bet_his')->insert($arrayFileData);
-                    DB::table('bet')->whereIn('bet_id', $arrayTmp)->where('updated_at','<=',$clearDate1)->delete();
-                    Storage::disk('betTemp')->delete($arrayTmp);              //删除用户在文件的历史数据
-                    foreach ($arrayFileDataDel as $ik => $delKey){
-                        unset($files[$delKey]);
-                    }
-                    if($needNew)
-                        $redis->del($rdKeybet);
-                    else
-                        $redis->setex($rdKeybet,30,json_encode($files));
-                    $num++;
-                    $redis->del('clear-bet');
-                }else{
-                    echo "clear clear-bet db into...".PHP_EOL;
-                    //如果还有遗漏的数据，则像原先一样到bet里读出来，再放到bet_his里
-                    $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
-                    $tmp = DB::select($sql);
-                    $arrIds = array();
-                    foreach ($tmp as&$value)
-                        $arrIds[] = $value->bet_id;
-                    if(count($arrIds)==0){
-                        $redis->setex('clear-bet',$this->time,$this->stoptime);
-                    }else{
-                        DB::beginTransaction();
-                        try {
-                            DB::table('bet_his')->whereIn('bet_id', $arrIds)->delete();
-                            $strIds = implode(',',$arrIds);
-                            $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE bet_id in (".$strIds.")";
-                            $res = DB::statement($sql);
-                            writeLog('clear','table insert into bet_his :'.$res);
-                            if($res){
-                                $res = DB::table('bet')->whereIn('bet_id', $arrIds)->delete();
-                                writeLog('clear','table delete bet :'.$res);
-                            }
-                            DB::commit();
-                        }catch (\Exception $e){
-                            DB::rollback();
-                            writeLog('clear', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
-                            writeLog('clear','table insert into bet_his :fail');
+                    echo "clear clear-bet file count :".$ii.PHP_EOL;
+                    if($ii>0){
+                        DB::table('bet_his')->whereIn('bet_id', $arrayTmp)->where('updated_at','<=',$clearDate1)->delete();
+                        DB::table('bet_his')->insert($arrayFileData);
+                        DB::table('bet')->whereIn('bet_id', $arrayTmp)->where('updated_at','<=',$clearDate1)->delete();
+                        Storage::disk('betTemp')->delete($arrayTmp);              //删除用户在文件的历史数据
+                        foreach ($arrayFileDataDel as $ik => $delKey){
+                            unset($files[$delKey]);
                         }
+                        if($needNew)
+                            $redis->del($rdKeybet);
+                        else
+                            $redis->setex($rdKeybet,30,json_encode($files));
                         $num++;
                         $redis->del('clear-bet');
+                    }else{
+                        echo 'no1. the jq bet file not have.'.PHP_EOL;
+                        $num = $this->exeOldClearBet($clearDate1,$redis,$num);
                     }
+                } else {
+                    echo 'no2. the jq bet file not have.'.PHP_EOL;
+                    $num = $this->exeOldClearBet($clearDate1,$redis,$num);
                 }
             }
         }
@@ -156,6 +135,8 @@ class clear_data extends Command
         //清-投注历史数据
         if(!$redis->exists('clear-bet-his')){
             echo 'table bet_his ing ...' . PHP_EOL;
+            $sql = "DELETE FROM bet WHERE updated_at<='{$clearDate93}' LIMIT 2000";
+            $res = DB::statement($sql);
             $sql = "DELETE FROM bet_his WHERE updated_at<='{$clearDate93}' LIMIT 2000";
             $res = DB::statement($sql);
             echo 'table bet_his :' . $res . PHP_EOL;
@@ -246,6 +227,7 @@ class clear_data extends Command
             echo "clear clear-bet jq file into...".PHP_EOL;
             $res = DB::table('jq_bet')->select('id')->where('flag',1)->where('updated_at','<=',$clearDate1)->first();       //查一下有没有数据
             writeLog('clear','clear bet jq :'.json_encode($res));
+            echo 'clear clear-bet jq :'.json_encode($res).PHP_EOL;
             if(empty($res)){
                 $redis->setex('clear-jq-bet',$this->time,$this->stoptime);
             }else {
@@ -271,59 +253,42 @@ class clear_data extends Command
                             continue;
                         }
                         $betinfoData = json_decode(Storage::disk('betJqTemp')->get($hisKey), true);     //把值从文件里面拿出来
-                        if (strtotime($betinfoData['updated_at']) > strtotime($clearDate1))
+                        if (strtotime($betinfoData['updated_at']) > strtotime($clearDate1) || strtotime($betinfoData['updated_at']) < strtotime(substr($clearDate1,0,10).' 00:00:00'))
                             continue;
                         $arrayTmp[] = $hisKey;                      //将序号放成数组，容易使用sql查询
                         $arrayFileData[] = $betinfoData;
                         $arrayFileDataDel[] = $ik;
                         $ii++;
                     }
-                    DB::table('jq_bet_his')->whereIn('id', $arrayTmp)->where('updated_at', '<=', $clearDate1)->delete();
-                    DB::table('jq_bet_his')->insert($arrayFileData);
-                    DB::table('jq_bet')->whereIn('id', $arrayTmp)->where('updated_at', '<=', $clearDate1)->delete();
-                    Storage::disk('betJqTemp')->delete($arrayTmp);              //删除用户在文件的历史数据
-                    foreach ($arrayFileDataDel as $ik => $delKey) {
-                        unset($files[$delKey]);
-                    }
-                    if ($needNew)
-                        $redis->del($rdKeybet);
-                    else
-                        $redis->setex($rdKeybet, 30, json_encode($files));
-                    $num++;
-                    $redis->del('clear-jq-bet');
-                } else {
-                    echo "clear clear-bet db into..." . PHP_EOL;
-                    $sql = "SELECT id FROM jq_bet WHERE `flag` = 1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
-                    $tmp = DB::select($sql);
-                    $arrIds = array();
-                    foreach ($tmp as &$value)
-                        $arrIds[] = $value->id;
-
-                    DB::table('jq_bet_his')->whereIn('id', $arrIds)->delete();
-                    writeLog('clear', 'clear jq bet :' . json_encode($arrIds));
-                    if (count($arrIds) == 0) {
-                        $redis->setex('clear-jq-bet', $this->time, $this->stoptime);
-                    } else {
-                        try {
-                            $strIds = implode(',', $arrIds);
-                            $sql = "INSERT INTO jq_bet_his SELECT * FROM jq_bet WHERE `id` in (" . $strIds . ")";
-                            $res = DB::statement($sql);
-                            writeLog('clear', 'table insert into jq_bet_his :' . $res);
-                            $sql = "DELETE FROM jq_bet WHERE `id` in (" . $strIds . ")";
-                            $res = DB::statement($sql);
-                            writeLog('clear', 'table delete jq_bet :' . $res);
-                        } catch (\Exception $e) {
-                            writeLog('clear', 'error :' . $e->getMessage());
-                            writeLog('clear', 'table insert into jq_bet_his :fail');
+                    echo "clear clear-jq-bet file count :".$ii.PHP_EOL;
+                    if($ii>0){
+                        DB::table('jq_bet_his')->whereIn('id', $arrayTmp)->where('updated_at', '<=', $clearDate1)->delete();
+                        DB::table('jq_bet_his')->insert($arrayFileData);
+                        DB::table('jq_bet')->whereIn('id', $arrayTmp)->where('updated_at', '<=', $clearDate1)->delete();
+                        Storage::disk('betJqTemp')->delete($arrayTmp);              //删除用户在文件的历史数据
+                        foreach ($arrayFileDataDel as $ik => $delKey) {
+                            unset($files[$delKey]);
                         }
+                        if ($needNew)
+                            $redis->del($rdKeybet);
+                        else
+                            $redis->setex($rdKeybet, 30, json_encode($files));
                         $num++;
-                        $redis->setex('clear-jq-bet', 1, 'on');
+                        $redis->del('clear-jq-bet');
+                    }else{
+                        echo 'no1. the jq bet file not have.'.PHP_EOL;
+                        $num = $this->exeOldClearBet_jq($clearDate1,$redis,$num);
                     }
+                } else {
+                    echo 'no2. the jq bet file not have.'.PHP_EOL;
+                    $num = $this->exeOldClearBet_jq($clearDate1,$redis,$num);
                 }
             }
         }
         //清-棋牌历史数据
         if(!$redis->exists('clear-jq-bet-his')){
+            $sql = "DELETE FROM jq_bet WHERE updated_at<='{$clearDate93}' LIMIT 5000";
+            $res = DB::statement($sql);
             $sql = "DELETE FROM jq_bet_his WHERE updated_at<='{$clearDate93}' LIMIT 5000";
             $res = DB::statement($sql);
             echo 'table jq_bet_his :' . $res . PHP_EOL;
@@ -384,6 +349,76 @@ class clear_data extends Command
         }
         writeLog('clear','Ok');
         echo 'Ok';
+    }
+
+    /**
+     * 为了如果没有在档案里找到记录，则只能按老方法，读数据库方式做迁移
+     */
+    private function exeOldClearBet($clearDate1,$redis,$num){
+        echo "clear clear-bet db into...".PHP_EOL;
+        //如果还有遗漏的数据，则像原先一样到bet里读出来，再放到bet_his里
+        $sql = "SELECT bet_id FROM bet WHERE status >=1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
+        $tmp = DB::select($sql);
+        $arrIds = array();
+        foreach ($tmp as&$value)
+            $arrIds[] = $value->bet_id;
+        if(count($arrIds)==0){
+            $redis->setex('clear-bet',$this->time,$this->stoptime);
+        }else{
+            DB::beginTransaction();
+            try {
+                DB::table('bet_his')->whereIn('bet_id', $arrIds)->delete();
+                $strIds = implode(',',$arrIds);
+                $sql = "INSERT INTO bet_his SELECT * FROM bet WHERE bet_id in (".$strIds.")";
+                $res = DB::statement($sql);
+                writeLog('clear','table insert into bet_his :'.$res);
+                if($res){
+                    $res = DB::table('bet')->whereIn('bet_id', $arrIds)->delete();
+                    writeLog('clear','table delete bet :'.$res);
+                }
+                DB::commit();
+            }catch (\Exception $e){
+                DB::rollback();
+                writeLog('clear', __CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
+                writeLog('clear','table insert into bet_his :fail');
+            }
+            $num++;
+            $redis->del('clear-bet');
+        }
+    }
+
+    /**
+     * 为了如果没有在档案里找到记录，则只能按老方法，读数据库方式做迁移
+     */
+    private function exeOldClearBet_jq($clearDate1,$redis,$num){
+        echo "clear clear-jq-bet db into..." . PHP_EOL;
+        $sql = "SELECT id FROM jq_bet WHERE `flag` = 1 AND updated_at <= '{$clearDate1}' LIMIT 1000";
+        $tmp = DB::select($sql);
+        $arrIds = array();
+        foreach ($tmp as &$value)
+            $arrIds[] = $value->id;
+
+        DB::table('jq_bet_his')->whereIn('id', $arrIds)->delete();
+        writeLog('clear', 'clear jq bet :' . json_encode($arrIds));
+        if (count($arrIds) == 0) {
+            $redis->setex('clear-jq-bet', $this->time, $this->stoptime);
+        } else {
+            try {
+                $strIds = implode(',', $arrIds);
+                $sql = "INSERT INTO jq_bet_his SELECT * FROM jq_bet WHERE `id` in (" . $strIds . ")";
+                $res = DB::statement($sql);
+                writeLog('clear', 'table insert into jq_bet_his :' . $res);
+                $sql = "DELETE FROM jq_bet WHERE `id` in (" . $strIds . ")";
+                $res = DB::statement($sql);
+                writeLog('clear', 'table delete jq_bet :' . $res);
+            } catch (\Exception $e) {
+                writeLog('clear', 'error :' . $e->getMessage());
+                writeLog('clear', 'table insert into jq_bet_his :fail');
+            }
+            $num++;
+            $redis->setex('clear-jq-bet', 1, 'on');
+        }
+        return $num;
     }
 
     /**
