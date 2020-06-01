@@ -215,13 +215,6 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
                     unset($aRebate[$kRebate]);
                 }
             }
-
-            foreach ($aPromotion as $kPromotion => $iPromotion){
-                if($iArrayBunko['game_id'] == $iPromotion->game_id && $iArrayBunko['general_id'] == $iPromotion->general_id){
-                    $aArrayBunko[$kArrayBunko]['promotion_money'] = $iPromotion->money;
-                    unset($aPromotion[$kPromotion]);
-                }
-            }
         }
 
         foreach ($aRebate as $iRebate){
@@ -242,6 +235,15 @@ class ZhReportGeneralStatementDaily implements ShouldQueue
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ];
+        }
+
+        foreach ($aArrayBunko as $kArrayBunko => $iArrayBunko){
+            foreach ($aPromotion as $kPromotion => $iPromotion){
+                if($iArrayBunko['game_id'] == $iPromotion->game_id && $iArrayBunko['general_id'] == $iPromotion->general_id){
+                    $aArrayBunko[$kArrayBunko]['promotion_money'] = $iPromotion->money;
+                    unset($aPromotion[$kPromotion]);
+                }
+            }
         }
 
         foreach ($aPromotion as $iPromotion){
