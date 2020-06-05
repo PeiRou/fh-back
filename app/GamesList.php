@@ -108,7 +108,7 @@ class GamesList extends Base
         30 => 'IBC(沙巴)',
         47 => 'BTI',
         43 => 'MG',
-        3 => 'PT',
+        85 => 'PT',
     ];
 
     /**
