@@ -108,7 +108,7 @@ class GamesList extends Base
         30 => 'IBC(沙巴)',
         47 => 'BTI',
         43 => 'MG',
-        3 => 'PT',
+        85 => 'PT',
     ];
 
     /**
@@ -202,7 +202,7 @@ class GamesList extends Base
         '26' => [
             'g_id' => 19,
             'param' => [
-                'product_type' => 3,
+                'product_type' => 85,
                 'gameType' => 'LIVE',
             ]
         ],
@@ -210,7 +210,7 @@ class GamesList extends Base
         '27' => [
             'g_id' => 19,
             'param' => [
-                'product_type' => 3,
+                'product_type' => 85,
                 'gameType' => 'RNG',
             ]
         ],
@@ -218,7 +218,7 @@ class GamesList extends Base
         '28' => [
             'g_id' => 19,
             'param' => [
-                'product_type' => 3,
+                'product_type' => 85,
                 'gameType' => 'FISH',
             ]
         ],
