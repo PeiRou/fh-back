@@ -81,7 +81,11 @@ class SystemSetting extends Model
                     ELSE `cheak_drawing`
                     END
                     WHERE `id` IN(". implode(',', $ids) .")";
-            return DB::select($sql);
+            $res = DB::select($sql);
+            if(!$res){
+                writeLog('error','修改打码量失败'.$sql);
+            }
+            return $res;
         }catch (\Throwable $e){
             writeLog('error',__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $e->getLine() . ' ' . $e->getMessage());
             return false;
