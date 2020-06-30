@@ -202,11 +202,11 @@ class clear_data extends Command
             //特定休市彩种-删奖期----留给未来使用
             $res = ['game_xyft'];
             foreach ($res as $key => $table){
-                $num_else = $this->delGameTables($table, '2020-05-10 00:00:00', '2020-06-30 23:59:59', $num_else);
+                $num_else = $this->delGameTables($table, '2020-05-10 00:00:00', '2020-07-31 23:59:59', $num_else);
             }
             //特定休市彩种-封盘
             $resGameIds = [55];
-            DB::table('game')->whereIn('game_id',$resGameIds)->update(['holiday_start'=>'2020-05-10 00:00:00','holiday_end'=>'2020-06-30 23:59:59']);
+            DB::table('game')->whereIn('game_id',$resGameIds)->update(['holiday_start'=>'2020-05-10 00:00:00','holiday_end'=>'2020-07-31 23:59:59']);
             //清-计画试算
             $num_else = $this->clrGameTables('plan_record', $clearDate2, $num_else,'updated_at');
             //清-推送消息
