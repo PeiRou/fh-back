@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Bet;
 use App\Excel;
 use App\ExcelLotteryLHC;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 class New_tlhc extends Excel
 {
