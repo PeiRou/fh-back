@@ -38,7 +38,7 @@ class VGRepository extends BaseRepository
                 'g_id' => $this->gameInfo->g_id,
                 'GameID' => $v['id'],   //游戏代码
                 'username' => str_replace($this->Config['agent'].'_','',$v['username']),  //玩家账号
-                'AllBet' => $v['betamount'],//总下注
+                'AllBet' => $v['validbetamount'],//总下注
                 'bunko' => $v['money'] + $v['servicemoney'],       //盈利 输赢 servicemoney一般是负的  所以直接+
                 'bet_money' => $v['validbetamount'],//有效投注额
                 'GameStartTime' => $v['begintime'],//游戏开始时间
