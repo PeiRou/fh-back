@@ -2,15 +2,15 @@
 
 namespace App\Console\Commands\BUNKO;
 
-use App\Http\Controllers\Bet\New_hklhc;
+use App\Http\Controllers\Bet\New_tlhc;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use SameClass\Config\LotteryGames\Games;
 
-class BUNKO_lhc extends Command
+class BUNKO_t extends Command
 {
-    protected $signature = 'BUNKO_lhc';
+    protected $signature = 'BUNKO_t {code?}';
     protected $description = '六合彩-定时结算';
 
     public function __construct()
@@ -20,12 +20,12 @@ class BUNKO_lhc extends Command
 
     public function handle()
     {
-        $code = 'lhc';
+        $code = $this->argument('code');
         $Games = new Games();
         $lotterys = $Games->games[$code]??'';
         if(empty($lotterys))
             return false;
-        $excel = new New_hklhc();
+        $excel = new New_tlhc();
         $get = $excel->getNeedBunkoIssueLhc($lotterys['table']);
         if($get){
             $redis = Redis::connection();
