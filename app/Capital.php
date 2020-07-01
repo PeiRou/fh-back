@@ -196,7 +196,7 @@ class Capital extends Model
                     `to_user`,
                     SUM( `money` ) AS `moneySum`,
                     SUM( CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `money` ELSE 0 END  ) AS other_money,
-                    SUM( CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `capital`.`money` ELSE 0 END ) AS cai_money,
+                    SUM( CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` IN (1,3) THEN `capital`.`money` ELSE 0 END ) AS cai_money,
                     LEFT ( `created_at`, 10 ) AS `date` 
                 FROM
                     `capital` 
@@ -258,8 +258,8 @@ class Capital extends Model
                     `users`.`agent` AS `agentId`,
                     SUM( CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `capital`.`money` ELSE 0 END  ) AS other_money,
                     COUNT(DISTINCT CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `capital`.`to_user` ELSE NULL END  ) AS other_count,
-                    SUM( CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `capital`.`money` ELSE 0 END ) AS cai_money,
-                    COUNT(DISTINCT CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `capital`.`to_user` ELSE NULL END ) AS cai_count
+                    SUM( CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` IN (1,3) THEN `capital`.`money` ELSE 0 END ) AS cai_money,
+                    COUNT(DISTINCT CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` IN (1,3) THEN `capital`.`to_user` ELSE NULL END ) AS cai_count
                   FROM `capital`
                   JOIN `users` ON `users`.`id` = `capital`.`to_user`
                   WHERE 1
@@ -349,9 +349,9 @@ class Capital extends Model
                   SUM( CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `capital`.`money` ELSE 0 END  ) AS other_money,
                   COUNT(DISTINCT CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `capital`.`to_user` ELSE NULL END  ) AS other_count,
                   COUNT(DISTINCT CASE WHEN (`capital`.`type` IN('".implode("','", $types)."') OR ((`capital`.`type` = 't18') AND `capital`.`rechargesType` = 3 )) THEN `agent`.`a_id` ELSE NULL END  ) AS other_agent_count,
-                  SUM( CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `capital`.`money` ELSE 0 END ) AS cai_money,
-                  COUNT(DISTINCT CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `capital`.`to_user` ELSE NULL END ) AS cai_count,
-                  COUNT(DISTINCT CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` = 1 THEN `agent`.`a_id` ELSE NULL END ) AS cai_agent_count
+                  SUM( CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` IN (1,3) THEN `capital`.`money` ELSE 0 END ) AS cai_money,
+                  COUNT(DISTINCT CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` IN (1,3) THEN `capital`.`to_user` ELSE NULL END ) AS cai_count,
+                  COUNT(DISTINCT CASE WHEN `capital`.`type` = 't18' AND `capital`.`rechargesType` IN (1,3) THEN `agent`.`a_id` ELSE NULL END ) AS cai_agent_count
                   FROM `capital`
                   JOIN `users` ON `users`.`id` = `capital`.`to_user`
                   JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
