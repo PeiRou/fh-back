@@ -51,7 +51,7 @@ class Recharges extends Model
         $aSql .= "      GROUP BY `userId`,`agent_id`,`date` ORDER BY `date` ASC
                     ) AS `re`
                     JOIN `users` ON `users`.id = `re`.userId
-                    LEFT JOIN `agent` ON `agent`.a_id = `re`.agent_id
+                    JOIN `agent` ON `agent`.a_id = `re`.agent_id
                     LEFT JOIN `general_agent` ON `general_agent`.ga_id = `agent`.gagent_id";
         return DB::select($aSql,$aArray);
     }
