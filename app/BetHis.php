@@ -177,7 +177,7 @@ class BetHis extends Model
                 break;
         }
         if(isset($markSix) && $markSix == 2){
-            $betSql .= " AND bet_his.game_id != 70";
+            $betSql .= " AND bet_his.game_id != 70 AND bet_his.game_id != 71";
         }
         if(isset($timeStart) && isset($timeEnd)){
             $betSql .= " AND bet_his.created_at BETWEEN '{$timeStart} 00:00:00' and '{$timeEnd} 23:59:59' ";
@@ -234,7 +234,7 @@ class BetHis extends Model
                 break;
         }
         if(isset($markSix) && $markSix == 2){
-            $betSql .= " AND bet_his.game_id != 70";
+            $betSql .= " AND bet_his.game_id != 70 AND bet_his.game_id != 71";
         }
         if(isset($timeStart) && isset($timeEnd)){
             $betSql .= " AND bet_his.created_at BETWEEN '{$timeStart} 00:00:00' and '{$timeEnd} 23:59:59' ";
@@ -288,7 +288,7 @@ class BetHis extends Model
             ->where(function ($query) use ($markSix){
                 if(isset($markSix) && $markSix){
                     if($markSix == 2)
-                        $query->where("bet_his.game_id",'!=',70);
+                        $query->where("bet_his.game_id",'!=',70)->where("bet_his.game_id",'!=',71);
                 }
             })
             ->where(function ($query) use($status){
