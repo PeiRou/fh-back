@@ -33,16 +33,18 @@ class JqReportBetGame extends Model
 
     //获取代理棋牌投注
     public static function betAgentReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT SUM(`bet_count`) AS `bet_count`, SUM(`bet_money`) AS `bet_money`,
-                    SUM(`bet_bunko`) AS `bet_bunko`,`agent_id`,`gameslist_id`,`gameCategory`
-                    FROM `jq_report_bet_game` WHERE gameslist_id > 0";
+        $aSql = "SELECT SUM(`jq_report_bet_game`.`bet_count`) AS `bet_count`, SUM(`jq_report_bet_game`.`bet_money`) AS `bet_money`,
+                    SUM(`jq_report_bet_game`.`bet_bunko`) AS `bet_bunko`,`jq_report_bet_game`.`agent_id`,`jq_report_bet_game`.`gameslist_id`,`jq_report_bet_game`.`gameCategory`
+                    FROM `jq_report_bet_game`
+                    INNER JOIN `users` ON `users`.id = `jq_report_bet_game`.user_id
+                    WHERE gameslist_id > 0";
         $aArray = [];
         if(!empty($startTime)){
-            $aSql .= " AND `date` >= :startTime";
+            $aSql .= " AND `jq_report_bet_game`.`date` >= :startTime";
             $aArray['startTime'] = $startTime;
         }
         if(!empty($endTime)){
-            $aSql .= " AND `date` <= :endTime";
+            $aSql .= " AND `jq_report_bet_game`.`date` <= :endTime";
             $aArray['endTime'] = $endTime;
         }
         $aSql .= " GROUP BY `agent_id`,`gameslist_id`";
@@ -54,7 +56,8 @@ class JqReportBetGame extends Model
         $aSql = "SELECT SUM(`jq_report_bet_game`.`bet_count`) AS `bet_count`, SUM(`jq_report_bet_game`.`bet_money`) AS `bet_money`,SUM(`jq_report_bet_game`.`bet_bunko`) AS `bet_bunko`,
                      `jq_report_bet_game`.`gameslist_id`,`jq_report_bet_game`.`gameCategory`,`agent`.`gagent_id`
                     FROM `jq_report_bet_game` 
-                    JOIN `agent` ON `agent`.a_id = `jq_report_bet_game`.agent_id
+                    INNER JOIN `agent` ON `agent`.a_id = `jq_report_bet_game`.agent_id
+                    INNER JOIN `users` ON `users`.id = `jq_report_bet_game`.user_id
                     WHERE `jq_report_bet_game`.`gameslist_id` > 0";
         $aArray = [];
         if(!empty($startTime)){
