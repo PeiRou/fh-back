@@ -73,6 +73,7 @@ class JqBetHis extends Model
                     SUM(`bet_count`) AS `bet_count`,
                     SUM(`bet_bunko`) AS `bet_bunko`,
                     SUM(`bet_money`) AS `bet_money`,
+                    SUM(`bonus_amount`) AS `bonus_amount`,
                     `agent_account`,
                     `agent_name`,
                     `gameslist_id`,

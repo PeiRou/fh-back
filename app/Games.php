@@ -126,6 +126,7 @@ class Games extends Model
         1 => 'cqssc',
         84 => 'xy28',
         70 => 'lhc',
+        71 => 'amlhc',
         61 => 'cqxync',
         85 => 'xylhc',
         83 => 'xykl8',

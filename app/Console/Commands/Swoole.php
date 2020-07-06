@@ -123,10 +123,10 @@ class Swoole extends Command
                     Artisan::call($data['thread'], $serv->get);
                     $response->end(ob_get_clean());
                     return '';
-                }else if(substr($data['thread'],0,7) == 'BUNKO_1'){
+                }else if(substr($data['thread'],0,6) == 'BUNKO_'){
                     $tmp = explode('_',$data['thread']);
                     $data['code'] = $tmp[2];
-                    $data['thread'] = 'BUNKO_1';
+                    $data['thread'] = $tmp[0].'_'.$tmp[1];
                 }else if(substr($data['thread'],0,6) == 'KILL_1'){
                     $tmp = explode('_',$data['thread']);
                     $data['code'] = $tmp[2];
