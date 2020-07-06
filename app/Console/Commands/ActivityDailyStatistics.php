@@ -65,9 +65,12 @@ class ActivityDailyStatistics extends Command
             ];
         }
         $activityStatistics = new ActivityStatistics();
-        if($activityStatistics->batchInsert($aArray,$dayTime))
-            $this->info('Console activity daily statistics successfully.');
-        else
-            $this->info('Console activity daily statistics failure.');
+        $aArrayChunk = array_chunk($aArray,500);
+        foreach ($aArrayChunk as $k => $v){
+            if($activityStatistics->batchInsert($v,$dayTime))
+                $this->info($k . 'Console activity daily statistics successfully.');
+            else
+                $this->info($k . 'Console activity daily statistics failure.');
+        }
     }
 }
