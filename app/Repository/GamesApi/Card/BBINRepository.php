@@ -117,7 +117,7 @@ class BBINRepository extends BaseRepository
         $table = DB::table('jq_bet');
         if($table->insert($data)){
             # 修改提款打码量
-            SystemSetting::decDrawingMoneyCheckCode($data, 'AllBet');
+            UsersModel::decDrawingMoneyCheckCode($data);
             # 增加可提现金额
             UsersModel::upUserWithdrawableAmount($data, null, 'user_id', 'bunko');
             echo $this->gameInfo->name.'_'.(self::gamekind[$this->param['gamekind']]['gameCategory'] ?? '').$this->param['subgamekind'].'插入'.count($data).'条数据'.PHP_EOL;

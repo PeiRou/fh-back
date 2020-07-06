@@ -65,7 +65,7 @@ class BaseRepository
         if(!$whereField){
             $a = '插入';
             # 修改提款打码量
-            SystemSetting::decDrawingMoneyCheckCode($data, 'AllBet');
+            UsersModel::decDrawingMoneyCheckCode($data);
             # 增加可提现金额
             UsersModel::upUserWithdrawableAmount($data, null, 'user_id', 'bunko');
             $res = DB::table($table)->insert($data);
