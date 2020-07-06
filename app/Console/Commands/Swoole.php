@@ -125,8 +125,10 @@ class Swoole extends Command
                     return '';
                 }else if(substr($data['thread'],0,6) == 'BUNKO_'){
                     $tmp = explode('_',$data['thread']);
-                    $data['code'] = $tmp[2];
-                    $data['thread'] = $tmp[0].'_'.$tmp[1];
+                    if(isset($tmp[2])){
+                        $data['code'] = $tmp[2];
+                        $data['thread'] = $tmp[0].'_'.$tmp[1];
+                    }
                 }else if(substr($data['thread'],0,6) == 'KILL_1'){
                     $tmp = explode('_',$data['thread']);
                     $data['code'] = $tmp[2];
