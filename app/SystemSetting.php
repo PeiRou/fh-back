@@ -83,11 +83,6 @@ class SystemSetting extends Model
                     WHERE `id` IN(". implode(',', $ids) .")";
             DB::beginTransaction();
             $res = DB::update($sql);
-            writeLog('error', var_export($res, 1));
-            writeLog('error','修改打码量:'.$sql);
-            if(!$res){
-                writeLog('error','修改打码量失败'.$sql);
-            }
             DB::commit();
             return $res;
         }catch (\Throwable $e){
