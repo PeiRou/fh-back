@@ -194,7 +194,7 @@ class clear_data extends Command
             $res = $Games->games;
             foreach ($res as $key => $val){
                 $newClearDate = $clearDate62;
-                if($val['table'] == 'game_lhc'){
+                if($val['isGuan'] === 4){
                     $newClearDate = date('Y-m-d 23:59:59',strtotime("-1 Year")-300);
                 }
                 $num_else = $this->clrGameTables($val['table'], $newClearDate, $num_else);
