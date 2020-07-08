@@ -65,7 +65,10 @@ class BaseRepository
         if(!$whereField){
             $a = '插入';
             # 修改提款打码量
-            UsersModel::decDrawingMoneyCheckCode($data);
+            UsersModel::decDrawingMoneyCheckCode($data, [
+                'capital_type' => 4,
+                'game_type' => 2
+            ]);
             # 增加可提现金额
             UsersModel::upUserWithdrawableAmount($data, null, 'user_id', 'bunko');
             $res = DB::table($table)->insert($data);
