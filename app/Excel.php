@@ -191,7 +191,9 @@ class Excel
                 }
             }
             # 反水计算打码
-            UsersModel::userCheakDrawings($get->toArray(),'t14',  $users, 'user_id', 'back_money');
+            UsersModel::userCheakDrawings($get->toArray(),'t14',  $users, 'user_id', 'back_money',[
+                'capital_type' => 7
+            ]);
 
             $capData = [];
             $ii = 0;

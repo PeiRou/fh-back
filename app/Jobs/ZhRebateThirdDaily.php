@@ -284,7 +284,9 @@ class ZhRebateThirdDaily implements ShouldQueue
                 $aUserMoney = array_chunk($aUserMoney,1000);
                 foreach ($aUserMoney as $iUserMoney){
                     DB::update( Users::updateUserBatchStitching('users',$iUserMoney));
-                    UsersModel::userCheakDrawings($iUserMoney, 't31', null, 'to_user', 'money');
+                    UsersModel::userCheakDrawings($iUserMoney, 't31', null, 'to_user', 'money',[
+                        'capital_type' => 5
+                    ]);
                 }
             }
 

@@ -118,7 +118,7 @@ class BBINRepository extends BaseRepository
         if($table->insert($data)){
             # 修改提款打码量
             UsersModel::decDrawingMoneyCheckCode($data, [
-                'capital_type' => 4,
+                'capital_type' => 8,
                 'game_type' => 2
             ]);
             # 增加可提现金额
