@@ -140,18 +140,24 @@ class Swoole extends Command
                     $this->exeComds_one($data);
                     return '';
                 }
-            }else if($data['thread2']=='push'){
+//            }else if($data['thread2']=='push'){
+            }else if(substr($data['thread2'],0,4) == 'push'){
                 $ii = 1;
                 foreach ($this->threadArray as $key => $val){
-                    if(substr($val,0,7) == 'BUNKO_1'){
-                        $tmp = explode('_',$val);
+                    $tmp = explode('_',$val);
+                    if(isset($tmp[2])){
+                        switch ($tmp[2]){
+                            case 'BUNKO':
+                                if(!in_array($data['thread2'],['push','push_B']))
+                                    continue;
+                                break;
+                            case 'KILL':
+                                if(!in_array($data['thread2'],['push','push_K']))
+                                    continue;
+                                break;
+                        }
                         $data['code'] = $tmp[2];
-                        $data['thread'] = 'BUNKO_1';
-                    }else if(substr($val,0,6) == 'KILL_1'){
-                        $tmp = explode('_',$val);
-                        $data['code'] = $tmp[2];
-                        $info['extra'] =  ['code'=>$data['code']];
-                        $data['thread'] = 'KILL_1';
+                        $data['thread'] = $tmp[0].'_'.$tmp[1];
                     }
                     $tmpIndex = ($ii%$this->maxId)+1;
                     $this->num[$tmpIndex]['cmds'][$data['thread'].'-'.$data['code']] = $data;
