@@ -1200,7 +1200,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                 writeLog('New_Kill', '开启了传统模式--'.$table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
-                if($this->checkOneBetMoney($exeBase,$gameId,$issue) && $lose_losewin_rate<=($exeBase->kill_rate)) {            //平台最大营利去选杀号
+                if($this->checkOneBetMoney($exeBase,$gameId,$issue) || $lose_losewin_rate<=($exeBase->kill_rate)) {            //平台最大营利去选杀号
                     $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = " . $gameId . " AND issue ='{$issue}') and game_id = " . $gameId . " AND issue ='{$issue}' LIMIT 1";
                     $tmp = DB::select($aSql);
                     foreach ($tmp as &$value)
