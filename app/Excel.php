@@ -1170,12 +1170,8 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                     $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                     writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
                     $randRate = rand(1000,1999)/1000;
-                    $checkKill_betmoney = false;
-                    writeLog('New_Kill', 'kill_betmoney:'.$exeBase->kill_betmoney);
-                    if($exeBase->kill_betmoney>0)
-                        $checkKill_betmoney = DB::table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bet_money','>=',$exeBase->kill_betmoney)->exists();
-                    writeLog('New_Kill', '$checkKill_betmoney:'.$checkKill_betmoney);
-                    if($checkKill_betmoney==false && $lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
+                    $checkKill_betmoney = $this->checkOneBetMoney($exeBase,$gameId,$issue);     //如果有注单金额超过这标准，则强行打开杀率
+                    if($checkKill_betmoney===false && $lose_losewin_rate>($exeBase->kill_rate*$randRate)){            //如果当日的输赢比高于杀率，则选给用户吃红
                         $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
                     }else{
                         if($checkKill_betmoney || $lose_losewin_rate<=0.1 || (!in_array($randNum,array(3,5,7)))) {                        //如果当日的输赢比低于0，则选平台最好的营利值
@@ -1204,7 +1200,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                 $total = $exeBase->bet_lose + $exeBase->bet_win;
                 $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                 writeLog('New_Kill', '开启了传统模式--'.$table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
-                if($lose_losewin_rate<=($exeBase->kill_rate)) {            //平台最大营利去选杀号
+                if($this->checkOneBetMoney($exeBase,$gameId,$issue) && $lose_losewin_rate<=($exeBase->kill_rate)) {            //平台最大营利去选杀号
                     $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = " . $gameId . " AND issue ='{$issue}') and game_id = " . $gameId . " AND issue ='{$issue}' LIMIT 1";
                     $tmp = DB::select($aSql);
                     foreach ($tmp as &$value)
@@ -1219,6 +1215,15 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
         DB::table("excel_bet")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->limit(1000)->delete();
         DB::table("excel_game")->where('created_at','<=',date('Y-m-d H:i:s',time()-600))->limit(1000)->delete();
+    }
+    //检查是否有注单超过自定的金额
+    private function checkOneBetMoney($exeBase,$gameId,$issue){
+        $checkKill_betmoney = false;
+        writeLog('New_Kill', 'kill_betmoney:'.$exeBase->kill_betmoney);
+        if($exeBase->kill_betmoney>0)   //如果有注单金额超过这标准，则强行打开杀率
+            $checkKill_betmoney = DB::table('excel_bet')->where('game_id',$gameId)->where('issue',$issue)->where('bet_money','>=',$exeBase->kill_betmoney)->exists();
+        writeLog('New_Kill', '$checkKill_betmoney:'.$checkKill_betmoney);
+        return $checkKill_betmoney;
     }
     //试算杀率个别取用方法，用来继承的父类
     protected function exc_play($openCode,$gameId){
