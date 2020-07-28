@@ -6,7 +6,6 @@ use App\Excel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
-use SameClass\Config\LotteryGames\Games;
 
 class KILL_1 extends Command
 {
@@ -21,17 +20,15 @@ class KILL_1 extends Command
     public function handle()
     {
         $code = $this->argument('code');
-        $Games = new Games();
-        $games = $Games->games[$code]??'';
-        if(empty($games))
-            return false;
-        $redis = Redis::connection();
-        $redis->select(0);
-        $nextIssueLotteryTime = $redis->exists($code.':nextIssueLotteryTime')?$redis->get($code.':nextIssueLotteryTime'):0;
-        if(empty($nextIssueLotteryTime) || time() < ($nextIssueLotteryTime-7))
-            return false;
 
         $excel = new Excel();
+
+        //检查是否需要执行杀率
+        $checkNeedKill = $excel->checkNeedKill($code,true);
+        if($checkNeedKill===false)
+            return false;
+        else
+            $games = $checkNeedKill;
         $excel = $excel->newObject($code);
         $get = $excel->getNeedKillIssue($games['table']);
         $exeBase = $excel->getKillBase($games['gameId']);

@@ -13,6 +13,21 @@ use SameClass\Config\LotteryGames\Games;
 
 class Excel
 {
+    //检查是否需要执行杀率
+    public function checkNeedKill($code,$needReturnData=false){
+        $Games = new Games();
+        $games = $Games->games[$code]??'';
+        if(empty($games))
+            return false;
+        $redis = Redis::connection();
+        $redis->select(0);
+        $nextIssueLotteryTime = $redis->exists($code.':nextIssueLotteryTime')?$redis->get($code.':nextIssueLotteryTime'):0;
+        if(empty($nextIssueLotteryTime) || (time() < ($nextIssueLotteryTime-7) || time() > ($nextIssueLotteryTime-5)))
+            return false;
+        if($needReturnData===true)
+            return $games;
+        return true;
+    }
     /**
      * 更新赢钱的用户馀额
      * @param $gameId
@@ -1019,7 +1034,8 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         $key = $strBunko.':'.$gameId.'ing:';
 
         if(!$redis->exists($key)){
-            $redis->setex($key, $time, date('Y-m-d H:i:s').'=='.$time);
+            if($time > 0)
+                $redis->setex($key, $time, date('Y-m-d H:i:s').'=='.$time);
             $result = 0;
         }else{
             $result = 1;

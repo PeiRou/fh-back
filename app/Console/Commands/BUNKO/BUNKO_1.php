@@ -25,7 +25,7 @@ class BUNKO_1 extends Command
             return false;
         $Games = new Games();
         $lotterys = $Games->games[$code]??'';
-        if(empty($lotterys) || in_array($code,['lhc','msnn','pknn']))
+        if(empty($lotterys))
             return false;
         $havElse = $lotterys['conElseLottery'];
         $havElseLottery = [];
