@@ -111,55 +111,57 @@ class Swoole extends Command
         });
         $this->ws->on('workerStart', function ($serv,$worker_id) {
             $this->serv = $serv;
-            $Games = new \SameClass\Config\LotteryGames\Games();
-            //取得需要做杀率的
-            $doKillArrary = $Games->setlottery([],'isGuan',2);
+            if(in_array(env('MODEL_TYPE',0),[0,1])){
+                $Games = new \SameClass\Config\LotteryGames\Games();
+                //取得需要做杀率的
+                $doKillArrary = $Games->setlottery([],'isGuan',2);
 
-            //取得需要做结算的的
-            $doBunkoArrary = $Games->setlottery([],'isGuan',1);
-            $doBunkoArrary1 = $Games->setlottery([],'isGuan',3);
-            $doBunkoArrary = array_merge($doBunkoArrary,$doBunkoArrary1);
-            unset($doBunkoArrary1);
-            $doBunkoArrary = array_merge($doKillArrary,$doBunkoArrary);
+                //取得需要做结算的的
+                $doBunkoArrary = $Games->setlottery([],'isGuan',1);
+                $doBunkoArrary1 = $Games->setlottery([],'isGuan',3);
+                $doBunkoArrary = array_merge($doBunkoArrary,$doBunkoArrary1);
+                unset($doBunkoArrary1);
+                $doBunkoArrary = array_merge($doKillArrary,$doBunkoArrary);
 
-            $excel = new \App\Excel;
-            switch ($worker_id){
-                case 0:     //杀率
-                    $this->serv->tick(1000, function($id) use ($excel,$doKillArrary) {
-                        $this->urls = [];
-                        $redis = Redis::connection();
-                        foreach ($doKillArrary as $code){
-                            $checkNeedKill = $excel->checkNeedKill($code);
-                            if($checkNeedKill){
-                                $send = 'KILL_1_'.$code;
-                                $this->pushData('http://127.0.0.1:9500?thread='.$send);
+                $excel = new \App\Excel;
+                switch ($worker_id){
+                    case 0:     //杀率
+                        $this->serv->tick(1000, function($id) use ($excel,$doKillArrary) {
+                            $this->urls = [];
+                            $redis = Redis::connection();
+                            foreach ($doKillArrary as $code){
+                                $checkNeedKill = $excel->checkNeedKill($code);
+                                if($checkNeedKill){
+                                    $send = 'KILL_1_'.$code;
+                                    $this->pushData('http://127.0.0.1:9500?thread='.$send);
+                                }
                             }
-                        }
-                        if(count($this->urls)>0)
-                            $this->sendUrl();
-                        $redis->disconnect();
-                    });
-                    break;
-                case 1:     //结算
-                    $this->serv->tick(1000, function($id) use ($excel,$doBunkoArrary) {
-                        $this->urls = [];
+                            if(count($this->urls)>0)
+                                $this->sendUrl();
+                            $redis->disconnect();
+                        });
+                        break;
+                    case 1:     //结算
+                        $this->serv->tick(1000, function($id) use ($excel,$doBunkoArrary) {
+                            $this->urls = [];
 
-                        $redis = Redis::connection();
-                        foreach ($doBunkoArrary as $code){
-                            $checkNeedKill = !$excel->stopBunko($code, 0,'BunkoCP');
-                            if($checkNeedKill){
-                                if($code=='msnn' || $code=='pknn')
-                                    $send = 'BUNKO_'.$code;
-                                else
-                                    $send = 'BUNKO_1_'.$code;
-                                $this->pushData('http://127.0.0.1:9500?thread='.$send);
+                            $redis = Redis::connection();
+                            foreach ($doBunkoArrary as $code){
+                                $checkNeedKill = !$excel->stopBunko($code, 0,'BunkoCP');
+                                if($checkNeedKill){
+                                    if($code=='msnn' || $code=='pknn')
+                                        $send = 'BUNKO_'.$code;
+                                    else
+                                        $send = 'BUNKO_1_'.$code;
+                                    $this->pushData('http://127.0.0.1:9500?thread='.$send);
+                                }
                             }
-                        }
-                        if(count($this->urls)>0)
-                            $this->sendUrl();
-                        $redis->disconnect();
-                    });
-                    break;
+                            if(count($this->urls)>0)
+                                $this->sendUrl();
+                            $redis->disconnect();
+                        });
+                        break;
+                }
             }
         });
         $this->ws->on('request', function ($serv, $response) {
