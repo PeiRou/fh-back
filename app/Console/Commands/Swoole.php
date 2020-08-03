@@ -13,24 +13,6 @@ class Swoole extends Command
     public $ws;
     public $serv;
     public $num;
-    public $maxId = 8;
-    public $threadArray= [
-        'BUNKO_1_bjkl8','BUNKO_1_pk10','BUNKO_1_cqssc','BUNKO_1_cqxync','BUNKO_1_gd11x5','BUNKO_1_gdklsf','BUNKO_1_gsk3',
-        'BUNKO_1_gxk3','BUNKO_1_gzk3','BUNKO_1_hbk3','BUNKO_1_hebeik3','BUNKO_1_jsk3','BUNKO_1_msft','BUNKO_1_msjsk3',
-        'BUNKO_1_qqffc','BUNKO_msnn','BUNKO_1_mssc','BUNKO_1_msssc','BUNKO_1_paoma','BUNKO_1_pcdd','BUNKO_pknn',
-        'BUNKO_1_xjssc','BUNKO_1_xylhc','BUNKO_1_kssc','BUNKO_1_ksft','BUNKO_1_ksssc','BUNKO_1_twxyft',
-        'BUNKO_1_sfsc','BUNKO_1_sfssc','BUNKO_1_jslhc','BUNKO_1_sflhc','BUNKO_1_xyft','BUNKO_1_ahk3',
-        'BUNKO_1_xykl8','BUNKO_1_xylsc','BUNKO_1_xylft','BUNKO_1_xylssc','BUNKO_1_xy28','BUNKO_1_twbgc',
-        'BUNKO_1_twbg28','BUNKO_1_hlsx','BUNKO_1_yfsc','BUNKO_1_yfssc','BUNKO_1_yflhc','BUNKO_1_efsc','BUNKO_1_efssc',
-        'BUNKO_1_eflhc','BUNKO_1_wfsc','BUNKO_1_wfssc','BUNKO_1_wflhc','BUNKO_1_shfsc','BUNKO_1_shfssc','BUNKO_1_shflhc',
-        'BUNKO_1_hkk3','BUNKO_1_yfk3','BUNKO_1_efk3','BUNKO_1_sfk3','BUNKO_1_wfk3',
-        'BUNKO_1_xyft168','BUNKO_1_azxy5','BUNKO_1_azxy8','BUNKO_1_azxy10','BUNKO_1_azxy20',
-        'KILL_1_msft','KILL_1_mssc','KILL_1_msssc',
-        'KILL_1_paoma','KILL_1_xylhc','KILL_1_msjsk3','KILL_1_qqffc','KILL_1_kssc','KILL_1_ksft','KILL_1_ksssc','KILL_1_twxyft',
-        'KILL_1_sfsc','KILL_1_sfssc','KILL_1_jslhc','KILL_1_sflhc','KILL_1_xykl8','KILL_1_xylsc','KILL_1_xylft','KILL_1_xylssc',
-        'KILL_1_yfsc','KILL_1_yfssc','KILL_1_yflhc','KILL_1_efsc','KILL_1_efssc','KILL_1_eflhc','KILL_1_wfsc','KILL_1_wfssc',
-        'KILL_1_wflhc','KILL_1_shfsc','KILL_1_shfssc','KILL_1_shflhc','KILL_1_hkk3','KILL_1_yfk3','KILL_1_efk3','KILL_1_sfk3','KILL_1_wfk3'
-    ];
     /**
      * The name and signature of the console command.
      *
