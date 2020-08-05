@@ -344,7 +344,7 @@ class BetHis extends Model
     }
 
     public static function betAgentReportData($startTime = '',$endTime = ''){
-        $aSql = "SELECT LEFT(`bet_his`.`updated_at`,10) AS `date`,`users`.`agent` AS `agentId`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(`bet_his`.`bet_id`) AS `idCount`,SUM(`bet_his`.`bet_money`) AS `betMoneySum`, 
+        $aSql = "SELECT LEFT(`bet_his`.`updated_at`,10) AS `date`,`bet_his`.`agent_id` AS `agentId`,COUNT(DISTINCT(`users`.`id`)) AS `userIdCount`,COUNT(`bet_his`.`bet_id`) AS `idCount`,SUM(`bet_his`.`bet_money`) AS `betMoneySum`, 
                   SUM(CASE WHEN `bet_his`.`game_id` IN(90,91) THEN (CASE WHEN `bet_his`.`nn_view_money` > 0 THEN `bet_his`.`bet_money` ELSE 0 END) ELSE (CASE WHEN `bet_his`.`bunko` >0 THEN `bet_his`.`bet_money` ELSE 0 END) END) AS `sumWinbet`,
                   SUM(CASE WHEN `bet_his`.`game_id` IN(90,91) THEN `bet_his`.`nn_view_money` ELSE (CASE WHEN `bet_his`.`bunko` >0 THEN `bet_his`.`bunko` - `bet_his`.`bet_money` ELSE `bet_his`.`bunko` END) END) AS `sumBunko`,
                   SUM(`bet_money` * `play_rebate`) AS `back_money`  
@@ -395,7 +395,7 @@ class BetHis extends Model
                   SUM(`bet_money` * `play_rebate`) AS `back_money` 
                   FROM `bet_his` 
                   JOIN `users` ON `users`.`id` = `bet_his`.`user_id`
-                  JOIN `agent` ON `agent`.`a_id` = `users`.`agent`
+                  JOIN `agent` ON `agent`.`a_id` = `bet_his`.`agent_id`
                   WHERE `bet_his`.`testFlag` = 0 AND `users`.`testFlag` = 0 AND `bet_his`.`bunko` != 0 AND `bet_his`.`status` = 1 ";
         $aArray = [];
         if(!empty($startTime)){
