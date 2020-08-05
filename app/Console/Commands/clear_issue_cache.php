@@ -36,16 +36,16 @@ class clear_issue_cache extends Command
      */
     public function handle()
     {
-        $redis = Redis::connection();
-        $redis->select(0);
-        $redis->flushdb();        //清除所有开奖相关redis
-        if(Storage::disk('thread')->exists('thread')){
-            Storage::disk('thread')->delete('thread');
-        }
-        $directories = Storage::disk('logs')->directories();
-        foreach ($directories as $key => $val){
-            Storage::disk('logs')->deleteDirectory($val);
-        }
-        return 'Ok';
+//        $redis = Redis::connection();
+//        $redis->select(0);
+//        $redis->flushdb();        //清除所有开奖相关redis
+//        if(Storage::disk('thread')->exists('thread')){
+//            Storage::disk('thread')->delete('thread');
+//        }
+//        $directories = Storage::disk('logs')->directories();
+//        foreach ($directories as $key => $val){
+//            Storage::disk('logs')->deleteDirectory($val);
+//        }
+//        return 'Ok';
     }
 }

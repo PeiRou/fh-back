@@ -64,11 +64,18 @@ class Swoole extends Command
      * 初始化
      */
     private function init(){
-        $redis = Redis::connection();
-        $redis->select(0);
-        $redis->flushdb();        //清除所有开奖相关redis
-        if(Storage::disk('thread')->exists('thread')){
-            Storage::disk('thread')->delete('thread');
+
+        if(in_array(env('MODEL_TYPE',0),[0,1])){
+            $redis = Redis::connection();
+            $redis->select(0);
+            $redis->flushdb();        //清除所有开奖相关redis
+            if(Storage::disk('thread')->exists('thread')){
+                Storage::disk('thread')->delete('thread');
+            }
+            $directories = Storage::disk('logs')->directories();
+            foreach ($directories as $key => $val){
+                Storage::disk('logs')->deleteDirectory($val);
+            }
         }
     }
 
