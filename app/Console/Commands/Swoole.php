@@ -76,6 +76,9 @@ class Swoole extends Command
         foreach ($directories as $key => $val){
             Storage::disk('logs')->deleteDirectory($val);
         }
+        $files =  Storage::disk('logs')->files();
+        if(count($files)>0)
+            Storage::disk('logs')->delete($files);
     }
 
     /***
