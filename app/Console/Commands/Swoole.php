@@ -64,7 +64,6 @@ class Swoole extends Command
      * 初始化
      */
     private function init(){
-
         if(in_array(env('MODEL_TYPE',0),[0,1])){
             $redis = Redis::connection();
             $redis->select(0);
@@ -72,10 +71,10 @@ class Swoole extends Command
             if(Storage::disk('thread')->exists('thread')){
                 Storage::disk('thread')->delete('thread');
             }
-            $directories = Storage::disk('logs')->directories();
-            foreach ($directories as $key => $val){
-                Storage::disk('logs')->deleteDirectory($val);
-            }
+        }
+        $directories = Storage::disk('logs')->directories();
+        foreach ($directories as $key => $val){
+            Storage::disk('logs')->deleteDirectory($val);
         }
     }
 
@@ -119,10 +118,14 @@ class Swoole extends Command
                             $this->urls = [];
                             $redis = Redis::connection();
                             foreach ($doKillArrary as $code){
-                                $checkNeedKill = $excel->checkNeedKill($code);
-                                if($checkNeedKill){
-                                    $send = 'KILL_1_'.$code;
-                                    $this->pushData('http://127.0.0.1:9500?thread='.$send);
+                                try{
+                                    $checkNeedKill = $excel->checkNeedKill($code);
+                                    if($checkNeedKill){
+                                        $send = 'KILL_1_'.$code;
+                                        $this->pushData('http://127.0.0.1:9500?thread='.$send);
+                                    }
+                                }catch (\Exception $e) {
+                                    writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
                                 }
                             }
                             if(count($this->urls)>0)
@@ -136,13 +139,17 @@ class Swoole extends Command
 
                             $redis = Redis::connection();
                             foreach ($doBunkoArrary as $code){
-                                $checkNeedKill = !$excel->stopBunko($code, 0,'BunkoCP');
-                                if($checkNeedKill){
-                                    if($code=='msnn' || $code=='pknn')
-                                        $send = 'BUNKO_'.$code;
-                                    else
-                                        $send = 'BUNKO_1_'.$code;
-                                    $this->pushData('http://127.0.0.1:9500?thread='.$send);
+                                try{
+                                    $checkNeedKill = !$excel->stopBunko($code, 0,'BunkoCP');
+                                    if($checkNeedKill){
+                                        if($code=='msnn' || $code=='pknn')
+                                            $send = 'BUNKO_'.$code;
+                                        else
+                                            $send = 'BUNKO_1_'.$code;
+                                        $this->pushData('http://127.0.0.1:9500?thread='.$send);
+                                    }
+                                }catch (\Exception $e) {
+                                    writeLog('error', $e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
                                 }
                             }
                             if(count($this->urls)>0)
@@ -214,6 +221,9 @@ class Swoole extends Command
         $redis->disconnect();
     }
     private function exeComds($data){
+        if(!in_array(env('MODEL_TYPE',0),[0,1])){
+            writeLog('doIt',$data);
+        }
         if(empty($data['code']))
             Artisan::call($data['thread']);
         else
