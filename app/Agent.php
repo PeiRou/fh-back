@@ -136,6 +136,25 @@ class Agent extends Model
         return $aSql;
     }
 
+    public static function updateBatchAgentMoney($data,$primary,$symbol = '+',$table = 'agent'){
+        $aSql = 'UPDATE '. $table . ' SET ';
+        $str1 = '`balance` = `balance` ' . $symbol . ' CASE ' . $primary . ' ';
+        foreach ($data as $key => $value){
+            $str1 .= 'WHEN \'' . $value[$primary] . '\' THEN \'' . $value['balance'] . '\' ';
+        }
+        $str1 .= 'END , ';
+        $aSql .= $str1;
+        $aSql = substr($aSql, 0, strlen($aSql) - 2);
+        $endStr = 'WHERE ' . $primary . ' IN (';
+        foreach ($data as $key => $value) {
+            $endStr .= '\'' . $value[$primary] . '\',';
+        }
+        $endStr = substr($endStr, 0, strlen($endStr) - 1);
+        $endStr .= ')';
+        $aSql .= $endStr;
+        return $aSql;
+    }
+
     public static function updateBalanceBatch($data,$fields,$table = 'agent'){
         $aSql = 'UPDATE '. $table . ' SET ';
         foreach ($fields as $field){

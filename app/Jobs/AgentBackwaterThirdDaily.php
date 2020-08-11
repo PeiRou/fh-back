@@ -100,7 +100,7 @@ class AgentBackwaterThirdDaily implements ShouldQueue
         try{
             AgentBackwater::insert($aAgentBackwater);
             if(count($aAgentMoney) > 0)
-                DB::update(Agent::updateFiledBatchStitching($aAgentMoney,['balance'],'a_id'));
+                DB::update(Agent::updateBatchAgentMoney($aAgentMoney,'a_id'));
             CapitalAgent::insert($aCapitalAgent);
             DB::commit();
             Artisan::call('AgentOdds:AgentBackwaterReport',['date' => $this->aDateTime]);
