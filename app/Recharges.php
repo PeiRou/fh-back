@@ -38,7 +38,7 @@ class Recharges extends Model
                     `users`.username AS `userAccount`,`users`.name AS `userName`,`users`.testFlag AS `userTestFlag`  
                     FROM (
                         SELECT `userId`,`agent_id`,SUM(`amount`) AS `reAmountSum`,LEFT(`updated_at`,10) AS `date` 
-                        FROM `recharges` WHERE (`status` = 2 AND `payType` != 'adminAddMoney') OR (`payType` = 'adminAddMoney' AND `admin_add_money` = 2)";
+                        FROM `recharges` WHERE ((`status` = 2 AND `payType` != 'adminAddMoney') OR (`payType` = 'adminAddMoney' AND `admin_add_money` = 2))";
         $aArray = [];
         if(!empty($startTime)){
             $aSql .= " AND `updated_at` >= :startTime ";
