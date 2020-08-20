@@ -21,8 +21,8 @@ class Excel
             return false;
         $redis = Redis::connection();
         $redis->select(0);
-        $nextIssueLotteryTime = $redis->exists($code.':nextIssueLotteryTime')?$redis->get($code.':nextIssueLotteryTime'):0;
-        if(empty($nextIssueLotteryTime) || (time() < ($nextIssueLotteryTime-7) || time() > ($nextIssueLotteryTime-5)))
+        $nextIssueLotteryTime = $redis->exists($code.':nextIssueLotteryTime')?(int)$redis->get($code.':nextIssueLotteryTime'):0;
+        if((time() < ($nextIssueLotteryTime-7) || time() > ($nextIssueLotteryTime-5)))
             return false;
         if($needReturnData===true)
             return $games;
@@ -130,18 +130,17 @@ class Excel
                     continue;
                 $redis->setex($keyEx,60,'on');
                 $content = ' 第'.$i->issue.'期 '.$i->playcate_name.' '.$i->play_name;
-//                $tmpContent = '<div><span style="color: red">'.$gameName.'</span>'.$content. '已中奖，中奖金额 <span style="color:#8d71ff">' .round($winBunko,3).'元</span></div>';
                 $tmpContent = "<div><span style='color: red'>".$gameName."</span>".$content. "已中奖，中奖金额 <span style='color:#8d71ff'>" .round($winBunko,3)."元</span></div>";
                 $push[] = array('userid'=>$i->user_id,'notice'=>$tmpContent);
             }
-//            krsort($capData);     //取消多一个排序
             $capIns = DB::table('capital')->insert($capData);
             if($capIns != 1){
                 return 1;
             }
             if(!empty(env('PUSHER_APP_ID',''))){
+                $pushData['type'] = 'win';
+                $pushData['title'] = '中奖通知';
                 foreach ($push as $key => $val){
-//                    @event(new BackPusherEvent('win','中奖通知',$val['notice'],array('fnotice-'.$val['userid'])));
                     $pushData['notice'] = $val['notice'];
                     $pushData['userid'] = $val['userid'];
                     $this->pushWinInfo($pushData);
@@ -151,9 +150,22 @@ class Excel
             writeLog('New_Bet',$gameName.'已结算过，已阻止！');
         }
         if($is_status){
+            $push = DB::connection('mysql_report')->table('bet')->select('user_id')->where('status',$betStatus)->where('game_id',$gameId)->where('issue',$issue)->groupBy('user_id')->get();
             $res = DB::table('bet')->where('status',$betStatus)->where('game_id',$gameId)->where('issue',$issue)->update(['status' => 1]);
             if(!$res)
                 writeLog('New_Bet',$gameName.$issue.'返钱失败！');
+            //推送通知用户未结已结已更新
+            if(!empty(env('PUSHER_APP_ID',''))){
+                $pushData['type'] = 'needReq';
+                $pushData['notice'] = '';
+                foreach ($push as $key => $val){
+                    $pushData['userid'] = $val->user_id;
+                    $pushData['title'] = 'unBalance';
+                    $this->pushWinInfo($pushData);
+                    $pushData['title'] = 'getSettled';
+                    $this->pushWinInfo($pushData);
+                }
+            }
         }
         return 0;
     }
