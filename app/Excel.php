@@ -22,7 +22,7 @@ class Excel
         $redis = Redis::connection();
         $redis->select(0);
         $nextIssueLotteryTime = $redis->exists($code.':nextIssueLotteryTime')?(int)$redis->get($code.':nextIssueLotteryTime'):0;
-        if((time() < ($nextIssueLotteryTime-7) || time() > ($nextIssueLotteryTime-5)))
+        if((time() < ($nextIssueLotteryTime-5) || time() > ($nextIssueLotteryTime-3)))
             return false;
         if($needReturnData===true)
             return $games;
@@ -340,7 +340,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
     public function getNeedKillIssue($table,$status=0){
         if(empty($table))
             return false;
-        $today = date('Y-m-d H:i:s',time()+9);
+        $today = date('Y-m-d H:i:s',time()+4);
         $sql = "SELECT id,issue,excel_num FROM {$table} WHERE id = (SELECT MAX(id) FROM {$table} WHERE opentime <='{$today}' and is_open=0 and excel_num=".$status.") and is_open=0 and bunko=0 and excel_num=".$status;
         $tmp = DB::connection('mysql_report')->select($sql);
         if(empty($tmp))
