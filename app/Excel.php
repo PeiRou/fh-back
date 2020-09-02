@@ -22,7 +22,7 @@ class Excel
         $redis = Redis::connection();
         $redis->select(0);
         $nextIssueLotteryTime = $redis->exists($code.':nextIssueLotteryTime')?(int)$redis->get($code.':nextIssueLotteryTime'):0;
-        if((time() < ($nextIssueLotteryTime-5) || time() > ($nextIssueLotteryTime-3)))
+        if((time() < ($nextIssueLotteryTime-6) || time() > ($nextIssueLotteryTime-3)))
             return false;
         if($needReturnData===true)
             return $games;
@@ -1180,22 +1180,26 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                     $this->setKillIssueNum($table,$issue,$dataExcGame['excel_num'],$openCode,$excBunko);
             }
         }
+        if($exeBase->is_open==1){
         //开启智能杀率
-        if(isset($exeBase->is_ai)&&$exeBase->is_ai){
-            if($exeBase->is_open==1){
-                $exeData = DB::table('excel_game')->select(DB::raw('opennum,issue,bunko'))->where('game_id',$gameId)->where('issue',$issue)->groupBy('issue','excel_num')->get();
-                writeLog('New_Kill', '开启了智慧模式--'.$table.' :'.$issue.' origin-'.json_encode($exeData));
-                $arrLimit = array();
-                foreach ($exeData as $key => $val) {
-                    $arrLimit[(string)$val->bunko] = $val->opennum;
-                }
-                ksort($arrLimit);                //将计算后的杀率值，由小到大排序
-                writeLog('New_Kill', $table.' :'.$issue.' s-to-b-'.json_encode($arrLimit));
+            $exeData = DB::table('excel_game')->select(DB::raw('opennum,issue,bunko'))->where('game_id',$gameId)->where('issue',$issue)->groupBy('issue','excel_num')->get();
+            writeLog('New_Kill', '开启了智慧模式--'.$table.' :'.$issue.' origin-'.json_encode($exeData));
+            $arrLimit = array();
+            foreach ($exeData as $key => $val) {
+                $arrLimit[(string)$val->bunko] = $val->opennum;
+            }
+            ksort($arrLimit);                //将计算后的杀率值，由小到大排序
+            writeLog('New_Kill', $table.' :'.$issue.' s-to-b-'.json_encode($arrLimit));
+            $thisBunko = key(array_slice($arrLimit,-1,1));
+            writeLog('New_Kill', $table.' :'.$issue.' MAX_BUNKO:'.$thisBunko);
+            if($thisBunko>0)                //把最高值算进去输赢里
+                $exeBase->bet_win += $thisBunko;
+            $total = $exeBase->bet_lose + $exeBase->bet_win;
+            $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
+            if(isset($exeBase->is_ai)&&$exeBase->is_ai){
                 $ii = 0;
                 $randNum = rand(0,10);                              //定一个随机数，随机期数让用户有最大的吃红
                 if($exeBase->count_date==date('Y-m-d')){            //如果当日的已有计算，则开始以比试算值选号
-                    $total = $exeBase->bet_lose + $exeBase->bet_win;
-                    $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
                     writeLog('New_Kill', $table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
                     $randRate = rand(1000,1999)/1000;
                     $checkKill_betmoney = $this->checkOneBetMoney($exeBase,$gameId,$issue);     //如果有注单金额超过这标准，则强行打开杀率
@@ -1220,13 +1224,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                         break;
                     }
                 }
-            }else {
-                $openCode = '';
-            }
-        }else{  //传统模式
-            if($exeBase->is_open==1) {
-                $total = $exeBase->bet_lose + $exeBase->bet_win;
-                $lose_losewin_rate = $total>0?($exeBase->bet_lose-$exeBase->bet_win)/$total:0;
+            }else{  //传统模式
                 writeLog('New_Kill', '开启了传统模式--'.$table.' :'.$issue.' now: '.$lose_losewin_rate.' target: '.$exeBase->kill_rate);
                 if($this->checkOneBetMoney($exeBase,$gameId,$issue) || $lose_losewin_rate<=($exeBase->kill_rate)) {            //平台最大营利去选杀号
                     $aSql = "SELECT opennum FROM excel_game WHERE bunko = (SELECT min(bunko) FROM excel_game WHERE game_id = " . $gameId . " AND issue ='{$issue}') and game_id = " . $gameId . " AND issue ='{$issue}' LIMIT 1";
@@ -1235,9 +1233,9 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
                         $openCode = $value->opennum;
                 }else
                     $openCode = $this->opennum($code,$type,$exeBase->is_user,$issue,$i);
-            }else{
-                $openCode = '';
             }
+        }else{
+            $openCode = '';
         }
         writeLog('New_Kill', $table.' :'.$openCode);
         DB::table($table)->where('issue',$issue)->update(["excel_opennum"=>$openCode]);
