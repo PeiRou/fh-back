@@ -20,9 +20,9 @@ class Excel
         if(empty($games))
             return false;
         $redis = Redis::connection();
-        $redis->select(0);
+        $redis->select(0);      //从开奖的redis读
         $nextIssueLotteryTime = $redis->exists($code.':nextIssueLotteryTime')?(int)$redis->get($code.':nextIssueLotteryTime'):0;
-        if((time() < ($nextIssueLotteryTime-6) || time() > ($nextIssueLotteryTime-3)))
+        if((time() < ($nextIssueLotteryTime-5) || time() > ($nextIssueLotteryTime-2)))
             return false;
         if($needReturnData===true)
             return $games;
@@ -377,7 +377,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         $time = $time<0?1:$time;
 
         $redis = Redis::connection();
-        $redis->select(0);
+        $redis->select(3);
         $key = 'BunkoCP:'.$code.'ing:';
         if($isGuan){
             $coutGuanKey = 'guan:'.$code.'-'.$OrgIssue;
@@ -420,7 +420,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
         $time = $time<0?1:$time;
 
         $redis = Redis::connection();
-        $redis->select(0);
+        $redis->select(3);
         $key = 'BunkoCP:'.$code.'ing:';
         $redis->setex($key, $time, date('Y-m-d H:i:s').'-- next:'.$OrgOpentime.'-- sec:'.$time);
     }
@@ -1041,7 +1041,7 @@ FROM bet WHERE 1 and testFlag = 0 ".$where;
     //结算阻止
     public function stopBunko($gameId,$time=1,$strBunko='Bunko'){
         $redis = Redis::connection();
-        $redis->select(0);
+        $redis->select(3);
         //阻止進行中
         $key = $strBunko.':'.$gameId.'ing:';
 

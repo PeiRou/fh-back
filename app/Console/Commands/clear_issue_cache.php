@@ -37,7 +37,7 @@ class clear_issue_cache extends Command
     public function handle()
     {
 //        $redis = Redis::connection();
-//        $redis->select(0);
+//        $redis->select(3);
 //        $redis->flushdb();        //清除所有开奖相关redis
 //        if(Storage::disk('thread')->exists('thread')){
 //            Storage::disk('thread')->delete('thread');

@@ -66,7 +66,7 @@ class Swoole extends Command
     private function init(){
         if(in_array(env('MODEL_TYPE',0),[0,1])){
             $redis = Redis::connection();
-            $redis->select(0);
+            $redis->select(3);
             $redis->flushdb();        //清除所有开奖相关redis
             if(Storage::disk('thread')->exists('thread')){
                 Storage::disk('thread')->delete('thread');
@@ -215,6 +215,7 @@ class Swoole extends Command
     private function cldComds($data){
         $key = 'Artisan:'.$data['thread'].'-'.$data['code'];
         $redis = Redis::connection();
+        $redis->select(3);
         if(!$redis->exists($key)){
             $redis->setex($key, 60,'on');
             DB::disconnect();

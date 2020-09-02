@@ -29,7 +29,7 @@ class BUNKO_t extends Command
         $get = $excel->getNeedBunkoIssueLhc($lotterys['table']);
         if($get){
             $redis = Redis::connection();
-            $redis->select(0);
+            $redis->select(3);
             //阻止進行中
             $key = 'Bunko:'.$lotterys['gameId'].'ing:'.$get->issue;
             if($redis->exists($key)){
